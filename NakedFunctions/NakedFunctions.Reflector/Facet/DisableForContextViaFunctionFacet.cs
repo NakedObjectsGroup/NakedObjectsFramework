@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -32,14 +33,12 @@ namespace NakedFunctions.Meta.Facet {
 
         #region IDisableForContextFacet Members
 
-        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Session, ic.Persistor);
+        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
 
         public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter,
-                                     ISession session,
-                                     IObjectPersistor persistor) =>
-            (string) method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor));
+        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) =>
+            (string) method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, framework));
 
         #endregion
 

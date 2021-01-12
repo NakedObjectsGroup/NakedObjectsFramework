@@ -37,12 +37,12 @@ namespace NakedObjects.Meta.Audit {
         public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedObjectsFramework framework) {
-            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework.Session, framework.LifecycleManager);
+            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework);
             return underlyingFacet.Invoke(nakedObjectAdapter, parameters, framework);
         }
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedObjectsFramework framework) {
-            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework.Session, framework.LifecycleManager);
+            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework);
             return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, framework);
         }
     }

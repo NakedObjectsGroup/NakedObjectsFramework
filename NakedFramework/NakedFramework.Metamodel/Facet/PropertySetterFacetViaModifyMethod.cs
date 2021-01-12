@@ -41,7 +41,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager) => methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
+        public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, INakedObjectsFramework framework) => methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
 
         protected override string ToStringValues() => $"method={method}";
 

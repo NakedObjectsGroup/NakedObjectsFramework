@@ -34,11 +34,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IHideForContextFacet Members
 
-        public string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => HiddenReason(ic.Target, ic.Session, ic.Persistor);
+        public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
 
-        public Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => new HiddenException(ic, Hides(ic, lifecycleManager, manager));
+        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
-        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) {
+        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             if (nakedObjectAdapter == null) {
                 return null;
             }

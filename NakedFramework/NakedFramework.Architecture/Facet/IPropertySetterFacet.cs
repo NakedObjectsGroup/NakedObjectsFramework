@@ -23,6 +23,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Sets the value of this property
         /// </summary>
-        void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager);
+        void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedObjectsFramework framework);
     }
 }

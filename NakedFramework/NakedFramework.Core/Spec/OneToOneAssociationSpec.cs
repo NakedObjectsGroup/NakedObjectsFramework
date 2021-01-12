@@ -20,12 +20,10 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
-        private readonly ITransactionManager transactionManager;
         private bool? isFindMenuEnabled;
 
         public OneToOneAssociationSpec(IOneToOneAssociationSpecImmutable association, INakedObjectsFramework framework)
             : base(association, framework) {
-            this.transactionManager = framework.TransactionManager;
         }
 
         public override IObjectSpec ElementSpec => null;
@@ -57,7 +55,7 @@ namespace NakedObjects.Core.Spec {
                 ? new (string, IObjectSpec)[] { }
                 : propertyChoicesFacet.ParameterNamesAndTypes.Select(t => {
                     var (pName, pSpec) = t;
-                    return (pName, MetamodelManager.GetSpecification(pSpec));
+                    return (pName, Framework.MetamodelManager.GetSpecification(pSpec));
                 }).ToArray();
         }
 
@@ -68,19 +66,19 @@ namespace NakedObjects.Core.Spec {
             var objectOptions = propertyChoicesFacet == null ? null : propertyChoicesFacet.GetChoices(target, parameterNameValues);
             if (objectOptions != null) {
                 if (enumFacet == null) {
-                    return Manager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
+                    return Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
                 }
 
-                return Manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(target, objectOptions)).ToArray();
+                return Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(target, objectOptions)).ToArray();
             }
 
             objectOptions = enumFacet == null ? null : enumFacet.GetChoices(target);
             if (objectOptions != null) {
-                return Manager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
+                return Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
             }
 
             if (ReturnSpec.IsBoundedSet()) {
-                return Manager.GetCollectionOfAdaptedObjects(Persistor.GetBoundedSet(ReturnSpec)).ToArray();
+                return Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(Framework.Persistor.GetBoundedSet(ReturnSpec)).ToArray();
             }
 
             return null;
@@ -88,7 +86,7 @@ namespace NakedObjects.Core.Spec {
 
         public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter target, string autoCompleteParm) {
             var propertyAutoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return propertyAutoCompleteFacet == null ? null : Manager.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm, Session, Persistor)).ToArray();
+            return propertyAutoCompleteFacet == null ? null : Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm, Framework)).ToArray();
         }
 
         public void InitAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate) {
@@ -108,7 +106,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             var buf = new InteractionBuffer();
-            IInteractionContext ic = InteractionContext.ModifyingPropParam(Session, Persistor,false, inObjectAdapter, Identifier, reference);
+            IInteractionContext ic = InteractionContext.ModifyingPropParam(Framework,false, inObjectAdapter, Identifier, reference);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
@@ -134,7 +132,7 @@ namespace NakedObjects.Core.Spec {
                 var setterFacet = GetFacet<IPropertySetterFacet>();
                 if (setterFacet != null) {
                     inObjectAdapter.ResolveState.CheckCanAssociate(associate);
-                    setterFacet.SetProperty(inObjectAdapter, associate, transactionManager, Session, LifecycleManager);
+                    setterFacet.SetProperty(inObjectAdapter, associate, Framework);
                 }
             }
         }
@@ -147,10 +145,10 @@ namespace NakedObjects.Core.Spec {
                 return null;
             }
 
-            var spec = (IObjectSpec) MetamodelManager.GetSpecification(obj.GetType());
+            var spec = (IObjectSpec)Framework.MetamodelManager.GetSpecification(obj.GetType());
             return spec.ContainsFacet(typeof(IComplexTypeFacet))
-                ? Manager.CreateAggregatedAdapter(fromObjectAdapter, Id, obj)
-                : Manager.CreateAdapter(obj, null, null);
+                ? Framework.NakedObjectManager.CreateAggregatedAdapter(fromObjectAdapter, Id, obj)
+                : Framework.NakedObjectManager.CreateAdapter(obj, null, null);
         }
 
         private (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultObject(INakedObjectAdapter fromObjectAdapter) {
@@ -164,7 +162,7 @@ namespace NakedObjects.Core.Spec {
                 _ => (null, TypeOfDefaultValue.Implicit)
             };
 
-            return (Manager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
+            return (Framework.NakedObjectManager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
         }
 
         public override string ToString() {

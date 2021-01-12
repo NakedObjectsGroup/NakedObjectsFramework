@@ -83,7 +83,7 @@ namespace NakedObjects.Xat {
 
         public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(framework, contributor, actionSpec, owningObject, this);
 
-        public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) => new TestProperty(framework.Persistor, field, owningObject, this, framework.NakedObjectManager);
+        public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) => new TestProperty(field, owningObject, this, framework);
 
         public ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject) => new TestParameter(parameterSpec, owningObject, this);
 

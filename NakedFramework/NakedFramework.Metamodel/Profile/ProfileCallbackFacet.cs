@@ -36,13 +36,13 @@ namespace NakedObjects.Meta.Profile {
 
         #region ICreatedCallbackFacet Members
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            profileManager.Begin(session, associatedEvent, "", nakedObjectAdapter, lifecycleManager);
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+            profileManager.Begin(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
             try {
-                underlyingFacet.Invoke(nakedObjectAdapter, session, lifecycleManager, metamodelManager);
+                underlyingFacet.Invoke(nakedObjectAdapter, framework);
             }
             finally {
-                profileManager.End(session, associatedEvent, "", nakedObjectAdapter, lifecycleManager);
+                profileManager.End(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
             }
         }
 

@@ -347,7 +347,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var facet = parmSpec.GetFacet<IActionDefaultsFacet>();
                 Assert.IsNotNull(facet);
 
-                var (defaultValue, type) = facet.GetDefault(null, null, null);
+                var (defaultValue, type) = facet.GetDefault(null, null);
                 Assert.AreEqual("a default", defaultValue);
                 Assert.AreEqual("Explicit", type.ToString());
             }

@@ -26,7 +26,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
             Assert.IsNotNull(hideForContextFacet.GetMethodDelegate(), method.Name);
             var target = MockParm(new TestDelegateClass());
             var result = isHidden ? Resources.NakedObjects.Hidden : null;
-            Assert.AreEqual(result, facet.HiddenReason(target, null, null));
+            Assert.AreEqual(result, facet.HiddenReason(target, null));
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
             var mockIc = new Mock<IInteractionContext>();
             mockIc.Setup(ic => ic.Target).Returns(target);
 
-            var e = facet.CreateExceptionFor(mockIc.Object, null, null);
+            var e = facet.CreateExceptionFor(mockIc.Object);
 
             Assert.IsInstanceOfType(e, typeof(HiddenException));
             Assert.AreEqual("Hidden", e.Message);

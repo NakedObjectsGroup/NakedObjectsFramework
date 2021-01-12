@@ -41,8 +41,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var manager = new Mock<INakedObjectManager>().Object;
             var loggerFactory = new Mock<ILoggerFactory>().Object;
             var logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+            INakedObjectsFramework framework = new Mock<INakedObjectsFramework>().Object;
 
-            return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null, loggerFactory, logger);
+            return new NakedObjectAdapter(obj, null, framework, loggerFactory, logger);
         }
 
         [TestMethod]

@@ -18,37 +18,25 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class NakedObjectAdapter : INakedObjectAdapter {
-        private readonly ILifecycleManager lifecycleManager;
+        private readonly INakedObjectsFramework framework;
         private readonly ILogger<NakedObjectAdapter> logger;
-        private readonly IMetamodelManager metamodel;
-        private readonly INakedObjectManager nakedObjectManager;
-        private readonly IObjectPersistor persistor;
-        private readonly ISession session;
         private ITypeSpec spec;
 
-        public NakedObjectAdapter(IMetamodelManager metamodel,
-                                  ISession session,
-                                  IObjectPersistor persistor,
-                                  ILifecycleManager lifecycleManager,
-                                  INakedObjectManager nakedObjectManager,
-                                  object poco,
+        public NakedObjectAdapter( object poco,
                                   IOid oid,
+                                  INakedObjectsFramework framework,
                                   ILoggerFactory loggerFactory,
                                   ILogger<NakedObjectAdapter> logger) {
-            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
-            this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
-            this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
-            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            this.framework = framework;
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
-            this.lifecycleManager = lifecycleManager ?? throw new InitialisationException($"{nameof(lifecycleManager)} is null");
-
+        
             if (poco is INakedObjectAdapter) {
                 throw new AdapterException(logger.LogAndReturn($"Adapter can't be used to adapt an adapter: {poco}"));
             }
 
             Object = poco;
             Oid = oid;
-            ResolveState = new ResolveStateMachine(this, session);
+            ResolveState = new ResolveStateMachine(this, framework.Session);
             Version = new NullVersion(loggerFactory.CreateLogger<NullVersion>());
         }
 
@@ -161,7 +149,7 @@ namespace NakedObjects.Core.Adapter {
                 return;
             }
 
-            persistor.LoadComplexTypes(this, ResolveState.IsGhost());
+            framework.Persistor.LoadComplexTypes(this, ResolveState.IsGhost());
         }
 
         public void Created() => CallCallback<ICreatedCallbackFacet>();
@@ -193,14 +181,14 @@ namespace NakedObjects.Core.Adapter {
         #endregion
 
         private ITypeSpec SetSpec() {
-            spec = metamodel.GetSpecification(Object.GetType());
+            spec = framework.MetamodelManager.GetSpecification(Object.GetType());
             DefaultTitle = "A" + (" " + spec.SingularName).ToLower();
             return spec;
         }
 
         private string CollectionTitleString(ICollectionFacet facet) {
-            var size = CanCount() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
-            var elementSpecification = TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
+            var size = CanCount() ? facet.AsEnumerable(this, framework.NakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
+            var elementSpecification = TypeOfFacet == null ? null : framework.MetamodelManager.GetSpecification(TypeOfFacet.GetValueSpec(this, framework.MetamodelManager.Metamodel));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
 
@@ -252,11 +240,11 @@ namespace NakedObjects.Core.Adapter {
         }
 
         // todo - better to handle null facet or bind in noop facet ? 
-        private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>()?.Invoke(this, session, lifecycleManager, metamodel);
+        private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>()?.Invoke(this, framework);
 
         private object CallCallbackAndReturn<T>() where T : ICallbackFacet
         {
-            return Spec.GetFacet<T>()?.InvokeAndReturn(this, session, lifecycleManager, metamodel, persistor);
+            return Spec.GetFacet<T>()?.InvokeAndReturn(this, framework);
         }
     }
 

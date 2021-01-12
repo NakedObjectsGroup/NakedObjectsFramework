@@ -19,17 +19,19 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Xat {
     public class TestProperty : ITestProperty {
         private readonly ITestObjectFactory factory;
+        private readonly INakedObjectsFramework framework;
         private readonly IAssociationSpec field;
         private readonly INakedObjectManager manager;
         private readonly ITestHasActions owningObject;
         private readonly IObjectPersistor persistor;
 
-        public TestProperty(IObjectPersistor persistor, IAssociationSpec field, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager) {
-            this.persistor = persistor;
+        public TestProperty(IAssociationSpec field, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectsFramework framework) {
+            this.persistor = framework.Persistor;
             this.field = field;
             this.owningObject = owningObject;
             this.factory = factory;
-            this.manager = manager;
+            this.framework = framework;
+            this.manager = framework.NakedObjectManager;
         }
 
         #region ITestProperty Members
@@ -38,7 +40,7 @@ namespace NakedObjects.Xat {
 
         public string Id => field.Id;
 
-        public string Title => field.PropertyTitle(field.GetNakedObject(owningObject.NakedObject), manager, null, null);
+        public string Title => field.PropertyTitle(field.GetNakedObject(owningObject.NakedObject),framework);
 
         public ITestNaked Content {
             get {

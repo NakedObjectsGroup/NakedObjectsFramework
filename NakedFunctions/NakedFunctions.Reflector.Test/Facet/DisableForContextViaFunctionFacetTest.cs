@@ -18,7 +18,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Disables));
             var testFacet = new DisableForContextViaFunctionFacet(method, null);
 
-            var result = testFacet.DisabledReason(null, null, null);
+            var result = testFacet.DisabledReason(null, null);
 
             Assert.AreEqual(TestValue, result);
         }

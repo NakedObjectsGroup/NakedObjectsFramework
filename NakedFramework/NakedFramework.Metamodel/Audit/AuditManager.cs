@@ -33,10 +33,10 @@ namespace NakedObjects.Meta.Audit {
 
         #region IAuditManager Members
 
-        public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager lifecycleManager) {
-            var auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
+        public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedObjectsFramework framework) {
+            var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
 
-            var byPrincipal = session.Principal;
+            var byPrincipal = framework.Session.Principal;
             var memberName = identifier.MemberName;
             if (nakedObjectAdapter.Spec is IServiceSpec) {
                 var serviceName = nakedObjectAdapter.Spec.GetTitle(nakedObjectAdapter);
@@ -47,14 +47,14 @@ namespace NakedObjects.Meta.Audit {
             }
         }
 
-        public void Updated(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager) {
-            var auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
-            auditor.ObjectUpdated(session.Principal, nakedObjectAdapter.GetDomainObject());
+        public void Updated(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+            var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
+            auditor.ObjectUpdated(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
         }
 
-        public void Persisted(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager) {
-            var auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
-            auditor.ObjectPersisted(session.Principal, nakedObjectAdapter.GetDomainObject());
+        public void Persisted(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+            var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
+            auditor.ObjectPersisted(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
         }
 
         #endregion

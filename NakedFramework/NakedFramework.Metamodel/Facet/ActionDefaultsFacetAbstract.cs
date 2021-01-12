@@ -21,7 +21,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IActionDefaultsFacet Members
 
-        public abstract (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor);
+        public abstract (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
 
         #endregion
     }

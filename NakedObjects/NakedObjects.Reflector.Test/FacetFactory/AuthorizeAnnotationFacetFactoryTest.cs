@@ -28,9 +28,16 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private ILifecycleManager lifecycleManager;
         private Mock<ILifecycleManager> mockPersistor;
 
+        private readonly Mock<INakedObjectsFramework> mockFramework = new Mock<INakedObjectsFramework>();
+        private readonly INakedObjectsFramework framework;
+
         protected override Type[] SupportedTypes => new[] {typeof(IHiddenFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
+
+        public AuthorizeAnnotationFacetFactoryTest() {
+            framework = mockFramework.Object;
+        }
 
         [TestMethod]
         public void TestAuthorizeAnnotationActionRoleAuthorized() {
@@ -39,14 +46,14 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
-
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.IsNull(facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -59,12 +66,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.IsNull(facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -77,20 +85,22 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.IsNull(facet1.HiddenReason(null, framework));
 
             testSession = new TestSession("anotherRole", "");
-            Assert.IsNotNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNotNull(facet.DisabledReason(null, framework));
 
             facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNotNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.IsNotNull(facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -103,12 +113,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -121,12 +132,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -140,12 +152,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.IsNull(facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -159,12 +172,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.IsNull(facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -178,12 +192,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -197,12 +212,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -216,12 +232,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.IsNull(facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -235,12 +252,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.IsNull(facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -254,12 +272,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -273,12 +292,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -292,12 +312,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.IsNull(facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -311,12 +332,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.IsNull(facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -330,12 +352,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -349,12 +372,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
 
             var facet1 = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -368,7 +392,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -382,7 +407,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -396,7 +422,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -410,7 +437,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -424,7 +452,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -438,7 +467,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.DisabledReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -452,7 +482,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -466,7 +497,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -704,7 +736,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -718,7 +751,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -732,7 +766,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -746,7 +781,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -760,7 +796,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -774,7 +811,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -788,10 +826,12 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNull(facet.HiddenReason(null, framework));
 
             testSession = new TestSession("", "anotherUser");
-            Assert.IsNotNull(facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.IsNotNull(facet.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -805,7 +845,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 
@@ -819,7 +860,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
+            mockFramework.Setup(f => f.Session).Returns(testSession);
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(null, framework));
             Assert.IsNotNull(metamodel);
         }
 

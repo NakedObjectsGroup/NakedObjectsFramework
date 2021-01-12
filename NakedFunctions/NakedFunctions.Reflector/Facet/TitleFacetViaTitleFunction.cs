@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -21,11 +22,8 @@ namespace NakedFunctions.Meta.Facet {
 
         public TitleFacetViaTitleFunction(MethodInfo method, ISpecification holder) : base(holder) => this.method = method;
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter,
-                                        INakedObjectManager nakedObjectManager,
-                                        ISession session,
-                                        IObjectPersistor persistor) =>
-            method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor)) as string;
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter,  INakedObjectsFramework framework) =>
+            method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, framework)) as string;
 
         #region IImperativeFacet Members
 

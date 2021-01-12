@@ -19,7 +19,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.GetDefault));
             var testFacet = new ActionDefaultsFacetViaFunction(method, null);
 
-            var (result, defaultType) = testFacet.GetDefault(null, null, null);
+            var (result, defaultType) = testFacet.GetDefault(null, null);
 
             Assert.AreEqual(TestValue, result);
             Assert.AreEqual(TypeOfDefaultValue.Explicit, defaultType);

@@ -20,13 +20,10 @@ namespace NakedObjects.Core.Spec {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
         protected AssociationSpecAbstract(IAssociationSpecImmutable association,  INakedObjectsFramework framework)
             : base(association.Identifier.MemberName, association, framework) {
-            Manager = framework.NakedObjectManager ?? throw new InitialisationException($"{nameof(framework.NakedObjectManager)} is null");
-            ReturnSpec = MetamodelManager.GetSpecification(association.ReturnSpec);
+            ReturnSpec = framework.MetamodelManager.GetSpecification(association.ReturnSpec);
         }
 
         public virtual bool IsAutoCompleteEnabled => ContainsFacet(typeof(IAutoCompleteFacet));
-
-        public INakedObjectManager Manager { get; }
 
         #region IAssociationSpec Members
 
@@ -63,7 +60,7 @@ namespace NakedObjects.Core.Spec {
 
             if (viewModelFacet != null) {
                 // all fields on a non-editable view model are disabled
-                if (!viewModelFacet.IsEditView(target, Session, Persistor)) {
+                if (!viewModelFacet.IsEditView(target, Framework)) {
                     return new Veto(Resources.NakedObjects.FieldDisabled);
                 }
             }
@@ -85,11 +82,11 @@ namespace NakedObjects.Core.Spec {
             }
 
             var f = GetFacet<IDisableForContextFacet>();
-            var reason = f?.DisabledReason(target, Session, Persistor);
+            var reason = f?.DisabledReason(target, Framework);
 
             if (reason == null) {
                 var fs = GetFacet<IDisableForSessionFacet>();
-                reason = fs == null ? null : fs.DisabledReason(Session, target, LifecycleManager, MetamodelManager);
+                reason = fs == null ? null : fs.DisabledReason( target, Framework);
             }
 
             return GetConsent(reason);

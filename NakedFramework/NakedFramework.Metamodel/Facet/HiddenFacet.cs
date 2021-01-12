@@ -43,11 +43,11 @@ namespace NakedObjects.Meta.Facet {
             };
 
 
-        public string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => HiddenReason(ic.Target);
+        public string Hides(IInteractionContext ic) => HiddenReason(ic.Target);
         
         public string HidesForState(bool persisted) => HiddenReason(persisted);
 
-        public Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => new HiddenException(ic, Hides(ic, lifecycleManager, manager));
+        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
         #endregion
     }

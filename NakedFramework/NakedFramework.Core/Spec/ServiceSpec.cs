@@ -13,8 +13,8 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
     public sealed class ServiceSpec : TypeSpec, IServiceSpec {
-        public ServiceSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IServiceSpecImmutable innerSpec, ISession session, IObjectPersistor persistor) :
-            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec, session, persistor) { }
+        public ServiceSpec(SpecFactory memberFactory,  IServiceSpecImmutable innerSpec, INakedObjectsFramework framework) :
+            base(memberFactory, innerSpec, framework) { }
 
         private IActionSpec[] contributedActions;
         private IActionSpec[] ContributedActions => contributedActions ?? (contributedActions = MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions));

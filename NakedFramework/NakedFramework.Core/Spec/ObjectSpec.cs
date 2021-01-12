@@ -27,13 +27,10 @@ namespace NakedObjects.Core.Spec {
         private IAssociationSpec[] objectFields;
 
         public ObjectSpec(SpecFactory memberFactory,
-                          IMetamodelManager metamodelManager,
-                          INakedObjectManager nakedObjectManager,
                           IObjectSpecImmutable innerSpec,
-                          ISession session,
-                          IObjectPersistor persistor,
+                          INakedObjectsFramework framework,
                           ILogger<ObjectSpec> logger) :
-            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec, session, persistor) => this.logger = logger;
+            base(memberFactory, innerSpec, framework) => this.logger = logger;
 
         private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions);
 

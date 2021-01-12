@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -46,13 +47,11 @@ namespace NakedFunctions.Meta.Facet {
 
         public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter,
                                             IDictionary<string, INakedObjectAdapter> parameterNameValues,
-                                            ISession session,
-                                            IObjectPersistor persistor) {
+                                            INakedObjectsFramework framework) {
             try {
                 if (choicesMethod.Invoke(null, choicesMethod.GetParameterValues(nakedObjectAdapter,
                                                                                 parameterNameValues,
-                                                                                session,
-                                                                                persistor)) is IEnumerable options) {
+                                                                               framework)) is IEnumerable options) {
                     return options.Cast<object>().ToArray();
                 }
 

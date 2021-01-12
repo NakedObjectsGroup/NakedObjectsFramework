@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,15 +25,12 @@ namespace NakedFunctions.Meta.Facet {
             : base(holder) =>
             this.method = method;
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session,
-                                    ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             // do nothing should always be called via Invoke and Return
         }
 
-        public override object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, ISession session,
-                                               ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager,
-                                               IObjectPersistor persistor) =>
-            method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor));
+        public override object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) =>
+            method.Invoke(null, method.GetParameterValues(nakedObjectAdapter,framework));
 
         protected override string ToStringValues() => $"method={method}";
 

@@ -13,9 +13,9 @@ namespace NakedObjects.Architecture.Facet {
     ///     A <see cref="IFacet" /> that represents some type of lifecycle callback on the object (eg about to be persisted).
     /// </summary>
     public interface ICallbackFacet : IFacet {
-        void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager);
+        void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
 
-        object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager, IObjectPersistor persistor);
+        object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
 
     }
 

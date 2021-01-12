@@ -19,6 +19,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Service;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -52,7 +53,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var loggerFactory = new Mock<ILoggerFactory>().Object;
             var logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
 
-            return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null, loggerFactory, logger);
+            INakedObjectsFramework framework = new Mock<INakedObjectsFramework>().Object;
+
+            return new NakedObjectAdapter(obj, null, framework, loggerFactory, logger);
         }
 
         [TestMethod]

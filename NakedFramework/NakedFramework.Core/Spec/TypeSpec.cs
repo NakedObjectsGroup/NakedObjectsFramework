@@ -18,12 +18,6 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public abstract class TypeSpec : ITypeSpec {
-        private readonly IMetamodelManager metamodelManager;
-
-        private readonly INakedObjectManager nakedObjectManager;
-        private readonly ISession session;
-        private readonly IObjectPersistor persistor;
-
         // cached values 
         private string description;
         private bool? hasNoIdentity;
@@ -49,13 +43,10 @@ namespace NakedObjects.Core.Spec {
         private ITypeSpec superclass;
         private string untitledName;
 
-        protected TypeSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, ITypeSpecImmutable innerSpec, ISession session, IObjectPersistor persistor) {
+        protected TypeSpec(SpecFactory memberFactory,  ITypeSpecImmutable innerSpec, INakedObjectsFramework framework) {
             MemberFactory = memberFactory ?? throw new InitialisationException($"{nameof(memberFactory)} is null");
-            this.metamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
-            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
-            this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
-            this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
             InnerSpec = innerSpec ?? throw new InitialisationException($"{nameof(innerSpec)} is null");
+            Framework = framework;
         }
 
         private Type Type => InnerSpec.Type;
@@ -67,6 +58,7 @@ namespace NakedObjects.Core.Spec {
         #region ITypeSpec Members
 
         public ITypeSpecImmutable InnerSpec { get; }
+        public INakedObjectsFramework Framework { get; }
 
         public virtual string FullName => InnerSpec.FullName;
 
@@ -131,7 +123,7 @@ namespace NakedObjects.Core.Spec {
         public virtual ITypeSpec Superclass {
             get {
                 if (superclass == null && InnerSpec.Superclass != null) {
-                    superclass = metamodelManager.GetSpecification(InnerSpec.Superclass);
+                    superclass = Framework.MetamodelManager.GetSpecification(InnerSpec.Superclass);
                 }
 
                 return superclass;
@@ -162,11 +154,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public ITypeSpec[] Interfaces {
-            get { return interfaces ??= InnerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray(); }
+            get { return interfaces ??= InnerSpec.Interfaces.Select(i => Framework.MetamodelManager.GetSpecification(i)).ToArray(); }
         }
 
         public ITypeSpec[] Subclasses {
-            get { return subclasses ??= InnerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray(); }
+            get { return subclasses ??= InnerSpec.Subclasses.Select(i => Framework.MetamodelManager.GetSpecification(i)).ToArray(); }
         }
 
         public bool IsAbstract {
@@ -190,7 +182,7 @@ namespace NakedObjects.Core.Spec {
                 if (shortName == null) {
                     var postfix = "";
                     if (Type.IsGenericType && !IsCollection) {
-                        postfix = Type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + "-" + metamodelManager.GetSpecification(y).ShortName);
+                        postfix = Type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + "-" + Framework.MetamodelManager.GetSpecification(y).ShortName);
                     }
 
                     shortName = InnerSpec.ShortName + postfix;
@@ -257,7 +249,7 @@ namespace NakedObjects.Core.Spec {
 
         public string GetTitle(INakedObjectAdapter nakedObjectAdapter) {
             var titleFacet = GetFacet<ITitleFacet>();
-            var title = titleFacet == null ? null : titleFacet.GetTitle(nakedObjectAdapter, nakedObjectManager, session, persistor);
+            var title = titleFacet == null ? null : titleFacet.GetTitle(nakedObjectAdapter, Framework);
             return title ?? DefaultTitle();
         }
 
@@ -266,7 +258,7 @@ namespace NakedObjects.Core.Spec {
             return parser == null ? null : parser.InvariantString(nakedObjectAdapter);
         }
 
-        public string GetIconName(INakedObjectAdapter forObjectAdapter) => InnerSpec.GetIconName(forObjectAdapter, metamodelManager.Metamodel);
+        public string GetIconName(INakedObjectAdapter forObjectAdapter) => InnerSpec.GetIconName(forObjectAdapter, Framework.MetamodelManager.Metamodel);
 
         #endregion
 

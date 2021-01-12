@@ -10,8 +10,8 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Meta.Audit {
     public interface IAuditManager {
-        void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager lifecycleManager);
-        void Updated(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager);
-        void Persisted(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager);
+        void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedObjectsFramework framework);
+        void Updated(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
+        void Persisted(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
     }
 }

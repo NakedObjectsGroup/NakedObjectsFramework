@@ -23,12 +23,9 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Spec {
     public abstract class ActionParameterSpec : IActionParameterSpec {
         private readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
-        private readonly INakedObjectManager manager;
-        private readonly IMetamodelManager metamodel;
+     
         private readonly IActionSpec parentAction;
-        private readonly IObjectPersistor persistor;
-
-        private readonly ISession session;
+     
 
         // cache 
         private bool checkedForElementSpec;
@@ -44,14 +41,11 @@ namespace NakedObjects.Core.Spec {
         private string name;
         private IObjectSpec spec;
 
-        protected internal ActionParameterSpec(IMetamodelManager metamodel, int number, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
+        protected internal ActionParameterSpec(int number, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectsFramework framework) {
             Number = number;
-            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            Framework = framework;
             parentAction = actionSpec ?? throw new InitialisationException($"{nameof(actionSpec)} is null");
             this.actionParameterSpecImmutable = actionParameterSpecImmutable ?? throw new InitialisationException($"{nameof(actionParameterSpecImmutable)} is null");
-            this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
-            this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
-            this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
         }
 
         public virtual IObjectSpec ElementSpec {
@@ -59,7 +53,7 @@ namespace NakedObjects.Core.Spec {
                 if (!checkedForElementSpec) {
                     var facet = GetFacet<IElementTypeFacet>();
                     var es = facet != null ? facet.ValueSpec : null;
-                    elementSpec = es == null ? null : metamodel.GetSpecification(es);
+                    elementSpec = es == null ? null : Framework.MetamodelManager.GetSpecification(es);
                     checkedForElementSpec = true;
                 }
 
@@ -96,10 +90,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual int Number { get; }
+        protected INakedObjectsFramework Framework { get; }
 
         public virtual IActionSpec Action => parentAction;
 
-        public virtual IObjectSpec Spec => spec ??= metamodel.GetSpecification(actionParameterSpecImmutable.Specification);
+        public virtual IObjectSpec Spec => spec ??=  Framework.MetamodelManager.GetSpecification(actionParameterSpecImmutable.Specification);
 
         public string Name => name ??= GetFacet<INamedFacet>().NaturalName;
 
@@ -141,7 +136,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             var buf = new InteractionBuffer();
-            IInteractionContext ic = InteractionContext.ModifyingPropParam(session, persistor, false, parentAction.RealTarget(nakedObjectAdapter), Identifier, proposedValue);
+            IInteractionContext ic = InteractionContext.ModifyingPropParam(Framework, false, parentAction.RealTarget(nakedObjectAdapter), Identifier, proposedValue);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
@@ -162,7 +157,7 @@ namespace NakedObjects.Core.Spec {
                     ? new (string, IObjectSpec)[] { }
                     : choicesFacet.ParameterNamesAndTypes.Select(t => {
                         var (pName, pSpec) = t;
-                        return (pName, metamodel.GetSpecification(pSpec));
+                        return (pName, Framework.MetamodelManager.GetSpecification(pSpec));
                     }).ToArray();
             }
 
@@ -172,9 +167,11 @@ namespace NakedObjects.Core.Spec {
         public INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             var choicesFacet = GetFacet<IActionChoicesFacet>();
             var enumFacet = GetFacet<IEnumFacet>();
+            var manager = Framework.NakedObjectManager;
+            var persistor = Framework.Persistor;
 
             if (choicesFacet != null) {
-                var options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), parameterNameValues, session, persistor);
+                var options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), parameterNameValues, Framework);
                 if (enumFacet == null) {
                     return manager.GetCollectionOfAdaptedObjects(options).ToArray();
                 }
@@ -201,7 +198,7 @@ namespace NakedObjects.Core.Spec {
 
         public INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) {
             var autoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return autoCompleteFacet == null ? null : manager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObjectAdapter), autoCompleteParm, session, persistor)).ToArray();
+            return autoCompleteFacet == null ? null : Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObjectAdapter), autoCompleteParm, Framework)).ToArray();
         }
 
         public INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) => GetDefaultValueAndType(nakedObjectAdapter).value;
@@ -224,14 +221,14 @@ namespace NakedObjects.Core.Spec {
             var facet = this.GetOpFacet<IActionDefaultsFacet>() ?? Spec.GetOpFacet<IDefaultedFacet>();
 
             var (domainObject, typeOfDefaultValue) = facet switch {
-                IActionDefaultsFacet adf => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter), session, persistor),
+                IActionDefaultsFacet adf => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter), Framework),
                 IDefaultedFacet df => (df.Default, TypeOfDefaultValue.Implicit),
                 _ when nakedObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
                 _ when nakedObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),
                 _ => (null, TypeOfDefaultValue.Implicit)
             };
 
-            return (manager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
+            return (Framework.NakedObjectManager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
         }
 
         private static IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);

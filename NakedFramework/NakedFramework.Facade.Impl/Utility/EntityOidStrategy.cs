@@ -76,12 +76,12 @@ namespace NakedObjects.Facade.Impl.Utility {
         public string GetLinkDomainTypeBySpecification(ITypeFacade spec) => GetCode(spec);
 
         public IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id) {
-            var oid = framework.LifecycleManager.RestoreOid(id.Tokenize());
+            var oid = framework.LifecycleManager.RestoreOid(id.Tokenize(), framework);
             return new OidFacade(oid);
         }
 
         public IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id) {
-            var oid = framework.LifecycleManager.RestoreOid(id.Tokenize());
+            var oid = framework.LifecycleManager.RestoreOid(id.Tokenize(), framework);
             return new OidFacade(oid);
         }
 
@@ -141,7 +141,7 @@ namespace NakedObjects.Facade.Impl.Utility {
             return assoc.GetNakedObject(parent);
         }
 
-        private static INakedObjectAdapter RestoreViewModel(INakedObjectsFramework framework, IViewModelOid viewModelOid) => framework.NakedObjectManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid);
+        private static INakedObjectAdapter RestoreViewModel(INakedObjectsFramework framework, IViewModelOid viewModelOid) => framework.NakedObjectManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid, framework);
 
         public static INakedObjectAdapter RestoreObject(INakedObjectsFramework framework, IOid oid) => oid.IsTransient ? framework.LifecycleManager.RecreateInstance(oid, oid.Spec) : framework.LifecycleManager.LoadObject(oid, oid.Spec);
 
@@ -191,7 +191,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         private INakedObjectAdapter GetViewModel(string[] keys, IObjectSpec spec) {
             try {
                 var viewModel = framework.LifecycleManager.CreateViewModel(spec);
-                spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel, framework.NakedObjectManager, framework.DomainObjectInjector, framework.Session, framework.Persistor);
+                spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel, framework);
                 return viewModel;
             }
             catch (Exception e) {

@@ -12,9 +12,11 @@ using NakedObjects.Facade.Translation;
 
 namespace NakedObjects.Facade.Impl.Implementation {
     public class OidTranslatorSemiColonSeparatedList : IOidTranslator {
-        private readonly ILifecycleManager lifecycleManager;
+        private readonly INakedObjectsFramework framework;
 
-        public OidTranslatorSemiColonSeparatedList(ILifecycleManager lifecycleManager) => this.lifecycleManager = lifecycleManager;
+        public OidTranslatorSemiColonSeparatedList(INakedObjectsFramework framework) {
+            this.framework = framework;
+        }
 
         #region IOidTranslator Members
 
@@ -31,7 +33,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
         public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
             if (objectFacade.IsViewModel) {
                 var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
-                lifecycleManager.PopulateViewModelKeys(vm);
+                framework.LifecycleManager.PopulateViewModelKeys(vm, framework);
             }
 
             var oid = objectFacade.Oid;

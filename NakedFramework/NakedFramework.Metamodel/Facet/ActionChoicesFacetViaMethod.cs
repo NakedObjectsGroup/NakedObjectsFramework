@@ -54,7 +54,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, ISession session, IObjectPersistor persistor) {
+        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) {
             var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
 
             try {

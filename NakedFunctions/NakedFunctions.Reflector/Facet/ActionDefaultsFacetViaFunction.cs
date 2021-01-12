@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -27,13 +28,11 @@ namespace NakedFunctions.Meta.Facet {
         // for testing only 
         internal Func<object, object[], object> MethodDelegate => null;
 
-        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter,
-                                                                ISession session,
-                                                                IObjectPersistor persistor) {
+        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
 
-            var defaultValue = method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor));
+            var defaultValue = method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, framework));
 
             return (defaultValue, TypeOfDefaultValue.Explicit);
         }

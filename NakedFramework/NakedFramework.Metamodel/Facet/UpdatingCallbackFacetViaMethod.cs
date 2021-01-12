@@ -39,7 +39,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) => updatingDelegate(nakedObjectAdapter.GetDomainObject());
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => updatingDelegate(nakedObjectAdapter.GetDomainObject());
 
         protected override string ToStringValues() => $"method={method}";
 

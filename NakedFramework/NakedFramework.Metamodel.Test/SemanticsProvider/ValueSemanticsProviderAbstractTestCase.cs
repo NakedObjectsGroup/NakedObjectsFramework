@@ -28,6 +28,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         protected IReflector Reflector = new Mock<IReflector>().Object;
         private IValueSemanticsProvider<T> value;
 
+        protected INakedObjectsFramework Framework = new Mock<INakedObjectsFramework>().Object;
+
         protected void SetValue(IValueSemanticsProvider<T> newValue) {
             value = newValue;
             encodeableFacet = new EncodeableFacetUsingEncoderDecoder<T>(newValue, null);
@@ -44,7 +46,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         protected INakedObjectAdapter CreateAdapter(object obj) {
             var session = new Mock<ISession>().Object;
-            return new NakedObjectAdapter(Metamodel, session, Persistor, LifecycleManager, Manager, obj, null, loggerFactory, logger);
+            return new NakedObjectAdapter(obj, null, Framework, loggerFactory, logger);
         }
 
         public virtual void TestParseNull() {

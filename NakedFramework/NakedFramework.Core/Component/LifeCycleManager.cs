@@ -110,7 +110,7 @@ namespace NakedObjects.Core.Component {
 
         public object CreateNonAdaptedInjectedObject(Type type) => CreateNotPersistedObject(type, true);
 
-        public INakedObjectAdapter GetViewModel(IOid oid) => nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid);
+        public INakedObjectAdapter GetViewModel(IOid oid, INakedObjectsFramework framework) => nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid, framework);
 
         /// <summary>
         ///     Makes a naked object persistent. The specified object should be stored away via this object store's
@@ -142,17 +142,17 @@ namespace NakedObjects.Core.Component {
             persistAlgorithm.MakePersistent(nakedObjectAdapter);
         }
 
-        public void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter) {
+        public void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             var vmoid = nakedObjectAdapter.Oid as ViewModelOid;
 
             if (vmoid == null) {
                 throw new UnknownTypeException(logger.LogAndReturn($"Expect ViewModelOid got {(nakedObjectAdapter.Oid == null ? "null" : nakedObjectAdapter.Oid.GetType().ToString())}"));
             }
 
-            vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, nakedObjectManager, injector, session, objectPersistor), true);
+            vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, framework), true);
         }
 
-        public IOid RestoreOid(string[] encodedData) => RestoreGenericOid(encodedData) ?? oidGenerator.RestoreOid(encodedData);
+        public IOid RestoreOid(string[] encodedData, INakedObjectsFramework framework) => RestoreGenericOid(encodedData, framework) ?? oidGenerator.RestoreOid(encodedData);
 
         #endregion
 
@@ -174,12 +174,12 @@ namespace NakedObjects.Core.Component {
             return CreateNotPersistedObject(type);
         }
 
-        private IOid RestoreGenericOid(string[] encodedData) {
+        private IOid RestoreGenericOid(string[] encodedData, INakedObjectsFramework framework) {
             var typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
             var spec = metamodel.GetSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(this, nakedObjectManager, metamodel, loggerFactory, loggerFactory.CreateLogger<CollectionMemento>(), encodedData);
+                return new CollectionMemento(framework, loggerFactory, loggerFactory.CreateLogger<CollectionMemento>(), encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {
@@ -196,11 +196,11 @@ namespace NakedObjects.Core.Component {
 
         private void InitInlineObject(object root, object inlineObject) => injector.InjectIntoInline(root, inlineObject);
 
-        private INakedObjectAdapter RecreateViewModel(ViewModelOid oid) {
+        private INakedObjectAdapter RecreateViewModel(ViewModelOid oid, INakedObjectsFramework framework) {
             var keys = oid.Keys;
             var spec = (IObjectSpec) oid.Spec;
             var vm = CreateViewModel(spec);
-            vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm, nakedObjectManager, injector, session, objectPersistor);
+            vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm, framework);
             nakedObjectManager.UpdateViewModel(vm, keys);
             return vm;
         }

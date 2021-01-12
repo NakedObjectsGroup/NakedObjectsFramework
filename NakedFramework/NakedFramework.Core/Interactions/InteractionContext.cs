@@ -20,8 +20,7 @@ namespace NakedObjects.Core.Interactions {
     /// </para>
     internal sealed class InteractionContext : IInteractionContext {
         private InteractionContext(InteractionType interactionType,
-                                   ISession session,
-                                   IObjectPersistor persistor,
+                                   INakedObjectsFramework framework,
                                    bool programmatic,
                                    INakedObjectAdapter target,
                                    IIdentifier id,
@@ -30,8 +29,7 @@ namespace NakedObjects.Core.Interactions {
             InteractionType = interactionType;
             IsProgrammatic = programmatic;
             Id = id;
-            Session = session;
-            Persistor = persistor;
+            Framework = framework;
             Target = target;
             ProposedArgument = proposedArgument;
             ProposedArguments = arguments;
@@ -59,9 +57,7 @@ namespace NakedObjects.Core.Interactions {
         /// <para>
         ///     Will be set for all interactions.
         /// </para>
-        public ISession Session { get; }
-
-        public IObjectPersistor Persistor { get; }
+        public INakedObjectsFramework Framework { get; }
 
         /// <summary>
         ///     How the interaction was initiated
@@ -129,14 +125,12 @@ namespace NakedObjects.Core.Interactions {
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
         ///     <see cref="Architecture.Interactions.InteractionType.MemberAccess" />  reading a property.
         /// </summary>
-        public static InteractionContext AccessMember(ISession session,
-                                                      IObjectPersistor persistor,
+        public static InteractionContext AccessMember(INakedObjectsFramework framework,
                                                       bool programmatic,
                                                       INakedObjectAdapter target,
                                                       IIdentifier memberIdentifier) =>
             new InteractionContext(InteractionType.MemberAccess,
-                session,
-                persistor,
+                framework,
                 programmatic,
                 target,
                 memberIdentifier,
@@ -147,15 +141,13 @@ namespace NakedObjects.Core.Interactions {
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
         ///     <see cref="Architecture.Interactions.InteractionType.PropertyParamModify" />  modifying a property or parameter.
         /// </summary>
-        public static InteractionContext ModifyingPropParam(ISession session,
-            IObjectPersistor persistor,
+        public static InteractionContext ModifyingPropParam(INakedObjectsFramework framework,
                                                             bool programmatic,
                                                             INakedObjectAdapter target,
                                                             IIdentifier propertyIdentifier,
                                                             INakedObjectAdapter proposedArgument) =>
             new InteractionContext(InteractionType.PropertyParamModify,
-                session,
-                persistor,
+               framework,
                 programmatic,
                 target,
                 propertyIdentifier,
@@ -166,15 +158,13 @@ namespace NakedObjects.Core.Interactions {
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
         ///     <see cref="Architecture.Interactions.InteractionType.ActionInvoke" />  invoking an action.
         /// </summary>
-        public static InteractionContext InvokingAction(ISession session,
-            IObjectPersistor persistor,
+        public static InteractionContext InvokingAction(INakedObjectsFramework framework,
                                                         bool programmatic,
                                                         INakedObjectAdapter target,
                                                         IIdentifier actionIdentifier,
                                                         INakedObjectAdapter[] arguments) =>
             new InteractionContext(InteractionType.ActionInvoke,
-                session,
-                persistor,
+                framework,
                 programmatic,
                 target,
                 actionIdentifier,

@@ -13,21 +13,14 @@ using NakedObjects.Core.Adapter;
 namespace NakedObjects.Core.Component {
     public sealed class NakedObjectFactory {
         private bool isInitialized;
-        private ILifecycleManager lifecycleManager;
         private ILoggerFactory loggerFactory;
-        private IMetamodelManager metamodelManager;
-        private INakedObjectManager nakedObjectManager;
-        private IObjectPersistor persistor;
-        private ISession session;
+        private INakedObjectsFramework framework;
 
         // ReSharper disable ParameterHidesMember
-        public void Initialize(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager nakedObjectManager, ILoggerFactory loggerFactory) {
+        public void Initialize(INakedObjectsFramework framework, ILoggerFactory loggerFactory) {
+            this.framework = framework;
             // ReSharper restore ParameterHidesMember
-            this.metamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
-            this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
-            this.lifecycleManager = lifecycleManager ?? throw new InitialisationException($"{nameof(lifecycleManager)} is null");
-            this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
-            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+          
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             isInitialized = true;
         }
@@ -37,14 +30,14 @@ namespace NakedObjects.Core.Component {
                 throw new InitialisationException("NakedObjectFactory not initialized");
             }
 
-            return new NakedObjectAdapter(metamodelManager, session, persistor, lifecycleManager, nakedObjectManager, obj, oid, loggerFactory, loggerFactory.CreateLogger<NakedObjectAdapter>());
+            return new NakedObjectAdapter(obj, oid, framework, loggerFactory, loggerFactory.CreateLogger<NakedObjectAdapter>());
         }
 
         public INakedObjectAdapter CreateAdapterForExistingObject(object obj)
         {
             //Assert.AssertTrue(isInitialized);
-            persistor.AdaptDetachedObject(obj);
-            return nakedObjectManager.GetAdapterFor(obj);
+            framework.Persistor.AdaptDetachedObject(obj);
+            return framework.NakedObjectManager.GetAdapterFor(obj);
 
         }
     }

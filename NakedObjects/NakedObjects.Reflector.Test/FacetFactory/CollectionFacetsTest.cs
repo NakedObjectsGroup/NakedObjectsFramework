@@ -35,6 +35,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly ISpecification specification = new Mock<ISpecification>().Object;
 
+        INakedObjectsFramework framework = new Mock<INakedObjectsFramework>().Object;
+
         public CollectionFacetsTest() {
             lifecycleManager = mockLifecycleManager.Object;
             persistor = mockPersistor.Object;
@@ -42,7 +44,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             mockManager.Setup(mm => mm.CreateAdapter(It.IsAny<object>(), null, null)).Returns<object, IOid, IVersion>((obj, oid, ver) => AdapterFor(obj));
         }
 
-        private INakedObjectAdapter AdapterFor(object obj) => new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, manager, obj, oid, loggerFactory, logger);
+        private INakedObjectAdapter AdapterFor(object obj) => new NakedObjectAdapter(obj, oid, framework, loggerFactory, logger);
 
         private void Size(ICollectionFacet collectionFacet, INakedObjectAdapter collection) {
             Assert.AreEqual(2, collectionFacet.AsEnumerable(collection, manager).Count());

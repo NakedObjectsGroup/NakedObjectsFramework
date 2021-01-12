@@ -20,7 +20,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Choices));
             var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, IObjectSpecImmutable)>(), typeof(string), null);
 
-            var result = testFacet.GetChoices(null, null, null, null);
+            var result = testFacet.GetChoices(null, null, null);
 
             Assert.AreEqual(TestValue.Length, result.Length);
             Assert.AreEqual(TestValue[0], result[0]);

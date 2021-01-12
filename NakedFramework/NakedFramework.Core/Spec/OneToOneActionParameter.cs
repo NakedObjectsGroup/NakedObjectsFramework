@@ -14,8 +14,8 @@ namespace NakedObjects.Core.Spec {
     public sealed class OneToOneActionParameter : ActionParameterSpec, IOneToOneActionParameterSpec {
         private bool? isFindMenuEnabled;
 
-        public OneToOneActionParameter(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
-            : base(metamodel, index, actionImpl, actionParameterSpecImmutable, manager, session, persistor) { }
+        public OneToOneActionParameter(int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectsFramework framework)
+            : base(index, actionImpl, actionParameterSpecImmutable, framework) { }
 
         #region IOneToOneActionParameterSpec Members
 

@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -33,18 +34,13 @@ namespace NakedFunctions.Meta.Facet {
         private static Type Type => typeof(IViewModelFacet);
 
         public override string[] Derive(INakedObjectAdapter nakedObjectAdapter,
-                                        INakedObjectManager nakedObjectManager,
-                                        IDomainObjectInjector injector,
-                                        ISession session,
-                                        IObjectPersistor persistor) =>
-            deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, session, persistor)) as string[];
+                                        INakedObjectsFramework framework) =>
+            deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, framework)) as string[];
 
         public override void Populate(string[] keys,
                                       INakedObjectAdapter nakedObjectAdapter,
-                                      INakedObjectManager nakedObjectManager, IDomainObjectInjector injector,
-                                      ISession session,
-                                      IObjectPersistor persistor) {
-            var newVm = populateFunction.Invoke(null, populateFunction.GetParameterValues(nakedObjectAdapter, keys, session, persistor));
+                                      INakedObjectsFramework framework) {
+            var newVm = populateFunction.Invoke(null, populateFunction.GetParameterValues(nakedObjectAdapter, keys,framework));
             nakedObjectAdapter.ReplacePoco(newVm);
         }
     }

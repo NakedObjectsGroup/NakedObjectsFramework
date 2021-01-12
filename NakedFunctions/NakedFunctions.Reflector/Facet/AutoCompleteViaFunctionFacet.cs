@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -52,9 +53,9 @@ namespace NakedFunctions.Meta.Facet {
 
         public int MinLength { get; }
 
-        public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, ISession session, IObjectPersistor persistor) {
+        public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedObjectsFramework framework) {
             try {
-                var autoComplete = method.Invoke(null, method.GetParameterValues(inObjectAdapter, autoCompleteParm, session, persistor));
+                var autoComplete = method.Invoke(null, method.GetParameterValues(inObjectAdapter, autoCompleteParm, framework));
 
                 switch (autoComplete) {
                     //returning an IQueryable

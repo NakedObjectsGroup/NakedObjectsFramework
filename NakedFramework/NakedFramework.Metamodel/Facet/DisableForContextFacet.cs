@@ -34,11 +34,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IDisableForContextFacet Members
 
-        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Session, ic.Persistor);
+        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
 
         public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
+        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
 
         #endregion
 

@@ -38,6 +38,6 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         public static bool IsIdempotent(this IActionSpec action) => action.ContainsFacet<IIdempotentFacet>();
 
-        public static bool IsViewModelEditView(this INakedObjectAdapter target, ISession session, IObjectPersistor persistor) => target.Spec.ContainsFacet<IViewModelFacet>() && target.Spec.GetFacet<IViewModelFacet>().IsEditView(target, session, persistor);
+        public static bool IsViewModelEditView(this INakedObjectAdapter target, INakedObjectsFramework framework) => target.Spec.ContainsFacet<IViewModelFacet>() && target.Spec.GetFacet<IViewModelFacet>().IsEditView(target, framework);
     }
 }

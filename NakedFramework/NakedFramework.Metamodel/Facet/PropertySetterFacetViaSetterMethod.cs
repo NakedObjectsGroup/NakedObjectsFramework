@@ -26,7 +26,7 @@ namespace NakedObjects.Meta.Facet {
             protected set { }
         }
 
-        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager) {
+        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, INakedObjectsFramework framework) {
             try {
                 property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
             }

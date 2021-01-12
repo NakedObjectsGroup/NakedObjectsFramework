@@ -19,7 +19,7 @@ namespace NakedObjects.Core.Spec {
             : base(association, framework) {
             IsASet = association.ContainsFacet<IIsASetFacet>();
 
-            ElementSpec = MetamodelManager.GetSpecification(association.ElementSpec);
+            ElementSpec = framework.MetamodelManager.GetSpecification(association.ElementSpec);
         }
 
         public override bool IsAutoCompleteEnabled => false;
@@ -34,7 +34,7 @@ namespace NakedObjects.Core.Spec {
 
         public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) => Count(inObjectAdapter) == 0;
 
-        public int Count(INakedObjectAdapter inObjectAdapter) => Persistor.CountField(inObjectAdapter, Id);
+        public int Count(INakedObjectAdapter inObjectAdapter) => Framework.Persistor.CountField(inObjectAdapter, Id);
 
         public override bool IsInline => false;
 
@@ -56,7 +56,7 @@ namespace NakedObjects.Core.Spec {
                 return null;
             }
 
-            var adapterFor = Manager.CreateAggregatedAdapter(inObjectAdapter, ((IAssociationSpec) this).Id, collection);
+            var adapterFor = Framework.NakedObjectManager.CreateAggregatedAdapter(inObjectAdapter, ((IAssociationSpec) this).Id, collection);
             SetResolveStateForDerivedCollections(adapterFor);
             return adapterFor;
         }
@@ -64,7 +64,7 @@ namespace NakedObjects.Core.Spec {
         private void SetResolveStateForDerivedCollections(INakedObjectAdapter adapterFor) {
             var isDerived = !IsPersisted;
             if (isDerived && !adapterFor.ResolveState.IsResolved()) {
-                if (adapterFor.GetAsEnumerable(Manager).Any()) {
+                if (adapterFor.GetAsEnumerable(Framework.NakedObjectManager).Any()) {
                     adapterFor.ResolveState.Handle(Events.StartResolvingEvent);
                     adapterFor.ResolveState.Handle(Events.EndResolvingEvent);
                 }

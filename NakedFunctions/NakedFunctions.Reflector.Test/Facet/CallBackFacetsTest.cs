@@ -22,7 +22,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Persisting));
             var testFacet = new PersistingCallbackFacetViaFunction(method, null);
 
-            var result = testFacet.InvokeAndReturn(null, null, null, null, null);
+            var result = testFacet.InvokeAndReturn(null, null);
 
             Assert.AreEqual(TestValuePersisting, result);
         }
@@ -32,7 +32,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Persisted));
             var testFacet = new PersistedCallbackFacetViaFunction(method, null);
 
-            var result = testFacet.InvokeAndReturn(null, null, null, null, null);
+            var result = testFacet.InvokeAndReturn(null, null);
 
             Assert.AreEqual(TestValuePersisted, result);
         }
@@ -42,7 +42,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Updating));
             var testFacet = new UpdatingCallbackFacetViaFunction(method, null);
 
-            var result = testFacet.InvokeAndReturn(null, null, null, null, null);
+            var result = testFacet.InvokeAndReturn(null, null);
 
             Assert.AreEqual(TestValueUpdating, result);
         }
@@ -52,7 +52,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Updated));
             var testFacet = new UpdatedCallbackFacetViaFunction(method, null);
 
-            var result = testFacet.InvokeAndReturn(null, null, null, null, null);
+            var result = testFacet.InvokeAndReturn(null, null);
 
             Assert.AreEqual(TestValueUpdated, result);
         }

@@ -18,7 +18,7 @@ namespace NakedObjects.Architecture.Facet {
     ///     invoking the <c>HideXxx</c> support method for the member
     /// </para>
     public interface IHideForSessionFacet : IFacet, IHidingInteractionAdvisor {
-        string HiddenReason(ISession session, INakedObjectAdapter target, ILifecycleManager lifecycleManager, IMetamodelManager manager);
+        string HiddenReason(INakedObjectAdapter target, INakedObjectsFramework framework);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

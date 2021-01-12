@@ -36,9 +36,9 @@ namespace NakedObjects.Core.Spec {
             CheckInitialised();
             var specification = parameterSpecImmutable.Specification;
             return specification switch {
-                _ when specification.IsParseable => new ActionParseableParameterSpec(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor),
-                _ when specification.IsObject => new OneToOneActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor),
-                _ when specification.IsCollection => new OneToManyActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor),
+                _ when specification.IsParseable => new ActionParseableParameterSpec(index, actionSpec, parameterSpecImmutable, framework),
+                _ when specification.IsObject => new OneToOneActionParameter(index, actionSpec, parameterSpecImmutable, framework),
+                _ when specification.IsCollection => new OneToManyActionParameter(index, actionSpec, parameterSpecImmutable, framework),
                 _ => throw new UnknownTypeException(logger.LogAndReturn($"{specification}"))
             };
         }
@@ -78,18 +78,15 @@ namespace NakedObjects.Core.Spec {
 
         private IServiceSpec CreateServiceSpec(IServiceSpecImmutable specImmutable) {
             CheckInitialised();
-            return new ServiceSpec(this, framework.MetamodelManager, framework.NakedObjectManager, specImmutable, framework.Session, framework.Persistor);
+            return new ServiceSpec(this,  specImmutable, framework);
         }
 
         private IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
             CheckInitialised();
             return new ObjectSpec(this,
-                framework.MetamodelManager,
-                framework.NakedObjectManager,
-                specImmutable,
-                framework.Session,
-                framework.Persistor,
-                loggerFactory.CreateLogger<ObjectSpec>());
+                                  specImmutable,
+                                  framework, 
+                                  loggerFactory.CreateLogger<ObjectSpec>());
         }
     }
 }

@@ -96,7 +96,7 @@ namespace NakedObjects.Facade.Impl {
 
         public IFrameworkFacade FrameworkFacade { get; set; }
 
-        public bool IsViewModelEditView => IsViewModel && WrappedNakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject, framework.Session, framework.Persistor);
+        public bool IsViewModelEditView => IsViewModel && WrappedNakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject, framework);
 
         public bool IsViewModel => WrappedNakedObject.Spec.ContainsFacet<IViewModelFacet>();
 

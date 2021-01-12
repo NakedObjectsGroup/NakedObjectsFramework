@@ -24,12 +24,12 @@ namespace NakedFunctions.Meta.Test.Facet {
            
             var testFacet = new ViewModelFacetViaFunctionsConvention(null, deriveMethod, populateMethod);
 
-            var keys = testFacet.Derive(null, null, null, null, null);
+            var keys = testFacet.Derive(null, null);
 
             Assert.AreEqual(testClass.Keys, keys);
 
             var testAdapter = new TestAdapter();
-            testFacet.Populate(keys, testAdapter, null, null, null, null);
+            testFacet.Populate(keys, testAdapter, null);
 
             Assert.AreEqual(testClass, testAdapter.Object);
         }
@@ -42,16 +42,16 @@ namespace NakedFunctions.Meta.Test.Facet {
 
             var testFacet = new ViewModelEditFacetViaFunctionsConvention(null, deriveMethod, populateMethod);
 
-            var keys = testFacet.Derive(null, null, null, null, null);
+            var keys = testFacet.Derive(null, null);
 
             Assert.AreEqual(testClass.Keys, keys);
 
             var testAdapter = new TestAdapter();
-            testFacet.Populate(keys, testAdapter, null, null, null, null);
+            testFacet.Populate(keys, testAdapter, null);
 
             Assert.AreEqual(testClass, testAdapter.Object);
 
-            Assert.IsTrue(testFacet.IsEditView(null, null, null));
+            Assert.IsTrue(testFacet.IsEditView(null, null));
         }
 
         [TestMethod]
@@ -63,16 +63,16 @@ namespace NakedFunctions.Meta.Test.Facet {
 
             var testFacet = new ViewModelSwitchableFacetViaFunctionsConvention(null, deriveMethod, populateMethod, editMethod);
 
-            var keys = testFacet.Derive(null, null, null, null, null);
+            var keys = testFacet.Derive(null, null);
 
             Assert.AreEqual(testClass.Keys, keys);
 
             var testAdapter = new TestAdapter();
-            testFacet.Populate(keys, testAdapter, null, null, null, null);
+            testFacet.Populate(keys, testAdapter, null);
 
             Assert.AreEqual(testClass, testAdapter.Object);
 
-            Assert.IsFalse(testFacet.IsEditView(null, null, null));
+            Assert.IsFalse(testFacet.IsEditView(null, null));
         }
 
 

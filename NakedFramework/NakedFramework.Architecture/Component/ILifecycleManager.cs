@@ -38,9 +38,9 @@ namespace NakedObjects.Architecture.Component {
         /// </para>
         void MakePersistent(INakedObjectAdapter nakedObjectAdapter);
 
-        void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter);
-        INakedObjectAdapter GetViewModel(IOid oid);
-        IOid RestoreOid(string[] encodedData);
+        void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
+        INakedObjectAdapter GetViewModel(IOid oid, INakedObjectsFramework framework);
+        IOid RestoreOid(string[] encodedData, INakedObjectsFramework framework);
         INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec);
 
         object Persist(object poco);

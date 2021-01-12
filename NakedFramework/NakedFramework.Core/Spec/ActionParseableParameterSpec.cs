@@ -17,8 +17,8 @@ namespace NakedObjects.Core.Spec {
         private int? noLines;
         private int? typicalLineLength;
 
-        public ActionParseableParameterSpec(IMetamodelManager metamodel, int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
-            : base(metamodel, index, actionSpec, actionParameterSpecImmutable, manager, session, persistor) { }
+        public ActionParseableParameterSpec(int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectsFramework framework)
+            : base(index, actionSpec, actionParameterSpecImmutable, framework) { }
 
         #region IActionParseableParameterSpec Members
 

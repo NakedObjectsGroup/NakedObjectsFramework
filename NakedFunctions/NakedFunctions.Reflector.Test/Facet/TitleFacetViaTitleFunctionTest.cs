@@ -18,7 +18,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Title));
             var testFacet = new TitleFacetViaTitleFunction(method, null);
 
-            var result = testFacet.GetTitle(null, null, null, null);
+            var result = testFacet.GetTitle(null, null);
 
             Assert.AreEqual(TestValue, result);
         }

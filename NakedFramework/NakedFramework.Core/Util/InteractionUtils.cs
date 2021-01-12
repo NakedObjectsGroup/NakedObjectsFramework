@@ -16,18 +16,17 @@ using NakedObjects.Core.Reflect;
 
 namespace NakedObjects.Core.Util {
     public static class InteractionUtils {
-        public static bool IsVisible(ISpecification specification, IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public static bool IsVisible(ISpecification specification, IInteractionContext ic) {
             var buf = new InteractionBuffer();
             var facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (var advisor in facets) {
-                buf.Append(advisor.Hides(ic, lifecycleManager, manager));
+                buf.Append(advisor.Hides(ic));
             }
 
             return IsVisible(buf);
         }
 
-        public static bool IsVisibleWhenPersistent(ISpecification specification, IInteractionContext ic,
-            ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public static bool IsVisibleWhenPersistent(ISpecification specification, IInteractionContext ic) {
             var buf = new InteractionBuffer();
             var facets = specification.GetFacets()
                 .Where(f => f is IHidingInteractionAdvisor)
@@ -37,7 +36,7 @@ namespace NakedObjects.Core.Util {
                     buf.Append(facet.HidesForState(true));
                 }
                 else {
-                    buf.Append(advisor.Hides(ic, lifecycleManager, manager));
+                    buf.Append(advisor.Hides(ic));
                 }
             }
 

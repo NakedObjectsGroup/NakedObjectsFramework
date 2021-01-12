@@ -85,7 +85,7 @@ namespace NakedObjects.Facade.Impl {
 
         public (string, ITypeFacade)[] GetChoicesParameters() => WrappedSpec.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
 
-        public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework.NakedObjectManager, framework.Session, framework.Persistor);
+        public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework);
 
         public (IObjectFacade, string)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) =>
             GetChoices(objectFacade, parameterNameValues).Select(c => (c, c.TitleString)).ToArray();

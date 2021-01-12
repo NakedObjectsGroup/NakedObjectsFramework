@@ -18,7 +18,7 @@ namespace NakedObjects.Meta.Facet {
 
         public override bool IsNoOp => true;
 
-        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) => (null, TypeOfDefaultValue.Implicit);
+        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => (null, TypeOfDefaultValue.Implicit);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

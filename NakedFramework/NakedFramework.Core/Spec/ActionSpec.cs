@@ -24,7 +24,6 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
-        private readonly INakedObjectsFramework framework;
         private readonly IActionSpecImmutable actionSpecImmutable;
         private readonly ILogger<ActionSpec> logger;
         private readonly ILoggerFactory loggerFactory;
@@ -41,13 +40,10 @@ namespace NakedObjects.Core.Spec {
 
         public ActionSpec(INakedObjectsFramework framework,
                           SpecFactory memberFactory,
-                          
                           IActionSpecImmutable actionSpecImmutable,
-                          
                           ILoggerFactory loggerFactory,
                           ILogger<ActionSpec> logger)
             : base(actionSpecImmutable?.Identifier?.MemberName, actionSpecImmutable, framework) {
-            this.framework = framework ?? throw new InitialisationException($"{nameof(framework)} is null");
             this.actionSpecImmutable = actionSpecImmutable ?? throw new InitialisationException($"{nameof(actionSpecImmutable)} is null");
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
@@ -61,11 +57,11 @@ namespace NakedObjects.Core.Spec {
 
         #region IActionSpec Members
 
-        public override IObjectSpec ReturnSpec => returnSpec ??= MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec);
+        public override IObjectSpec ReturnSpec => returnSpec ??= Framework.MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec);
 
-        public override IObjectSpec ElementSpec => elementSpec ??= MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec);
+        public override IObjectSpec ElementSpec => elementSpec ??= Framework.MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec);
 
-        public ITypeSpec OnSpec => onSpec ??= MetamodelManager.GetSpecification(ActionInvocationFacet.OnType);
+        public ITypeSpec OnSpec => onSpec ??= Framework.MetamodelManager.GetSpecification(ActionInvocationFacet.OnType);
 
         public override Type[] FacetTypes => actionSpecImmutable.FacetTypes;
 
@@ -96,10 +92,10 @@ namespace NakedObjects.Core.Spec {
         public INakedObjectAdapter Execute(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet) {
             var parms = RealParameters(nakedObjectAdapter, parameterSet);
             var target = RealTarget(nakedObjectAdapter);
-            var result = ActionInvocationFacet.Invoke(target, parms, framework);
+            var result = ActionInvocationFacet.Invoke(target, parms, Framework);
 
             if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(LifecycleManager, framework.NakedObjectManager, MetamodelManager, loggerFactory.CreateLogger<CollectionMemento>(), nakedObjectAdapter, this, parameterSet));
+                result.SetATransientOid(new CollectionMemento(Framework, loggerFactory.CreateLogger<CollectionMemento>(), nakedObjectAdapter, this, parameterSet));
             }
 
             return result;
@@ -142,19 +138,19 @@ namespace NakedObjects.Core.Spec {
             if (parameterSet != null) {
                 var parms = RealParameters(nakedObjectAdapter, parameterSet);
                 for (var i = 0; i < parms.Length; i++) {
-                    ic = InteractionContext.ModifyingPropParam(Session, Persistor, false, RealTarget(nakedObjectAdapter), Identifier, parameterSet[i]);
+                    ic = InteractionContext.ModifyingPropParam(Framework, false, RealTarget(nakedObjectAdapter), Identifier, parameterSet[i]);
                     InteractionUtils.IsValid(GetParameter(i), ic, buf);
                 }
             }
 
             var target = RealTarget(nakedObjectAdapter);
-            ic = InteractionContext.InvokingAction(Session, Persistor,false, target, Identifier, parameterSet);
+            ic = InteractionContext.InvokingAction(Framework,false, target, Identifier, parameterSet);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
         public override IConsent IsUsable(INakedObjectAdapter target) {
-            IInteractionContext ic = InteractionContext.InvokingAction(Session, Persistor,false, RealTarget(target), Identifier, new[] {target});
+            IInteractionContext ic = InteractionContext.InvokingAction(Framework,false, RealTarget(target), Identifier, new[] {target});
             return InteractionUtils.IsUsable(this, ic);
         }
 
@@ -167,7 +163,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public bool IsLocallyContributedTo(ITypeSpec typeSpec, string id) {
-            var spec = MetamodelManager.Metamodel.GetSpecification(typeSpec.FullName) as IObjectSpecImmutable;
+            var spec = Framework.MetamodelManager.Metamodel.GetSpecification(typeSpec.FullName) as IObjectSpecImmutable;
             return spec != null && actionSpecImmutable.IsContributedToLocalCollectionOf(spec, id);
         }
 
@@ -176,7 +172,7 @@ namespace NakedObjects.Core.Spec {
         private bool FindServiceOnSpecOrSpecSuperclass(ITypeSpec spec) => spec != null && (spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass));
 
         private INakedObjectAdapter FindService() {
-            foreach (var serviceAdapter in framework.ServicesManager.GetServices()) {
+            foreach (var serviceAdapter in Framework.ServicesManager.GetServices()) {
                 if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Spec)) {
                     return serviceAdapter;
                 }

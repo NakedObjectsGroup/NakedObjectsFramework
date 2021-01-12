@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     The reason this is disabled, or <c>null</c> if not
         /// </summary>
-        string DisabledReason(ISession session, INakedObjectAdapter target, ILifecycleManager lifecycleManager, IMetamodelManager manager);
+        string DisabledReason(INakedObjectAdapter target, INakedObjectsFramework framework);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

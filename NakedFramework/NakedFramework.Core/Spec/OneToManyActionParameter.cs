@@ -11,7 +11,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
     public sealed class OneToManyActionParameter : ActionParameterSpec, IOneToManyActionParameterSpec {
-        public OneToManyActionParameter(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
-            : base(metamodel, index, actionImpl, actionParameterSpecImmutable, manager, session, persistor) { }
+        public OneToManyActionParameter(int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectsFramework framework)
+            : base(index, actionImpl, actionParameterSpecImmutable,framework) { }
     }
 }

@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IActionChoicesFacet Members
 
-        public abstract object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, ISession session, IObjectPersistor persistor);
+        public abstract object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework);
         public abstract (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
         public abstract bool IsMultiple { get; }
 

@@ -38,9 +38,9 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, ISession session, IObjectPersistor persistor) => nakedObjectAdapter.Object.ToString();
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => nakedObjectAdapter.Object.ToString();
 
-        public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, ISession session, IObjectPersistor persistor) {
+        public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             if (maskDelegate != null) {
                 return (string) maskDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {mask});
             }
@@ -49,7 +49,7 @@ namespace NakedObjects.Meta.Facet {
                 return (string) maskMethod.Invoke(nakedObjectAdapter.GetDomainObject(), new object[] {mask});
             }
 
-            return GetTitle(nakedObjectAdapter, nakedObjectManager, session, persistor);
+            return GetTitle(nakedObjectAdapter, framework);
         }
 
         [OnDeserialized]

@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -32,21 +33,16 @@ namespace NakedFunctions.Meta.Facet {
 
         #region IHideForContextFacet Members
 
-        public string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => HiddenReason(ic.Target, ic.Session, ic.Persistor);
+        public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
 
-        public Exception CreateExceptionFor(IInteractionContext ic,
-                                            ILifecycleManager lifecycleManager,
-                                            IMetamodelManager manager) =>
-            new HiddenException(ic, Hides(ic, lifecycleManager, manager));
+        public Exception CreateExceptionFor(IInteractionContext ic) =>     new HiddenException(ic, Hides(ic));
 
-        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter,
-                                   ISession session,
-                                   IObjectPersistor persistor) {
+        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             if (nakedObjectAdapter == null) {
                 return null;
             }
 
-            var isHidden = (bool) method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor));
+            var isHidden = (bool) method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, framework));
             return isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
         }
 

@@ -26,12 +26,12 @@ namespace NakedObjects.Architecture.Interactions {
         ///     however guard against a <c>null</c> target <see cref="IInteractionContext.Target" />
         ///     and session <see cref="IInteractionContext.Session" /> - neither are guaranteed to be populated.
         /// </para>
-        string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager);
+        string Hides(IInteractionContext ic);
 
         /// <summary>
         ///     Create (not throw) an exception to indicate that this
         ///     interaction cannot be performed because the target object or member is hidden.
         /// </summary>
-        Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager);
+        Exception CreateExceptionFor(IInteractionContext ic);
     }
 }

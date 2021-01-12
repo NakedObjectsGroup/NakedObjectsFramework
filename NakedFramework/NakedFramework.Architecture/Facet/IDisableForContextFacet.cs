@@ -22,7 +22,7 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     The reason this object is disabled, or <c>null</c> otherwise
         /// </summary>
-        string DisabledReason(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor);
+        string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

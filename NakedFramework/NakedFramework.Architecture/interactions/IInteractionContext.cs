@@ -31,9 +31,7 @@ namespace NakedObjects.Architecture.Interactions {
         /// <para>
         ///     Will be set for all interactions.
         /// </para>
-        ISession Session { get; }
-
-        IObjectPersistor Persistor { get; }
+        INakedObjectsFramework Framework { get; }
 
         /// <summary>
         ///     How the interaction was initiated

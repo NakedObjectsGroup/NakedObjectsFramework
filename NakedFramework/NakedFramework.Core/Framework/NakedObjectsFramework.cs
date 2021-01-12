@@ -42,7 +42,7 @@ namespace NakedObjects.Service {
             ServiceProvider = serviceProvider;
             domainObjectInjector.Framework = this;
             memberFactory.Initialize(this, loggerFactory, loggerFactory.CreateLogger<SpecFactory>());
-            nakedObjectFactory.Initialize(metamodelManagerManager, session, lifecycleManager, persistor, nakedObjectManager, loggerFactory);
+            nakedObjectFactory.Initialize(this, loggerFactory);
         }
 
         #region INakedObjectsFramework Members

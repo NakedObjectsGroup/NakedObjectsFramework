@@ -21,9 +21,9 @@ namespace NakedObjects.Meta.Facet {
 
         #region ITitleFacet Members
 
-        public virtual string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, ISession session, IObjectPersistor persistor) => GetTitle(nakedObjectAdapter, nakedObjectManager, session, persistor);
+        public virtual string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => GetTitle(nakedObjectAdapter,framework);
 
-        public abstract string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, ISession session, IObjectPersistor persistor);
+        public abstract string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
 
         #endregion
     }

@@ -20,7 +20,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Hides));
             var testFacet = new HideForContextViaFunctionFacet(method, null);
 
-            var result = testFacet.HiddenReason(new Mock<INakedObjectAdapter>().Object, null, null);
+            var result = testFacet.HiddenReason(new Mock<INakedObjectAdapter>().Object, null);
 
             Assert.AreEqual(TestValue, result);
         }

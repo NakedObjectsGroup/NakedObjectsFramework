@@ -30,7 +30,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
         public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
             if (objectFacade.IsViewModel) {
                 var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
-                framework.LifecycleManager.PopulateViewModelKeys(vm);
+                framework.LifecycleManager.PopulateViewModelKeys(vm, framework);
             }
 
             var (code, key) = GetCodeAndKeyAsTuple(objectFacade);
@@ -61,7 +61,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
             var wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
 
             if (wrappedNakedObject.Spec.IsViewModel) {
-                keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector, framework.Session, framework.Persistor);
+                keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework);
             }
             else {
                 var keyPropertyInfo = nakedObjectForKey.GetKeys();

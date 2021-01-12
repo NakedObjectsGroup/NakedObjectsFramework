@@ -30,22 +30,22 @@ namespace NakedObjects.Core.Adapter {
         #endregion
 
         private readonly ILifecycleManager lifecycleManager;
+        private readonly INakedObjectsFramework framework;
         private readonly ILogger<CollectionMemento> logger;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
         private object[] selectedObjects;
 
-        private CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger) {
-            this.lifecycleManager = lifecycleManager ?? throw new InitialisationException($"{nameof(lifecycleManager)} is null");
-            ;
-            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
-            ;
-            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+        private CollectionMemento(INakedObjectsFramework framework, ILogger<CollectionMemento> logger) {
+            this.lifecycleManager = framework.LifecycleManager ?? throw new InitialisationException($"{nameof(framework.LifecycleManager)} is null");
+            this.nakedObjectManager = framework.NakedObjectManager ?? throw new InitialisationException($"{nameof(framework.NakedObjectManager)} is null");
+            this.metamodel = framework.MetamodelManager ?? throw new InitialisationException($"{nameof(framework.MetamodelManager)} is null");
+            this.framework = framework;
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger, CollectionMemento otherMemento, object[] selectedObjects)
-            : this(lifecycleManager, nakedObjectManager, metamodel, logger) {
+        public CollectionMemento(INakedObjectsFramework framework, ILogger<CollectionMemento> logger, CollectionMemento otherMemento, object[] selectedObjects)
+            : this(framework, logger) {
             IsPaged = otherMemento.IsPaged;
             IsNotQueryable = otherMemento.IsNotQueryable;
             Target = otherMemento.Target;
@@ -54,19 +54,19 @@ namespace NakedObjects.Core.Adapter {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger, INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters)
-            : this(lifecycleManager, nakedObjectManager, metamodel, logger) {
+        public CollectionMemento(INakedObjectsFramework framework, ILogger<CollectionMemento> logger, INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters)
+            : this(framework, logger) {
             Target = target;
             Action = actionSpec;
             Parameters = parameters;
 
             if (Target?.Spec.IsViewModel == true) {
-                lifecycleManager.PopulateViewModelKeys(Target);
+                lifecycleManager.PopulateViewModelKeys(Target, framework);
             }
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILoggerFactory loggerFactory, ILogger<CollectionMemento> logger, string[] strings)
-            : this(lifecycleManager, nakedObjectManager, metamodel, logger) {
+        public CollectionMemento(INakedObjectsFramework framework, ILoggerFactory loggerFactory, ILogger<CollectionMemento> logger, string[] strings)
+            : this(framework, logger) {
             var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings, true);
             // ReSharper disable once UnusedVariable
             var specName = helper.GetNextString();
@@ -135,7 +135,7 @@ namespace NakedObjects.Core.Adapter {
 
         public ITypeSpec Spec => Target.Spec;
 
-        public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) => new CollectionMemento(lifecycleManager, nakedObjectManager, metamodel, logger, this, objects) {IsPaged = isPaged};
+        public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) => new CollectionMemento(framework, logger, this, objects) {IsPaged = isPaged};
 
         public INakedObjectAdapter RecoverCollection() {
             var nakedObjectAdapter = Action.Execute(Target, Parameters);
@@ -198,7 +198,7 @@ namespace NakedObjects.Core.Adapter {
         private INakedObjectAdapter RestoreObject(IOid oid) =>
             oid switch {
                 _ when oid.IsTransient => lifecycleManager.RecreateInstance(oid, oid.Spec),
-                IViewModelOid _ => lifecycleManager.GetViewModel(oid),
+                IViewModelOid _ => lifecycleManager.GetViewModel(oid, framework),
                 _ => lifecycleManager.LoadObject(oid, oid.Spec)
             };
     }

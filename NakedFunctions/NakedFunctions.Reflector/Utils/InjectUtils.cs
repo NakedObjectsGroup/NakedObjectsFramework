@@ -47,7 +47,7 @@ namespace NakedObjects.Meta.Utils {
         // maybe called reflectively
         public static IQueryable<T> GetInjectedQueryableValue<T>(IObjectPersistor persistor) where T : class => persistor.UntrackedInstances<T>();
 
-        private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, ISession session, IObjectPersistor persistor) {
+        private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectsFramework framework) {
             if (p.Position == 0 && !(adapter.Spec is IServiceSpec)) {
                 return adapter.Object;
             }
@@ -67,13 +67,13 @@ namespace NakedObjects.Meta.Utils {
                 }
 
                 if (parameterType == typeof(IPrincipal)) {
-                    return GetInjectedIPrincipalValue(session);
+                    return GetInjectedIPrincipalValue(framework.Session);
                 }
 
                 if (CollectionUtils.IsQueryable(parameterType)) {
                     var elementType = GetMatchingImpl(parameterType.GetGenericArguments().First());
                     var f = typeof(InjectUtils).GetMethod("GetInjectedQueryableValue")?.MakeGenericMethod(elementType);
-                    return f?.Invoke(null, new object[] {persistor});
+                    return f?.Invoke(null, new object[] {framework.Persistor});
                 }
             }
 
@@ -88,13 +88,13 @@ namespace NakedObjects.Meta.Utils {
             return null;
         }
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, ISession session, IObjectPersistor persistor) => method.GetParameters().Select(p => p.GetParameterValue(adapter, session, persistor)).ToArray();
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework)).ToArray();
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, ISession session, IObjectPersistor persistor) => method.GetParameters().Select(p => p.GetParameterValue(adapter, session, persistor) ?? p.GetMatchingParameter(parameterNameValues)).ToArray();
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? p.GetMatchingParameter(parameterNameValues)).ToArray();
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string autocomplete, ISession session, IObjectPersistor persistor) => method.GetParameters().Select(p => p.GetParameterValue(adapter, session, persistor) ?? autocomplete).ToArray();
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string autocomplete, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? autocomplete).ToArray();
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string[] keys, ISession session, IObjectPersistor persistor) => method.GetParameters().Select(p => p.GetParameterValue(adapter, session, persistor) ?? keys).ToArray();
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string[] keys, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? keys).ToArray();
 
         public static void PerformAction<T>(object action, T toInject) => ((Action<T>)action)(toInject);
     }

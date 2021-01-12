@@ -18,7 +18,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Completions));
             var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null);
 
-            var result = testFacet.GetCompletions(null, null, null, null);
+            var result = testFacet.GetCompletions(null, null, null);
 
             Assert.AreEqual(TestValue.Length, result.Length);
             Assert.AreEqual(TestValue[0], result[0]);

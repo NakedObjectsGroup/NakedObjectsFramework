@@ -28,13 +28,13 @@ namespace NakedObjects.Meta.Profile {
             protected set { }
         }
 
-        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager) {
-            profileManager.Begin(session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, lifecycleManager);
+        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedObjectsFramework framework) {
+            profileManager.Begin(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
             try {
-                underlyingFacet.SetProperty(nakedObjectAdapter, nakedValue, transactionManager, session, lifecycleManager);
+                underlyingFacet.SetProperty(nakedObjectAdapter, nakedValue, framework);
             }
             finally {
-                profileManager.End(session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, lifecycleManager);
+                profileManager.End(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
             }
         }
     }

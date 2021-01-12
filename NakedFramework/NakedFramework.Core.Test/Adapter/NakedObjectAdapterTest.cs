@@ -27,16 +27,18 @@ namespace NakedObjects.Core.Test.Adapter {
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly ILogger<NullVersion> vLogger = new Mock<ILogger<NullVersion>>().Object;
 
+        private readonly INakedObjectsFramework framework = new Mock<INakedObjectsFramework>().Object;
+
         [Test]
         public void TestCheckLockDefaultOk() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid, loggerFactory, logger);
+            INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
             var testNullVersion = new NullVersion(vLogger);
             testAdapter.CheckLock(testNullVersion);
         }
 
         [Test]
         public void TestCheckLockDefaultFail() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid, loggerFactory, logger);
+            INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
             var testCcVersionVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
 
             try {
@@ -50,7 +52,7 @@ namespace NakedObjects.Core.Test.Adapter {
 
         [Test]
         public void TestCheckLockNewVersionOk() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid, loggerFactory, logger);
+            INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
             var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
 
             testAdapter.OptimisticLock = testCcVersion;
@@ -60,7 +62,7 @@ namespace NakedObjects.Core.Test.Adapter {
 
         [Test]
         public void TestCheckLockNewVersionFail() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid, loggerFactory, logger);
+            INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
             var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
 
             testAdapter.OptimisticLock = testCcVersion;
