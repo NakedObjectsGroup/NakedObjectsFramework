@@ -63,8 +63,6 @@ namespace AW.Types {
 
         #endregion
 
-        public override string ToString() => $"{OrderQty} x {Product}";
-
         #region ID
 
         [Hidden]
@@ -115,43 +113,7 @@ namespace AW.Types {
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
-    }
 
-    public static class SalesOrderDetail_Functions
-    {
-        #region Life Cycle methods
-
-        public static void Persisted(this SalesOrderDetail sod)
-        {
-            //TODO:
-            //SalesOrderHeader.Details.Add(this);
-            //SalesOrderHeader.Recalculate();
-        }
-
-        #endregion
-
-        public static (SalesOrderDetail, IContext) Recalculate(this SalesOrderDetail sod)
-        {
-            throw new NotImplementedException();
-            //UnitPrice = SpecialOfferProduct.Product.ListPrice;
-            //UnitPriceDiscount = (SpecialOfferProduct.SpecialOffer.DiscountPct * UnitPrice);
-            //LineTotal = (UnitPrice - UnitPriceDiscount) * OrderQty;
-            //SalesOrderHeader.Recalculate();
-        }
-
-        public static (SalesOrderDetail, IContext) ChangeQuantity(this SalesOrderDetail sod, short newQuantity, IContext context)
-        {
-            throw new NotImplementedException();
-            //OrderQty = newQuantity;
-            //            IQueryable<SpecialOfferProduct> sops
-            //SpecialOfferProduct = ProductFunctions2.BestSpecialOfferProduct(Product, newQuantity, sops);
-            //Recalculate();
-        }
-
-        public static string DisableChangeQuantity()
-        {
-            throw new NotImplementedException();
-            //return SalesOrderHeader.DisableAddNewDetail();
-        }
+        public override string ToString() => $"{OrderQty} x {Product}";
     }
 }

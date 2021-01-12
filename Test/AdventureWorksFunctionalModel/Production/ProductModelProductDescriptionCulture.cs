@@ -30,6 +30,6 @@ namespace AW.Types {
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
-        public override string ToString() => $"{Culture}";
+        public override string ToString() => $"ProductModelProductDescriptionCulture: {ProductModelID}-{ProductDescriptionID}-{CultureID}";
     }
 }

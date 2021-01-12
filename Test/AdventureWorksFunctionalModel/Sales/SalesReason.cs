@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
 namespace AW.Types {
@@ -16,19 +15,13 @@ namespace AW.Types {
         [Hidden]
         public virtual int SalesReasonID { get; init; }
 
-        //Title
         public virtual string Name { get; init; }
 
         public virtual string ReasonType { get; init; }
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        
-        [Versioned]
+        [MemberOrder(99)] [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
-        #endregion
+        public override string ToString() => Name;
     }
 }

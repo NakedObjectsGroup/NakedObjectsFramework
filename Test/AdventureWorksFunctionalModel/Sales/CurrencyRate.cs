@@ -17,7 +17,6 @@ namespace AW.Types {
 
         public virtual DateTime CurrencyRateDate { get; init; }
 
-        //Title
         public virtual decimal AverageRate { get; init; }
 
         public virtual decimal EndOfDayRate { get; init; }
@@ -34,5 +33,7 @@ namespace AW.Types {
         [MemberOrder(99)]
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => $"{AverageRate}";
     }
 }

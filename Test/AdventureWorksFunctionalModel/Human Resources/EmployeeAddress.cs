@@ -32,6 +32,8 @@ namespace AW.Types
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
+
+        public override string ToString() =>  $"EmployeeAddress: {EmployeeID}-{AddressID}";
     }
 
 }

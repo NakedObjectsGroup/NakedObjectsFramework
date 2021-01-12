@@ -110,5 +110,7 @@ namespace AW.Types {
         [RenderEagerly]
         [TableView(true, "OrderQty", "Product", "UnitPrice", "LineTotal")]
         public virtual ICollection<PurchaseOrderDetail> Details { get; init; }
+
+        public override string ToString() => $"PO from {Vendor}, {OrderDate}";
     }
 }

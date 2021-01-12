@@ -33,7 +33,7 @@ namespace AW.Types
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
-        public override string ToString() => "Special offer - title TODO";
+        public override string ToString() => "SpecialOfferProduct: {SpecialOfferID}-{ProductID}";
     }
 
     public static class SpecialOfferProductFunctions

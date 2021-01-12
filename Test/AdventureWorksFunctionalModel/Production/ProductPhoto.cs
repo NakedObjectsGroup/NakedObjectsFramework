@@ -48,6 +48,6 @@ namespace AW.Types {
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
-        public override string ToString() => "Product Photo";
+        public override string ToString() => $"Product Photo: {ProductPhotoID}";
     }
 }

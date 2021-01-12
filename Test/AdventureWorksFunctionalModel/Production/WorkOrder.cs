@@ -69,9 +69,7 @@ namespace AW.Types
         public virtual string AnAlwaysHiddenReadOnlyProperty
         {
             get { return ""; }
-        }
-
-      
+        } 
 
         public override string ToString() => $"{Product}: {StartDate}";
     }

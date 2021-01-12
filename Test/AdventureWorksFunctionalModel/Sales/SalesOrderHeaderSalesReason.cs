@@ -30,6 +30,6 @@ namespace AW.Types {
 
         #endregion
 
-        public override string ToString() => $"{SalesReason}";
+        public override string ToString() => $"SalesOrderHeaderSalesReason: {SalesOrderID}-{SalesReasonID}";
     }
 }

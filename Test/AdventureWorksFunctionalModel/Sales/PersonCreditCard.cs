@@ -26,6 +26,6 @@ namespace AW.Types {
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
-        public override string ToString() => $"{Person}";
+        public override string ToString() => $"PersonCreditCard: {PersonID}-{CreditCardID}";
     }
 }
