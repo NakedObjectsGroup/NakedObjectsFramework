@@ -44,7 +44,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("Employee--2", "Terri Duffy");
             AccessInstanceWithTitle("EmployeeDepartmentHistory--1--16--1--631808640000000000", "Executive 2/15/2003");
             AccessInstanceWithTitle("EmployeePayHistory--1--631808640000000000", "$125.50 from 2/15/2003");
-            //AccessInstanceWithTitle("JobCandidate--1", "Job Candidate "); //Not retrievable directly
+            AccessInstanceWithTitle("JobCandidate--1", "Job Candidate"); 
             AccessInstanceWithTitle("Shift--1", "Day");
             AccessInstanceWithTitle("Address--1", "1970 Napa Ct....");
             AccessInstanceWithTitle("AddressType--1", "Billing");
@@ -59,25 +59,25 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("PersonPhone--1--697-555-0142--1", "Cell:697-555-0142");
             AccessInstanceWithTitle("PhoneNumberType--1", "Cell");
             AccessInstanceWithTitle("StateProvince--1", "Alberta");
-            //AccessInstanceWithTitle("BillOfMaterial--893", "BillOfMaterial: 893"); //Not retrievable directly
-            //AccessInstanceWithTitle("Culture--%20%20%20%20%20%20", "Invariant Language(Invariant Country)"); //Not retrievable directly
-            //AccessInstanceWithTitle("Illustration--3", "Illustration: 3"); //Not retrievable directly
+            AccessInstanceWithTitle("BillOfMaterial--893", "BillOfMaterial: 893"); 
+            AccessInstanceWithTitle("Culture--ar", "Arabic"); 
+            AccessInstanceWithTitle("Illustration--3", "Illustration: 3"); 
             AccessInstanceWithTitle("Location--1", "Tool Crib");
             AccessInstanceWithTitle("Product--1", "Adjustable Race");
             AccessInstanceWithTitle("ProductCategory--1", "Bikes");
             AccessInstanceWithTitle("ProductCostHistory--707--632557728000000000", "12.0278 7/1/2005 12:00:00 AM~");
             AccessInstanceWithTitle("ProductDescription--3", "Chromoly steel.");
             AccessInstanceWithTitle("ProductInventory--1--1", "408 in Tool Crib - A");
-            //AccessInstanceWithTitle("ProductListPriceHistory--707--632557728000000000", "ProductListPriceHistory: 707"); //Not retrievable directly
+            AccessInstanceWithTitle("ProductListPriceHistory--707--632557728000000000", "ProductListPriceHistory: 707"); 
             AccessInstanceWithTitle("ProductModel--1", "Classic Vest");
-            //AccessInstanceWithTitle("ProductModelIllustration--7--3", "ProductModelIllustration: 7 - 3"); //Not retrievable directly
+            AccessInstanceWithTitle("ProductModelIllustration--7--3", "ProductModelIllustration: 7-3"); 
             AccessInstanceWithTitle("ProductModelProductDescriptionCulture--1--1199--en%20%20%20%20", "ProductModelProductDescriptionCulture: 1-1199-en");
             AccessInstanceWithTitle("ProductPhoto--1", "Product Photo: 1");
             AccessInstanceWithTitle("ProductProductPhoto--1--1", "ProductProductPhoto: 1-1");
-            //AccessInstanceWithTitle("ProductReview--1", " *****"); //Not retrievable directly
+            AccessInstanceWithTitle("ProductReview--1", "*****"); 
             AccessInstanceWithTitle("ProductSubcategory--1", "Mountain Bikes");
             AccessInstanceWithTitle("ScrapReason--1", "Brake assembly not as ordered");
-            //AccessInstanceWithTitle("TransactionHistory--100000", "TransactionHistory: 100000"); //Not retrievable directly
+            AccessInstanceWithTitle("TransactionHistory--100000", "TransactionHistory: 100000"); 
             AccessInstanceWithTitle("UnitMeasure--BOX", "Boxes");
             AccessInstanceWithTitle("WorkOrder--1", "LL Road Frame - Black, 58: 7/4/2005 12:00:00 AM");
             AccessInstanceWithTitle("WorkOrderRouting--13--747--1", "Frame Forming");
@@ -93,7 +93,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("Customer--1", "A Bike Store");
             AccessInstanceWithTitle("PersonCreditCard--293--17038", "PersonCreditCard: 293-17038");
             AccessInstanceWithTitle("SalesOrderDetail--43659--1", "1 x Mountain-100 Black, 42");
-            //SalesOrderHeader - Not retrievable by action or direct. Cannot build URI : object key is null or empty
+            AccessInstanceWithTitle("SalesOrderHeader--43659", "SO43659");
             AccessInstanceWithTitle("SalesOrderHeaderSalesReason--43697--5", "SalesOrderHeaderSalesReason: 43697-5");
             AccessInstanceWithTitle("SalesPerson--274", "Stephen Jiang");
             AccessInstanceWithTitle("SalesPersonQuotaHistory--274--632557728000000000", "7/1/2005 $28,000.00");
@@ -105,7 +105,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("SpecialOffer--1", "No Discount");
             AccessInstanceWithTitle("SpecialOfferProduct--1--342", "SpecialOfferProduct: 1-342");
             AccessInstanceWithTitle("Store--292", "Next-Door Bike Store");
-
         }
 
         private const string prefix ="object?i1=View&o1=AW.Types.";
