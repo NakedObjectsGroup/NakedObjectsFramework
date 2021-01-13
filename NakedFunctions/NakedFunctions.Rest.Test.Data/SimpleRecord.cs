@@ -21,6 +21,7 @@ namespace NakedFunctions.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
+        public string Name { get; init; }
         public DateTime EndDate { get; set; } = DateTime.Now;
         public DateTime StartDate { get; set; } = DateTime.Now;
     }
@@ -37,6 +38,19 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public TestEnum TestEnum { get; set; }
     }
+
+    public record ReferenceRecord
+    {
+        [Key]
+        public int Id { get; init; }
+
+        public int? SimpleRecordId => SimpleRecord?.Id;
+        public int? DateRecordId => DateRecord?.Id;
+
+        public SimpleRecord SimpleRecord { get; init; }
+        public DateRecord DateRecord { get; init; }
+    }
+
 
 
     public record GuidRecord {

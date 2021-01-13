@@ -6,45 +6,33 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 
 namespace NakedFunctions.Rest.Test.Data {
-    public static class SimpleRecordFunctions {
+    internal static class Helpers {
         internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
+    }
 
+    public static class SimpleRecordFunctions {
         [Edit]
         public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, string name, IContext context)
-            => DisplayAndSave(sp with {Name = name}, context);
+            => Helpers.DisplayAndSave(sp with {Name = name}, context);
 
-        //public static SimpleRecord ReShowRecord(this SimpleRecord simpleRecord) => simpleRecord;
+        public static (ReferenceRecord, IContext) AssociateWithDateRecord(this SimpleRecord simpleRecord, DateRecord dateRecord, IContext context) =>
+            context.Instances<ReferenceRecord>().Any(x => x.SimpleRecordId == simpleRecord.Id && x.DateRecordId == dateRecord.Id)
+                ? (null, context.WithInformUser($"{simpleRecord} is already associated with {dateRecord}"))
+                : Helpers.DisplayAndSave(new ReferenceRecord() with { SimpleRecord = simpleRecord, DateRecord = dateRecord }, context);
 
-        //public static SimpleRecord UpdateSimpleRecord(this SimpleRecord simpleRecord, IQueryable<SimpleRecord> allSimpleRecords, string name) {
-        //    var updatedSr = simpleRecord with {
-        //        Name = name
-        //    };
+        [PageSize(20)]
+        public static IQueryable<DateRecord> AutoComplete1AssociateWithDateRecord(this SimpleRecord simpleRecord, [Length(2)] string name, IContext context)
+            => context.Instances<DateRecord>().Where(simpleRecord => simpleRecord.Name.ToUpper().StartsWith(name.ToUpper()));
 
-        //    return updatedSr;
-        //}
-
-        //public static (SimpleRecord, SimpleRecord) UpdateAndPersistSimpleRecord(this SimpleRecord simpleRecord, IQueryable<SimpleRecord> allSimpleRecords, string name) {
-        //    var updatedSr = simpleRecord with
-        //    {
-        //        Name = name
-        //    } ;
-
-        //    return (updatedSr, updatedSr);
-        //}
-
-        //public static (SimpleRecord, Action<IAlert>) GetSimpleRecordWithWarning(this SimpleRecord simpleRecord) =>  (simpleRecord, a => a.WarnUser("a warning"));
-
-        //public static (SimpleRecord, Action<ILogger<SimpleRecord>>) GetSimpleRecordWithLog(this SimpleRecord simpleRecord) => (simpleRecord, l => l.LogInformation("a log"));
     }
 
     public static class DateRecordFunctions {
-        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
-
         [Edit]
         public static (DateRecord, IContext) EditDates(this DateRecord sp, DateTime startDate, DateTime endDate, IContext context)
-            => DisplayAndSave(sp with {StartDate = startDate, EndDate = endDate}, context);
+            => Helpers.DisplayAndSave(sp with {StartDate = startDate, EndDate = endDate}, context);
 
         public static DateTime Default1EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today();
 
