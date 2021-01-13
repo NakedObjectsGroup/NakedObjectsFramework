@@ -1,6 +1,4 @@
 ﻿using NakedFunctions;
-using static AW.Utilities;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AW.Types
 {
