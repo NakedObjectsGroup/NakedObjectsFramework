@@ -42,6 +42,7 @@ namespace AW.Types {
         public virtual byte StatusByte { get; init; }
 
         [MemberOrder(1)]
+        [Hidden]
         public OrderStatus Status => (OrderStatus)StatusByte;
 
 
