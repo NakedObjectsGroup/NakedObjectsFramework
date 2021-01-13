@@ -42,6 +42,8 @@ namespace AW.Types {
 
         public override string ToString() => $"{Quantity} in {Location} - {Shelf}";
 
-		public override int GetHashCode() => HashCode(this, ProductID, LocationID);    
+		public override int GetHashCode() => HashCode(this, ProductID, LocationID);
+
+        public virtual bool Equals(ProductInventory other) => ReferenceEquals(this, other);
     }
 }

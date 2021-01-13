@@ -29,5 +29,7 @@ namespace AW.Types
         public override string ToString() => Description;
 
 		public override int GetHashCode() => HashCode(this, ProductDescriptionID);
+
+        public virtual bool Equals(ProductDescription other) => ReferenceEquals(this, other);
     }
 }

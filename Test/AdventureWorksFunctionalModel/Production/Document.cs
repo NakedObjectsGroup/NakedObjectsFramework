@@ -34,5 +34,7 @@ namespace AW.Types
         public override string ToString() => $"Document: {DocumentID}";
 
 		public override int GetHashCode() => HashCode(this, DocumentID);
+
+        public virtual bool Equals(Document other) => ReferenceEquals(this, other);
     }
 }

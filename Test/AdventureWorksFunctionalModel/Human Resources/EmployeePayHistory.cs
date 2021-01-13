@@ -36,5 +36,7 @@ namespace AW.Types
         public override string ToString() => $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}";
 
 		public override int GetHashCode() => HashCode(this, EmployeeID, RateChangeDate.GetHashCode());
+
+        public virtual bool Equals(EmployeePayHistory other) => ReferenceEquals(this, other);
     }
 }

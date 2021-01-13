@@ -76,5 +76,7 @@ namespace AW.Types {
         public override string ToString() => $"{Name}";
 
 		public override int GetHashCode() => HashCode(this, BusinessEntityID);
+
+        public virtual bool Equals(Vendor other) => ReferenceEquals(this, other);
     }
 }

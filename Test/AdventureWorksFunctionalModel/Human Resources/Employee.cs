@@ -85,6 +85,8 @@ namespace AW.Types
 
         public override string ToString() => $"{PersonDetails}";
 
-		public override int GetHashCode() => HashCode(this, BusinessEntityID); 
+		public override int GetHashCode() => HashCode(this, BusinessEntityID);
+
+        public virtual bool Equals(Employee other) => ReferenceEquals(this, other);
     }
 }

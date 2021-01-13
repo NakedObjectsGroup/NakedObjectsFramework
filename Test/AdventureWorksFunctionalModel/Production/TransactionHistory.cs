@@ -31,5 +31,7 @@ namespace AW.Types {
         public override string ToString() => $"TransactionHistory: {TransactionID}";
 
 		public override int GetHashCode() => HashCode(this, TransactionID);
+
+        public virtual bool Equals(TransactionHistory other) => ReferenceEquals(this, other);
     }
 }

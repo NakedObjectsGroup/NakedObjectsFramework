@@ -26,5 +26,7 @@ namespace AW.Types
         public override string ToString() => Name;
 
 		public override int GetHashCode() => HashCode(this, CultureID.GetHashCode());
+
+        public virtual bool Equals(Culture other) => ReferenceEquals(this, other);
     }
 }

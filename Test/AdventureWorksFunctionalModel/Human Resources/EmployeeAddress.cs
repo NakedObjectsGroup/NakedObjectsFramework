@@ -35,7 +35,9 @@ namespace AW.Types
 
         public override string ToString() =>  $"EmployeeAddress: {EmployeeID}-{AddressID}";
 
-		public override int GetHashCode() => HashCode(this, EmployeeID, AddressID);    
+		public override int GetHashCode() => HashCode(this, EmployeeID, AddressID);
+
+        public virtual bool Equals(EmployeeAddress other) => ReferenceEquals(this, other);
     }
 
 }

@@ -54,5 +54,7 @@ namespace AW.Types
         public override string ToString() => $"{AddressLine1}...";
 
 		public override int GetHashCode() => HashCode(this, AddressID);
+
+        public virtual bool Equals(Address other) => ReferenceEquals(this, other);
     }
 }

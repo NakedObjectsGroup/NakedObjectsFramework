@@ -28,6 +28,8 @@ namespace AW.Types {
 
         public override string ToString() => $"BusinessEntity: {BusinessEntityID}";
 
-		public override int GetHashCode() => HashCode(this, BusinessEntityID); 
+		public override int GetHashCode() => HashCode(this, BusinessEntityID);
+
+        public virtual bool Equals(BusinessEntity other) => ReferenceEquals(this, other);
     }
 }

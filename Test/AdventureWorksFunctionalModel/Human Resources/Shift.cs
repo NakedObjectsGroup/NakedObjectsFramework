@@ -33,5 +33,8 @@ namespace AW.Types
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() => HashCode(this, ShiftID);    }
+		public override int GetHashCode() => HashCode(this, ShiftID);
+
+        public virtual bool Equals(Shift other) => ReferenceEquals(this, other);
+    }
 }

@@ -72,5 +72,7 @@ namespace AW.Types
         public override string ToString() => $"{Product}: {StartDate}";
 
 		public override int GetHashCode() => HashCode(this, WorkOrderID);
+
+        public virtual bool Equals(WorkOrder other) => ReferenceEquals(this, other);
     }
 }

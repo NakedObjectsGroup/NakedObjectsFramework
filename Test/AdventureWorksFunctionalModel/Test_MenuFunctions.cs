@@ -70,6 +70,7 @@ namespace AW.Functions
         [MemberOrder(76)] public static PersonCreditCard PersonCreditCard(IContext context) => FirstOf<PersonCreditCard>(context);
         [MemberOrder(77)] public static SalesOrderDetail SalesOrderDetail(IContext context) => FirstOf<SalesOrderDetail>(context);
         [MemberOrder(78)] public static SalesOrderHeader SalesOrderHeader(IContext context) => FirstOf<SalesOrderHeader>(context);
+        [MemberOrder(78)] public static SalesOrderHeaderSalesReason SalesOrderHeaderSalesReason(IContext context) => FirstOf<SalesOrderHeaderSalesReason>(context);
         [MemberOrder(79)] public static SalesPerson SalesPerson(IContext context) => FirstOf<SalesPerson>(context);
         [MemberOrder(80)] public static SalesPersonQuotaHistory SalesPersonQuotaHistory(IContext context) => FirstOf<SalesPersonQuotaHistory>(context);
         [MemberOrder(81)] public static SalesReason SalesReason(IContext context) => FirstOf<SalesReason>(context);
