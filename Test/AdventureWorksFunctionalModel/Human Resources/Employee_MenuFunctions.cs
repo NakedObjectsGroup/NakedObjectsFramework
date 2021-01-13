@@ -104,5 +104,8 @@ namespace AW.Functions {
         //}
 
         public static IQueryable<Shift> Shifts(IContext context) => context.Instances<Shift>();
+
+        public static IQueryable<JobCandidate> JobCandidates(IContext context) => context.Instances<JobCandidate>();
+
     }
 }
