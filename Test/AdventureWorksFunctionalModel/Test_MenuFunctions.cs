@@ -11,7 +11,6 @@ namespace AW.Functions
         //Human Resources
         [MemberOrder(1)] public static Department Department(IContext context) => FirstOf<Department>(context);
         [MemberOrder(2)] public static Employee Employee(IContext context) => FirstOf<Employee>(context);
-        [MemberOrder(3)] public static EmployeeAddress EmployeeAddress(IContext context) => FirstOf<EmployeeAddress>(context);
         [MemberOrder(4)] public static EmployeeDepartmentHistory EmployeeDepartmentHistory(IContext context) => FirstOf<EmployeeDepartmentHistory>(context);
         [MemberOrder(5)] public static EmployeePayHistory EmployeePayHistory(IContext context) => FirstOf<EmployeePayHistory>(context);
         [MemberOrder(6)] public static JobCandidate JobCandidate(IContext context) => FirstOf<JobCandidate>(context);
@@ -33,14 +32,12 @@ namespace AW.Functions
         //Production
         [MemberOrder(31)] public static BillOfMaterial BillOfMaterial(IContext context) => FirstOf<BillOfMaterial>(context);
         [MemberOrder(32)] public static Culture Culture(IContext context) => FirstOf<Culture>(context);
-        [MemberOrder(33)] public static Document Document(IContext context) => FirstOf<Document>(context);
         [MemberOrder(34)] public static Illustration Illustration(IContext context) => FirstOf<Illustration>(context);
         [MemberOrder(35)] public static Location Location(IContext context) => FirstOf<Location>(context);
         [MemberOrder(36)] public static Product Product(IContext context) => FirstOf<Product>(context);
         [MemberOrder(37)] public static ProductCategory ProductCategory(IContext context) => FirstOf<ProductCategory>(context);
         [MemberOrder(38)] public static ProductCostHistory ProductCostHistory(IContext context) => FirstOf<ProductCostHistory>(context);
         [MemberOrder(39)] public static ProductDescription ProductDescription(IContext context) => FirstOf<ProductDescription>(context);
-        [MemberOrder(40)] public static ProductDocument ProductDocument(IContext context) => FirstOf<ProductDocument>(context);
         [MemberOrder(41)] public static ProductInventory ProductInventory(IContext context) => FirstOf<ProductInventory>(context);
         [MemberOrder(42)] public static ProductListPriceHistory ProductListPriceHistory(IContext context) => FirstOf<ProductListPriceHistory>(context);
         [MemberOrder(43)] public static ProductModel ProductModel(IContext context) => FirstOf<ProductModel>(context);
