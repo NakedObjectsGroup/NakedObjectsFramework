@@ -31,7 +31,7 @@ namespace AW.Types
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        public override string ToString() => $"{TaxRate}";
+        public override string ToString() => $"Sales Tax Rate for {StateProvince}";
 
 		public override int GetHashCode() => HashCode(this, SalesTaxRateID);
 

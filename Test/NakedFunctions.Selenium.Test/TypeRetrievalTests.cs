@@ -98,7 +98,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("SalesPerson--274", "Stephen Jiang");
             AccessInstanceWithTitle("SalesPersonQuotaHistory--274--632557728000000000", "7/1/2005 $28,000.00");
             AccessInstanceWithTitle("SalesReason--1", "Price");
-            //SalesTaxRate - Not retrievable by action or direct. Nothing displayed
+            AccessInstanceWithTitle("SalesTaxRate--1", "Canadian GST + Alberta Provincial Tax");
             AccessInstanceWithTitle("SalesTerritory--1", "Northwest");
             AccessInstanceWithTitle("SalesTerritoryHistory--632557728000000000--275--2", "Michael Blythe Northeast");
             AccessInstanceWithTitle("ShoppingCartItem--2", "3 x Full-Finger Gloves, M");
