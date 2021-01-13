@@ -32,6 +32,8 @@ namespace NakedFunctions.Rest.Test.Data {
             context.DateRecords.Add(new DateRecord());
             context.EnumRecords.Add(new EnumRecord());
 
+            context.ReferenceRecords.Add(new ReferenceRecord());
+
             context.GuidRecords.Add(new GuidRecord());
             context.SaveChanges();
         }
@@ -44,6 +46,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<DateRecord> DateRecords { get; set; }
         public DbSet<EnumRecord> EnumRecords { get; set; }
         public DbSet<GuidRecord> GuidRecords { get; set; }
+        public DbSet<ReferenceRecord> ReferenceRecords { get; set; }
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
             Database.SetInitializer(new DatabaseInitializer<T>());

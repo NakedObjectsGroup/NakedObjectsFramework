@@ -30,7 +30,7 @@ namespace AW.Types
         public virtual Product Product1 { get; init; }
 
         [Hidden]
-        public string UnitMeasureCode { get; init; }
+        public virtual string UnitMeasureCode { get; init; }
         public virtual UnitMeasure UnitMeasure { get; init; }
 
         [MemberOrder(99)]

@@ -35,7 +35,7 @@ namespace NakedFunctions.Rest.Test
     {
         protected override Type[] Functions { get; } = { typeof(SimpleRecordFunctions), typeof(DateRecordFunctions) };
 
-        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(DateRecord), typeof(EnumRecord), typeof(TestEnum) };
+        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(DateRecord), typeof(EnumRecord), typeof(TestEnum), typeof(ReferenceRecord) };
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -181,6 +181,20 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual(FormatForTest(DateTime.Today.AddDays(90)), ped["default"].ToString());
         }
 
+        [Test]
+        public void TestGetObjectActionWithAutoComplete()
+        {
+            var api = Api();
+            var result = api.GetAction($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.AssociateWithDateRecord));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(SimpleRecordFunctions.AssociateWithDateRecord), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+            var dr = parameters["dateRecord"];
+        }
 
         [Test]
         public void TestInvokeEditDates()

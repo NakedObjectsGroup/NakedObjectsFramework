@@ -16,7 +16,7 @@ namespace AW.Types {
         public virtual DateTime StartDate { get; init; }
         public virtual DateTime? EndDate { get; init; }
         public virtual decimal ListPrice { get; init; }
-        public Product Product { get; init; }
+        public virtual Product Product { get; init; }
         [MemberOrder(99)]
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
