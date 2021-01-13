@@ -22,7 +22,7 @@ namespace AW.Types {
 
         [Hidden]
         public virtual int ProductID { get; init; }
-        public Product Product { get; init; }
+        public virtual Product Product { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
