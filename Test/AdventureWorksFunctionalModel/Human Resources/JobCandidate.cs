@@ -22,7 +22,7 @@ namespace AW.Types
         [Hidden]
         public virtual int? EmployeeID { get; init; }
 
-        public Employee Employee { get; init; }
+        public virtual Employee Employee { get; init; }
 
         [MemberOrder(99)]
         [Versioned]

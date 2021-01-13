@@ -30,7 +30,7 @@ namespace AW.Types {
         public virtual string Comments { get; init; }
 
         [Hidden]
-        public int ProductID { get; init; }
+        public virtual int ProductID { get; init; }
 
         [Hidden]
         public virtual Product Product { get; init; }

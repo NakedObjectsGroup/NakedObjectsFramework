@@ -16,7 +16,7 @@ namespace AW.Types {
         public virtual int IllustrationID { get; init; }
         public virtual string Diagram { get; init; }
 
-        public ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
+        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
         [MemberOrder(99)]
         [Versioned]
