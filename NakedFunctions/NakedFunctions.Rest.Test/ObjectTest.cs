@@ -197,6 +197,24 @@ namespace NakedFunctions.Rest.Test
         }
 
         [Test]
+        public void TestInvokeActionWithAutoComplete()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "dateRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.DateRecord/1" ,"dateRecord") } } };
+
+            var result = api.PostInvoke($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.AssociateWithDateRecord), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            //resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            //Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
+        }
+
+
+        [Test]
         public void TestInvokeEditDates()
         {
             var api = Api().AsPut();
