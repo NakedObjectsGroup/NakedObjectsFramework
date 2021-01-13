@@ -42,7 +42,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         {
             AccessInstanceWithTitle("Department--1 ", "Engineering");
             AccessInstanceWithTitle("Employee--2", "Terri Duffy");
-            //EmployeeAddress - Not retrievable by action or direct. Invalid object name 'HumanResources.EmployeeAddress'.
             AccessInstanceWithTitle("EmployeeDepartmentHistory--1--16--1--631808640000000000", "Executive 2/15/2003");
             AccessInstanceWithTitle("EmployeePayHistory--1--631808640000000000", "$125.50 from 2/15/2003");
             //AccessInstanceWithTitle("JobCandidate--1", "Job Candidate "); //Not retrievable directly
@@ -62,14 +61,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("StateProvince--1", "Alberta");
             //AccessInstanceWithTitle("BillOfMaterial--893", "BillOfMaterial: 893"); //Not retrievable directly
             //AccessInstanceWithTitle("Culture--%20%20%20%20%20%20", "Invariant Language(Invariant Country)"); //Not retrievable directly
-            //Document - Not retrievable by action or direct.Message: Invalid column name 'DocumentID'.
             //AccessInstanceWithTitle("Illustration--3", "Illustration: 3"); //Not retrievable directly
             AccessInstanceWithTitle("Location--1", "Tool Crib");
             AccessInstanceWithTitle("Product--1", "Adjustable Race");
             AccessInstanceWithTitle("ProductCategory--1", "Bikes");
             AccessInstanceWithTitle("ProductCostHistory--707--632557728000000000", "12.0278 7/1/2005 12:00:00 AM~");
             AccessInstanceWithTitle("ProductDescription--3", "Chromoly steel.");
-            //ProductDocument - Not retrievable by action or direct. Message: Invalid column name 'DocumentID'.
             AccessInstanceWithTitle("ProductInventory--1--1", "408 in Tool Crib - A");
             //AccessInstanceWithTitle("ProductListPriceHistory--707--632557728000000000", "ProductListPriceHistory: 707"); //Not retrievable directly
             AccessInstanceWithTitle("ProductModel--1", "Classic Vest");
@@ -77,7 +74,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("ProductModelProductDescriptionCulture--1--1199--en%20%20%20%20", "ProductModelProductDescriptionCulture: 1-1199-en");
             AccessInstanceWithTitle("ProductPhoto--1", "Product Photo: 1");
             AccessInstanceWithTitle("ProductProductPhoto--1--1", "ProductProductPhoto: 1-1");
-            //AccessInstanceWithTitle("ProductReview--1", " *****");
+            //AccessInstanceWithTitle("ProductReview--1", " *****"); //Not retrievable directly
             AccessInstanceWithTitle("ProductSubcategory--1", "Mountain Bikes");
             AccessInstanceWithTitle("ScrapReason--1", "Brake assembly not as ordered");
             //AccessInstanceWithTitle("TransactionHistory--100000", "TransactionHistory: 100000"); //Not retrievable directly

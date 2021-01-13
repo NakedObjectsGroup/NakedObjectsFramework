@@ -28,7 +28,7 @@ namespace AW.Types
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
-        public override string ToString() => $"Job Candidate {Employee}";
+        public override string ToString() => $"Job Candidate ";
 
 		public override int GetHashCode() => HashCode(this, JobCandidateID);
 

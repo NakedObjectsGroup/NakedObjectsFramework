@@ -33,14 +33,12 @@ namespace AW
         public DbSet<StateProvince> StateProvinces { get; init; }
         public DbSet<BillOfMaterial> BillOfMaterials { get; init; }
         public DbSet<Culture> Cultures { get; init; }
-        public DbSet<Document> Documents { get; init; }
         public DbSet<Illustration> Illustrations { get; init; }
         public DbSet<Location> Locations { get; init; }
         public DbSet<Product> Products { get; init; }
         public DbSet<ProductCategory> ProductCategories { get; init; }
         public DbSet<ProductCostHistory> ProductCostHistories { get; init; }
         public DbSet<ProductDescription> ProductDescriptions { get; init; }
-        public DbSet<ProductDocument> ProductDocuments { get; init; }
         public DbSet<ProductInventory> ProductInventories { get; init; }
         public DbSet<ProductListPriceHistory> ProductListPriceHistories { get; init; }
         public DbSet<ProductModel> ProductModels { get; init; }
@@ -84,7 +82,6 @@ namespace AW
         {
             modelBuilder.Configurations.Add(new DepartmentMap());
             modelBuilder.Configurations.Add(new EmployeeMap());
-            modelBuilder.Configurations.Add(new EmployeeAddressMap());
             modelBuilder.Configurations.Add(new EmployeeDepartmentHistoryMap());
             modelBuilder.Configurations.Add(new EmployeePayHistoryMap());
             modelBuilder.Configurations.Add(new JobCandidateMap());
@@ -101,18 +98,15 @@ namespace AW
             modelBuilder.Configurations.Add(new PasswordMap());
             modelBuilder.Configurations.Add(new PersonPhoneMap());
             modelBuilder.Configurations.Add(new PhoneNumberTypeMap());
-
             modelBuilder.Configurations.Add(new StateProvinceMap());
             modelBuilder.Configurations.Add(new BillOfMaterialMap());
             modelBuilder.Configurations.Add(new CultureMap());
-            modelBuilder.Configurations.Add(new DocumentMap());
             modelBuilder.Configurations.Add(new IllustrationMap());
             modelBuilder.Configurations.Add(new LocationMap());
             modelBuilder.Configurations.Add(new ProductMap());
             modelBuilder.Configurations.Add(new ProductCategoryMap());
             modelBuilder.Configurations.Add(new ProductCostHistoryMap());
             modelBuilder.Configurations.Add(new ProductDescriptionMap());
-            modelBuilder.Configurations.Add(new ProductDocumentMap());
             modelBuilder.Configurations.Add(new ProductInventoryMap());
             modelBuilder.Configurations.Add(new ProductListPriceHistoryMap());
             modelBuilder.Configurations.Add(new ProductModelMap());

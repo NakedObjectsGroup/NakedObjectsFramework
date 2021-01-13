@@ -30,8 +30,7 @@ namespace AW.Functions {
         }
 
         #endregion
-
-       
+      
         public static SalesPerson RandomSalesPerson(IContext context) => Random<SalesPerson>(context);
 
         [MemberOrder(1, "Sales")]
@@ -66,30 +65,6 @@ namespace AW.Functions {
 
         #endregion
 
-        public static SalesTaxRate RandomSalesTaxRate(IContext context) => Random<SalesTaxRate>(context);
-
-        #region Sub-menu hierarchy for testing only
-
-        internal static void Menu(IMenu menu)
-        {
-            menu.AddAction(nameof(CreateNewSalesPerson));
-            menu.AddAction(nameof(FindSalesPersonByName));
-            menu.AddAction(nameof(ListAccountsForSalesPerson));
-            menu.AddAction(nameof(RandomSalesPerson));
-            menu.AddAction(nameof(RandomSalesTaxRate));
-            menu.CreateSubMenu("Sub Menu")
-                .AddAction(nameof(Action1))
-                .CreateSubMenu("Level 2 sub menu")
-                .AddAction(nameof(Action2))
-                .CreateSubMenu("Level 3 sub menu")
-                .AddRemainingNativeActions();
-        }
-
-        public static SalesTaxRate Action1() {return null; }
-        public static SalesTaxRate Action2() { return null; }
-        public static SalesTaxRate Action3() { return null; }
-        public static SalesTaxRate Action4() { return null; }
-        #endregion
-
+        public static IQueryable<SalesTaxRate> ListSalesTaxRates(IContext context) => context.Instances<SalesTaxRate>();
     }
 }
