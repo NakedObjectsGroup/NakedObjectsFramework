@@ -209,8 +209,7 @@ namespace NakedFunctions.Rest.Test
 
             var resultObj = parsedResult["result"];
 
-            //resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-            //Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
+            Assert.AreEqual("2-1-1", resultObj["title"].ToString());
         }
 
 

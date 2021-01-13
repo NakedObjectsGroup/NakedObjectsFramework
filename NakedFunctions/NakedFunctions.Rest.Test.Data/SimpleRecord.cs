@@ -44,11 +44,10 @@ namespace NakedFunctions.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public int? SimpleRecordId => SimpleRecord?.Id;
-        public int? DateRecordId => DateRecord?.Id;
-
         public SimpleRecord SimpleRecord { get; init; }
         public DateRecord DateRecord { get; init; }
+
+        public override string ToString() => $"{Id}-{SimpleRecord.Id}-{DateRecord.Id}";
     }
 
 
