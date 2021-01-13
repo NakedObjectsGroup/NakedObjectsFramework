@@ -9,76 +9,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Principal;
+using System.Runtime.CompilerServices;
 using NakedFunctions;
+using NakedFunctions.Reflector.Component;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Utils {
     public static class InjectUtils {
 
-        private static readonly Random Random = new Random();
-
-        public static DateTime GetInjectedDateTimeValue() => DateTime.Now;
-
-        public static Guid GetInjectedGuidValue() => Guid.NewGuid();
-
-        public static int GetInjectedRandomValue() => Random.Next();
+        public static bool IsExtensionMethod(this MemberInfo m) => m.IsDefined(typeof(ExtensionAttribute), false);
 
         public static bool IsInjectedParameter(this ParameterInfo p) => p.ParameterType.IsAssignableTo(typeof(IContext));
 
-        public static IPrincipal GetInjectedIPrincipalValue(ISession session) => session.Principal;
-
-        public static Type GetMatchingImpl(Type typeOfQueryable) {
-            if (typeOfQueryable.IsInterface) {
-                // get matching impl type by convention for the moment 
-                var implTypeName = $"{typeOfQueryable.Namespace}.{typeOfQueryable.Name.Remove(0, 1)}";
-                var implType = typeOfQueryable.Assembly.GetType(implTypeName);
-                return implType;
-            }
-
-            return typeOfQueryable;
-        }
+        public static bool IsTargetParameter(this ParameterInfo p) => p.Position == 0 && p.Member.IsExtensionMethod();
 
 
         // ReSharper disable once UnusedMember.Global
         // maybe called reflectively
         public static IQueryable<T> GetInjectedQueryableValue<T>(IObjectPersistor persistor) where T : class => persistor.UntrackedInstances<T>();
 
-        private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectsFramework framework) {
-            if (p.Position == 0 && !(adapter.Spec is IServiceSpec)) {
-                return adapter.Object;
-            }
-
-            if (p.IsInjectedParameter()) {
-                var parameterType = p.ParameterType;
-                if (parameterType == typeof(DateTime)) {
-                    return GetInjectedDateTimeValue();
-                }
-
-                if (parameterType == typeof(Guid)) {
-                    return GetInjectedGuidValue();
-                }
-
-                if (parameterType == typeof(int)) {
-                    return GetInjectedRandomValue();
-                }
-
-                if (parameterType == typeof(IPrincipal)) {
-                    return GetInjectedIPrincipalValue(framework.Session);
-                }
-
-                if (CollectionUtils.IsQueryable(parameterType)) {
-                    var elementType = GetMatchingImpl(parameterType.GetGenericArguments().First());
-                    var f = typeof(InjectUtils).GetMethod("GetInjectedQueryableValue")?.MakeGenericMethod(elementType);
-                    return f?.Invoke(null, new object[] {framework.Persistor});
-                }
-            }
-
-            return null;
-        }
+        private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectsFramework framework) =>
+            p switch {
+                _ when p.IsTargetParameter() => adapter.Object,
+                _ when p.IsInjectedParameter() => new Context(framework.Persistor, framework.ServiceProvider),
+                _ => null
+            };
 
         private static object GetMatchingParameter(this ParameterInfo p, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             if (parameterNameValues != null &&  parameterNameValues.ContainsKey(p.Name.ToLower())) {

@@ -157,23 +157,59 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
         }
 
+        private static string FormatForTest(DateTime dt) => $"{dt.Year}-{dt.Month:00}-{dt.Day}";
 
-        //[Test]
-        //public void TestInvokeEditDates()
-        //{
-        //    var api = Api().AsPut();
-        //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("Fred4") } } };
 
-        //    var result = api.PutInvoke($"NakedFunctions.Rest.Test.Data.{nameof(DateRecord)}", "1", nameof(DateRecordFunctions.EditDates), map);
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
+        [Test]
+        public void TestGetObjectActionWithDateDefaults()
+        {
+            var api = Api();
+            var result = api.GetAction($"NakedFunctions.Rest.Test.Data.{nameof(DateRecord)}", "1", nameof(DateRecordFunctions.EditDates));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
-        //    //var resultObj = parsedResult["result"];
+            Assert.AreEqual(nameof(DateRecordFunctions.EditDates), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(2, parameters.Count());
+            var psd = parameters["startDate"];
 
-        //    //resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //    //Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
-        //}
+            Assert.AreEqual(FormatForTest(DateTime.Today), psd["default"].ToString());
+
+            var ped = parameters["endDate"];
+
+            Assert.AreEqual(FormatForTest(DateTime.Today.AddDays(90)), ped["default"].ToString());
+        }
+
+
+        [Test]
+        public void TestInvokeEditDates()
+        {
+            var api = Api().AsPut();
+            var startDate = new DateTime(2000, 1, 1);
+            var endDate = new DateTime(2001, 12, 31);
+            var map = new ArgumentMap {
+                Map = new Dictionary<string, IValue> {
+                    {"startDate", new ScalarValue(startDate)},
+                    {"endDate", new ScalarValue(endDate)}
+                }
+            };
+
+            var result = api.PutInvoke($"NakedFunctions.Rest.Test.Data.{nameof(DateRecord)}", "1", nameof(DateRecordFunctions.EditDates), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+            var sd = resultObj["members"]["StartDate"]["value"].ToString();
+            var ed = resultObj["members"]["EndDate"]["value"].ToString();
+
+            Assert.AreEqual(startDate, DateTime.Parse(sd));
+            Assert.AreEqual(endDate, DateTime.Parse(ed));
+
+            //resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            //Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
+        }
 
 
 

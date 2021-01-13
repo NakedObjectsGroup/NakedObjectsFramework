@@ -46,8 +46,8 @@ namespace NakedFunctions.Rest.Test.Data {
         public static (DateRecord, IContext) EditDates(this DateRecord sp, DateTime startDate, DateTime endDate, IContext context)
             => DisplayAndSave(sp with {StartDate = startDate, EndDate = endDate}, context);
 
-        public static DateTime Default0EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today();
+        public static DateTime Default1EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today();
 
-        public static DateTime Default1EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today().AddDays(90);
+        public static DateTime Default2EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today().AddDays(90);
     }
 }
