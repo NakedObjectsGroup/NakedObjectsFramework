@@ -16,49 +16,25 @@ namespace AW.Types {
     [Named("Sales Order")]
     public record SalesOrderHeader : ICreditCardCreator
     {
-        public bool AddItemsFromCart { get; init; }
-
-        #region Properties
-
-        #region ID
+        public virtual bool AddItemsFromCart { get; init; }
 
         [Hidden]
         public virtual int SalesOrderID { get; init; }
 
-        #endregion
-
-        #region SalesOrderNumber
-
-        //Title
-
         [MemberOrder(1)]
         public virtual string SalesOrderNumber { get; init; }
-
-        #endregion
-
-        #region Status
 
         [Hidden]
         public virtual byte StatusByte { get; init; }
 
-        [MemberOrder(1)]
-        [Hidden]
+        [MemberOrder(1), Hidden] //TODO: temp kludge, pending #232
         public OrderStatus Status => (OrderStatus)StatusByte;
-
-
-        #endregion
-
-        #region Customer
 
         [Hidden]
         public virtual int CustomerID { get; init; }
 
         [MemberOrder(2)]
         public virtual Customer Customer { get; init; }
-
-        #endregion
-
-        #region Contact
 
         //[Hidden]
         //public virtual int ContactID { get; init; }
@@ -109,10 +85,6 @@ namespace AW.Types {
         //}
         //#endregion
 
-        #endregion
-
-        #region BillingAddress
-
         [Hidden]
         public virtual int BillingAddressID { get; init; }
 
@@ -121,16 +93,8 @@ namespace AW.Types {
 
         public List<Address> ChoicesBillingAddress(IContext context) =>  Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();
  
-        #endregion
-
-        #region PurchaseOrderNumber
-
         [MemberOrder(5)]
         public virtual string PurchaseOrderNumber { get; init; }
-
-        #endregion
-
-        #region ShippingAddress
 
         [Hidden]
         public virtual int ShippingAddressID { get; init; }
@@ -139,10 +103,6 @@ namespace AW.Types {
         public virtual Address ShippingAddress { get; init; }
 
         public List<Address> ChoicesShippingAddress(IContext context) =>  ChoicesBillingAddress(context);
-      
-        #endregion
-
-        #region ShipMethod
 
         [Hidden]
         public virtual int ShipMethodID { get; init; }
@@ -150,121 +110,54 @@ namespace AW.Types {
         [MemberOrder(11)]
         public virtual ShipMethod ShipMethod { get; init; }
 
-        #endregion
-
-        #region AccountNumber
-
         [Optionally, MemberOrder(12)]
         public virtual string AccountNumber { get; init; }
-
-        #endregion
-
-        #region Dates
-
-        #region OrderDate
-
 
         [MemberOrder(20)]
         public virtual DateTime OrderDate { get; init; }
 
-        #endregion
-
-        #region DueDate
-
         [MemberOrder(21)]
         public virtual DateTime DueDate { get; init; }
 
-
-
-        #endregion
-
-        #region ShipDate
-
-
-        [MemberOrder(22)]
-        [Mask("d")]
+        [MemberOrder(22), Mask("d")]
        // [NakedFunctions.Range(-30, 0)]
         public virtual DateTime? ShipDate { get; init; }
-        #endregion
-
-        #endregion
-
-        #region Amounts
-
-
+  
         [MemberOrder(31)]
         [Mask("C")]
         public virtual decimal SubTotal { get; init; }
 
-
-        [MemberOrder(32)]
-        [Mask("C")]
+        [MemberOrder(32), Mask("C")]
         public virtual decimal TaxAmt { get; init; }
 
-
-        [MemberOrder(33)]
-        [Mask("C")]
+        [MemberOrder(33), Mask("C")]
         public virtual decimal Freight { get; init; }
 
-
-        [MemberOrder(34)]
-        [Mask("C")]
+        [MemberOrder(34), Mask("C")]
         public virtual decimal TotalDue { get; init; }
-
-
-
-
-        #region CurrencyRate
 
         [Hidden]
         public virtual int? CurrencyRateID { get; init; }
 
-
         [MemberOrder(35)]
         public virtual CurrencyRate CurrencyRate { get; init; }
 
-        #endregion
-
-        #endregion
-
-        #region OnlineOrder
-
         [DescribedAs("Order has been placed via the web")]
-
-        [MemberOrder(41)]
-        [Named("Online Order")]
+        [MemberOrder(41),Named("Online Order")]
         public virtual bool OnlineOrder { get; init; }
 
-        #endregion
-
-        #region CreditCard
         [Hidden]
         public virtual int? CreditCardID { get; init; }
-
 
         [MemberOrder(42)]
         public virtual CreditCard CreditCard { get; init; }
 
-        #endregion
-
-        #region CreditCardApprovalCode
-
-
-
         [MemberOrder(43)]
         public virtual string CreditCardApprovalCode { get; init; }
-
-        #endregion
-
-        #region RevisionNumber
 
 
         [MemberOrder(51)]
         public virtual byte RevisionNumber { get; init; }
-
-        #endregion
-
-        #region Comment
 
 
         [MultiLine(NumberOfLines = 3, Width = 50)]
@@ -272,11 +165,6 @@ namespace AW.Types {
         [DescribedAs("Free-form text")]
         public virtual string Comment { get; init; }
 
-
-       
-        #endregion
-
-        #region SalesPerson
 
         [Hidden]
         public virtual int? SalesPersonID { get; init; }
@@ -290,9 +178,6 @@ namespace AW.Types {
             [NakedFunctions.Range(2, 0)] string name, IContext context) =>
             Sales_MenuFunctions.FindSalesPersonByName(null, name, context);
 
-        #endregion
-
-        #region SalesTerritory
         [Hidden]
         public virtual int? SalesTerritoryID { get; init; }
 
@@ -300,61 +185,22 @@ namespace AW.Types {
         [MemberOrder(62)]
         public virtual SalesTerritory SalesTerritory { get; init; }
 
-        #endregion
 
-        #region ModifiedDate and rowguid
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-
-        
+        [MemberOrder(99)]     
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
-
-        #region rowguid
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        #endregion
 
-        #endregion
-
-        #endregion
-
-        #region Collections
-
-        #region Details
-
-        private ICollection<SalesOrderDetail> details = new List<SalesOrderDetail>();
-
-
-        public virtual ICollection<SalesOrderDetail> Details
-        {
-            get { return details; }
-            set { details = value; }
-        }
-
-        #endregion
-
-        #region Reasons
-
-        private ICollection<SalesOrderHeaderSalesReason> salesOrderHeaderSalesReason = new List<SalesOrderHeaderSalesReason>();
-
+        public virtual ICollection<SalesOrderDetail> Details { get; init; } 
+            = new List<SalesOrderDetail>();
 
         [Named("Reasons")]
-        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason
-        {
-            get { return salesOrderHeaderSalesReason; }
-            set { salesOrderHeaderSalesReason = value; }
-        }
+        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason { get; init; } 
+            = new List<SalesOrderHeaderSalesReason>();
 
-        #endregion
-
-        #endregion
 
         public override string ToString() => $"{SalesOrderNumber}";
 
@@ -362,6 +208,7 @@ namespace AW.Types {
 
         public virtual bool Equals(SalesOrderHeader other) => ReferenceEquals(this, other);
     }
+
     public enum OrderStatus : byte {
         InProcess = 1,
         Approved = 2,
