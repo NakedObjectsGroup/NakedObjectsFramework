@@ -24,5 +24,7 @@ namespace AW.Types {
         public override string ToString() => $"ProductListPriceHistory: {ProductID}";
 
 		public override int GetHashCode() => HashCode(this, ProductID, StartDate.GetHashCode());
+
+        public virtual bool Equals(ProductListPriceHistory other) => ReferenceEquals(this, other);
     }
 }

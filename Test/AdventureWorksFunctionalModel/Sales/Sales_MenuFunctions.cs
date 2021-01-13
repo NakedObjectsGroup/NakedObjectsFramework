@@ -66,13 +66,6 @@ namespace AW.Functions {
 
         #endregion
 
-
-        public static IQueryable<SalesTaxRate> SalesTaxRates(
-            IQueryable<SalesTaxRate> strs)
-        {
-            return strs;
-        }
-
         public static SalesTaxRate RandomSalesTaxRate(IContext context) => Random<SalesTaxRate>(context);
 
         #region Sub-menu hierarchy for testing only
@@ -83,7 +76,6 @@ namespace AW.Functions {
             menu.AddAction(nameof(FindSalesPersonByName));
             menu.AddAction(nameof(ListAccountsForSalesPerson));
             menu.AddAction(nameof(RandomSalesPerson));
-            menu.AddAction(nameof(SalesTaxRates));
             menu.AddAction(nameof(RandomSalesTaxRate));
             menu.CreateSubMenu("Sub Menu")
                 .AddAction(nameof(Action1))

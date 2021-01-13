@@ -358,6 +358,8 @@ namespace AW.Types {
         public override string ToString() => $"{SalesOrderNumber}";
 
 		public override int GetHashCode() => HashCode(this, SalesOrderID);
+
+        public virtual bool Equals(SalesOrderHeader other) => ReferenceEquals(this, other);
     }
     public enum OrderStatus : byte {
         InProcess = 1,

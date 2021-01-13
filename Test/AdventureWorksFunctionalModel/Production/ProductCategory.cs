@@ -32,5 +32,7 @@ namespace AW.Types {
         public override string ToString() => Name;
 
 		public override int GetHashCode() => HashCode(this, ProductCategoryID);
+
+        public virtual bool Equals(ProductCategory other) => ReferenceEquals(this, other);
     }
 }

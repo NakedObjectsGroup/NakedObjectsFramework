@@ -52,6 +52,8 @@ namespace AW.Types
 
         public override string ToString() => Description;
 
-		public override int GetHashCode() => HashCode(this, SpecialOfferID);    
+		public override int GetHashCode() => HashCode(this, SpecialOfferID);
+
+        public virtual bool Equals(SpecialOffer other) => ReferenceEquals(this, other);
     }
 }

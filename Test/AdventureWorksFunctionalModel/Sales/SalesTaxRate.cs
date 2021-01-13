@@ -32,6 +32,8 @@ namespace AW.Types
 
         public override string ToString() => $"Tax Rate for: {StateProvince}";
 
-		public override int GetHashCode() => HashCode(this, SalesTaxRateID);  
+		public override int GetHashCode() => HashCode(this, SalesTaxRateID);
+
+        public virtual bool Equals(SalesTaxRate other) => ReferenceEquals(this, other);
     }
 }

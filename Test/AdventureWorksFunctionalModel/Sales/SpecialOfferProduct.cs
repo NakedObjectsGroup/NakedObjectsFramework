@@ -32,8 +32,10 @@ namespace AW.Types
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
-        public override string ToString() => "SpecialOfferProduct: {SpecialOfferID}-{ProductID}";
+        public override string ToString() => $"SpecialOfferProduct: {SpecialOfferID}-{ProductID}";
 
-		public override int GetHashCode() => HashCode(this, SpecialOfferID, ProductID);    }
+		public override int GetHashCode() => HashCode(this, SpecialOfferID, ProductID);
 
+        public virtual bool Equals(SpecialOfferProduct other) => ReferenceEquals(this, other);
+    }
 }

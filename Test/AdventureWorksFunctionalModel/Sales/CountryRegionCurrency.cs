@@ -21,5 +21,8 @@ namespace AW.Types {
 
         public override string ToString() => $"CountryRegionCurrency: {CountryRegion} {Currency}";
 
-		public override int GetHashCode() => HashCode(this, CountryRegionCode.GetHashCode(), CurrencyCode.GetHashCode());    }
+		public override int GetHashCode() => HashCode(this, CountryRegionCode.GetHashCode(), CurrencyCode.GetHashCode());
+
+        public virtual bool Equals(CountryRegionCurrency other) => ReferenceEquals(this, other);
+    }
 }

@@ -43,6 +43,8 @@ namespace AW.Types
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() => HashCode(this, StateProvinceID);    
+		public override int GetHashCode() => HashCode(this, StateProvinceID);
+
+        public virtual bool Equals(StateProvince other) => ReferenceEquals(this, other);
     }
 }

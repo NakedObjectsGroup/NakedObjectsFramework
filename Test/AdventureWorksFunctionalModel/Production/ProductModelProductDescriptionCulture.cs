@@ -33,5 +33,7 @@ namespace AW.Types {
         public override string ToString() => $"ProductModelProductDescriptionCulture: {ProductModelID}-{ProductDescriptionID}-{CultureID}";
 
 		public override int GetHashCode() => HashCode(this, ProductModelID, ProductDescriptionID, CultureID.GetHashCode());
+
+        public virtual bool Equals(ProductModelProductDescriptionCulture other) => ReferenceEquals(this, other);
     }
 }

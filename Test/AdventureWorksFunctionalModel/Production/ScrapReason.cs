@@ -27,5 +27,7 @@ namespace AW.Types
         public override string ToString() => Name;
 
 		public override int GetHashCode() => HashCode(this, ScrapReasonID);
+
+        public virtual bool Equals(ScrapReason other) => ReferenceEquals(this, other);
     }
 }

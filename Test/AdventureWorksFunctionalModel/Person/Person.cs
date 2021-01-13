@@ -78,6 +78,8 @@ namespace AW.Types {
 
         public override string ToString() => NameStyle ? $"{LastName} {FirstName}" : $"{FirstName} {LastName}";
 
-		public override int GetHashCode() => HashCode(this, BusinessEntityID);    
+		public override int GetHashCode() => HashCode(this, BusinessEntityID);
+
+        public virtual bool Equals(Person other) => ReferenceEquals(this, other);
     }
 }

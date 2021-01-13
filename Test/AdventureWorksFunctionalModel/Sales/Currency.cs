@@ -9,8 +9,10 @@ using System;
 using NakedFunctions;
 using static AW.Utilities;
 
-namespace AW.Types {
-        public record Currency {
+namespace AW.Types
+{
+    public record Currency
+    {
         [Hidden]
         public virtual string CurrencyCode { get; init; }
         [Hidden]
@@ -18,10 +20,12 @@ namespace AW.Types {
 
         [Hidden]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() => HashCode(this, CurrencyCode.GetHashCode());    }
+        public override int GetHashCode() => HashCode(this, CurrencyCode.GetHashCode());
 
+        public virtual bool Equals(Currency other) => ReferenceEquals(this, other);
+    }
 }

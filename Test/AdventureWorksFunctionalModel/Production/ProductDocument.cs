@@ -20,6 +20,8 @@ namespace AW.Types {
 		public virtual DateTime ModifiedDate { get; init; }
         public override string ToString() => $"ProductDocument: {ProductID}-{DocumentID}";
 
-		public override int GetHashCode() => HashCode(this, ProductID, DocumentID);    
+		public override int GetHashCode() => HashCode(this, ProductID, DocumentID);
+
+        public virtual bool Equals(ProductDocument other) => ReferenceEquals(this, other);
     }
 }

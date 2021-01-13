@@ -57,5 +57,7 @@ namespace AW.Types
         public override string ToString() => AccountNumber + Store is null ? $"{Person}" : $"{Store}";
 
 		public override int GetHashCode() => HashCode(this, CustomerID);
+
+        public virtual bool Equals(Customer other) => ReferenceEquals(this, other);
     }
 }

@@ -23,9 +23,12 @@ namespace AW.Types
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() => HashCode(this, CountryRegionCode.GetHashCode());    }
+        public override int GetHashCode() => HashCode(this, CountryRegionCode.GetHashCode());
+
+        public virtual bool Equals(CountryRegion other) => ReferenceEquals(this, other);
+    }
 }
