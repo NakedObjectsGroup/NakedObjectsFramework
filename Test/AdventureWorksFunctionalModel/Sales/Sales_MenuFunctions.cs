@@ -66,13 +66,6 @@ namespace AW.Functions {
 
         #endregion
 
-
-        public static IQueryable<SalesTaxRate> SalesTaxRates(
-            IQueryable<SalesTaxRate> strs)
-        {
-            return strs;
-        }
-
         public static SalesTaxRate RandomSalesTaxRate(IContext context) => Random<SalesTaxRate>(context);
 
         #region Sub-menu hierarchy for testing only
