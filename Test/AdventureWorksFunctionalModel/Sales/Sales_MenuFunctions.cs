@@ -76,7 +76,6 @@ namespace AW.Functions {
             menu.AddAction(nameof(FindSalesPersonByName));
             menu.AddAction(nameof(ListAccountsForSalesPerson));
             menu.AddAction(nameof(RandomSalesPerson));
-            menu.AddAction(nameof(SalesTaxRates));
             menu.AddAction(nameof(RandomSalesTaxRate));
             menu.CreateSubMenu("Sub Menu")
                 .AddAction(nameof(Action1))
