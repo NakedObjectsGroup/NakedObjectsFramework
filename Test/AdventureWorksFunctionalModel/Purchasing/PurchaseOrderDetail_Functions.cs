@@ -9,7 +9,7 @@ using NakedFunctions;
 using AW.Types;
 using static AW.Helpers;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
         
     public static class PurchaseOrderDetail_Functions
     {

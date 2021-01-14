@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static AW.Helpers;
 
-namespace AdventureWorksModel
+namespace AW.Functions
 {
     public static class Vendor_Functions
     {
