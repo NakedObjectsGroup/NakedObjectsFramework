@@ -2,7 +2,7 @@
 using NakedFunctions;
 using System.Linq;
 
-namespace AW.Functions
+namespace AW.Test
 {
     public static class Test_MenuFunctions
     {
