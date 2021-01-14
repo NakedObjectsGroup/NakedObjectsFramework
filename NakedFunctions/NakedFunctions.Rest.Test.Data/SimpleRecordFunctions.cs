@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace NakedFunctions.Rest.Test.Data {
     internal static class Helpers {
@@ -40,5 +41,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public static DateTime Default1EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today();
 
         public static DateTime Default2EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today().AddDays(90);
+
+        public static DateRecord DateWithDefault(this DateRecord sp, [DefaultValue(22)] DateTime dt, IContext context) => sp;
     }
 }

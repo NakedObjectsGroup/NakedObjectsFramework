@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -66,15 +67,16 @@ namespace NakedFunctions.Reflector.Test.Component {
 
     
     public static class ParameterDefaultClass {
-        public static SimpleClass ParameterWithBoolDefaultFunction(this SimpleClass target, [DefaultValue(true)] string parameter) => target;
-        public static SimpleClass ParameterWithByteDefaultFunction(this SimpleClass target, [DefaultValue((byte)66)] string parameter) => target;
-        public static SimpleClass ParameterWithCharDefaultFunction(this SimpleClass target, [DefaultValue('g')] string parameter) => target;
-        public static SimpleClass ParameterWithDoubleDefaultFunction(this SimpleClass target, [DefaultValue(56.23)] string parameter) => target;
-        public static SimpleClass ParameterWithFloatDefaultFunction(this SimpleClass target, [DefaultValue((float)22.82)] string parameter) => target;
-        public static SimpleClass ParameterWithIntDefaultFunction(this SimpleClass target, [DefaultValue(72)] string parameter) => target;
-        public static SimpleClass ParameterWithLongDefaultFunction(this SimpleClass target, [DefaultValue((long)91)] string parameter) => target;
-        public static SimpleClass ParameterWithShortDefaultFunction(this SimpleClass target, [DefaultValue((short)30)] string parameter) => target;
+        public static SimpleClass ParameterWithBoolDefaultFunction(this SimpleClass target, [DefaultValue(true)] bool parameter) => target;
+        public static SimpleClass ParameterWithByteDefaultFunction(this SimpleClass target, [DefaultValue((byte)66)] byte parameter) => target;
+        public static SimpleClass ParameterWithCharDefaultFunction(this SimpleClass target, [DefaultValue('g')] char parameter) => target;
+        public static SimpleClass ParameterWithDoubleDefaultFunction(this SimpleClass target, [DefaultValue(56.23)] double parameter) => target;
+        public static SimpleClass ParameterWithFloatDefaultFunction(this SimpleClass target, [DefaultValue((float)22.82)] float parameter) => target;
+        public static SimpleClass ParameterWithIntDefaultFunction(this SimpleClass target, [DefaultValue(72)] int parameter) => target;
+        public static SimpleClass ParameterWithLongDefaultFunction(this SimpleClass target, [DefaultValue((long)91)] long parameter) => target;
+        public static SimpleClass ParameterWithShortDefaultFunction(this SimpleClass target, [DefaultValue((short)30)] short parameter) => target;
         public static SimpleClass ParameterWithStringDefaultFunction(this SimpleClass target, [DefaultValue("a default")] string parameter) => target;
+        public static SimpleClass ParameterWithDateTimeDefaultFunction(this SimpleClass target, [DefaultValue(35)] DateTime parameter) => target;
     }
 
     public record SimpleClass {
@@ -371,10 +373,12 @@ namespace NakedFunctions.Reflector.Test.Component {
             Assert.IsNotNull(facet);
 
             var (defaultValue, type) = facet.GetDefault(null, null);
-            Assert.AreEqual(value, defaultValue);
+            if (value is DateTime dt)
+                Assert.AreEqual(dt.ToString(), defaultValue.ToString());
+            else
+                Assert.AreEqual(value, defaultValue);
             Assert.AreEqual("Explicit", type.ToString());
         }
-
 
         [TestMethod]
         public void ReflectDefaultValueParameter() {
@@ -394,15 +398,19 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
                 
+
+
                 AssertParm(spec.ContributedActions[0], true);
                 AssertParm(spec.ContributedActions[1], (byte)66);
                 AssertParm(spec.ContributedActions[2], 'g');
-                AssertParm(spec.ContributedActions[3], 56.23);
-                AssertParm(spec.ContributedActions[4], (float)22.82);
-                AssertParm(spec.ContributedActions[5], 72);
-                AssertParm(spec.ContributedActions[6], (long)91);
-                AssertParm(spec.ContributedActions[7], (short)30);
-                AssertParm(spec.ContributedActions[8], "a default");
+                AssertParm(spec.ContributedActions[3], DateTime.UtcNow.AddDays(35));
+                AssertParm(spec.ContributedActions[4], 56.23);
+                AssertParm(spec.ContributedActions[5], (float)22.82);
+                AssertParm(spec.ContributedActions[6], 72);
+                AssertParm(spec.ContributedActions[7], (long)91);
+                AssertParm(spec.ContributedActions[8], (short)30);
+                AssertParm(spec.ContributedActions[9], "a default");
+               
             }
         }
 
