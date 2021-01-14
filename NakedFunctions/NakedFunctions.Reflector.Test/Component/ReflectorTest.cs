@@ -40,6 +40,18 @@ namespace NakedFunctions.Reflector.Test.Component {
         #endregion
     }
 
+    [DescribedAs("Class Description")]
+    public record DescribedAsClass
+    {
+        [DescribedAs("Property Description")]
+        public string DescribedProperty { get; init; }
+    }
+
+    public static class DescribedAsFunctions {
+        [DescribedAs("Function Description")]
+        public static DescribedAsClass DescribedAsFunction(this DescribedAsClass dac, IContext context) => dac;
+    }
+
     [Bounded]
     public record BoundedClass { }
 
@@ -148,6 +160,9 @@ namespace NakedFunctions.Reflector.Test.Component {
             options.NoValidate = true;
         }
 
+        private static string FullName<T>() => $"{typeof(T).FullName}";
+
+
         [TestMethod]
         public void ReflectNoTypes() {
             static void Setup(NakedCoreOptions coreOptions) {
@@ -255,7 +270,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 catch (AggregateException ae) {
                     var re = ae.InnerExceptions.FirstOrDefault();
                     Assert.IsInstanceOfType(re, typeof(ReflectionException));
-                    Assert.AreEqual("Cannot reflect empty tuple on NakedFunctions.Reflector.Test.Component.UnsupportedTupleFunctions.TupleFunction", re.Message);
+                    Assert.AreEqual($"Cannot reflect empty tuple on NakedFunctions.Reflector.Test.Component.UnsupportedTupleFunctions.TupleFunction", re.Message);
                 }
             }
         }
@@ -319,7 +334,7 @@ namespace NakedFunctions.Reflector.Test.Component {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.BoundedClass");
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<BoundedClass>());
                 Assert.IsTrue(spec.IsBoundedSet());
             }
         }
@@ -340,7 +355,7 @@ namespace NakedFunctions.Reflector.Test.Component {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.IgnoredClass");
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<IgnoredClass>());
                 Assert.AreEqual(0, spec.Fields.Count);
             }
         }
@@ -372,7 +387,7 @@ namespace NakedFunctions.Reflector.Test.Component {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
                 
                 AssertParm(spec.ContributedActions[0], true);
                 AssertParm(spec.ContributedActions[1], (byte)66);
@@ -385,6 +400,43 @@ namespace NakedFunctions.Reflector.Test.Component {
                 AssertParm(spec.ContributedActions[8], "a default");
             }
         }
+
+        [TestMethod]
+        public void ReflectDescribedAs() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] {typeof(DescribedAsClass)};
+                        options.Functions = new[] {typeof(DescribedAsFunctions)};
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<DescribedAsClass>());
+
+                var facet = spec.GetFacet<IDescribedAsFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Class Description", facet.Value);
+
+                var propertySpec = spec.Fields.First();
+
+                facet = propertySpec.GetFacet<IDescribedAsFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Property Description", facet.Value);
+
+                var actionSpec = spec.ContributedActions.First();
+
+                facet = actionSpec.GetFacet<IDescribedAsFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Function Description", facet.Value);
+            }
+        }
+
 
         [TestMethod]
         public void ReflectLifeCycleFunctions() {
@@ -402,7 +454,7 @@ namespace NakedFunctions.Reflector.Test.Component {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
                 IFacet facet = spec.GetFacet<IPersistingCallbackFacet>();
                 Assert.IsNotNull(facet);
@@ -431,7 +483,7 @@ namespace NakedFunctions.Reflector.Test.Component {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleViewModel");
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleViewModel>());
 
                 IFacet facet = spec.GetFacet<IViewModelFacet>();
                 Assert.IsNotNull(facet);
@@ -457,7 +509,7 @@ namespace NakedFunctions.Reflector.Test.Component {
             {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
                 var actionSpecs = spec.ContributedActions;
 
