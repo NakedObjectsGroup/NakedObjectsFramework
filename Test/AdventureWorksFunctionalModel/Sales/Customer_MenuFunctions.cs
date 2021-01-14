@@ -27,9 +27,9 @@ namespace AW.Functions {
         //    return new CustomerDashboard(cust);
         //}
 
-        [MemberOrder(10)]//[DefaultValue("AW")]
+        [MemberOrder(10)]
         public static Customer FindCustomerByAccountNumber(
-             string accountNumber, IContext context) =>
+            [DefaultValue("AW")] string accountNumber, IContext context) =>
             context.Instances<Customer>().Where(x => x.AccountNumber == accountNumber).FirstOrDefault();
 
         //public static string ValidateFindCustomerByAccountNumber(string accountNumber)
