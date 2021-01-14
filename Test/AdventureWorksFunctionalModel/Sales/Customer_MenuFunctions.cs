@@ -44,7 +44,7 @@ namespace AW.Functions {
         }
 
         [PageSize(10)]
-        public static IQueryable<Customer> AutoComplete0FindCustomer([Range(3, 0)] string matching, IContext context) =>
+        public static IQueryable<Customer> AutoComplete0FindCustomer([ValueRange(3, 0)] string matching, IContext context) =>
             context.Instances<Customer>().Where(c => c.AccountNumber.Contains(matching));
 
         #region Stores Menu

@@ -26,7 +26,7 @@ namespace AW.Functions {
         public static (SalesOrderHeader, IContext) AddNewDetail(
                 this SalesOrderHeader soh,
                 Product product,
-                [DefaultValue((short) 1), Range(1, 999)] short quantity,
+                [DefaultValue((short) 1), ValueRange(1, 999)] short quantity,
                 IContext context
             ) {
             int stock = product.NumberInStock();
