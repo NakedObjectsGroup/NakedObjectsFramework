@@ -50,12 +50,9 @@ namespace AW.Functions
         }
         #endregion
 
-        #region Create New Special Offer
         [MemberOrder(4), CreateNew]
         public static (SpecialOffer, IContext) CreateNewSpecialOffer(string description, IContext context)
        => DisplayAndSave(new SpecialOffer { Description = description }, context);
-
-        #endregion
 
         #region Create Multiple Special Offers
         [MemberOrder(5), MultiLine(2)]

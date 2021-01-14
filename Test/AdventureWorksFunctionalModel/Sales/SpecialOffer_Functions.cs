@@ -16,7 +16,6 @@ namespace AW.Functions
 {
     public static class SpecialOffer_Functions
     {
-
         #region Edit
         [Edit]
         public static (SpecialOffer, IContext) EditDescription(this SpecialOffer sp, string description, IContext context)
@@ -40,9 +39,10 @@ namespace AW.Functions
         public static (SpecialOffer, IContext) EditDates(this SpecialOffer sp, DateTime startDate, DateTime endDate, IContext context)
         => DisplayAndSave(sp with { StartDate = startDate, EndDate = endDate }, context);
 
-        public static DateTime Default0EditDates(this SpecialOffer sp, IContext context) => context.GetService<IClock>().Today();
+        //TODO: Should be able to replace these functions with [DefaultValue] (0 and 90) on the params.
+        public static DateTime Default1EditDates(this SpecialOffer sp, IContext context) => context.GetService<IClock>().Today();
 
-        public static DateTime Default1EditDates(this SpecialOffer sp, IContext context) => context.GetService<IClock>().Today().AddDays(90);
+        public static DateTime Default2EditDates(this SpecialOffer sp, IContext context) => context.GetService<IClock>().Today().AddDays(90);
 
         [Edit]
         public static (SpecialOffer, IContext) EditQuantities(
