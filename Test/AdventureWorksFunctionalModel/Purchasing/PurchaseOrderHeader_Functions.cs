@@ -35,7 +35,7 @@ namespace AW.Functions {
         [PageSize(10)]
         public static IQueryable<Product> AutoComplete0AddNewDetails(
             PurchaseOrderHeader header,
-            [NakedFunctions.ValueRange(3,0)] string matching,
+            [Length(3)] string matching,
             IContext context)
         {
             return Product_MenuFunctions.FindProductByName(matching, context);

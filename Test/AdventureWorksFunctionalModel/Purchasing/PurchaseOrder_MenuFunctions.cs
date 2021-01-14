@@ -39,7 +39,7 @@ namespace AdventureWorksModel
   
 
         [PageSize(20)]
-        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrdersForVendor([ValueRange(2)] string name, IContext context) =>
+        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrdersForVendor([Length(2)] string name, IContext context) =>
           context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
         #endregion
 
