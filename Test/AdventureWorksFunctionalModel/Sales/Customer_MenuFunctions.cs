@@ -27,9 +27,9 @@ namespace AW.Functions {
         //    return new CustomerDashboard(cust);
         //}
 
-        [MemberOrder(10)]//[DefaultValue("AW")]
+        [MemberOrder(10)]
         public static Customer FindCustomerByAccountNumber(
-             string accountNumber, IContext context) =>
+            [DefaultValue("AW")] string accountNumber, IContext context) =>
             context.Instances<Customer>().Where(x => x.AccountNumber == accountNumber).FirstOrDefault();
 
         //public static string ValidateFindCustomerByAccountNumber(string accountNumber)
@@ -44,7 +44,7 @@ namespace AW.Functions {
         }
 
         [PageSize(10)]
-        public static IQueryable<Customer> AutoComplete0FindCustomer([ValueRange(3, 0)] string matching, IContext context) =>
+        public static IQueryable<Customer> AutoComplete0FindCustomer([Length(3)] string matching, IContext context) =>
             context.Instances<Customer>().Where(c => c.AccountNumber.Contains(matching));
 
         #region Stores Menu

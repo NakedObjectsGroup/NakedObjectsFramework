@@ -36,7 +36,7 @@ namespace AW.Types {
         [MemberOrder(60)]
         public virtual string PurchasingWebServiceURL { get; init; }
 
-        public virtual IQueryable<string> AutoCompletePurchasingWebServiceURL([ValueRange(2, 0)] string value) {
+        public virtual IQueryable<string> AutoCompletePurchasingWebServiceURL([Length(2)] string value) {
             var matchingNames = new List<string> { "http://www.store1.com", "http://www.store2.com", "http://www.store3.com" };
             return from p in matchingNames.AsQueryable() select p.Trim();
         }

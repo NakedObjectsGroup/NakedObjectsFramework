@@ -50,7 +50,13 @@ namespace AW.Functions
             return (e, context.WithPendingSave(edh, newAssignment));
         }
 
-        public static Department Default0ChangeDepartmentOrShift(this Employee e)
+        public static Department Default1ChangeDepartmentOrShift(this Employee e)
+        {
+            EmployeeDepartmentHistory current = CurrentAssignment(e);
+            return current != null ? current.Department : null;
+        }
+
+        public static Department Default2ChangeDepartmentOrShift(this Employee e)
         {
             EmployeeDepartmentHistory current = CurrentAssignment(e);
             return current != null ? current.Department : null;
