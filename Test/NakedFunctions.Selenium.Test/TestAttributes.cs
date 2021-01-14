@@ -134,10 +134,23 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("... from an existing Employee", action1.GetAttribute("title"));
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void DescribedAsParameter()
         {
+            //TODO
+        }
 
+        [TestMethod]
+        public void Mask()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Product--497");
+            WaitForTextEquals(".title", "Pinch Bolt");
+            var prop4 = WaitForCssNo("nof-view-property",4);
+            Assert.AreEqual("List Price:", prop4.FindElement(By.CssSelector(".name")).Text);
+            Assert.AreEqual("£0.00", prop4.FindElement(By.CssSelector(".value")).Text);
+            var prop17 = WaitForCssNo("nof-view-property", 17);
+            Assert.AreEqual("Sell Start Date:", prop17.FindElement(By.CssSelector(".name")).Text);
+            Assert.AreEqual("1 Jun 2002", prop17.FindElement(By.CssSelector(".value")).Text);
         }
     }
 }
