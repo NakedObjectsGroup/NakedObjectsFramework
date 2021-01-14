@@ -72,6 +72,17 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
     }
 
+    public static class PotentFunctions
+    {
+        public static SimpleClass QueryFunction(this SimpleClass target, IContext context) => target;
+
+        public static (SimpleClass, IContext) PostFunction(this SimpleClass target, IContext context) => (target, context);
+
+        [Edit]
+        public static (SimpleClass, IContext) PutFunction(this SimpleClass target, IContext context) => (target, context);
+    }
+
+
     public static class SimpleInjectedFunctions {
         public static SimpleClass SimpleInjectedFunction(IQueryable<SimpleClass> injected) => injected.First();
     }
@@ -404,6 +415,42 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
             }
         }
+
+        [TestMethod]
+        public void ReflectPotentFunctions()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(SimpleClass) };
+                        options.Functions = new[] { typeof(PotentFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
+
+                var actionSpecs = spec.ContributedActions;
+
+                Assert.IsNull(actionSpecs[0].GetFacet<IQueryOnlyFacet>());
+                Assert.IsNull(actionSpecs[1].GetFacet<IQueryOnlyFacet>());
+                Assert.IsNotNull(actionSpecs[2].GetFacet<IQueryOnlyFacet>());
+                Assert.IsNull(actionSpecs[0].GetFacet<IIdempotentFacet>());
+                Assert.IsNotNull(actionSpecs[1].GetFacet<IIdempotentFacet>());
+                Assert.IsNull(actionSpecs[2].GetFacet<IIdempotentFacet>());
+
+            }
+        }
+
+
+
 
         public record Test(int a) { }
     }

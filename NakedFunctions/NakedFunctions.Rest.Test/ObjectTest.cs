@@ -212,6 +212,24 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual("2-1-1", resultObj["title"].ToString());
         }
 
+        //[Test]
+        //public void TestInvokeAutoComplete()
+        //{
+        //    var api = Api().AsGet();
+        //    var map = new ArgumentMap {Map = new Dictionary<string, IValue>(), ReservedArguments = new ReservedArguments {SearchTerm = "Fred"}};
+
+        //    var result = api.GetParameterPrompt($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.AssociateWithDateRecord), "dateRecord", map);
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
+
+        //    var resultObj = parsedResult["result"];
+
+        //    Assert.AreEqual("2-1-1", resultObj["title"].ToString());
+        //}
+
+
+
 
         [Test]
         public void TestInvokeEditDates()
