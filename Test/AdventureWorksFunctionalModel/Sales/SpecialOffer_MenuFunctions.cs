@@ -21,8 +21,8 @@ namespace AW.Functions
         public static IQueryable<SpecialOffer> CurrentSpecialOffers(IContext context)
         {
             var today = context.Today();
-           return AllSpecialOffers(context).Where(x => x.StartDate <= today &&
-                         x.EndDate >= new DateTime(2004, 6, 1));
+            return AllSpecialOffers(context).Where(x => x.StartDate <= today &&
+                          x.EndDate >= new DateTime(2004, 6, 1));
         }
 
         //Returns most recently-modified first
@@ -34,42 +34,52 @@ namespace AW.Functions
         public static IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty(IContext context) =>
             CurrentSpecialOffers(context).Where(s => s.MinQty <= 1);
 
-
+        //TODO: Annotations & complementary methods
         [MemberOrder(4), CreateNew]
-        public static (SpecialOffer, IContext) CreateNewSpecialOffer(string description, IContext context)
-       => DisplayAndSave(new SpecialOffer { Description = description, ModifiedDate = context.Now(), rowguid = context.NewGuid() }, context);
+        public static (SpecialOffer, IContext) CreateNewSpecialOffer(
+            string description,
+            /*[Mask("P")]*/ decimal discountPct,
+            [DefaultValue("Promotion")] string type,
+            [DefaultValue("Customer")] string category,
+            [DefaultValue(10)] int minQty,
+            /*[DefaultValue(1)]*/ DateTime startDate,
+             DateTime endDate,
+            IContext context)
+       => DisplayAndSave(new SpecialOffer
+       {
+           Description = description,
+           DiscountPct = discountPct,
+           Type = type,
+           Category = category,
+           MinQty = minQty,
+           StartDate = startDate,
+           EndDate = endDate,
+           ModifiedDate = context.Now(),
+           rowguid = context.NewGuid()
+       }, context);
 
-        #region Create Multiple Special Offers
+        //public static string ValidateCreateNewSpecialOffer(
+        //    [DefaultValue(1)] int minQty, [Optionally] int? maxQty) =>
+        //        SpecialOffer_Functions.ValidateQuantities(minQty, maxQty);
+
+        //public static string[] Choices3CreateNewSpecialOffer() =>
+        //    SpecialOffer_Functions.Categories;
+
+        //public static DateTime Default6CreateNewSpecialOffer(this SpecialOffer sp, IContext context) =>
+        //    SpecialOffer_Functions.DefaultEndDate(context);
+
+
         [MemberOrder(5), MultiLine(2)]
         public static (SpecialOffer, IContext) CreateMultipleSpecialOffers(
             string description,
             [Mask("P")] decimal discountPct,
-            string type,
-            string category,
-            int minQty,
-            DateTime startDate,
+            [DefaultValue("Promotion")] string type,
+            [DefaultValue("Customer")] string category,
+            [DefaultValue(10)] int minQty,
+            [DefaultValue(1)] DateTime startDate,
+            [DefaultValue(90)] DateTime endDate,
             IContext context) =>
-                DisplayAndSave(new SpecialOffer() with
-                {
-                    Description = description,
-                    DiscountPct = discountPct,
-                    Type = type,
-                    Category = category,
-                    MinQty = minQty,
-                    //Deliberately created non-current so they don't show up
-                    //in Current Special Offers (but can be viewed via All Special Offers)
-                    StartDate = startDate,
-                    EndDate = new DateTime(2003, 12, 31),
-                    ModifiedDate = context.Now(),
-                    rowguid = context.NewGuid()
-                }, context);
-
-
-        public static string[] Choices3CreateMultipleSpecialOffers() => new[] { "Reseller", "Customer" };
-
-        public static string Validate5CreateMultipleSpecialOffers(DateTime startDate) 
-            => startDate > new DateTime(2003, 12, 1) ? "Start Date must be before 1/12/2003" : null;
-        #endregion
+                CreateNewSpecialOffer(description, discountPct, type, category, minQty, startDate, endDate, context);
 
         internal static SpecialOffer NoDiscount(IContext context) => context.Instances<SpecialOffer>().Where(x => x.SpecialOfferID == 1).First();
     }
