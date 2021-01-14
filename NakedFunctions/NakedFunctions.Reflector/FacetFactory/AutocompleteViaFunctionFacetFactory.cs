@@ -56,7 +56,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                         var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
                         var pageSize = pageSizeAttr?.Value ?? 0; // default to 0 ie system default
-                        var minLength = minLengthAttr?.Length ?? 0;
+                        var minLength = minLengthAttr?.Value ?? 0;
 
                         // add facets directly to parameters, not to actions
                         FacetUtils.AddFacet(new AutoCompleteViaFunctionFacet(method, pageSize, minLength, parameters[i]));

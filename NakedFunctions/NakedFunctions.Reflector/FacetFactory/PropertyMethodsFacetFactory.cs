@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -189,7 +188,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
                     var pageSize = pageSizeAttr is not null ? pageSizeAttr.Value : 0; // default to 0 ie system default
-                    var minLength = minLengthAttr is not null ? minLengthAttr.Length : 0;
+                    var minLength = minLengthAttr is not null ? minLengthAttr.Value : 0;
 
                     propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
                     MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
