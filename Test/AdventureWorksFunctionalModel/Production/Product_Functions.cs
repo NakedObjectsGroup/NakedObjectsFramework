@@ -19,7 +19,7 @@ namespace AW.Functions {
 
         [DescribedAs("Determines the best discount offered by current special offers for a specified order quantity")]
         public static SpecialOffer BestSpecialOffer(
-            Product p, short quantity, IContext context)
+            this Product p, short quantity, IContext context)
            => BestSpecialOfferProduct(p, quantity, context).SpecialOffer ?? SpecialOffer_MenuFunctions.NoDiscount(context);
 
         public static string ValidateBestSpecialOffer(this Product p, short quantity)
