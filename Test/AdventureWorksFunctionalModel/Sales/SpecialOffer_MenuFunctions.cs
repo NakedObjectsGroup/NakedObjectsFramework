@@ -42,7 +42,7 @@ namespace AW.Functions
             [DefaultValue("Promotion")] string type,
             [DefaultValue("Customer")] string category,
             [DefaultValue(10)] int minQty,
-            [DefaultValue(1)] DateTime startDate,
+            /*[DefaultValue(1)]*/ DateTime startDate,
              DateTime endDate,
             IContext context)
        => DisplayAndSave(new SpecialOffer
