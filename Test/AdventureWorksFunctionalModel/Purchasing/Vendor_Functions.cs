@@ -31,7 +31,7 @@ namespace AW.Functions
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrders(this Vendor vendor, IContext context) =>
             PurchaseOrder_MenuFunctions.OpenPurchaseOrdersForVendor(vendor, context);
 
-        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrders([Length(2)] string name, IContext context) =>
+        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrders([MinLength(2)] string name, IContext context) =>
             PurchaseOrder_MenuFunctions.AutoComplete0OpenPurchaseOrdersForVendor(name, context);
 
 
@@ -44,7 +44,7 @@ namespace AW.Functions
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0ListPurchaseOrders(
-            this Vendor vendor, [Length(2)] string name, IContext context) =>
+            this Vendor vendor, [MinLength(2)] string name, IContext context) =>
             PurchaseOrder_MenuFunctions.AutoComplete0ListPurchaseOrders(name, context);
 
         //TODO: Should match action, ignoring any injected properties, on either action or this

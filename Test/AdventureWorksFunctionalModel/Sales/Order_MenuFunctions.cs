@@ -55,7 +55,7 @@ namespace AW.Functions {
      
         [PageSize(10)]
         public static Customer AutoComplete0OrdersForCustomer(
-            [Length(10)] string accountNumber,
+            [MinLength(10)] string accountNumber,
             IContext context) {
             return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, context);
         }
@@ -87,7 +87,7 @@ namespace AW.Functions {
 
         [PageSize(10)]
         public static Customer AutoComplete0FindOrders(
-            [Length(10)] string accountNumber,
+            [MinLength(10)] string accountNumber,
             IContext context)
         {
             return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, context);

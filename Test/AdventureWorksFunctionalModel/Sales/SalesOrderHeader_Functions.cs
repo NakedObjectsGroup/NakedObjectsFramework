@@ -52,7 +52,7 @@ namespace AW.Functions {
         }
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoComplete0AddNewDetail(this SalesOrderHeader soh, [Length(2)] string name, IContext context) => 
+        public static IQueryable<Product> AutoComplete0AddNewDetail(this SalesOrderHeader soh, [MinLength(2)] string name, IContext context) => 
             Product_MenuFunctions.FindProductByName( name, context);
 
         #endregion
@@ -76,7 +76,7 @@ namespace AW.Functions {
         //            return DisableAddNewDetail();
         //        }
         //        [PageSize(20)]
-        //        public IQueryable<Product> AutoComplete0AddNewDetails([Length(2)] string name, IQueryable<Product> products)
+        //        public IQueryable<Product> AutoComplete0AddNewDetails([MinLength(2)] string name, IQueryable<Product> products)
         //        {
         //            return AutoComplete0AddNewDetail(name, products);
         //        }

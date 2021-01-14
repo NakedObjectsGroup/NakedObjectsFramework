@@ -31,7 +31,7 @@ namespace AdventureWorksFunctionalModel.Person
             return (et2, et2);
         }
 
-        public static IQueryable<string> AutoCompleteSubject(this EmailTemplate et, [Length(2)] string value)
+        public static IQueryable<string> AutoCompleteSubject(this EmailTemplate et, [MinLength(2)] string value)
         {
             var matchingNames = new List<string> { "Subject1", "Subject2", "Subject3" };
             return from p in matchingNames.AsQueryable() select p.Trim();

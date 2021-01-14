@@ -74,7 +74,7 @@ namespace AW.Functions
 
         [PageSize(20)]
         public static IQueryable<Employee> AutoCompleteManager(
-             this Employee e, [Length(2)] string name, IContext context) =>
+             this Employee e, [MinLength(2)] string name, IContext context) =>
              Employee_MenuFunctions.FindEmployeeByName(null, name, context);
 
 

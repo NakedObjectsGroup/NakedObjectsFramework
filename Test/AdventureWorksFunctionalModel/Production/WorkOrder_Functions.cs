@@ -42,7 +42,7 @@ namespace AW.Functions
         }
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoCompleteProduct([Length(2)] string name, IContext context)
+        public static IQueryable<Product> AutoCompleteProduct([MinLength(2)] string name, IContext context)
         {
             return Product_MenuFunctions.FindProductByName(name, context);
         }

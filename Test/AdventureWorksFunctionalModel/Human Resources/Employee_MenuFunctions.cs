@@ -44,7 +44,7 @@ namespace AW.Functions {
 
         [PageSize(20)]
         public static IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact(
-            [Length(2)] string name, IContext context) =>  context.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
+            [MinLength(2)] string name, IContext context) =>  context.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
 
         [RenderEagerly]
         [TableView(true, "GroupName")]

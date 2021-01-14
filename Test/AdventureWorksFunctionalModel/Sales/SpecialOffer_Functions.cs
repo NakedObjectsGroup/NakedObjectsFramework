@@ -75,7 +75,7 @@ namespace AW.Functions
                 : (null, context.WithInformUser($"{offer} is already associated with { product}"));
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoComplete1AssociateWithProduct([Length(2)] string name, IContext context)
+        public static IQueryable<Product> AutoComplete1AssociateWithProduct([MinLength(2)] string name, IContext context)
             => context.Instances<Product>().Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
 
         #endregion

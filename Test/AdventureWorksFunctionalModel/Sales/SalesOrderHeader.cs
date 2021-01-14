@@ -175,7 +175,7 @@ namespace AW.Types {
 
         [PageSize(20)]
         public IQueryable<SalesPerson> AutoCompleteSalesPerson(
-            [Length(2)] string name, IContext context) =>
+            [MinLength(2)] string name, IContext context) =>
             Sales_MenuFunctions.FindSalesPersonByName(null, name, context);
 
         [Hidden]

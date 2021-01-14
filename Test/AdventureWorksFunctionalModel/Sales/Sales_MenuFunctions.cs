@@ -57,7 +57,7 @@ namespace AW.Functions {
 
         [PageSize(20)]
         public static IQueryable<SalesPerson> AutoComplete0ListAccountsForSalesPerson(
-            [Length(2)] string name,
+            [MinLength(2)] string name,
             IQueryable<SalesPerson> sps
             ) {
             return sps.Where(sp => sp.EmployeeDetails.PersonDetails.LastName.ToUpper().StartsWith(name.ToUpper()));

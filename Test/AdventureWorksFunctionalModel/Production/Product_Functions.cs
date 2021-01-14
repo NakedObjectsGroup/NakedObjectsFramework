@@ -50,7 +50,7 @@ namespace AW.Functions {
 
         [PageSize(20)]
         public static IQueryable<SpecialOffer> AutoComplete1AssociateWithSpecialOffer(
-            [Length(2)] string name, IContext context) => 
+            [MinLength(2)] string name, IContext context) => 
             context.Instances<SpecialOffer>().Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
         #endregion
 

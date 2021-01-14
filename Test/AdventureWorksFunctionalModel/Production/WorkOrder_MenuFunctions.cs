@@ -22,7 +22,7 @@ namespace AW.Functions {
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0CreateNewWorkOrder(
-            [Length(2)] string name, IContext context) =>
+            [MinLength(2)] string name, IContext context) =>
             Product_MenuFunctions.FindProductByName(name, context);
 
         public static(WorkOrder, IContext) CreateNewWorkOrder2(
@@ -33,7 +33,7 @@ namespace AW.Functions {
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0CreateNewWorkOrder2(
-            [Length(2)] string name, IContext context) =>
+            [MinLength(2)] string name, IContext context) =>
             Product_MenuFunctions.FindProductByName(name, context);
     
         public static IQueryable<Location> AllLocations(IContext context) => context.Instances<Location>();
@@ -48,7 +48,7 @@ namespace AW.Functions {
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0ListWorkOrders(
-            [Length(2)] string name, IContext context) =>
+            [MinLength(2)] string name, IContext context) =>
             Product_MenuFunctions.FindProductByName(name, context);
 
         #endregion

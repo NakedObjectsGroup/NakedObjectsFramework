@@ -39,7 +39,7 @@ namespace AW.Functions
   
 
         [PageSize(20)]
-        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrdersForVendor([Length(2)] string name, IContext context) =>
+        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrdersForVendor([MinLength(2)] string name, IContext context) =>
           context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
         #endregion
 
@@ -59,7 +59,7 @@ namespace AW.Functions
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0ListPurchaseOrders(
-            [Length(2)] string name, IContext context) =>
+            [MinLength(2)] string name, IContext context) =>
              context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
 
         public static string ValidateListPurchaseOrders(
@@ -85,7 +85,7 @@ namespace AW.Functions
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0OpenPurchaseOrdersForProduct(
-            [Length(2)] string name,IContext context)
+            [MinLength(2)] string name,IContext context)
         {
             return context.Instances<Product>().Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
         }
@@ -110,7 +110,7 @@ namespace AW.Functions
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0CreateNewPurchaseOrder(
-            [Length(2)] string name, IContext context) =>
+            [MinLength(2)] string name, IContext context) =>
             context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
 
         [MemberOrder(7)]
