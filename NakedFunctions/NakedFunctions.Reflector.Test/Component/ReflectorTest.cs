@@ -47,8 +47,17 @@ namespace NakedFunctions.Reflector.Test.Component {
         internal virtual string IgnoredProperty { get; set; }
     }
 
+    
     public static class ParameterDefaultClass {
-        public static SimpleClass ParameterWithDefaultFunction(this SimpleClass target, [DefaultValue("a default")] string parameter) => target;
+        public static SimpleClass ParameterWithBoolDefaultFunction(this SimpleClass target, [DefaultValue(true)] string parameter) => target;
+        public static SimpleClass ParameterWithByteDefaultFunction(this SimpleClass target, [DefaultValue((byte)66)] string parameter) => target;
+        public static SimpleClass ParameterWithCharDefaultFunction(this SimpleClass target, [DefaultValue('g')] string parameter) => target;
+        public static SimpleClass ParameterWithDoubleDefaultFunction(this SimpleClass target, [DefaultValue(56.23)] string parameter) => target;
+        public static SimpleClass ParameterWithFloatDefaultFunction(this SimpleClass target, [DefaultValue((float)22.82)] string parameter) => target;
+        public static SimpleClass ParameterWithIntDefaultFunction(this SimpleClass target, [DefaultValue(72)] string parameter) => target;
+        public static SimpleClass ParameterWithLongDefaultFunction(this SimpleClass target, [DefaultValue((long)91)] string parameter) => target;
+        public static SimpleClass ParameterWithShortDefaultFunction(this SimpleClass target, [DefaultValue((short)30)] string parameter) => target;
+        public static SimpleClass ParameterWithStringDefaultFunction(this SimpleClass target, [DefaultValue("a default")] string parameter) => target;
     }
 
     public record SimpleClass {
@@ -336,6 +345,17 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
+        private static void AssertParm(IActionSpecImmutable actionSpec, object value) {
+            var parmSpec = actionSpec.Parameters[1];
+            var facet = parmSpec.GetFacet<IActionDefaultsFacet>();
+            Assert.IsNotNull(facet);
+
+            var (defaultValue, type) = facet.GetDefault(null, null);
+            Assert.AreEqual(value, defaultValue);
+            Assert.AreEqual("Explicit", type.ToString());
+        }
+
+
         [TestMethod]
         public void ReflectDefaultValueParameter() {
             static void Setup(NakedCoreOptions coreOptions) {
@@ -353,14 +373,16 @@ namespace NakedFunctions.Reflector.Test.Component {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
-                var actionSpec = spec.ContributedActions.Single();
-                var parmSpec = actionSpec.Parameters[1];
-                var facet = parmSpec.GetFacet<IActionDefaultsFacet>();
-                Assert.IsNotNull(facet);
-
-                var (defaultValue, type) = facet.GetDefault(null, null);
-                Assert.AreEqual("a default", defaultValue);
-                Assert.AreEqual("Explicit", type.ToString());
+                
+                AssertParm(spec.ContributedActions[0], true);
+                AssertParm(spec.ContributedActions[1], (byte)66);
+                AssertParm(spec.ContributedActions[2], 'g');
+                AssertParm(spec.ContributedActions[3], 56.23);
+                AssertParm(spec.ContributedActions[4], (float)22.82);
+                AssertParm(spec.ContributedActions[5], 72);
+                AssertParm(spec.ContributedActions[6], (long)91);
+                AssertParm(spec.ContributedActions[7], (short)30);
+                AssertParm(spec.ContributedActions[8], "a default");
             }
         }
 
