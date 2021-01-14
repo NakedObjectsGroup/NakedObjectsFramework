@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -404,8 +403,6 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
                 
-
-
                 AssertParm(spec.ContributedActions[0], true);
                 AssertParm(spec.ContributedActions[1], (byte)66);
                 AssertParm(spec.ContributedActions[2], 'g');

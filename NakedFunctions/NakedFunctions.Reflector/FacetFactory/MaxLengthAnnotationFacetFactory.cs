@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
@@ -16,7 +15,6 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
@@ -29,13 +27,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
             logger = loggerFactory.CreateLogger<MaxLengthAnnotationFacetFactory>();
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttribute<MaxLengthAttribute>();
+            var attribute =  type.GetCustomAttribute<LengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
         private void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) member.GetCustomAttribute<MaxLengthAttribute>();
+            var attribute =  member.GetCustomAttribute<LengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -51,22 +49,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) parameter.GetCustomAttribute<MaxLengthAttribute>();
+            var attribute =  parameter.GetCustomAttribute<LengthAttribute>();
 
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-        private IMaxLengthFacet Create(Attribute attribute, ISpecification holder) =>
-            attribute switch {
-                null => null,
-                StringLengthAttribute lengthAttribute => Create(lengthAttribute, holder),
-                MaxLengthAttribute maxLengthAttribute => Create(maxLengthAttribute, holder),
-                _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
-            };
+        private static IMaxLengthFacet Create(LengthAttribute attribute, ISpecification holder) => attribute is null ? null : new MaxLengthFacetAnnotation((int)attribute.MaxInt, holder);
 
-        private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) => attribute is null ? null : new MaxLengthFacetAnnotation(attribute.Length, holder);
-
-        private static IMaxLengthFacet Create(StringLengthAttribute attribute, ISpecification holder) => attribute is null ? null : new MaxLengthFacetAnnotation(attribute.MaximumLength, holder);
     }
 }
