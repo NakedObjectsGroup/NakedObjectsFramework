@@ -7,14 +7,19 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using NakedFramework;
 
 namespace NakedFunctions.Rest.Test.Data {
+
     public record SimpleRecord {
         [Key]
         public int Id { get; init; }
 
         public string Name { get; init; }
         public override string ToString() => Name;
+
+        public virtual bool Equals(SimpleRecord other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 
     public record DateRecord {
