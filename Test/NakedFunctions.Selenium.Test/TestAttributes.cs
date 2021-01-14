@@ -57,6 +57,13 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         }
         #endregion 
 
+        //[TestMethod]
+        public void AllAttributes()
+        {
+            Bounded();
+            DefaultValueInt();
+        }
+
         [TestMethod]
         public void Bounded()
         {
@@ -67,6 +74,26 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             Assert.AreEqual("*", options[0]);
             Assert.AreEqual("Engineering", options[1]);
             Assert.AreEqual("Tool Design", options[2]);
+        }
+
+        [TestMethod] 
+        public void DefaultValueInt()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
+            var minQty = WaitForCss("input#minqty1");
+            Assert.AreEqual("1", minQty.GetAttribute("value"));
+        }
+
+        //[TestMethod]
+        public void DefaultValueString()
+        {
+            //Not yet working. Use Find (Customer) By Account Number
+        }
+
+        //[TestMethod]
+        public void DefaultValueDate()
+        {
+            //Not yet working. Use Special Offer - Edit Dates.
         }
     }
 }
