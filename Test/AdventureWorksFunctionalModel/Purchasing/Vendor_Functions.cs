@@ -31,7 +31,7 @@ namespace AdventureWorksModel
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrders(this Vendor vendor, IContext context) =>
             PurchaseOrder_MenuFunctions.OpenPurchaseOrdersForVendor(vendor, context);
 
-        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrders([Range(2)] string name, IContext context) =>
+        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrders([ValueRange(2)] string name, IContext context) =>
             PurchaseOrder_MenuFunctions.AutoComplete0OpenPurchaseOrdersForVendor(name, context);
 
 
