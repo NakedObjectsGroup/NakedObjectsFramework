@@ -115,6 +115,8 @@ namespace NakedFunctions.Rest.Test
 
         }
 
+
+
         //[Test]
         //public void TestGetEnumObject()
         //{
@@ -156,6 +158,27 @@ namespace NakedFunctions.Rest.Test
             resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
             Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
         }
+
+        [Test]
+        public void TestInvokeCreateSimpleRecord()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("Ellen") } } };
+
+            var result = api.PostInvoke($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.CreateSimpleRecord), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
+
+            //resultObj.AssertObject("Ellen", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "4");
+            Assert.AreEqual("Ellen", resultObj["members"]["Name"]["value"].ToString());
+        }
+
+
 
         private static string FormatForTest(DateTime dt) => $"{dt.Year}-{dt.Month:00}-{dt.Day}";
 

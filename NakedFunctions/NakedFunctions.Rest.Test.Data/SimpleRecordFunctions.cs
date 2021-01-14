@@ -18,6 +18,9 @@ namespace NakedFunctions.Rest.Test.Data {
         public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, string name, IContext context)
             => Helpers.DisplayAndSave(sp with {Name = name}, context);
 
+        public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context)
+            => Helpers.DisplayAndSave(new SimpleRecord() { Name = name }, context);
+
         public static (ReferenceRecord, IContext) AssociateWithDateRecord(this SimpleRecord simpleRecord, DateRecord dateRecord, IContext context) =>
             context.Instances<ReferenceRecord>().Any(x => x.SimpleRecord.Id == simpleRecord.Id && x.DateRecord.Id == dateRecord.Id)
                 ? (null, context.WithInformUser($"{simpleRecord} is already associated with {dateRecord}"))
