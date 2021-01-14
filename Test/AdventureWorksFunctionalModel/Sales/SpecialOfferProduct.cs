@@ -34,7 +34,7 @@ namespace AW.Types
 
         public override string ToString() => $"SpecialOfferProduct: {SpecialOfferID}-{ProductID}";
 
-		public override int GetHashCode() => HashCode(this, SpecialOfferID, ProductID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(SpecialOfferProduct other) => ReferenceEquals(this, other);
     }

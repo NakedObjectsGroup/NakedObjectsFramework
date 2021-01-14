@@ -28,7 +28,7 @@ namespace AW.Types {
 
         public override string ToString() => $"PersonCreditCard: {PersonID}-{CreditCardID}";
 
-		public override int GetHashCode() => HashCode(this, PersonID, CreditCardID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(PersonCreditCard other) => ReferenceEquals(this, other);
     }

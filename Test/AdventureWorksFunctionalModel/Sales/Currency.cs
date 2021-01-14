@@ -24,7 +24,7 @@ namespace AW.Types
 
         public override string ToString() => Name;
 
-        public override int GetHashCode() => HashCode(this, CurrencyCode.GetHashCode());
+        public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(Currency other) => ReferenceEquals(this, other);
     }

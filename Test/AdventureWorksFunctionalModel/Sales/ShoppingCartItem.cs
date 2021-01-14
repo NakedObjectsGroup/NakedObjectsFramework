@@ -43,7 +43,7 @@ namespace AW.Types
 
         public override string ToString() => $"{Quantity}  x {Product}";
 
-        public override int GetHashCode() => HashCode(this, ShoppingCartItemID);
+        public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(ShoppingCartItem other) => ReferenceEquals(this, other);
     }

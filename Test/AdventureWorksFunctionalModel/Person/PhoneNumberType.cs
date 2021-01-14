@@ -18,7 +18,7 @@ namespace AW.Types {
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() => HashCode(this, PhoneNumberTypeID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(PhoneNumberType other) => ReferenceEquals(this, other);
     }

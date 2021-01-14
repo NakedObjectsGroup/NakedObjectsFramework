@@ -44,7 +44,7 @@ namespace AW.Types
 
         public override string ToString() => $"{Department} {StartDate.ToString("d")}";
 
-		public override int GetHashCode() => HashCode(this, EmployeeID, DepartmentID, ShiftID, StartDate.GetHashCode());
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(EmployeeDepartmentHistory other) => ReferenceEquals(this, other);
     }

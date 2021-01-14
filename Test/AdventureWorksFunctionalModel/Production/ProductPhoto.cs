@@ -51,7 +51,7 @@ namespace AW.Types {
 
         public override string ToString() => $"Product Photo: {ProductPhotoID}";
 
-		public override int GetHashCode() => HashCode(this, ProductPhotoID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(ProductPhoto other) => ReferenceEquals(this, other);
     }

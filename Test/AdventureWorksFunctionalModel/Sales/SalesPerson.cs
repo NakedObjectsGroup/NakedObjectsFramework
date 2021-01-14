@@ -70,7 +70,7 @@ namespace AW.Types
   
         public override string ToString() => $"{EmployeeDetails}";
 
-		public override int GetHashCode() => HashCode(this, BusinessEntityID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(SalesPerson other) => ReferenceEquals(this, other);
     }

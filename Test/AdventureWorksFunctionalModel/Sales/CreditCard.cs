@@ -54,7 +54,7 @@ namespace AW.Types {
 
         public override string ToString() => CreditCard_Functions.ObfuscatedNumber(this);
 
-		public override int GetHashCode() => HashCode(this, CreditCardID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(CreditCard other) => ReferenceEquals(this, other);
     }

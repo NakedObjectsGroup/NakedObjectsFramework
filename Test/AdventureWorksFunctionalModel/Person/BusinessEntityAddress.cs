@@ -35,7 +35,7 @@ namespace AW.Types
 
         public override string ToString() => $"{AddressType}: {Address}";
 
-		public override int GetHashCode() => HashCode(this, BusinessEntityID, AddressTypeID, AddressID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(BusinessEntityAddress other) => ReferenceEquals(this, other);
     }

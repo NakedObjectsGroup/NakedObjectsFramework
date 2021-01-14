@@ -25,7 +25,7 @@ namespace AW.Types {
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() => HashCode(this, SalesReasonID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(SalesReason other) => ReferenceEquals(this, other);
     }

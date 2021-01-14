@@ -34,7 +34,7 @@ namespace AW.Types {
 
         public override string ToString() => $"{Person}";
 
-		public override int GetHashCode() => HashCode(this, BusinessEntityID, PersonID, ContactTypeID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(BusinessEntityContact other) => ReferenceEquals(this, other);
     }

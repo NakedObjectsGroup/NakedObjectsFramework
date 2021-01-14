@@ -39,7 +39,7 @@ namespace AW.Types
 
         public override string ToString() => $"BillOfMaterial: {BillOfMaterialID}";
 
-		public override int GetHashCode() => HashCode(this, BillOfMaterialID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(BillOfMaterial other) => ReferenceEquals(this, other);
     }

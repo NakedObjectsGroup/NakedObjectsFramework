@@ -31,7 +31,7 @@ namespace AW.Types
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() => HashCode(this, LocationID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(Location other) => ReferenceEquals(this, other);
     }

@@ -114,7 +114,7 @@ namespace AW.Types {
 
         public override string ToString() => $"PO from {Vendor}, {OrderDate}";
 
-		public override int GetHashCode() => HashCode(this, PurchaseOrderID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(PurchaseOrderHeader other) => ReferenceEquals(this, other);
     }

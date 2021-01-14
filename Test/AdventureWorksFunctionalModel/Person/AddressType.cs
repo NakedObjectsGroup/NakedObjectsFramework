@@ -30,7 +30,7 @@ namespace AW.Types
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() => HashCode(this, AddressTypeID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(AddressType other) => ReferenceEquals(this, other);
     }

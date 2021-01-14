@@ -41,7 +41,7 @@ namespace AW.Types {
 
         public override string ToString()  => "*****".Substring(0, Rating);
 
-		public override int GetHashCode() => HashCode(this, ProductReviewID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(ProductReview other) => ReferenceEquals(this, other);
     }

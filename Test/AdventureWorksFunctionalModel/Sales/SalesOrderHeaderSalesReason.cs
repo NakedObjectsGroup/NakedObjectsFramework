@@ -33,7 +33,7 @@ namespace AW.Types {
 
         public override string ToString() => $"SalesOrderHeaderSalesReason: {SalesOrderID}-{SalesReasonID}";
 
-		public override int GetHashCode() => HashCode(this, SalesOrderID, SalesReasonID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(SalesOrderHeaderSalesReason other) => ReferenceEquals(this, other);
     }

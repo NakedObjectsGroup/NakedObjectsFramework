@@ -35,7 +35,7 @@ namespace AW.Types {
 
         public override string ToString() => $"{AverageRate}";
 
-		public override int GetHashCode() => HashCode(this, CurrencyRateID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(CurrencyRate other) => ReferenceEquals(this, other);
     }

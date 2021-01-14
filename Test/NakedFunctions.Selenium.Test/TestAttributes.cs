@@ -123,5 +123,21 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual(4, br.FindElements(By.CssSelector("nof-view-property")).Count);
             //i.e. no 'Shift ID' field showing
         }
+
+            [TestMethod]
+        public void DescribedAsFunction()
+        {
+            GeminiUrl("home?m1=Sales_MenuFunctions");
+            WaitForTextEquals(".title", "Home");
+            var action1 = WaitForCssNo("nof-action-list nof-action input",0);
+            Assert.AreEqual("Create New Sales Person", action1.GetAttribute("value"));
+            Assert.AreEqual("... from an existing Employee", action1.GetAttribute("title"));
+        }
+
+        [TestMethod]
+        public void DescribedAsParameter()
+        {
+
+        }
     }
 }

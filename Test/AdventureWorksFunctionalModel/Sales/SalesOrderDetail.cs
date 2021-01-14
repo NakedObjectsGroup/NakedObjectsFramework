@@ -117,7 +117,7 @@ namespace AW.Types {
 
         public override string ToString() => $"{OrderQty} x {Product}";
 
-		public override int GetHashCode() => HashCode(this, SalesOrderID, SalesOrderDetailID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(SalesOrderDetail other) => ReferenceEquals(this, other);
     }

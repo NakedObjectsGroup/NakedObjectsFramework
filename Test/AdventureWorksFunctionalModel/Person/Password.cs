@@ -24,7 +24,7 @@ namespace AW.Types {
 
         public override string ToString() => "Password";
 
-		public override int GetHashCode() => HashCode(this, BusinessEntityID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(Password other) => ReferenceEquals(this, other);
     }
