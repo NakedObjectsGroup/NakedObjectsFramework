@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Reflection;
@@ -26,10 +27,10 @@ namespace NakedObjects.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<DefaultValueAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, parameter.ParameterType == typeof(DateTime), holder));
             return metamodel;
         }
 
-        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute is null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
+        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, bool isDateTime, ISpecification holder) => attribute is null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, isDateTime, holder);
     }
 }

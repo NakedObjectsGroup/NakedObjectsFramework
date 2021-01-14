@@ -180,7 +180,7 @@ namespace NakedFunctions.Rest.Test
 
 
 
-        private static string FormatForTest(DateTime dt) => $"{dt.Year}-{dt.Month:00}-{dt.Day}";
+        private static string FormatForTest(DateTime dt) => $"{dt.Year}-{dt.Month:00}-{dt.Day:00}";
 
 
         [Test]
@@ -202,6 +202,23 @@ namespace NakedFunctions.Rest.Test
             var ped = parameters["endDate"];
 
             Assert.AreEqual(FormatForTest(DateTime.Today.AddDays(90)), ped["default"].ToString());
+        }
+
+        [Test]
+        public void TestGetObjectActionWithAnnotatedDefaults()
+        {
+            var api = Api();
+            var result = api.GetAction($"NakedFunctions.Rest.Test.Data.{nameof(DateRecord)}", "1", nameof(DateRecordFunctions.DateWithDefault));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(DateRecordFunctions.DateWithDefault), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+            var psd = parameters["dt"];
+
+            Assert.AreEqual(FormatForTest(DateTime.UtcNow.AddDays(22)), psd["default"].ToString());
         }
 
         [Test]

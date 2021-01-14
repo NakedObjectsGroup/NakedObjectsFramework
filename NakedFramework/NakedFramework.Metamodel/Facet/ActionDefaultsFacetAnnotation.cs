@@ -7,21 +7,25 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ActionDefaultsFacetAnnotation : ActionDefaultsFacetAbstract {
+        private readonly bool isDateTime;
         private readonly object value;
 
-        public ActionDefaultsFacetAnnotation(object value, ISpecification holder)
-            : base(holder) =>
+        public ActionDefaultsFacetAnnotation(object value, bool isDateTime, ISpecification holder)
+            : base(holder) {
             this.value = value;
+            this.isDateTime = isDateTime;
+        }
 
         public override bool CanAlwaysReplace => false;
 
-        public override (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => (value, TypeOfDefaultValue.Explicit);
+        private object GetDefaultValue() => isDateTime && value is int i ? DateTime.UtcNow.AddDays(i) : value;
+
+        public override (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => (GetDefaultValue(), TypeOfDefaultValue.Explicit);
 
         protected override string ToStringValues() => $"Value={value}";
     }
