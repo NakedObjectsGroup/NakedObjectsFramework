@@ -79,6 +79,12 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static SimpleClass ParameterWithDateTimeDefaultFunction(this SimpleClass target, [DefaultValue(35)] DateTime parameter) => target;
     }
 
+    public static class RangeClass
+    {
+        public static SimpleClass ParameterWithRangeFunction(this SimpleClass target, [ValueRange(1, 56)] int parameter) => target;
+    }
+
+
     public record SimpleClass {
         public virtual SimpleClass SimpleProperty { get; set; }
     }
@@ -411,6 +417,36 @@ namespace NakedFunctions.Reflector.Test.Component {
                 AssertParm(spec.ContributedActions[8], (short)30);
                 AssertParm(spec.ContributedActions[9], "a default");
                
+            }
+        }
+
+        [TestMethod]
+        public void ReflectRangeParameter()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(SimpleClass) };
+                        options.Functions = new[] { typeof(RangeClass) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
+
+                var parmSpec = spec.ContributedActions.First().Parameters[1];
+                var facet = parmSpec.GetFacet<IRangeFacet>();
+                Assert.IsNotNull(facet);
+
+                Assert.AreEqual(1, facet.Min);
+                Assert.AreEqual(56, facet.Max);
             }
         }
 
