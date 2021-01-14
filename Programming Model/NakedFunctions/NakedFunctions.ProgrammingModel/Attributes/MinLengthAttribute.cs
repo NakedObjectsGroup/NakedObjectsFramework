@@ -14,13 +14,9 @@ namespace NakedFunctions {
     ///     characters the user must type before the method will be invoked.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
-    public class LengthAttribute : Attribute {
-        public LengthAttribute(int minimum, int maximum = int.MaxValue) {
-            MinInt = minimum;
-            MaxInt = maximum;
-        }
+    public class MinLengthAttribute : Attribute {
+        public MinLengthAttribute(int value) => Value = value;
 
-        public double MinInt { get; }
-        public double MaxInt { get; }
+        public int Value { get; }
     }
 }

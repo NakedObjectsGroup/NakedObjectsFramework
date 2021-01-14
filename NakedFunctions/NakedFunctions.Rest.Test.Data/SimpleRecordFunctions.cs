@@ -28,7 +28,7 @@ namespace NakedFunctions.Rest.Test.Data {
                 : Helpers.DisplayAndSave(new ReferenceRecord() with { SimpleRecord = simpleRecord, DateRecord = dateRecord }, context);
 
         [PageSize(20)]
-        public static IQueryable<DateRecord> AutoComplete1AssociateWithDateRecord(this SimpleRecord simpleRecord, [Length(2)] string name, IContext context)
+        public static IQueryable<DateRecord> AutoComplete1AssociateWithDateRecord(this SimpleRecord simpleRecord, [MinLength(2)] string name, IContext context)
             => context.Instances<DateRecord>().Where(simpleRecord => simpleRecord.Name.ToUpper().StartsWith(name.ToUpper()));
 
     }
