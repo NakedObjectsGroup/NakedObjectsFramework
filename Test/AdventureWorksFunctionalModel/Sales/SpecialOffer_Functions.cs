@@ -23,23 +23,22 @@ namespace AW.Functions
 
         [Edit]
         public static (SpecialOffer, IContext) EditDiscount(this SpecialOffer sp, decimal discountPct, IContext context)
-        => DisplayAndSave(sp with { DiscountPct = discountPct }, context);
+        => DisplayAndSave(sp with { DiscountPct = discountPct, ModifiedDate = context.Now() }, context);
 
         [Edit]
         public static (SpecialOffer, IContext) EditType(this SpecialOffer sp, string type, IContext context)
-        => DisplayAndSave(sp with { Type = type }, context);
+        => DisplayAndSave(sp with { Type = type, ModifiedDate = context.Now() }, context);
 
         [Edit]
         public static (SpecialOffer, IContext) EditCategory(this SpecialOffer sp, string category, IContext context)
-        => DisplayAndSave(sp with { Category = category }, context);
+        => DisplayAndSave(sp with { Category = category, ModifiedDate = context.Now() }, context);
 
         public static string[] Choices0Category(this SpecialOffer sp) => new[] { "Reseller", "Customer" };
 
         [Edit]
         public static (SpecialOffer, IContext) EditDates(this SpecialOffer sp, DateTime startDate, DateTime endDate, IContext context)
-        => DisplayAndSave(sp with { StartDate = startDate, EndDate = endDate }, context);
+        => DisplayAndSave(sp with { StartDate = startDate, EndDate = endDate, ModifiedDate = context.Now() }, context);
 
-        //TODO: Should be able to replace these functions with [DefaultValue] (0 and 90) on the params.
         public static DateTime Default1EditDates(this SpecialOffer sp, IContext context) => context.GetService<IClock>().Today();
 
         public static DateTime Default2EditDates(this SpecialOffer sp, IContext context) => context.GetService<IClock>().Today().AddDays(90);
@@ -47,7 +46,7 @@ namespace AW.Functions
         [Edit]
         public static (SpecialOffer, IContext) EditQuantities(
             this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) => 
-            DisplayAndSave(sp with { MinQty = minQty, MaxQty = maxQty }, context);
+            DisplayAndSave(sp with { MinQty = minQty, MaxQty = maxQty, ModifiedDate = context.Now() }, context);
 
         public static string ValidateEditQuantities(
             this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty) => 
@@ -59,7 +58,8 @@ namespace AW.Functions
         public static (SpecialOfferProduct, IContext) AssociateWithProduct(
             this SpecialOffer offer, Product product, IContext context) =>
             context.Instances<SpecialOfferProduct>().Where(x => x.SpecialOfferID == offer.SpecialOfferID && x.ProductID == product.ProductID).Count() == 0 ?
-                DisplayAndSave(new SpecialOfferProduct() with { SpecialOffer = offer, Product = product }, context)
+                DisplayAndSave(new SpecialOfferProduct() with 
+                    { SpecialOffer = offer, Product = product, ModifiedDate = context.Now(), rowguid = context.NewGuid() }, context)
                 : (null, context.WithInformUser($"{offer} is already associated with { product}"));
 
         [PageSize(20)]
@@ -87,7 +87,7 @@ namespace AW.Functions
             this IQueryable<SpecialOffer> offers, IContext context)
         {
             var yesterday = context.Today().AddDays(-1);
-            var list = offers.Where(x => x.EndDate > yesterday).ToList().Select(x => x with { EndDate = yesterday }).ToList();
+            var list = offers.Where(x => x.EndDate > yesterday).ToList().Select(x => x with { EndDate = yesterday, ModifiedDate = context.Now() }).ToList();
             return DisplayAndSave(list, context);
         }
         #endregion
