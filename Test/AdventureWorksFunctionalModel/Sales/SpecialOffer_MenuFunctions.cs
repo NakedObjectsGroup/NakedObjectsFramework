@@ -58,15 +58,15 @@ namespace AW.Functions
            rowguid = context.NewGuid()
        }, context);
 
-        public static string ValidateCreateNewSpecialOffer(
-            [DefaultValue(1)] int minQty, [Optionally] int? maxQty) =>
-                SpecialOffer_Functions.ValidateQuantities(minQty, maxQty);
+        //public static string ValidateCreateNewSpecialOffer(
+        //    [DefaultValue(1)] int minQty, [Optionally] int? maxQty) =>
+        //        SpecialOffer_Functions.ValidateQuantities(minQty, maxQty);
 
-        public static string[] Choices3CreateNewSpecialOffer() =>
-            SpecialOffer_Functions.Categories;
+        //public static string[] Choices3CreateNewSpecialOffer() =>
+        //    SpecialOffer_Functions.Categories;
 
-        public static DateTime Default6CreateNewSpecialOffer(this SpecialOffer sp, IContext context) =>
-            SpecialOffer_Functions.DefaultEndDate(context);
+        //public static DateTime Default6CreateNewSpecialOffer(this SpecialOffer sp, IContext context) =>
+        //    SpecialOffer_Functions.DefaultEndDate(context);
 
 
         [MemberOrder(5), MultiLine(2)]
