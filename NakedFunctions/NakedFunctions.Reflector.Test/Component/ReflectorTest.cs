@@ -52,6 +52,11 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static DescribedAsClass DescribedAsFunction(this DescribedAsClass dac, IContext context) => dac;
     }
 
+    public record HiddenClass {
+        [Hidden]
+        public string HiddenProperty { get; init; }
+    }
+
     [Bounded]
     public record BoundedClass { }
 
@@ -436,6 +441,34 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual("Function Description", facet.Value);
             }
         }
+
+        [TestMethod]
+        public void ReflectHidden()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(HiddenClass) };
+                        options.Functions = new Type[] { };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
+
+                var facet = spec.Fields.First().GetFacet<IHiddenFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(WhenTo.Always, facet.Value);
+            }
+        }
+
 
 
         [TestMethod]
