@@ -10,7 +10,8 @@ using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 using System.Linq;
 
-namespace NakedFunctions.Selenium.Test.FunctionTests {
+namespace NakedFunctions.Selenium.Test.FunctionTests
+{
 
     [TestClass]
     public class TestAttributes : GeminiTest
@@ -76,7 +77,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             Assert.AreEqual("Tool Design", options[2]);
         }
 
-        [TestMethod] 
+        [TestMethod]
         public void DefaultValueInt()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
@@ -94,6 +95,33 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         public void DefaultValueDate()
         {
             //Not yet working. Use Special Offer - Edit Dates.
+        }
+
+        [TestMethod]
+        public void ValueRangeInt()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--75126&as1=open&d1=AddNewDetail");
+            var ok = WaitForCss("input.ok");
+            var qty = "input#quantity1";
+            var val = WaitForCssNo("nof-edit-parameter .validation", 1);
+            Assert.AreEqual("", val.Text);
+            ClearFieldThenType(qty, "1000");
+            Assert.AreEqual("Value is outside the range 1 to 999", val.Text);
+            ClearFieldThenType(qty, "10");
+            Assert.AreEqual("", val.Text);
+        }
+
+        [TestMethod]
+        public void Hidden()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Shift--1");
+            WaitForTextEquals(".title", "Day");
+            Assert.AreEqual("Name:", WaitForCssNo("nof-view-property .name", 0).Text);
+            Assert.AreEqual("Start Time:", WaitForCssNo("nof-view-property .name", 1).Text);
+            Assert.AreEqual("End Time:", WaitForCssNo("nof-view-property .name", 2).Text);
+            Assert.AreEqual("Modified Date:", WaitForCssNo("nof-view-property .name", 3).Text);
+            Assert.AreEqual(4, br.FindElements(By.CssSelector("nof-view-property")).Count);
+            //i.e. no 'Shift ID' field showing
         }
     }
 }
