@@ -28,7 +28,7 @@ namespace AW.Types
  
         public override string ToString() => Description;
 
-		public override int GetHashCode() => HashCode(this, ProductDescriptionID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(ProductDescription other) => ReferenceEquals(this, other);
     }

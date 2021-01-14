@@ -59,7 +59,7 @@ namespace AW.Types {
 
         public override string ToString()  => $"{SalesPerson} {SalesTerritory}";
 
-		public override int GetHashCode() => HashCode(this, BusinessEntityID, SalesTerritoryID, StartDate.GetHashCode());
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(SalesTerritoryHistory other) => ReferenceEquals(this, other);
     }

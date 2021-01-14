@@ -26,7 +26,7 @@ namespace AW.Types
 
         public override string ToString() => EmailAddress1;
 
-		public override int GetHashCode() => HashCode(this, BusinessEntityID, EmailAddressID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(EmailAddress other) => ReferenceEquals(this, other);
     }

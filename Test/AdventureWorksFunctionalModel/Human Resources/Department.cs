@@ -29,7 +29,7 @@ namespace AW.Types
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() => HashCode(this, DepartmentID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(Department other) => ReferenceEquals(this, other);
     }

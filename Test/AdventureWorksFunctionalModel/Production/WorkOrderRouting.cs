@@ -69,7 +69,7 @@ namespace AW.Types {
 
         public override string ToString() => $"{Location}";
 
-		public override int GetHashCode() => HashCode(this, WorkOrderID, ProductID, OperationSequence);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(WorkOrderRouting other) => ReferenceEquals(this, other);
     }

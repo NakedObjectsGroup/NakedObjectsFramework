@@ -60,7 +60,7 @@ namespace AW.Types {
 
         public override string ToString() => $"ProductVendor: {ProductID}-{VendorID}";
 
-		public override int GetHashCode() => HashCode(this, ProductID, VendorID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(ProductVendor other) => ReferenceEquals(this, other);
     }

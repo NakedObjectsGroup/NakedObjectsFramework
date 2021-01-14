@@ -26,7 +26,7 @@ namespace AW.Types {
 
         public override string ToString() => $"ProductModelIllustration: {ProductModelID}-{IllustrationID}";
 
-		public override int GetHashCode() => HashCode(this, ProductModelID, IllustrationID);
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(ProductModelIllustration other) => ReferenceEquals(this, other);
     }

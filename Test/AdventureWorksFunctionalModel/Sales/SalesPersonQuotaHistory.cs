@@ -49,7 +49,7 @@ namespace AW.Types {
 
         public override string ToString() => $"{QuotaDate.ToString("d")} {SalesQuota.ToString("C")}";
 
-		public override int GetHashCode() => HashCode(this, BusinessEntityID, QuotaDate.GetHashCode());
+		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(SalesPersonQuotaHistory other) => ReferenceEquals(this, other);
     }
