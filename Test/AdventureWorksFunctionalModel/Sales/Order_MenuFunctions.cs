@@ -31,11 +31,9 @@ namespace AW.Functions {
 
         [ MemberOrder(5)]
         [TableView(true, "OrderDate", "DueDate")]
-        public static IQueryable<SalesOrderHeader> OrdersInProcess(
-             IQueryable<SalesOrderHeader> headers) {
-            return headers.Where(x => x.StatusByte == 1);
-        }
-
+        public static IQueryable<SalesOrderHeader> OrdersInProcess(IContext context) =>
+            context.Instances<SalesOrderHeader>().Where(x => x.StatusByte == 1);
+       
         [MemberOrder(10)]
         public static SalesOrderHeader FindOrder([DefaultValue("SO")] string orderNumber, IContext context) =>
          context.Instances<SalesOrderHeader>().Where(x => x.SalesOrderNumber == orderNumber).FirstOrDefault();

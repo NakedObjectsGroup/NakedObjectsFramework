@@ -26,7 +26,7 @@ namespace AW.Functions {
         public static (SalesOrderHeader, IContext) AddNewDetail(
                 this SalesOrderHeader soh,
                 Product product,
-                [DefaultValue((short) 1), ValueRange(1, 999)] short quantity,
+                [DefaultValue(1), ValueRange(1, 999)] short quantity,
                 IContext context
             ) {
             int stock = product.NumberInStock();
@@ -40,6 +40,15 @@ namespace AW.Functions {
             //TODO:
             //sod.Recalculate();
             return (soh, context.WithPendingSave(sod).WithWarnUser(stock < quantity ? $"Current inventory of {product} is {stock}" : ""));
+        }
+
+        public static string DisableAddNewDetail(this SalesOrderHeader soh)
+        {
+            if (!soh.IsInProcess())
+            {
+                return "Can only add to 'In Process' order";
+            }
+            return null;
         }
 
         [PageSize(20)]
@@ -288,32 +297,32 @@ namespace AW.Functions {
 
         internal static bool IsInProcess(this SalesOrderHeader soh)
         {
-            return soh.Status.Equals((byte)OrderStatus.InProcess);
+            return soh.Status == OrderStatus.InProcess;
         }
 
         internal static bool IsApproved(this SalesOrderHeader soh)
         {
-            return soh.Status.Equals((byte)OrderStatus.Approved);
+            return soh.Status == OrderStatus.Approved;
         }
 
         internal static bool IsBackOrdered(this SalesOrderHeader soh)
         {
-            return soh.Status.Equals((byte)OrderStatus.BackOrdered);
+            return soh.Status == OrderStatus.BackOrdered;
         }
 
         internal static bool IsRejected(this SalesOrderHeader soh)
         {
-            return soh.Status.Equals((byte)OrderStatus.Rejected);
+            return soh.Status == OrderStatus.Rejected;
         }
 
         internal static bool IsShipped(this SalesOrderHeader soh)
         {
-            return soh.Status.Equals((byte)OrderStatus.Shipped);
+            return soh.Status == OrderStatus.Shipped;
         }
 
         internal static bool IsCancelled(this SalesOrderHeader soh)
         {
-            return soh.Status.Equals((byte)OrderStatus.Cancelled);
+            return soh.Status == OrderStatus.Cancelled;
         }
 
 
@@ -359,14 +368,7 @@ namespace AW.Functions {
             return null;
         }
 
-        public static string DisableAddNewDetail(this SalesOrderHeader soh)
-        {
-            if (!soh.IsInProcess())
-            {
-                return "Can only add to 'In Process' order";
-            }
-            return null;
-        }
+
 
         #region Comments - all TODO
         public static bool HideComment(this SalesOrderHeader soh)
