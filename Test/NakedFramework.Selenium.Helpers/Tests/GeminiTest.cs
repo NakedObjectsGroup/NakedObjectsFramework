@@ -762,6 +762,9 @@ namespace NakedFramework.Selenium.Helpers.Tests {
             GeminiUrl("home");
             WaitForTextEquals(".title", "Home");
         }
+
+        protected IWebElement WaitForTitle(string title) => WaitForTextEquals(".title", title);
+
     }
 
     public static class ExtensionMethods {

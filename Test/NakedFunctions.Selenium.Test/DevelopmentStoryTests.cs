@@ -78,7 +78,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         {
             //Tests that an action (side effect free) can be associated with an object
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open");
-            WaitForTextEquals(".title", "Mountain Tire Sale");
+            WaitForTitle( "Mountain Tire Sale");
             var action = GetObjectAction("List Associated Products");
             RightClick(action);
             WaitForView(Pane.Right, PaneType.List);
@@ -108,7 +108,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             //Corresponds to Story #202
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--6&as1=open&d1=EditDescription");
             string original = "Volume Discount over 60";
-            var title =WaitForTextEquals(".title", original);
+            var title =WaitForTitle( original);
             string newDesc = "Volume Discount 60+";
             TypeIntoFieldWithoutClearing("#description1", newDesc);
             Click(OKButton());
