@@ -9,8 +9,8 @@ using System;
 
 namespace NakedFunctions.Services {
     public class Clock : IClock {
-        public DateTime Now() => DateTime.Now;
+        public DateTime Now() => DateTime.UtcNow;
 
-        public DateTime Today() => DateTime.Today;
+        public DateTime Today() => DateTime.UtcNow.Date;
     }
 }
