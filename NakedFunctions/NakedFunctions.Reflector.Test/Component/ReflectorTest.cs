@@ -181,6 +181,12 @@ namespace NakedFunctions.Reflector.Test.Component {
         public string HiddenProperty { get; init; }
     }
 
+    public record VersionedClass {
+        [Versioned]
+        public string VersionedProperty { get; init; }
+    }
+
+
     [Bounded]
     public record BoundedClass { }
 
@@ -1128,6 +1134,31 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
+        [TestMethod]
+        public void ReflectVersioned()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(VersionedClass) };
+                        options.Functions = new Type[] { };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<VersionedClass>());
+
+                var facet = spec.Fields.First().GetFacet<IConcurrencyCheckFacet>();
+                Assert.IsNotNull(facet);
+            }
+        }
 
 
         [TestMethod]
