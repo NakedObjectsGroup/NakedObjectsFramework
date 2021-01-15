@@ -82,8 +82,5 @@ namespace AW.Functions
                 CreateNewSpecialOffer(description, discountPct, type, category, minQty, startDate, endDate, context);
 
         internal static SpecialOffer NoDiscount(IContext context) => context.Instances<SpecialOffer>().Where(x => x.SpecialOfferID == 1).First();
-
-        public static IQueryable<SpecialOfferProduct> AllSpecialOfferProducts(IContext context) => context.Instances<SpecialOfferProduct>();
-    
     }
 }

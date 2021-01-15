@@ -15,20 +15,16 @@ namespace AW.Functions {
     public static class Product_Functions {
 
         #region BestSpecialOffer
-
-
         [DescribedAs("Determines the best discount offered by current special offers for a specified order quantity")]
         public static SpecialOffer BestSpecialOffer(
-            this Product p, short quantity, IContext context)
-           => BestSpecialOfferProduct(p, quantity, context).SpecialOffer ?? SpecialOffer_MenuFunctions.NoDiscount(context);
+            this Product p,[ValueRange(1,999)] int quantity, IContext context)
+           => BestSpecialOfferProduct(p, (short) quantity, context).SpecialOffer ?? SpecialOffer_MenuFunctions.NoDiscount(context);
 
-        public static string ValidateBestSpecialOffer(this Product p, short quantity)
-            => quantity <= 0 ? "Quantity must be > 0" : null;
 
         public static string DisableBestSpecialOffer(this Product p,  IContext context)
          => p.IsDiscontinued(context) ? "Product is discontinued" : null;
 
-        public static SpecialOfferProduct BestSpecialOfferProduct(
+        internal static SpecialOfferProduct BestSpecialOfferProduct(
             this Product p, short quantity, IContext context) => 
             context.Instances<SpecialOfferProduct>().Where(obj => obj.Product.ProductID == p.ProductID &&
                               obj.SpecialOffer.StartDate <= DateTime.Now &&
@@ -41,7 +37,6 @@ namespace AW.Functions {
             p.DiscontinuedDate != null ? p.DiscontinuedDate.Value < context.Now() : false;
         
         #endregion
-
 
         #region Associate with Special Offer
         public static (SpecialOfferProduct, IContext) AssociateWithSpecialOffer(

@@ -103,7 +103,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("SalesTerritoryHistory--632557728000000000--275--2", "Michael Blythe Northeast");
             AccessInstanceWithTitle("ShoppingCartItem--2", "3 x Full-Finger Gloves, M");
             AccessInstanceWithTitle("SpecialOffer--1", "No Discount");
-            AccessInstanceWithTitle("SpecialOfferProduct--1--342", "SpecialOfferProduct: 1-342");
+            AccessInstanceWithTitle("SpecialOfferProduct--1--680", "SpecialOfferProduct: 1-680");
             AccessInstanceWithTitle("Store--292", "Next-Door Bike Store");
         }
 
