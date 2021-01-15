@@ -67,6 +67,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Hidden();
             DescribedAsFunction();
             Mask();
+            Named();
+            Optionally();
+            PageSize();
         }
 
        //[TestMethod]
@@ -159,5 +162,32 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Sell Start Date:", prop17.FindElement(By.CssSelector(".name")).Text);
             Assert.AreEqual("1 Jun 2002", prop17.FindElement(By.CssSelector(".value")).Text);
         }
-    }
+
+        //[TestMethod]
+        public void Named()
+        {
+            Home();
+            var employee_menuFunctions = WaitForCssNo("nof-menu-bar nof-action", 0);
+            Assert.AreEqual("Employees", employee_menuFunctions.GetAttribute("value"));
+
+        }
+
+        //[TestMethod]
+        public void Optionally()
+        {
+            GeminiUrl("home?m1=Employee_MenuFunctions&d1=FindEmployeeByName");
+            var lastName = WaitForCss("input#lastname1");
+            Assert.AreEqual("*", lastName.GetAttribute("placeholder"));
+            Assert.AreEqual("", lastName.GetAttribute("value"));
+            var firstName = WaitForCss("input#firstname1");
+            Assert.IsNull(firstName.GetAttribute("placeholder"));
+            Assert.AreEqual("", firstName.GetAttribute("value"));
+            Assert.AreEqual("Missing mandatory fields: Last Name; ",OKButton().GetAttribute("title"));
+        }
+
+        [TestMethod]
+        public void PageSize()
+        {
+
+        }
 }

@@ -36,30 +36,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         }
         #endregion
 
-        #region Helpers
-        protected virtual void OpenMainMenu(string menuName)
-        {
-            ClickHomeButton();
-            WaitForView(Pane.Single, PaneType.Home, "Home");
-            string menuSelector = $"nof-menu-bar nof-action input[title=\"{menuName}\"";
-            wait.Until(dr => dr.FindElement(By.CssSelector(menuSelector)));
-            IWebElement menu = br.FindElement(By.CssSelector($"nof-menu-bar nof-action input[title={menuName}"));
-            Click(menu);
-        }
-        protected void OpenMainMenuAction(string menuName, string actionName)
-        {
-            OpenMainMenu(menuName);
-            string actionSelector = $"nof-action-list nof-action input[value=\"{actionName}\"]";
-            Click(WaitForCss(actionSelector));
-        }
-
-        protected void Home()
-        {
-            GeminiUrl("home");
-            WaitForTextEquals(".title", "Home");
-        }
-        #endregion 
-
         [TestMethod]
         public void AllWorkingStories()
         {
