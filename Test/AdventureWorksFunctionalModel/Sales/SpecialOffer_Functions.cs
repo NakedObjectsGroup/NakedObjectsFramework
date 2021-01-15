@@ -40,18 +40,20 @@ namespace AW.Functions
         [Edit]
         public static (SpecialOffer, IContext) EditDates(
             this SpecialOffer sp, 
-            [DefaultValue(0)] DateTime startDate,
+            DateTime startDate,
             DateTime endDate, 
             IContext context)
         => DisplayAndSave(sp with 
         { StartDate = startDate, EndDate = endDate, ModifiedDate = context.Now() }
         , context);
 
-        public static DateTime Default2EditDates(this SpecialOffer sp, IContext context) =>
-            DefaultEndDate(context);
+        public static DateTime Default1EditDates(this SpecialOffer sp, IContext context) =>
+            sp.StartDate;
 
-        internal static DateTime DefaultEndDate(IContext context) =>
-                context.GetService<IClock>().Today().AddMonths(1);
+        public static DateTime Default2EditDates(this SpecialOffer sp, IContext context) =>
+            context.GetService<IClock>().Today().AddMonths(1);
+
+                
         [Edit]
         public static (SpecialOffer, IContext) EditQuantities(
             this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) => 
