@@ -76,6 +76,18 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static RenderEagerlyClass RenderEagerlyFunction(this RenderEagerlyClass dac, IContext context) => dac;
     }
 
+    public record TableViewClass {
+        [TableView(true)]
+        public IList<TableViewClass> TableViewProperty { get; init; }
+    }
+
+    public static class TableViewFunctions {
+        [TableView(true)]
+        public static IQueryable<TableViewClass> TableViewFunction(this TableViewClass dac, IContext context) => new[] { dac}.AsQueryable();
+        [TableView(true)]
+        public static (IQueryable<TableViewClass>, IContext) TableViewFunction1(this TableViewClass dac, IContext context) => (new[] { dac }.AsQueryable(), context);
+    }
+
     [Mask("Class Mask")]
     public record MaskClass {
         [Mask("Property Mask")]
@@ -660,6 +672,46 @@ namespace NakedFunctions.Reflector.Test.Component {
                 facet = actionSpec.GetFacet<IEagerlyFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(Do.Rendering, facet.What);
+            }
+        }
+
+        [TestMethod]
+        public void ReflectTableView()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(TableViewClass) };
+                        options.Functions = new[] { typeof(TableViewFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<TableViewClass>());
+
+                var propertySpec = spec.Fields.First();
+
+                var facet = propertySpec.GetFacet<ITableViewFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(true, facet.Title);
+
+                var actionSpec1 = spec.ContributedActions.First();
+                var actionSpec2 = spec.ContributedActions[1];
+
+                facet = actionSpec1.GetFacet<ITableViewFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(true, facet.Title);
+
+                facet = actionSpec2.GetFacet<ITableViewFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(true, facet.Title);
             }
         }
 
