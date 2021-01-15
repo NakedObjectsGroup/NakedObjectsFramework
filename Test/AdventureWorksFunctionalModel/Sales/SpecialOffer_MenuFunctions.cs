@@ -37,7 +37,7 @@ namespace AW.Functions
         //TODO: Annotations & complementary methods
         [MemberOrder(4), CreateNew]
         public static (SpecialOffer, IContext) CreateNewSpecialOffer(
-            string description,
+            [MaxLength(50)] string description,
             [Mask("P")] decimal discountPct,
             [DefaultValue("Promotion")] string type,
             [DefaultValue("Customer")] string category,
