@@ -25,7 +25,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<RegExAnnotationFacetFactory> logger;
 
         public RegExAnnotationFacetFactory(IFacetFactoryOrder<RegExAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) =>
+            : base(order.Order, loggerFactory, FeatureType.EverythingButCollections) =>
             logger = loggerFactory.CreateLogger<RegExAnnotationFacetFactory>();
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
