@@ -94,7 +94,7 @@ namespace NakedObjects.Facade.Impl {
 
         public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) => WrappedSpec.GetDefaultType(((ObjectFacade) objectFacade)?.WrappedNakedObject) == TypeOfDefaultValue.Explicit;
 
-        public IObjectFacade GetDefault(IObjectFacade objectFacade) => ObjectFacade.Wrap(WrappedSpec.GetDefault(((ObjectFacade) objectFacade).WrappedNakedObject), FrameworkFacade, framework);
+        public IObjectFacade GetDefault(IObjectFacade objectFacade) => ObjectFacade.Wrap(WrappedSpec.GetDefault(((ObjectFacade) objectFacade)?.WrappedNakedObject), FrameworkFacade, framework);
 
         public bool IsInjected => WrappedSpec.IsInjected;
 
