@@ -56,13 +56,7 @@ namespace AW.Functions {
 
         
         [MemberOrder(1)]
-        public static (Person,Password) ChangePassword(this Person p, [Password] string oldPassword, [Password] string newPassword, [Named("New Password (Confirm)"), Password] string confirm)
-        {
-            throw new NotImplementedException();
-            //var p1 = CreateSaltAndHash(p, newPassword));
-        }
-
-        internal static Person CreateSaltAndHash(this Person p, string newPassword)
+        public static (Person, IContext) ChangePassword(this Person p, [Password] string oldPassword, [Password] string newPassword, [Named("New Password (Confirm)"), Password] string confirm, IContext context)
         {
             var pw = new Password()
             {
@@ -70,7 +64,8 @@ namespace AW.Functions {
                 PasswordHash = Hashed(newPassword, p.Password.PasswordSalt),
                 PasswordSalt = CreateRandomSalt()
             };
-            return p with { Password = pw };
+            var p2 = p with { Password = pw };
+            return (p2, context.WithPendingSave(p2, pw));
         }
 
         public static string ValidateChangePassword(this Person p, string oldPassword, string newPassword, string confirm)
