@@ -219,5 +219,27 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Page 1 of 20; viewing 15 of 290 items", page.Text);
         }
 
+        [TestMethod]
+        public void RegEx()
+        {
+            GeminiUrl("home?m1=Customer_MenuFunctions&d1=FindCustomerByAccountNumber");
+            WaitForTitle("Home");
+            string invalid = "Invalid entry";
+            var input = "input#accountnumber1";
+            Assert.AreEqual("AW", WaitForCss(input).GetAttribute("value"));
+            var validation = WaitForCss("nof-edit-parameter .validation");
+            Assert.AreEqual(invalid, validation.Text);
+
+            ClearFieldThenType(input, "12345");
+            Assert.AreEqual(invalid, validation.Text);
+
+            ClearFieldThenType(input, "AW12345");
+            Assert.AreEqual(invalid, validation.Text);
+
+            ClearFieldThenType(input, "AW00012345");
+            Assert.AreEqual("", validation.Text);
+
+        }
+
     }
 }
