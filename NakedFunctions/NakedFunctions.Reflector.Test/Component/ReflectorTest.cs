@@ -63,6 +63,17 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static MaskClass MaskFunction(this MaskClass dac, [Mask("Parameter Mask")] string parm, IContext context) => dac;
     }
 
+    public record OptionallyClass {
+        [Optionally]
+        public string OptionallyProperty { get; init; }
+
+        public string NotOptionallyProperty { get; init; }
+    }
+
+    public static class OptionallyFunctions {
+        public static OptionallyClass OptionallyFunction(this OptionallyClass dac, [Optionally] string parm1, string parm2, IContext context) => dac;
+    }
+
     [Named("Class Name")]
     public record NamedClass
     {
@@ -578,6 +589,62 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual("Parameter Mask", facet.Value);
             }
         }
+
+        [TestMethod]
+        public void ReflectOptionally()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(OptionallyClass) };
+                        options.Functions = new[] { typeof(OptionallyFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<OptionallyClass>());
+
+                var propertySpec1 = spec.Fields.First();
+                var propertySpec2 = spec.Fields[1];
+
+                var facet = propertySpec1.GetFacet<IMandatoryFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(true, facet.IsMandatory);
+                Assert.AreEqual(false, facet.IsOptional);
+                
+                facet = propertySpec2.GetFacet<IMandatoryFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(false, facet.IsMandatory);
+                Assert.AreEqual(true, facet.IsOptional);
+
+                var actionSpec = spec.ContributedActions.First();
+
+
+                var parmSpec1 = actionSpec.Parameters[1];
+                var parmSpec2 = actionSpec.Parameters[2];
+
+                facet = parmSpec1.GetFacet<IMandatoryFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(false, facet.IsMandatory);
+                Assert.AreEqual(true, facet.IsOptional);
+
+                facet = parmSpec2.GetFacet<IMandatoryFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(true, facet.IsMandatory);
+                Assert.AreEqual(false, facet.IsOptional);
+            }
+        }
+
+
+
+
 
         [TestMethod]
         public void ReflectNamed()
