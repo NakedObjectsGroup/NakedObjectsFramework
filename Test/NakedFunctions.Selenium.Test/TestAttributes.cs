@@ -70,9 +70,10 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Named();
             Optionally();
             PageSize();
+            MultiLine();
         }
 
-       //[TestMethod]
+        //[TestMethod]
         public void Bounded()
         {
             //Change Department Or Shift on Employee. Both params are of Bounded types
@@ -139,7 +140,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             GeminiUrl("home?m1=Sales_MenuFunctions");
             WaitForTextEquals(".title", "Home");
-            var action1 = WaitForCssNo("nof-action-list nof-action input",0);
+            var action1 = WaitForCssNo("nof-action-list nof-action input", 0);
             Assert.AreEqual("Create New Sales Person", action1.GetAttribute("value"));
             Assert.AreEqual("... from an existing Employee", action1.GetAttribute("title"));
         }
@@ -155,12 +156,22 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Product--497");
             WaitForTextEquals(".title", "Pinch Bolt");
-            var prop4 = WaitForCssNo("nof-view-property",4);
+            var prop4 = WaitForCssNo("nof-view-property", 4);
             Assert.AreEqual("List Price:", prop4.FindElement(By.CssSelector(".name")).Text);
             Assert.AreEqual("£0.00", prop4.FindElement(By.CssSelector(".value")).Text);
             var prop17 = WaitForCssNo("nof-view-property", 17);
             Assert.AreEqual("Sell Start Date:", prop17.FindElement(By.CssSelector(".name")).Text);
             Assert.AreEqual("1 Jun 2002", prop17.FindElement(By.CssSelector(".value")).Text);
+        }
+
+        //[TestMethod]
+        public void MultiLine()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--51131");
+            WaitForTextEquals(".title", "SO51131");
+            var comment = WaitForCssNo("nof-view-property", 19);
+            Assert.AreEqual("Comment:", comment.FindElement(By.CssSelector(".name")).Text);
+            comment.FindElement(By.CssSelector(".multiline"));           
         }
 
         //[TestMethod]
@@ -182,12 +193,19 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var firstName = WaitForCss("input#firstname1");
             Assert.IsNull(firstName.GetAttribute("placeholder"));
             Assert.AreEqual("", firstName.GetAttribute("value"));
-            Assert.AreEqual("Missing mandatory fields: Last Name; ",OKButton().GetAttribute("title"));
+            Assert.AreEqual("Missing mandatory fields: Last Name; ", OKButton().GetAttribute("title"));
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void PageSize()
         {
-
+            GeminiUrl("home?m1=Employee_MenuFunctions");
+            WaitForTextEquals(".title", "Home");
+            Click(WaitForCss("input[value=\"All Employees\""));
+            WaitForTextEquals(".title", "All Employees");
+            var page = WaitForCss(".summary .details");
+            Assert.AreEqual("Page 1 of 20; viewing 15 of 290 items", page.Text);
         }
+
+    }
 }
