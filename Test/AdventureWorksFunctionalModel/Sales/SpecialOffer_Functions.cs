@@ -49,7 +49,7 @@ namespace AW.Functions
 
         public static DateTime Default1EditDates(this SpecialOffer sp, IContext context) =>
             sp.StartDate;
-
+       
         public static DateTime Default2EditDates(this SpecialOffer sp, IContext context) =>
             context.GetService<IClock>().Today().AddMonths(1);
 

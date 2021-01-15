@@ -8,6 +8,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
+using System;
 using System.Threading;
 
 namespace NakedFunctions.Selenium.Test.FunctionTests {
@@ -118,6 +119,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             TypeIntoFieldWithoutClearing("#description1", original);
             Click(OKButton());
             wait.Until(d => d.FindElement(By.CssSelector(".title")).Text == original);
+        }
+
+        [TestMethod] 
+        public void AccessToIClock()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--1&as1=open&d1=EditDates");
+            var endDate = WaitForCss("input#enddate1");
+            var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
+            Assert.AreEqual(oneMonthOn, endDate.GetAttribute("value"));
         }
     }
 }

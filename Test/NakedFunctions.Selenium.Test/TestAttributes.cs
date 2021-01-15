@@ -96,7 +96,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var minQty = WaitForCss("input#minqty1");
             Assert.AreEqual("10", minQty.GetAttribute("value"));
             var start = WaitForCss("input#startdate1");
-            var tomorrow = DateTime.Today.AddDays(1).ToString("dd MMM yyyy");
+            var tomorrow = DateTime.Today.AddDays(1).ToString("d MMM yyyy");
             Assert.AreEqual(tomorrow, start.GetAttribute("value"));
         }
 
