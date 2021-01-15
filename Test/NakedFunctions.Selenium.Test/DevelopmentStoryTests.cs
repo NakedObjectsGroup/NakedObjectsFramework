@@ -52,12 +52,29 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             string actionSelector = $"nof-action-list nof-action input[value=\"{actionName}\"]";
             Click(WaitForCss(actionSelector));
         }
+
+        protected void Home()
+        {
+            GeminiUrl("home");
+            WaitForTextEquals(".title", "Home");
+        }
         #endregion 
 
         [TestMethod]
+        public void AllWorkingStories()
+        {
+            RetrieveObjectViaMenuAction();
+            UseOfRandomSeedGenerator();
+            ObjectContributedAction();
+            InformUserViaIAlertService();
+            EditAction();
+        }
+
+        //[TestMethod]
         public  void RetrieveObjectViaMenuAction()
         {
             //Corresponds to Story #199. Tests that IContext is injected as param, and that its Instances<T> method works
+            Home(); 
             OpenMainMenuAction("Products", "Find Product By Name");
             ClearFieldThenType("#searchstring1", "handlebar tube");
             Click(OKButton());         
@@ -65,10 +82,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AssertTopItemInListIs("Handlebar Tube");
         }
 
-        [TestMethod]
+        //[TestMethod]
         public  void UseOfRandomSeedGenerator()
         {
             //Corresponds to Story #200. Tests that IContext provides access to IRandomSeedGenerator & that the latter works
+            Home(); 
             OpenMainMenuAction("Products", "Random Product");
             WaitForView(Pane.Single, PaneType.Object);
             Assert.IsTrue(br.Url.Contains(".Product-"));
@@ -79,12 +97,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             Assert.AreNotEqual(product1Url, br.Url);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public  void ObjectContributedAction()
         {
             //Tests that an action (side effect free) can be associated with an object
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open");
-            WaitForView(Pane.Single, PaneType.Object);
+            WaitForTextEquals(".title", "Mountain Tire Sale");
             var action = GetObjectAction("List Associated Products");
             RightClick(action);
             WaitForView(Pane.Right, PaneType.List);
@@ -92,7 +110,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             Assert.AreEqual("LL Mountain Tire", product.Text);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void InformUserViaIAlertService()
         {
             //Corresponds to Story #201
@@ -108,14 +126,13 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             Assert.AreEqual("Mountain Tire Sale is already associated with LL Mountain Tire", msg);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void EditAction()
         {
             //Corresponds to Story #202
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--6&as1=open&d1=EditDescription");
-            var title = WaitForCss(".title");
             string original = "Volume Discount over 60";
-            Assert.AreEqual(original, title.Text);
+            var title =WaitForTextEquals(".title", original);
             string newDesc = "Volume Discount 60+";
             TypeIntoFieldWithoutClearing("#description1", newDesc);
             Click(OKButton());
