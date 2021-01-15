@@ -148,10 +148,20 @@ namespace AW.Functions {
 
         #region CreditCards
 
-        //TODO: This must be changed to request all fields & return object to be persisted.
-        public static (CreditCard, IContext context) CreateNewCreditCard(this Person p)
+        //TODO: param validation. choices for type
+        public static (Person, IContext context) CreateNewCreditCard(
+            this Person p, 
+            string cardType,
+            [DescribedAs("No spaces")] string cardNumber,
+            [DescribedAs("mm/yy")] string expires,
+            IContext context
+            )
         {
-            throw new NotImplementedException();
+            byte expMonth = Convert.ToByte(expires.Substring(0, 2));
+            byte expYear = Convert.ToByte(expires.Substring(3, 2));
+            var cc = new CreditCard() { CardType = cardType, CardNumber = cardNumber, ExpMonth = expMonth, ExpYear = expYear };
+            var link = new PersonCreditCard() { CreditCard = cc, Person = p };
+            return (p, context.WithPendingSave(cc, link));                
         }
 
         public static IList<CreditCard> ListCreditCards(this Person p, IQueryable<PersonCreditCard> pccs)

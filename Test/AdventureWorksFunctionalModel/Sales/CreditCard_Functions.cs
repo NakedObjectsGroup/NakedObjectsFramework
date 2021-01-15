@@ -13,12 +13,6 @@ using NakedFunctions;
 namespace AW.Functions {
         public static class CreditCard_Functions {
         
-        #region Life Cycle Methods
-             public static (PersonCreditCard, ICreditCardCreator) Persisted(this CreditCard x) =>
-            (new PersonCreditCard() { CreditCard = x, Person = x.ForContact }, ICreditCardCreator.CreatedCardHasBeenSaved(x.Creator, x));
-
-        #endregion
-
 
         [MemberOrder(2), DisplayAsProperty, Named("Card No.")]
         public static string ObfuscatedNumber(this CreditCard cc) =>

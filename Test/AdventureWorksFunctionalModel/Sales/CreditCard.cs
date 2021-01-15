@@ -19,7 +19,7 @@ namespace AW.Types {
         [MemberOrder(1)]
         public virtual string CardType { get; init; }
 
-        [MemberOrder(2)][DescribedAs("Without spaces")]
+        [MemberOrder(2)]
         public virtual string CardNumber { get; init; }
 
         //TODO: what was intended purpose?
@@ -44,13 +44,6 @@ namespace AW.Types {
         [MemberOrder(99)]
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
-
-        //TODO: I think this was (in NO version) a non-persisted property on a transient object. 
-        //If so then we need to instead create the (persisted) credit card from an action dialogue (or use a view model)
-        [Hidden]      
-        public ICreditCardCreator Creator { get; init; }
-
-        public Person ForContact { get; init; }
 
         public override string ToString() => CreditCard_Functions.ObfuscatedNumber(this);
 

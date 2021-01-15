@@ -11,9 +11,6 @@ namespace AW.Mapping
             HasKey(t => t.CreditCardID);
 
             //Ignores
-            Ignore(t => t.Creator);
-            Ignore(t => t.ForContact);
-            //Ignore(t => t.ObfuscatedNumber);
 
             // Properties
             Property(t => t.CardType)
