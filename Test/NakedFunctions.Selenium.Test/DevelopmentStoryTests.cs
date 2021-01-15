@@ -45,6 +45,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             ObjectContributedAction();
             InformUserViaIAlertService();
             EditAction();
+            AccessToIClock();
+            SaveNewInstance();
         }
 
         //[TestMethod]
@@ -121,13 +123,31 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             wait.Until(d => d.FindElement(By.CssSelector(".title")).Text == original);
         }
 
-        [TestMethod] 
+        //[TestMethod] 
         public void AccessToIClock()
         {
+            //Corresponds to #203
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--1&as1=open&d1=EditDates");
             var endDate = WaitForCss("input#enddate1");
             var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
             Assert.AreEqual(oneMonthOn, endDate.GetAttribute("value"));
+        }
+
+        //[TestMethod]
+        public void SaveNewInstance()
+        {
+            //Corresponds to #204
+            GeminiUrl("home?m1=SpecialOffer_MenuFunctions&d1=CreateNewSpecialOffer");
+            TypeIntoFieldWithoutClearing("input#description1", "Manager's Special");
+            TypeIntoFieldWithoutClearing("input#discountpct1", "15");
+            var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
+            TypeIntoFieldWithoutClearing("input#enddate1",endDate);
+            wait.Until(d => OKButton().GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
+            var now = DateTime.Now.ToString("d MMM yyyy HH:mm:").Substring(0,16);
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Manager's Special");
+            var modified = WaitForCssNo("nof-view-property .value", 8).Text;
+            Assert.AreEqual(now, modified.Substring(0, 16));
         }
     }
 }
