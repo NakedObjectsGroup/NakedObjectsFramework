@@ -40,6 +40,7 @@ namespace NakedFunctions.Reflector.Reflect {
                 typeof(PropertyDefaultAnnotationFacetFactory),
                 typeof(DescribedAsAnnotationFacetFactory),
                 typeof(PageSizeAnnotationFacetFactory),
+                typeof(PasswordAnnotationFacetFactory),
                 typeof(HiddenAnnotationFacetFactory),
                 typeof(MaxLengthAnnotationFacetFactory),
                 typeof(RangeAnnotationFacetFactory),

@@ -45,6 +45,11 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static SimpleClass PageSizeFunction(this SimpleClass dac, IContext context) => dac;
     }
 
+    public static class PasswordFunctions {
+        public static SimpleClass PasswordFunction(this SimpleClass dac, [Password] string parm, IContext context) => dac;
+    }
+
+
     [DescribedAs("Class Description")]
     public record DescribedAsClass
     {
@@ -721,6 +726,35 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual(66, facet.Value);
             }
         }
+
+        [TestMethod]
+        public void ReflectPassword() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
+                        options.Functions = new[] {typeof(PasswordFunctions)};
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
+
+                var actionSpec = spec.ContributedActions.First();
+
+                var parmSpec = actionSpec.Parameters[1];
+
+                var facet = parmSpec.GetFacet<IPasswordFacet>();
+                Assert.IsNotNull(facet);
+            }
+        }
+
+
 
         [TestMethod]
         public void ReflectMultiline()
