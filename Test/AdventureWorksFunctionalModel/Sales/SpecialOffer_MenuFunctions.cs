@@ -41,7 +41,7 @@ namespace AW.Functions
             [Mask("P")] decimal discountPct,
             /*[DefaultValue("Promotion")]*/ string type,
             /*[DefaultValue("Customer")] */string category,
-           [DefaultValue(10)] int minQty,
+          /* [DefaultValue(10)]*/ int minQty,
             /*[DefaultValue(1)]*/ DateTime startDate,
              DateTime endDate,
             IContext context)
@@ -82,5 +82,8 @@ namespace AW.Functions
                 CreateNewSpecialOffer(description, discountPct, type, category, minQty, startDate, endDate, context);
 
         internal static SpecialOffer NoDiscount(IContext context) => context.Instances<SpecialOffer>().Where(x => x.SpecialOfferID == 1).First();
+
+        public static IQueryable<SpecialOfferProduct> AllSpecialOfferProducts(IContext context) => context.Instances<SpecialOfferProduct>();
+    
     }
 }
