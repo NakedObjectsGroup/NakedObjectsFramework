@@ -38,10 +38,9 @@ namespace AW.Functions {
         //}
 
         //Method exists to test auto-complete
-        public static Customer FindCustomer([DescribedAs("Enter Account Number")] Customer customer)
-        {
-            return customer;
-        }
+        public static Customer FindCustomer(
+            [DescribedAs("Enter Account Number")]
+            [RegEx(Format = @"AW\d{8}", Message ="'AW' + 8 digits")]Customer customer) => customer;
 
         [PageSize(10)]
         public static IQueryable<Customer> AutoComplete0FindCustomer([MinLength(3)] string matching, IContext context) =>
