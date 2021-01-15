@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework;
+using NakedFunctions.Attributes;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -49,6 +50,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static SimpleClass PasswordFunction(this SimpleClass dac, [Password] string parm, IContext context) => dac;
     }
 
+    [Plural("Class Plural")]
+    public record PluralClass { }
 
     [DescribedAs("Class Description")]
     public record DescribedAsClass
@@ -422,6 +425,35 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsTrue(spec.IsBoundedSet());
             }
         }
+
+        [TestMethod]
+        public void ReflectPluralClass()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(PluralClass) };
+                        options.Functions = Array.Empty<Type>();
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<PluralClass>());
+                var facet = spec.GetFacet<IPluralFacet>();
+                Assert.IsNotNull(facet);
+
+                Assert.AreEqual("Class Plural", facet.Value);
+            }
+        }
+
+
 
         [TestMethod]
         public void ReflectIgnoredProperty() {
