@@ -39,10 +39,10 @@ namespace AW.Functions
         public static (SpecialOffer, IContext) CreateNewSpecialOffer(
             string description,
             [Mask("P")] decimal discountPct,
-            /*[DefaultValue("Promotion")]*/ string type,
-            /*[DefaultValue("Customer")] */string category,
-          /* [DefaultValue(10)]*/ int minQty,
-            /*[DefaultValue(1)]*/ DateTime startDate,
+            [DefaultValue("Promotion")] string type,
+            [DefaultValue("Customer")] string category,
+            [DefaultValue(10)] int minQty,
+            [DefaultValue(1)] DateTime startDate,
              DateTime endDate,
             IContext context)
        => DisplayAndSave(new SpecialOffer
