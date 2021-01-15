@@ -44,4 +44,9 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static DateRecord DateWithDefault(this DateRecord sp, [DefaultValue(22)] DateTime dt, IContext context) => sp;
     }
+
+    public static class DateMenuFunctions
+    {
+        public static DateRecord DateWithDefault([DefaultValue(22)] DateTime dt, IContext context) => new DateRecord();
+    }
 }

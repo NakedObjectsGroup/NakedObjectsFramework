@@ -29,10 +29,10 @@ namespace NakedFunctions.Rest.Test
 
     public class MenuTest : AcceptanceTestCase
     {
-        protected override Type[] Functions { get; } = { typeof(SimpleMenuFunctions) };
+        protected override Type[] Functions { get; } = { typeof(SimpleMenuFunctions), typeof(DateMenuFunctions) };
 
         // todo should IAlert be here or should we ignore?
-        protected override Type[] Records { get; } = { typeof(SimpleRecord) };
+        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(DateRecord) };
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -43,7 +43,10 @@ namespace NakedFunctions.Rest.Test
         protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
             new Func<IConfiguration, DbContext>[] { config => new MenuDbContext() };
 
-        protected override IMenu[] MainMenus(IMenuFactory factory) => new[] { factory.NewMenu(typeof(SimpleMenuFunctions), true, "Test menu") };
+        protected override IMenu[] MainMenus(IMenuFactory factory) => new[] {
+            factory.NewMenu(typeof(SimpleMenuFunctions), true, "Test menu"),
+            factory.NewMenu(typeof(DateMenuFunctions), true, "Date Test menu")
+        };
 
         protected override void RegisterTypes(IServiceCollection services)
         {
@@ -93,7 +96,7 @@ namespace NakedFunctions.Rest.Test
             var val = parsedResult.GetValue("value") as JArray;
 
             Assert.IsNotNull(val);
-            Assert.AreEqual(1, val.Count);
+            Assert.AreEqual(2, val.Count);
 
             var firstItem = val.First;
 
@@ -269,6 +272,25 @@ namespace NakedFunctions.Rest.Test
 
             resultObj.AssertObject("Fred", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
                    
+        }
+
+        private static string FormatForTest(DateTime dt) => $"{dt.Year}-{dt.Month:00}-{dt.Day:00}";
+
+        [Test]
+        public void TestGetMenuActionWithAnnotatedDefaults()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(DateMenuFunctions), nameof(DateMenuFunctions.DateWithDefault));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(DateRecordFunctions.DateWithDefault), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+            var psd = parameters["dt"];
+
+            Assert.AreEqual(FormatForTest(DateTime.UtcNow.AddDays(22)), psd["default"].ToString());
         }
 
 
