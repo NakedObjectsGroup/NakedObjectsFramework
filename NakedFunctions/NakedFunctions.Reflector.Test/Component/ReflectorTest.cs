@@ -40,6 +40,11 @@ namespace NakedFunctions.Reflector.Test.Component {
         #endregion
     }
 
+    public static class PageSizeFunctions {
+        [PageSize(66)]
+        public static SimpleClass PageSizeFunction(this SimpleClass dac, IContext context) => dac;
+    }
+
     [DescribedAs("Class Description")]
     public record DescribedAsClass
     {
@@ -691,7 +696,31 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
+        [TestMethod]
+        public void ReflectPageSize() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
+                        options.Functions = new[] {typeof(PageSizeFunctions)};
+                    }
+                );
+            }
 
+            var (container, host) = GetContainer(Setup);
+
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
+
+                var actionSpec = spec.ContributedActions.First();
+
+                var facet = actionSpec.GetFacet<IPageSizeFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(66, facet.Value);
+            }
+        }
 
         [TestMethod]
         public void ReflectMultiline()
