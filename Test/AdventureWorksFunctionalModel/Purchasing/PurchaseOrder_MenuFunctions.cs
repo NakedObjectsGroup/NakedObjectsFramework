@@ -14,7 +14,7 @@ using static AW.Helpers;
 
 namespace AW.Functions
 {
-
+    [Named("Purchase Orders")]
     public static class PurchaseOrder_MenuFunctions
     {
 
