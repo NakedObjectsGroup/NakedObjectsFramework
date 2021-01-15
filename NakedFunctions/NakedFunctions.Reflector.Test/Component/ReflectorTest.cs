@@ -63,7 +63,17 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static MaskClass MaskFunction(this MaskClass dac, [Mask("Parameter Mask")] string parm, IContext context) => dac;
     }
 
-  
+    public record MultilineClass {
+        [MultiLine(1, 2)]
+        public string MultilineProperty { get; init; }
+    }
+
+    public static class MultiLineFunctions {
+        [MultiLine(3, 4)]
+        public static MultilineClass MaskFunction(this MultilineClass dac, [MultiLine(5, 6)] string parm, IContext context) => dac;
+    }
+
+
     public record OrderClass
     {
         [MemberOrder(0, "Property Order")]
@@ -554,6 +564,55 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual("Parameter Mask", facet.Value);
             }
         }
+
+        [TestMethod]
+        public void ReflectMultiline()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(MultilineClass) };
+                        options.Functions = new[] { typeof(MultiLineFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<MultilineClass>());
+
+
+                var propertySpec = spec.Fields.First();
+
+                var facet = propertySpec.GetFacet<IMultiLineFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(1, facet.NumberOfLines);
+                Assert.AreEqual(2, facet.Width);
+
+                var actionSpec = spec.ContributedActions.First();
+
+                facet = actionSpec.GetFacet<IMultiLineFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(3, facet.NumberOfLines);
+                Assert.AreEqual(4, facet.Width);
+
+                var parmSpec = actionSpec.Parameters[1];
+
+                facet = parmSpec.GetFacet<IMultiLineFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(5, facet.NumberOfLines);
+                Assert.AreEqual(6, facet.Width);
+
+            }
+        }
+
+
+
 
         [TestMethod]
         public void ReflectOrder()
