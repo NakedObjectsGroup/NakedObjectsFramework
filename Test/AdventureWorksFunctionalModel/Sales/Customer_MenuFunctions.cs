@@ -29,7 +29,7 @@ namespace AW.Functions {
 
         [MemberOrder(10)]
         public static Customer FindCustomerByAccountNumber(
-            [DefaultValue("AW")] string accountNumber, IContext context) =>
+            [DefaultValue("AW")][RegEx(Validation = @"$AW\d{8}$", Message = "'AW' + 8 digits")] string accountNumber, IContext context) =>
             context.Instances<Customer>().Where(x => x.AccountNumber == accountNumber).FirstOrDefault();
 
         //public static string ValidateFindCustomerByAccountNumber(string accountNumber)
@@ -40,7 +40,7 @@ namespace AW.Functions {
         //Method exists to test auto-complete
         public static Customer FindCustomer(
             [DescribedAs("Enter Account Number")]
-            [RegEx(Validation = @"AW\d{8}", Message ="'AW' + 8 digits")]Customer customer) => customer;
+            Customer customer) => customer;
 
         [PageSize(10)]
         public static IQueryable<Customer> AutoComplete0FindCustomer([MinLength(3)] string matching, IContext context) =>

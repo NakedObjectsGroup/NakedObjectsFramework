@@ -184,10 +184,10 @@ namespace AW.Functions {
             return true;
         }
 
-        // regex doesn't work!
+        // TODO: the Regex is wrong - it needs start and end anchors i.e. ^   $
 
     //    public static (Person, PersonPhone) CreateNewPhoneNumber(this Person p, PhoneNumberType type,
-    //[RegEx(@"[0-9][0-9\s-]+")] string phoneNumber)
+    //[RegEx(@"^[0-9][0-9\s-]+$")] string phoneNumber)
     //        => (p, new PersonPhone()
     //        {
     //            BusinessEntityID = p.BusinessEntityID,
