@@ -140,10 +140,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("... from an existing Employee", action1.GetAttribute("title"));
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void DescribedAsParameter()
         {
-            //TODO
+            GeminiUrl("object?i1=View&o1=AW.Types.Person--16315&as1=open&d1=CreateNewCreditCard");
+            WaitForTitle("Casey Nath");
+            var number = WaitForCss("input#cardnumber1").GetAttribute("placeholder");
+            Assert.IsTrue(number.Contains("No spaces"));
+            var expires = WaitForCss("input#expires1").GetAttribute("placeholder");
+            Assert.IsTrue(expires.Contains("mm/yy"));
         }
 
         //[TestMethod]
