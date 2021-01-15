@@ -65,6 +65,17 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static DescribedAsClass DescribedAsFunction(this DescribedAsClass dac, IContext context) => dac;
     }
 
+    [RenderEagerly]
+    public record RenderEagerlyClass {
+        [RenderEagerly]
+        public string RenderEagerlyProperty { get; init; }
+    }
+
+    public static class RenderEagerlyFunctions {
+        [RenderEagerly]
+        public static RenderEagerlyClass RenderEagerlyFunction(this RenderEagerlyClass dac, IContext context) => dac;
+    }
+
     [Mask("Class Mask")]
     public record MaskClass {
         [Mask("Property Mask")]
@@ -612,6 +623,46 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual("Function Description", facet.Value);
             }
         }
+
+        [TestMethod]
+        public void ReflectRenderEagerly()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(RenderEagerlyClass) };
+                        options.Functions = new[] { typeof(RenderEagerlyFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<RenderEagerlyClass>());
+
+                var facet = spec.GetFacet<IEagerlyFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(Do.Rendering, facet.What);
+
+                var propertySpec = spec.Fields.First();
+
+                facet = propertySpec.GetFacet<IEagerlyFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(Do.Rendering, facet.What);
+
+                var actionSpec = spec.ContributedActions.First();
+
+                facet = actionSpec.GetFacet<IEagerlyFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(Do.Rendering, facet.What);
+            }
+        }
+
 
         [TestMethod]
         public void ReflectMask()
