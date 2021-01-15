@@ -100,6 +100,19 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static NamedClass MaskFunction(this NamedClass dac, [Named("Parameter Name")] string parm, IContext context) => dac;
     }
 
+    [PresentationHint("Class Hint")]
+    public record HintClass
+    {
+        [PresentationHint("Property Hint")]
+        public string HintProperty { get; init; }
+    }
+
+    public static class HintFunctions
+    {
+        [PresentationHint("Function Hint")]
+        public static HintClass HintFunction(this HintClass dac, [PresentationHint("Parameter Hint")] string parm, IContext context) => dac;
+    }
+
 
     public record MultilineClass {
         [MultiLine(1, 2)]
@@ -730,6 +743,51 @@ namespace NakedFunctions.Reflector.Test.Component {
                 facet = parmSpec.GetFacet<INamedFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual("Parameter Name", facet.Value);
+            }
+        }
+
+        [TestMethod]
+        public void ReflectPresentationHint()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(HintClass) };
+                        options.Functions = new[] { typeof(HintFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HintClass>());
+
+                var facet = spec.GetFacet<IPresentationHintFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Class Hint", facet.Value);
+
+                var propertySpec = spec.Fields.First();
+
+                facet = propertySpec.GetFacet<IPresentationHintFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Property Hint", facet.Value);
+
+                var actionSpec = spec.ContributedActions.First();
+
+                facet = actionSpec.GetFacet<IPresentationHintFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Function Hint", facet.Value);
+
+                var parmSpec = actionSpec.Parameters[1];
+
+                facet = parmSpec.GetFacet<IPresentationHintFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Parameter Hint", facet.Value);
             }
         }
 

@@ -16,7 +16,8 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public static class SimpleRecordFunctions {
         [Edit]
-        public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, string name, IContext context)
+        [PresentationHint("Hint3")]
+        public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, [PresentationHint("Hint4")] string name, IContext context)
             => Helpers.DisplayAndSave(sp with {Name = name}, context);
 
         public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context)

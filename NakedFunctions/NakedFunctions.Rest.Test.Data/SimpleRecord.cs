@@ -11,10 +11,12 @@ using NakedFramework;
 
 namespace NakedFunctions.Rest.Test.Data {
 
+    [PresentationHint("Hint1")]
     public record SimpleRecord {
         [Key]
         public int Id { get; init; }
 
+        [PresentationHint("Hint2")]
         public string Name { get; init; }
         public override string ToString() => Name;
 

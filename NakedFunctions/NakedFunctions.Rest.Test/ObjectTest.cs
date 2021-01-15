@@ -109,13 +109,38 @@ namespace NakedFunctions.Rest.Test
             var links = parameter["links"];
             var extensions = parameter["extensions"];
             Assert.AreEqual(0, links.Count());
-            Assert.AreEqual(7, extensions.Count());
+            Assert.AreEqual(8, extensions.Count());
 
             // todo test rest of json
 
         }
 
+        [Test]
+        public void TestGetObjectHints()
+        {
+            var api = Api();
+            var result = api.GetObject($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
+            Assert.AreEqual("Hint1", parsedResult["extensions"]["x-ro-nof-presentationHint"].ToString());
+            Assert.AreEqual("Hint2", parsedResult["members"]["Name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
+        }
+
+
+        [Test]
+        public void TestGetObjectActionHints()
+        {
+            var api = Api();
+            var result = api.GetAction($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.EditSimpleRecord));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("Hint3", parsedResult["extensions"]["x-ro-nof-presentationHint"].ToString());
+            Assert.AreEqual("Hint4", parsedResult["parameters"]["name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
+        }
 
         //[Test]
         //public void TestGetEnumObject()
