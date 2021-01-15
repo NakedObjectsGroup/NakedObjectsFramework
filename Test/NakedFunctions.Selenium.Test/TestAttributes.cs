@@ -8,6 +8,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
+using System;
 using System.Linq;
 
 namespace NakedFunctions.Selenium.Test.FunctionTests
@@ -62,7 +63,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void AllWorkingAttributes()
         {
             Bounded();
-            DefaultValueInt();
+            DefaultValue();
             ValueRangeInt();
             Hidden();
             DescribedAsFunction();
@@ -87,25 +88,18 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
-        public void DefaultValueInt()
+        public void DefaultValue()
         {
-            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
-            WaitForTitle( "Road-650 Overstock");
+            GeminiUrl("home?m1=SpecialOffer_MenuFunctions&d1=CreateNewSpecialOffer");
+            var type = WaitForCss("input#type1");
+            Assert.AreEqual("Promotion", type.GetAttribute("value"));
             var minQty = WaitForCss("input#minqty1");
-            Assert.AreEqual("1", minQty.GetAttribute("value"));
+            Assert.AreEqual("10", minQty.GetAttribute("value"));
+            var start = WaitForCss("input#startdate1");
+            var tomorrow = DateTime.Today.AddDays(1).ToString("dd MMM yyyy");
+            Assert.AreEqual(tomorrow, start.GetAttribute("value"));
         }
 
-        //[TestMethod]
-        public void DefaultValueString()
-        {
-            //Not yet working. Use Find (Customer) By Account Number
-        }
-
-        //[TestMethod]
-        public void DefaultValueDate()
-        {
-            //Not yet working. Use Special Offer - Edit Dates.
-        }
 
         //[TestMethod]
         public void ValueRangeInt()
