@@ -72,7 +72,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             GeminiUrl("object?i1=View&o1=AW.Types.Employee--7&c1_DepartmentHistory=Table&as1=open&d1=ChangeDepartmentOrShift");
             wait.Until(d => d.FindElements(By.CssSelector("#department1 option")).Count() >= 3);
             var options = br.FindElements(By.CssSelector("#department1 option")).Select(e => e.Text).ToArray();
-            Assert.AreEqual("*", options[0]);
             Assert.AreEqual("Engineering", options[0]);
             Assert.AreEqual("Tool Design", options[1]);
         }
