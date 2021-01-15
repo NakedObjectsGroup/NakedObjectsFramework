@@ -52,6 +52,18 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static DescribedAsClass DescribedAsFunction(this DescribedAsClass dac, IContext context) => dac;
     }
 
+    [Mask("Class Mask")]
+    public record MaskClass {
+        [Mask("Property Mask")]
+        public string MaskProperty { get; init; }
+    }
+
+    public static class MaskFunctions {
+        [Mask("Function Mask")]
+        public static MaskClass MaskFunction(this MaskClass dac, [Mask("Parameter Mask")] string parm, IContext context) => dac;
+    }
+
+
     public record HiddenClass {
         [Hidden]
         public string HiddenProperty { get; init; }
@@ -482,6 +494,53 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual("Function Description", facet.Value);
             }
         }
+
+        [TestMethod]
+        public void ReflectMask()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(MaskClass) };
+                        options.Functions = new[] { typeof(MaskFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<MaskClass>());
+
+                var facet = spec.GetFacet<IMaskFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Class Mask", facet.Value);
+
+                var propertySpec = spec.Fields.First();
+
+                facet = propertySpec.GetFacet<IMaskFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Property Mask", facet.Value);
+
+                var actionSpec = spec.ContributedActions.First();
+
+                facet = actionSpec.GetFacet<IMaskFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Function Mask", facet.Value);
+
+                var parmSpec = actionSpec.Parameters[1];
+
+                facet = parmSpec.GetFacet<IMaskFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Parameter Mask", facet.Value);
+            }
+        }
+
+
 
         [TestMethod]
         public void ReflectHidden()
