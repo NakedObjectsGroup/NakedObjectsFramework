@@ -58,28 +58,34 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
         #endregion 
 
-        //[TestMethod]
-        public void AllAttributes()
+        [TestMethod]
+        public void AllWorkingAttributes()
         {
             Bounded();
             DefaultValueInt();
+            ValueRangeInt();
+            Hidden();
+            DescribedAsFunction();
+            Mask();
         }
 
-        [TestMethod]
+       //[TestMethod]
         public void Bounded()
         {
             //Change Department Or Shift on Employee. Both params are of Bounded types
             GeminiUrl("object?i1=View&o1=AW.Types.Employee--7&c1_DepartmentHistory=Table&as1=open&d1=ChangeDepartmentOrShift");
+            WaitForTextEquals(".title", "Dylan Miller");
             wait.Until(d => d.FindElements(By.CssSelector("#department1 option")).Count() >= 3);
             var options = br.FindElements(By.CssSelector("#department1 option")).Select(e => e.Text).ToArray();
             Assert.AreEqual("Engineering", options[0]);
             Assert.AreEqual("Tool Design", options[1]);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void DefaultValueInt()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
+            WaitForTextEquals(".title", "Road-650 Overstock");
             var minQty = WaitForCss("input#minqty1");
             Assert.AreEqual("1", minQty.GetAttribute("value"));
         }
@@ -96,21 +102,23 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //Not yet working. Use Special Offer - Edit Dates.
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ValueRangeInt()
         {
-            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--75126&as1=open&d1=AddNewDetail");
-            var ok = WaitForCss("input.ok");
+            GeminiUrl("object?i1=View&o1=AW.Types.Product--890&as1=open&d1=BestSpecialOffer");
+            WaitForTextEquals(".title", "HL Touring Frame - Blue, 46");
             var qty = "input#quantity1";
-            var val = WaitForCssNo("nof-edit-parameter .validation", 1);
+            var val = WaitForCss("nof-edit-parameter .validation");
             Assert.AreEqual("", val.Text);
             ClearFieldThenType(qty, "1000");
             Assert.AreEqual("Value is outside the range 1 to 999", val.Text);
             ClearFieldThenType(qty, "10");
             Assert.AreEqual("", val.Text);
+            ClearFieldThenType(qty, "1000");
+            Assert.AreEqual("Value is outside the range 1 to 999", val.Text);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void Hidden()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Shift--1");
@@ -123,7 +131,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //i.e. no 'Shift ID' field showing
         }
 
-            [TestMethod]
+        //[TestMethod]
         public void DescribedAsFunction()
         {
             GeminiUrl("home?m1=Sales_MenuFunctions");
@@ -139,7 +147,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //TODO
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void Mask()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Product--497");
