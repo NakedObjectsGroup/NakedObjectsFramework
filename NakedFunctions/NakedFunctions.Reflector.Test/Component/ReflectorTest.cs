@@ -52,6 +52,43 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static DescribedAsClass DescribedAsFunction(this DescribedAsClass dac, IContext context) => dac;
     }
 
+    [Mask("Class Mask")]
+    public record MaskClass {
+        [Mask("Property Mask")]
+        public string MaskProperty { get; init; }
+    }
+
+    public static class MaskFunctions {
+        [Mask("Function Mask")]
+        public static MaskClass MaskFunction(this MaskClass dac, [Mask("Parameter Mask")] string parm, IContext context) => dac;
+    }
+
+    public record MultilineClass {
+        [MultiLine(1, 2)]
+        public string MultilineProperty { get; init; }
+    }
+
+    public static class MultiLineFunctions {
+        [MultiLine(3, 4)]
+        public static MultilineClass MaskFunction(this MultilineClass dac, [MultiLine(5, 6)] string parm, IContext context) => dac;
+    }
+
+
+    public record OrderClass
+    {
+        [MemberOrder(0, "Property Order")]
+        public string OrderProperty { get; init; }
+        [MemberOrder(1, "Collection Order")]
+        public IList<OrderClass> OrderList{ get; init; }
+    }
+
+    public static class OrderFunctions
+    {
+        [MemberOrder(2, "Function Order")]
+        public static OrderClass MaskFunction(this OrderClass dac, IContext context) => dac;
+    }
+
+
     public record HiddenClass {
         [Hidden]
         public string HiddenProperty { get; init; }
@@ -482,6 +519,147 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual("Function Description", facet.Value);
             }
         }
+
+        [TestMethod]
+        public void ReflectMask()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(MaskClass) };
+                        options.Functions = new[] { typeof(MaskFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<MaskClass>());
+
+                var facet = spec.GetFacet<IMaskFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Class Mask", facet.Value);
+
+                var propertySpec = spec.Fields.First();
+
+                facet = propertySpec.GetFacet<IMaskFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Property Mask", facet.Value);
+
+                var actionSpec = spec.ContributedActions.First();
+
+                facet = actionSpec.GetFacet<IMaskFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Function Mask", facet.Value);
+
+                var parmSpec = actionSpec.Parameters[1];
+
+                facet = parmSpec.GetFacet<IMaskFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Parameter Mask", facet.Value);
+            }
+        }
+
+        [TestMethod]
+        public void ReflectMultiline()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(MultilineClass) };
+                        options.Functions = new[] { typeof(MultiLineFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<MultilineClass>());
+
+
+                var propertySpec = spec.Fields.First();
+
+                var facet = propertySpec.GetFacet<IMultiLineFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(1, facet.NumberOfLines);
+                Assert.AreEqual(2, facet.Width);
+
+                var actionSpec = spec.ContributedActions.First();
+
+                facet = actionSpec.GetFacet<IMultiLineFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(3, facet.NumberOfLines);
+                Assert.AreEqual(4, facet.Width);
+
+                var parmSpec = actionSpec.Parameters[1];
+
+                facet = parmSpec.GetFacet<IMultiLineFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(5, facet.NumberOfLines);
+                Assert.AreEqual(6, facet.Width);
+
+            }
+        }
+
+
+
+
+        [TestMethod]
+        public void ReflectOrder()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(OrderClass) };
+                        options.Functions = new[] { typeof(OrderFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<OrderClass>());
+
+
+                var propertySpec = spec.Fields.First();
+                var collectionSpec = spec.Fields[1];
+
+                var facet = propertySpec.GetFacet<IMemberOrderFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Property Order", facet.Name);
+                Assert.AreEqual("0", facet.Sequence);
+
+                facet = collectionSpec.GetFacet<IMemberOrderFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Collection Order", facet.Name);
+                Assert.AreEqual("1", facet.Sequence);
+
+                var actionSpec = spec.ContributedActions.First();
+
+                facet = actionSpec.GetFacet<IMemberOrderFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Function Order", facet.Name);
+                Assert.AreEqual("2", facet.Sequence);
+            }
+        }
+
+
+
 
         [TestMethod]
         public void ReflectHidden()

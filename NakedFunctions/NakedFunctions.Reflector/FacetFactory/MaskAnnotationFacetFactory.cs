@@ -21,7 +21,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class MaskAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public MaskAnnotationFacetFactory(IFacetFactoryOrder<MaskAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) { }
+            : base(order.Order, loggerFactory, FeatureType.EverythingButCollections) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var attribute = type.GetCustomAttribute<MaskAttribute>();
