@@ -63,6 +63,21 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static MaskClass MaskFunction(this MaskClass dac, [Mask("Parameter Mask")] string parm, IContext context) => dac;
     }
 
+  
+    public record OrderClass
+    {
+        [MemberOrder(0, "Property Order")]
+        public string OrderProperty { get; init; }
+        [MemberOrder(1, "Collection Order")]
+        public IList<OrderClass> OrderList{ get; init; }
+    }
+
+    public static class OrderFunctions
+    {
+        [MemberOrder(2, "Function Order")]
+        public static OrderClass MaskFunction(this OrderClass dac, IContext context) => dac;
+    }
+
 
     public record HiddenClass {
         [Hidden]
@@ -539,6 +554,51 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual("Parameter Mask", facet.Value);
             }
         }
+
+        [TestMethod]
+        public void ReflectOrder()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(OrderClass) };
+                        options.Functions = new[] { typeof(OrderFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<OrderClass>());
+
+
+                var propertySpec = spec.Fields.First();
+                var collectionSpec = spec.Fields[1];
+
+                var facet = propertySpec.GetFacet<IMemberOrderFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Property Order", facet.Name);
+                Assert.AreEqual("0", facet.Sequence);
+
+                facet = collectionSpec.GetFacet<IMemberOrderFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Collection Order", facet.Name);
+                Assert.AreEqual("1", facet.Sequence);
+
+                var actionSpec = spec.ContributedActions.First();
+
+                facet = actionSpec.GetFacet<IMemberOrderFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual("Function Order", facet.Name);
+                Assert.AreEqual("2", facet.Sequence);
+            }
+        }
+
 
 
 
