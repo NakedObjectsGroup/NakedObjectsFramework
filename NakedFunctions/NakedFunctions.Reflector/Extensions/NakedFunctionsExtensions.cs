@@ -36,6 +36,7 @@ namespace NakedFunctions.Reflector.Extensions {
                 // filter enums and add to SystemTypes 
                 var enums = options.FunctionalTypes.Where(t => t.IsEnum).ToArray();
                 options.FunctionalTypes = options.FunctionalTypes.Except(enums).ToArray();
+                coreOptions.SupportedSystemTypes ??= t => t;
                 coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Union(enums).ToArray();
                 options.FunctionalTypes = options.FunctionalTypes.Append(typeof(IContext)).Append(typeof(Context)).Distinct().ToArray();
             }
