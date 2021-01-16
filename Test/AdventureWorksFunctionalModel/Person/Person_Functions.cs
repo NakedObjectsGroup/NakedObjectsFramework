@@ -186,7 +186,7 @@ namespace AW.Functions {
 
 
         public static (Person, IContext) CreateNewPhoneNumber(this Person p, PhoneNumberType type,
-    [RegEx(@"^[0-9][0-9\s-]+$")] string phoneNumber, IContext context)
+    [RegEx(Validation=@"^[0-9][0-9\s-]+$")] string phoneNumber, IContext context)
             => (p, context.WithPendingSave(new PersonPhone()
             {
                 BusinessEntityID = p.BusinessEntityID,
