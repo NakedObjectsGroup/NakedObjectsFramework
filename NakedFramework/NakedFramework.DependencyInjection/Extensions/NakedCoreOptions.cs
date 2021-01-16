@@ -6,11 +6,14 @@
 // // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.Profile;
+
+[assembly:InternalsVisibleTo("NakedFunctions.Reflector")]
 
 namespace NakedObjects.DependencyInjection.Extensions {
     public class NakedCoreOptions {
@@ -21,5 +24,6 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public Func<IMenuFactory, IMenu[]> MainMenus { get; set; }
         public Func<Type[], Type[]> SupportedSystemTypes { get; set; }
         public IServiceCollection Services { get; }
+        internal Type[] AdditionalSystemTypes { get; set; } = Array.Empty<Type>();
     }
 }

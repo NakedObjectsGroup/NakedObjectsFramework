@@ -142,28 +142,19 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual("Hint4", parsedResult["parameters"]["name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
         }
 
-        //[Test]
-        //public void TestGetEnumObject()
-        //{
-        //    var api = Api();
-        //    var result = api.GetObject($"NakedFunctions.Rest.Test.Data.{nameof(EnumRecord)}", "1");
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
+        [Test]
+        public void TestGetEnumObject()
+        {
+            var api = Api();
+            var result = api.GetObject($"NakedFunctions.Rest.Test.Data.{nameof(EnumRecord)}", "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
-        //    //Assert.AreEqual(nameof(SimpleRecordFunctions.EditSimpleRecord), parsedResult["id"].ToString());
-        //    //var parameters = parsedResult["parameters"];
-        //    //Assert.AreEqual(1, parameters.Count());
-        //    //var parameter = parameters["name"];
-        //    //Assert.AreEqual(2, parameter.Count());
-        //    //var links = parameter["links"];
-        //    //var extensions = parameter["extensions"];
-        //    //Assert.AreEqual(0, links.Count());
-        //    //Assert.AreEqual(7, extensions.Count());
+            Assert.AreEqual("number", parsedResult["members"]["TestEnum"]["extensions"]["returnType"].ToString());
 
-        //    // todo test rest of json
 
-        //}
+        }
 
 
 

@@ -17,6 +17,7 @@ using NakedFunctions.Reflector.Reflect;
 using NakedFunctions.Services;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Core.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.Extensions;
 
@@ -32,6 +33,10 @@ namespace NakedFunctions.Reflector.Extensions {
 
             // todo - refine
             if (options.FunctionalTypes.Any()) {
+                // filter enums and add to SystemTypes 
+                var enums = options.FunctionalTypes.Where(t => t.IsEnum).ToArray();
+                options.FunctionalTypes = options.FunctionalTypes.Except(enums).ToArray();
+                coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Union(enums).ToArray();
                 options.FunctionalTypes = options.FunctionalTypes.Append(typeof(IContext)).Append(typeof(Context)).Distinct().ToArray();
             }
 
