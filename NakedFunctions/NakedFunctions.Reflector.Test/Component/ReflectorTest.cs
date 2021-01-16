@@ -343,6 +343,13 @@ namespace NakedFunctions.Reflector.Test.Component {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
+                var propertySpec = spec.Fields.First();
+                var facet = propertySpec.GetFacet<IDisabledFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(WhenTo.Always, facet.Value);
+
             }
         }
 
