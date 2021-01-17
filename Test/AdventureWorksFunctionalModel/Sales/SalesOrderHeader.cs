@@ -27,7 +27,7 @@ namespace AW.Types {
         [Hidden]
         public virtual byte StatusByte { get; init; }
 
-        [MemberOrder(1), Hidden] //TODO: temp kludge, pending #232
+        [MemberOrder(1)]
         public OrderStatus Status => (OrderStatus)StatusByte;
 
         [Hidden]
