@@ -43,7 +43,11 @@ namespace AW.Functions {
         public static IQueryable<SalesOrderHeader> HighestValueOrders(IContext context) =>
           context.Instances<SalesOrderHeader>().OrderByDescending(obj => obj.TotalDue);
 
- 
+        [MemberOrder(91)]
+        [TableView(true, "OrderDate", "Customer")]
+        public static IQueryable<SalesOrderHeader> OrdersByStatus(IContext context, OrderStatus status) =>
+          context.Instances<SalesOrderHeader>().Where(x => x.StatusByte == (byte) status).OrderByDescending(obj => obj.OrderDate);
+
         #region OrdersForCustomer
         //Action to demonstrate use of Auto-Complete that returns a single object
         public static IQueryable<SalesOrderHeader> OrdersForCustomer(
