@@ -30,7 +30,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
             var config = new CoreConfiguration(options.MainMenus);
 
             if (options.SupportedSystemTypes is not null) {
-                config.SupportedSystemTypes = options.SupportedSystemTypes(config.SupportedSystemTypes.ToArray()).ToList();
+                config.SupportedSystemTypes = options.SupportedSystemTypes(config.SupportedSystemTypes.ToArray()).Union(options.AdditionalSystemTypes).ToList();
             }
 
             return config;

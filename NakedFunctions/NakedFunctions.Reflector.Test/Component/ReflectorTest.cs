@@ -191,7 +191,7 @@ namespace NakedFunctions.Reflector.Test.Component {
     public record BoundedClass { }
 
     public record IgnoredClass {
-        internal virtual string IgnoredProperty { get; set; }
+        internal virtual string IgnoredProperty { get; init; }
     }
 
     
@@ -215,16 +215,16 @@ namespace NakedFunctions.Reflector.Test.Component {
 
 
     public record SimpleClass {
-        public virtual SimpleClass SimpleProperty { get; set; }
+        public virtual SimpleClass SimpleProperty { get; init; }
     }
 
     [ViewModel]
     public record SimpleViewModel {
-        public virtual SimpleClass SimpleProperty { get; set; }
+        public virtual SimpleClass SimpleProperty { get; init; }
     }
 
     public class NavigableClass {
-        public SimpleClass SimpleProperty { get; set; }
+        public SimpleClass SimpleProperty { get; init; }
     }
 
     public static class SimpleFunctions {
@@ -343,6 +343,13 @@ namespace NakedFunctions.Reflector.Test.Component {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
+                var propertySpec = spec.Fields.First();
+                var facet = propertySpec.GetFacet<IDisabledFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(WhenTo.Always, facet.Value);
+
             }
         }
 
@@ -1149,8 +1156,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<VersionedClass>());
@@ -1246,9 +1252,5 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
-
-
-
-        public record Test(int a) { }
     }
 }
