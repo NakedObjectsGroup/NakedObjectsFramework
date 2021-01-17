@@ -29,22 +29,9 @@ namespace AW.Functions {
 
         [MemberOrder(10)]
         public static Customer FindCustomerByAccountNumber(
-            [DefaultValue("AW")][RegEx(Validation = @"^AW\d{8}$", Message = "'AW' + 8 digits")] string accountNumber, IContext context) =>
+            [DefaultValue("AW")][RegEx(Validation = @"^AW\d{8}$")] string accountNumber, IContext context) =>
             context.Instances<Customer>().Where(x => x.AccountNumber == accountNumber).FirstOrDefault();
 
-        //public static string ValidateFindCustomerByAccountNumber(string accountNumber)
-        //{
-        //    return accountNumber.StartsWith("AW") ? null : "Account number must start with AW";
-        //}
-
-        //Method exists to test auto-complete
-        public static Customer FindCustomer(
-            [DescribedAs("Enter Account Number")]
-            Customer customer) => customer;
-
-        [PageSize(10)]
-        public static IQueryable<Customer> AutoComplete0FindCustomer([MinLength(3)] string matching, IContext context) =>
-            context.Instances<Customer>().Where(c => c.AccountNumber.Contains(matching));
 
         #region Stores Menu
 
@@ -129,19 +116,5 @@ namespace AW.Functions {
         }
 
         #endregion
-
-
-        [TableView(false, "AccountNumber","Store","Person","SalesTerritory")]        
-        public static List<Customer> RandomCustomers(IContext context)
-        {
-            var list = new List<Customer>();
-            //Added this slightly odd way around for historical test compatibility only
-            IRandom random = context.RandomSeed().Next();
-            list.Add(Random<Customer>(context));
-            list.Add(RandomStore(context));
-            //TODO: Must use different random numbers
-            throw new NotImplementedException();
-            //return list;
-        }
     }
 }

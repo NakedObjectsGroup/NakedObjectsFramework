@@ -64,15 +64,17 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             Bounded();
             DefaultValue();
-            ValueRangeInt();
-            Hidden();
             DescribedAsFunction();
+            Hidden();
             Mask();
+            MaxLength();
             MemberOrder();
             MultiLine();
             Named();
             Optionally();
             PageSize();
+            RegEx();
+            ValueRangeInt();
         }
 
         //[TestMethod]
@@ -102,35 +104,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
 
         //[TestMethod]
-        public void ValueRangeInt()
-        {
-            GeminiUrl("object?i1=View&o1=AW.Types.Product--890&as1=open&d1=BestSpecialOffer");
-            WaitForTitle( "HL Touring Frame - Blue, 46");
-            var qty = "input#quantity1";
-            var val = WaitForCss("nof-edit-parameter .validation");
-            Assert.AreEqual("", val.Text);
-            ClearFieldThenType(qty, "1000");
-            Assert.AreEqual("Value is outside the range 1 to 999", val.Text);
-            ClearFieldThenType(qty, "10");
-            Assert.AreEqual("", val.Text);
-            ClearFieldThenType(qty, "1000");
-            Assert.AreEqual("Value is outside the range 1 to 999", val.Text);
-        }
-
-        //[TestMethod]
-        public void Hidden()
-        {
-            GeminiUrl("object?i1=View&o1=AW.Types.Shift--1");
-            WaitForTitle( "Day");
-            Assert.AreEqual("Name:", WaitForCssNo("nof-view-property .name", 0).Text);
-            Assert.AreEqual("Start Time:", WaitForCssNo("nof-view-property .name", 1).Text);
-            Assert.AreEqual("End Time:", WaitForCssNo("nof-view-property .name", 2).Text);
-            Assert.AreEqual("Modified Date:", WaitForCssNo("nof-view-property .name", 3).Text);
-            Assert.AreEqual(4, br.FindElements(By.CssSelector("nof-view-property")).Count);
-            //i.e. no 'Shift ID' field showing
-        }
-
-        //[TestMethod]
         public void DescribedAsFunction()
         {
             GeminiUrl("home?m1=Sales_MenuFunctions");
@@ -140,7 +113,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("... from an existing Employee", action1.GetAttribute("title"));
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void DescribedAsParameter()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Person--16315&as1=open&d1=CreateNewCreditCard");
@@ -149,6 +122,20 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.IsTrue(number.Contains("No spaces"));
             var expires = WaitForCss("input#expires1").GetAttribute("placeholder");
             Assert.IsTrue(expires.Contains("mm/yy"));
+        }
+
+
+        //[TestMethod]
+        public void Hidden()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Shift--1");
+            WaitForTitle("Day");
+            Assert.AreEqual("Name:", WaitForCssNo("nof-view-property .name", 0).Text);
+            Assert.AreEqual("Start Time:", WaitForCssNo("nof-view-property .name", 1).Text);
+            Assert.AreEqual("End Time:", WaitForCssNo("nof-view-property .name", 2).Text);
+            Assert.AreEqual("Modified Date:", WaitForCssNo("nof-view-property .name", 3).Text);
+            Assert.AreEqual(4, br.FindElements(By.CssSelector("nof-view-property")).Count);
+            //i.e. no 'Shift ID' field showing
         }
 
         //[TestMethod]
@@ -165,7 +152,24 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
-        public void MemberOrder()
+        public void MaxLength()
+        {
+            GeminiUrl("home?m1=SpecialOffer_MenuFunctions&d1=CreateNewSpecialOffer");
+            var description = "input#description1";
+            string longText = "Now is the time for all good men to come to the aid of the party.";
+            string invalid = "Too long";
+            var validation = WaitForCssNo("nof-edit-parameter .validation",0);
+            Assert.AreEqual("", validation.Text);
+
+            TypeIntoFieldWithoutClearing(description, longText);
+            Assert.AreEqual(invalid, validation.Text);
+
+            ClearFieldThenType(description, longText.Substring(0, 50));
+            Assert.AreEqual("", validation.Text);
+        }
+
+            //[TestMethod]
+            public void MemberOrder()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Store--670");
             WaitForTitle( "Fitness Cycling");
@@ -219,7 +223,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Page 1 of 20; viewing 15 of 290 items", page.Text);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void RegEx()
         {
             GeminiUrl("home?m1=Customer_MenuFunctions&d1=FindCustomerByAccountNumber");
@@ -241,5 +245,20 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
         }
 
+        //[TestMethod]
+        public void ValueRangeInt()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Product--890&as1=open&d1=BestSpecialOffer");
+            WaitForTitle("HL Touring Frame - Blue, 46");
+            var qty = "input#quantity1";
+            var val = WaitForCss("nof-edit-parameter .validation");
+            Assert.AreEqual("", val.Text);
+            ClearFieldThenType(qty, "1000");
+            Assert.AreEqual("Value is outside the range 1 to 999", val.Text);
+            ClearFieldThenType(qty, "10");
+            Assert.AreEqual("", val.Text);
+            ClearFieldThenType(qty, "1000");
+            Assert.AreEqual("Value is outside the range 1 to 999", val.Text);
+        }
     }
 }

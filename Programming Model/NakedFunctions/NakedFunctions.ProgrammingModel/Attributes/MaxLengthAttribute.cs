@@ -9,9 +9,7 @@ using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     Applied to a string parameter, specifies the minimum & maximum string length that the user may enter.
-    ///     When applied to the string parameter of an AutoComplete method, the Minimum specifies the number of
-    ///     characters the user must type before the method will be invoked.
+    ///     Applied to a string parameter, specifies the maximum string length that the user may enter.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public class MaxLengthAttribute : Attribute {
