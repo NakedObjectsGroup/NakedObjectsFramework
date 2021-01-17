@@ -47,6 +47,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessToIClock();
             SaveNewInstance();
             RecordsDoNotHaveEditButton();
+            EnumProperty();
         }
 
         //[TestMethod]
@@ -160,6 +161,16 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             var edit = WaitForCssNo("nof-action-bar nof-action", 1);
             var title = edit.GetAttribute("value");
             Assert.IsTrue(title is null || title == "");
+        }
+
+        //[TestMethod]
+        public void EnumProperty()
+        {
+            //Coresponds to (part of) #232
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--55864");
+            WaitForTitle("SO55864");
+            string value = GetValueFromProperty("Status");
+            Assert.AreEqual("Shipped", value);
         }
     }
 }
