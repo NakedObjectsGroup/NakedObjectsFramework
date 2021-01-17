@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 using System;
-using System.Threading;
 
 namespace NakedFunctions.Selenium.Test.FunctionTests {
 
@@ -47,6 +46,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             EditAction();
             AccessToIClock();
             SaveNewInstance();
+            RecordsDoNotHaveEditButton();
         }
 
         //[TestMethod]
@@ -148,6 +148,18 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             WaitForView(Pane.Single, PaneType.Object, "Manager's Special");
             var modified = WaitForCssNo("nof-view-property .value", 8).Text;
             Assert.AreEqual(now, modified.Substring(0, 16));
+        }
+
+        //[TestMethod]
+        public void RecordsDoNotHaveEditButton()
+        {
+            //Corresponds to #229
+            GeminiUrl("object?i1=View&o1=AW.Types.WorkOrder--4717");
+            WaitForTitle("Road-650 Red, 58: 10/30/2005 12:00:00 AM");
+            WaitForCssNo("nof-action-bar nof-action", 2);
+            var edit = WaitForCssNo("nof-action-bar nof-action", 1);
+            var title = edit.GetAttribute("value");
+            Assert.IsTrue(title is null || title == "");
         }
     }
 }
