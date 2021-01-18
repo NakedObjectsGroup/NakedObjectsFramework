@@ -41,24 +41,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
         #endregion
 
-        #region Helpers
-        protected virtual void OpenMainMenu(string menuName)
-        {
-            ClickHomeButton();
-            WaitForView(Pane.Single, PaneType.Home, "Home");
-            string menuSelector = $"nof-menu-bar nof-action input[title=\"{menuName}\"";
-            wait.Until(dr => dr.FindElement(By.CssSelector(menuSelector)));
-            IWebElement menu = br.FindElement(By.CssSelector($"nof-menu-bar nof-action input[title={menuName}"));
-            Click(menu);
-        }
-        protected void OpenMainMenuAction(string menuName, string actionName)
-        {
-            OpenMainMenu(menuName);
-            string actionSelector = $"nof-action-list nof-action input[value=\"{actionName}\"]";
-            Click(WaitForCss(actionSelector));
-        }
-        #endregion 
-
         [TestMethod]
         public void AllWorkingAttributes()
         {
@@ -76,6 +58,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Password();
             RegEx();
             RenderEagerly();
+            TableView();
             ValueRangeInt();
         }
 
@@ -263,6 +246,19 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             OpenMainMenuAction("Employees", "List All Departments");
             WaitForTitle("List All Departments");
             wait.Until(dr => dr.FindElements(By.CssSelector("th")).Where(el => el.Text == "Group Name").Single());
+        }
+
+        //[TestMethod]
+        public void TableView()
+        {
+            GeminiUrl("home");
+            WaitForTitle("Home");
+            OpenMainMenuAction("Purchase Orders","All Open Purchase Orders");
+            Click(WaitForCss(".summary .icon.table"));
+            Assert.AreEqual("Total Due", WaitForCssNo("thead th", 3).Text);
+            Assert.AreEqual("Order Date", WaitForCssNo("thead th", 2).Text);
+            Assert.AreEqual("Vendor", WaitForCssNo("thead th", 1).Text);
+            Assert.AreEqual("", WaitForCssNo("thead th", 0).Text);
         }
 
         //[TestMethod]
