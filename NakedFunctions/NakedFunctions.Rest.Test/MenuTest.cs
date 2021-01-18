@@ -97,7 +97,7 @@ namespace NakedFunctions.Rest.Test
             var val = parsedResult.GetValue("value") as JArray;
 
             Assert.IsNotNull(val);
-            Assert.AreEqual(2, val.Count);
+            Assert.AreEqual(3, val.Count);
 
             var firstItem = val.First;
 
