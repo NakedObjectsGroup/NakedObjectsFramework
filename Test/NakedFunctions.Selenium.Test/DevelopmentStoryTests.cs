@@ -10,28 +10,32 @@ using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 using System;
 
-namespace NakedFunctions.Selenium.Test.FunctionTests {
+namespace NakedFunctions.Selenium.Test.FunctionTests
+{
 
-    [TestClass] 
+    [TestClass]
     public class DevelopmentStoryTests : GeminiTest
     {
         protected override string BaseUrl => TestConfig.BaseFunctionalUrl;
 
         #region initialization
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.chromedriver.exe");
             GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitChromeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             CleanUpTest();
         }
         #endregion
@@ -48,29 +52,30 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             SaveNewInstance();
             RecordsDoNotHaveEditButton();
             EnumProperty();
+            EnumParam();
         }
 
         //[TestMethod]
-        public  void RetrieveObjectViaMenuAction()
+        public void RetrieveObjectViaMenuAction()
         {
             //Corresponds to Story #199. Tests that IContext is injected as param, and that its Instances<T> method works
-            Home(); 
+            Home();
             OpenMainMenuAction("Products", "Find Product By Name");
             ClearFieldThenType("#searchstring1", "handlebar tube");
-            Click(OKButton());         
+            Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Product By Name");
             AssertTopItemInListIs("Handlebar Tube");
         }
 
         //[TestMethod]
-        public  void UseOfRandomSeedGenerator()
+        public void UseOfRandomSeedGenerator()
         {
             //Corresponds to Story #200. Tests that IContext provides access to IRandomSeedGenerator & that the latter works
-            Home(); 
+            Home();
             OpenMainMenuAction("Products", "Random Product");
             WaitForView(Pane.Single, PaneType.Object);
             Assert.IsTrue(br.Url.Contains(".Product-"));
-            string product1Url = br.Url;           
+            string product1Url = br.Url;
             OpenMainMenuAction("Products", "Random Product");
             WaitForView(Pane.Single, PaneType.Object);
             Assert.IsTrue(br.Url.Contains(".Product-"));
@@ -78,11 +83,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         }
 
         //[TestMethod]
-        public  void ObjectContributedAction()
+        public void ObjectContributedAction()
         {
             //Tests that an action (side effect free) can be associated with an object
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open");
-            WaitForTitle( "Mountain Tire Sale");
+            WaitForTitle("Mountain Tire Sale");
             var action = GetObjectAction("List Associated Products");
             RightClick(action);
             WaitForView(Pane.Right, PaneType.List);
@@ -112,7 +117,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             //Corresponds to Story #202
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--6&as1=open&d1=EditDescription");
             string original = "Volume Discount over 60";
-            var title =WaitForTitle( original);
+            var title = WaitForTitle(original);
             string newDesc = "Volume Discount 60+";
             TypeIntoFieldWithoutClearing("#description1", newDesc);
             Click(OKButton());
@@ -142,9 +147,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             TypeIntoFieldWithoutClearing("input#description1", "Manager's Special");
             TypeIntoFieldWithoutClearing("input#discountpct1", "15");
             var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
-            TypeIntoFieldWithoutClearing("input#enddate1",endDate);
+            TypeIntoFieldWithoutClearing("input#enddate1", endDate);
             wait.Until(d => OKButton().GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
-            var now = DateTime.Now.ToString("d MMM yyyy HH:mm:").Substring(0,16);
+            var now = DateTime.Now.ToString("d MMM yyyy HH:mm:").Substring(0, 16);
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Manager's Special");
             var modified = WaitForCssNo("nof-view-property .value", 8).Text;
@@ -171,6 +176,16 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             WaitForTitle("SO55864");
             string value = GetPropertyValue("Status");
             Assert.AreEqual("Shipped", value);
+        }
+
+        //[TestMethod]
+        public void EnumParam()
+        {
+            GeminiUrl("home?m1=Order_MenuFunctions&d1=OrdersByStatus");
+            WaitForCssNo("#status1 option", 6);
+            Assert.AreEqual("Shipped", WaitForCssNo("#status1 option", 6).Text);
+            Assert.AreEqual("Rejected", WaitForCssNo("#status1 option", 5).Text);
+            Assert.AreEqual("*", WaitForCssNo("#status1 option", 0).Text);
         }
     }
 }
