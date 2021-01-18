@@ -35,7 +35,14 @@ namespace NakedFunctions.Rest.Test
     {
         protected override Type[] Functions { get; } = { typeof(SimpleRecordFunctions), typeof(DateRecordFunctions) };
 
-        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(DateRecord), typeof(EnumRecord), typeof(TestEnum), typeof(ReferenceRecord) };
+        protected override Type[] Records { get; } = {
+            typeof(SimpleRecord),
+            typeof(DateRecord), 
+            typeof(EnumRecord),
+            typeof(GuidRecord),
+            typeof(TestEnum), 
+            typeof(ReferenceRecord)
+        };
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -166,6 +173,21 @@ namespace NakedFunctions.Rest.Test
 
             Assert.AreEqual("number", parsedResult["members"]["TestEnum"]["extensions"]["returnType"].ToString());
         }
+
+
+        [Test]
+        public void TestGetGuidObject()
+        {
+            var api = Api();
+            var result = api.GetObject($"NakedFunctions.Rest.Test.Data.{nameof(GuidRecord)}", "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            
+        }
+
+
 
         [Test]
         public void TestGetEnumAction()

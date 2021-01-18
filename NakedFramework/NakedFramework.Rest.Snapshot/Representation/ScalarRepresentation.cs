@@ -31,7 +31,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        private void SetScalars(ObjectContextFacade objectContext) => Value = RestUtils.ObjectToPredefinedType(objectContext.Target.Object);
+        private void SetScalars(ObjectContextFacade objectContext) => Value = RestUtils.ObjectToPredefinedType(objectContext.Target.Object, false);
 
         private void SetLinks(HttpRequest req, ObjectContextFacade objectContext) => Links = new LinkRepresentation[] { };
 

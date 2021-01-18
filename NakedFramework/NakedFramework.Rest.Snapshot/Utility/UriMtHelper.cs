@@ -139,7 +139,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             : this(oidStrategy, req) {
             this.spec = spec;
             cachedId = "";
-            CachedType = RestUtils.SpecToPredefinedTypeString(spec, oidStrategy);
+            CachedType = RestUtils.SpecToPredefinedTypeString(spec, oidStrategy, false);
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade assoc, IObjectFacade objectFacade)
@@ -409,7 +409,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private static string GetParameterValue(RestControlFlags flags, string parameterValue) => parameterValue;
 
-        private string GetParameterValue(RestControlFlags flags, ITypeFacade parameterValueSpec) => RestUtils.SpecToPredefinedTypeString(parameterValueSpec, oidStrategy);
+        private string GetParameterValue(RestControlFlags flags, ITypeFacade parameterValueSpec) => RestUtils.SpecToPredefinedTypeString(parameterValueSpec, oidStrategy, false);
 
         public void AddListRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
             var specToUse = param == null ? spec : param.Specification;

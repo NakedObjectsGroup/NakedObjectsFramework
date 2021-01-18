@@ -40,7 +40,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             {typeof(void), PredefinedJsonType.Void}
         };
 
-        private static readonly Dictionary<Type, PredefinedFormatType> SimpleFormatMap = new Dictionary<Type, PredefinedFormatType> {
+        private static readonly Dictionary<Type, PredefinedFormatType?> SimpleFormatMap = new Dictionary<Type, PredefinedFormatType?> {
             {typeof(sbyte), PredefinedFormatType.Int},
             {typeof(byte), PredefinedFormatType.Int},
             {typeof(short), PredefinedFormatType.Int},
@@ -50,6 +50,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             {typeof(long), PredefinedFormatType.Int},
             {typeof(ulong), PredefinedFormatType.Int},
             {typeof(char), PredefinedFormatType.String},
+            {typeof(bool), null},
             {typeof(string), PredefinedFormatType.String},
             {typeof(float), PredefinedFormatType.Decimal},
             {typeof(double), PredefinedFormatType.Decimal},
@@ -156,7 +157,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public static object GetChoiceValue(IOidStrategy oidStrategy, IObjectFacade item, Func<ChoiceRelType> relType, RestControlFlags flags) {
             var title = SafeGetTitle(item);
-            var value = ObjectToPredefinedType(item.Object);
+            var value = ObjectToPredefinedType(item.Object, false);
             return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType(), flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
@@ -172,7 +173,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public static string SafeGetTitle(IAssociationFacade property, IObjectFacade valueNakedObject) => valueNakedObject == null ? "" : property.GetTitle(valueNakedObject);
 
-        private static PredefinedJsonType? TypeToPredefinedJsonType(Type toMapType) {
+        private static PredefinedJsonType? TypeToPredefinedJsonType(Type toMapType, bool isParseable) {
             if (SimpleTypeMap.ContainsKey(toMapType)) {
                 return SimpleTypeMap[toMapType];
             }
@@ -204,10 +205,15 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 return PredefinedJsonType.List;
             }
 
+            // if parseable default to string
+            if (isParseable) {
+                return PredefinedJsonType.String;
+            }
+
             return null;
         }
 
-        public static PredefinedFormatType? TypeToPredefinedFormatType(Type toMapType, bool useDateOverDateTime = false) {
+        public static PredefinedFormatType? TypeToPredefinedFormatType(Type toMapType, bool isParseable, bool useDateOverDateTime) {
             if (SimpleFormatMap.ContainsKey(toMapType)) {
                 return SimpleFormatMap[toMapType];
             }
@@ -225,14 +231,18 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 return PredefinedFormatType.Time;
             }
 
+            if (isParseable) {
+                return PredefinedFormatType.String;
+            }
+
             return null;
         }
 
-        public static (PredefinedJsonType, PredefinedFormatType?)? TypeToPredefinedTypes(Type toMapType, bool useDateOverDateTime = false) {
-            var pst = TypeToPredefinedJsonType(toMapType);
+        public static (PredefinedJsonType, PredefinedFormatType?)? TypeToPredefinedTypes(Type toMapType, bool isParseable, bool useDateOverDateTime) {
+            var pst = TypeToPredefinedJsonType(toMapType, isParseable);
 
             if (pst.HasValue) {
-                var pft = TypeToPredefinedFormatType(toMapType, useDateOverDateTime);
+                var pft = TypeToPredefinedFormatType(toMapType, isParseable, useDateOverDateTime);
                 return (pst.Value, pft);
             }
 
@@ -251,12 +261,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public static string ToTimeFormatString(TimeSpan time) => time.ToString(@"hh\:mm\:ss");
 
-        public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime = false) {
+        public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime) {
             static object ToUniversalTime(DateTime dt) => dt.Kind == DateTimeKind.Unspecified
                 ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
                 : dt.ToUniversalTime();
 
-            var predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(), useDateOverDateTime);
+            var predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(),false, useDateOverDateTime);
             return predefinedFormatType switch {
                 PredefinedFormatType.Date_time => ToUniversalTime((DateTime) toMap),
                 PredefinedFormatType.Date => ToDateFormatString((DateTime) toMap),
@@ -265,22 +275,22 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public static (PredefinedJsonType pdt, PredefinedFormatType? pft)? SpecToPredefinedTypes(ITypeFacade spec, bool useDateOverDateTime = false) {
+        public static (PredefinedJsonType pdt, PredefinedFormatType? pft)? SpecToPredefinedTypes(ITypeFacade spec, bool useDateOverDateTime) {
             if (spec.IsFileAttachment || spec.IsImage) {
                 return (PredefinedJsonType.String, PredefinedFormatType.Blob);
             }
 
             if (spec.IsParseable || spec.IsCollection || spec.IsVoid) {
                 var underlyingType = spec.GetUnderlyingType();
-                return TypeToPredefinedTypes(underlyingType, useDateOverDateTime);
+                return TypeToPredefinedTypes(underlyingType, spec.IsParseable, useDateOverDateTime);
             }
 
             return null;
         }
 
-        public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime = false) {
+        public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime) {
             if (!spec.IsVoid) {
-                var types = SpecToPredefinedTypes(spec);
+                var types = SpecToPredefinedTypes(spec, false);
                 return types != null ? types.Value.pdt.ToRoString() : spec.DomainTypeName(oidStrategy);
             }
 
@@ -306,7 +316,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public static bool IsBlobOrClob(ITypeFacade spec) {
             if (spec.IsParseable || spec.IsCollection) {
                 var underlyingType = spec.GetUnderlyingType();
-                var pdt = TypeToPredefinedFormatType(underlyingType);
+                var pdt = TypeToPredefinedFormatType(underlyingType, spec.IsParseable, false);
                 return pdt == PredefinedFormatType.Blob || pdt == PredefinedFormatType.Clob;
             }
 

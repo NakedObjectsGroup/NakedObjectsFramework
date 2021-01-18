@@ -940,7 +940,10 @@ let internal makePropertyMemberGuid oType (oName : string) (mName : string) (oVa
       
         TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Id"));
                                                              TProperty(JsonPropertyNames.Description, TObjectVal(""));
-                                                             TProperty(JsonPropertyNames.ReturnType, TObjectVal(tName));
+                                                             TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"));
+                                                             TProperty(JsonPropertyNames.MaxLength, TObjectVal(0));
+                                                             TProperty(JsonPropertyNames.Format, TObjectVal("string"));
+                                                             TProperty(JsonPropertyNames.Pattern, TObjectVal(""));
                                                              TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0));                                                   
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(false))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
