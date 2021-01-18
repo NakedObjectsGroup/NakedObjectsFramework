@@ -13,6 +13,14 @@ using static AW.Helpers;
 namespace AW.Functions {
     [Named("Employees")]
     public static class Employee_MenuFunctions {
+
+        [MemberOrder(1)]
+        public static Employee EnterEmailAddress(
+            [RegEx(Validation = @"([A-Z]{1,2}\d[A-Z\d]?).*(\d[ABD-HJLNP-UW-Z]{2})", Format = @"$1 $2", Message="Wrong!")] 
+            string email)
+        {
+            return null;
+        }
   
         [PageSize(15)]
         public static IQueryable<Employee> AllEmployees(IContext context) => context.Instances<Employee>();
