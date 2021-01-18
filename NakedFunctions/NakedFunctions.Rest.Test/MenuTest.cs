@@ -32,7 +32,7 @@ namespace NakedFunctions.Rest.Test
         protected override Type[] Functions { get; } = { typeof(SimpleMenuFunctions), typeof(DateMenuFunctions) };
 
         // todo should IAlert be here or should we ignore?
-        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(DateRecord) };
+        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(DateRecord) , typeof(TestEnum) };
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -154,6 +154,20 @@ namespace NakedFunctions.Rest.Test
             // todo test rest of json
 
         }
+
+
+        [Test]
+        public void TestGetMenuEnumAction()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByEnum));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("number", parsedResult["parameters"]["eParm"]["extensions"]["returnType"].ToString());
+        }
+
 
 
         [Test]
