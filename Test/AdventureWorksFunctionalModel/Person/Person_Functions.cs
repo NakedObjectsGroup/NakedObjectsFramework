@@ -27,20 +27,15 @@ namespace AW.Functions {
         [MemberOrder(1)]
         public static (Person, IContext) ChangePassword(this Person p, [Password] string oldPassword, [Password] string newPassword, [Named("New Password (Confirm)"), Password] string confirm, IContext context)
         {
-            var pw = new Password()
-            {
-                BusinessEntityID = p.BusinessEntityID,
-                PasswordHash = Hashed(newPassword, p.Password.PasswordSalt),
-                PasswordSalt = CreateRandomSalt()
-            };
-            var p2 = p with { Password = pw };
+              Password pw = Password_Functions.CreateNewPassword(newPassword, p.BusinessEntityID, context);
+            var p2 = p with { Password = pw, ModifiedDate = context.Now()};
             return (p2, context.WithPendingSave(p2, pw));
         }
 
         public static string ValidateChangePassword(this Person p, string oldPassword, string newPassword, string confirm)
         {
             var reason = "";
-            if (Hashed(oldPassword, p.Password.PasswordSalt) != p.Password.PasswordHash)
+            if (!p.Password.OfferedPasswordIsCorrect(oldPassword))
             {
                 reason += "Old Password is incorrect";
             }
@@ -61,27 +56,7 @@ namespace AW.Functions {
         #endregion
 
 
-        private static string Hashed(this string password, string salt)
-        {
-            string saltedPassword = password + salt;
-            byte[] data = Encoding.UTF8.GetBytes(saltedPassword);
-            byte[] hash = SHA256.Create().ComputeHash(data);
-            char[] chars = Encoding.UTF8.GetChars(hash);
-            return new string(chars);
-        }
-
-        private static string CreateRandomSalt()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var random = new Random();
-            var output = new StringBuilder();
-            for (int i = 1; i <= 7; i++)
-            {
-                output.Append(chars.Substring(random.Next(chars.Length - 1), 1));
-            }
-            output.Append("=");
-            return output.ToString();
-        }
+       
 
         #region Actions for test purposes only
 

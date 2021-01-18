@@ -13,13 +13,6 @@ using System.Collections.Generic;
 namespace AW.Types {
 
         public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
-          
-        [Hidden]
-        public IBusinessEntity ForEntity { get; init; }
-
-        [MemberOrder(2)]
-
-        public ContactType ContactType { get; init; }
 
         #region Name fields
 

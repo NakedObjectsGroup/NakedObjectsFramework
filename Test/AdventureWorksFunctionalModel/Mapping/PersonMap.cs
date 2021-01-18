@@ -10,13 +10,7 @@ namespace AW.Mapping
             // Primary Key
             HasKey(t => t.BusinessEntityID);
 
-            //Ignores
-            //Ignores
-            //Ignore(t => t.InitialPassword);
-            Ignore(t => t.ContactType);
-            Ignore(t => t.ForEntity);
-            //TODO: Temp ignored
-            Ignore(t => t.Password);
+             //Ignore(t => t.Password); //TODO: Why?
 
             Property(t => t.Title)
                 .HasMaxLength(8);
