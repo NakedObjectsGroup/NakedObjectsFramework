@@ -32,6 +32,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IQueryable<DateRecord> AutoComplete1AssociateWithDateRecord(this SimpleRecord simpleRecord, [MinLength(2)] string name, IContext context)
             => context.Instances<DateRecord>().Where(simpleRecord => simpleRecord.Name.ToUpper().StartsWith(name.ToUpper()));
 
+        public static SimpleRecord EnumParmSimpleRecord(this SimpleRecord sp, TestEnum eParm, IContext context) => sp;
     }
 
     public static class DateRecordFunctions {
@@ -50,4 +51,6 @@ namespace NakedFunctions.Rest.Test.Data {
     {
         public static DateRecord DateWithDefault([DefaultValue(22)] DateTime dt, IContext context) => new DateRecord();
     }
+
+ 
 }
