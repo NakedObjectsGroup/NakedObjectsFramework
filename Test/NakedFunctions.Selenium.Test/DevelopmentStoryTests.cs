@@ -169,7 +169,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             //Coresponds to (part of) #232
             GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--55864");
             WaitForTitle("SO55864");
-            string value = GetValueFromProperty("Status");
+            string value = GetPropertyValue("Status");
             Assert.AreEqual("Shipped", value);
         }
     }

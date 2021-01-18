@@ -425,21 +425,22 @@ namespace NakedFramework.Selenium.Helpers.Tests
             Right
         }
 
-        protected string GetValueFromProperty(string propertyName, Pane pane = Pane.Single)
+        protected string GetPropertyValue(string propertyName, Pane pane = Pane.Single)
+        {
+            var prop = GetProperty(propertyName, pane);
+            return prop.FindElement(By.CssSelector(".value")).Text;
+        }
+
+        protected IWebElement GetProperty(string propertyName, Pane pane = Pane.Single)
         {
             string propCss = CssSelectorFor(pane) + " " + "nof-view-property";
-            var prop = wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
-                .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":").Single()
-            );
-            return prop.FindElement(By.CssSelector(".value")).Text;
+            return wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
+                .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":").Single());
         }
 
         protected IWebElement GetReferenceFromProperty(string propertyName, Pane pane = Pane.Single)
         {
-            string propCss = CssSelectorFor(pane) + " " + ".property";
-            var prop = wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
-                .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":").Single()
-            );
+            var prop = GetProperty(propertyName, pane);
             return prop.FindElement(By.CssSelector(".reference"));
         }
 

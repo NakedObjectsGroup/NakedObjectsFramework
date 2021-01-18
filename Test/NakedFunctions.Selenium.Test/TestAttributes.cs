@@ -73,6 +73,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Named();
             Optionally();
             PageSize();
+            Password();
             RegEx();
             ValueRangeInt();
         }
@@ -185,8 +186,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--51131");
             WaitForTitle( "SO51131");
-            var comment = WaitForCssNo("nof-view-property", 19);
-            Assert.AreEqual("Comment:", comment.FindElement(By.CssSelector(".name")).Text);
+            var comment = GetProperty("Comment");
             comment.FindElement(By.CssSelector(".multiline"));           
         }
 
@@ -223,7 +223,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Page 1 of 20; viewing 15 of 290 items", page.Text);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void Password()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Person--11714&as1=open&d1=ChangePassword");
