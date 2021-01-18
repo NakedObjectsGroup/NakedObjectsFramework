@@ -19,38 +19,7 @@ namespace AW.Functions {
 
     public static class Person_Functions
     {
-        #region Life Cycle Methods
-        public static BusinessEntityContact Persisted(Person p)
-        {
-            return new BusinessEntityContact()
-            {
-                //TODO:
-                //p.ForEntity.BusinessEntityID,
-                //p,
-                //p.BusinessEntityID,
-                //p,
-                //p.ContactType.ContactTypeID,
-                //p.ContactType,
-                //guid,
-                //now
-            };
-        }
 
-        //TODO
-        public static Person Persisting(Person p,  IContext context)
-        {
-            throw new NotImplementedException();
-            ////return Updating(p, now) with {rowguid =  guid).CreateSaltAndHash(p.InitialPassword}
-            ////     with {BusinessEntityRowguid =  guid}
-            ////     with {BusinessEntityModifiedDate =  now};
-        }
-
-        //TODO
-        public static Person Updating(Person x,  IContext context) => 
-         x with {BusinessEntityModifiedDate =  context.Now(), ModifiedDate = context.Now()};
-
-
-        #endregion
 
         #region ChangePassword (Action)
 

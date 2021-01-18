@@ -97,26 +97,11 @@ namespace AW.Functions {
 
         #endregion
 
-
         internal static bool IsPending(this PurchaseOrderHeader poh) => poh.Status == 1;
  
+        //TODO: call this from any function updating poh
+        public static PurchaseOrderHeader Updating(PurchaseOrderHeader x, IContext context) =>
+            x with {ModifiedDate =  context.Now(), RevisionNumber = Convert.ToByte(x.RevisionNumber + 1) };
 
-        #region Life Cycle Methods
-
-        //TODO: This work needs to be done in constructor
-        public static void Created(PurchaseOrderHeader header)
-        {
-            //RevisionNumber = 0;
-            //Status = 1;
-            //OrderDate = DateTime.Today.Date;
-        }
-
-        //TODO
-        public static PurchaseOrderHeader Updating(PurchaseOrderHeader x, IContext context)
-        {
-            byte newRev = Convert.ToByte(x.RevisionNumber + 1);
-            return x with {ModifiedDate =  context.Now(), RevisionNumber = newRev};
-        }
-        #endregion
     }
 }

@@ -105,7 +105,13 @@ namespace AW.Functions
         #region Create New Purchase Order
         [MemberOrder(6, "Purchase Orders")]
         public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(this Vendor vendor, IContext context) =>
-            DisplayAndSave(new PurchaseOrderHeader() { Vendor = vendor, ShipDate = context.Today() }, context);
+            DisplayAndSave(new PurchaseOrderHeader() { 
+                Vendor = vendor,
+                RevisionNumber = 0,
+                Status = 1,
+                OrderDate = context.Today(),
+                ShipDate = context.Today()}, 
+                context);
 
 
         [PageSize(20)]
