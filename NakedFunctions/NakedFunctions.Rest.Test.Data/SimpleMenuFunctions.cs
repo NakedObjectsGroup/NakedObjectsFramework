@@ -36,5 +36,7 @@ namespace NakedFunctions.Rest.Test.Data {
             int id = int.Parse(number);
             return context.Instances<SimpleRecord>().Where(x => x.Id == id).SingleObjectWarnIfNoMatch(context);
         }
+
+        public static IQueryable<SimpleRecord> FindByEnum(TestEnum eParm, IContext context) => context.Instances<SimpleRecord>();
     }
 }
