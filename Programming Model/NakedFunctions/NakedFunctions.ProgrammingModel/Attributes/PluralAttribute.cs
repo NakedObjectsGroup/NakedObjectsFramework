@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFunctions.Attributes {
+namespace NakedFunctions {
     /// <summary>
     ///     Specify the plural form of the object's name
     /// </summary>
