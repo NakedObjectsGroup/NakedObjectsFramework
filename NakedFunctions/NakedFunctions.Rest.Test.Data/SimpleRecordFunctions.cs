@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -49,10 +50,11 @@ namespace NakedFunctions.Rest.Test.Data {
         public static DateRecord DateWithDefault(this DateRecord sp, [DefaultValue(22)] DateTime dt, IContext context) => sp;
     }
 
-    public static class DateMenuFunctions
-    {
-        public static DateRecord DateWithDefault([DefaultValue(22)] DateTime dt, IContext context) => new DateRecord();
-    }
 
- 
+    public static class ChoicesRecordFunctions
+    {
+        public static SimpleRecord WithChoices(this SimpleRecord sp, SimpleRecord record, IContext context) => record;
+
+        public static IList<SimpleRecord> Choices1WithChoices(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>().ToList();
+    }
 }

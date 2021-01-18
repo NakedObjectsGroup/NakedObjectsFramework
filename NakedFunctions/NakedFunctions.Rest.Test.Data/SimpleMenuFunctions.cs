@@ -41,6 +41,11 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IQueryable<SimpleRecord> FindByEnum(TestEnum eParm, IContext context) => context.Instances<SimpleRecord>();
     }
 
+    public static class DateMenuFunctions
+    {
+        public static DateRecord DateWithDefault([DefaultValue(22)] DateTime dt, IContext context) => new DateRecord();
+    }
+
     public static class ChoicesMenuFunctions {
         public static SimpleRecord WithChoices(SimpleRecord record, IContext context) => record;
 

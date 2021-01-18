@@ -33,7 +33,7 @@ namespace NakedFunctions.Rest.Test
 
     public class ObjectTest : AcceptanceTestCase
     {
-        protected override Type[] Functions { get; } = { typeof(SimpleRecordFunctions), typeof(DateRecordFunctions) };
+        protected override Type[] Functions { get; } = { typeof(SimpleRecordFunctions), typeof(DateRecordFunctions), typeof(ChoicesRecordFunctions)};
 
         protected override Type[] Records { get; } = {
             typeof(SimpleRecord),
@@ -311,6 +311,31 @@ namespace NakedFunctions.Rest.Test
 
             Assert.AreEqual("2-1-1", resultObj["title"].ToString());
         }
+
+        [Test]
+        public void TestGetRecordActionWithChoices()
+        {
+            var api = Api();
+            var result = api.GetAction($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(ChoicesRecordFunctions.WithChoices));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ChoicesRecordFunctions.WithChoices), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+            var choices = parameters["record"]["choices"];
+
+            Assert.AreEqual(3, choices.Count());
+            Assert.AreEqual("Fred", choices[0]["title"].ToString());
+            Assert.AreEqual("Bill", choices[1]["title"].ToString());
+            Assert.AreEqual("Jack", choices[2]["title"].ToString());
+
+
+        }
+
+
+
 
         //[Test]
         //public void TestInvokeAutoComplete()
