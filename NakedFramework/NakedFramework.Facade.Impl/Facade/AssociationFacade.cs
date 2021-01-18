@@ -104,7 +104,7 @@ namespace NakedObjects.Facade.Impl {
             ((TypeFacade) objectFacade.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
             WrappedSpec.ContainsFacet<IEagerlyFacet>();
 
-        public DataType? DataType => WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType();
+        public DataType? DataType => WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType() ?? WrappedSpec.GetFacet<IPasswordFacet>()?.DataType;
 
         public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
             var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;

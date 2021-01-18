@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
@@ -14,5 +15,7 @@ namespace NakedObjects.Meta.Facet {
     public sealed class PasswordFacet : MarkerFacetAbstract, IPasswordFacet {
         public PasswordFacet(ISpecification holder)
             : base(typeof(IPasswordFacet), holder) { }
+
+        public DataType? DataType => System.ComponentModel.DataAnnotations.DataType.Password;
     }
 }
