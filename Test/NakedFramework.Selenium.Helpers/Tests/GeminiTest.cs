@@ -890,7 +890,7 @@ namespace NakedFramework.Selenium.Helpers.Tests
             WaitForView(Pane.Single, PaneType.Home, "Home");
             string menuSelector = $"nof-menu-bar nof-action input[title=\"{menuName}\"";
             wait.Until(dr => dr.FindElement(By.CssSelector(menuSelector)));
-            IWebElement menu = br.FindElement(By.CssSelector($"nof-menu-bar nof-action input[title={menuName}"));
+            IWebElement menu = br.FindElement(By.CssSelector($"nof-menu-bar nof-action input[title=\"{menuName}\"]"));
             Click(menu);
         }
         protected void OpenMainMenuAction(string menuName, string actionName)

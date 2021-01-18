@@ -28,7 +28,6 @@ namespace AW.Types
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        [Hidden]
         public virtual Guid rowguid { get; init; }
 
         public override string ToString() => $"Sales Tax Rate for {StateProvince}";
