@@ -15,8 +15,10 @@ namespace AW.Functions
             return vendor.Products.Select(vp => vp.Product).ToList();
         }
 
-        public static (Person, IContext) CreateNewContact(this Vendor vendor, IContext context) =>
-          DisplayAndSave(new Person() with { ForEntity = vendor }, context);
+        //TODO: Should be obsoleted by generic implementation, def on BusinessEntity_Functions?
+        //public static (Person, IContext) CreateNewContact(this Vendor vendor, IContext context) =>
+        //    throw new NotImplementedException();    
+          //DisplayAndSave(new Person() with { ForEntity = vendor }, context);
 
         [DescribedAs("Get report from credit agency")]
         public static Vendor CheckCredit(this Vendor v)

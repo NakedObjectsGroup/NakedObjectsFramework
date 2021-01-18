@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework;
-using NakedFunctions.Attributes;
+using NakedFunctions;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;

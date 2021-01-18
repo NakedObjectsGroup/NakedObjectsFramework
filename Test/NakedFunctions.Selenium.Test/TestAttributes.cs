@@ -223,6 +223,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Page 1 of 20; viewing 15 of 290 items", page.Text);
         }
 
+        [TestMethod]
+        public void Password()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Person--11714&as1=open&d1=ChangePassword");
+            WaitForTitle("Marshall Black");
+            var oldPWField = WaitForCss("input#oldpassword1");
+            Assert.AreEqual("password",  oldPWField.GetAttribute("type"));
+        }
+
         //[TestMethod]
         public void RegEx()
         {
