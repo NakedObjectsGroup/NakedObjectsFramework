@@ -29,7 +29,7 @@ namespace AW.Functions {
 
         [MemberOrder(10)]
         public static Customer FindCustomerByAccountNumber(
-            [DefaultValue("AW")][RegEx(Validation = @"^AW\d{8}$")] string accountNumber, IContext context) =>
+            [DefaultValue("AW")][RegEx(@"^AW\d{8}$")] string accountNumber, IContext context) =>
             context.Instances<Customer>().Where(x => x.AccountNumber == accountNumber).FirstOrDefault();
 
 

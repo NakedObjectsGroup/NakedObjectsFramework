@@ -13,13 +13,7 @@ using static AW.Helpers;
 namespace AW.Functions {
     [Named("Employees")]
     public static class Employee_MenuFunctions {
-
-        [MemberOrder(1)]
-        public static (Employee, IContext) EnterPhone(
-            [RegEx(Validation = @"^([0-9][0-9\s-]+)$", Format = @"+44 $1")]
-            string phone, IContext context) =>
-            (null, context.WithInformUser($"Formatted phone: {phone}"));
-  
+ 
         [PageSize(15)]
         public static IQueryable<Employee> AllEmployees(IContext context) => context.Instances<Employee>();
 

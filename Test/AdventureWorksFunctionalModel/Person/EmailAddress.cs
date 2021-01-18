@@ -14,7 +14,7 @@ namespace AW.Types
         public virtual int EmailAddressID { get; init; }
 
         [Named("Email Address")]
-        [RegEx(Validation = @"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$", Message = "Not a valid email address")]
+        [RegEx(@"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$")]
         public virtual string EmailAddress1 { get; init; }
 
         [Hidden]

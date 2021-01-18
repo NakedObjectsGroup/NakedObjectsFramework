@@ -9,56 +9,33 @@ using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     Validate and potentially to normalise the format of the input using supplied regular expression.
+    ///     Validate the format of the input using supplied regular expression.
+    ///     Optional second parameter may be set to true to enforce case sensitivity.
     /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         The RegEx attribute may be applied to any property, or to any parameter within an action method,
-    ///         that allows the user to type in text as input. It serves both to validate and potentially to
-    ///         normalise the format of the input. RegEx is therefore similar in use to Mask but provides more
-    ///         flexibility.
-    ///     </para>
-    ///     <para>
-    ///         For example this annotation should validate UK postcodes and format them with a space
-    ///         <code>
-    /// [RegEx(Validation = @"([A-Z]{1,2}\d[A-Z\d]?).*(\d[ABD-HJLNP-UW-Z]{2})", Format = @"$1 $2")]
-    /// </code>
-    ///         <para>
-    ///             (Regex from Ben Forta, Regular Expressions, SAMS)
-    ///         </para>
-    ///     </para>
-    /// </remarks>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+    [AttributeUsage(AttributeTargets.Parameter)]
     public class RegExAttribute : Attribute {
-        public RegExAttribute() : this("") { }
-        public RegExAttribute(string format) : this(format, false) { }
 
-        public RegExAttribute(string format, bool caseSensitive) {
+            public RegExAttribute(string validation, bool caseSensitive = false) {
             CaseSensitive = caseSensitive;
-            Format = format;
+            Validation = validation;
         }
 
         /// <summary>
         ///     Validation regular expression string a match is considered success.
         /// </summary>
-        public string Validation { get; set; }
+        public string Validation { get; private set; }
 
-        /// <summary>
-        ///     Message to display if the validation fails
-        /// </summary>
-        public string Message { get; set; }
+        /// TODO: Delete
+        public string Message { get; private set; }
 
-        /// <summary>
-        ///     Format regular expression substitution string
-        /// </summary>
-        /// <para>
+        /// TODO: Delete
         ///     http://msdn.microsoft.com/en-us/library/ewy2t5e0.aspx"/>
         /// </para>
-        public string Format { get; set; }
+        public string Format { get; private set; }
 
         /// <summary>
         ///     Case sensitivity - defaults to false (non-sensitive)
         /// </summary>
-        public bool CaseSensitive { get; set; }
+        public bool CaseSensitive { get; private set; }
     }
 }
