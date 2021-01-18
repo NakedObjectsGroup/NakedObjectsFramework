@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NakedFunctions.Rest.Test.Data {
@@ -25,18 +26,24 @@ namespace NakedFunctions.Rest.Test.Data {
 
         internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
 
-        internal static Action<IAlert> WarnUser(string message) => (IAlert ua) => ua.WarnUser(message);
+        internal static Action<IAlert> WarnUser(string message) => ua => ua.WarnUser(message);
 
-        internal static Action<IAlert> InformUser(string message) => (IAlert ua) => ua.InformUser(message);
+        internal static Action<IAlert> InformUser(string message) => ua => ua.InformUser(message);
 
         internal static (T, IContext) SingleObjectWarnIfNoMatch<T>(this IQueryable<T> query, IContext context) =>
             (query.FirstOrDefault(), query.Any() ? context : context.WithAction(WarnUser("There is no matching object")));
 
         public static (SimpleRecord, IContext) FindByNumber(string number, IContext context) {
-            int id = int.Parse(number);
+            var id = int.Parse(number);
             return context.Instances<SimpleRecord>().Where(x => x.Id == id).SingleObjectWarnIfNoMatch(context);
         }
 
         public static IQueryable<SimpleRecord> FindByEnum(TestEnum eParm, IContext context) => context.Instances<SimpleRecord>();
+    }
+
+    public static class ChoicesMenuFunctions {
+        public static SimpleRecord WithChoices(SimpleRecord record, IContext context) => record;
+
+        public static IList<SimpleRecord> Choices0WithChoices(IContext context) => context.Instances<SimpleRecord>().ToList();
     }
 }

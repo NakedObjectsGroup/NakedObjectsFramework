@@ -29,7 +29,7 @@ namespace NakedFunctions.Rest.Test
 
     public class MenuTest : AcceptanceTestCase
     {
-        protected override Type[] Functions { get; } = { typeof(SimpleMenuFunctions), typeof(DateMenuFunctions) };
+        protected override Type[] Functions { get; } = { typeof(SimpleMenuFunctions), typeof(DateMenuFunctions), typeof(ChoicesMenuFunctions) };
 
         // todo should IAlert be here or should we ignore?
         protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(DateRecord) , typeof(TestEnum) };
@@ -45,7 +45,8 @@ namespace NakedFunctions.Rest.Test
 
         protected override IMenu[] MainMenus(IMenuFactory factory) => new[] {
             factory.NewMenu(typeof(SimpleMenuFunctions), true, "Test menu"),
-            factory.NewMenu(typeof(DateMenuFunctions), true, "Date Test menu")
+            factory.NewMenu(typeof(DateMenuFunctions), true, "Date Test menu"),
+            factory.NewMenu(typeof(ChoicesMenuFunctions), true, "Choices Test menu")
         };
 
         protected override void RegisterTypes(IServiceCollection services)
@@ -306,6 +307,29 @@ namespace NakedFunctions.Rest.Test
 
             Assert.AreEqual(FormatForTest(DateTime.UtcNow.AddDays(22)), psd["default"].ToString());
         }
+
+        [Test]
+        public void TestGetMenuActionWithChoices()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoices));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoices), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+            var choices = parameters["record"]["choices"];
+
+            Assert.AreEqual(3, choices.Count());
+            Assert.AreEqual("Fred", choices[0]["title"].ToString());
+            Assert.AreEqual("Bill", choices[1]["title"].ToString());
+            Assert.AreEqual("Jack", choices[2]["title"].ToString());
+
+
+        }
+
 
 
         //[Test]
