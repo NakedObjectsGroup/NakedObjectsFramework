@@ -70,6 +70,9 @@ namespace AW.Functions {
         //        {
         //            var detail = AddNewDetail(product, quantity, sops);
         //            Container.Persist(ref detail);
+        // TODO: Call this at the end
+        //SalesOrderHeader.Recalculate()
+
         //        }
         //        public virtual string DisableAddNewDetails()
         //        {

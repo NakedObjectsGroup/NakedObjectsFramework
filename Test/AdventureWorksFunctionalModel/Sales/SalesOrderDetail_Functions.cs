@@ -13,17 +13,7 @@ namespace AW.Functions {
 
     public static class SalesOrderDetail_Functions
     {
-        #region Life Cycle methods
-
-        public static void Persisted(this SalesOrderDetail sod)
-        {
-            //TODO:
-            //SalesOrderHeader.Details.Add(this);
-            //SalesOrderHeader.Recalculate();
-        }
-
-        #endregion
-
+        //Call this from any function that updates a SalesOrderDetail
         public static (SalesOrderDetail, IContext) Recalculate(this SalesOrderDetail sod)
         {
             throw new NotImplementedException();

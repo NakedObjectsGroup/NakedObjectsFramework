@@ -10,11 +10,6 @@ namespace AW.Mapping
             // Primary Key
             HasKey(t => t.AddressID);
 
-            //Ignores
-            Ignore(t => t.AddressType);
-            Ignore(t => t.AddressFor);
-            Ignore(t => t.CountryRegion);
-
             // Properties
             Property(t => t.AddressLine1)
                 .IsRequired()

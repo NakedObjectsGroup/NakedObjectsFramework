@@ -15,12 +15,6 @@ namespace AW.Functions {
   
     public static class Address_Functions
     {
-        #region LifeCycle methods
-        //TODO
-        public static BusinessEntityAddress Persisted(Address x, IContext context) =>
-            throw new NotImplementedException();
-            //=>  new BusinessEntityAddress() with { Address = x.AddressF, AddressTypeID = x.AddressTypeID, BusinessEntityID = x.AddressForID, rowguid = context.NewGuid(), ModifiedDate = context.Now() };
-        #endregion
 
         #region Property-associated functions
         public static string Validate(this Address a, CountryRegion countryRegion, StateProvince stateProvince, IQueryable<StateProvince> allProvinces)

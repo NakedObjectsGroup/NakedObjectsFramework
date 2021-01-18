@@ -10,6 +10,7 @@ using System.Linq;
 using NakedFunctions;
 using AW.Types;
 using static AW.Helpers;
+using System;
 
 namespace AW.Functions {
     [Named("Persons")]
@@ -54,5 +55,17 @@ namespace AW.Functions {
 
         public static IList<BusinessEntityAddress> RecentAddressLinks(IContext context) =>
          context.Instances<BusinessEntityAddress>().OrderByDescending(a => a.ModifiedDate).Take(10).ToList();
+
+        //TODO: Add mandatory fields
+        //Review if this should be a menu function or just a shared function called from BusinessEntity_Functions.CreateNewContact and from Employee_MenuFunctions create new Employee
+        public static (Person, IContext) CreateNewPerson(
+            [Password] string initialPassword,
+            IContext context)
+        {
+            throw new NotImplementedException();
+            //TODO: 
+            //CreateSaltAndHash(p.InitialPassword}
+            //rowguid & modified date
+        }
     }
 }
