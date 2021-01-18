@@ -41,7 +41,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
                 MenuPath = MenuPath,
                 MenuId = MenuId,
                 Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? ""),
-                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextFacade(facade, framework)).ToArray(),
+                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextFacade(facade, framework, MenuId)).ToArray(),
                 VisibleProperties = VisibleProperties.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray()
             };
             return ToContextFacade(ac, facade, framework);

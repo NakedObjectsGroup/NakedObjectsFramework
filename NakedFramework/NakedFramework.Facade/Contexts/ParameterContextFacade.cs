@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Globalization;
+
 namespace NakedObjects.Facade.Contexts {
     public class ParameterContextFacade : ContextFacade {
         public IActionParameterFacade Parameter { get; set; }
@@ -17,5 +19,7 @@ namespace NakedObjects.Facade.Contexts {
         public override ITypeFacade ElementSpecification => Parameter.ElementType;
 
         public IActionFacade Action { get; set; }
+
+        public string MenuId { get; init; }
     }
 }

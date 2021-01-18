@@ -44,12 +44,12 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         public virtual string GetId() => ActionContext.Action.Id;
 
-        protected ParameterRepresentation GetParameter(IActionParameterFacade parameter) {
+        protected ParameterRepresentation GetParameter(ParameterContextFacade parameterContext) {
             var objectFacade = ActionContext.Target;
-            return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, parameter, Flags);
+            return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, parameterContext, Flags);
         }
 
-        protected virtual IEnumerable<ParameterRepresentation> GetParameterList() => ActionContext.VisibleParameters.Select(p => GetParameter(p.Parameter));
+        protected virtual IEnumerable<ParameterRepresentation> GetParameterList() => ActionContext.VisibleParameters.Select(GetParameter);
 
         public virtual MapRepresentation GetParameters() => RestUtils.CreateMap(parameterList.ToDictionary(p => p.Name, p => (object) p));
 

@@ -331,6 +331,27 @@ namespace NakedFunctions.Rest.Test
         }
 
 
+        [Test]
+        public void TestGetMenuActionWithChoicesWithParameters()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParameters));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParameters), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(3, parameters.Count());
+            var prompt = parameters["record"]["links"][0];
+
+            Assert.AreEqual(2, prompt["arguments"].Count());
+            Assert.AreEqual(@"http://localhost/menus/ChoicesMenuFunctions/actions/WithChoicesWithParameters/params/record/prompt", prompt["href"].ToString());
+        }
+
+
+
+
 
         //[Test]
         //public void TestInvokeMenuActionThatReturnsObject()

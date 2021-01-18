@@ -124,15 +124,25 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             : this(oidStrategy, req) {
             action = parameterContext.Action;
             param = parameterContext.Parameter;
-            objectFacade = parameterContext.Target;
-            spec = objectFacade.Specification;
-            if (objectFacade.Specification.IsParseable) {
-                throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
-            }
 
-            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
-            cachedId = oid.InstanceId;
-            CachedType = oid.DomainType;
+            if (parameterContext.Target is null)
+            {
+                spec = parameterContext.Action.OnType;
+                cachedId = "";
+                CachedType = parameterContext.MenuId;
+            }
+            else {
+
+                objectFacade = parameterContext.Target;
+                spec = objectFacade.Specification;
+                if (objectFacade.Specification.IsParseable) {
+                    throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
+                }
+
+                var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
+                cachedId = oid.InstanceId;
+                CachedType = oid.DomainType;
+            }
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, ITypeFacade spec)

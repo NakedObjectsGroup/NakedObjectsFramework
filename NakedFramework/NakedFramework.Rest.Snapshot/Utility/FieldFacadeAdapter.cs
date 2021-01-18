@@ -24,6 +24,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public string Id => parameter?.Id ?? association?.Id;
 
+        public string MenuId { get; init; }
+
         public Choices IsChoicesEnabled => (parameter?.IsChoicesEnabled ?? association?.IsChoicesEnabled).GetValueOrDefault();
         public ITypeFacade Specification => parameter?.Specification ?? association?.Specification;
         public ITypeFacade ElementType => parameter?.ElementType ?? association?.ElementSpecification;
@@ -52,7 +54,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 var parameterContext = new ParameterContextFacade {
                     Action = parameter.Action,
                     Target = objectFacade,
-                    Parameter = parameter
+                    Parameter = parameter,
+                    MenuId = MenuId
                 };
                 return new UriMtHelper(oidStrategy, req, parameterContext);
             }

@@ -20,11 +20,12 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public string OverloadedUniqueId { get; set; }
 
-        public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
+        public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework, string menuId) {
             var pc = new ParameterContextFacade {
                 Parameter = new ActionParameterFacade(Parameter, facade, framework, OverloadedUniqueId ?? ""),
                 Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? ""),
-                Completions = Completions?.ToListContextFacade(facade, framework)
+                Completions = Completions?.ToListContextFacade(facade, framework),
+                MenuId = menuId
             };
             return ToContextFacade(pc, facade, framework);
         }

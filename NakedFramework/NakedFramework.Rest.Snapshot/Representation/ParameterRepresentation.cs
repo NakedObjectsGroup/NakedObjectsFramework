@@ -140,8 +140,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return CreateDefaultLink(oidStrategy, req, parameter, action, defaultNakedObject, title, flags);
         }
 
-        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade, IActionParameterFacade parameter, RestControlFlags flags) {
+        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade, ParameterContextFacade parameterContext, RestControlFlags flags) {
             var optionals = new List<OptionalProperty>();
+            var parameter = parameterContext.Parameter;
 
             if (parameter.IsChoicesEnabled != Choices.NotEnabled && !parameter.GetChoicesParameters().Any()) {
                 var choices = parameter.GetChoices(objectFacade, null);
@@ -149,7 +150,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
             }
 
-            var adapter = new FieldFacadeAdapter(parameter);
+            var adapter = new FieldFacadeAdapter(parameter) {MenuId = parameterContext.MenuId};
 
             // include default value for for non-nullable boolean so we can distinguish from nullable on client 
             if (parameter.DefaultTypeIsExplicit(objectFacade) || parameter.Specification.IsBoolean && !parameter.IsNullable) {
