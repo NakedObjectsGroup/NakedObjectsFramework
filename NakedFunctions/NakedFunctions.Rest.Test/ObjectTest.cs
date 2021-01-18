@@ -334,6 +334,24 @@ namespace NakedFunctions.Rest.Test
 
         }
 
+        [Test]
+        public void TestGetRecordActionWithChoicesWithParameters()
+        {
+            var api = Api();
+            var result = api.GetAction($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(ChoicesRecordFunctions.WithChoicesWithParameters));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParameters), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(3, parameters.Count());
+            var prompt = parameters["record"]["links"][0];
+
+            Assert.AreEqual(2, prompt["arguments"].Count());
+            Assert.AreEqual(@"http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1/actions/WithChoicesWithParameters/params/record/prompt", prompt["href"].ToString());
+        }
+
 
 
 
