@@ -75,6 +75,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             PageSize();
             Password();
             RegEx();
+            RenderEagerly();
             ValueRangeInt();
         }
 
@@ -83,7 +84,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             //Change Department Or Shift on Employee. Both params are of Bounded types
             GeminiUrl("object?i1=View&o1=AW.Types.Employee--7&c1_DepartmentHistory=Table&as1=open&d1=ChangeDepartmentOrShift");
-            WaitForTitle( "Dylan Miller");
+            WaitForTitle("Dylan Miller");
             wait.Until(d => d.FindElements(By.CssSelector("#department1 option")).Count() >= 3);
             var options = br.FindElements(By.CssSelector("#department1 option")).Select(e => e.Text).ToArray();
             Assert.AreEqual("Engineering", options[0]);
@@ -108,7 +109,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void DescribedAsFunction()
         {
             GeminiUrl("home?m1=Sales_MenuFunctions");
-            WaitForTitle( "Home");
+            WaitForTitle("Home");
             var action1 = WaitForCssNo("nof-action-list nof-action input", 0);
             Assert.AreEqual("Create New Sales Person", action1.GetAttribute("value"));
             Assert.AreEqual("... from an existing Employee", action1.GetAttribute("title"));
@@ -143,7 +144,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void Mask()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Product--497");
-            WaitForTitle( "Pinch Bolt");
+            WaitForTitle("Pinch Bolt");
             var prop4 = WaitForCssNo("nof-view-property", 4);
             Assert.AreEqual("List Price:", prop4.FindElement(By.CssSelector(".name")).Text);
             Assert.AreEqual("£0.00", prop4.FindElement(By.CssSelector(".value")).Text);
@@ -159,7 +160,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var description = "input#description1";
             string longText = "Now is the time for all good men to come to the aid of the party.";
             string invalid = "Too long";
-            var validation = WaitForCssNo("nof-edit-parameter .validation",0);
+            var validation = WaitForCssNo("nof-edit-parameter .validation", 0);
             Assert.AreEqual("", validation.Text);
 
             TypeIntoFieldWithoutClearing(description, longText);
@@ -169,11 +170,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("", validation.Text);
         }
 
-            //[TestMethod]
-            public void MemberOrder()
+        //[TestMethod]
+        public void MemberOrder()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Store--670");
-            WaitForTitle( "Fitness Cycling");
+            WaitForTitle("Fitness Cycling");
             Assert.AreEqual("Modified Date:", WaitForCssNo("nof-view-property .name", 3).Text);
             Assert.AreEqual("Sales Person:", WaitForCssNo("nof-view-property .name", 2).Text);
             Assert.AreEqual("Demographics:", WaitForCssNo("nof-view-property .name", 1).Text);
@@ -185,18 +186,18 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void MultiLine()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--51131");
-            WaitForTitle( "SO51131");
+            WaitForTitle("SO51131");
             var comment = GetProperty("Comment");
-            comment.FindElement(By.CssSelector(".multiline"));           
+            comment.FindElement(By.CssSelector(".multiline"));
         }
 
-       // [TestMethod]
+        // [TestMethod]
         public void Named()
         {
             Home();
-           var employee_menuFunctions = WaitForCssNo("nof-menu-bar nof-action input", 0);
+            var employee_menuFunctions = WaitForCssNo("nof-menu-bar nof-action input", 0);
             Assert.AreEqual("Employees", employee_menuFunctions.GetAttribute("value"));
-         }
+        }
 
         //[TestMethod]
         public void Optionally()
@@ -216,9 +217,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void PageSize()
         {
             GeminiUrl("home?m1=Employee_MenuFunctions");
-            WaitForTitle( "Home");
+            WaitForTitle("Home");
             Click(WaitForCss("input[value=\"All Employees\""));
-            WaitForTitle( "All Employees");
+            WaitForTitle("All Employees");
             var page = WaitForCss(".summary .details");
             Assert.AreEqual("Page 1 of 20; viewing 15 of 290 items", page.Text);
         }
@@ -229,7 +230,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             GeminiUrl("object?i1=View&o1=AW.Types.Person--11714&as1=open&d1=ChangePassword");
             WaitForTitle("Marshall Black");
             var oldPWField = WaitForCss("input#oldpassword1");
-            Assert.AreEqual("password",  oldPWField.GetAttribute("type"));
+            Assert.AreEqual("password", oldPWField.GetAttribute("type"));
         }
 
         //[TestMethod]
@@ -252,6 +253,16 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ClearFieldThenType(input, "AW00012345");
             Assert.AreEqual("", validation.Text);
 
+        }
+
+        //[TestMethod]
+        public void RenderEagerly()
+        {
+            GeminiUrl("home");
+            WaitForTitle("Home");
+            OpenMainMenuAction("Employees", "List All Departments");
+            WaitForTitle("List All Departments");
+            wait.Until(dr => dr.FindElements(By.CssSelector("th")).Where(el => el.Text == "Group Name").Single());
         }
 
         //[TestMethod]
