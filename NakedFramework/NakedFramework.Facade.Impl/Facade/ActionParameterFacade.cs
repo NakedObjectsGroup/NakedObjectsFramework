@@ -40,7 +40,8 @@ namespace NakedObjects.Facade.Impl {
 
         public int? MaxLength => WrappedSpec.GetMaxLength();
 
-        public DataType? DataType => WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType();
+        public DataType? DataType => 
+            WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType() ?? WrappedSpec.GetFacet<IPasswordFacet>()?.DataType;
 
         public bool IsDateOnly => WrappedSpec.ContainsFacet<IDateOnlyFacet>();
 

@@ -142,6 +142,19 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual("Hint4", parsedResult["parameters"]["name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
         }
 
+
+        [Test]
+        public void TestGetObjectActionPassword()
+        {
+            var api = Api();
+            var result = api.GetAction($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.PasswordParmSimpleRecord));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("password", parsedResult["parameters"]["parm"]["extensions"]["x-ro-nof-dataType"].ToString());
+        }
+
         [Test]
         public void TestGetEnumObject()
         {
@@ -165,8 +178,6 @@ namespace NakedFunctions.Rest.Test
 
             Assert.AreEqual("number", parsedResult["parameters"]["eParm"]["extensions"]["returnType"].ToString());
         }
-
-
 
 
         [Test]
