@@ -14,8 +14,7 @@ namespace NakedFunctions {
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public class RegExAttribute : Attribute {
-
-            public RegExAttribute(string validation, bool caseSensitive = false) {
+        public RegExAttribute(string validation, bool caseSensitive = false) {
             CaseSensitive = caseSensitive;
             Validation = validation;
         }
@@ -23,19 +22,11 @@ namespace NakedFunctions {
         /// <summary>
         ///     Validation regular expression string a match is considered success.
         /// </summary>
-        public string Validation { get; private set; }
-
-        /// TODO: Delete
-        public string Message { get; private set; }
-
-        /// TODO: Delete
-        ///     http://msdn.microsoft.com/en-us/library/ewy2t5e0.aspx"/>
-        /// </para>
-        public string Format { get; private set; }
+        public string Validation { get; }
 
         /// <summary>
         ///     Case sensitivity - defaults to false (non-sensitive)
         /// </summary>
-        public bool CaseSensitive { get; private set; }
+        public bool CaseSensitive { get; }
     }
 }

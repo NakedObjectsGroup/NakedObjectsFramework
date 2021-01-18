@@ -123,17 +123,12 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static NamedClass NamedFunction(this NamedClass dac, [Named("Parameter Name")] string parm, IContext context) => dac;
     }
 
-    [RegEx(Validation="Class Regex")]
-    public record RegexClass
-    {
-        [RegEx(Validation = "Property Regex")]
+    public record RegexClass {
         public string RegexProperty { get; init; }
     }
 
-    public static class RegexFunctions
-    {
-        [RegEx(Validation = "Function Regex")]
-        public static string RegexFunction(this RegexClass dac, [RegEx(Validation = "Parameter Regex")] string parm, IContext context) => "";
+    public static class RegexFunctions {
+        public static string RegexFunction(this RegexClass dac, [RegEx("Parameter Regex")] string parm, IContext context) => "";
     }
 
     [PresentationHint("Class Hint")]
@@ -897,20 +892,17 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<RegexClass>());
 
                 var facet = spec.GetFacet<IRegExFacet>();
-                Assert.IsNotNull(facet);
-                Assert.AreEqual("Class Regex", facet.Pattern.ToString());
+                Assert.IsNull(facet);
 
                 var propertySpec = spec.Fields.First();
 
                 facet = propertySpec.GetFacet<IRegExFacet>();
-                Assert.IsNotNull(facet);
-                Assert.AreEqual("Property Regex", facet.Pattern.ToString());
+                Assert.IsNull(facet);
 
                 var actionSpec = spec.ContributedActions.First();
 
                 facet = actionSpec.GetFacet<IRegExFacet>();
-                Assert.IsNotNull(facet);
-                Assert.AreEqual("Function Regex", facet.Pattern.ToString());
+                Assert.IsNull(facet);
 
                 var parmSpec = actionSpec.Parameters[1];
 

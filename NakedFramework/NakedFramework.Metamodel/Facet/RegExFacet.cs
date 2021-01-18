@@ -6,10 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+
+[assembly:InternalsVisibleTo("NakedObjects.Reflector.Test")]
+[assembly: InternalsVisibleTo("NakedFunctions.Reflector.Test")]
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
@@ -23,13 +27,21 @@ namespace NakedObjects.Meta.Facet {
             FailureMessage = message;
         }
 
+        public RegExFacet(string validation, bool caseSensitive, ISpecification holder)
+            : base(typeof(IRegExFacet), holder)
+        {
+            ValidationPattern = validation;
+            Pattern = new Regex(validation, PatternFlags);
+            IsCaseSensitive = caseSensitive;
+        }
+
         private RegexOptions PatternFlags => !IsCaseSensitive ? RegexOptions.IgnoreCase : RegexOptions.None;
 
-        public string ValidationPattern { get; }
+        internal string ValidationPattern { get; }
 
-        public string FormatPattern { get; }
+        private string FormatPattern { get; }
 
-        public bool IsCaseSensitive { get; }
+        internal bool IsCaseSensitive { get; }
 
         #region IRegExFacet Members
 

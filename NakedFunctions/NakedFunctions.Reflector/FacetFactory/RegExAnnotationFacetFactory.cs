@@ -65,6 +65,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) => attribute is null ? null : new RegExFacet(attribute.Validation, attribute.Format, attribute.CaseSensitive, attribute.Message, holder);
+        private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) => attribute is null ? null : new RegExFacet(attribute.Validation, attribute.CaseSensitive, holder);
     }
 }
