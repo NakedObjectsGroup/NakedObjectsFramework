@@ -181,11 +181,23 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void EnumParam()
         {
+            //Coresponds to (part of) #232
             GeminiUrl("home?m1=Order_MenuFunctions&d1=OrdersByStatus");
             WaitForCssNo("#status1 option", 6);
             Assert.AreEqual("Shipped", WaitForCssNo("#status1 option", 6).Text);
             Assert.AreEqual("Rejected", WaitForCssNo("#status1 option", 5).Text);
             Assert.AreEqual("*", WaitForCssNo("#status1 option", 0).Text);
         }
+
+        [TestMethod]
+        public void DisplayGuidProperty()
+        {
+            //Corresponds to #236
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesTaxRate--1");
+            WaitForTitle("Sales Tax Rate for Alberta");
+            var guid = GetPropertyValue("Rowguid");
+            Assert.AreEqual("683de5dd-521a-47d4-a573-06a3cdb1bc5d", guid);
+        }
+
     }
 }
