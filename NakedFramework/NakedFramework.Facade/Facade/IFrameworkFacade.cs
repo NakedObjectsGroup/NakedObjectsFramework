@@ -29,6 +29,7 @@ namespace NakedObjects.Facade {
         ActionContextFacade GetMenuAction(string menuName, string actionName);
         ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName);
         ActionContextFacade GetServiceActionWithCompletions(IOidTranslation serviceName, string actionName, string parmName, ArgumentsContextFacade arguments);
+        ActionContextFacade GetMenuActionWithCompletions(string menuName, string actionName, string parmName, ArgumentsContextFacade arguments);
         ActionContextFacade GetObjectActionWithCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments);
         PropertyContextFacade PutProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);
         PropertyContextFacade DeleteProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);

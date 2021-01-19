@@ -238,6 +238,16 @@ namespace NakedObjects.Rest {
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
+            routes.MapRoute("GetParameterPromptOnMenu",
+                            template: menus + "/{menuName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
+                            defaults: new {controller = "RestfulObjects", action = "GetParameterPromptOnMenu"},
+                            constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
+            );
+
+            routes.MapRoute("InvalidParameterPromptOnMenu",
+                            template: menus + "/{menuName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
+                            defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
+
             routes.MapRoute("GetCollectionValue",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}/" + SegmentValues.CollectionValue,
                 defaults: new {controller = "RestfulObjects", action = "GetCollectionValue"},
@@ -279,9 +289,9 @@ namespace NakedObjects.Rest {
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
             routes.MapRoute("MenuAction",
-                            template: menus + "/{menuName}/" + SegmentValues.Actions + "/{actionName}",
-                            defaults: new { controller = "RestfulObjects", action = "GetMenuAction" },
-                            constraints: new { httpMethod = new HttpMethodRouteConstraint("GET") }
+                 template: menus + "/{menuName}/" + SegmentValues.Actions + "/{actionName}",
+                 defaults: new { controller = "RestfulObjects", action = "GetMenuAction" },
+                 constraints: new { httpMethod = new HttpMethodRouteConstraint("GET") }
             );
 
             routes.MapRoute("InvalidMenuAction",

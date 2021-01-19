@@ -32,12 +32,17 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetScalars(parmContext.Id);
             SetChoices(parmContext, req);
             SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, parmContext));
-            var helper = new UriMtHelper(oidStrategy, req, parmContext.Target);
-            var parentRelType = parmContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
-            SetLinks(req, parmContext.Completions.ElementType, parentRelType);
+            SetLinks(req, parmContext.Completions.ElementType, GetParentRelType(oidStrategy, parmContext, req));
             SetExtensions();
             SetHeader(parmContext.Completions.IsListOfServices);
         }
+
+        private static RelType GetParentRelType(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequest req) =>
+            parmContext.Target is null 
+                ? new MenuRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, new MenuIdHolder(parmContext.MenuId))) 
+                : (RelType) (parmContext.Target.Specification.IsService 
+                    ? new ServiceRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, parmContext)) 
+                    : new ObjectRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, parmContext)));
 
         [DataMember(Name = JsonPropertyNames.Id)]
         public string Id { get; set; }

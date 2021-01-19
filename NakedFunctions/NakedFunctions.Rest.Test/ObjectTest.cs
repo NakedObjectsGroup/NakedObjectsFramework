@@ -352,7 +352,21 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual(@"http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1/actions/WithChoicesWithParameters/params/record/prompt", prompt["href"].ToString());
         }
 
+        [Test]
+        public void TestGetObjectPrompt()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "parm1", new ScalarValue("1") }, { "parm2", new ScalarValue("J") } } };
+            var result = api.GetParameterPrompt($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(ChoicesRecordFunctions.WithChoicesWithParameters), "record", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
+            Assert.AreEqual("record", parsedResult["id"].ToString());
+            var choices = parsedResult["choices"];
+            Assert.AreEqual(1, choices.Count());
+            Assert.AreEqual("Jack", choices[0]["title"].ToString());
+        }
 
 
         //[Test]

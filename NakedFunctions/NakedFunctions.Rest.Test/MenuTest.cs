@@ -350,6 +350,23 @@ namespace NakedFunctions.Rest.Test
         }
 
 
+        [Test]
+        public void TestGetMenuPrompt()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "parm1", new ScalarValue("1") }, { "parm2", new ScalarValue("J") } } };
+            var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParameters), "record", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("record", parsedResult["id"].ToString());
+            var choices = parsedResult["choices"];
+            Assert.AreEqual(1, choices.Count());
+            Assert.AreEqual("Jack", choices[0]["title"].ToString()); ;
+        }
+
+
 
 
 

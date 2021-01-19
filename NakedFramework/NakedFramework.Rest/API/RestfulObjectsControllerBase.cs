@@ -178,6 +178,18 @@ namespace NakedObjects.Rest {
             return InitAndHandleErrors(PromptSnapshot());
         }
 
+        public virtual ActionResult GetParameterPromptOnMenu(string menuName, string actionName, string parmName, ArgumentMap arguments)
+        {
+            Func<RestSnapshot> PromptSnapshot()
+            {
+                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
+                ParameterContextFacade ParameterContext() => FrameworkFacade.GetMenuParameterByName(menuName, actionName, parmName, argsContext);
+                return SnapshotFactory.PromptSnaphot(OidStrategy, ParameterContext, Request, flags);
+            }
+
+            return InitAndHandleErrors(PromptSnapshot());
+        }
+
         public virtual ActionResult PutObject(string domainType, string instanceId, ArgumentMap arguments) {
             (Func<RestSnapshot>, bool) PutObject() {
                 RejectRequestIfReadOnly();

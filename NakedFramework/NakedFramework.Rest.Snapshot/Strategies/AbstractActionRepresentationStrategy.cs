@@ -57,14 +57,6 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         public abstract LinkRepresentation[] GetLinks();
 
-        private class MenuIdHolder : IMenuFacade {
-            public MenuIdHolder(string id) => Id = id;
-            public string Name => null;
-            public string Id { get; }
-            public object Wrapped => null;
-            public IList<IMenuItemFacade> MenuItems => null;
-        }
-
         protected LinkRepresentation CreateUpLink() {
             RelType parentRelType;
 

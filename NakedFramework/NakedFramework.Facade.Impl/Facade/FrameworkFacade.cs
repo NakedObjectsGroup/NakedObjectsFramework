@@ -133,6 +133,8 @@ namespace NakedObjects.Facade.Impl {
 
         public ActionContextFacade GetServiceActionWithCompletions(IOidTranslation serviceName, string actionName, string parmName, ArgumentsContextFacade arguments) => MapErrors(() => GetActionWithCompletions(actionName, GetServiceAsNakedObject(serviceName), parmName, arguments).ToActionContextFacade(this, Framework));
 
+        public ActionContextFacade GetMenuActionWithCompletions(string menuName, string actionName, string parmName, ArgumentsContextFacade arguments) => MapErrors(() => GetMenuActionWithCompletions1(menuName, actionName, parmName, arguments).ToActionContextFacade(this, Framework));
+
         public PropertyContextFacade PutProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument) => MapErrors(() => ChangeProperty(GetObjectAsNakedObject(objectId), propertyName, argument));
 
         public PropertyContextFacade DeleteProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument) => MapErrors(() => ChangeProperty(GetObjectAsNakedObject(objectId), propertyName, argument));
@@ -962,6 +964,44 @@ namespace NakedObjects.Facade.Impl {
             }
 
             return ac;
+        }
+
+        private ActionContext GetMenuActionWithCompletions1(string menuName, string actionName, string parmName, ArgumentsContextFacade arguments) {
+            var menu = Framework.MetamodelManager.MainMenus().SingleOrDefault(m => m.Id == menuName);
+
+            if (menu is not null) {
+                try {
+                    var action = GetActionsFromMenuItems(menu.MenuItems).SingleOrDefault(a => a.Identifier.MemberName == actionName);
+                    if (action is not null) {
+                        var actionSpec = Framework.MetamodelManager.GetActionSpec(action);
+                        var uid = FacadeUtils.GetOverloadedUId(actionSpec, actionSpec.OnSpec);
+                        var parm = GetParameterInternal(actionSpec, parmName);
+                        var completions = GetCompletions(new PropParmAdapter(parm, this, Framework), null, arguments);
+
+                        var ac = new ActionContext {
+                            Target = null,
+                            Action = actionSpec,
+                            MenuId = menu.Id,
+                            VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec, uid),
+                            OverloadedUniqueId = uid
+                        };
+
+                        var pc = ac.VisibleParameters.SingleOrDefault(p => p.Id == parmName);
+
+                        if (pc != null) {
+                            pc.Completions = completions;
+                        }
+
+                        return ac;
+                    }
+                }
+                catch (InvalidOperationException e) {
+                    logger.LogError($"multiple actions with name '{actionName}' found on menu '{menuName}'");
+                    throw new ActionResourceNotFoundNOSException(actionName);
+                }
+            }
+
+            throw new ActionResourceNotFoundNOSException(actionName);
         }
 
         private ActionContext GetInvokeActionOnObject(IOidTranslation objectId, string actionName) {

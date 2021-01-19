@@ -86,6 +86,12 @@ namespace NakedObjects.Rest.API {
             return frameworkFacade.GetParameterByName(action, parmName);
         }
 
+        public static ParameterContextFacade GetMenuParameterByName(this IFrameworkFacade frameworkFacade, string menuName, string actionName, string parmName, ArgumentsContextFacade argsContext)
+        {
+            var action = frameworkFacade.GetMenuActionWithCompletions(menuName, actionName, parmName, argsContext);
+            return frameworkFacade.GetParameterByName(action, parmName);
+        }
+
         private static ObjectContextFacade ValidateObjectContext(ObjectContextFacade objectContext) {
             if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
                 if (objectContext.VisibleProperties.Any(p => p.ErrorCause == Cause.WrongType)) {
