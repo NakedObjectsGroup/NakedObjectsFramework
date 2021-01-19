@@ -17,7 +17,7 @@ namespace AW.Functions
     {
 
         public static (WorkOrder, IContext) ChangeScrappedQuantity(this WorkOrder wo, short newQty, IContext context)
-        =>  DisplayAndSave(wo with { ScrappedQty = newQty }, context);
+        => DisplayAndSave(wo with { ScrappedQty = newQty }, context);
 
         public static string Validate(WorkOrder wo, DateTime startDate, DateTime dueDate)
         {
@@ -29,17 +29,7 @@ namespace AW.Functions
             return qty <= 0 ? "Order Quantity must be > 0" : null;
         }
 
-        //TODO: Move to New method, as a DefaultValue attribute
-        public static DateTime DefaultStartDate(WorkOrder wo,  DateTime dt)
-        {
-            throw new NotImplementedException();
-        }
 
-        //TODO: Move to New method, as a DefaultValue(30) attribute
-        public static DateTime DefaultDueDate( DateTime dt)
-        {
-            throw new NotImplementedException();
-        }
 
         [PageSize(20)]
         public static IQueryable<Product> AutoCompleteProduct([MinLength(2)] string name, IContext context)
@@ -55,9 +45,23 @@ namespace AW.Functions
             {
                 WorkOrder = wo,
                 Location = loc,
-                OperationSequence = (short) highestSequence
+                OperationSequence = (short)highestSequence
             };
             return DisplayAndSave(wor, context);
         }
+
+        #region Edits
+
+        [Edit]
+        public static (WorkOrder, IContext) EditStartDate(this WorkOrder wo,
+            [DefaultValue(0)] DateTime startDate, IContext context) =>
+            DisplayAndSave(wo with { StartDate = startDate }, context);
+
+        [Edit]
+        public static (WorkOrder, IContext) EditDueDate(this WorkOrder wo,
+            [DefaultValue(7)] DateTime dueDate, IContext context) =>
+            DisplayAndSave(wo with { DueDate = dueDate }, context);
+
+        #endregion
     }
 }
