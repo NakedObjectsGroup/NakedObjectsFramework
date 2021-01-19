@@ -34,28 +34,43 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
-            pi is not null &&
-            pi.ParameterType == toMatch;
-
-        private static bool NameMatches(MethodInfo compFunction, MethodInfo actionFunction) =>
-            compFunction.Name.StartsWith(RecognisedMethodsAndPrefixes.ValidatePrefix)
-            && compFunction.Name.Substring(RecognisedMethodsAndPrefixes.ValidatePrefix.Length) == actionFunction.Name;
-
         #region IMethodFilteringFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod,  ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var type = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
+        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type paramType) =>
+            methodInfo.Name == name &&
+            methodInfo.DeclaringType == type &&
+            InjectUtils.FilterParms(methodInfo).Count(p => p.ParameterType == paramType) == 1 &&
+            methodInfo.ReturnType == typeof(string);
 
-            if (type is not null) {
-                var declaringType = actionMethod.DeclaringType;
+        private static MethodInfo FindValidateMethod(Type declaringType, string capitalizedName, int i, Type paramType) {
+            var name = RecognisedMethodsAndPrefixes.ValidatePrefix + i + capitalizedName;
+            return declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, paramType));
+        }
 
-                // find matching disable function
-                var match = declaringType?.GetMethods().Where(m => NameMatches(m, actionMethod)).SingleOrDefault(m => IsSameType(m.GetParameters().FirstOrDefault(), type));
+        private static IImmutableDictionary<string, ITypeSpecBuilder> FindValidateMethod(Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            for (var i = 0; i < paramTypes.Length; i++) {
+                var paramType = paramTypes[i];
 
-                if (match is not null) {
-                    FacetUtils.AddFacet(new ActionValidationViaFunctionFacet(match, action));
+                var methodToUse = FindValidateMethod(declaringType, capitalizedName, i, paramType);
+
+                if (methodToUse is not null) {
+                    // add facets directly to parameters, not to actions
+                    FacetUtils.AddFacet(new ActionValidationViaFunctionFacet(methodToUse, parameters[i]));
                 }
+            }
+
+            return metamodel;
+        }
+
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
+            var declaringType = actionMethod.DeclaringType;
+
+            var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
+
+            if (action is IActionSpecImmutable actionSpecImmutable) {
+                var actionParameters = actionSpecImmutable.Parameters;
+                metamodel = FindValidateMethod(declaringType, capitalizedName, paramTypes, actionParameters, metamodel);
             }
 
             return metamodel;

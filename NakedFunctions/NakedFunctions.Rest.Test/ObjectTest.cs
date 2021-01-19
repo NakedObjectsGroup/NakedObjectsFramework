@@ -32,7 +32,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(SimpleRecordFunctions),
             typeof(DateRecordFunctions),
             typeof(ChoicesRecordFunctions),
-            typeof(DefaultedRecordFunctions)
+            typeof(DefaultedRecordFunctions),
+            typeof(ValidatedRecordFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -418,5 +419,34 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("101", parameters["default1"]["default"].ToString());
             Assert.AreEqual("Fred", parameters["default2"]["default"]["title"].ToString());
         }
+
+        [Test]
+        public void TestGetRecordActionWithValidate()
+        {
+            var api = Api();
+            var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.WithValidation));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ValidatedRecordFunctions.WithValidation), parsedResult["id"].ToString());
+
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+        }
+
+        //[Test]
+        //public void TestInvokeRecordActionWithValidateFail()
+        //{
+        //    var api = Api();
+        //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") } } };
+        //    var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.WithValidation), map);
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
+
+        //    Assert.AreEqual(nameof(ValidatedRecordFunctions.WithValidation), parsedResult["id"].ToString());
+        //}
+
     }
 }

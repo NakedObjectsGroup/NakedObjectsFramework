@@ -74,4 +74,13 @@ namespace NakedFunctions.Rest.Test.Data {
         public static int Default1WithDefaults(this SimpleRecord sp, IContext context) => 101;
         public static SimpleRecord Default2WithDefaults(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>().First();
     }
+
+
+    public static class ValidatedRecordFunctions
+    {
+
+        public static SimpleRecord WithValidation(this SimpleRecord sp, int validate1, IContext context) => sp;
+
+        public static string Validate1WithValidation(this SimpleRecord sp, int validate1, IContext context) => validate1 == 1 ? "" : "invalid";
+    }
 }

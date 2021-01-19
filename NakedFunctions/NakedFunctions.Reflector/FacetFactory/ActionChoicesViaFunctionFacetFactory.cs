@@ -38,9 +38,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private static ParameterInfo[] FilterParms(MethodInfo m) =>
-            m.GetParameters().Where(p => !p.IsInjectedParameter() && (!m.IsDefined(typeof(ExtensionAttribute), false) || p.Position > 0)).ToArray();
-
         private  IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
@@ -59,7 +56,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     // add facets directly to parameters, not to actions
                     var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 
-                    foreach (var parameterInfo in FilterParms(methodToUse)) {
+                    foreach (var parameterInfo in InjectUtils.FilterParms(methodToUse)) {
                         ITypeSpecBuilder typeSpecBuilder;
                         (typeSpecBuilder, metamodel) = reflector.LoadSpecification(parameterInfo.ParameterType, metamodel);
                         var name = parameterInfo.Name?.ToLower();

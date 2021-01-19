@@ -18,6 +18,9 @@ using NakedObjects.Architecture.Component;
 namespace NakedObjects.Meta.Utils {
     public static class InjectUtils {
 
+        public static ParameterInfo[] FilterParms(MethodInfo m) =>
+            m.GetParameters().Where(p => !p.IsInjectedParameter() && (!m.IsDefined(typeof(ExtensionAttribute), false) || p.Position > 0)).ToArray();
+
         public static bool IsExtensionMethod(this MemberInfo m) => m.IsDefined(typeof(ExtensionAttribute), false);
 
         public static bool IsInjectedParameter(this ParameterInfo p) => p.ParameterType.IsAssignableTo(typeof(IContext));
