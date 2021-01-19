@@ -32,16 +32,6 @@ namespace AW.Functions {
             return null;
         }
 
-        public static string[] ChoicesCardType(this CreditCard cc) =>
-            new[] {"Vista", "Distinguish", "SuperiorCard", "ColonialVoice"};
 
-        public static string ValidateCardNumber(this CreditCard cc,string cardNumber) =>
-            cardNumber != null && cardNumber.Length <= 4 ? "card number too short" : null;
-
-        public static byte[] ChoicesExpMonth(this CreditCard cc)=> 
-            Enumerable.Range(1, 12).Select(x => Convert.ToByte(x)).ToArray();
-
-        public static short[] ChoicesExpYear() =>
-            new short[] {2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020};
     }
 }

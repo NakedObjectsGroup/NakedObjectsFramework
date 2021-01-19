@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
 using AW.Types;
+using static AW.Helpers;
 
 namespace AW.Functions {
     public static class Product_Functions {
@@ -58,11 +59,13 @@ namespace AW.Functions {
 
         #endregion
 
-        #region Property functions
-        #region Product Line
+        public static (Product, IContext) EditProductLine(this Product p,
+            string productLine, IContext context) =>
+            DisplayAndSave(p with { ProductLine = productLine }, context);
+
         public static string[] ChoicesProductLine(this Product p)
         => new[] { "R ", "M ", "T ", "S " };  // nchar(2) in database so pad right with space
-        #endregion
+
 
         #region Class
         public static string[] ChoicesClass(this Product p)
@@ -94,7 +97,7 @@ namespace AW.Functions {
             return new ProductSubcategory[] { }.ToList();
         }
         #endregion
-        #endregion
+ 
 
 
     }
