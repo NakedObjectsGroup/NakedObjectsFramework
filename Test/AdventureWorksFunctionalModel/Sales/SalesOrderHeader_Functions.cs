@@ -328,7 +328,7 @@ namespace AW.Functions {
             return soh.Status == OrderStatus.Cancelled;
         }
 
-
+        //TODO: Move to Edit
         public static ShipMethod DefaultShipMethod(this SalesOrderHeader soh, IContext context) => context.Instances<ShipMethod>().FirstOrDefault();
 
 
@@ -395,7 +395,7 @@ namespace AW.Functions {
         //    //}
         //}
 
-        //public string[] Choices0AddStandardComments()
+        //public IList<string> Choices0AddStandardComments()
         //{
         //    return new[] {
         //        "Payment on delivery",

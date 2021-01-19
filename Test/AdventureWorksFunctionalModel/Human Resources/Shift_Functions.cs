@@ -21,7 +21,7 @@ namespace AW.Functions {
             return DisplayAndSave(s2, context);
         }
 
-        public static TimeSpan Default0ChangeTimes(this Shift s) => new(0, 9, 0, 0);
+        public static TimeSpan Default1ChangeTimes(this Shift s) => new(0, 9, 0, 0);
 
     }
 }

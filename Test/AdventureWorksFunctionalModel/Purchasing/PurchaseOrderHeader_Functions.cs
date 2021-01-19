@@ -43,10 +43,10 @@ namespace AW.Functions {
 
         #endregion
 
-
+        //TODO Move to CreateNewPO
         public static Employee DefaultOrderPlacedBy(this PurchaseOrderHeader header, IContext context) =>
            Random<Employee>(context);
-
+        //TODO ditto
         public static ShipMethod DefaultShipMethod(this PurchaseOrderHeader header, IContext context) =>
             context.Instances<ShipMethod>().First();
         
@@ -61,7 +61,7 @@ namespace AW.Functions {
         public static string DisableAddNewDetail(this PurchaseOrderHeader header) =>
            header.IsPending() ? null: "Cannot add to Purchase Order unless status is Pending";
 
-        public static Product[] Choices1AddNewDetail(this PurchaseOrderHeader header) =>
+        public static IList<Product> Choices1AddNewDetail(this PurchaseOrderHeader header) =>
             header.Vendor.Products.Select(n => n.Product).ToArray();
         #endregion
 

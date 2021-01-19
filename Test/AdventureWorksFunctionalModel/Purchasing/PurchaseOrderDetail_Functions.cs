@@ -20,9 +20,9 @@ namespace AW.Functions {
             DisplayAndSave(pod with {ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock}, context);
 
 
-        public static int Default0ReceiveGoods(this PurchaseOrderDetail pod)=>  pod.OrderQty;
+        public static int Default1ReceiveGoods(this PurchaseOrderDetail pod)=>  pod.OrderQty;
 
-        public static int Default2ReceiveGoods(this PurchaseOrderDetail pod) => pod.OrderQty;
+        public static int Defaul32ReceiveGoods(this PurchaseOrderDetail pod) => pod.OrderQty;
 
         public static string ValidateReceiveGoods(this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock) =>
         qtyRejected + qtyIntoStock != qtyReceived ? "Qty Into Stock + Qty Rejected must add up to Qty Received" : null;

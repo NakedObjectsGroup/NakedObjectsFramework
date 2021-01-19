@@ -43,23 +43,6 @@ namespace AW.Functions {
             return headers.Where(x => x.Customer.CustomerID == id && x.StatusByte <= 3).OrderByDescending(x => x.SalesOrderNumber);
         }
 
-        
-        
-        [TableView(true, "CurrencyRateDate", "AverageRate", "EndOfDayRate")]
-        public static CurrencyRate FindRate(
-            string currency, 
-            string currency1,
-            IQueryable<CurrencyRate> rates) {
-            return rates.FirstOrDefault(cr => cr.Currency.Name == currency && cr.Currency1.Name == currency1);
-        }
-
-        public static string Default0FindRate() {
-            return "US Dollar";
-        }
-
-        public static string Default1FindRate() {
-            return "Euro";
-        }
 
         #region Comments
 
@@ -133,10 +116,6 @@ namespace AW.Functions {
             return customer == null ?
                  headers
                  : headers.Where(x => x.Customer.CustomerID == customerID);
-        }
-
-        public static DateTime Default1SearchForOrders() {
-            return new DateTime(2000, 1, 1);
         }
 
         public static string ValidateSearchForOrders(Customer customer, DateTime? fromDate, DateTime? toDate) {
