@@ -23,16 +23,17 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace NakedFunctions.Rest.Test
-{
-
-
-    public class MenuTest : AcceptanceTestCase
-    {
-        protected override Type[] Functions { get; } = { typeof(SimpleMenuFunctions), typeof(DateMenuFunctions), typeof(ChoicesMenuFunctions) };
+namespace NakedFunctions.Rest.Test {
+    public class MenuTest : AcceptanceTestCase {
+        protected override Type[] Functions { get; } = {
+            typeof(SimpleMenuFunctions),
+            typeof(DateMenuFunctions),
+            typeof(ChoicesMenuFunctions),
+            typeof(DefaultedMenuFunctions)
+        };
 
         // todo should IAlert be here or should we ignore?
-        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(DateRecord) , typeof(TestEnum) };
+        protected override Type[] Records { get; } = {typeof(SimpleRecord), typeof(DateRecord), typeof(TestEnum)};
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -41,16 +42,18 @@ namespace NakedFunctions.Rest.Test
         protected override bool EnforceProxies => false;
 
         protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
-            new Func<IConfiguration, DbContext>[] { config => new MenuDbContext() };
+            new Func<IConfiguration, DbContext>[] {config => new MenuDbContext()};
 
-        protected override IMenu[] MainMenus(IMenuFactory factory) => new[] {
-            factory.NewMenu(typeof(SimpleMenuFunctions), true, "Test menu"),
-            factory.NewMenu(typeof(DateMenuFunctions), true, "Date Test menu"),
-            factory.NewMenu(typeof(ChoicesMenuFunctions), true, "Choices Test menu")
-        };
+        //protected override IMenu[] MainMenus(IMenuFactory factory) => new[] {
+        //    factory.NewMenu(typeof(SimpleMenuFunctions), true, "Test menu"),
+        //    factory.NewMenu(typeof(DateMenuFunctions), true, "Date Test menu"),
+        //    factory.NewMenu(typeof(ChoicesMenuFunctions), true, "Choices Test menu")
+        //};
 
-        protected override void RegisterTypes(IServiceCollection services)
-        {
+        protected override IMenu[] MainMenus(IMenuFactory factory) => Functions.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
+
+
+        protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
             services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
             services.AddMvc(options => options.EnableEndpointRouting = false)
@@ -64,44 +67,40 @@ namespace NakedFunctions.Rest.Test
         public void TearDown() => EndTest();
 
         [OneTimeSetUp]
-        public void FixtureSetUp()
-        {
+        public void FixtureSetUp() {
             ObjectReflectorConfiguration.NoValidate = true;
             var context = new MenuDbContext();
             InitializeNakedObjectsFramework(this);
         }
 
         [OneTimeTearDown]
-        public void FixtureTearDown()
-        {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             MenuDbContext.Delete();
         }
 
-        protected RestfulObjectsControllerBase Api()
-        {
+        protected RestfulObjectsControllerBase Api() {
             var sp = GetConfiguredContainer();
             var api = sp.GetService<RestfulObjectsController>();
             return Helpers.SetMockContext(api, sp);
         }
 
         [Test]
-        public void TestGetMenus()
-        {
+        public void TestGetMenus() {
             var api = Api();
             var result = api.GetMenus();
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             var val = parsedResult.GetValue("value") as JArray;
 
             Assert.IsNotNull(val);
-            Assert.AreEqual(3, val.Count);
+            Assert.AreEqual(4, val.Count);
 
             var firstItem = val.First;
 
-            firstItem.AssertMenuLink("Test menu", "GET", nameof(SimpleMenuFunctions));
+            firstItem.AssertMenuLink("SimpleMenuFunctions", "GET", nameof(SimpleMenuFunctions));
         }
 
         [Test]
@@ -112,7 +111,7 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual("Test menu", parsedResult["title"].ToString());
+            Assert.AreEqual("SimpleMenuFunctions", parsedResult["title"].ToString());
             Assert.AreEqual(nameof(SimpleMenuFunctions), parsedResult["menuId"].ToString());
 
             var members = parsedResult["members"] as JObject;
@@ -132,14 +131,12 @@ namespace NakedFunctions.Rest.Test
             invokeLink.AssertMenuInvokeLink("{\r\n  \"searchString\": {\r\n    \"value\": null\r\n  }\r\n}", "GET", nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByName));
         }
 
-
         [Test]
-        public void TestGetMenuAction()
-        {
+        public void TestGetMenuAction() {
             var api = Api();
             var result = api.GetMenuAction(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByName));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(SimpleMenuFunctions.FindByName), parsedResult["id"].ToString());
@@ -153,33 +150,27 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual(7, extensions.Count());
 
             // todo test rest of json
-
         }
 
-
         [Test]
-        public void TestGetMenuEnumAction()
-        {
+        public void TestGetMenuEnumAction() {
             var api = Api();
             var result = api.GetMenuAction(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByEnum));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("number", parsedResult["parameters"]["eParm"]["extensions"]["returnType"].ToString());
         }
 
-
-
         [Test]
-        public void TestInvokeMenuActionThatReturnsSingleItemList()
-        {
+        public void TestInvokeMenuActionThatReturnsSingleItemList() {
             var api = Api();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "searchString", new ScalarValue("Fred") } } };
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"searchString", new ScalarValue("Fred")}}};
             var result = api.GetInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByName), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("list", parsedResult["resultType"].ToString());
@@ -193,14 +184,13 @@ namespace NakedFunctions.Rest.Test
         }
 
         [Test]
-        public void TestInvokeMenuActionThatReturnsMultipleItemList()
-        {
+        public void TestInvokeMenuActionThatReturnsMultipleItemList() {
             var api = Api();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "length", new ScalarValue(4) } } };
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"length", new ScalarValue(4)}}};
             var result = api.GetInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByLength), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("list", parsedResult["resultType"].ToString());
@@ -214,7 +204,6 @@ namespace NakedFunctions.Rest.Test
             value[1].AssertObjectElementLink("Fred", "GET", Helpers.FullName<SimpleRecord>(), "1");
             value[2].AssertObjectElementLink("Jack", "GET", Helpers.FullName<SimpleRecord>(), "3");
         }
-
 
         [Test]
         public void TestInvokeMenuActionThatReturnsRandomItem() {
@@ -247,14 +236,13 @@ namespace NakedFunctions.Rest.Test
         }
 
         [Test]
-        public void TestInvokeMenuActionThatGeneratesWarningNoObject()
-        {
+        public void TestInvokeMenuActionThatGeneratesWarningNoObject() {
             var api = Api().AsPost();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "number", new ScalarValue("4") } } };
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"number", new ScalarValue("4")}}};
             var result = api.PostInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByNumber), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("object", parsedResult["resultType"].ToString());
@@ -267,14 +255,13 @@ namespace NakedFunctions.Rest.Test
         }
 
         [Test]
-        public void TestInvokeMenuActionThatGeneratesWarningObject()
-        {
+        public void TestInvokeMenuActionThatGeneratesWarningObject() {
             var api = Api().AsPost();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "number", new ScalarValue("1") } } };
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"number", new ScalarValue("1")}}};
             var result = api.PostInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByNumber), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("object", parsedResult["resultType"].ToString());
@@ -286,18 +273,16 @@ namespace NakedFunctions.Rest.Test
             var resultObj = parsedResult["result"];
 
             resultObj.AssertObject("Fred", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-                   
         }
 
         private static string FormatForTest(DateTime dt) => $"{dt.Year}-{dt.Month:00}-{dt.Day:00}";
 
         [Test]
-        public void TestGetMenuActionWithAnnotatedDefaults()
-        {
+        public void TestGetMenuActionWithAnnotatedDefaults() {
             var api = Api();
             var result = api.GetMenuAction(nameof(DateMenuFunctions), nameof(DateMenuFunctions.DateWithDefault));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(DateRecordFunctions.DateWithDefault), parsedResult["id"].ToString());
@@ -309,12 +294,11 @@ namespace NakedFunctions.Rest.Test
         }
 
         [Test]
-        public void TestGetMenuActionWithChoices()
-        {
+        public void TestGetMenuActionWithChoices() {
             var api = Api();
             var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoices));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoices), parsedResult["id"].ToString());
@@ -326,18 +310,14 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual("Fred", choices[0]["title"].ToString());
             Assert.AreEqual("Bill", choices[1]["title"].ToString());
             Assert.AreEqual("Jack", choices[2]["title"].ToString());
-
-
         }
 
-
         [Test]
-        public void TestGetMenuActionWithChoicesWithParameters()
-        {
+        public void TestGetMenuActionWithChoicesWithParameters() {
             var api = Api();
             var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParameters));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParameters), parsedResult["id"].ToString());
@@ -349,14 +329,12 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual(@"http://localhost/menus/ChoicesMenuFunctions/actions/WithChoicesWithParameters/params/record/prompt", prompt["href"].ToString());
         }
 
-
         [Test]
-        public void TestGetMenuActionWithMultipleChoices()
-        {
+        public void TestGetMenuActionWithMultipleChoices() {
             var api = Api();
             var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoices));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(ChoicesMenuFunctions.WithMultipleChoices), parsedResult["id"].ToString());
@@ -370,254 +348,59 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual("Bill", choices[1]["title"].ToString());
             Assert.AreEqual("Jack", choices[2]["title"].ToString());
 
-
             var prompt = parameters["dateRecords"]["links"][0];
 
             Assert.AreEqual(1, prompt["arguments"].Count());
             Assert.AreEqual(@"http://localhost/menus/ChoicesMenuFunctions/actions/WithMultipleChoices/params/dateRecords/prompt", prompt["href"].ToString());
         }
 
-
-
         [Test]
-        public void TestGetMenuPrompt()
-        {
+        public void TestGetMenuPrompt() {
             var api = Api();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "parm1", new ScalarValue("1") }, { "parm2", new ScalarValue("J") } } };
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"parm1", new ScalarValue("1")}, {"parm2", new ScalarValue("J")}}};
             var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParameters), "record", map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("record", parsedResult["id"].ToString());
             var choices = parsedResult["choices"];
             Assert.AreEqual(1, choices.Count());
-            Assert.AreEqual("Jack", choices[0]["title"].ToString()); ;
+            Assert.AreEqual("Jack", choices[0]["title"].ToString());
+            ;
         }
 
-
-
-
-
-        //[Test]
-        //public void TestInvokeMenuActionThatReturnsObject()
-        //{
-        //    var api = Api();
-        //    var result = api.GetInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecord), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    Assert.AreEqual("object", parsedResult["resultType"].ToString());
-
-        //    var resultObj = parsedResult["result"];
-
-        //    resultObj.AssertObject("Fred", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //}
-
-        //[Test]
-        //public void TestInvokeMenuActionThatReturnsSingleItemList()
-        //{
-        //    var api = Api();
-        //    var result = api.GetInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordsSingle), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    Assert.AreEqual("list", parsedResult["resultType"].ToString());
-
-        //    var resultObj = parsedResult["result"];
-        //    var value = resultObj["value"] as JArray;
-
-        //    Assert.AreEqual(1, value.Count);
-
-
-        //    value[0].AssertObjectElementLink("Fred", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //}
-
-        //[Test]
-        //public void TestInvokeMenuActionThatReturnsMultiItemList()
-        //{
-        //    var api = Api();
-        //    var result = api.GetInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordsMultiple), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    Assert.AreEqual("list", parsedResult["resultType"].ToString());
-
-        //    var resultObj = parsedResult["result"];
-        //    var value = resultObj["value"] as JArray;
-
-        //    Assert.AreEqual(2, value.Count);
-
-        //    var firstItem = value[0];
-
-        //    value[0].AssertObjectElementLink("Fred", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //    value[1].AssertObjectElementLink("Bill", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
-        //}
-
-        //[Test]
-        //public void TestInvokeMenuActionThatUpdatesObject()
-        //{
-        //    var api = Api().AsPost();
-        //    var result = api.PostInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetAndUpdateSimpleRecord), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-
-        //    Assert.AreEqual("object", parsedResult["resultType"].ToString());
-
-        //    var resultObj = parsedResult["result"];
-
-        //    resultObj.AssertObject("Jack0", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
-        //    Assert.AreEqual("Jack0", resultObj["members"]["Name"]["value"].ToString());
-        //}
-
-        //[Test]
-        //public void TestInvokeMenuActionThatUpdatesList()
-        //{
-        //    var api = Api().AsPost();
-        //    var result = api.PostInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordAndUpdateSimpleRecords), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    Assert.AreEqual("object", parsedResult["resultType"].ToString());
-
-        //    var resultObj = parsedResult["result"];
-
-        //    resultObj.AssertObject("Fred2", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //    Assert.AreEqual("Fred2", resultObj["members"]["Name"]["value"].ToString());
-        //}
-
-        //[Test]
-        //public void TestInvokeMenuActionThatUpdatesListAndReturnsIt()
-        //{
-        //    var api = Api().AsPost();
-        //    var result = api.PostInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetAndUpdateSimpleRecords), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-
-        //    Assert.AreEqual("list", parsedResult["resultType"].ToString());
-
-        //    var item1 = parsedResult["result"]["value"][0];
-        //    var item2 = parsedResult["result"]["value"][1];
-        //    var item3 = parsedResult["result"]["value"][2];
-
-        //    item1.AssertObjectElementLink("Fred1", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //    item2.AssertObjectElementLink("Bill1", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
-        //    item3.AssertObjectElementLink("Jack1", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
-        //}
-
-        //[Test]
-        //public void TestInvokeMenuActionThatUpdatesTuple()
-        //{
-        //    var api = Api();
-        //    api.HttpContext.Request.Method = "POST";
-        //    var result = api.PostInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordAndUpdateSimpleRecordsByTuple), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    Assert.AreEqual("object", parsedResult["resultType"].ToString());
-
-        //    var resultObj = parsedResult["result"];
-
-        //    resultObj.AssertObject("Fred3", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //    Assert.AreEqual("Fred3", resultObj["members"]["Name"]["value"].ToString());
-        //}
-
-        //[Test]
-        //public void TestInvokeMenuActionThatUpdatesTupleAndReturnsIt()
-        //{
-        //    var api = Api().AsPost();
-        //    var result = api.PostInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetAndUpdateSimpleRecordsByTuple), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-
-        //    Assert.AreEqual("list", parsedResult["resultType"].ToString());
-
-        //    var item1 = parsedResult["result"]["value"][0];
-        //    var item2 = parsedResult["result"]["value"][1];
-        //    var item3 = parsedResult["result"]["value"][2];
-
-        //    item1.AssertObjectElementLink("Fred4", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //    item2.AssertObjectElementLink("Bill4", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
-        //    item3.AssertObjectElementLink("Jack4", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
-        //}
-
-        //[Test]
-        //public void TestInvokeMenuActionThatUpdatesSubTuple()
-        //{
-        //    var api = Api();
-        //    api.HttpContext.Request.Method = "POST";
-        //    var result = api.PostInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordAndUpdateSimpleRecordsBySubTuple), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    Assert.AreEqual("object", parsedResult["resultType"].ToString());
-
-        //    var resultObj = parsedResult["result"];
-
-        //    resultObj.AssertObject("Fred5", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //    Assert.AreEqual("Fred5", resultObj["members"]["Name"]["value"].ToString());
-        //}
-
-        //[Test]
-        //public void TestInvokeMenuActionThatUpdatesSubTupleAndReturnsIt()
-        //{
-        //    var api = Api().AsPost();
-        //    var result = api.PostInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetAndUpdateSimpleRecordsBySubTuple), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-
-        //    Assert.AreEqual("list", parsedResult["resultType"].ToString());
-
-        //    var item1 = parsedResult["result"]["value"][0];
-        //    var item2 = parsedResult["result"]["value"][1];
-        //    var item3 = parsedResult["result"]["value"][2];
-
-        //    item1.AssertObjectElementLink("Fred6", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //    item2.AssertObjectElementLink("Bill6", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
-        //    item3.AssertObjectElementLink("Jack6", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
-        //}
-
-        //[Test]
-        //public void TestInvokeMenuActionThatReturnsObjectAndAction()
-        //{
-        //    var api = Api();
-        //    var result = api.GetInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordWithWarning), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    Assert.AreEqual("object", parsedResult["resultType"].ToString());
-
-        //    Assert.AreEqual("a warning", parsedResult["extensions"]["x-ro-nof-warnings"][0].ToString());
-
-        //    var resultObj = parsedResult["result"];
-
-        //    resultObj.AssertObject("Fred", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //}
+        [Test]
+        public void TestGetMenuPromptWithMultipleChoices() {
+            var api = Api();
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"simplerecords", new ListValue(new IValue[] {new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord")})}}};
+            var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoices), "dateRecords", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("dateRecords", parsedResult["id"].ToString());
+            var choices = parsedResult["choices"];
+            Assert.AreEqual(1, choices.Count());
+            Assert.IsTrue(choices[0]["title"].ToString().StartsWith("DateRecord"));
+        }
+
+        [Test]
+        public void TestGetMenuActionWithDefaults()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(DefaultedMenuFunctions), nameof(DefaultedMenuFunctions.WithDefaults));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(DefaultedMenuFunctions.WithDefaults), parsedResult["id"].ToString());
+
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(2, parameters.Count());
+
+            Assert.AreEqual("101", parameters["default1"]["default"].ToString());
+            Assert.AreEqual("Fred", parameters["default2"]["default"]["title"].ToString());
+        }
     }
 }
