@@ -397,6 +397,24 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual("Jack", choices[0]["title"].ToString());
         }
 
+        [Test]
+        public void TestGetObjectPromptWithMultipleChoices()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "simplerecords", new ListValue(new IValue[] { new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") }) } } };
+            var result = api.GetParameterPrompt($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(ChoicesRecordFunctions.WithMultipleChoices), "dateRecords", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("dateRecords", parsedResult["id"].ToString());
+            var choices = parsedResult["choices"];
+            Assert.AreEqual(1, choices.Count());
+            Assert.IsTrue(choices[0]["title"].ToString().StartsWith("DateRecord"));
+        }
+
+
+
 
         //[Test]
         //public void TestInvokeAutoComplete()
