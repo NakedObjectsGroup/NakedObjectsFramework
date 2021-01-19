@@ -9,6 +9,7 @@ using NakedFunctions;
 using System.Linq;
 using static AW.Helpers;
 using AW.Types;
+using System.Collections.Generic;
 
 namespace AW.Functions
 {
@@ -83,7 +84,7 @@ namespace AW.Functions
             this Employee e, string gender, IContext context) =>
                 DisplayAndSave(e with { Gender = gender }, context);
 
-        public static string[] Choices1EditGender(this Employee e) => new[] { "M", "F" };
+        public static IList<string> Choices1EditGender(this Employee e) => new[] { "M", "F" };
         
 
         [Edit]
@@ -91,7 +92,7 @@ namespace AW.Functions
             this Employee e, string maritalStatus, IContext context) =>
                 DisplayAndSave(e with { MaritalStatus = maritalStatus }, context);
 
-        public static string[] Choices1EditMaritalStatus(this Employee e) => new[] { "S", "M" };
+        public static IList<string> Choices1EditMaritalStatus(this Employee e) => new[] { "S", "M" };
 
         public static (Employee, IContext) CreateNewEmployeeFromContact(this Person contactDetails, IContext context) => Employee_MenuFunctions.CreateNewEmployeeFromContact(contactDetails, context);
     }
