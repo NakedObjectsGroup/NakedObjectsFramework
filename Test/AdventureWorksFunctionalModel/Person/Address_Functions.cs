@@ -25,8 +25,7 @@ namespace AW.Functions {
             CountryRegion countryRegion, StateProvince stateProvince, IContext context) =>
                 DisplayAndSave(a with {StateProvince = stateProvince }, context);
 
-        public static CountryRegion[] Choices1EditStateProvince(this Address a, 
-            CountryRegion countryRegion, IContext context) =>
+        public static CountryRegion[] Choices1EditStateProvince(this Address a, IContext context) =>
                 context.Instances<CountryRegion>().ToArray();
 
         public static StateProvince[] Choices2EditStateProvince(this Address a, 

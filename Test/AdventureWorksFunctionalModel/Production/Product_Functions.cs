@@ -67,8 +67,8 @@ namespace AW.Functions
             string productLine, IContext context) =>
             DisplayAndSave(p with { ProductLine = productLine }, context);
 
-        public static string[] Choices1EditProductLine(this Product p)
-        => new[] { "R ", "M ", "T ", "S " };  // nchar(2) in database so pad right with space
+        public static IList<string> Choices1EditProductLine(this Product p)
+        => new List<string> { "R ", "M ", "T ", "S " };  // nchar(2) in database so pad right with space
 
         [Edit]
         public static (Product, IContext) EditClass(this Product p,
