@@ -69,8 +69,9 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public static class DefaultedRecordFunctions {
 
-        public static SimpleRecord WithDefaults(this SimpleRecord sp, int default1, IContext context) => sp;
+        public static SimpleRecord WithDefaults(this SimpleRecord sp, int default1, SimpleRecord default2,  IContext context) => sp;
 
         public static int Default1WithDefaults(this SimpleRecord sp, IContext context) => 101;
+        public static SimpleRecord Default2WithDefaults(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>().First();
     }
 }

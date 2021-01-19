@@ -63,8 +63,9 @@ namespace NakedFunctions.Rest.Test.Data {
     }
 
     public static class DefaultedMenuFunctions {
-        public static SimpleRecord WithDefaults(int default1, IContext context) => context.Instances<SimpleRecord>().First();
+        public static SimpleRecord WithDefaults(int default1, SimpleRecord default2, IContext context) => context.Instances<SimpleRecord>().First();
 
         public static int Default0WithDefaults(IContext context) => 101;
+        public static SimpleRecord Default1WithDefaults(IContext context) => context.Instances<SimpleRecord>().First();
     }
 }

@@ -413,9 +413,10 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(nameof(DefaultedRecordFunctions.WithDefaults), parsedResult["id"].ToString());
 
             var parameters = parsedResult["parameters"];
-            Assert.AreEqual(1, parameters.Count());
+            Assert.AreEqual(2, parameters.Count());
 
-            Assert.AreEqual("101",  parameters["default1"]["default"].ToString());
+            Assert.AreEqual("101", parameters["default1"]["default"].ToString());
+            Assert.AreEqual("Fred", parameters["default2"]["default"]["title"].ToString());
         }
     }
 }
