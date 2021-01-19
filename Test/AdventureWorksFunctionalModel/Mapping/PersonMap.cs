@@ -10,8 +10,6 @@ namespace AW.Mapping
             // Primary Key
             HasKey(t => t.BusinessEntityID);
 
-            Ignore(t => t.Password); //TODO: Why?
-
             Property(t => t.Title)
                 .HasMaxLength(8);
 

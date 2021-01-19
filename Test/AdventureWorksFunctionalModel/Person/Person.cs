@@ -37,10 +37,7 @@ namespace AW.Types {
 
         [MemberOrder(21), Hidden]
         public virtual EmailPromotion EmailPromotion { get; init; }
-
-        [Hidden]
-        public virtual Password Password { get; init; }
-      
+    
         //To test a null image
         //[NotMapped]
         //public virtual Image Photo { get { return null; } }

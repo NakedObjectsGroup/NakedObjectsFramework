@@ -61,9 +61,8 @@ namespace AW.Functions {
         public static string DisableAddNewDetail(this PurchaseOrderHeader header) =>
            header.IsPending() ? null: "Cannot add to Purchase Order unless status is Pending";
 
-
-        public static List<Product> Choices1AddNewDetail(this PurchaseOrderHeader header) =>
-            header.Vendor.Products.Select(n => n.Product).ToList();
+        public static Product[] Choices1AddNewDetail(this PurchaseOrderHeader header) =>
+            header.Vendor.Products.Select(n => n.Product).ToArray();
         #endregion
 
         #region Approve (Action)

@@ -446,6 +446,14 @@ namespace AW.Functions {
 
         public static (SalesOrderHeader, IContext) Recalculate(this SalesOrderHeader soh, IContext context) =>
             DisplayAndSave(soh with {SubTotal = soh.Details.Sum(d => d.LineTotal), TotalDue = soh.SubTotal}, context);
+
+        #region Edits - TODO
+        //public static Address[] ChoicesBillingAddress(IContext context) => Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();
+
+        //public static Address[] ChoicesShippingAddress(IContext context) => ChoicesBillingAddress(context);
+
+        #endregion
+
     }
 
 }

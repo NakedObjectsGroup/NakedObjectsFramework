@@ -7,7 +7,6 @@
 
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using NakedFunctions;
 using AW.Types;
@@ -24,16 +23,11 @@ namespace AW.Functions
             .FirstOrDefault();
 
         [DisplayAsProperty, Named("CatalogDescription"), MemberOrder(20), MultiLine(10)]
-        public static string FormattedCatalogDescription(ProductModel pm)
-        {
-            var output = new StringBuilder();
-            //TODO: Re-write using aggregation (reduce) pattern & without builder
-            if (!string.IsNullOrEmpty(pm.CatalogDescription))
-            {
-                XElement.Parse(pm.CatalogDescription).Elements().ToList().ForEach(n => output.Append(n.Name.ToString().Substring(n.Name.ToString().IndexOf("}") + 1) + ": " + n.Value + "\n"));
-            }
-            return output.ToString();
-        }
+        public static string FormattedCatalogDescription(ProductModel pm) =>
+            string.IsNullOrEmpty(pm.CatalogDescription) ? "" :
+            XElement.Parse(pm.CatalogDescription).Elements().Select(e => Formatted(e)).Aggregate((i, j) => i + j);
 
+        private static string Formatted(XElement n) =>
+            n.Name.ToString().Substring(n.Name.ToString().IndexOf("}") + 1) + ": " + n.Value + "\n";
     }
 }

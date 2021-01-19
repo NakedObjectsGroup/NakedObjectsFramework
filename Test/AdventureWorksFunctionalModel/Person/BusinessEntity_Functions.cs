@@ -26,7 +26,6 @@ namespace AW.Functions
 
 
         //TODO: Add params for all mandatory fields of person.
-
         internal static (Person, IContext) CreateNewContact(
             this IBusinessEntity forEntity, 
             string firstName, 
@@ -35,13 +34,10 @@ namespace AW.Functions
             IContext context)
         {
             throw new NotImplementedException();
-            var p = Person_MenuFunctions.CreateNewPerson(initialPassword, context);
+            //var p = Person_MenuFunctions.CreateNewPerson(initialPassword, context);
             //TODO: Create new BusinessEntityContact. Ssve both, return the Person
             //Don't forget ModifiedDate & rowguid on either/both if needed.
 
         }
-
-
-
     }
 }

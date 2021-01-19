@@ -75,7 +75,7 @@ namespace AW.Types {
         //    return Customer != null && Customer.IsIndividual();
         //}
 
-        //[Executed(Where.Remotely)]
+
         //public List<StoreContact> ChoicesStoreContact() {
         //    throw new NotImplementedException();
         //    //if (Customer != null && Customer.IsStore()) {
@@ -91,8 +91,7 @@ namespace AW.Types {
         [MemberOrder(4)]
         public virtual Address BillingAddress { get; init; }
 
-        public List<Address> ChoicesBillingAddress(IContext context) =>  Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();
- 
+
         [MemberOrder(5)]
         public virtual string PurchaseOrderNumber { get; init; }
 
@@ -101,8 +100,6 @@ namespace AW.Types {
 
         [MemberOrder(10)]
         public virtual Address ShippingAddress { get; init; }
-
-        public List<Address> ChoicesShippingAddress(IContext context) =>  ChoicesBillingAddress(context);
 
         [Hidden]
         public virtual int ShipMethodID { get; init; }

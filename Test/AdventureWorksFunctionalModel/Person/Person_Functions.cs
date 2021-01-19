@@ -19,44 +19,7 @@ namespace AW.Functions {
 
     public static class Person_Functions
     {
-
-
-        #region ChangePassword (Action)
-
-        
-        [MemberOrder(1)]
-        public static (Person, IContext) ChangePassword(this Person p, [Password] string oldPassword, [Password] string newPassword, [Named("New Password (Confirm)"), Password] string confirm, IContext context)
-        {
-              Password pw = Password_Functions.CreateNewPassword(newPassword, p.BusinessEntityID, context);
-            var p2 = p with { Password = pw, ModifiedDate = context.Now()};
-            return (p2, context.WithPendingSave(p2, pw));
-        }
-
-        public static string ValidateChangePassword(this Person p, string oldPassword, string newPassword, string confirm)
-        {
-            var reason = "";
-            if (!p.Password.OfferedPasswordIsCorrect(oldPassword))
-            {
-                reason += "Old Password is incorrect";
-            }
-            if (newPassword != confirm)
-            {
-                reason += "New Password and Confirmation don't match";
-            }
-            if (newPassword.Length < 6)
-            {
-                reason += "New Password must be at least 6 characters";
-            }
-            if (newPassword == oldPassword)
-            {
-                reason += "New Password should be different from Old Password";
-            }
-            return reason;
-        }
-        #endregion
-
-
-       
+     
 
         #region Actions for test purposes only
 
@@ -93,7 +56,6 @@ namespace AW.Functions {
         #region CreditCards
 
         #region CreateNewCreditCard
-        //TODO: param validation. choices for type
         public static (Person, IContext context) CreateNewCreditCard(this Person p, 
             string cardType,
             [RegEx("^[0-9]{16}$")][DescribedAs("No spaces")] string cardNumber,
