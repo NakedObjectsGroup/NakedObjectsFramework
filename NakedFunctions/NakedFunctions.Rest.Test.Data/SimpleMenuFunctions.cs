@@ -55,5 +55,11 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static IList<SimpleRecord> Choices0WithChoicesWithParameters(int parm1, string parm2, IContext context) =>
             context.Instances<SimpleRecord>().Where(sr => sr.Name.StartsWith(parm2)).Take(parm1).ToList();
+
+        public static IQueryable<SimpleRecord> WithMultipleChoices(IEnumerable<SimpleRecord> simpleRecords, IEnumerable<DateRecord> dateRecords, IContext context) => simpleRecords.AsQueryable();
+
+        public static IQueryable<SimpleRecord> Choices0WithMultipleChoices(IContext context) => context.Instances<SimpleRecord>();
+
+        public static IQueryable<DateRecord> Choices1WithMultipleChoices(IEnumerable<SimpleRecord> simpleRecords, IContext context) => context.Instances<DateRecord>();
     }
 }

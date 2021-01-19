@@ -351,6 +351,35 @@ namespace NakedFunctions.Rest.Test
 
 
         [Test]
+        public void TestGetMenuActionWithMultipleChoices()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoices));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ChoicesMenuFunctions.WithMultipleChoices), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(2, parameters.Count());
+
+            var choices = parameters["simpleRecords"]["choices"];
+
+            Assert.AreEqual(3, choices.Count());
+            Assert.AreEqual("Fred", choices[0]["title"].ToString());
+            Assert.AreEqual("Bill", choices[1]["title"].ToString());
+            Assert.AreEqual("Jack", choices[2]["title"].ToString());
+
+
+            var prompt = parameters["dateRecords"]["links"][0];
+
+            Assert.AreEqual(1, prompt["arguments"].Count());
+            Assert.AreEqual(@"http://localhost/menus/ChoicesMenuFunctions/actions/WithMultipleChoices/params/dateRecords/prompt", prompt["href"].ToString());
+        }
+
+
+
+        [Test]
         public void TestGetMenuPrompt()
         {
             var api = Api();
