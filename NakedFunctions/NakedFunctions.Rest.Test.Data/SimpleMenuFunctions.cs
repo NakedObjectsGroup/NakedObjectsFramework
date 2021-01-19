@@ -41,9 +41,8 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IQueryable<SimpleRecord> FindByEnum(TestEnum eParm, IContext context) => context.Instances<SimpleRecord>();
     }
 
-    public static class DateMenuFunctions
-    {
-        public static DateRecord DateWithDefault([DefaultValue(22)] DateTime dt, IContext context) => new DateRecord();
+    public static class DateMenuFunctions {
+        public static DateRecord DateWithDefault([DefaultValue(22)] DateTime dt, IContext context) => new();
     }
 
     public static class ChoicesMenuFunctions {
@@ -51,7 +50,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static IList<SimpleRecord> Choices0WithChoices(IContext context) => context.Instances<SimpleRecord>().ToList();
 
-        public static SimpleRecord WithChoicesWithParameters(SimpleRecord record, int parm1, string parm2,  IContext context) => record;
+        public static SimpleRecord WithChoicesWithParameters(SimpleRecord record, int parm1, string parm2, IContext context) => record;
 
         public static IList<SimpleRecord> Choices0WithChoicesWithParameters(int parm1, string parm2, IContext context) =>
             context.Instances<SimpleRecord>().Where(sr => sr.Name.StartsWith(parm2)).Take(parm1).ToList();
@@ -61,5 +60,11 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IQueryable<SimpleRecord> Choices0WithMultipleChoices(IContext context) => context.Instances<SimpleRecord>();
 
         public static IQueryable<DateRecord> Choices1WithMultipleChoices(IEnumerable<SimpleRecord> simpleRecords, IContext context) => context.Instances<DateRecord>();
+    }
+
+    public static class DefaultedMenuFunctions {
+        public static SimpleRecord WithDefaults(int default1, IContext context) => context.Instances<SimpleRecord>().First();
+
+        public static int Default0WithDefaults(IContext context) => 101;
     }
 }

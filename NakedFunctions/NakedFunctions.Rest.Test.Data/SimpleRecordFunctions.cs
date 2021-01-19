@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace NakedFunctions.Rest.Test.Data {
     internal static class Helpers {
@@ -22,12 +21,12 @@ namespace NakedFunctions.Rest.Test.Data {
             => Helpers.DisplayAndSave(sp with {Name = name}, context);
 
         public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context)
-            => Helpers.DisplayAndSave(new SimpleRecord() { Name = name }, context);
+            => Helpers.DisplayAndSave(new SimpleRecord {Name = name}, context);
 
         public static (ReferenceRecord, IContext) AssociateWithDateRecord(this SimpleRecord simpleRecord, DateRecord dateRecord, IContext context) =>
             context.Instances<ReferenceRecord>().Any(x => x.SimpleRecord.Id == simpleRecord.Id && x.DateRecord.Id == dateRecord.Id)
                 ? (null, context.WithInformUser($"{simpleRecord} is already associated with {dateRecord}"))
-                : Helpers.DisplayAndSave(new ReferenceRecord() with { SimpleRecord = simpleRecord, DateRecord = dateRecord }, context);
+                : Helpers.DisplayAndSave(new ReferenceRecord() with {SimpleRecord = simpleRecord, DateRecord = dateRecord}, context);
 
         [PageSize(20)]
         public static IQueryable<DateRecord> AutoComplete1AssociateWithDateRecord(this SimpleRecord simpleRecord, [MinLength(2)] string name, IContext context)
@@ -50,16 +49,14 @@ namespace NakedFunctions.Rest.Test.Data {
         public static DateRecord DateWithDefault(this DateRecord sp, [DefaultValue(22)] DateTime dt, IContext context) => sp;
     }
 
-
-    public static class ChoicesRecordFunctions
-    {
+    public static class ChoicesRecordFunctions {
         public static SimpleRecord WithChoices(this SimpleRecord sp, SimpleRecord record, IContext context) => record;
 
         public static IList<SimpleRecord> Choices1WithChoices(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>().ToList();
 
         public static SimpleRecord WithChoicesWithParameters(this SimpleRecord sp, SimpleRecord record, int parm1, string parm2, IContext context) => record;
 
-        public static IList<SimpleRecord> Choices1WithChoicesWithParameters(this SimpleRecord sp, int parm1, string parm2, IContext context) => 
+        public static IList<SimpleRecord> Choices1WithChoicesWithParameters(this SimpleRecord sp, int parm1, string parm2, IContext context) =>
             context.Instances<SimpleRecord>().Where(sr => sr.Name.StartsWith(parm2)).Take(parm1).ToList();
 
         public static IQueryable<SimpleRecord> WithMultipleChoices(this SimpleRecord sp, IEnumerable<SimpleRecord> simpleRecords, IEnumerable<DateRecord> dateRecords, IContext context) => simpleRecords.AsQueryable();
@@ -67,7 +64,13 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IQueryable<SimpleRecord> Choices1WithMultipleChoices(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>();
 
         public static IQueryable<DateRecord> Choices2WithMultipleChoices(this SimpleRecord sp, IEnumerable<SimpleRecord> simpleRecords, IContext context) => context.Instances<DateRecord>();
+    }
 
 
+    public static class DefaultedRecordFunctions {
+
+        public static SimpleRecord WithDefaults(this SimpleRecord sp, int default1, IContext context) => sp;
+
+        public static int Default1WithDefaults(this SimpleRecord sp, IContext context) => 101;
     }
 }
