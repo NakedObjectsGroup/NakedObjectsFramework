@@ -92,12 +92,12 @@ namespace AW.Functions {
 
         #region CreditCards
 
+        #region CreateNewCreditCard
         //TODO: param validation. choices for type
-        public static (Person, IContext context) CreateNewCreditCard(
-            this Person p, 
+        public static (Person, IContext context) CreateNewCreditCard(this Person p, 
             string cardType,
-            [DescribedAs("No spaces")] string cardNumber,
-            [DescribedAs("mm/yy")] string expires,
+            [RegEx("^[0-9]{16}$")][DescribedAs("No spaces")] string cardNumber,
+            [RegEx("^[0-9]{2}/[0-9]{2}")][DescribedAs("mm/yy")] string expires,
             IContext context
             )
         {
@@ -107,6 +107,12 @@ namespace AW.Functions {
             var link = new PersonCreditCard() { CreditCard = cc, Person = p };
             return (p, context.WithPendingSave(cc, link));                
         }
+
+        public static string[] Choices1CreateNewCreditCard(this Person p) =>
+            new[] {"Vista","Distinguish","SuperiorCard","ColonialVoice" };
+
+        //TODO: Validate expiry date
+               #endregion
 
         public static IList<CreditCard> ListCreditCards(this Person p, IQueryable<PersonCreditCard> pccs)
         {

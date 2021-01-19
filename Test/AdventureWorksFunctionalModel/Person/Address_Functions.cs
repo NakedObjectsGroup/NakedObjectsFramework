@@ -10,22 +10,33 @@ using System.Linq;
 using NakedFunctions;
 using AW.Types;
 using System;
+using static AW.Helpers;
 
 namespace AW.Functions {
   
     public static class Address_Functions
     {
 
-        #region Property-associated functions
-        public static string Validate(this Address a, CountryRegion countryRegion, StateProvince stateProvince, IQueryable<StateProvince> allProvinces)
-        => StateProvincesForCountry(countryRegion, allProvinces).Contains(stateProvince) ? null : "Invalid region";
+        //public static string Validate(this Address a, CountryRegion countryRegion, StateProvince stateProvince, IQueryable<StateProvince> allProvinces)
+        //=> StateProvincesForCountry(countryRegion, allProvinces).Contains(stateProvince) ? null : "Invalid region";
 
-        public static IList<StateProvince> ChoicesStateProvince(this Address a, CountryRegion countryRegion, IQueryable<StateProvince> allProvinces)
-        => countryRegion != null ? StateProvincesForCountry(countryRegion, allProvinces) : new List<StateProvince>();
+        [Edit]
+        public static (Address, IContext) EditStateProvince(this Address a,
+            CountryRegion countryRegion, StateProvince stateProvince, IContext context) =>
+                DisplayAndSave(a with {StateProvince = stateProvince }, context);
 
-        private static IList<StateProvince> StateProvincesForCountry(this CountryRegion country, IQueryable<StateProvince> provinces)
-        => provinces.Where(p => p.CountryRegion.CountryRegionCode == country.CountryRegionCode).OrderBy(p => p.Name).ToList();
-        #endregion 
+        public static CountryRegion[] Choices1EditStateProvince(this Address a, 
+            CountryRegion countryRegion, IContext context) =>
+                context.Instances<CountryRegion>().ToArray();
+
+        public static StateProvince[] Choices2EditStateProvince(this Address a, 
+            CountryRegion countryRegion, IContext context)=> 
+                countryRegion != null ? StateProvincesForCountry(countryRegion, context) 
+                : new StateProvince[] { };
+
+        internal static StateProvince[] StateProvincesForCountry(this CountryRegion country,
+            IContext context) => 
+            context.Instances<StateProvince>().Where(p => p.CountryRegion.CountryRegionCode == country.CountryRegionCode).OrderBy(p => p.Name).ToArray();
 
     }
 }

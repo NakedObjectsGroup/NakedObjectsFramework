@@ -54,26 +54,16 @@ namespace AW.Functions {
         #region Add New Detail
 
         [MemberOrder(1)]
-        public static (PurchaseOrderDetail, IContext) AddNewDetail(
-            PurchaseOrderHeader header, Product prod, short qty, IContext context)
-        {
-            var pod = new PurchaseOrderDetail() { PurchaseOrderHeader = header, Product = prod, OrderQty = qty };
-            return DisplayAndSave(pod, context);
-        }
+        public static (PurchaseOrderDetail, IContext) AddNewDetail(this PurchaseOrderHeader header,
+             Product prod, short qty, IContext context) =>
+               DisplayAndSave(new PurchaseOrderDetail() { PurchaseOrderHeader = header, Product = prod, OrderQty = qty }, context);
 
-        public static string DisableAddNewDetail(PurchaseOrderHeader header)
-        {
-            if (!header.IsPending())
-            {
-                return "Cannot add to Purchase Order unless status is Pending";
-            }
-            return null;
-        }
+        public static string DisableAddNewDetail(this PurchaseOrderHeader header) =>
+           header.IsPending() ? null: "Cannot add to Purchase Order unless status is Pending";
 
-        public static List<Product> Choices0AddNewDetail(PurchaseOrderHeader header)
-        {
-            return header.Vendor.Products.Select(n => n.Product).ToList();
-        }
+
+        public static List<Product> Choices1AddNewDetail(this PurchaseOrderHeader header) =>
+            header.Vendor.Products.Select(n => n.Product).ToList();
         #endregion
 
         #region Approve (Action)
