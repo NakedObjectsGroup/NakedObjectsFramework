@@ -45,8 +45,8 @@ namespace AW.Functions
            this Employee e, Department department, Shift shift, IContext context)
         {
             var edh = CurrentAssignment(e) with { EndDate = context.Now() };
-            var newAssignment = new EmployeeDepartmentHistory() 
-                { Department = department, Shift = shift, Employee = e, StartDate = context.Today() };
+            var newAssignment = new EmployeeDepartmentHistory()
+            { Department = department, Shift = shift, Employee = e, StartDate = context.Today() };
             return (e, context.WithPendingSave(edh, newAssignment));
         }
 
@@ -69,7 +69,7 @@ namespace AW.Functions
 
         #endregion
         [Edit]
-        public static (Employee, IContext) EditManager(Employee e, IEmployee manager, IContext context) =>
+        public static (Employee, IContext) EditManager(this Employee e, IEmployee manager, IContext context) =>
             DisplayAndSave(e with { ManagerID = manager.BusinessEntityID }, context);
 
         [PageSize(20)]
@@ -78,15 +78,20 @@ namespace AW.Functions
              Employee_MenuFunctions.FindEmployeeByName(null, name, context);
 
 
-        //public static  IList<string> ChoicesGender(Employee e)
-        //{
-        //    return new[] { "M", "F" };
-        //}
+        [Edit]
+        public static (Employee, IContext) EditGender(
+            this Employee e, string gender, IContext context) =>
+                DisplayAndSave(e with { Gender = gender }, context);
 
-        //public static IList<string> ChoicesMaritalStatus(Employee e)
-        //{
-        //    return new[] { "S", "M" };
-        //}
+        public static string[] Choices1EditGender(Employee e) => new[] { "M", "F" };
+        
+
+        [Edit]
+        public static (Employee, IContext) EditMaritalStatus(
+            this Employee e, string maritalStatus, IContext context) =>
+                DisplayAndSave(e with { MaritalStatus = maritalStatus }, context);
+
+        public static string[] Choices1EditMaritalStatus(Employee e) => new[] { "S", "M" };
 
         public static (Employee, IContext) CreateNewEmployeeFromContact(this Person contactDetails, IContext context) => Employee_MenuFunctions.CreateNewEmployeeFromContact(contactDetails, context);
     }
