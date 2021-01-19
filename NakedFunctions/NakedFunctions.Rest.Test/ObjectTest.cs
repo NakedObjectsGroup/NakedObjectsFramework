@@ -343,7 +343,7 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParameters), parsedResult["id"].ToString());
+            Assert.AreEqual(nameof(ChoicesRecordFunctions.WithChoicesWithParameters), parsedResult["id"].ToString());
             var parameters = parsedResult["parameters"];
             Assert.AreEqual(3, parameters.Count());
             var prompt = parameters["record"]["links"][0];
@@ -351,6 +351,35 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual(2, prompt["arguments"].Count());
             Assert.AreEqual(@"http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1/actions/WithChoicesWithParameters/params/record/prompt", prompt["href"].ToString());
         }
+
+        [Test]
+        public void TestGetRecordActionWithMultipleChoices()
+        {
+            var api = Api();
+            var result = api.GetAction($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(ChoicesRecordFunctions.WithMultipleChoices));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ChoicesRecordFunctions.WithMultipleChoices), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(2, parameters.Count());
+
+            var choices = parameters["simpleRecords"]["choices"];
+
+            Assert.AreEqual(3, choices.Count());
+            Assert.AreEqual("Fred", choices[0]["title"].ToString());
+            Assert.AreEqual("Bill", choices[1]["title"].ToString());
+            Assert.AreEqual("Jack", choices[2]["title"].ToString());
+
+
+            var prompt = parameters["dateRecords"]["links"][0];
+
+            Assert.AreEqual(1, prompt["arguments"].Count());
+            Assert.AreEqual(@"http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1/actions/WithMultipleChoices/params/dateRecords/prompt", prompt["href"].ToString());
+        }
+
+
 
         [Test]
         public void TestGetObjectPrompt()
