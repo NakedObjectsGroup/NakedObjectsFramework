@@ -692,7 +692,7 @@ namespace NakedObjects.Facade.Impl {
             if (actionContext.Action.IsStaticFunction)
             {
                 // Filter parameters
-                actionContext.VisibleParameters = actionContext.VisibleParameters.Where(p => p.Parameter.Number > 0 && !p.Parameter.IsInjected).ToArray();
+                actionContext.VisibleParameters = actionContext.VisibleParameters.Where(p => !IsTargetParm(actionContext.Action, p.Parameter) && !p.Parameter.IsInjected).ToArray();
             }
 
             return actionResultContext.ToActionResultContextFacade(this, Framework);

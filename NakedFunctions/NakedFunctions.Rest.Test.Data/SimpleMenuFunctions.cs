@@ -68,4 +68,10 @@ namespace NakedFunctions.Rest.Test.Data {
         public static int Default0WithDefaults(IContext context) => 101;
         public static SimpleRecord Default1WithDefaults(IContext context) => context.Instances<SimpleRecord>().First();
     }
+
+    public static class ValidatedMenuFunctions {
+        public static SimpleRecord WithValidation(int validate1, IContext context) => context.Instances<SimpleRecord>().First();
+
+        public static string Validate0WithValidation(int validate1, IContext context) => validate1 == 1 ? "" : "invalid";
+    }
 }

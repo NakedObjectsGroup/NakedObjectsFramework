@@ -29,7 +29,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(SimpleMenuFunctions),
             typeof(DateMenuFunctions),
             typeof(ChoicesMenuFunctions),
-            typeof(DefaultedMenuFunctions)
+            typeof(DefaultedMenuFunctions),
+            typeof(ValidatedMenuFunctions)
         };
 
         // todo should IAlert be here or should we ignore?
@@ -44,11 +45,7 @@ namespace NakedFunctions.Rest.Test {
         protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
             new Func<IConfiguration, DbContext>[] {config => new MenuDbContext()};
 
-        //protected override IMenu[] MainMenus(IMenuFactory factory) => new[] {
-        //    factory.NewMenu(typeof(SimpleMenuFunctions), true, "Test menu"),
-        //    factory.NewMenu(typeof(DateMenuFunctions), true, "Date Test menu"),
-        //    factory.NewMenu(typeof(ChoicesMenuFunctions), true, "Choices Test menu")
-        //};
+        private static string FullName<T>() => typeof(T).FullName;
 
         protected override IMenu[] MainMenus(IMenuFactory factory) => Functions.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
 
@@ -96,7 +93,7 @@ namespace NakedFunctions.Rest.Test {
             var val = parsedResult.GetValue("value") as JArray;
 
             Assert.IsNotNull(val);
-            Assert.AreEqual(4, val.Count);
+            Assert.AreEqual(5, val.Count);
 
             var firstItem = val.First;
 
@@ -401,6 +398,36 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual("101", parameters["default1"]["default"].ToString());
             Assert.AreEqual("Fred", parameters["default2"]["default"]["title"].ToString());
+        }
+
+        [Test]
+        public void TestInvokeRecordActionWithValidateFail()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") } } };
+            var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithValidation), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("2", parsedResult["validate1"]["value"].ToString());
+            Assert.AreEqual("invalid", parsedResult["validate1"]["invalidReason"].ToString());
+        }
+
+
+        [Test]
+        public void TestInvokeRecordActionWithValidateSuccess()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") } } };
+            var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithValidation), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Fred", FullName<SimpleRecord>(), "1");
         }
     }
 }
