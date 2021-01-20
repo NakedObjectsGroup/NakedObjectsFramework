@@ -47,7 +47,7 @@ namespace AW.Functions {
             return null;
         }
 
-        public static Address Default0CreateLetter(this Person p)
+        public static Address Default1CreateLetter(this Person p)
         {
             return p.Addresses.First().Address;
         }

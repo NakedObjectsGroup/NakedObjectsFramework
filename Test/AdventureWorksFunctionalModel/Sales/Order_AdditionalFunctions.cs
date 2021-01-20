@@ -52,7 +52,7 @@ namespace AW.Functions {
             }
         }
 
-        public static string ValidateAppendComment(string commentToAppend, IQueryable<SalesOrderHeader> toOrders) {
+        public static string Validate1AppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) {
             if (commentToAppend == "fail") {
                 return "For test purposes the comment 'fail' fails validation";
             }
@@ -65,7 +65,7 @@ namespace AW.Functions {
             return DisplayAndSave(order with {Comment = newComments }, context);
         }
 
-        public static string ValidateAppendComment(string commentToAppend, SalesOrderHeader order) {
+        public static string Validate1AppendComment(this SalesOrderHeader order, string commentToAppend) {
             return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
         }
 
@@ -73,7 +73,7 @@ namespace AW.Functions {
             AppendComment(toOrders, "User unhappy", context);
         
 
-        public static string ValidateCommentAsUsersUnhappy(IQueryable<SalesOrderHeader> toOrders) {
+        public static string DisableCommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders) {
             return toOrders.Any(o => !o.IsShipped()) ? "Not all shipped yet" : null;
         }
 
@@ -81,7 +81,7 @@ namespace AW.Functions {
             AppendComment(order, "User unhappy", context);
         }
 
-        public static string ValidateCommentAsUserUnhappy(SalesOrderHeader order) {
+        public static string DisableCommentAsUserUnhappy(this SalesOrderHeader order) {
             return order.IsShipped() ? null : "Not shipped yet";
         }
 
@@ -103,11 +103,11 @@ namespace AW.Functions {
             this Customer customer,
             [Optionally] [Mask("d")] DateTime? fromDate,
             [Optionally] [Mask("d")] DateTime? toDate,
-            IQueryable<SalesOrderHeader> query) {
+            IContext context) {
 
             int customerID = customer.CustomerID;
 
-            var headers =  from obj in query
+            var headers =  from obj in context.Instances<SalesOrderHeader>()
                    where ((fromDate == null) || obj.OrderDate >= fromDate) &&
                          ((toDate == null) || obj.OrderDate <= toDate)
                    orderby obj.OrderDate
@@ -118,7 +118,7 @@ namespace AW.Functions {
                  : headers.Where(x => x.Customer.CustomerID == customerID);
         }
 
-        public static string ValidateSearchForOrders(Customer customer, DateTime? fromDate, DateTime? toDate) {
+        public static string ValidateSearchForOrders(this Customer customer, DateTime? fromDate, DateTime? toDate) {
             if (fromDate.HasValue && toDate.HasValue) {
                 if (fromDate >= toDate) {
                     return "'From Date' must be before 'To Date'";
@@ -157,7 +157,7 @@ namespace AW.Functions {
             //return newOrder;
         }
 
-        public static string ValidateCreateNewOrder(this Customer customer) =>
+        public static string DisableCreateNewOrder(this Customer customer) =>
             customer.SalesTerritoryID == 6 ? "Customers in Canada may not place orders directly." : null;
 
         [MemberOrder(1)]

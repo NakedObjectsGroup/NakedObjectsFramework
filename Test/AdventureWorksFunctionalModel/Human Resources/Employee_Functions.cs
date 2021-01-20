@@ -57,10 +57,10 @@ namespace AW.Functions
             return current != null ? current.Department : null;
         }
 
-        public static Department Default2ChangeDepartmentOrShift(this Employee e)
+        public static Shift Default2ChangeDepartmentOrShift(this Employee e)
         {
             EmployeeDepartmentHistory current = CurrentAssignment(e);
-            return current != null ? current.Department : null;
+            return current != null ? current.Shift : null;
         }
 
         private static EmployeeDepartmentHistory CurrentAssignment(Employee e)

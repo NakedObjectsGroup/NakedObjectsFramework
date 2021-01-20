@@ -68,18 +68,18 @@ namespace AW.Functions {
         #region Approve (Action)
 
         [MemberOrder(1)]
-        public static (PurchaseOrderHeader, PurchaseOrderHeader) Approve(PurchaseOrderHeader header)
+        public static (PurchaseOrderHeader, PurchaseOrderHeader) Approve(this PurchaseOrderHeader header)
         {
             var header2 = header with {Status =  2};
             return (header2, header2);
         }
 
-        public static bool HideApprove(PurchaseOrderHeader header)
+        public static bool HideApprove(this PurchaseOrderHeader header)
         {
             return !header.IsPending();
         }
 
-        public static string DisableApprove(PurchaseOrderHeader header)
+        public static string DisableApprove(this PurchaseOrderHeader header)
         {
             return header.Details.Count < 1 ? "Purchase Order must have at least one Detail to be approved" : null;
         }

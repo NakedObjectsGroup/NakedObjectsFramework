@@ -33,7 +33,7 @@ namespace AW.Functions
         public static (SpecialOffer, IContext) EditCategory(this SpecialOffer sp, string category, IContext context)
         => DisplayAndSave(sp with { Category = category, ModifiedDate = context.Now() }, context);
 
-        public static IList<string> Choices0Category(this SpecialOffer sp) => Categories;
+        public static IList<string> Choices1Category(this SpecialOffer sp) => Categories;
 
         internal static IList<string> Categories = new[] { "Reseller", "Customer" };
 

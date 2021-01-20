@@ -93,30 +93,37 @@ namespace AW.Functions {
 
         //        #endregion
 
-        //        #region Remove Detail
-        //        public void RemoveDetail(SalesOrderDetail detailToRemove) {
-        //            if (Details.Contains(detailToRemove)) {
-        //                Details.Remove(detailToRemove);
-        //            }
-        //        }
+        //#region Remove Detail
+        //public static void RemoveDetail(this SalesOrderHeader soh, SalesOrderDetail detailToRemove)
+        //{
+        //    if (soh.Details.Contains(detailToRemove))
+        //    {
+        //        Details.Remove(detailToRemove);
+        //    }
+        //}
 
-        //        public IEnumerable<SalesOrderDetail> Choices0RemoveDetail() {
-        //            return Details;
-        //        }
+        //public static IEnumerable<SalesOrderDetail> Choices1RemoveDetail(this SalesOrderHeader soh)
+        //{
+        //    return Details;
+        //}
 
-        //        public SalesOrderDetail Default0RemoveDetail() {
-        //            return Details.FirstOrDefault();
-        //        }
+        //public static SalesOrderDetail Default1RemoveDetail(this SalesOrderHeader soh )
+        //{
+        //    return Details.FirstOrDefault();
+        //}
 
-        //        [MemberOrder(3)]
-        //        public void RemoveDetails(this IEnumerable<SalesOrderDetail> details) {
-        //            foreach (SalesOrderDetail detail in details) {
-        //                if (Details.Contains(detail)) {
-        //                    Details.Remove(detail);
-        //                }
-        //            }
+        //[MemberOrder(3)]
+        //public void static RemoveDetails(this IEnumerable<SalesOrderDetail> details)
+        //{
+        //    foreach (SalesOrderDetail detail in details)
+        //    {
+        //        if (Details.Contains(detail))
+        //        {
+        //            Details.Remove(detail);
         //        }
-        //        #endregion
+        //    }
+        //}
+        //#endregion
 
         //        #region AdjustQuantities
         //        [MemberOrder(4)]
@@ -177,7 +184,8 @@ namespace AW.Functions {
         //        }
 
 
-        //        public IList<SalesOrderHeaderSalesReason> Choices0RemoveSalesReason()
+        //        public IList<SalesOrderHeaderSalesReason> 
+        //Choices0RemoveSalesReason()
         //        {
         //            return this.SalesOrderHeaderSalesReason.ToList();
         //        }
