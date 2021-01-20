@@ -7,7 +7,7 @@
 
 using NakedFunctions;
 using System.Linq;
-using static AW.Helpers;
+
 using AW.Types;
 using System.Collections.Generic;
 
@@ -35,7 +35,7 @@ namespace AW.Functions
         {
             EmployeePayHistory current = CurrentEmployeePayHistory(e);
             var eph = new EmployeePayHistory() { Employee = e, RateChangeDate = context.Now(), PayFrequency = current.PayFrequency };
-            return DisplayAndSave(eph, context);
+            return context.SaveAndDisplay(eph);
         }
 
         public static EmployeePayHistory CurrentEmployeePayHistory(Employee e) => e.PayHistory.OrderByDescending(x => x.RateChangeDate).FirstOrDefault();
@@ -71,7 +71,7 @@ namespace AW.Functions
         #endregion
         [Edit]
         public static (Employee, IContext) EditManager(this Employee e, IEmployee manager, IContext context) =>
-            DisplayAndSave(e with { ManagerID = manager.BusinessEntityID }, context);
+            context.SaveAndDisplay(e with { ManagerID = manager.BusinessEntityID });
 
         [PageSize(20)]
         public static IQueryable<Employee> AutoCompleteManager(
@@ -82,7 +82,7 @@ namespace AW.Functions
         [Edit]
         public static (Employee, IContext) EditGender(
             this Employee e, string gender, IContext context) =>
-                DisplayAndSave(e with { Gender = gender }, context);
+                context.SaveAndDisplay(e with { Gender = gender });
 
         public static IList<string> Choices1EditGender(this Employee e) => new[] { "M", "F" };
         
@@ -90,7 +90,7 @@ namespace AW.Functions
         [Edit]
         public static (Employee, IContext) EditMaritalStatus(
             this Employee e, string maritalStatus, IContext context) =>
-                DisplayAndSave(e with { MaritalStatus = maritalStatus }, context);
+                context.SaveAndDisplay(e with { MaritalStatus = maritalStatus });
 
         public static IList<string> Choices1EditMaritalStatus(this Employee e) => new[] { "S", "M" };
 

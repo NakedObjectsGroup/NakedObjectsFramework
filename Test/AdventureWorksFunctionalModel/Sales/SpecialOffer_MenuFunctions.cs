@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using NakedFunctions;
 using AW.Types;
-using static AW.Helpers;
+
 using System.Collections.Generic;
 
 namespace AW.Functions
@@ -46,7 +46,7 @@ namespace AW.Functions
             [DefaultValue(1)] DateTime startDate,
              DateTime endDate,
             IContext context)
-       => DisplayAndSave(new SpecialOffer
+       => context.SaveAndDisplay(new SpecialOffer
        {
            Description = description,
            DiscountPct = discountPct,
@@ -57,7 +57,7 @@ namespace AW.Functions
            EndDate = endDate,
            ModifiedDate = context.Now(),
            rowguid = context.NewGuid()
-       }, context);
+       });
 
         //public static string ValidateCreateNewSpecialOffer(
         //    [DefaultValue(1)] int minQty, [Optionally] int? maxQty) =>

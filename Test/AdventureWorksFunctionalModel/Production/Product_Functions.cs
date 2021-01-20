@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
 using AW.Types;
-using static AW.Helpers;
+
 
 namespace AW.Functions
 {
@@ -65,7 +65,7 @@ namespace AW.Functions
         [Edit]
         public static (Product, IContext) EditProductLine(this Product p,
             string productLine, IContext context) =>
-            DisplayAndSave(p with { ProductLine = productLine }, context);
+            context.SaveAndDisplay(p with { ProductLine = productLine });
 
         public static IList<string> Choices1EditProductLine(this Product p)
         => new List<string> { "R ", "M ", "T ", "S " };  // nchar(2) in database so pad right with space
@@ -73,7 +73,7 @@ namespace AW.Functions
         [Edit]
         public static (Product, IContext) EditClass(this Product p,
           string @class, IContext context) =>
-          DisplayAndSave(p with { Class = @class }, context);
+          context.SaveAndDisplay(p with { Class = @class });
 
         public static IList<string> Choices1EditClass(this Product p) =>
             new[] { "H ", "M ", "L " }; // nchar(2) in database so pad right with space
@@ -81,7 +81,7 @@ namespace AW.Functions
         [Edit]
         public static (Product, IContext) EditStyle(this Product p,
             string style, IContext context) =>
-                DisplayAndSave(p with { Style = style }, context);
+                context.SaveAndDisplay(p with { Style = style });
 
         public static IList<string> Choices1EditStyle(this Product p) =>
             new[] { "U ", "M ", "W " }; // nchar(2) in database so pad right with space
@@ -89,7 +89,7 @@ namespace AW.Functions
         [Edit]
         public static (Product, IContext) EditProductModel(this Product p,
             ProductModel productModel, IContext context) =>
-                    DisplayAndSave(p with { ProductModel = productModel }, context);
+                    context.SaveAndDisplay(p with { ProductModel = productModel });
 
 
         public static IQueryable<ProductModel> AutoComplete1EditProductModel(this Product p,
@@ -101,7 +101,7 @@ namespace AW.Functions
         [Edit]
         public static (Product, IContext) EditCategories(this Product p,
       ProductCategory category, ProductSubcategory subCategory, IContext context) =>
-              DisplayAndSave(p with { ProductCategory = category, ProductSubcategory = subCategory }, context);
+              context.SaveAndDisplay(p with { ProductCategory = category, ProductSubcategory = subCategory });
 
         public static IList<ProductSubcategory> Choices2EditCategories(this Product p,
             ProductCategory productCategory, IContext context) =>

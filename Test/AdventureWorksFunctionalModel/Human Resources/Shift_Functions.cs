@@ -7,7 +7,7 @@
 
 using System;
 using NakedFunctions;
-using static AW.Helpers;
+
 using AW.Types;
 
 namespace AW.Functions {
@@ -18,7 +18,7 @@ namespace AW.Functions {
         public static (Shift, IContext) ChangeTimes(this Shift s, TimeSpan startTime, TimeSpan endTime, IContext context)
         {
             var s2 = s with { StartTime = startTime } with { EndTime = endTime };
-            return DisplayAndSave(s2, context);
+            return context.SaveAndDisplay(s2);
         }
 
         public static TimeSpan Default1ChangeTimes(this Shift s) => new(0, 9, 0, 0);

@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using NakedFunctions;
 using AW.Types;
-using static AW.Helpers;
+
 
 namespace AW.Functions {
 
@@ -58,7 +58,7 @@ namespace AW.Functions {
 
         public static (Customer, IContext) CreateCustomerFromStore(
             Store store, IContext context) =>
-            DisplayAndSave(new Customer() with { Store = store, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() }, context);
+            context.SaveAndDisplay(new Customer() with { Store = store, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() });
 
         //TODO: Temporary exploration
         public static (Store, IContext) CreateNewStoreOnly(

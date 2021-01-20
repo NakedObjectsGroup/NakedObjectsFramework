@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NakedFunctions;
 using AW.Types;
-using static AW.Helpers;
+
 
 
 namespace AW.Functions
@@ -55,7 +55,7 @@ namespace AW.Functions
             var sp = vm.SalesPerson;
             var sn = vm.StoreName;
             var cus2 = cus with { SalesTerritory = st }; //TODO:   Store.SalesPerson = sp, Store.Name = sn);
-            return DisplayAndSave(cus2, context);
+            return context.SaveAndDisplay(cus2);
         }
 
         public static bool HideSave(this StoreSalesInfo ssi)

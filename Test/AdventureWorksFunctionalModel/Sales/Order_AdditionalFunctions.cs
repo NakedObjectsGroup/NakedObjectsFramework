@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using AW.Types;
 using NakedFunctions;
-using static AW.Helpers;
+
 
 namespace AW.Functions {
     [Named("Orders")]
@@ -62,7 +62,7 @@ namespace AW.Functions {
 
         public static (SalesOrderHeader, IContext) AppendComment(this SalesOrderHeader order, string commentToAppend, IContext context) {
             string newComments = order.Comment == null? commentToAppend: order.Comment + "; " + commentToAppend;
-            return DisplayAndSave(order with {Comment = newComments }, context);
+            return context.SaveAndDisplay(order with {Comment = newComments });
         }
 
         public static string Validate1AppendComment(this SalesOrderHeader order, string commentToAppend) {

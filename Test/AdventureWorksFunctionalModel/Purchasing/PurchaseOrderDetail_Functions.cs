@@ -7,7 +7,7 @@
 
 using NakedFunctions;
 using AW.Types;
-using static AW.Helpers;
+
 
 namespace AW.Functions {
         
@@ -17,7 +17,7 @@ namespace AW.Functions {
         [MemberOrder(1)]
         public static (PurchaseOrderDetail, IContext) ReceiveGoods(
             this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock, IContext context) =>
-            DisplayAndSave(pod with {ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock}, context);
+            context.SaveAndDisplay(pod with {ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock});
 
 
         public static int Default1ReceiveGoods(this PurchaseOrderDetail pod)=>  pod.OrderQty;

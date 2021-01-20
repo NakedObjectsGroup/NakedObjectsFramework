@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using AW.Types;
 using NakedFunctions;
-using static AW.Helpers;
+
 
 namespace AW.Functions
 {
@@ -34,7 +34,7 @@ namespace AW.Functions
             {
                 newYTD = 0;
             }
-            return DisplayAndSave(sp with { SalesYTD = newYTD }, context);
+            return context.SaveAndDisplay(sp with { SalesYTD = newYTD });
         }
 
         [MemberOrder(2)]

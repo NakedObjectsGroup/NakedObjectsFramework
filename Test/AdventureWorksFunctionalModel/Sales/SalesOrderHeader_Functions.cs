@@ -9,7 +9,7 @@ using System;
 using AW.Types;
 using System.Linq;
 using NakedFunctions;
-using static AW.Helpers;
+
 
 namespace AW.Functions {
     [Named("Sales Order")]
@@ -453,7 +453,7 @@ namespace AW.Functions {
         #endregion
 
         public static (SalesOrderHeader, IContext) Recalculate(this SalesOrderHeader soh, IContext context) =>
-            DisplayAndSave(soh with {SubTotal = soh.Details.Sum(d => d.LineTotal), TotalDue = soh.SubTotal}, context);
+            context.SaveAndDisplay(soh with {SubTotal = soh.Details.Sum(d => d.LineTotal), TotalDue = soh.SubTotal});
 
         #region Edits - TODO
         //public static Address[] ChoicesBillingAddress(IContext context) => Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();

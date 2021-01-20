@@ -10,7 +10,7 @@ using System.Linq;
 using NakedFunctions;
 using AW.Types;
 using System;
-using static AW.Helpers;
+
 
 namespace AW.Functions {
   
@@ -23,7 +23,7 @@ namespace AW.Functions {
         [Edit]
         public static (Address, IContext) EditStateProvince(this Address a,
             CountryRegion countryRegion, StateProvince stateProvince, IContext context) =>
-                DisplayAndSave(a with {StateProvince = stateProvince }, context);
+                context.SaveAndDisplay(a with {StateProvince = stateProvince });
 
         public static IList<CountryRegion> Choices1EditStateProvince(this Address a, IContext context) =>
                 context.Instances<CountryRegion>().ToArray();

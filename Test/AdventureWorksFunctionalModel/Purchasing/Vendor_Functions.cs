@@ -4,7 +4,7 @@ using AW.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static AW.Helpers;
+
 
 namespace AW.Functions
 {

@@ -8,6 +8,7 @@
 using System.Linq;
 using NakedFunctions;
 using AW.Types;
+
 using static AW.Helpers;
 
 namespace AW.Functions

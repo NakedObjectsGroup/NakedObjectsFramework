@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NakedFunctions;
 
 namespace AW
 {
     public static class Helpers
     {
-        public static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
-
         /// <summary>
         ///     Returns a random instance from the set of all instance of type T
         /// </summary>

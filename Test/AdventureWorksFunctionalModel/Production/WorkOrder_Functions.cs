@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using NakedFunctions;
 using AW.Types;
-using static AW.Helpers;
+
 
 namespace AW.Functions
 {
@@ -17,17 +17,17 @@ namespace AW.Functions
     {
 
         public static (WorkOrder, IContext) ChangeScrappedQuantity(this WorkOrder wo, short newQty, IContext context)
-        => DisplayAndSave(wo with { ScrappedQty = newQty }, context);
+        => context.SaveAndDisplay(wo with { ScrappedQty = newQty });
 
         public static (WorkOrder, IContext) EditDates(this WorkOrder wo, 
             DateTime startDate, DateTime dueDate, IContext context) =>
-             DisplayAndSave(wo with { StartDate = startDate, DueDate = dueDate }, context);
+             context.SaveAndDisplay(wo with { StartDate = startDate, DueDate = dueDate });
 
         public static string ValidateEditDates(this WorkOrder wo, DateTime startDate, DateTime dueDate) =>
             startDate > dueDate ? "StartDate must be before DueDate" : null;
 
         public static (WorkOrder, IContext) EditOrderQty(this WorkOrder wo, int orderQty, IContext context) =>
-            DisplayAndSave(wo with { OrderQty = orderQty }, context);
+            context.SaveAndDisplay(wo with { OrderQty = orderQty });
 
         public static string Validate1EditOrderQty(this WorkOrder wo, int orderQty)
         {
@@ -52,7 +52,7 @@ namespace AW.Functions
                 Location = loc,
                 OperationSequence = (short)highestSequence
             };
-            return DisplayAndSave(wor, context);
+            return context.SaveAndDisplay(wor);
         }
 
         #region Edits
@@ -60,12 +60,12 @@ namespace AW.Functions
         [Edit]
         public static (WorkOrder, IContext) EditStartDate(this WorkOrder wo,
             [DefaultValue(0)] DateTime startDate, IContext context) =>
-            DisplayAndSave(wo with { StartDate = startDate }, context);
+            context.SaveAndDisplay(wo with { StartDate = startDate });
 
         [Edit]
         public static (WorkOrder, IContext) EditDueDate(this WorkOrder wo,
             [DefaultValue(7)] DateTime dueDate, IContext context) =>
-            DisplayAndSave(wo with { DueDate = dueDate }, context);
+            context.SaveAndDisplay(wo with { DueDate = dueDate });
 
         #endregion
     }

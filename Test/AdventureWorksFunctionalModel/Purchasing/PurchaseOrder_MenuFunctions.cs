@@ -7,9 +7,10 @@
 
 using NakedFunctions;
 using AW.Types;
+using static AW.Helpers;
 using System;
 using System.Linq;
-using static AW.Helpers;
+
 
 
 namespace AW.Functions
@@ -105,13 +106,12 @@ namespace AW.Functions
         #region Create New Purchase Order
         [MemberOrder(6, "Purchase Orders")]
         public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(this Vendor vendor, IContext context) =>
-            DisplayAndSave(new PurchaseOrderHeader() { 
+            context.SaveAndDisplay(new PurchaseOrderHeader() { 
                 Vendor = vendor,
                 RevisionNumber = 0,
                 Status = 1,
                 OrderDate = context.Today(),
-                ShipDate = context.Today()}, 
-                context);
+                ShipDate = context.Today()});
 
 
         [PageSize(20)]
@@ -121,7 +121,7 @@ namespace AW.Functions
 
         [MemberOrder(7)]
         public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder2(IContext context) =>
-             DisplayAndSave(new PurchaseOrderHeader() { OrderPlacedBy = null }, context);
+             context.SaveAndDisplay(new PurchaseOrderHeader() { OrderPlacedBy = null });
 
         #endregion
 

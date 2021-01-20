@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
 using AW.Types;
-using static AW.Helpers;
+
 
 namespace AW.Functions
 {
@@ -19,19 +19,19 @@ namespace AW.Functions
         #region Edit
         [Edit]
         public static (SpecialOffer, IContext) EditDescription(this SpecialOffer sp, string description, IContext context)
-        => DisplayAndSave(sp with { Description = description, ModifiedDate = context.Now() }, context);
+        => context.SaveAndDisplay(sp with { Description = description, ModifiedDate = context.Now() });
 
         [Edit]
         public static (SpecialOffer, IContext) EditDiscount(this SpecialOffer sp, decimal discountPct, IContext context)
-        => DisplayAndSave(sp with { DiscountPct = discountPct, ModifiedDate = context.Now() }, context);
+        => context.SaveAndDisplay(sp with { DiscountPct = discountPct, ModifiedDate = context.Now() });
 
         [Edit]
         public static (SpecialOffer, IContext) EditType(this SpecialOffer sp, string type, IContext context)
-        => DisplayAndSave(sp with { Type = type, ModifiedDate = context.Now() }, context);
+        => context.SaveAndDisplay(sp with { Type = type, ModifiedDate = context.Now() });
 
         [Edit]
         public static (SpecialOffer, IContext) EditCategory(this SpecialOffer sp, string category, IContext context)
-        => DisplayAndSave(sp with { Category = category, ModifiedDate = context.Now() }, context);
+        => context.SaveAndDisplay(sp with { Category = category, ModifiedDate = context.Now() });
 
         public static IList<string> Choices1Category(this SpecialOffer sp) => Categories;
 
@@ -43,9 +43,7 @@ namespace AW.Functions
             DateTime startDate,
             DateTime endDate,
             IContext context)                   
-        => DisplayAndSave(sp with
-        { StartDate = startDate, EndDate = endDate, ModifiedDate = context.Now() }
-        , context);
+        => context.SaveAndDisplay(sp with { StartDate = startDate, EndDate = endDate, ModifiedDate = context.Now() });
 
         public static DateTime Default1EditDates(this SpecialOffer sp, IContext context) =>
             sp.StartDate;
@@ -59,7 +57,7 @@ namespace AW.Functions
         [Edit]
         public static (SpecialOffer, IContext) EditQuantities(
             this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
-            DisplayAndSave(sp with { MinQty = minQty, MaxQty = maxQty, ModifiedDate = context.Now() }, context);
+            context.SaveAndDisplay(sp with { MinQty = minQty, MaxQty = maxQty, ModifiedDate = context.Now() });
 
         public static string ValidateEditQuantities(
             this SpecialOffer sp, int minQty, int? maxQty) =>
@@ -74,8 +72,8 @@ namespace AW.Functions
         public static (SpecialOfferProduct, IContext) AssociateWithProduct(
             this SpecialOffer offer, Product product, IContext context) =>
             context.Instances<SpecialOfferProduct>().Where(x => x.SpecialOfferID == offer.SpecialOfferID && x.ProductID == product.ProductID).Count() == 0 ?
-                DisplayAndSave(new SpecialOfferProduct() with
-                { SpecialOffer = offer, Product = product, ModifiedDate = context.Now(), rowguid = context.NewGuid() }, context)
+                context.SaveAndDisplay(new SpecialOfferProduct() with
+                { SpecialOffer = offer, Product = product, ModifiedDate = context.Now(), rowguid = context.NewGuid() })
                 : (null, context.WithInformUser($"{offer} is already associated with { product}"));
 
         [PageSize(20)]
@@ -92,7 +90,7 @@ namespace AW.Functions
 
         #region Queryable-contributed
         private static (IList<SpecialOffer>, IContext) Change(this IQueryable<SpecialOffer> offers, Func<SpecialOffer, SpecialOffer> change, IContext context)
-        => DisplayAndSave(offers.ToList().Select(change).ToList(), context);
+        => context.SaveAndDisplay(offers.ToList().Select(change).ToList());
 
         //TODO: This example shows we must permit returning a List (not a queryable) for display.
         public static (IList<SpecialOffer>, IContext) ExtendOffers(this IQueryable<SpecialOffer> offers, DateTime toDate, IContext context)
@@ -104,7 +102,7 @@ namespace AW.Functions
         {
             var yesterday = context.Today().AddDays(-1);
             var list = offers.Where(x => x.EndDate > yesterday).ToList().Select(x => x with { EndDate = yesterday, ModifiedDate = context.Now() }).ToList();
-            return DisplayAndSave(list, context);
+            return context.SaveAndDisplay(list);
         }
         #endregion
     }

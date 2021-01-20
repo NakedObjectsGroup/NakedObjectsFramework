@@ -8,6 +8,7 @@
 using System.Linq;
 using AW.Types;
 using NakedFunctions;
+
 using static AW.Helpers;
 
 namespace AW.Functions {
@@ -41,7 +42,7 @@ namespace AW.Functions {
                 BusinessEntityID = contactDetails.BusinessEntityID,
                 PersonDetails = contactDetails
             };
-            return DisplayAndSave(e, context);
+            return context.SaveAndDisplay(e);
         }
 
         [PageSize(20)]

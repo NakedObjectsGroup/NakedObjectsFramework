@@ -8,6 +8,7 @@
 using System.Linq;
 using NakedFunctions;
 using AW.Types;
+
 using static AW.Helpers;
 
 namespace AW.Functions {
@@ -18,7 +19,7 @@ namespace AW.Functions {
 
         public static (WorkOrder, IContext context) CreateNewWorkOrder(
              [DescribedAs("product partial name")] this Product product, IContext context) =>
-             DisplayAndSave(new WorkOrder() { Product = product }, context);
+             context.SaveAndDisplay(new WorkOrder() { Product = product });
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0CreateNewWorkOrder(
@@ -28,7 +29,7 @@ namespace AW.Functions {
         public static(WorkOrder, IContext) CreateNewWorkOrder2(
              [DescribedAs("product partial name")] this Product product, int orderQty, IContext context) {
             (var wo, var context2 ) = CreateNewWorkOrder(product, context);
-            return DisplayAndSave(wo with { OrderQty = orderQty, ScrappedQty = 0 }, context2);
+            return context2.SaveAndDisplay(wo with { OrderQty = orderQty, ScrappedQty = 0 });
         }
 
         [PageSize(20)]

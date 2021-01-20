@@ -14,6 +14,7 @@ using AW.Types;
 using static AW.Helpers;
 
 
+
 namespace AW.Functions {
         public static class PurchaseOrderHeaderFunctions
     {
@@ -56,7 +57,7 @@ namespace AW.Functions {
         [MemberOrder(1)]
         public static (PurchaseOrderDetail, IContext) AddNewDetail(this PurchaseOrderHeader header,
              Product prod, short qty, IContext context) =>
-               DisplayAndSave(new PurchaseOrderDetail() { PurchaseOrderHeader = header, Product = prod, OrderQty = qty }, context);
+               context.SaveAndDisplay(new PurchaseOrderDetail() { PurchaseOrderHeader = header, Product = prod, OrderQty = qty });
 
         public static string DisableAddNewDetail(this PurchaseOrderHeader header) =>
            header.IsPending() ? null: "Cannot add to Purchase Order unless status is Pending";
