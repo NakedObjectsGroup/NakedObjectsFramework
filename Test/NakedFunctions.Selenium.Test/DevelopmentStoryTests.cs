@@ -53,6 +53,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             RecordsDoNotHaveEditButton();
             EnumProperty();
             EnumParam();
+            DisplayGuidProperty();
+            ParameterChoicesSimple();
+            ParameterChoicesDependent();
         }
 
         //[TestMethod]
@@ -189,7 +192,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("*", WaitForCssNo("#status1 option", 0).Text);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void DisplayGuidProperty()
         {
             //Corresponds to #236
@@ -199,5 +202,42 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("683de5dd-521a-47d4-a573-06a3cdb1bc5d", guid);
         }
 
+        //[TestMethod]
+        public void ParameterChoicesSimple()
+        {
+            //Corresponds to #242
+            GeminiUrl("object?i1=View&o1=AW.Types.Employee--105");
+            WaitForTitle("Kevin Homer");
+            var currentStatus = GetPropertyValue("Marital Status");
+            Assert.AreEqual("S", currentStatus);
+            GeminiUrl("object?i1=View&o1=AW.Types.Employee--105&as1=open&d1=EditMaritalStatus");
+            var option = "select#maritalstatus1 option";
+            Assert.AreEqual("M", WaitForCssNo(option, 2).Text);
+            Assert.AreEqual("S", WaitForCssNo(option, 1).Text);
+            Assert.AreEqual("*", WaitForCssNo(option, 0).Text);
+            SelectDropDownOnField("select#maritalstatus1", 2);
+            Click(OKButton());
+            wait.Until(dr => GetPropertyValue("Marital Status") == "M");
+            GeminiUrl("object?i1=View&o1=AW.Types.Employee--105&as1=open&d1=EditMaritalStatus");
+            SelectDropDownOnField("select#maritalstatus1", 1);
+            Click(OKButton());
+            wait.Until(dr => GetPropertyValue("Marital Status") == "S");
+        }
+
+       // [TestMethod]
+        public void ParameterChoicesDependent()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Address--22691&as1=open&d1=EditStateProvince");
+            WaitForTitle("2107 Cardinal...");
+            var field1 = WaitForCss("select#countryregion1");
+            var field2 = WaitForCss("select#stateprovince1");
+            Assert.AreEqual(239, field1.FindElements(By.CssSelector("option")).Count);
+            Assert.AreEqual(0, field2.FindElements(By.CssSelector("option")).Count);
+            SelectDropDownOnField("select#countryregion1", 36);
+            wait.Until(br => field2.FindElements(By.CssSelector("option")).Count > 0);
+            var option = "select#stateprovince1 option";
+            var yukon = WaitForCssNo(option, 13);
+            Assert.AreEqual("Yukon Territory", yukon.Text);
+        }
     }
 }

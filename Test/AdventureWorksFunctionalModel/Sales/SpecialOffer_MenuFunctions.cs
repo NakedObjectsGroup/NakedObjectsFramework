@@ -66,7 +66,7 @@ namespace AW.Functions
         public static IList<string> Choices3CreateNewSpecialOffer() =>
             SpecialOffer_Functions.Categories;
 
-        public static DateTime Default6CreateNewSpecialOffer(this SpecialOffer sp, IContext context) =>
+        public static DateTime Default6CreateNewSpecialOffer(IContext context) =>
             SpecialOffer_Functions.DefaultEndDate(context);
 
 
