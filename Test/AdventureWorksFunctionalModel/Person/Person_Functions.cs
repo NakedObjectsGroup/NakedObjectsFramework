@@ -70,7 +70,7 @@ namespace AW.Functions {
             return (p, context.WithPendingSave(cc, link));                
         }
 
-        public static string[] Choices1CreateNewCreditCard(this Person p) =>
+        public static IList<string> Choices1CreateNewCreditCard(this Person p) =>
             new[] {"Vista","Distinguish","SuperiorCard","ColonialVoice" };
 
         //TODO: Validate expiry date

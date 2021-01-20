@@ -10,6 +10,7 @@ using System.Linq;
 using NakedFunctions;
 using AW.Types;
 using static AW.Helpers;
+using System.Collections.Generic;
 
 namespace AW.Functions
 {
@@ -62,11 +63,11 @@ namespace AW.Functions
         //    [DefaultValue(1)] int minQty, [Optionally] int? maxQty) =>
         //        SpecialOffer_Functions.ValidateQuantities(minQty, maxQty);
 
-        public static string[] Choices3CreateNewSpecialOffer() =>
+        public static IList<string> Choices3CreateNewSpecialOffer() =>
             SpecialOffer_Functions.Categories;
 
-        //public static DateTime Default6CreateNewSpecialOffer(this SpecialOffer sp, IContext context) =>
-        //    SpecialOffer_Functions.DefaultEndDate(context);
+        public static DateTime Default6CreateNewSpecialOffer(this SpecialOffer sp, IContext context) =>
+            SpecialOffer_Functions.DefaultEndDate(context);
 
 
         [MemberOrder(5), MultiLine(2)]

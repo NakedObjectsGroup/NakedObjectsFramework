@@ -12,6 +12,7 @@ using NakedFunctions;
 using AW.Types;
 using NakedFramework;
 using static AW.Helpers;
+using System.Collections.Generic;
 
 namespace AW.Functions {
     [Named("Sales")]
@@ -66,5 +67,18 @@ namespace AW.Functions {
         #endregion
 
         public static IQueryable<SalesTaxRate> ListSalesTaxRates(IContext context) => context.Instances<SalesTaxRate>();
+
+
+        [TableView(true, "CurrencyRateDate", "AverageRate", "EndOfDayRate")]
+        public static CurrencyRate FindCurrencyRate(Currency currency1, Currency currency2, IContext context)
+        {
+            var name1 = currency1.Name;
+            var name2 = currency2.Name;
+            return context.Instances<CurrencyRate>().FirstOrDefault(cr => cr.Currency.Name == name1 && cr.Currency1.Name == name2);
+        }
+
+        public static Currency Default0FindRate(IContext context) =>
+            context.Instances<Currency>().FirstOrDefault(c => c.Name == "US Dollar");    
+
     }
 }

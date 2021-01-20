@@ -75,7 +75,7 @@ namespace AW.Functions
           string @class, IContext context) =>
           DisplayAndSave(p with { Class = @class }, context);
 
-        public static string[] Choices1EditClass(this Product p) =>
+        public static IList<string> Choices1EditClass(this Product p) =>
             new[] { "H ", "M ", "L " }; // nchar(2) in database so pad right with space
 
         [Edit]
@@ -83,7 +83,7 @@ namespace AW.Functions
             string style, IContext context) =>
                 DisplayAndSave(p with { Style = style }, context);
 
-        public static string[] Choices1EditStyle(this Product p) =>
+        public static IList<string> Choices1EditStyle(this Product p) =>
             new[] { "U ", "M ", "W " }; // nchar(2) in database so pad right with space
 
         [Edit]
@@ -103,7 +103,7 @@ namespace AW.Functions
       ProductCategory category, ProductSubcategory subCategory, IContext context) =>
               DisplayAndSave(p with { ProductCategory = category, ProductSubcategory = subCategory }, context);
 
-        public static ProductSubcategory[] Choices2EditCategories(this Product p,
+        public static IList<ProductSubcategory> Choices2EditCategories(this Product p,
             ProductCategory productCategory, IContext context) =>
             productCategory is null ? new ProductSubcategory[] { }
             : context.Instances<ProductSubcategory>().Where(psc => psc.ProductCategory.ProductCategoryID == productCategory.ProductCategoryID).ToArray();

@@ -33,30 +33,32 @@ namespace AW.Functions
         public static (SpecialOffer, IContext) EditCategory(this SpecialOffer sp, string category, IContext context)
         => DisplayAndSave(sp with { Category = category, ModifiedDate = context.Now() }, context);
 
-        public static string[] Choices0Category(this SpecialOffer sp) => Categories;
+        public static IList<string> Choices0Category(this SpecialOffer sp) => Categories;
 
-        internal static string[] Categories = new[] { "Reseller", "Customer" };
+        internal static IList<string> Categories = new[] { "Reseller", "Customer" };
 
         [Edit]
         public static (SpecialOffer, IContext) EditDates(
-            this SpecialOffer sp, 
+            this SpecialOffer sp,
             DateTime startDate,
-            DateTime endDate, 
-            IContext context)
-        => DisplayAndSave(sp with 
+            DateTime endDate,
+            IContext context)                   
+        => DisplayAndSave(sp with
         { StartDate = startDate, EndDate = endDate, ModifiedDate = context.Now() }
         , context);
 
         public static DateTime Default1EditDates(this SpecialOffer sp, IContext context) =>
             sp.StartDate;
-       
+
         public static DateTime Default2EditDates(this SpecialOffer sp, IContext context) =>
+            DefaultEndDate(context);
+
+        internal static DateTime DefaultEndDate(IContext context) =>
             context.GetService<IClock>().Today().AddMonths(1);
 
-                
         [Edit]
         public static (SpecialOffer, IContext) EditQuantities(
-            this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) => 
+            this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
             DisplayAndSave(sp with { MinQty = minQty, MaxQty = maxQty, ModifiedDate = context.Now() }, context);
 
         public static string ValidateEditQuantities(
@@ -64,7 +66,7 @@ namespace AW.Functions
             ValidateQuantities(minQty, maxQty);
 
         internal static string ValidateQuantities(int minQty, int? maxQty) =>
-            minQty < 1 || maxQty != null && maxQty.Value < minQty ?  "Quantities invalid": null;
+            minQty < 1 || maxQty != null && maxQty.Value < minQty ? "Quantities invalid" : null;
         #endregion
 
         #region AssociateWithProduct
@@ -72,8 +74,8 @@ namespace AW.Functions
         public static (SpecialOfferProduct, IContext) AssociateWithProduct(
             this SpecialOffer offer, Product product, IContext context) =>
             context.Instances<SpecialOfferProduct>().Where(x => x.SpecialOfferID == offer.SpecialOfferID && x.ProductID == product.ProductID).Count() == 0 ?
-                DisplayAndSave(new SpecialOfferProduct() with 
-                    { SpecialOffer = offer, Product = product, ModifiedDate = context.Now(), rowguid = context.NewGuid() }, context)
+                DisplayAndSave(new SpecialOfferProduct() with
+                { SpecialOffer = offer, Product = product, ModifiedDate = context.Now(), rowguid = context.NewGuid() }, context)
                 : (null, context.WithInformUser($"{offer} is already associated with { product}"));
 
         [PageSize(20)]

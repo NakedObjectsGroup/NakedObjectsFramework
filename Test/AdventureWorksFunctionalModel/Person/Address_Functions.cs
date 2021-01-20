@@ -25,10 +25,10 @@ namespace AW.Functions {
             CountryRegion countryRegion, StateProvince stateProvince, IContext context) =>
                 DisplayAndSave(a with {StateProvince = stateProvince }, context);
 
-        public static CountryRegion[] Choices1EditStateProvince(this Address a, IContext context) =>
+        public static IList<CountryRegion> Choices1EditStateProvince(this Address a, IContext context) =>
                 context.Instances<CountryRegion>().ToArray();
 
-        public static StateProvince[] Choices2EditStateProvince(this Address a, 
+        public static IList<StateProvince> Choices2EditStateProvince(this Address a, 
             CountryRegion countryRegion, IContext context)=> 
                 countryRegion != null ? StateProvincesForCountry(countryRegion, context) 
                 : new StateProvince[] { };

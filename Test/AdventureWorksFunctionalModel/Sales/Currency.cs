@@ -11,6 +11,7 @@ using static AW.Utilities;
 
 namespace AW.Types
 {
+    [Bounded]
     public record Currency
     {
         [Hidden]
