@@ -7,33 +7,23 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
-using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
+using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public sealed class ActionParameterValidation : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
-        private readonly ILogger<ActionParameterValidation> logger;
+    public sealed class ActionParameterValidationViaFunctionFacet : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
-        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
-
-        public ActionParameterValidation(MethodInfo method, ISpecification holder, ILogger<ActionParameterValidation> logger)
-            : base(typeof(IActionParameterValidationFacet), holder) {
+        public ActionParameterValidationViaFunctionFacet(MethodInfo method, ISpecification holder)
+            : base(typeof(IActionParameterValidationFacet), holder) =>
             this.method = method;
-            this.logger = logger;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
 
         protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
 
         #region IActionParameterValidationFacet Members
 
@@ -42,7 +32,7 @@ namespace NakedObjects.Meta.Facet {
         public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
         public string InvalidReason(INakedObjectAdapter target, INakedObjectsFramework framework, INakedObjectAdapter proposedArgument) =>
-            (string) methodDelegate(target.GetDomainObject(), new[] {proposedArgument.GetDomainObject()});
+            (string) InvokeUtils.InvokeStatic(method, method.GetParameterValues(target, proposedArgument, framework));
 
         #endregion
 
@@ -50,7 +40,7 @@ namespace NakedObjects.Meta.Facet {
 
         public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+        public Func<object, object[], object> GetMethodDelegate() => null;
 
         #endregion
     }

@@ -34,7 +34,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> FindDefaultMethod(Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindDefaultMethod(Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
 
@@ -54,9 +54,16 @@ namespace NakedFunctions.Reflector.FacetFactory {
             methodInfo.DeclaringType == type &&
             methodInfo.ReturnType == returnType;
 
-        private static MethodInfo FindDefaultMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
-            var name = RecognisedMethodsAndPrefixes.ParameterDefaultPrefix + i + capitalizedName;
-            return declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
+        private MethodInfo FindDefaultMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
+            var name = $"{RecognisedMethodsAndPrefixes.ParameterDefaultPrefix}{i}{capitalizedName}";
+            var defaultMethod = declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
+            var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != defaultMethod);
+
+            foreach (var methodInfo in nameMatches) {
+                logger.LogWarning($"default method found: {methodInfo.Name} not matching expected signature");
+            }
+
+            return defaultMethod;
         }
 
         #region IMethodFilteringFacetFactory Members

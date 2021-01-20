@@ -17,6 +17,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 
@@ -29,22 +30,33 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<ActionValidateViaFunctionFacetFactory> logger;
 
         public ActionValidateViaFunctionFacetFactory(IFacetFactoryOrder<ActionValidateViaFunctionFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
+            : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters) =>
             logger = loggerFactory.CreateLogger<ActionValidateViaFunctionFacetFactory>();
 
         public string[] Prefixes => FixedPrefixes;
 
         #region IMethodFilteringFacetFactory Members
 
-        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type paramType) =>
+        private static bool MatchParams(MethodInfo methodInfo, Type[] toMatch) {
+            var actualParams = InjectUtils.FilterParms(methodInfo).Select(p => p.ParameterType).ToArray();
+            if (actualParams.Length == 0 || actualParams.Length != toMatch.Length) {
+                return false;
+            }
+
+            return actualParams.Zip(toMatch).All(i => i.First == i.Second);
+        }
+
+        private static bool Matches(MethodInfo methodInfo, string name, Type type) =>
             methodInfo.Name == name &&
             methodInfo.DeclaringType == type &&
-            InjectUtils.FilterParms(methodInfo).Count(p => p.ParameterType == paramType) == 1 &&
             methodInfo.ReturnType == typeof(string);
 
-        private MethodInfo FindValidateMethod(Type declaringType, string capitalizedName, int i, Type paramType) {
-            var name = $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{i}{capitalizedName}";
-            var validateMethod = declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, paramType));
+        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type[] paramTypes) =>
+            Matches(methodInfo, name, type) &&
+            MatchParams(methodInfo, paramTypes);
+
+        private MethodInfo FindValidateMethod(Type declaringType, string name, Type[] paramTypes) {
+            var validateMethod = declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, paramTypes));
             var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != validateMethod);
 
             foreach (var methodInfo in nameMatches) {
@@ -54,33 +66,41 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return validateMethod;
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindValidateMethod(Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            for (var i = 0; i < paramTypes.Length; i++) {
-                var paramType = paramTypes[i];
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacetToParameterValidateMethod(Type declaringType, string name, Type paramType, ISpecificationBuilder parameter, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var methodToUse = FindValidateMethod(declaringType, name, new[] {paramType});
 
-                var methodToUse = FindValidateMethod(declaringType, capitalizedName, i, paramType);
+            if (methodToUse is not null) {
+                // add facets directly to parameters, not to actions
+                FacetUtils.AddFacet(new ActionParameterValidationViaFunctionFacet(methodToUse, parameter));
+            }
 
-                if (methodToUse is not null) {
-                    // add facets directly to parameters, not to actions
-                    FacetUtils.AddFacet(new ActionValidationViaFunctionFacet(methodToUse, parameters[i]));
-                }
+            return metamodel;
+        }
+
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacetToActionValidateMethod(Type declaringType, string name, Type[] paramTypes, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var methodToUse = FindValidateMethod(declaringType, name, paramTypes);
+
+            if (methodToUse is not null) {
+                FacetUtils.AddFacet(new ActionValidationViaFunctionFacet(methodToUse, action));
             }
 
             return metamodel;
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
+            var name = $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{NameUtils.CapitalizeName(actionMethod.Name)}";
             var declaringType = actionMethod.DeclaringType;
+            var parameters = InjectUtils.FilterParms(actionMethod).Select(p => p.ParameterType).ToArray();
 
-            var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
+            return FindAndAddFacetToActionValidateMethod(declaringType, name, parameters, action, metamodel);
+        }
 
-            if (action is IActionSpecImmutable actionSpecImmutable) {
-                var actionParameters = actionSpecImmutable.Parameters;
-                metamodel = FindValidateMethod(declaringType, capitalizedName, paramTypes, actionParameters, metamodel);
-            }
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo actionMethod, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var name = $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{paramNum}{NameUtils.CapitalizeName(actionMethod.Name)}";
+            var declaringType = actionMethod.DeclaringType;
+            var parameter = actionMethod.GetParameters()[paramNum];
 
-            return metamodel;
+            return FindAndAddFacetToParameterValidateMethod(declaringType, name, parameter.ParameterType, holder, metamodel);
         }
 
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.ValidatePrefix);
