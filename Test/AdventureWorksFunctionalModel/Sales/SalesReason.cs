@@ -20,7 +20,7 @@ namespace AW.Types {
 
         public virtual string ReasonType { get; init; }
 
-        [MemberOrder(99)] [Versioned]
+        [MemberOrder(99)] //[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;

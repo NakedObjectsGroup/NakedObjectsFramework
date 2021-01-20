@@ -21,7 +21,7 @@ namespace AW.Types {
         public virtual ProductModel ProductModel { get; init; }
 
         [MemberOrder(99)]
-        [Versioned]
+        //[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"ProductModelIllustration: {ProductModelID}-{IllustrationID}";

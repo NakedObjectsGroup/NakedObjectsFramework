@@ -25,7 +25,7 @@ namespace AW.Types
         public virtual Guid rowguid { get; init; }
 
         [Hidden]
-        [Versioned]
+        //[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;

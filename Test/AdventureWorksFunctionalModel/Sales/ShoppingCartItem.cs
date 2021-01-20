@@ -36,7 +36,7 @@ namespace AW.Types
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Versioned]
+        //[Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
         #endregion

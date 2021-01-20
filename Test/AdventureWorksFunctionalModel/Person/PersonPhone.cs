@@ -15,7 +15,7 @@ namespace AW.Types
 
         public virtual PhoneNumberType PhoneNumberType { get; init; }
         
-        [Versioned]
+        //[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{PhoneNumberType}:{PhoneNumber}";

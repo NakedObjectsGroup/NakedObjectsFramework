@@ -16,7 +16,7 @@ namespace AW.Types {
         public virtual string CurrencyCode { get; init; }
         public virtual CountryRegion CountryRegion { get; init; }
         public virtual Currency Currency { get; init; }
-        [Versioned]
+        //[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"CountryRegionCurrency: {CountryRegion} {Currency}";

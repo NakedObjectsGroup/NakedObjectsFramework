@@ -24,7 +24,7 @@ namespace AW.Types
         public virtual string GroupName { get; init; }
 
         [MemberOrder(99)]
-		[Versioned]
+		//[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;

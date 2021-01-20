@@ -23,7 +23,7 @@ namespace AW.Types {
         public virtual CreditCard CreditCard { get; init; }
 
         [MemberOrder(99)]
-        [Versioned]
+        //[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"PersonCreditCard: {PersonID}-{CreditCardID}";

@@ -77,7 +77,7 @@ namespace AW.Types
         public virtual int BusinessEntityID { get; init; }
 
         [MemberOrder(99)]
-        [Versioned]
+        //[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]

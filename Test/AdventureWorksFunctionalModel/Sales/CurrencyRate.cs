@@ -30,7 +30,7 @@ namespace AW.Types {
 
         public virtual Currency Currency1 { get; init; }
 
-        [MemberOrder(99)][Versioned]
+        [MemberOrder(99)]//[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{AverageRate}";

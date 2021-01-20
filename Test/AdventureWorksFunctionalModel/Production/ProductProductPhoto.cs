@@ -19,7 +19,7 @@ namespace AW.Types {
         public virtual ProductPhoto ProductPhoto { get; init; }
 
         [MemberOrder(99)]
-        [Versioned]
+        //[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"ProductProductPhoto: {ProductID}-{ProductPhotoID}";

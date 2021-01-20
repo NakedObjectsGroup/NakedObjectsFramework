@@ -55,7 +55,7 @@ namespace AW.Types {
         public virtual Vendor Vendor { get; init; }
 
         [MemberOrder(99)]
-        [Versioned]
+        //[Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"ProductVendor: {ProductID}-{VendorID}";
