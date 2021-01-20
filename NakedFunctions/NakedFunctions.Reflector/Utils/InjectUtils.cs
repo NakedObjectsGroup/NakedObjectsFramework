@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -49,10 +48,6 @@ namespace NakedObjects.Meta.Utils {
             return null;
         }
 
-        private static IEnumerator GetNextParameter(INakedObjectAdapter[] parmValues) {
-            return parmValues.Select(adapter => adapter.GetDomainObject()).GetEnumerator();
-        }
-
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework)).ToArray();
 
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) => 
@@ -61,11 +56,6 @@ namespace NakedObjects.Meta.Utils {
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string autocomplete, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? autocomplete).ToArray();
 
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectAdapter parmValue, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? parmValue.GetDomainObject()).ToArray();
-
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectAdapter[] parmValues, INakedObjectsFramework framework) {
-            var i = 0;
-            return method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? parmValues[i++]).ToArray();
-        }
 
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string[] keys, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? keys).ToArray();
 

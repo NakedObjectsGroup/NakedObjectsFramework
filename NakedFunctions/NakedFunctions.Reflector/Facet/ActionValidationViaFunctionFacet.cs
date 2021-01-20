@@ -40,7 +40,7 @@ namespace NakedFunctions.Meta.Facet {
         public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
         public string InvalidReason(INakedObjectAdapter target, INakedObjectsFramework framework, INakedObjectAdapter[] proposedArguments) =>
-            (string) InvokeUtils.InvokeStatic(method, method.GetParameterValues(target, proposedArguments, framework));
+            (string) InvokeUtils.InvokeStatic(method, proposedArguments.Select(a => a.GetDomainObject()).ToArray());
 
         #endregion
 

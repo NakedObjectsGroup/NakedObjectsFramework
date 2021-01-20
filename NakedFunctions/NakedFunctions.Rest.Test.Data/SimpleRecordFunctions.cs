@@ -66,21 +66,21 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IQueryable<DateRecord> Choices2WithMultipleChoices(this SimpleRecord sp, IEnumerable<SimpleRecord> simpleRecords, IContext context) => context.Instances<DateRecord>();
     }
 
-
     public static class DefaultedRecordFunctions {
-
-        public static SimpleRecord WithDefaults(this SimpleRecord sp, int default1, SimpleRecord default2,  IContext context) => sp;
+        public static SimpleRecord WithDefaults(this SimpleRecord sp, int default1, SimpleRecord default2, IContext context) => sp;
 
         public static int Default1WithDefaults(this SimpleRecord sp, IContext context) => 101;
         public static SimpleRecord Default2WithDefaults(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>().First();
     }
 
-
-    public static class ValidatedRecordFunctions
-    {
-
+    public static class ValidatedRecordFunctions {
         public static SimpleRecord WithValidation(this SimpleRecord sp, int validate1, IContext context) => sp;
 
         public static string Validate1WithValidation(this SimpleRecord sp, int validate1, IContext context) => validate1 == 1 ? "" : "invalid";
+
+        public static SimpleRecord WithCrossValidation(this SimpleRecord sp, int validate1, string validate2, IContext context) => sp;
+
+        public static string ValidateWithCrossValidation(this SimpleRecord sp, int validate1, string validate2, IContext context) =>
+            validate1 == int.Parse(validate2) ? "" : $"invalid: {validate1}:{validate2}";
     }
 }

@@ -429,5 +429,35 @@ namespace NakedFunctions.Rest.Test {
 
             resultObj.AssertObject("Fred", FullName<SimpleRecord>(), "1");
         }
+
+        [Test]
+        public void TestInvokeRecordActionWithCrossValidateFail()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") }, { "validate2", new ScalarValue("1") } } };
+            var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithCrossValidation), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+            var parsedResult = JObject.Parse(json);
+
+
+            Assert.AreEqual("invalid: 2:1", parsedResult["x-ro-invalidReason"].ToString());
+        }
+
+
+        [Test]
+        public void TestInvokeRecordActionWithCrossValidateSuccess()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") }, { "validate2", new ScalarValue("1") } } };
+            var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithCrossValidation), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Fred", FullName<SimpleRecord>(), "1");
+        }
     }
 }

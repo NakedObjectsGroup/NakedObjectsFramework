@@ -73,5 +73,10 @@ namespace NakedFunctions.Rest.Test.Data {
         public static SimpleRecord WithValidation(int validate1, IContext context) => context.Instances<SimpleRecord>().First();
 
         public static string Validate0WithValidation(int validate1, IContext context) => validate1 == 1 ? "" : "invalid";
+
+        public static SimpleRecord WithCrossValidation(int validate1, string validate2, IContext context) => context.Instances<SimpleRecord>().First();
+
+        public static string ValidateWithCrossValidation(int validate1, string validate2, IContext context) =>
+            validate1 == int.Parse(validate2) ? "" : $"invalid: {validate1}:{validate2}";
     }
 }
