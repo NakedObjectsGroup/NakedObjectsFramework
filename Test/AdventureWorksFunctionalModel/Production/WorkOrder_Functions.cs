@@ -19,19 +19,19 @@ namespace AW.Functions
         public static (WorkOrder, IContext) ChangeScrappedQuantity(this WorkOrder wo, short newQty, IContext context)
         => DisplayAndSave(wo with { ScrappedQty = newQty }, context);
 
+        public static (WorkOrder, IContext) EditDates(this WorkOrder wo, 
+            DateTime startDate, DateTime dueDate, IContext context) =>
+             DisplayAndSave(wo with { StartDate = startDate, DueDate = dueDate }, context);
 
-
-        public static string Validate(WorkOrder wo, DateTime startDate, DateTime dueDate)
-        {
-            return startDate > dueDate ? "StartDate must be before DueDate" : null;
-        }
+        public static string ValidateEditDates(this WorkOrder wo, DateTime startDate, DateTime dueDate) =>
+            startDate > dueDate ? "StartDate must be before DueDate" : null;
 
         public static (WorkOrder, IContext) EditOrderQty(this WorkOrder wo, int orderQty, IContext context) =>
             DisplayAndSave(wo with { OrderQty = orderQty }, context);
 
-        public static string Validate1EditOrderQty(this WorkOrder wo, int qty)
+        public static string Validate1EditOrderQty(this WorkOrder wo, int orderQty)
         {
-            return qty <= 0 ? "Order Quantity must be > 0" : null;
+            return orderQty <= 0 ? "Order Quantity must be > 0" : null;
         }
 
 
