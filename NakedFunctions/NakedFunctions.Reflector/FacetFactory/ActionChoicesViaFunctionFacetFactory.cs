@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
 using NakedObjects;
@@ -38,7 +37,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private  IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
                 var isMultiple = false;
@@ -82,14 +81,21 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static bool MatchReturnType(Type returnType, Type toMatch) => CollectionUtils.IsGenericEnumerable(returnType) && returnType.GenericTypeArguments.SequenceEqual(toMatch.GenericTypeArguments);
 
-        private static MethodInfo FindChoicesMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
-            var name = RecognisedMethodsAndPrefixes.ParameterChoicesPrefix + i + capitalizedName;
-            return declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
+        private MethodInfo FindChoicesMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
+            var name = $"{RecognisedMethodsAndPrefixes.ParameterChoicesPrefix}{i}{capitalizedName}";
+            var choicesMethod = declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
+            var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != choicesMethod);
+
+            foreach (var methodInfo in nameMatches) {
+                logger.LogWarning($"validate method found: {methodInfo.Name} not matching expected signature");
+            }
+
+            return choicesMethod;
         }
 
         #region IMethodFilteringFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod,  ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
             var declaringType = actionMethod.DeclaringType;
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
