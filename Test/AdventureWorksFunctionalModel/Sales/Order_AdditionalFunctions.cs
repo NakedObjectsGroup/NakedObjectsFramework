@@ -157,12 +157,8 @@ namespace AW.Functions {
             //return newOrder;
         }
 
-        public static string ValidateCreateNewOrder(Customer customer)
-        {
-            if (customer.SalesTerritoryID == 6 )
-                return "Customers in Canada may not place orders directly.";
-            return null;
-        }
+        public static string ValidateCreateNewOrder(this Customer customer) =>
+            customer.SalesTerritoryID == 6 ? "Customers in Canada may not place orders directly." : null;
 
         [MemberOrder(1)]
         public static QuickOrderForm QuickOrder(this Customer customer) {
