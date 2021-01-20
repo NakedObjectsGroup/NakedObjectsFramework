@@ -56,6 +56,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             DisplayGuidProperty();
             ParameterChoicesSimple();
             ParameterChoicesDependent();
+            ParameterDefaultFunction();
         }
 
         //[TestMethod]
@@ -238,6 +239,16 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var option = "select#stateprovince1 option";
             var yukon = WaitForCssNo(option, 13);
             Assert.AreEqual("Yukon Territory", yukon.Text);
+        }
+
+        //[TestMethod]
+        public void ParameterDefaultFunction()
+        {
+            GeminiUrl("home?m1=SpecialOffer_MenuFunctions&d1=CreateNewSpecialOffer");
+            WaitForTitle("Home");
+            var field = WaitForCss("input#enddate1");
+            var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
+            Assert.AreEqual(oneMonthOn, field.GetAttribute("value"));
         }
     }
 }
