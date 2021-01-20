@@ -31,7 +31,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(ChoicesMenuFunctions),
             typeof(DefaultedMenuFunctions),
             typeof(ValidatedMenuFunctions),
-            typeof(DisabledMenuFunctions)
+            typeof(DisabledMenuFunctions),
+            typeof(HiddenMenuFunctions)
         };
 
         // todo should IAlert be here or should we ignore?
@@ -94,7 +95,7 @@ namespace NakedFunctions.Rest.Test {
             var val = parsedResult.GetValue("value") as JArray;
 
             Assert.IsNotNull(val);
-            Assert.AreEqual(6, val.Count);
+            Assert.AreEqual(7, val.Count);
 
             var firstItem = val.First;
 
@@ -484,6 +485,31 @@ namespace NakedFunctions.Rest.Test {
            
 
             Assert.IsNotNull(parsedResult["members"]["WithDisabled2"]);
+        }
+
+        [Test]
+        public void TestGetMenuActionWithHidden1()
+        {
+            var api = Api();
+            var result = api.GetMenu(nameof(HiddenMenuFunctions));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["WithHidden1"]);
+        }
+
+        [Test]
+        public void TestGetMenuActionWithHidden2()
+        {
+            var api = Api();
+            var result = api.GetMenu(nameof(HiddenMenuFunctions));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+
+            Assert.IsNotNull(parsedResult["members"]["WithHidden2"]);
         }
     }
 }

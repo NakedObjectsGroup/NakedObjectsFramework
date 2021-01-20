@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
@@ -23,7 +22,6 @@ namespace NakedFunctions.Meta.Facet {
     public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
-
         public HideForContextViaFunctionFacet(MethodInfo method, ISpecification holder) : base(typeof(IHideForContextFacet), holder) => this.method = method;
 
         protected override string ToStringValues() => $"method={method}";
@@ -35,13 +33,9 @@ namespace NakedFunctions.Meta.Facet {
 
         public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
 
-        public Exception CreateExceptionFor(IInteractionContext ic) =>     new HiddenException(ic, Hides(ic));
+        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
         public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
-            if (nakedObjectAdapter == null) {
-                return null;
-            }
-
             var isHidden = (bool) method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, framework));
             return isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
         }
