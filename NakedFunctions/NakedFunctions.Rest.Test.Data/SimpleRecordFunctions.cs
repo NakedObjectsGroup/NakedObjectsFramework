@@ -93,4 +93,15 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static string DisableWithDisabled2(this SimpleRecord sp, IContext context) => "";
     }
+
+    public static class HiddenRecordFunctions
+    {
+        public static SimpleRecord WithHidden1(this SimpleRecord sp, IContext context) => sp;
+
+        public static bool HideWithHidden1(this SimpleRecord sp, IContext context) => true;
+
+        public static SimpleRecord WithHidden2(this SimpleRecord sp, IContext context) => sp;
+
+        public static bool HideWithHidden2(this SimpleRecord sp, IContext context) => false;
+    }
 }
