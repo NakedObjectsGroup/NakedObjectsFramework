@@ -87,7 +87,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != choicesMethod);
 
             foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"validate method found: {methodInfo.Name} not matching expected signature");
+                logger.LogWarning($"choices method found: {methodInfo.Name} not matching expected signature");
             }
 
             return choicesMethod;
