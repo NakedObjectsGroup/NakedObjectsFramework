@@ -62,7 +62,7 @@ namespace AW.Functions
             DisplayAndSave(sp with { MinQty = minQty, MaxQty = maxQty, ModifiedDate = context.Now() }, context);
 
         public static string ValidateEditQuantities(
-            this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty) =>
+            this SpecialOffer sp, int minQty, int? maxQty) =>
             ValidateQuantities(minQty, maxQty);
 
         internal static string ValidateQuantities(int minQty, int? maxQty) =>

@@ -116,5 +116,12 @@ namespace AW.Functions {
         }
 
         #endregion
+
+        public static IQueryable<Customer> ListCustomersForSalesTerritory(SalesTerritory territory, IContext context)
+        {
+            var id = territory.TerritoryID;
+            return context.Instances<Customer>().Where(c => c.SalesTerritory.TerritoryID == id);
+        }
+        
     }
 }
