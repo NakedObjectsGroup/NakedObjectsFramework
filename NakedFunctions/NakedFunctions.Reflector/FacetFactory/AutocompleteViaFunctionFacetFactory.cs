@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -36,24 +35,25 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private static void FindAutoCompleteMethod(Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
+        private void FindAutoCompleteMethodAndAddFacet(Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 // only support on strings and reference types
                 var paramType = paramTypes[i];
                 if (paramType.IsClass || paramType.IsInterface) {
+                    var name = $"{RecognisedMethodsAndPrefixes.AutoCompletePrefix}{i}{capitalizedName}";
                     //returning an IQueryable ...
                     //.. or returning a single object
-                    var method = FindAutoCompleteMethod(type, capitalizedName, i, typeof(IQueryable<>).MakeGenericType(paramType)) ??
-                                 FindAutoCompleteMethod(type, capitalizedName, i, paramType);
+                    var method = FindAutoCompleteMethod(type, name, typeof(IQueryable<>).MakeGenericType(paramType)) ??
+                                 FindAutoCompleteMethod(type, name, paramType);
 
                     //... or returning an enumerable of string
                     if (method is null && TypeUtils.IsString(paramType)) {
-                        method = FindAutoCompleteMethod(type, capitalizedName, i, typeof(IEnumerable<string>));
+                        method = FindAutoCompleteMethod(type, name, typeof(IEnumerable<string>));
                     }
 
                     if (method is not null) {
-                        var pageSizeAttr = method.GetCustomAttribute<NakedObjects.PageSizeAttribute>();
-                        var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
+                        var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
+                        var minLengthAttr = method.GetParameters().First().GetCustomAttribute<MinLengthAttribute>();
 
                         var pageSize = pageSizeAttr?.Value ?? 0; // default to 0 ie system default
                         var minLength = minLengthAttr?.Value ?? 0;
@@ -61,30 +61,39 @@ namespace NakedFunctions.Reflector.FacetFactory {
                         // add facets directly to parameters, not to actions
                         FacetUtils.AddFacet(new AutoCompleteViaFunctionFacet(method, pageSize, minLength, parameters[i]));
                     }
+                    else {
+                        foreach (var methodInfo in type.GetMethods().Where(mi => mi.Name == name)) {
+                            logger.LogWarning($"validate method found: {methodInfo.Name} not matching expected signature");
+                        }
+                    }
                 }
             }
+        }
+
+        private static bool MatchParams(MethodInfo methodInfo) {
+            var actualParams = InjectUtils.FilterParms(methodInfo).Select(p => p.ParameterType).ToArray();
+            return actualParams.Length == 1 && actualParams.First() == typeof(string);
         }
 
         private static bool Matches(MethodInfo methodInfo, string name, Type type, Type returnType) =>
             methodInfo.Name == name &&
             methodInfo.DeclaringType == type &&
-            methodInfo.ReturnType == returnType;
+            methodInfo.ReturnType == returnType &&
+            MatchParams(methodInfo);
 
-        private static MethodInfo FindAutoCompleteMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
-            var name = RecognisedMethodsAndPrefixes.AutoCompletePrefix + i + capitalizedName;
-            return declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
-        }
+        private static MethodInfo FindAutoCompleteMethod(Type declaringType, string name, Type returnType) =>
+            declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
 
         #region IMethodFilteringFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod,  ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
             var declaringType = actionMethod.DeclaringType;
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
             if (action is IActionSpecImmutable actionSpecImmutable) {
                 var actionParameters = actionSpecImmutable.Parameters;
-                FindAutoCompleteMethod(declaringType, capitalizedName, paramTypes, actionParameters);
+                FindAutoCompleteMethodAndAddFacet(declaringType, capitalizedName, paramTypes, actionParameters);
             }
 
             return metamodel;
