@@ -33,7 +33,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(DateRecordFunctions),
             typeof(ChoicesRecordFunctions),
             typeof(DefaultedRecordFunctions),
-            typeof(ValidatedRecordFunctions)
+            typeof(ValidatedRecordFunctions),
+            typeof(DisabledRecordFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -493,6 +494,29 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             resultObj.AssertObject("Fred", FullName<SimpleRecord>(), "1");
+        }
+
+        [Test]
+        public void TestGetRecordActionWithDisable1() {
+            var api = Api();
+            var result = api.GetObject(FullName<SimpleRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("disabled", parsedResult["members"]["WithDisabled1"]["disabledReason"].ToString());
+        }
+
+        [Test]
+        public void TestGetRecordActionWithDisable2()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<SimpleRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["WithDisabled2"]["disabledReason"]);
         }
     }
 }

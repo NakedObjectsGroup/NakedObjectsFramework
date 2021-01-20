@@ -34,30 +34,38 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
-            pi is not null &&
-            pi.ParameterType == toMatch;
-
-        private static bool NameMatches(MethodInfo compFunction, MethodInfo actionFunction) =>
-            compFunction.Name.StartsWith(RecognisedMethodsAndPrefixes.DisablePrefix)
-            && compFunction.Name.Substring(RecognisedMethodsAndPrefixes.DisablePrefix.Length) == actionFunction.Name;
-
         #region IMethodFilteringFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod,  ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameterType = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
+        private static bool Matches(MethodInfo methodInfo, string name, Type type) =>
+            methodInfo.Name == name &&
+            methodInfo.DeclaringType == type &&
+            methodInfo.ReturnType == typeof(string) &&
+            !InjectUtils.FilterParms(methodInfo).Any();
 
-            if (parameterType is not null) {
-                var declaringType = actionMethod.DeclaringType;
-                // find matching disable function
-                var match = declaringType?.GetMethods().SingleOrDefault(m => NameMatches(m, actionMethod) && IsSameType(m.GetParameters().FirstOrDefault(), parameterType));
+        private MethodInfo FindDisableMethod(Type declaringType, string name) {
+            var disableMethod = declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType));
+            var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != disableMethod);
 
-                if (match is not null) {
-                    FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(match, action));
-                }
+            foreach (var methodInfo in nameMatches) {
+                logger.LogWarning($"disable method found: {methodInfo.Name} not matching expected signature");
+            }
+
+            return disableMethod;
+        }
+
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var methodToUse = FindDisableMethod(declaringType, name);
+            if (methodToUse is not null) {
+                FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(methodToUse, action));
             }
 
             return metamodel;
+        }
+
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var name = $"{RecognisedMethodsAndPrefixes.DisablePrefix}{NameUtils.CapitalizeName(actionMethod.Name)}";
+            var declaringType = actionMethod.DeclaringType;
+            return FindAndAddFacet(declaringType, name, action, metamodel);
         }
 
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.DisablePrefix);
