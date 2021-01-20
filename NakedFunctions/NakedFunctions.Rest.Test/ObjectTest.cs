@@ -435,18 +435,34 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(1, parameters.Count());
         }
 
-        //[Test]
-        //public void TestInvokeRecordActionWithValidateFail()
-        //{
-        //    var api = Api();
-        //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") } } };
-        //    var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.WithValidation), map);
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
+        [Test]
+        public void TestInvokeRecordActionWithValidateFail()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") } } };
+            var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.WithValidation), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+            var parsedResult = JObject.Parse(json);
 
-        //    Assert.AreEqual(nameof(ValidatedRecordFunctions.WithValidation), parsedResult["id"].ToString());
-        //}
+            Assert.AreEqual("2", parsedResult["validate1"]["value"].ToString());
+            Assert.AreEqual("invalid", parsedResult["validate1"]["invalidReason"].ToString());
+        }
 
+
+        [Test]
+        public void TestInvokeRecordActionWithValidateSuccess()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") } } };
+            var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.WithValidation), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Fred", FullName<SimpleRecord>(), "1");
+        }
     }
 }

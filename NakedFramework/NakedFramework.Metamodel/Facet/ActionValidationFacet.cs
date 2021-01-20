@@ -33,11 +33,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IActionValidationFacet Members
 
-        public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArguments);
+        public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArguments);
 
         public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
-        public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter[] proposedArguments) {
+        public string InvalidReason(INakedObjectAdapter target, INakedObjectsFramework framework, INakedObjectAdapter[] proposedArguments) {
             if (methodDelegate != null) {
                 return (string) methodDelegate(target.GetDomainObject(), proposedArguments.Select(no => no.GetDomainObject()).ToArray());
             }

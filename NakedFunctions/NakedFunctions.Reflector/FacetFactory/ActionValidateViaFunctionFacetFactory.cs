@@ -42,12 +42,19 @@ namespace NakedFunctions.Reflector.FacetFactory {
             InjectUtils.FilterParms(methodInfo).Count(p => p.ParameterType == paramType) == 1 &&
             methodInfo.ReturnType == typeof(string);
 
-        private static MethodInfo FindValidateMethod(Type declaringType, string capitalizedName, int i, Type paramType) {
-            var name = RecognisedMethodsAndPrefixes.ValidatePrefix + i + capitalizedName;
-            return declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, paramType));
+        private MethodInfo FindValidateMethod(Type declaringType, string capitalizedName, int i, Type paramType) {
+            var name = $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{i}{capitalizedName}";
+            var validateMethod = declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, paramType));
+            var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != validateMethod);
+
+            foreach (var methodInfo in nameMatches) {
+                logger.LogWarning($"validate method found: {methodInfo.Name} not matching expected signature");
+            }
+
+            return validateMethod;
         }
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> FindValidateMethod(Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindValidateMethod(Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
 

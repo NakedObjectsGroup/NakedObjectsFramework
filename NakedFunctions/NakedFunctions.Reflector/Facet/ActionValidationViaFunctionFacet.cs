@@ -6,8 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -15,6 +17,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta;
 using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Meta.Facet {
     [Serializable]
@@ -32,11 +35,12 @@ namespace NakedFunctions.Meta.Facet {
 
         #region IActionValidationFacet Members
 
-        public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArguments);
+        public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, new []{ic.ProposedArgument});
 
         public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
-        public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter[] proposedArguments) => (string) InvokeUtils.InvokeStatic(method, proposedArguments);
+        public string InvalidReason(INakedObjectAdapter target, INakedObjectsFramework framework, INakedObjectAdapter[] proposedArguments) =>
+            (string) InvokeUtils.InvokeStatic(method, method.GetParameterValues(target, proposedArguments.FirstOrDefault(), framework));
 
         #endregion
 

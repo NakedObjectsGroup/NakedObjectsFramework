@@ -20,7 +20,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Validate));
             var testFacet = new ActionValidationViaFunctionFacet(method, null);
 
-            var result = testFacet.InvalidReason(null, Array.Empty<INakedObjectAdapter>());
+            var result = testFacet.InvalidReason(null, null, Array.Empty<INakedObjectAdapter>());
 
             Assert.AreEqual(TestValue, result);
         }

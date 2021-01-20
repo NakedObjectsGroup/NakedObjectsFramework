@@ -14,6 +14,7 @@ using NakedFunctions;
 using NakedFunctions.Reflector.Component;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Utils {
     public static class InjectUtils {
@@ -53,6 +54,8 @@ namespace NakedObjects.Meta.Utils {
             method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? p.GetMatchingParameter(parameterNameValues)).ToArray();
 
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string autocomplete, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? autocomplete).ToArray();
+
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectAdapter parmValue, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? parmValue.GetDomainObject()).ToArray();
 
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string[] keys, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? keys).ToArray();
 

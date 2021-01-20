@@ -27,7 +27,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
             Assert.IsNotNull(actionValidationFacet.GetMethodDelegate(), method.Name);
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().Select(MockParm).ToArray();
             var target = MockParm(new TestDelegateClass());
-            Assert.AreEqual($"Validation{parms.Length}", facet.InvalidReason(target, parms));
+            Assert.AreEqual($"Validation{parms.Length}", facet.InvalidReason(target, null, parms));
         }
 
         private static void InvokeFuncTest(MethodInfo method) {
@@ -37,7 +37,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
             Assert.IsNotNull(actionValidationFacet.GetMethod());
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().Select(MockParm).ToArray();
             var target = MockParm(new TestDelegateClass());
-            Assert.AreEqual($"Validation{parms.Length}", facet.InvalidReason(target, parms));
+            Assert.AreEqual($"Validation{parms.Length}", facet.InvalidReason(target, null, parms));
         }
 
         [TestMethod]
