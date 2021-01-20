@@ -30,5 +30,10 @@ namespace NakedFunctions {
 
         public static Guid NewGuid(this IContext context)
             => context.GetService<IGuidGenerator>().NewGuid();
+
+        //Helper method that is convenient if a function creates or modifies a single object that
+        //also needs to be returned as the first item of the tuple i.e. for display
+        public static (T, IContext) SaveAndDisplay<T>(this IContext context, T obj) => (obj, context.WithPendingSave(obj));
+
     }
 }
