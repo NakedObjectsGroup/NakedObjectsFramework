@@ -22,6 +22,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Reason why the validation has failed, or <c>null</c> if okay
         /// </summary>
-        string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter paramValue);
+        string InvalidReason(INakedObjectAdapter target, INakedObjectsFramework framework, INakedObjectAdapter paramValue);
     }
 }

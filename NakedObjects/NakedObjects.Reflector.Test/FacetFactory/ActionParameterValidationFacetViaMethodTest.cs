@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var mock = new Mock<INakedObjectAdapter>();
             var value = mock.Object;
             mock.Setup(no => no.Object).Returns(10);
-            Assert.IsNull(facet.InvalidReason(target, value));
+            Assert.IsNull(facet.InvalidReason(target, null, value));
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var mock = new Mock<INakedObjectAdapter>();
             var value = mock.Object;
             mock.Setup(no => no.Object).Returns(-7);
-            Assert.AreEqual(facet.InvalidReason(target, value), "must be positive");
+            Assert.AreEqual(facet.InvalidReason(target, null, value), "must be positive");
         }
 
         #region Setup/Teardown

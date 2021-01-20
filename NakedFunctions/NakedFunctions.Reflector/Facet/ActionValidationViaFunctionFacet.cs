@@ -35,12 +35,12 @@ namespace NakedFunctions.Meta.Facet {
 
         #region IActionValidationFacet Members
 
-        public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, new []{ic.ProposedArgument});
+        public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArguments);
 
         public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
         public string InvalidReason(INakedObjectAdapter target, INakedObjectsFramework framework, INakedObjectAdapter[] proposedArguments) =>
-            (string) InvokeUtils.InvokeStatic(method, method.GetParameterValues(target, proposedArguments.FirstOrDefault(), framework));
+            (string) InvokeUtils.InvokeStatic(method, method.GetParameterValues(target, proposedArguments, framework));
 
         #endregion
 
