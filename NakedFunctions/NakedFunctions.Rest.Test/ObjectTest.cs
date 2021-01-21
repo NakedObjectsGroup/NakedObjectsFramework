@@ -469,6 +469,52 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
+        public void TestGetRecordActionWithValidateNoContext()
+        {
+            var api = Api();
+            var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.WithValidationNoContext));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ValidatedRecordFunctions.WithValidationNoContext), parsedResult["id"].ToString());
+
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+        }
+
+        [Test]
+        public void TestInvokeRecordActionWithValidateFailNoContext()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") } } };
+            var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.WithValidationNoContext), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("2", parsedResult["validate1"]["value"].ToString());
+            Assert.AreEqual("invalid", parsedResult["validate1"]["invalidReason"].ToString());
+        }
+
+
+        [Test]
+        public void TestInvokeRecordActionWithValidateSuccessNoContext()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") } } };
+            var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.WithValidationNoContext), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Fred", FullName<SimpleRecord>(), "1");
+        }
+
+
+        [Test]
         public void TestInvokeRecordActionWithCrossValidateFail()
         {
             var api = Api();
@@ -497,6 +543,38 @@ namespace NakedFunctions.Rest.Test {
 
             resultObj.AssertObject("Fred", FullName<SimpleRecord>(), "1");
         }
+
+        [Test]
+        public void TestInvokeRecordActionWithCrossValidateFailNoContext()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") }, { "validate2", new ScalarValue("1") } } };
+            var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.WithCrossValidationNoContext), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+            var parsedResult = JObject.Parse(json);
+
+
+            Assert.AreEqual("invalid: 2:1", parsedResult["x-ro-invalidReason"].ToString());
+        }
+
+
+        [Test]
+        public void TestInvokeRecordActionWithCrossValidateSuccessNoContext()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") }, { "validate2", new ScalarValue("1") } } };
+            var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.WithCrossValidationNoContext), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Fred", FullName<SimpleRecord>(), "1");
+        }
+
+
 
         [Test]
         public void TestGetRecordActionWithDisable1() {
