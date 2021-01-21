@@ -54,7 +54,7 @@ namespace AW.Functions
         internal static DateTime DefaultEndDate(IContext context) =>
             context.GetService<IClock>().Today().AddMonths(1);
 
-        [Edit]
+    
         public static (SpecialOffer, IContext) EditQuantities(
             this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
             context.SaveAndDisplay(sp with { MinQty = minQty, MaxQty = maxQty, ModifiedDate = context.Now() });

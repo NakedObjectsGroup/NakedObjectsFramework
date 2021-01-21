@@ -34,7 +34,7 @@ namespace AW.Functions {
 
         public static string DisableChangeQuantity()
         {
-            throw new NotImplementedException();
+            return null;
             //return SalesOrderHeader.DisableAddNewDetail();
         }
     }
