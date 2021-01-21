@@ -21,8 +21,6 @@ namespace AW.Functions
         public static (SpecialOffer, IContext) EditDescription(this SpecialOffer sp, string description, IContext context)
         => context.SaveAndDisplay(sp with { Description = description, ModifiedDate = context.Now() });
 
-        public static bool HideEditDescription(this SpecialOffer sp, IContext context) =>
-            HideIfEnded(sp, context);
 
         [Edit]
         public static (SpecialOffer, IContext) EditDiscount(this SpecialOffer sp, decimal discountPct, IContext context)
@@ -34,6 +32,9 @@ namespace AW.Functions
         [Edit]
         public static (SpecialOffer, IContext) EditType(this SpecialOffer sp, string type, IContext context)
         => context.SaveAndDisplay(sp with { Type = type, ModifiedDate = context.Now() });
+
+        public static bool HideEditType(this SpecialOffer sp, IContext context) =>
+            HideIfEnded(sp, context);
 
         [Edit]
         public static (SpecialOffer, IContext) EditCategory(this SpecialOffer sp, string category, IContext context)
