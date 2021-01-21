@@ -41,26 +41,10 @@ namespace NakedFunctions.Reflector.FacetFactory {
             methodInfo.Matches(name, declaringType, typeof(bool)) &&
             !InjectUtils.FilterParms(methodInfo).Any();
 
-        private MethodInfo FindHideMethod(Type declaringType, string name) {
-            var hideMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType)).ToArray();
-
-            if (hideMethods.Length > 1) {
-                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
-                return null;
-            }
-
-            var hideMethod = hideMethods.SingleOrDefault();
-            var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != hideMethod);
-
-            foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
-            }
-
-            return hideMethod;
-        }
-
         private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var methodToUse = FindHideMethod(declaringType, name);
+            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType);
+
+            var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
             if (methodToUse is not null) {
                 FacetUtils.AddFacet(new HideForContextViaFunctionFacet(methodToUse, action));
             }

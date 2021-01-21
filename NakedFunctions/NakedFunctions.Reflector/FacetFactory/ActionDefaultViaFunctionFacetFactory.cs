@@ -37,9 +37,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private IImmutableDictionary<string, ITypeSpecBuilder> FindDefaultMethod(Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
+                var name = $"{RecognisedMethodsAndPrefixes.ParameterDefaultPrefix}{i}{capitalizedName}";
                 var paramType = paramTypes[i];
 
-                var methodToUse = FindDefaultMethod(declaringType, capitalizedName, i, paramType);
+                bool Matcher(MethodInfo mi) => mi.Matches(name, declaringType, paramType);
+
+                var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
                 if (methodToUse is not null) {
                     // add facets directly to parameters, not to actions
@@ -50,32 +53,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private MethodInfo FindDefaultMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
-            var name = $"{RecognisedMethodsAndPrefixes.ParameterDefaultPrefix}{i}{capitalizedName}";
-            var defaultMethods = declaringType.GetMethods().Where(methodInfo => methodInfo.Matches(name, declaringType, returnType)).ToArray();
-
-            if (defaultMethods.Length > 1) {
-                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
-                return null;
-            }
-
-            var defaultMethod = defaultMethods.SingleOrDefault();
-            var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != defaultMethod);
-
-            foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
-            }
-
-            return defaultMethod;
-        }
-
         #region IMethodFilteringFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod,  ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
-
             var declaringType = actionMethod.DeclaringType;
-
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
             if (action is IActionSpecImmutable actionSpecImmutable) {
