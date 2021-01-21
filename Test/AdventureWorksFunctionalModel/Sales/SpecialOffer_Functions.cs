@@ -65,6 +65,20 @@ namespace AW.Functions
 
         internal static string ValidateQuantities(int minQty, int? maxQty) =>
             minQty < 1 || maxQty != null && maxQty.Value < minQty ? "Quantities invalid" : null;
+
+        public static SpecialOffer TestQuantities(
+    this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) => sp;
+
+        public static string ValidateTestQuantities(
+            this SpecialOffer sp, int minQty, int? maxQty) =>
+            ValidateQuantities(minQty, maxQty);
+
+        public static SpecialOffer TestQuantities2(
+this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) => sp;
+
+        public static string ValidateTestQuantities2(
+            this SpecialOffer sp, int minQty, int? maxQty, IContext context) =>
+            ValidateQuantities(minQty, maxQty);
         #endregion
 
         #region AssociateWithProduct
