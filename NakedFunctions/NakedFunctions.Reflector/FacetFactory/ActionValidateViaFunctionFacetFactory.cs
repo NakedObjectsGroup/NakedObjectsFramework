@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -46,13 +47,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return actualParams.Zip(toMatch).All(i => i.First == i.Second);
         }
 
-        private static bool Matches(MethodInfo methodInfo, string name, Type type) =>
-            methodInfo.Name == name &&
-            methodInfo.DeclaringType == type &&
-            methodInfo.ReturnType == typeof(string);
-
         private static bool Matches(MethodInfo methodInfo, string name, Type type, Type[] paramTypes) =>
-            Matches(methodInfo, name, type) &&
+            methodInfo.Matches(name, type, typeof(string)) &&
             MatchParams(methodInfo, paramTypes);
 
         private MethodInfo FindValidateMethod(Type declaringType, string name, Type[] paramTypes) {
