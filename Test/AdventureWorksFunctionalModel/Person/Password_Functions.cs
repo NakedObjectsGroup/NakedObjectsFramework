@@ -21,10 +21,10 @@ namespace AW.Functions {
             string oldPassword, string newPassword, string confirm, IContext context)
         {
             var reason = "";
-            if (!MostRecentPassword(be.BusinessEntityID, context).OfferedPasswordIsCorrect(oldPassword))
-            {
-                reason += "Old Password is incorrect";
-            }
+            //if (!MostRecentPassword(be.BusinessEntityID, context).OfferedPasswordIsCorrect(oldPassword))
+            //{
+            //    reason += "Old Password is incorrect";
+            //}
             if (newPassword != confirm)
             {
                 reason += "New Password and Confirmation don't match";
