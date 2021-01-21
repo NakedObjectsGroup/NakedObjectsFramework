@@ -52,13 +52,14 @@ namespace AW.Functions {
             }
         }
 
-        public static string Validate1AppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) {
-            if (commentToAppend == "fail") {
-                return "For test purposes the comment 'fail' fails validation";
-            }
+        // temp comment out
+        //public static string Validate1AppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) {
+        //    if (commentToAppend == "fail") {
+        //        return "For test purposes the comment 'fail' fails validation";
+        //    }
 
-            return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
-        }
+        //    return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
+        //}
 
         public static (SalesOrderHeader, IContext) AppendComment(this SalesOrderHeader order, string commentToAppend, IContext context) {
             string newComments = order.Comment == null? commentToAppend: order.Comment + "; " + commentToAppend;
