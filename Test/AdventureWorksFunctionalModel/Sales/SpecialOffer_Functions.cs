@@ -21,9 +21,15 @@ namespace AW.Functions
         public static (SpecialOffer, IContext) EditDescription(this SpecialOffer sp, string description, IContext context)
         => context.SaveAndDisplay(sp with { Description = description, ModifiedDate = context.Now() });
 
+        public static bool HideEditDescription(this SpecialOffer sp, IContext context) =>
+            HideIfEnded(sp, context);
+
         [Edit]
         public static (SpecialOffer, IContext) EditDiscount(this SpecialOffer sp, decimal discountPct, IContext context)
         => context.SaveAndDisplay(sp with { DiscountPct = discountPct, ModifiedDate = context.Now() });
+
+        public static string DisableEditDiscount(this SpecialOffer sp, IContext context) =>
+            DisableIfStarted(sp, context);
 
         [Edit]
         public static (SpecialOffer, IContext) EditType(this SpecialOffer sp, string type, IContext context)
@@ -36,6 +42,13 @@ namespace AW.Functions
         public static IList<string> Choices1Category(this SpecialOffer sp) => Categories;
 
         internal static IList<string> Categories = new[] { "Reseller", "Customer" };
+
+
+        internal static string DisableIfStarted(this SpecialOffer so, IContext context) =>
+            context.Today() > so.StartDate? "Offer has started": null;
+
+        internal static bool HideIfEnded(this SpecialOffer so, IContext context) =>
+            context.Today() > so.EndDate;
 
         [Edit]
         public static (SpecialOffer, IContext) EditDates(
@@ -54,33 +67,23 @@ namespace AW.Functions
         internal static DateTime DefaultEndDate(IContext context) =>
             context.GetService<IClock>().Today().AddMonths(1);
 
-    
+    [Edit]
         public static (SpecialOffer, IContext) EditQuantities(
             this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
             context.SaveAndDisplay(sp with { MinQty = minQty, MaxQty = maxQty, ModifiedDate = context.Now() });
 
+        public static string Validate1EditQuantities(this SpecialOffer sp, int minQty) =>
+            minQty < 1 ? "Must be > 0" : null;
+
         public static string ValidateEditQuantities(
-            this SpecialOffer sp, int minQty, int? maxQty) =>
-            ValidateQuantities(minQty, maxQty);
+            this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
+               ValidateQuantities(minQty, maxQty);
 
         internal static string ValidateQuantities(int minQty, int? maxQty) =>
-            minQty < 1 || maxQty != null && maxQty.Value < minQty ? "Quantities invalid" : null;
-
-        public static SpecialOffer TestQuantities(
-    this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) => sp;
-
-        public static string ValidateTestQuantities(
-            this SpecialOffer sp, int minQty, int? maxQty) =>
-            ValidateQuantities(minQty, maxQty);
-
-        public static SpecialOffer TestQuantities2(
-this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) => sp;
-
-        public static string ValidateTestQuantities2(
-            this SpecialOffer sp, int minQty, int? maxQty, IContext context) =>
-            ValidateQuantities(minQty, maxQty);
+             maxQty != null && maxQty.Value < minQty ? "Max Qty cannot be < Min Qty" : null;
         #endregion
 
+  
         #region AssociateWithProduct
 
         public static (SpecialOfferProduct, IContext) AssociateWithProduct(
