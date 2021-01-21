@@ -104,4 +104,12 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static bool HideWithHidden2(this SimpleRecord sp, IContext context) => false;
     }
+
+    public static class AutoCompleteRecordFunctions
+    {
+        public static SimpleRecord WithAutoComplete(this SimpleRecord sp, SimpleRecord simpleRecord, IContext context) => simpleRecord;
+
+        [PageSize(10)]
+        public static IQueryable<SimpleRecord> AutoComplete1WithAutoComplete(this SimpleRecord sp, [MinLength(2)]string name, IContext context) => context.Instances<SimpleRecord>();
+    }
 }

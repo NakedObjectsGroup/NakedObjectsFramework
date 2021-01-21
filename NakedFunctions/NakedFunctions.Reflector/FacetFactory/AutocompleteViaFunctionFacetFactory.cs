@@ -53,7 +53,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
                     if (method is not null) {
                         var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
-                        var minLengthAttr = method.GetParameters().First().GetCustomAttribute<MinLengthAttribute>();
+                        var minLengthAttr = InjectUtils.FilterParms(method).FirstOrDefault()?.GetCustomAttribute<MinLengthAttribute>();
 
                         var pageSize = pageSizeAttr?.Value ?? 0; // default to 0 ie system default
                         var minLength = minLengthAttr?.Value ?? 0;

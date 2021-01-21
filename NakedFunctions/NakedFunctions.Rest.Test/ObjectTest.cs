@@ -35,7 +35,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(DefaultedRecordFunctions),
             typeof(ValidatedRecordFunctions),
             typeof(DisabledRecordFunctions),
-            typeof(HiddenRecordFunctions)
+            typeof(HiddenRecordFunctions),
+            typeof(AutoCompleteRecordFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -257,7 +258,7 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestGetObjectActionWithAutoComplete() {
+        public void TestGetObjectActionAssociateDataRecord() {
             var api = Api();
             var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.AssociateWithDateRecord));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -271,7 +272,7 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestInvokeActionWithAutoComplete() {
+        public void TestInvokeActionAssociateDataRecord() {
             var api = Api().AsPost();
             var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"dateRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.DateRecord/1", "dateRecord")}}};
 
@@ -543,5 +544,41 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNotNull(parsedResult["members"]["WithHidden2"]);
         }
+
+        [Test]
+        public void TestGetObjectActionWithAutocomplete()
+        {
+            var api = Api();
+            var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(AutoCompleteRecordFunctions.WithAutoComplete));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(AutoCompleteRecordFunctions.WithAutoComplete), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+
+            var parameter = parameters["simpleRecord"];
+            Assert.AreEqual("", parameter["links"][0]["arguments"]["x-ro-searchTerm"]["value"].ToString());
+            Assert.AreEqual("2", parameter["links"][0]["extensions"]["minLength"].ToString());
+            Assert.AreEqual("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1/actions/WithAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
+        }
+
+        [Test]
+        public void TestInvokeActionWithAutocomplete()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "simpleRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") } } };
+
+            var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(AutoCompleteRecordFunctions.WithAutoComplete), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("Fred", resultObj["title"].ToString());
+        }
+
     }
 }
