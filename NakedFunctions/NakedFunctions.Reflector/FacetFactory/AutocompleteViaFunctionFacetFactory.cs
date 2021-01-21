@@ -43,13 +43,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     var name = $"{RecognisedMethodsAndPrefixes.AutoCompletePrefix}{i}{capitalizedName}";
                     //returning an IQueryable ...
                     //.. or returning a single object
-                    var method = FindAutoCompleteMethod(type, name, typeof(IQueryable<>).MakeGenericType(paramType)) ??
-                                 FindAutoCompleteMethod(type, name, paramType);
-
-                    //... or returning an enumerable of string
-                    if (method is null && TypeUtils.IsString(paramType)) {
-                        method = FindAutoCompleteMethod(type, name, typeof(IEnumerable<string>));
-                    }
+                    var method = FindAutoCompleteMethodWithReturnTypes(type, name, paramType);
 
                     if (method is not null) {
                         var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
@@ -70,6 +64,18 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
         }
 
+        private MethodInfo FindAutoCompleteMethodWithReturnTypes(Type type, string name, Type paramType) {
+            var method = FindAutoCompleteMethod(type, name, typeof(IQueryable<>).MakeGenericType(paramType)) ??
+                         FindAutoCompleteMethod(type, name, paramType);
+
+            //... or returning an enumerable of string
+            if (method is null && TypeUtils.IsString(paramType)) {
+                method = FindAutoCompleteMethod(type, name, typeof(IEnumerable<string>));
+            }
+
+            return method;
+        }
+
         private static bool MatchParams(MethodInfo methodInfo) {
             var actualParams = InjectUtils.FilterParms(methodInfo).Select(p => p.ParameterType).ToArray();
             return actualParams.Length == 1 && actualParams.First() == typeof(string);
@@ -81,8 +87,16 @@ namespace NakedFunctions.Reflector.FacetFactory {
             methodInfo.ReturnType == returnType &&
             MatchParams(methodInfo);
 
-        private static MethodInfo FindAutoCompleteMethod(Type declaringType, string name, Type returnType) =>
-            declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
+        private MethodInfo FindAutoCompleteMethod(Type declaringType, string name, Type returnType) {
+            var methods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType, returnType)).ToArray();
+
+            if (methods.Length > 1) {
+                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
+                return null;
+            }
+
+            return methods.SingleOrDefault();
+        }
 
         #region IMethodFilteringFacetFactory Members
 
