@@ -239,26 +239,20 @@ namespace AW.Functions {
 
         //        #endregion
 
-        //        #region ApproveOrder
+        #region ApproveOrder
 
-        //        [MemberOrder(1)]
-        //        public void ApproveOrder() {
-        //            Status = (byte) OrderStatus.Approved;
-        //        }
+        [MemberOrder(1)]
+        public static (SalesOrderHeader, IContext) ApproveOrder(this SalesOrderHeader soh, IContext context) =>
+            context.SaveAndDisplay(soh with { StatusByte = (byte)OrderStatus.Approved });
+       
+        //TODO: Remove context param from next 2
+        public static bool HideApproveOrder( this SalesOrderHeader soh, IContext context) =>
+          !soh.IsInProcess();
 
-        //        public virtual bool HideApproveOrder() {
-        //            return !IsInProcess();
-        //        }
+        public static string DisableApproveOrder(this SalesOrderHeader soh, IContext context) =>
+            soh.Details.Count == 0 ? "Cannot approve orders with no Details" : null;
 
-        //        public virtual string DisableApproveOrder() {
-        //            var rb = new ReasonBuilder();
-        //            if (Details.Count == 0) {
-        //                rb.Append("Cannot approve orders with no Details");
-        //            }
-        //            return rb.Reason;
-        //        }
-
-        //        #endregion
+        #endregion
 
         //        #region MarkAsShipped
 
