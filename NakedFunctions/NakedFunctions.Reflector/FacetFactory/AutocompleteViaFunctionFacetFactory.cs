@@ -56,11 +56,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
                         // add facets directly to parameters, not to actions
                         FacetUtils.AddFacet(new AutoCompleteViaFunctionFacet(method, pageSize, minLength, parameters[i]));
                     }
-                    else {
-                        foreach (var methodInfo in type.GetMethods().Where(mi => mi.Name == name)) {
-                            logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
-                        }
-                    }
                 }
             }
         }
@@ -87,14 +82,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
             MatchParams(methodInfo);
 
         private MethodInfo FindAutoCompleteMethod(Type declaringType, string name, Type returnType) {
-            var methods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType, returnType)).ToArray();
-
-            if (methods.Length > 1) {
-                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
-                return null;
-            }
-
-            return methods.SingleOrDefault();
+            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, returnType);
+            return FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
         }
 
         #region IMethodFilteringFacetFactory Members

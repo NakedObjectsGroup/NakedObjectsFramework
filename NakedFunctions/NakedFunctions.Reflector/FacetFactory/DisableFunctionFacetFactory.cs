@@ -41,26 +41,9 @@ namespace NakedFunctions.Reflector.FacetFactory {
             methodInfo.Matches(name, declaringType, typeof(string)) &&
             !InjectUtils.FilterParms(methodInfo).Any();
 
-        private MethodInfo FindDisableMethod(Type declaringType, string name) {
-            var disableMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType)).ToArray();
-
-            if (disableMethods.Length > 1) {
-                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
-                return null;
-            }
-
-            var disableMethod = disableMethods.SingleOrDefault();
-            var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != disableMethod);
-
-            foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
-            }
-
-            return disableMethod;
-        }
-
         private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var methodToUse = FindDisableMethod(declaringType, name);
+            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType);
+            var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
             if (methodToUse is not null) {
                 FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(methodToUse, action));
             }

@@ -52,9 +52,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
             MatchParams(methodInfo, paramTypes);
 
         private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacetToParameterValidateMethod(Type declaringType, string name, Type paramType, ISpecificationBuilder parameter, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-
             bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, new[] {paramType});
-            var methodToUse =  FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
+            var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
             if (methodToUse is not null) {
                 // add facets directly to parameters, not to actions
