@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 using System;
+using System.Linq;
 
 namespace NakedFunctions.Selenium.Test.FunctionTests
 {
@@ -57,6 +58,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ParameterChoicesSimple();
             ParameterChoicesDependent();
             ParameterDefaultFunction();
+            ValidateSingleParam();
+            ValidateMultipleParams();
+            DisableFunction();
+            HideFunction();
+            AutoCompleteFunction();
         }
 
         //[TestMethod]
@@ -119,18 +125,21 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void EditAction()
         {
             //Corresponds to Story #202
-            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--6&as1=open&d1=EditDescription");
-            string original = "Volume Discount over 60";
-            var title = WaitForTitle(original);
-            string newDesc = "Volume Discount 60+";
-            TypeIntoFieldWithoutClearing("#description1", newDesc);
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--6&as1=open&d1=EditType");
+            var title = WaitForTitle("Volume Discount over 60");
+            var original = "Volume Discount";
+            Assert.AreEqual(original, GetPropertyValue("Type"));
+            var newType = "Clearance";
+            TypeIntoFieldWithoutClearing("#type1", newType);
             Click(OKButton());
-            wait.Until(d => d.FindElement(By.CssSelector(".title")).Text == newDesc);
+            Reload();
+            Assert.AreEqual(newType, GetPropertyValue("Type"));
             OpenObjectActions();
-            OpenActionDialog("Edit Description");
-            TypeIntoFieldWithoutClearing("#description1", original);
+            OpenActionDialog("Edit Type");
+            TypeIntoFieldWithoutClearing("#type1", original);
             Click(OKButton());
-            wait.Until(d => d.FindElement(By.CssSelector(".title")).Text == original);
+            Reload();
+            Assert.AreEqual(original, GetPropertyValue("Type"));
         }
 
         //[TestMethod] 
@@ -250,5 +259,60 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
             Assert.AreEqual(oneMonthOn, field.GetAttribute("value"));
         }
+
+        //[TestMethod]
+        public void ValidateSingleParam()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--3&as1=open&d1=EditQuantities");
+            WaitForTitle("Volume Discount 15 to 24");
+            ClearFieldThenType("input#minqty1", "0");
+            ClearFieldThenType("input#maxqty1", "5");
+            Click(OKButton());
+            var msg = "Must be > 0";
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-parameter .validation")).First().Text == msg);
+        }
+
+        //[TestMethod]
+        public void ValidateMultipleParams()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--3&as1=open&d1=EditQuantities");
+            WaitForTitle("Volume Discount 15 to 24");
+            ClearFieldThenType("input#minqty1", "10");
+            ClearFieldThenType("input#maxqty1", "5");
+            Click(OKButton());
+            var msg = "Max Qty cannot be < Min Qty";
+            wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text == msg );
+        }
+
+        //[TestMethod]
+        public void DisableFunction()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--75084&as1=open");
+            WaitForTitle("SO75084");
+            var act = WaitForCss("nof-action input[value=\"Add New Detail\"");
+            Assert.IsNotNull(act.GetAttribute("disabled"));
+            Assert.AreEqual("Can only add to 'In Process' order", act.GetAttribute("title"));
+        }
+
+        //[TestMethod]
+        public void HideFunction()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--75084&as1=open");
+            WaitForTitle("SO75084");
+            WaitForCssNo("nof-action input", 3); //To ensure all loaded
+            var actions = br.FindElements(By.CssSelector("nof-action input"));
+            Assert.IsFalse(actions.Any(act => act.GetAttribute("title") == "Approve Order"));
+        }
+
+        //[TestMethod]
+        public void AutoCompleteFunction()
+        {
+            GeminiUrl("home?m1=Employee_MenuFunctions&d1=CreateNewEmployeeFromContact");
+            WaitForTitle("Home");
+            TypeIntoFieldWithoutClearing("input#contactdetails1", "ab");
+            Assert.AreEqual("Sam Abolrous", WaitForCssNo("nof-auto-complete .suggestions li", 4).Text);
+            Assert.AreEqual("Kim Abercrombie", WaitForCssNo("nof-auto-complete .suggestions li", 0).Text);
+        }
+
     }
 }
