@@ -32,7 +32,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(DefaultedMenuFunctions),
             typeof(ValidatedMenuFunctions),
             typeof(DisabledMenuFunctions),
-            typeof(HiddenMenuFunctions)
+            typeof(HiddenMenuFunctions),
+            typeof(AutoCompleteMenuFunctions)
         };
 
         // todo should IAlert be here or should we ignore?
@@ -95,7 +96,7 @@ namespace NakedFunctions.Rest.Test {
             var val = parsedResult.GetValue("value") as JArray;
 
             Assert.IsNotNull(val);
-            Assert.AreEqual(7, val.Count);
+            Assert.AreEqual(8, val.Count);
 
             var firstItem = val.First;
 
@@ -510,6 +511,58 @@ namespace NakedFunctions.Rest.Test {
 
 
             Assert.IsNotNull(parsedResult["members"]["WithHidden2"]);
+        }
+
+        [Test]
+        public void TestGetMenuActionWithAutoComplete()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(AutoCompleteMenuFunctions), nameof(AutoCompleteMenuFunctions.WithAutoComplete));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(AutoCompleteMenuFunctions.WithAutoComplete), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+
+            var parameter = parameters["simpleRecord"];
+            Assert.AreEqual("", parameter["links"][0]["arguments"]["x-ro-searchTerm"]["value"].ToString());
+            Assert.AreEqual("2", parameter["links"][0]["extensions"]["minLength"].ToString());
+            Assert.AreEqual("http://localhost/menus/AutoCompleteMenuFunctions/actions/WithAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
+        }
+
+        [Test]
+        public void TestInvokeMenuActionPromptWithAutoComplete()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>(), ReservedArguments = new ReservedArguments { SearchTerm = "Fr" } };
+            var result = api.GetParameterPromptOnMenu(nameof(AutoCompleteMenuFunctions), nameof(AutoCompleteMenuFunctions.WithAutoComplete), "simpleRecord", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("simpleRecord", parsedResult["id"].ToString());
+            var choices = parsedResult["choices"];
+            Assert.AreEqual(2, choices.Count()); // tests PageSize
+            Assert.AreEqual("Fred", choices[0]["title"].ToString());
+            Assert.AreEqual("Bill", choices[1]["title"].ToString());
+        }
+
+        [Test]
+        public void TestInvokemenuActionWithAutoComplete()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "simpleRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") } } };
+
+            var result = api.GetInvokeOnMenu(nameof(AutoCompleteMenuFunctions), nameof(AutoCompleteMenuFunctions.WithAutoComplete), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("Fred", resultObj["title"].ToString());
         }
     }
 }

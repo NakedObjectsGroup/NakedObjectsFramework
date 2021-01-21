@@ -109,7 +109,7 @@ namespace NakedFunctions.Rest.Test.Data {
     {
         public static SimpleRecord WithAutoComplete(this SimpleRecord sp, SimpleRecord simpleRecord, IContext context) => simpleRecord;
 
-        [PageSize(10)]
+        [PageSize(2)]
         public static IQueryable<SimpleRecord> AutoComplete1WithAutoComplete(this SimpleRecord sp, [MinLength(2)]string name, IContext context) => context.Instances<SimpleRecord>();
     }
 }

@@ -546,7 +546,7 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestGetObjectActionWithAutocomplete()
+        public void TestGetObjectActionWithAutoComplete()
         {
             var api = Api();
             var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(AutoCompleteRecordFunctions.WithAutoComplete));
@@ -565,7 +565,23 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestInvokeActionWithAutocomplete()
+        public void TestInvokeObjectActionPromptWithAutoComplete() {
+            var api = Api();
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue>(), ReservedArguments = new ReservedArguments {SearchTerm = "Fr"}};
+            var result = api.GetParameterPrompt(FullName<SimpleRecord>(), "1", nameof(AutoCompleteRecordFunctions.WithAutoComplete), "simpleRecord", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("simpleRecord", parsedResult["id"].ToString());
+            var choices = parsedResult["choices"];
+            Assert.AreEqual(2, choices.Count()); // tests PageSize
+            Assert.AreEqual("Fred", choices[0]["title"].ToString());
+            Assert.AreEqual("Bill", choices[1]["title"].ToString());
+        }
+
+        [Test]
+        public void TestInvokeActionWithAutoComplete()
         {
             var api = Api();
             var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "simpleRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") } } };

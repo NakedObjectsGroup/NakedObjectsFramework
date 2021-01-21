@@ -99,4 +99,12 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static bool HideWithHidden2(IContext context) => false;
     }
+
+    public static class AutoCompleteMenuFunctions
+    {
+        public static SimpleRecord WithAutoComplete(SimpleRecord simpleRecord, IContext context) => simpleRecord;
+
+        [PageSize(2)]
+        public static IQueryable<SimpleRecord> AutoComplete0WithAutoComplete([MinLength(2)] string name, IContext context) => context.Instances<SimpleRecord>();
+    }
 }
