@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -49,14 +50,9 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type returnType) =>
-            methodInfo.Name == name &&
-            methodInfo.DeclaringType == type &&
-            methodInfo.ReturnType == returnType;
-
         private MethodInfo FindDefaultMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
             var name = $"{RecognisedMethodsAndPrefixes.ParameterDefaultPrefix}{i}{capitalizedName}";
-            var defaultMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType, returnType)).ToArray();
+            var defaultMethods = declaringType.GetMethods().Where(methodInfo => methodInfo.Matches(name, declaringType, returnType)).ToArray();
 
             if (defaultMethods.Length > 1) {
                 logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");

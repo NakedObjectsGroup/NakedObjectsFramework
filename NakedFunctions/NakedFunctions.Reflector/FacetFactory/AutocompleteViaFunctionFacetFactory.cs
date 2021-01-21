@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -82,9 +83,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         private static bool Matches(MethodInfo methodInfo, string name, Type type, Type returnType) =>
-            methodInfo.Name == name &&
-            methodInfo.DeclaringType == type &&
-            methodInfo.ReturnType == returnType &&
+            methodInfo.Matches(name, type, returnType) &&
             MatchParams(methodInfo);
 
         private MethodInfo FindAutoCompleteMethod(Type declaringType, string name, Type returnType) {
