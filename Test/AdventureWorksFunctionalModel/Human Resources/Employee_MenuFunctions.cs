@@ -14,6 +14,12 @@ using static AW.Helpers;
 namespace AW.Functions {
     [Named("Employees")]
     public static class Employee_MenuFunctions {
+
+        public static Employee Test(int a, int b) => null;
+
+        public static string Validate0Test(int a) => a < 1 ? "A must be > 1" : null;
+
+        public static string ValidateTest(int a, int b) => b > a ? "B can't be > a": null;
  
         [PageSize(15)]
         public static IQueryable<Employee> AllEmployees(IContext context) => context.Instances<Employee>();
