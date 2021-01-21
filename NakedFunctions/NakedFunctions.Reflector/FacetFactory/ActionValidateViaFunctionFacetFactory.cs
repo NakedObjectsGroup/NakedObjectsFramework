@@ -51,26 +51,10 @@ namespace NakedFunctions.Reflector.FacetFactory {
             methodInfo.Matches(name, type, typeof(string)) &&
             MatchParams(methodInfo, paramTypes);
 
-        private MethodInfo FindValidateMethod(Type declaringType, string name, Type[] paramTypes) {
-            var validateMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType, paramTypes)).ToArray();
-
-            if (validateMethods.Length > 1) {
-                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
-                return null;
-            }
-
-            var validateMethod = validateMethods.SingleOrDefault();
-            var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != validateMethod);
-
-            foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
-            }
-
-            return validateMethod;
-        }
-
         private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacetToParameterValidateMethod(Type declaringType, string name, Type paramType, ISpecificationBuilder parameter, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var methodToUse = FindValidateMethod(declaringType, name, new[] {paramType});
+
+            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, new[] {paramType});
+            var methodToUse =  FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
             if (methodToUse is not null) {
                 // add facets directly to parameters, not to actions
@@ -81,7 +65,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacetToActionValidateMethod(Type declaringType, string name, Type[] paramTypes, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var methodToUse = FindValidateMethod(declaringType, name, paramTypes);
+            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, paramTypes);
+            var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
             if (methodToUse is not null) {
                 FacetUtils.AddFacet(new ActionValidationViaFunctionFacet(methodToUse, action));

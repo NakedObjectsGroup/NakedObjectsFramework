@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -48,8 +49,10 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 }
 
                 var returnType = typeof(IEnumerable<>).MakeGenericType(paramType);
+                var name = $"{RecognisedMethodsAndPrefixes.ParameterChoicesPrefix}{i}{capitalizedName}";
+                bool Matcher(MethodInfo mi) => Matches(mi, name, returnType);
 
-                var methodToUse = FindChoicesMethod(declaringType, capitalizedName, i, returnType);
+                var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
                 if (methodToUse is not null) {
                     // add facets directly to parameters, not to actions
@@ -58,12 +61,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     foreach (var parameterInfo in InjectUtils.FilterParms(methodToUse)) {
                         ITypeSpecBuilder typeSpecBuilder;
                         (typeSpecBuilder, metamodel) = reflector.LoadSpecification(parameterInfo.ParameterType, metamodel);
-                        var name = parameterInfo.Name?.ToLower();
-                        if (typeSpecBuilder is IObjectSpecBuilder objectSpec && name is not null) {
-                            parameterNamesAndTypes.Add((name, objectSpec));
+                        var paramName = parameterInfo.Name?.ToLower();
+                        if (typeSpecBuilder is IObjectSpecBuilder objectSpec && paramName is not null) {
+                            parameterNamesAndTypes.Add((paramName, objectSpec));
                         }
                         else {
-                            logger.LogWarning($"Unexpected name: {name} or spec: {typeSpecBuilder}");
+                            logger.LogWarning($"Unexpected name: {paramName} or spec: {typeSpecBuilder}");
                         }
                     }
 
@@ -80,25 +83,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             MatchReturnType(methodInfo.ReturnType, returnType);
 
         private static bool MatchReturnType(Type returnType, Type toMatch) => CollectionUtils.IsGenericEnumerable(returnType) && returnType.GenericTypeArguments.SequenceEqual(toMatch.GenericTypeArguments);
-
-        private MethodInfo FindChoicesMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
-            var name = $"{RecognisedMethodsAndPrefixes.ParameterChoicesPrefix}{i}{capitalizedName}";
-            var choicesMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, returnType)).ToArray();
-
-            if (choicesMethods.Length > 1) {
-                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
-                return null;
-            }
-
-            var choicesMethod = choicesMethods.SingleOrDefault();
-            var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != choicesMethod);
-
-            foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
-            }
-
-            return choicesMethod;
-        }
 
         #region IMethodFilteringFacetFactory Members
 
