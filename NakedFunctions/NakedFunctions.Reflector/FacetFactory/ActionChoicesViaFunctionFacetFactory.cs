@@ -83,11 +83,18 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private MethodInfo FindChoicesMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
             var name = $"{RecognisedMethodsAndPrefixes.ParameterChoicesPrefix}{i}{capitalizedName}";
-            var choicesMethod = declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
+            var choicesMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType, returnType)).ToArray();
+
+            if (choicesMethods.Length > 1) {
+                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
+                return null;
+            }
+
+            var choicesMethod = choicesMethods.SingleOrDefault();
             var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != choicesMethod);
 
             foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"choices method found: {methodInfo.Name} not matching expected signature");
+                logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
             }
 
             return choicesMethod;

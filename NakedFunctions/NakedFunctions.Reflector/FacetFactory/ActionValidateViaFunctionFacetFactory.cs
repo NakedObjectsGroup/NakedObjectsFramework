@@ -56,11 +56,18 @@ namespace NakedFunctions.Reflector.FacetFactory {
             MatchParams(methodInfo, paramTypes);
 
         private MethodInfo FindValidateMethod(Type declaringType, string name, Type[] paramTypes) {
-            var validateMethod = declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, paramTypes));
+            var validateMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType, paramTypes)).ToArray();
+
+            if (validateMethods.Length > 1) {
+                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
+                return null;
+            }
+
+            var validateMethod = validateMethods.SingleOrDefault();
             var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != validateMethod);
 
             foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"validate method found: {methodInfo.Name} not matching expected signature");
+                logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
             }
 
             return validateMethod;

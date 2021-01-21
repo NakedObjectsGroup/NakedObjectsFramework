@@ -63,7 +63,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     }
                     else {
                         foreach (var methodInfo in type.GetMethods().Where(mi => mi.Name == name)) {
-                            logger.LogWarning($"validate method found: {methodInfo.Name} not matching expected signature");
+                            logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
                         }
                     }
                 }

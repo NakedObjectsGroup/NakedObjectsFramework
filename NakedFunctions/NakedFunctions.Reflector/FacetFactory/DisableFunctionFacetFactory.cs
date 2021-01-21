@@ -43,11 +43,18 @@ namespace NakedFunctions.Reflector.FacetFactory {
             !InjectUtils.FilterParms(methodInfo).Any();
 
         private MethodInfo FindDisableMethod(Type declaringType, string name) {
-            var disableMethod = declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType));
+            var disableMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType)).ToArray();
+
+            if (disableMethods.Length > 1) {
+                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
+                return null;
+            }
+
+            var disableMethod = disableMethods.SingleOrDefault();
             var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != disableMethod);
 
             foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"disable method found: {methodInfo.Name} not matching expected signature");
+                logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
             }
 
             return disableMethod;

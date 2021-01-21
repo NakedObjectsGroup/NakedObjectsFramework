@@ -56,11 +56,18 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private MethodInfo FindDefaultMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
             var name = $"{RecognisedMethodsAndPrefixes.ParameterDefaultPrefix}{i}{capitalizedName}";
-            var defaultMethod = declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
+            var defaultMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType, returnType)).ToArray();
+
+            if (defaultMethods.Length > 1) {
+                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
+                return null;
+            }
+
+            var defaultMethod = defaultMethods.SingleOrDefault();
             var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != defaultMethod);
 
             foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"default method found: {methodInfo.Name} not matching expected signature");
+                logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
             }
 
             return defaultMethod;
