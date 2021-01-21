@@ -75,7 +75,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type returnType) =>
+        private static bool Matches(MethodInfo methodInfo, string name, Type returnType) =>
             methodInfo.Name == name &&
             MatchReturnType(methodInfo.ReturnType, returnType);
 
@@ -83,7 +83,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private MethodInfo FindChoicesMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
             var name = $"{RecognisedMethodsAndPrefixes.ParameterChoicesPrefix}{i}{capitalizedName}";
-            var choicesMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, declaringType, returnType)).ToArray();
+            var choicesMethods = declaringType.GetMethods().Where(methodInfo => Matches(methodInfo, name, returnType)).ToArray();
 
             if (choicesMethods.Length > 1) {
                 logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
