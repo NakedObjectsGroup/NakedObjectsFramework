@@ -267,6 +267,12 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static SimpleViewModel PopulateUsingKeys(this SimpleViewModel target, string[] keys) => target;
     }
 
+    public static class CreateNewFunctions
+    {
+        [CreateNew]
+        public static SimpleClass SimpleFunction(this SimpleClass target) => target;
+    }
+
     [TestClass]
     public class ReflectorTest {
         private Action<IServiceCollection> TestHook { get; } = services => { };
@@ -482,6 +488,35 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsTrue(spec.IsBoundedSet());
             }
         }
+
+        [TestMethod]
+        public void ReflectCreateNewAction()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(SimpleClass) };
+                    options.Functions = new[] { typeof(CreateNewFunctions) };
+                }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
+
+                var actionSpec = spec.ContributedActions.First();
+                var facet = actionSpec.GetFacet<ICreateNewFacet>();
+                Assert.IsNotNull(facet);
+            }
+        }
+
+
 
         [TestMethod]
         public void ReflectPluralClass()

@@ -51,15 +51,23 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IList<SimpleRecord> Choices0WithChoices(IContext context) => context.Instances<SimpleRecord>().ToList();
 
         public static SimpleRecord WithChoicesWithParameters(SimpleRecord record, int parm1, string parm2, IContext context) => record;
-
         public static IList<SimpleRecord> Choices0WithChoicesWithParameters(int parm1, string parm2, IContext context) =>
             context.Instances<SimpleRecord>().Where(sr => sr.Name.StartsWith(parm2)).Take(parm1).ToList();
 
         public static IQueryable<SimpleRecord> WithMultipleChoices(IEnumerable<SimpleRecord> simpleRecords, IEnumerable<DateRecord> dateRecords, IContext context) => simpleRecords.AsQueryable();
-
         public static IQueryable<SimpleRecord> Choices0WithMultipleChoices(IContext context) => context.Instances<SimpleRecord>();
-
         public static IQueryable<DateRecord> Choices1WithMultipleChoices(IEnumerable<SimpleRecord> simpleRecords, IContext context) => context.Instances<DateRecord>();
+
+        public static SimpleRecord WithChoicesNoContext(SimpleRecord record, IContext context) => record;
+        public static IList<SimpleRecord> Choices0WithChoicesNoContext() => new List<SimpleRecord> {  };
+
+        public static SimpleRecord WithChoicesWithParametersNoContext(SimpleRecord record, int parm1, string parm2, IContext context) => record;
+        public static IList<SimpleRecord> Choices0WithChoicesWithParametersNoContext(int parm1, string parm2) => new List<SimpleRecord> { };
+
+        public static IQueryable<SimpleRecord> WithMultipleChoicesNoContext(IEnumerable<SimpleRecord> simpleRecords, IEnumerable<DateRecord> dateRecords, IContext context) => simpleRecords.AsQueryable();
+        public static IQueryable<SimpleRecord> Choices0WithMultipleChoicesNoContext() => new List<SimpleRecord> {  }.AsQueryable();
+        public static IQueryable<DateRecord> Choices1WithMultipleChoicesNoContext(IEnumerable<SimpleRecord> simpleRecords) => new List<DateRecord>().AsQueryable();
+
     }
 
     public static class DefaultedMenuFunctions {

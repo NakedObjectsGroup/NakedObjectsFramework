@@ -51,44 +51,45 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public static class ChoicesRecordFunctions {
         public static SimpleRecord WithChoices(this SimpleRecord sp, SimpleRecord record, IContext context) => record;
-
         public static IList<SimpleRecord> Choices1WithChoices(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>().ToList();
 
         public static SimpleRecord WithChoicesWithParameters(this SimpleRecord sp, SimpleRecord record, int parm1, string parm2, IContext context) => record;
-
         public static IList<SimpleRecord> Choices1WithChoicesWithParameters(this SimpleRecord sp, int parm1, string parm2, IContext context) =>
             context.Instances<SimpleRecord>().Where(sr => sr.Name.StartsWith(parm2)).Take(parm1).ToList();
 
         public static IQueryable<SimpleRecord> WithMultipleChoices(this SimpleRecord sp, IEnumerable<SimpleRecord> simpleRecords, IEnumerable<DateRecord> dateRecords, IContext context) => simpleRecords.AsQueryable();
-
         public static IQueryable<SimpleRecord> Choices1WithMultipleChoices(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>();
-
         public static IQueryable<DateRecord> Choices2WithMultipleChoices(this SimpleRecord sp, IEnumerable<SimpleRecord> simpleRecords, IContext context) => context.Instances<DateRecord>();
+
+        public static SimpleRecord WithChoicesNoContext(this SimpleRecord sp, SimpleRecord record, IContext context) => record;
+        public static IList<SimpleRecord> Choices1WithChoicesNoContext(this SimpleRecord sp) => new List<SimpleRecord> {sp};
+
+        public static SimpleRecord WithChoicesWithParametersNoContext(this SimpleRecord sp, SimpleRecord record, int parm1, string parm2, IContext context) => record;
+        public static IList<SimpleRecord> Choices1WithChoicesWithParametersNoContext(this SimpleRecord sp, int parm1, string parm2) => new List<SimpleRecord> {sp};
+
+        public static IQueryable<SimpleRecord> WithMultipleChoicesNoContext(this SimpleRecord sp, IEnumerable<SimpleRecord> simpleRecords, IEnumerable<DateRecord> dateRecords, IContext context) => simpleRecords.AsQueryable();
+        public static IQueryable<SimpleRecord> Choices1WithMultipleChoicesNoContext(this SimpleRecord sp) => new List<SimpleRecord> {sp}.AsQueryable();
+        public static IQueryable<DateRecord> Choices2WithMultipleChoicesNoContext(this SimpleRecord sp, IEnumerable<SimpleRecord> simpleRecords) => new List<DateRecord>().AsQueryable();
     }
 
     public static class DefaultedRecordFunctions {
         public static SimpleRecord WithDefaults(this SimpleRecord sp, int default1, SimpleRecord default2, IContext context) => sp;
-
         public static int Default1WithDefaults(this SimpleRecord sp, IContext context) => 101;
         public static SimpleRecord Default2WithDefaults(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>().First();
     }
 
     public static class ValidatedRecordFunctions {
         public static SimpleRecord WithValidation(this SimpleRecord sp, int validate1, IContext context) => sp;
-
         public static string Validate1WithValidation(this SimpleRecord sp, int validate1, IContext context) => validate1 == 1 ? "" : "invalid";
 
         public static SimpleRecord WithCrossValidation(this SimpleRecord sp, int validate1, string validate2, IContext context) => sp;
-
         public static string ValidateWithCrossValidation(this SimpleRecord sp, int validate1, string validate2, IContext context) =>
             validate1 == int.Parse(validate2) ? "" : $"invalid: {validate1}:{validate2}";
 
         public static SimpleRecord WithValidationNoContext(this SimpleRecord sp, int validate1, IContext context) => sp;
-
         public static string Validate1WithValidationNoContext(this SimpleRecord sp, int validate1) => validate1 == 1 ? "" : "invalid";
 
         public static SimpleRecord WithCrossValidationNoContext(this SimpleRecord sp, int validate1, string validate2, IContext context) => sp;
-
         public static string ValidateWithCrossValidationNoContext(this SimpleRecord sp, int validate1, string validate2) =>
             validate1 == int.Parse(validate2) ? "" : $"invalid: {validate1}:{validate2}";
 
