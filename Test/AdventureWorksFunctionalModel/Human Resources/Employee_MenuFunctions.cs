@@ -17,6 +17,10 @@ namespace AW.Functions {
     [Named("Employees")]
     public static class Employee_MenuFunctions {
 
+        public static (Employee, IContext) TestPrincpal(IContext context) =>
+                (null, context.WithInformUser($"User is {context.CurrentUser().Identity.Name}"));
+
+
         [PageSize(15)]
         public static IQueryable<Employee> AllEmployees(IContext context) => context.Instances<Employee>();
 
@@ -72,7 +76,8 @@ namespace AW.Functions {
         }
         [PageSize(20)]
         public static IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact(
-    [MinLength(2)] string name, IContext context) => context.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
+    [MinLength(2)] string name, IContext context) =>
+            context.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
 
         public static IList<string> Choices5CreateNewEmployeeFromContact() =>
             Employee_Functions.MaritalStatuses;
