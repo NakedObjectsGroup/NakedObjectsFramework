@@ -313,6 +313,23 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
+        public void TestGetMenuActionWithChoicesNoContext()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesNoContext));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesNoContext), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+            var choices = parameters["record"]["choices"];
+
+            Assert.AreEqual(0, choices.Count());
+        }
+
+        [Test]
         public void TestGetMenuActionWithChoicesWithParameters() {
             var api = Api();
             var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParameters));
@@ -327,6 +344,25 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual(2, prompt["arguments"].Count());
             Assert.AreEqual(@"http://localhost/menus/ChoicesMenuFunctions/actions/WithChoicesWithParameters/params/record/prompt", prompt["href"].ToString());
+        }
+
+
+        [Test]
+        public void TestGetMenuActionWithChoicesWithParametersNoContext()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(3, parameters.Count());
+            var prompt = parameters["record"]["links"][0];
+
+            Assert.AreEqual(2, prompt["arguments"].Count());
+            Assert.AreEqual(@"http://localhost/menus/ChoicesMenuFunctions/actions/WithChoicesWithParametersNoContext/params/record/prompt", prompt["href"].ToString());
         }
 
         [Test]
@@ -354,6 +390,31 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(@"http://localhost/menus/ChoicesMenuFunctions/actions/WithMultipleChoices/params/dateRecords/prompt", prompt["href"].ToString());
         }
 
+
+        [Test]
+        public void TestGetMenuActionWithMultipleChoicesNoContext()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoicesNoContext));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ChoicesMenuFunctions.WithMultipleChoicesNoContext), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(2, parameters.Count());
+
+            var choices = parameters["simpleRecords"]["choices"];
+
+            Assert.AreEqual(0, choices.Count());
+
+
+            var prompt = parameters["dateRecords"]["links"][0];
+
+            Assert.AreEqual(1, prompt["arguments"].Count());
+            Assert.AreEqual(@"http://localhost/menus/ChoicesMenuFunctions/actions/WithMultipleChoicesNoContext/params/dateRecords/prompt", prompt["href"].ToString());
+        }
+
         [Test]
         public void TestGetMenuPrompt() {
             var api = Api();
@@ -371,6 +432,22 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
+        public void TestGetMenuPromptNoContext()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm1", new ScalarValue("1") }, { "parm2", new ScalarValue("J") } } };
+            var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext), "record", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("record", parsedResult["id"].ToString());
+            var choices = parsedResult["choices"];
+            Assert.AreEqual(0, choices.Count());
+        }
+
+
+        [Test]
         public void TestGetMenuPromptWithMultipleChoices() {
             var api = Api();
             var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"simplerecords", new ListValue(new IValue[] {new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord")})}}};
@@ -384,6 +461,23 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(1, choices.Count());
             Assert.IsTrue(choices[0]["title"].ToString().StartsWith("DateRecord"));
         }
+
+
+        [Test]
+        public void TestGetMenuPromptWithMultipleChoicesNoContext()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "simplerecords", new ListValue(new IValue[] { new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") }) } } };
+            var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoicesNoContext), "dateRecords", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("dateRecords", parsedResult["id"].ToString());
+            var choices = parsedResult["choices"];
+            Assert.AreEqual(0, choices.Count());
+        }
+
 
         [Test]
         public void TestGetMenuActionWithDefaults() {
