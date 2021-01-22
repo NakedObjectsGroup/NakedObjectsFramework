@@ -17,10 +17,6 @@ namespace AW.Functions {
     [Named("Employees")]
     public static class Employee_MenuFunctions {
 
-        public static (Employee, IContext) TestPrincpal(IContext context) =>
-                (null, context.WithInformUser($"User is {context.CurrentUser().Identity.Name}"));
-
-
         [PageSize(15)]
         public static IQueryable<Employee> AllEmployees(IContext context) => context.Instances<Employee>();
 
