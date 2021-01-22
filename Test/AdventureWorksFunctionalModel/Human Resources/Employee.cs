@@ -49,9 +49,6 @@ namespace AW.Types
         [MemberOrder(20)]
         public virtual bool Current { get; init; }
 
-        [Hidden]
-        public virtual int? ManagerID { get; init; }
-
         [MemberOrder(30)]
         public virtual Employee Manager { get; init; }
 
