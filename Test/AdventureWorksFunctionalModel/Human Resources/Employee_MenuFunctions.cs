@@ -35,6 +35,21 @@ namespace AW.Functions {
             select emp;     
         }
 
+        [TableView(true, nameof(Employee.Current), nameof(Employee.JobTitle), nameof(Employee.Manager))]
+        public static IQueryable<Employee> FindEmployeeByName2(
+    [Optionally] string firstName, string lastName, IContext context)
+        {
+            var employees = context.Instances<Employee>();
+            var persons = context.Instances<Person>().
+                    Where( p=> firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper()) &&
+                         p.LastName.ToUpper().StartsWith(lastName.ToUpper()));
+            return from emp in employees
+                   from p in persons
+                   where emp.PersonDetails.BusinessEntityID == p.BusinessEntityID                    
+                   orderby p.LastName
+                   select emp;
+        }
+
         public static Employee FindEmployeeByNationalIDNumber(string nationalIDNumber, IContext context) 
             => context.Instances<Employee>().Where(e => e.NationalIDNumber == nationalIDNumber).FirstOrDefault();
 
