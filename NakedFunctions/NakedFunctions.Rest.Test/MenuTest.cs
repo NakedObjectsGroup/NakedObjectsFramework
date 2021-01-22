@@ -416,6 +416,19 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
+        public void TestGetMenuActionCreateNew()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.CreateNewFunction));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("True", parsedResult["extensions"]["x-ro-nof-createNew"].ToString());
+        }
+
+
+        [Test]
         public void TestGetMenuPrompt() {
             var api = Api();
             var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"parm1", new ScalarValue("1")}, {"parm2", new ScalarValue("J")}}};
