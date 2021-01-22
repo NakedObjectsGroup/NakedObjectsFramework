@@ -17,27 +17,41 @@ namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleRecordFunctions {
         [Edit]
         [PresentationHint("Hint3")]
-        public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, [PresentationHint("Hint4")] string name, IContext context)
-            => Helpers.DisplayAndSave(sp with {Name = name}, context);
+        public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, [PresentationHint("Hint4")] string name, IContext context) {
+            return Helpers.DisplayAndSave(sp with {Name = name}, context);
+        }
 
-        public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context)
-            => Helpers.DisplayAndSave(new SimpleRecord {Name = name}, context);
+        public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context) {
+            return Helpers.DisplayAndSave(new SimpleRecord {Name = name}, context);
+        }
 
-        public static (ReferenceRecord, IContext) AssociateWithDateRecord(this SimpleRecord simpleRecord, DateRecord dateRecord, IContext context) =>
-            context.Instances<ReferenceRecord>().Any(x => x.SimpleRecord.Id == simpleRecord.Id && x.DateRecord.Id == dateRecord.Id)
+        public static (ReferenceRecord, IContext) AssociateWithDateRecord(this SimpleRecord simpleRecord, DateRecord dateRecord, IContext context) {
+            return context.Instances<ReferenceRecord>().Any(x => x.SimpleRecord.Id == simpleRecord.Id && x.DateRecord.Id == dateRecord.Id)
                 ? (null, context.WithInformUser($"{simpleRecord} is already associated with {dateRecord}"))
                 : Helpers.DisplayAndSave(new ReferenceRecord() with {SimpleRecord = simpleRecord, DateRecord = dateRecord}, context);
+        }
 
         [PageSize(20)]
-        public static IQueryable<DateRecord> AutoComplete1AssociateWithDateRecord(this SimpleRecord simpleRecord, [MinLength(2)] string name, IContext context)
-            => context.Instances<DateRecord>().Where(simpleRecord => simpleRecord.Name.ToUpper().StartsWith(name.ToUpper()));
+        public static IQueryable<DateRecord> AutoComplete1AssociateWithDateRecord(this SimpleRecord simpleRecord, [MinLength(2)] string name, IContext context) {
+            return context.Instances<DateRecord>().Where(simpleRecord => simpleRecord.Name.ToUpper().StartsWith(name.ToUpper()));
+        }
 
-        public static SimpleRecord EnumParmSimpleRecord(this SimpleRecord sp, TestEnum eParm, IContext context) => sp;
+        public static SimpleRecord EnumParmSimpleRecord(this SimpleRecord sp, TestEnum eParm, IContext context) {
+            return sp;
+        }
 
-        public static SimpleRecord PasswordParmSimpleRecord(this SimpleRecord sp, [Password] string parm, IContext context) => sp;
+        public static SimpleRecord PasswordParmSimpleRecord(this SimpleRecord sp, [Password] string parm, IContext context) {
+            return sp;
+        }
 
         [CreateNew]
-        public static SimpleRecord CreateNewFunction(this SimpleRecord sp, IContext context) => sp;
+        public static SimpleRecord CreateNewFunction(this SimpleRecord sp, IContext context) {
+            return sp;
+        }
+
+        public static SimpleRecord SimpleRecordAsCurrentUser(this SimpleRecord sp, IContext context) {
+            return sp with{Name = context.CurrentUser().Identity.Name};
+        }
     }
 
     public static class DateRecordFunctions {

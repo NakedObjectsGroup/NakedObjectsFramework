@@ -231,6 +231,25 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("Ellen", resultObj["members"]["Name"]["value"].ToString());
         }
 
+        [Test]
+        public void TestInvokeCurrentUserAsEmployee()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+
+            var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.SimpleRecordAsCurrentUser), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
+
+            Assert.AreEqual("Test", resultObj["members"]["Name"]["value"].ToString());
+        }
+
+
         private static string FormatForTest(DateTime dt) => $"{dt.Year}-{dt.Month:00}-{dt.Day:00}";
 
         [Test]
