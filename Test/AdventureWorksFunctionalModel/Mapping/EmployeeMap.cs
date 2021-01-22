@@ -38,7 +38,6 @@ namespace AW.Mapping
             Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             Property(t => t.NationalIDNumber).HasColumnName("NationalIDNumber");
             Property(t => t.LoginID).HasColumnName("LoginID");
-            Ignore(t => t.ManagerID);//.HasColumnName("ManagerID");
             Property(t => t.JobTitle).HasColumnName("JobTitle");
             Property(t => t.DateOfBirth).HasColumnName("BirthDate");
             Property(t => t.MaritalStatus).HasColumnName("MaritalStatus");

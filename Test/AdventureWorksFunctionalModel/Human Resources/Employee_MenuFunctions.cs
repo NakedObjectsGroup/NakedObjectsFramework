@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using AW.Types;
 using NakedFunctions;
@@ -14,6 +16,10 @@ using static AW.Helpers;
 namespace AW.Functions {
     [Named("Employees")]
     public static class Employee_MenuFunctions {
+
+        public static (Employee, IContext) TestPrincpal(IContext context) =>
+                (null, context.WithInformUser($"User is {context.CurrentUser().Identity.Name}"));
+
 
         [PageSize(15)]
         public static IQueryable<Employee> AllEmployees(IContext context) => context.Instances<Employee>();
@@ -37,17 +43,52 @@ namespace AW.Functions {
             => context.Instances<Employee>().Where(e => e.NationalIDNumber == nationalIDNumber).FirstOrDefault();
 
 
-        public static (Employee, IContext) CreateNewEmployeeFromContact(Person contactDetails, IContext context) {
+        #region CreateNewEmployeeFromContact
+        public static (Employee, IContext) CreateNewEmployeeFromContact(
+            Person contactDetails, 
+            [MaxLength(15)] string  nationalIDNumber,
+            [MaxLength(256)] string LoginID,
+            [MaxLength(50)] string jobTitle,
+            DateTime dateOfBirth,
+            string maritalStatus,
+            string gender,
+            [DefaultValue(0)] DateTime hireDate,
+            bool salaried,
+            short vacationHours,
+            IContext context) {
             var e = new Employee {
                 BusinessEntityID = contactDetails.BusinessEntityID,
-                PersonDetails = contactDetails
+                PersonDetails = contactDetails,
+                NationalIDNumber = nationalIDNumber,
+                JobTitle = jobTitle,
+                DateOfBirth = dateOfBirth,
+                MaritalStatus = maritalStatus,
+                Gender = gender,
+                HireDate = hireDate,
+                Salaried = salaried,
+                VacationHours = vacationHours,
+                SickLeaveHours = 0,
+                Current = true,
+                ModifiedDate = context.Now(),
+                rowguid = context.NewGuid(),
             };
             return context.SaveAndDisplay(e);
         }
-
         [PageSize(20)]
         public static IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact(
-            [MinLength(2)] string name, IContext context) =>  context.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
+    [MinLength(2)] string name, IContext context) =>
+            context.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
+
+        public static IList<string> Choices5CreateNewEmployeeFromContact() =>
+            Employee_Functions.MaritalStatuses;
+
+        public static IList<string> Choices6CreateNewEmployeeFromContact() =>
+            Employee_Functions.Genders;
+
+        public static string Validate4CreateNewEmployeeFromContact(DateTime dob, IContext context) => 
+            Employee_Functions.ValidateDateOfBirth(dob, context);
+        #endregion
+
 
         [RenderEagerly]
         [TableView(true, "GroupName")]

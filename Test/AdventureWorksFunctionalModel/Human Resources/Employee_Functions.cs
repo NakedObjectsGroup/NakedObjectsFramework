@@ -10,6 +10,7 @@ using System.Linq;
 
 using AW.Types;
 using System.Collections.Generic;
+using System;
 
 namespace AW.Functions
 {
@@ -70,31 +71,90 @@ namespace AW.Functions
         }
 
         #endregion
+
+        #region Edit Properties
+        internal static (Employee, IContext) UpdateEmployee(Employee e, IContext context) =>
+            context.SaveAndDisplay(e with { ModifiedDate = context.Now() });
+
         [Edit]
-        public static (Employee, IContext) EditManager(this Employee e, IEmployee manager, IContext context) =>
-            context.SaveAndDisplay(e with { ManagerID = manager.BusinessEntityID });
+        public static (Employee, IContext) UpdateNationalIDNumber(this Employee e, 
+            [MaxLength(15)] string nationalIdNumber, IContext context) =>
+                UpdateEmployee(e with { NationalIDNumber = nationalIdNumber }, context);
+
+        [Edit]
+        public static (Employee, IContext) UpdateLoginID(this Employee e,
+             [MaxLength(256)] string loginID, IContext context) =>
+                UpdateEmployee(e with { LoginID = loginID }, context);
+
+        [Edit]
+        public static (Employee, IContext) UpdateJobTitle(this Employee e,
+            [MaxLength(50)] string jobTitle, IContext context) =>
+                UpdateEmployee(e with { JobTitle = jobTitle }, context);
+
+        [Edit]
+        public static (Employee, IContext) UpdateDateOfBirth(this Employee e,
+             DateTime dateOfBirth, IContext context) =>
+                UpdateEmployee(e with { DateOfBirth = dateOfBirth }, context);
+
+        public static string ValidateUpdateDateOfBirth(this Employee e,
+            DateTime dob, IContext context) => ValidateDateOfBirth(dob, context);
+
+        internal static string ValidateDateOfBirth(DateTime dob, IContext context) =>
+            (dob > context.Today().AddYears(-16)) || (dob < context.Today().AddYears(-100)) ? "Invalid Date Of Birth" : null;
+
+        [Edit]
+        public static (Employee, IContext) UpdateMaritalStatus(this Employee e, 
+            string maritalStatus, IContext context) =>
+                UpdateEmployee(e with { MaritalStatus = maritalStatus }, context);
+
+        public static IList<string> Choices1UpdateMaritalStatus(this Employee e) => MaritalStatuses;
+
+        internal static string[] MaritalStatuses = new[] { "S", "M" };
+
+        [Edit]
+        public static (Employee, IContext) UpdateGender(
+            this Employee e, string gender, IContext context) =>
+                UpdateEmployee(e with { Gender = gender }, context);
+
+        public static IList<string> Choices1UpdateGender(this Employee e) => Genders;
+            
+        internal static string[] Genders = new[] { "M", "F" };
+
+        [Edit]
+        public static (Employee, IContext) UpdateHireDate(this Employee e,
+             DateTime hireDate, IContext context) =>
+                UpdateEmployee(e with { HireDate = hireDate }, context);
+
+        [Edit]
+        public static (Employee, IContext) UpdateSalaried(this Employee e,
+             bool salaried, IContext context) =>
+                UpdateEmployee(e with { Salaried = salaried }, context);
+
+        [Edit]
+        public static (Employee, IContext) UpdateVacationHours(this Employee e,
+            short vacationHours, IContext context) =>
+                UpdateEmployee(e with { VacationHours = vacationHours}, context);
+
+        [Edit]
+        public static (Employee, IContext) UpdateSickLeaveHours(this Employee e,
+            short sickLeaveHours, IContext context) =>
+                UpdateEmployee(e with { SickLeaveHours = sickLeaveHours}, context);
+
+
+        [Edit]
+        public static (Employee, IContext) UpdateCurrent(this Employee e,
+             bool current, IContext context) =>
+                UpdateEmployee(e with { Current = current}, context);
+
+        [Edit]
+        public static (Employee, IContext) UpdateManager(this Employee e, Employee manager, IContext context) =>
+         UpdateEmployee(e with { Manager = manager }, context);
 
         [PageSize(20)]
-        public static IQueryable<Employee> AutoCompleteManager(
+        public static IQueryable<Employee> AutoComplete1UpdateManager(
              this Employee e, [MinLength(2)] string name, IContext context) =>
              Employee_MenuFunctions.FindEmployeeByName(null, name, context);
 
-
-        [Edit]
-        public static (Employee, IContext) EditGender(
-            this Employee e, string gender, IContext context) =>
-                context.SaveAndDisplay(e with { Gender = gender });
-
-        public static IList<string> Choices1EditGender(this Employee e) => new[] { "M", "F" };
-        
-
-        [Edit]
-        public static (Employee, IContext) EditMaritalStatus(
-            this Employee e, string maritalStatus, IContext context) =>
-                context.SaveAndDisplay(e with { MaritalStatus = maritalStatus });
-
-        public static IList<string> Choices1EditMaritalStatus(this Employee e) => new[] { "S", "M" };
-
-        public static (Employee, IContext) CreateNewEmployeeFromContact(this Person contactDetails, IContext context) => Employee_MenuFunctions.CreateNewEmployeeFromContact(contactDetails, context);
+        #endregion
     }
 }
