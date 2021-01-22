@@ -77,6 +77,7 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         public const string CustomRenderEagerly = "x-ro-nof-renderEagerly";
         public const string CustomMenuPath = "x-ro-nof-menuPath";
         public const string CustomFindMenu = "x-ro-nof-findMenu";
+        public const string CustomCreateNew = "x-ro-nof-createNew";
 
         public const string CustomWarnings = "x-ro-nof-warnings";
         public const string CustomMessages = "x-ro-nof-messages";

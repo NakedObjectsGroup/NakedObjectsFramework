@@ -144,6 +144,18 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
+        public void TestGetObjectActionCreateNew()
+        {
+            var api = Api();
+            var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.CreateNewFunction));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("True", parsedResult["extensions"]["x-ro-nof-createNew"].ToString());
+        }
+
+        [Test]
         public void TestGetObjectActionPassword() {
             var api = Api();
             var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.PasswordParmSimpleRecord));

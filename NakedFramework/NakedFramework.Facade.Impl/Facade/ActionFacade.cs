@@ -41,6 +41,8 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsIdempotent => WrappedSpec.ContainsFacet<IIdempotentFacet>();
 
+        public bool IsCreateNew => WrappedSpec.ContainsFacet<ICreateNewFacet>();
+
         public int MemberOrder => WrappedSpec.GetMemberOrder();
 
         public string MemberOrderName => WrappedSpec.GetMemberOrderName();

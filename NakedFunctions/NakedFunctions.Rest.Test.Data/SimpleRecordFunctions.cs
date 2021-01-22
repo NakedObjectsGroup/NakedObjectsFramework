@@ -35,6 +35,9 @@ namespace NakedFunctions.Rest.Test.Data {
         public static SimpleRecord EnumParmSimpleRecord(this SimpleRecord sp, TestEnum eParm, IContext context) => sp;
 
         public static SimpleRecord PasswordParmSimpleRecord(this SimpleRecord sp, [Password] string parm, IContext context) => sp;
+
+        [CreateNew]
+        public static SimpleRecord CreateNewFunction(this SimpleRecord sp, IContext context) => sp;
     }
 
     public static class DateRecordFunctions {
