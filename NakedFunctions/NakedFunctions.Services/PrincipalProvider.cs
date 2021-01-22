@@ -5,22 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.IO;
 using System.Security.Principal;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Core.Authentication {
-    public class WindowsSession : ISession {
-        public WindowsSession(IPrincipal principal) => Principal = principal ?? new EmptyPrincipal();
+namespace NakedFunctions.Services {
+    public class PrincipalProvider : IPrincipalProvider {
+        private readonly ISession session;
 
-        #region ISession Members
+        public PrincipalProvider(ISession session) => this.session = session;
 
-        public IPrincipal Principal { get; protected set; }
-
-        public string UserName => Path.GetFileName(Principal.Identity?.Name);
-
-        public bool IsAuthenticated => Principal.Identity?.IsAuthenticated ?? false;
-
-        #endregion
+        public IPrincipal CurrentUser => session.Principal;
     }
 }
