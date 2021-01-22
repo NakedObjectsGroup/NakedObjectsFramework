@@ -16,5 +16,21 @@ namespace NakedFunctions {
     ///     </para>
     /// </remarks>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-    public class ViewModelAttribute : Attribute { }
+    public class ViewModelAttribute : Attribute {
+
+        public ViewModelAttribute(Type typeDefiningVMFunctions, ViewModelType editability = ViewModelType.ViewOnly)
+        {
+            TypeDefiningVMFunctions = typeDefiningVMFunctions;
+            Editability = ViewModelType.ViewOnly;
+        }
+            
+        public ViewModelType Editability { get;  }
+
+        public Type TypeDefiningVMFunctions { get; }
+    }
+
+    public enum ViewModelType
+    {
+        ViewOnly, EditOnly, Switchable
+    }
 }
