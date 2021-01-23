@@ -53,6 +53,7 @@ namespace NakedFunctions.Reflector.Reflect {
                 typeof(OptionalAnnotationFacetFactory),
                 typeof(RegExAnnotationFacetFactory),
                 typeof(CreateNewAnnotationFacetFactory),
+                typeof(DisplayAsPropertyAnnotationFacetFactory),
                 typeof(SystemClassMethodFilteringFactory),
                 typeof(SystemClassPropertyFilteringFactory),
                 typeof(DefaultNamingFacetFactory), // must come after Named and Plural factories
