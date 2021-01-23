@@ -19,10 +19,16 @@ namespace AW
         private static IEnumerable<Type> DomainClasses =>
             typeof(ModelConfig).Assembly.GetTypes().Where(t => t.IsPublic && (t.IsClass || t.IsInterface || t.IsEnum));
 
-        public static IMenu[] MainMenus(IMenuFactory mf) =>
-            Functions().Where(t => t.FullName.Contains("MenuFunctions")).Select(t => mf.NewMenu(t, true)).ToArray();
 
         public static Func<IConfiguration, DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
+
+        //TODO: Delete when new NF.PM Helpers is available
+        public static IMenu[] MainMenus(IMenuFactory mf) =>
+             MainMenuTypes().Select(t => mf.NewMenu(t, true)).ToArray();
+
+
+        public static Type[] MainMenuTypes() =>
+            Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
 
     }
 }
