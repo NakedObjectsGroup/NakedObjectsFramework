@@ -67,6 +67,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
 
         private static Action<IMetamodelBuilder> GetAddAction(Type type) {
+
             var deriveMethod = GetDeriveMethod(type);
             var populateMethod = GetPopulateMethod(type);
             var isEditMethod = GetIsEditMethod(type);
@@ -74,18 +75,15 @@ namespace NakedFunctions.Reflector.FacetFactory {
             if (deriveMethod is not null && populateMethod is not null) {
                 var onType = GetAndValidateContributedToType(deriveMethod, populateMethod, isEditMethod);
                 if (onType is not null) {
-                    if (onType.GetCustomAttribute<ViewModelAttribute>() is not null ||onType.GetCustomAttribute<ViewModelEditAttribute>() is not null) {
-                        IFacet FacetCreator(ISpecification spec) {
-                            if (type.GetCustomAttribute<ViewModelEditAttribute>() is not null) {
-                                return new ViewModelEditFacetViaFunctionsConvention(spec, deriveMethod, populateMethod);
-                            }
-
-                            if (isEditMethod is not null) {
-                                return new ViewModelSwitchableFacetViaFunctionsConvention(spec, deriveMethod, populateMethod, isEditMethod);
-                            }
-
-                            return new ViewModelFacetViaFunctionsConvention(spec, deriveMethod, populateMethod);
-                        }
+                    var attribute = onType.GetCustomAttribute<ViewModelAttribute>();
+                    if ( attribute is not null && attribute.TypeDefiningVMFunctions == type) {
+                        IFacet FacetCreator(ISpecification spec) => attribute.Editability switch
+                        {
+                            //TODO: normalise the exception message?
+                            VMEditability.Switchable => isEditMethod is not null ? new ViewModelSwitchableFacetViaFunctionsConvention(spec, deriveMethod, populateMethod, isEditMethod) : throw new ReflectionException("No IsEdit function supplied for a ViewModel with switchable editability specified"),
+                            VMEditability.EditOnly => new ViewModelEditFacetViaFunctionsConvention(spec, deriveMethod, populateMethod),
+                            _ => new ViewModelFacetViaFunctionsConvention(spec, deriveMethod, populateMethod)
+                        };
 
                         return m => {
                             var spec = m.GetSpecification(onType);

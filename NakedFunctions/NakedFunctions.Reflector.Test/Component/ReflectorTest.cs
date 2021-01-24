@@ -213,7 +213,7 @@ namespace NakedFunctions.Reflector.Test.Component {
         public virtual SimpleClass SimpleProperty { get; init; }
     }
 
-    [ViewModel]
+    [ViewModel(typeof(SimpleFunctions))]
     public record SimpleViewModel {
         public virtual SimpleClass SimpleProperty { get; init; }
     }
