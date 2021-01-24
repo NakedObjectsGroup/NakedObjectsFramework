@@ -4,9 +4,9 @@ using System.Linq;
 using AW.Types;
 using NakedFunctions;
 
-namespace AdventureWorksFunctionalModel.Person
+namespace AW.Functions
 {
-    public static class EmailTemplateFunctions
+    public static class EmailTemplate_Functions
     {
 
         public static string[] DeriveKeys(EmailTemplate em)

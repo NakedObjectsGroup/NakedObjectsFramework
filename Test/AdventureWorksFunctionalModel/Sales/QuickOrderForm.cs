@@ -5,17 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
+using AW.Functions;
 using System.Collections.Generic;
-using System.Linq;
 using NakedFunctions;
 
 namespace AW.Types {
 
-    [ViewModelEdit]
+    [ViewModel(typeof(QuickOrderForm_Functions), VMEditability.EditOnly)]
     public record QuickOrderForm  {
         public QuickOrderForm(Customer customer, 
-            string accountNumber, 
+            string accountNumber,
             ICollection<QuickOrderLine> details)
         {
             Customer = customer;
@@ -35,66 +34,5 @@ namespace AW.Types {
         public string AccountNumber { get;  }
 
         public ICollection<QuickOrderLine> Details { get; }
-    }
-
-    public static class QuickOrderFormFunctions {
-
-        public static string[] DeriveKeys(QuickOrderForm vm )
-        {
-            //TODO: redo using immutable collection
-            var keys = new List<string> { vm.Customer.AccountNumber };
-            keys.AddRange(vm.Details.SelectMany(x => QuickOrderLineFunctions.DeriveKeys(x)));
-            return keys.ToArray();
-        }
-
-        public static QuickOrderForm PopulateUsingKeys(
-            QuickOrderForm vm, 
-            string[] keys,
-            IQueryable<Customer> customers)
-        {
-            throw new NotImplementedException(); //TODO
-            //var cust = customers.Single(c => c.AccountNumber == keys[0]);
-
-            //for (int i = 1; i < keys.Count(); i = i + 2)
-            //{
-            //    var dKeys = new[] { keys[i], keys[i + 1] };
-            //    var d = Container.NewViewModel<OrderLine>();
-            //    d.PopulateUsingKeys(dKeys);
-            //    details.Add(d);
-            //}
-        }
-
-        public static IQueryable<QuickOrderLine> GetOrders(QuickOrderForm vm)
-        {
-            return vm.Details.AsQueryable();
-        }
-
-        public static QuickOrderForm AddDetail( 
-            QuickOrderForm vm, Product product,short number)
-        {
-            throw new NotImplementedException();
-            //var ol = new QuickOrderLine(product, number);
-            //var details = vm.Details;
-            //details.Add(ol); //TODO: redo using immutable collection
-            //return vm with {Details =  details};
-        }
-
-        public static (SalesOrderHeader, SalesOrderHeader) CreateOrder(
-            QuickOrderForm vm,
-            IQueryable<BusinessEntityAddress> addresses,
-            IQueryable<SpecialOfferProduct> sops)
-        {
-            throw new NotImplementedException();
-            //SalesOrderHeader soh = OrderRepository.CreateNewOrder(Customer, true, addresses);
-            //soh.Status = (byte)OrderStatus.InProcess;
-            //Container.Persist(ref soh);
-
-            //foreach (OrderLine d in Details)
-            //{
-            //    d.AddTo(soh, sops);
-            //}
-
-            //return soh;
-        }
     }
 }
