@@ -158,15 +158,15 @@ namespace NakedFunctions.Reflector.Test.Component {
 
     public record OrderClass
     {
-        [MemberOrder(0, "Property Order")]
+        [MemberOrder("Property Order",0)]
         public string OrderProperty { get; init; }
-        [MemberOrder(1, "Collection Order")]
+        [MemberOrder("Collection Order",1)]
         public IList<OrderClass> OrderList{ get; init; }
     }
 
     public static class OrderFunctions
     {
-        [MemberOrder(2, "Function Order")]
+        [MemberOrder("Function Order",2)]
         public static OrderClass MaskFunction(this OrderClass dac, IContext context) => dac;
     }
 

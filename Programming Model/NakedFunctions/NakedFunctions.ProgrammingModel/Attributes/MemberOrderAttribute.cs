@@ -14,15 +14,13 @@ namespace NakedFunctions {
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
     public class MemberOrderAttribute : Attribute {
-        public MemberOrderAttribute(int sequence, string name) {
-            Sequence = sequence;
-            Name = name;
-        }
 
-        public MemberOrderAttribute(int sequence) => Sequence = sequence;
+        public MemberOrderAttribute(int order) => Order = order;
 
-        public int Sequence { get; }
+        public MemberOrderAttribute(string grouping, int order) : this(order) => Grouping = grouping;
+        
+        public int Order { get; }
 
-        public string Name { get; }
+        public string Grouping { get; }
     }
 }

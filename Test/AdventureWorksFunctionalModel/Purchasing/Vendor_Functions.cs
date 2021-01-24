@@ -37,7 +37,7 @@ namespace AW.Functions
             PurchaseOrder_MenuFunctions.AutoComplete0OpenPurchaseOrdersForVendor(name, context);
 
 
-        [MemberOrder(4, "Purchase Orders")]
+        [MemberOrder("Purchase Orders",4)]
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public static IQueryable<PurchaseOrderHeader> ListPurchaseOrders(
     this Vendor vendor, DateTime? fromDate, DateTime? toDate, IContext context) =>

@@ -21,7 +21,7 @@ namespace AW.Functions {
 
         [DescribedAs("Add a new line item to the order")]
 #pragma warning disable 612,618
-        [MemberOrder(2, "Details")]
+        [MemberOrder("Details",2)]
 #pragma warning restore 612,618
         public static (SalesOrderHeader, IContext) AddNewDetail(
                 this SalesOrderHeader soh,

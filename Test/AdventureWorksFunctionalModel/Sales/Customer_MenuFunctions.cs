@@ -35,7 +35,7 @@ namespace AW.Functions {
 
         #region Stores Menu
 
-        [PageSize(2), MemberOrder(1, "Stores")]
+        [PageSize(2), MemberOrder("Stores", 1)]
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
             public static IQueryable<Customer> FindStoreByName(
             [DescribedAs("partial match")]string name, IContext context) =>
@@ -47,7 +47,7 @@ namespace AW.Functions {
 
 
         //TODO:  Not working
-        [MemberOrder(2,  "Stores")]
+        [MemberOrder("Stores",2)]
         public static (Customer, IContext) CreateNewStoreCustomer(string name,
             [Optionally] string demographics, IContext context)
         {
@@ -57,13 +57,13 @@ namespace AW.Functions {
             //return DisplayAndPersist(c);
         }
 
-        [MemberOrder(3, "Stores")]
+        [MemberOrder("Stores",3)]
         public static (Customer, IContext) CreateCustomerFromStore(
             Store store, IContext context) =>
             context.SaveAndDisplay(new Customer() with { Store = store, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() });
 
         //TODO: Temporary exploration
-        [MemberOrder(4, "Stores")]
+        [MemberOrder("Stores",4)]
         public static (Store, IContext) CreateNewStoreOnly(
             string name, [Optionally] string demographics, IContext context){ 
 
@@ -72,12 +72,12 @@ namespace AW.Functions {
             //return DisplayAndPersist(store);
         }
 
-        [MemberOrder(5, "Stores")]
+        [MemberOrder("Stores",6)]
         public static IQueryable<Store> FindStoreOnlyByName(
             [DescribedAs("partial match")]string name, IContext context) => 
             context.Instances<Store>().Where(s => s.Name.ToUpper().Contains(name.ToUpper()));
 
-        [MemberOrder(6, "Stores")]
+        [MemberOrder("Stores",7)]
         public static Customer RandomStore(IContext context) {
             var stores = context.Instances<Customer>().Where(t => t.StoreID != null).OrderBy(t => "");
             var random = context.RandomSeed().ValueInRange(stores.Count());

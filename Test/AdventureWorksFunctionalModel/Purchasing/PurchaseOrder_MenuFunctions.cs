@@ -46,7 +46,7 @@ namespace AW.Functions
 
         #region ListPurchaseOrdersForVendor
 
-        [MemberOrder(4,"Purchase Orders")]
+        [MemberOrder(4)]
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public static IQueryable<PurchaseOrderHeader> ListPurchaseOrders(
             Vendor vendor, DateTime? fromDate, DateTime? toDate, IContext context) =>
@@ -74,7 +74,7 @@ namespace AW.Functions
 
         #region OpenPurchaseOrdersForProduct
 
-        [MemberOrder(5, "Purchase Orders")]
+        [MemberOrder("Purchase Orders", 5)]
         [TableView(true, "Vendor", "OrderDate", "Status")]
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForProduct(
              this Product product, IContext context) => 
@@ -104,7 +104,7 @@ namespace AW.Functions
         #endregion
 
         #region Create New Purchase Order
-        [MemberOrder(6, "Purchase Orders")]
+        [MemberOrder("Purchase Orders",6)]
         public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(this Vendor vendor, IContext context) =>
             context.SaveAndDisplay(new PurchaseOrderHeader() { 
                 Vendor = vendor,
