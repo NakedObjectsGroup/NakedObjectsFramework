@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedFramework;
 using System.Data.Entity;
 
 namespace AW
@@ -21,11 +20,6 @@ namespace AW
 
 
         public static Func<IConfiguration, DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
-
-        //TODO: Delete when new NF.PM Helpers is available
-        public static IMenu[] MainMenus(IMenuFactory mf) =>
-             MainMenuTypes().Select(t => mf.NewMenu(t, true)).ToArray();
-
 
         public static Type[] MainMenuTypes() =>
             Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
