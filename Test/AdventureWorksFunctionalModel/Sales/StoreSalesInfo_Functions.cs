@@ -2,11 +2,9 @@
 using NakedFunctions;
 using AW.Types;
 
-
-
 namespace AW.Functions
 {
-    public static class StoreSalesInfoFunctions
+    public static class StoreSalesInfo_Functions
     {
         public static string Title(this StoreSalesInfo vm,
                                    IQueryable<Customer> customers)

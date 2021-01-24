@@ -5,12 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using AW.Functions;
 using NakedFunctions;
 
 namespace AW.Types {
     //TODO: Need to think how we want to do ViewModels. Can't require methods to be implemented.
     //Probably just need a constructor that takes all keys, as well as any required Injected params
-    [ViewModel]
+    [ViewModel(typeof(StoreSalesInfo_Functions))]
     public record StoreSalesInfo {
         public StoreSalesInfo(
             string accountNumber,

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AW.Functions
 {
-     public static class QuickOrderLineFunctions
+     public static class QuickOrderLine_Functions
     {
         public static string[] DeriveKeys(QuickOrderLine vm)
         {

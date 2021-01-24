@@ -1,9 +1,10 @@
-﻿using NakedFunctions;
+﻿using AW.Functions;
+using NakedFunctions;
 
 namespace AW.Types
 {
 
-    [ViewModel]
+    [ViewModel(typeof(StaffSummary_Functions))]
     public record StaffSummary
     {
         [MemberOrder(1)]
