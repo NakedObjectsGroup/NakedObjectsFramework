@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.DependencyInjection.Extensions;
@@ -39,7 +40,7 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenuTypes);
+                builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenuTypes());
                 builder.AddEntityPersistor(options => {
                     options.ContextInstallers = new[] { ModelConfig.DbContextInstaller };
                 });
