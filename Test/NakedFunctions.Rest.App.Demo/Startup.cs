@@ -39,7 +39,7 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                builder.MainMenus = ModelConfig.MainMenus;
+                builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenuTypes);
                 builder.AddEntityPersistor(options => {
                     options.ContextInstallers = new[] { ModelConfig.DbContextInstaller };
                 });
