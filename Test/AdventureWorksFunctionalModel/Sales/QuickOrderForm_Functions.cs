@@ -9,13 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AW.Types;
+using NakedFunctions;
 
 namespace AW.Functions {
 
 
     public static class QuickOrderForm_Functions {
 
-        public static string[] DeriveKeys(QuickOrderForm vm )
+        public static string[] DeriveKeys(QuickOrderForm vm)
         {
             //TODO: redo using immutable collection
             var keys = new List<string> { vm.Customer.AccountNumber };
@@ -24,20 +25,18 @@ namespace AW.Functions {
         }
 
         public static QuickOrderForm PopulateUsingKeys(
-            QuickOrderForm vm, 
-            string[] keys,
-            IQueryable<Customer> customers)
+            QuickOrderForm vm, string[] keys, IContext context)
         {
-            throw new NotImplementedException(); //TODO
-            //var cust = customers.Single(c => c.AccountNumber == keys[0]);
-
-            //for (int i = 1; i < keys.Count(); i = i + 2)
-            //{
-            //    var dKeys = new[] { keys[i], keys[i + 1] };
-            //    var d = Container.NewViewModel<OrderLine>();
-            //    d.PopulateUsingKeys(dKeys);
-            //    details.Add(d);
-            //}
+            var cust = context.Instances<Customer>().Single(c => c.AccountNumber == keys[0]);
+            var lines = new List<QuickOrderLine>();
+            //TODO: redo as LINQ
+            for (int i = 1; i < keys.Count(); i = i + 2)
+            {
+                var dKeys = new[] { keys[i], keys[i + 1] };
+                var line = QuickOrderLine_Functions.PopulateUsingKeys(null, dKeys, context);
+                lines.Add(line);
+            }
+            return new QuickOrderForm(cust, cust.AccountNumber, lines);
         }
 
         public static IQueryable<QuickOrderLine> GetOrders(QuickOrderForm vm)

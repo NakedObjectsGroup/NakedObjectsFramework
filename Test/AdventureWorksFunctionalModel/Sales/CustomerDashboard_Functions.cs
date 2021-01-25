@@ -12,20 +12,11 @@ using NakedFunctions;
 namespace AW.Functions {
     public static class CustomerDashboard_Functions { 
 
-        //TODO: not clear what was intended functionality?
-        //public (SalesOrderHeader, IContainer) NewOrder(
-        //    IQueryable<BusinessEntityAddress> addresses,
-        //    IQueryable<SalesOrderHeader> headers) {
-        //    var order = OrderContributedActions.CreateNewOrder(Root, true, addresses, headers);
-        //    return DisplayAndSave(order, context);
-        //}
-
-        public static string[] DeriveKeys(this CustomerDashboard cd) {
+        public static string[] DeriveKeys(CustomerDashboard cd) {
             return new[] {cd.Root.CustomerID.ToString() };
         }
 
-        //TODO:
-        public static CustomerDashboard PopulateUsingKeys(this CustomerDashboard dashboard, string[] keys, IContext context)
+        public static CustomerDashboard PopulateUsingKeys(CustomerDashboard dashboard, string[] keys, IContext context)
         {
             int customerId = int.Parse(keys[0]);
             return new CustomerDashboard(context.Instances<Customer>().Single(c => c.CustomerID == customerId));

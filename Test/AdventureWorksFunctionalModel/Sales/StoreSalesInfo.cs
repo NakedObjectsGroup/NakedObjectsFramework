@@ -41,6 +41,8 @@ namespace AW.Types {
         public SalesPerson SalesPerson { get; init; }
 
         public bool EditMode { get; init; }
+
+        public override string ToString() => $"{(StoreSalesInfo_Functions.IsEditView(this) ? "Editing - " : "")} Sales Info for: {StoreName}";
     }
 
    

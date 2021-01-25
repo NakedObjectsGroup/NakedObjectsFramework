@@ -6,20 +6,13 @@ namespace AW.Functions
 {
     public static class StoreSalesInfo_Functions
     {
-        public static string Title(this StoreSalesInfo vm,
-                                   IQueryable<Customer> customers)
-        {
-            return $"{(vm.EditMode ? "Editing - " : "")} Sales Info for: {vm.StoreName}";
-        }
 
         public static string[] DeriveKeys(StoreSalesInfo vm)
         {
             return new string[] { vm.AccountNumber, vm.EditMode.ToString() };
         }
 
-        public static StoreSalesInfo PopulateUsingKeys(StoreSalesInfo vm,
-                                                       string[] keys,
-                                                       IContext context)
+        public static StoreSalesInfo PopulateUsingKeys(StoreSalesInfo vm, string[] keys, IContext context)
         {
             var cus = Customer_MenuFunctions.FindCustomerByAccountNumber(keys[0], context);
             return vm with { AccountNumber = keys[0] }
