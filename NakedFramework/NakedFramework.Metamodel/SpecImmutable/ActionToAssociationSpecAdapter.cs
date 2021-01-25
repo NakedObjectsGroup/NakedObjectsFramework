@@ -5,8 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
-
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Facet;
@@ -14,21 +12,29 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SpecImmutable;
 
 namespace NakedFramework.Metamodel.SpecImmutable {
-    public class ActionToAssociationSpecAdapter : MemberSpecImmutable, IOneToOneAssociationSpecImmutable {
+    public abstract class AbstractAdapter : MemberSpecImmutable {
         private readonly IActionSpecImmutable action;
 
-        public ActionToAssociationSpecAdapter(IActionSpecImmutable action) : base(action.Identifier) => this.action = action;
+        protected AbstractAdapter(IActionSpecImmutable action) : base(action.Identifier) => this.action = action;
 
         public override IObjectSpecImmutable ElementSpec => action.ElementSpec;
         public override IObjectSpecImmutable ReturnSpec => action.ReturnSpec;
         public IObjectSpecImmutable OwnerSpec => action.OwnerSpec as IObjectSpecImmutable;
 
-        public override IFacet GetFacet(Type facetType) => action.GetFacet(facetType);
-
         public override Type[] FacetTypes => action.FacetTypes;
+
+        public override IFacet GetFacet(Type facetType) => action.GetFacet(facetType);
 
         public override IEnumerable<IFacet> GetFacets() => action.GetFacets();
 
         public override void AddFacet(IFacet facet) => action.AddFacet(facet);
+    }
+
+    public class ActionToAssociationSpecAdapter : AbstractAdapter, IOneToOneAssociationSpecImmutable {
+        public ActionToAssociationSpecAdapter(IActionSpecImmutable action) : base(action) { }
+    }
+
+    public class ActionToCollectionSpecAdapter : AbstractAdapter, IOneToManyAssociationSpecImmutable {
+        public ActionToCollectionSpecAdapter(IActionSpecImmutable action) : base(action) { }
     }
 }

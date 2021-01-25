@@ -277,6 +277,9 @@ namespace NakedFunctions.Reflector.Test.Component {
     {
         [DisplayAsProperty]
         public static SimpleClass SimpleFunction(this SimpleClass target) => target;
+
+        [DisplayAsProperty]
+        public static IQueryable<SimpleClass> SimpleFunctionCollection(this SimpleClass target, IContext context) => context.Instances<SimpleClass>();
     }
 
     [TestClass]
@@ -523,29 +526,32 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         [TestMethod]
-        public void ReflectDisplayAsPropertyAction()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectDisplayAsPropertyAction() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(SimpleClass) };
-                        options.Functions = new[] { typeof(DisplayAsPropertyFunctions) };
+                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
+                        options.Functions = new[] {typeof(DisplayAsPropertyFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var propertySpec = spec.ContributedFields.First();
+                var propertySpec = spec.ContributedFields[0];
                 var facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
                 Assert.IsNotNull(facet);
+                Assert.AreEqual(false, propertySpec.ReturnSpec.IsCollection);
+
+                propertySpec = spec.ContributedFields[1];
+                facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
+                Assert.IsNotNull(facet);
+                Assert.AreEqual(true, propertySpec.ReturnSpec.IsCollection);
             }
         }
 

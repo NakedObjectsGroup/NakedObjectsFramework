@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 
@@ -17,10 +18,6 @@ namespace NakedObjects.Meta.SpecImmutable {
         public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec, IIdentifier identifier) => new ActionParameterSpecImmutable(spec, identifier);
 
         public static IActionSpecImmutable CreateActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec, IActionParameterSpecImmutable[] parameters) => new ActionSpecImmutable(identifier, ownerSpec, parameters);
-
-        //public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, IMetamodel metamodel) => new ObjectSpecImmutable(type);
-
-        //public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, IMetamodel metamodel) => new ServiceSpecImmutable(type);
 
         public static IOneToManyAssociationSpecImmutable CreateOneToManyAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec) => new OneToManyAssociationSpecImmutable(identifier, ownerSpec, returnSpec, defaultElementSpec);
 
@@ -46,12 +43,15 @@ namespace NakedObjects.Meta.SpecImmutable {
             }
         }
 
-        public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService, bool isRecognized)
-        {
-            return isService
+        public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService, bool isRecognized) =>
+            isService
                 ? (ITypeSpecBuilder)CreateServiceSpecImmutable(type, isRecognized)
                 : CreateObjectSpecImmutable(type, isRecognized);
-        }
+
+        public static IAssociationSpecImmutable CreateSpecAdapter(IActionSpecImmutable  actionSpecImmutable) =>
+            actionSpecImmutable.ReturnSpec.IsCollection 
+                ? (IAssociationSpecImmutable) new ActionToCollectionSpecAdapter(actionSpecImmutable) 
+                : new ActionToAssociationSpecAdapter(actionSpecImmutable);
 
         public static void ClearCache() {
             lock (SpecCache) {

@@ -122,8 +122,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public static string DisableWithDisabled2(this SimpleRecord sp, IContext context) => "";
     }
 
-    public static class HiddenRecordFunctions
-    {
+    public static class HiddenRecordFunctions {
         public static SimpleRecord WithHidden1(this SimpleRecord sp, IContext context) => sp;
 
         public static bool HideWithHidden1(this SimpleRecord sp, IContext context) => true;
@@ -133,18 +132,18 @@ namespace NakedFunctions.Rest.Test.Data {
         public static bool HideWithHidden2(this SimpleRecord sp, IContext context) => false;
     }
 
-    public static class AutoCompleteRecordFunctions
-    {
+    public static class AutoCompleteRecordFunctions {
         public static SimpleRecord WithAutoComplete(this SimpleRecord sp, SimpleRecord simpleRecord, IContext context) => simpleRecord;
 
         [PageSize(2)]
-        public static IQueryable<SimpleRecord> AutoComplete1WithAutoComplete(this SimpleRecord sp, [MinLength(2)]string name, IContext context) => context.Instances<SimpleRecord>();
+        public static IQueryable<SimpleRecord> AutoComplete1WithAutoComplete(this SimpleRecord sp, [MinLength(2)] string name, IContext context) => context.Instances<SimpleRecord>();
     }
 
-
-    public static class DisplayAsPropertyRecordFunctions
-    {
+    public static class DisplayAsPropertyRecordFunctions {
         [DisplayAsProperty]
         public static DisplayAsPropertyRecord DisplayAsProperty(this DisplayAsPropertyRecord sp, IContext context) => sp;
+
+        [DisplayAsProperty]
+        public static IQueryable<DisplayAsPropertyRecord> DisplayAsCollection(this DisplayAsPropertyRecord sp, IContext context) => context.Instances<DisplayAsPropertyRecord>();
     }
 }
