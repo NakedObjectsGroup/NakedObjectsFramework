@@ -159,15 +159,15 @@ namespace AW.Functions {
             return context.SaveAndDisplay(newOrder);
         }
 
-        //public static string DisableCreateAnotherOrder(this Customer customer, IContext context) =>
-        //  GetLastOrder(customer, context) is null ?
-        //        null :
-        //        "Customer has no previous orders. Use Create First Order.";
+        public static string DisableCreateAnotherOrder(this Customer customer, IContext context) =>
+          GetLastOrder(customer, context) is null ?
+                null :
+                "Customer has no previous orders. Use Create First Order.";
 
         public static SalesOrderHeader GetLastOrder(this Customer c, IContext context) {
             int cid = c.CustomerID;
             return context.Instances<SalesOrderHeader>().Where(o => o.CustomerID == cid).
-                OrderBy(o => o.OrderDate).LastOrDefault();
+                OrderByDescending(o => o.OrderDate).FirstOrDefault();
             }
         #endregion
 
