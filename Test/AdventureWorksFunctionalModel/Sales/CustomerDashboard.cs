@@ -30,7 +30,7 @@ namespace AW.Types {
             get { return Customer_Functions.IsIndividual(Root) ? Root.Person.ToString() : Root.Store.Name; }
         }
 
-        [DisplayAsProperty]
+        //[DisplayAsProperty]
         [TableView(true, "OrderDate", "TotalDue", "Status")]
         public IList<SalesOrderHeader> RecentOrders(
             IQueryable<SalesOrderHeader> headers)
@@ -38,7 +38,7 @@ namespace AW.Types {
             return Order_AdditionalFunctions.RecentOrders(Root, headers).ToList();
         }
 
-        [DisplayAsProperty]
+        //[DisplayAsProperty]
         public decimal TotalOrderValue(
             IQueryable<SalesOrderHeader> headers)
         {

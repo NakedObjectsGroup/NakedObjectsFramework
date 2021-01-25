@@ -31,30 +31,30 @@ namespace AW.Functions {
 
         #endregion
 
-        [MemberOrder(15), DisplayAsProperty]
+        [MemberOrder(15)]//[DisplayAsProperty]
         public static string CustomerType(this Customer c) =>
-            IsIndividual(c) ? "Individual" : "Store";
+            c.IsIndividual() ? "Individual" : "Store";
 
 
         internal static BusinessEntity BusinessEntity(this Customer c)
         {
-            if (IsStore(c)) return c.Store;
-            if (IsIndividual(c)) return c.Person;
+            if (c.IsStore()) return c.Store;
+            if (c.IsIndividual()) return c.Person;
             throw new Exception("Customer is neither Store nor Person!");
         }
 
-        //TODO:
-        //public static bool HideStore(this Customer c)
-        //{
-        //    return !IsStore(c);
-        //}
+        
+        public static bool HideStore(this Customer c)
+        {
+            return !IsStore(c);
+        }
 
-        //public static bool HidePerson(this Customer c)
-        //{
-        //    return !IsIndividual(c);
-        //}
+        public static bool HidePerson(this Customer c)
+        {
+            return !IsIndividual(c);
+        }
 
-        internal static bool IsIndividual(Customer c)
+        internal static bool IsIndividual(this Customer c)
         {
             return !IsStore(c);
         }

@@ -14,7 +14,7 @@ namespace AW.Functions {
         public static class CreditCard_Functions {
         
 
-        [MemberOrder(2), DisplayAsProperty, Named("Card No.")]
+        [MemberOrder(2),  Named("Card No.")] //DisplayAsProperty
         public static string ObfuscatedNumber(this CreditCard cc) =>
             cc.CardNumber != null && cc.CardNumber.Length > 4 ?
                cc.CardNumber.Substring(cc.CardNumber.Length - 4).PadLeft(cc.CardNumber.Length, '*')

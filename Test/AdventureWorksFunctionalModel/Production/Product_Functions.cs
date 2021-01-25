@@ -17,11 +17,11 @@ namespace AW.Functions
     public static class Product_Functions
     {
         #region Contributed Properties
-        [Named("Weight"), MemberOrder(17), DisplayAsProperty()]
+        [Named("Weight"), MemberOrder(17)]//[DisplayAsProperty()]
         public static string WeightWithUnit(this Product p) =>
             $"{p.Weight} {p.WeightUnit}";
 
-        [MemberOrder(12), DisplayAsProperty]
+        [MemberOrder(12)]//[DisplayAsProperty]
         public static ProductCategory ProductCategory(this Product p) =>
               p.ProductSubcategory is null ? null : p.ProductSubcategory.ProductCategory;
 
