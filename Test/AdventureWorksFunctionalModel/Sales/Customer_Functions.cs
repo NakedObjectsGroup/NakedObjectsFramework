@@ -43,17 +43,18 @@ namespace AW.Functions {
             throw new Exception("Customer is neither Store nor Person!");
         }
 
-        public static bool HideStore(this Customer c)
-        {
-            return !IsStore(c);
-        }
+        //TODO:
+        //public static bool HideStore(this Customer c)
+        //{
+        //    return !IsStore(c);
+        //}
 
-        public static bool HidePerson(this Customer c)
-        {
-            return !IsIndividual(c);
-        }
+        //public static bool HidePerson(this Customer c)
+        //{
+        //    return !IsIndividual(c);
+        //}
 
-        internal static bool IsIndividual(this Customer c)
+        internal static bool IsIndividual(Customer c)
         {
             return !IsStore(c);
         }
