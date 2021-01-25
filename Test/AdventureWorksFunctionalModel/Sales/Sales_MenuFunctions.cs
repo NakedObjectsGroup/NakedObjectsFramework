@@ -35,7 +35,7 @@ namespace AW.Functions {
       
         public static SalesPerson RandomSalesPerson(IContext context) => Random<SalesPerson>(context);
 
-        [MemberOrder(1, "Sales")]
+        [MemberOrder("Sales",1)]
         [DescribedAs("... from an existing Employee")]
         public static SalesPerson CreateNewSalesPerson( Employee employee) {
             //TODO:
@@ -47,7 +47,7 @@ namespace AW.Functions {
 
         #region ListAccountsForSalesPerson
 
-        [TableView(true),MemberOrder(1, "Sales")] //TableView == ListView
+        [TableView(true),MemberOrder("Sales",1)] //TableView == ListView
         public static IQueryable<Store> ListAccountsForSalesPerson(
             SalesPerson sp,
             IQueryable<Store> stores

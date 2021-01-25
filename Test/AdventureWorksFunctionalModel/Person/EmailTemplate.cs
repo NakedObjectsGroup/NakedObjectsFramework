@@ -1,8 +1,9 @@
-﻿using NakedFunctions;
+﻿using AW.Functions;
+using NakedFunctions;
 
 namespace AW.Types
 {
-    [ViewModelEdit]
+    [ViewModel(typeof(EmailTemplate_Functions), VMEditability.EditOnly)]
     public record EmailTemplate
     {
 

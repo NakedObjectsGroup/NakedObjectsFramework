@@ -2,12 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedFramework;
 using System.Data.Entity;
 
 namespace AW
 {
-    public static class ModelConfig
+    public static class AWModelConfig
     {
         //IsAbstract && IsSealed defines a static class. Not really necessary here, just extra safety check.
         public static Type[] FunctionalTypes() => 
@@ -17,12 +16,13 @@ namespace AW
           DomainClasses.Where(t => t.Namespace == "AW.Functions"   && t.IsAbstract && t.IsSealed).ToArray();
 
         private static IEnumerable<Type> DomainClasses =>
-            typeof(ModelConfig).Assembly.GetTypes().Where(t => t.IsPublic && (t.IsClass || t.IsInterface || t.IsEnum));
+            typeof(AWModelConfig).Assembly.GetTypes().Where(t => t.IsPublic && (t.IsClass || t.IsInterface || t.IsEnum));
 
-        public static IMenu[] MainMenus(IMenuFactory mf) =>
-            Functions().Where(t => t.FullName.Contains("MenuFunctions")).Select(t => mf.NewMenu(t, true)).ToArray();
 
         public static Func<IConfiguration, DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
+
+        public static Type[] MainMenuTypes() =>
+            Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
 
     }
 }

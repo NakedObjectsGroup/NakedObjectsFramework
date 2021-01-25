@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.DependencyInjection.Extensions;
@@ -39,9 +40,9 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                builder.MainMenus = ModelConfig.MainMenus;
+                builder.MainMenus = MenuHelper.GenerateMenus(AWModelConfig.MainMenuTypes());
                 builder.AddEntityPersistor(options => {
-                    options.ContextInstallers = new[] { ModelConfig.DbContextInstaller };
+                    options.ContextInstallers = new[] { AWModelConfig.DbContextInstaller };
                 });
                 // todo - outstanding issues 
                 // 1. Need to still add NakedObjects as missing dependencies - need to fix packaging
@@ -50,8 +51,8 @@ namespace NakedFunctions.Rest.App.Demo {
                     options.NoValidate = true;
                 });
                 builder.AddNakedFunctions(options => {
-                    options.FunctionalTypes = ModelConfig.FunctionalTypes();
-                    options.Functions = ModelConfig.Functions();
+                    options.FunctionalTypes = AWModelConfig.FunctionalTypes();
+                    options.Functions = AWModelConfig.Functions();
                 });
                 builder.AddRestfulObjects();
             });

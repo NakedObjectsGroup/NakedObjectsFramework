@@ -14,8 +14,7 @@ namespace AW.Types {
     /// <summary>
     /// 
     /// </summary>
-    //TODO: ViewModel
-    [ViewModel]
+    [ViewModel(typeof(CustomerDashboard_Functions))]
     public record CustomerDashboard {
 
         public CustomerDashboard(Customer cust)
@@ -25,7 +24,7 @@ namespace AW.Types {
 
         [Hidden]
         public virtual Customer Root { get; init; }
-      
+
 
         public string Name {
             get { return Customer_Functions.IsIndividual(Root) ? Root.Person.ToString() : Root.Store.Name; }
@@ -35,7 +34,7 @@ namespace AW.Types {
         [TableView(true, "OrderDate", "TotalDue", "Status")]
         public IList<SalesOrderHeader> RecentOrders(
             IQueryable<SalesOrderHeader> headers)
-            {
+        {
             return Order_AdditionalFunctions.RecentOrders(Root, headers).ToList();
         }
 
@@ -43,7 +42,7 @@ namespace AW.Types {
         public decimal TotalOrderValue(
             IQueryable<SalesOrderHeader> headers)
         {
-                int id = Root.CustomerID;
+            int id = Root.CustomerID;
             return headers.Where(x => x.Customer.CustomerID == id).Sum(x => x.TotalDue);
         }
 
@@ -53,23 +52,5 @@ namespace AW.Types {
         public override string ToString() {
             return $"{Name} - Dashboard";
         }
-
-        //TODO: not clear what was intended functionality?
-        //public (SalesOrderHeader, IContainer) NewOrder(
-        //    IQueryable<BusinessEntityAddress> addresses,
-        //    IQueryable<SalesOrderHeader> headers) {
-        //    var order = OrderContributedActions.CreateNewOrder(Root, true, addresses, headers);
-        //    return DisplayAndSave(order, context);
-        //}
-
-        public string[] DeriveKeys() {
-            return new[] {Root.CustomerID.ToString() };
-        }
-
-        //TODO:
-        //public void PopulateUsingKeys(string[] keys) {
-        //    int customerId = int.Parse(keys[0]);
-        //    Root = Container.Instances<Customer>().Single(c => c.CustomerID == customerId);
-        //}
     }
 }
