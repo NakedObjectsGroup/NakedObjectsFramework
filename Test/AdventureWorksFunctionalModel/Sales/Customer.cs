@@ -52,7 +52,7 @@ namespace AW.Types
         [Hidden]
         public virtual Guid CustomerRowguid { get; init; }
 
-        public override string ToString() => $"{AccountNumber} {(Store is null ? Person : Store)}";
+        public override string ToString() => $"{(Store is null ? Person : Store)}";
 
 		public override int GetHashCode() =>base.GetHashCode();
 

@@ -10,22 +10,12 @@ namespace AW.Functions
 {
     public static class Vendor_Functions
     {
-        public static List<Product> ShowAllProducts(this Vendor vendor)
-        {
-            return vendor.Products.Select(vp => vp.Product).ToList();
-        }
+        public static List<Product> ShowAllProducts(this Vendor vendor) =>
+            vendor.Products.Select(vp => vp.Product).ToList();
 
-        //TODO: Should be obsoleted by generic implementation, def on BusinessEntity_Functions?
-        //public static (Person, IContext) CreateNewContact(this Vendor vendor, IContext context) =>
-        //    throw new NotImplementedException();    
-          //DisplayAndSave(new Person() with { ForEntity = vendor }, context);
-
+        //Not implemented.  Action is to test disable function only.
         [DescribedAs("Get report from credit agency")]
-        public static Vendor CheckCredit(this Vendor v)
-        {
-            throw new NotImplementedException();
-            //Not implemented.  Action is to test disable function only.
-        }
+        public static Vendor CheckCredit(this Vendor v, IContext context) => v;
 
         public static string DisableCheckCredit(this Vendor v) => "Not yet implemented";
 
