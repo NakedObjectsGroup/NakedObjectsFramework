@@ -156,7 +156,7 @@ namespace AW.Functions {
                 rowguid = context.NewGuid(),
                 ModifiedDate = context.Now()
             };
-            return context.SaveAndDisplay(newOrder);
+            return (newOrder, context.WithPendingSave(newOrder, last.BillingAddress, last.ShippingAddress));
         }
 
         public static string DisableCreateAnotherOrder(this Customer customer, IContext context) =>
