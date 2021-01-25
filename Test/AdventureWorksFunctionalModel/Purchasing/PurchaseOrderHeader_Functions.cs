@@ -7,41 +7,36 @@
 
 using System;
 using System.Collections.Generic;
-
 using System.Linq;
 using NakedFunctions;
 using AW.Types;
 using static AW.Helpers;
 
-
-
-namespace AW.Functions {
-        public static class PurchaseOrderHeaderFunctions
+namespace AW.Functions
+{
+    public static class PurchaseOrderHeaderFunctions
     {
         #region Add New Details
-        [MemberOrder(1)]
-        [MultiLine()]
-        public static (object, PurchaseOrderDetail) AddNewDetails(
-            PurchaseOrderHeader header, Product prod, short qty, decimal unitPrice, IContext context)
+        [MemberOrder(1), MultiLine()]
+        public static (PurchaseOrderHeader, IContext) AddNewDetails(
+            this PurchaseOrderHeader header, Product prod, short qty, decimal unitPrice, IContext context)
         {
-            var det = AddNewDetail(header, prod, qty, context);
-            //TODO:  create new detail directly calling constructor with all params
-            var det2 = det.Item1 with {UnitPrice =  unitPrice}
-                 with {DueDate = context.Today().Date.AddDays(7)} 
-                 with {ReceivedQty = 0}
-                 with {RejectedQty =  0};
-            return(null, det2);
+            var det = new PurchaseOrderDetail()
+            {
+                PurchaseOrderHeader = header,
+                Product = prod,
+                OrderQty = qty,
+                UnitPrice = unitPrice,
+                DueDate = context.Today().Date.AddDays(7),
+                ModifiedDate = context.Now()
+            };
+            return (header, context.WithPendingSave(det));
         }
 
         [PageSize(10)]
-        public static IQueryable<Product> AutoComplete0AddNewDetails(
-            PurchaseOrderHeader header,
-            [MinLength(3)] string matching,
-            IContext context)
-        {
-            return Product_MenuFunctions.FindProductByName(matching, context);
-        }
-
+        public static IQueryable<Product> AutoComplete1AddNewDetails(this PurchaseOrderHeader header,
+            [MinLength(3)] string matching, IContext context) =>
+            Product_MenuFunctions.FindProductByName(matching, context);
         #endregion
 
         //TODO Move to CreateNewPO
@@ -50,7 +45,7 @@ namespace AW.Functions {
         //TODO ditto
         public static ShipMethod DefaultShipMethod(this PurchaseOrderHeader header, IContext context) =>
             context.Instances<ShipMethod>().First();
-        
+
 
         #region Add New Detail
 
@@ -60,7 +55,7 @@ namespace AW.Functions {
                context.SaveAndDisplay(new PurchaseOrderDetail() { PurchaseOrderHeader = header, Product = prod, OrderQty = qty });
 
         public static string DisableAddNewDetail(this PurchaseOrderHeader header) =>
-           header.IsPending() ? null: "Cannot add to Purchase Order unless status is Pending";
+           header.IsPending() ? null : "Cannot add to Purchase Order unless status is Pending";
 
         public static IList<Product> Choices1AddNewDetail(this PurchaseOrderHeader header) =>
             header.Vendor.Products.Select(n => n.Product).ToArray();
@@ -71,7 +66,7 @@ namespace AW.Functions {
         [MemberOrder(1)]
         public static (PurchaseOrderHeader, PurchaseOrderHeader) Approve(this PurchaseOrderHeader header)
         {
-            var header2 = header with {Status =  2};
+            var header2 = header with { Status = 2 };
             return (header2, header2);
         }
 
@@ -88,10 +83,10 @@ namespace AW.Functions {
         #endregion
 
         internal static bool IsPending(this PurchaseOrderHeader poh) => poh.Status == 1;
- 
+
         //TODO: call this from any function updating poh
         public static PurchaseOrderHeader Updating(PurchaseOrderHeader x, IContext context) =>
-            x with {ModifiedDate =  context.Now(), RevisionNumber = Convert.ToByte(x.RevisionNumber + 1) };
+            x with { ModifiedDate = context.Now(), RevisionNumber = Convert.ToByte(x.RevisionNumber + 1) };
 
     }
 }

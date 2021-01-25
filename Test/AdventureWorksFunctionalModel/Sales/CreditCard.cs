@@ -21,9 +21,6 @@ namespace AW.Types {
 
         [MemberOrder(2)]
         public virtual string CardNumber { get; init; }
-
-        //TODO: what was intended purpose?
-        //private string _ObfuscatedNumber;
         
         [MemberOrder(3)]
         public virtual byte ExpMonth { get; init; }
@@ -31,15 +28,8 @@ namespace AW.Types {
         [MemberOrder(4)]
         public virtual short ExpYear { get; init; }
 
-        private ICollection<PersonCreditCard> _links = new List<PersonCreditCard>();
-
-        [Named("Persons")]
-        [MemberOrder(5)]
-        //[TableOrder(True, "Contact")]
-        public virtual ICollection<PersonCreditCard> PersonLinks {
-            get { return _links; }
-            set { _links = value; }
-        }
+        [Named("Persons"), MemberOrder(5), TableView(false, nameof(PersonCreditCard.Person))]
+        public virtual ICollection<PersonCreditCard> PersonLinks { get; init; }  = new List<PersonCreditCard>();
 
         [MemberOrder(99)]
         //[Versioned]

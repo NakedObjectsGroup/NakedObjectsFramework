@@ -45,31 +45,13 @@ namespace AW.Functions {
                         c.StoreID == s.BusinessEntityID
                 select c;
 
-
-        //TODO:  Not working
         [MemberOrder("Stores",2)]
-        public static (Customer, IContext) CreateNewStoreCustomer(string name,
-            [Optionally] string demographics, IContext context)
+        public static (Customer, IContext) CreateNewStoreCustomer(
+            string name, IContext context)
         {
-            throw new NotImplementedException();
-            //var s = new Store(name, demographics, null, null, d, g1, 0, new List<BusinessEntityAddress>(), new List<BusinessEntityContact>(), g2, d);
-            //var c = new Customer(s, null, g3, d);
-            //return DisplayAndPersist(c);
-        }
-
-        [MemberOrder("Stores",3)]
-        public static (Customer, IContext) CreateCustomerFromStore(
-            Store store, IContext context) =>
-            context.SaveAndDisplay(new Customer() with { Store = store, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() });
-
-        //TODO: Temporary exploration
-        [MemberOrder("Stores",4)]
-        public static (Store, IContext) CreateNewStoreOnly(
-            string name, [Optionally] string demographics, IContext context){ 
-
-            throw new NotImplementedException();
-            //var store = new Store(name, demographics, null, null, dt, guid1, 0, new List<BusinessEntityAddress>(), new List<BusinessEntityContact>(), guid2, dt);
-            //return DisplayAndPersist(store);
+            var s = new Store() with { Name = name, rowguid = context.NewGuid(), ModifiedDate = context.Now() };
+            var c = new Customer() with { Store = s, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
+            return (c, context.WithPendingSave(s, c));
         }
 
         [MemberOrder("Stores",6)]

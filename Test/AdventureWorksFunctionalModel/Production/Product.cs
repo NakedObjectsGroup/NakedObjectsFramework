@@ -7,20 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using NakedFunctions;
-using static AW.Utilities;
+
 
 namespace AW.Types
 {
-    public interface IProduct
-    {
-        string Name { get; }
-        int ProductID { get; }
-    }
-
     public record Product : IProduct, IHasModifiedDate, IHasRowGuid
     {
         [Hidden]
@@ -95,15 +86,6 @@ namespace AW.Types
         [Hidden]
         public virtual UnitMeasure SizeUnit { get; init; }
 
-        [Named("Size"),MemberOrder(16)]
-        public virtual string SizeWithUnit
-        {
-            get
-            {
-                return $"{Size} {SizeUnit}";
-            }
-        }
-
         [Hidden]
         public virtual string WeightUnitMeasureCode { get; init; }
 
@@ -112,18 +94,8 @@ namespace AW.Types
 
         [Hidden]
         public virtual UnitMeasure WeightUnit { get; init; }
-
-        [MemberOrder(17)]
-        [Named("Weight")]
-        public virtual string WeightWithUnit
-        {
-            get
-            {
-                return $"{Weight} {WeightUnit}";
-            }
-        }
-      
-        [MemberOrder(24)] //TODO Range(1, 90)]
+  
+        [MemberOrder(24)] 
         public virtual int DaysToManufacture { get; init; }
 
         [MemberOrder(14)]
@@ -141,7 +113,7 @@ namespace AW.Types
         [MemberOrder(82),Mask("d")]
         public virtual DateTime? SellEndDate { get; init; }
 
-        [MemberOrder(83), Mask("d")] //[Range(0, 10)] TODO
+        [MemberOrder(83), Mask("d")]
         public virtual DateTime? DiscontinuedDate { get; init; }
         
         [Hidden]
@@ -150,23 +122,7 @@ namespace AW.Types
         [MemberOrder(10)]
         public virtual ProductModel ProductModel { get; init; }
         
-                private ProductCategory productCategory;
-
-        [MemberOrder(12)]
-        public virtual ProductCategory ProductCategory  //TODO: How to handle derived properties?
-        {
-            get
-            {
-                if (productCategory == null)
-                {
-                    return ProductSubcategory == null ? null : ProductSubcategory.ProductCategory;
-                }
-                return productCategory;
-            }
-            set { productCategory = value; }
-        }
-
-                [Hidden]
+        [Hidden]
         public virtual int? ProductSubcategoryID { get; init; }
 
         [MemberOrder(12)]
@@ -182,22 +138,18 @@ namespace AW.Types
         [Hidden]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
         
-        private ICollection<ProductReview> _ProductReviews = new List<ProductReview>();
 
         [TableView(true, nameof(ProductReview.Rating), nameof(ProductReview.Comments))]
         public virtual ICollection<ProductReview> ProductReviews { get; init; } = new List<ProductReview>();
 
-        [RenderEagerly, TableView(false, nameof(Types.ProductInventory.Quantity),
-                nameof(Types.ProductInventory.Location),
-                    nameof(Types.ProductInventory.Shelf),
-                        nameof(Types.ProductInventory.Bin))]
+        [RenderEagerly, TableView(false, 
+            nameof(Types.ProductInventory.Quantity),
+            nameof(Types.ProductInventory.Location),
+            nameof(Types.ProductInventory.Shelf),
+            nameof(Types.ProductInventory.Bin))]
         public virtual ICollection<ProductInventory> ProductInventory { get; init; } = new List<ProductInventory>();
 
-        internal virtual int NumberInStock()
-        {
-            return (from obj in ProductInventory
-                    select obj).Sum(obj => obj.Quantity);
-        }
+
         [Hidden]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; } = new List<SpecialOfferProduct>();
 

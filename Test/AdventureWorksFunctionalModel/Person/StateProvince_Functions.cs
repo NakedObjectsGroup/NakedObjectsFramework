@@ -11,7 +11,7 @@ using AW.Types;
 namespace AW.Functions
 {
     
-    public static class StateProvinceFunctions
+    public static class StateProvince_Functions
     {
     }
 }

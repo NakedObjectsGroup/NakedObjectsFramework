@@ -91,16 +91,15 @@ namespace AW.Functions {
         [TableView(true, "GroupName")]
         public static IQueryable<Department> ListAllDepartments(IContext context) => context.Instances<Department>();
 
-        //TODO: 3 functions marked internal temporarily, as IPrincipal is being reflected over.
-        internal static Employee CurrentUserAsEmployee(IContext context) =>
+ 
+        public static Employee CurrentUserAsEmployee(IContext context) =>
             context.Instances<Employee>().Where(x => x.LoginID == "adventure-works\\" + context.CurrentUser().Identity.Name).FirstOrDefault();
 
-        internal static Employee Me(IContext context) =>CurrentUserAsEmployee(context);
+        public static Employee Me(IContext context) =>CurrentUserAsEmployee(context);
 
-        internal static (IQueryable<Employee>, IContext) MyDepartmentalColleagues(IContext context) {
+        public static IQueryable<Employee> MyDepartmentalColleagues(IContext context) {
             var me = CurrentUserAsEmployee(context);
-            return me is null? ((IQueryable<Employee>) null, context.WithWarnUser("Current user unknown")) : 
-                (me.ColleaguesInSameDept(context), context);
+            return me is null ? null : me.ColleaguesInSameDept(context);
         }
 
         public static Employee RandomEmployee(IContext context) => Random<Employee>(context);

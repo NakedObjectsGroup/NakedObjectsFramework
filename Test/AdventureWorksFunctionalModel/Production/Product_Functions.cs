@@ -16,6 +16,19 @@ namespace AW.Functions
 {
     public static class Product_Functions
     {
+        #region Contributed Properties
+        [Named("Weight"), MemberOrder(17), DisplayAsProperty()]
+        public static string WeightWithUnit(this Product p) =>
+            $"{p.Weight} {p.WeightUnit}";
+
+        [MemberOrder(12), DisplayAsProperty]
+        public static ProductCategory ProductCategory(this Product p) =>
+              p.ProductSubcategory is null ? null : p.ProductSubcategory.ProductCategory;
+
+        [Named("Size"), MemberOrder(16)]
+        public static string SizeWithUnit(this Product p) =>
+            $"{p.Size} {p.SizeUnit}";
+        #endregion
 
         #region BestSpecialOffer
         [DescribedAs("Determines the best discount offered by current special offers for a specified order quantity")]
@@ -61,6 +74,10 @@ namespace AW.Functions
 
         #endregion
 
+
+        internal static int NumberInStock(this Product p) =>
+            p.ProductInventory.Sum(obj => obj.Quantity);
+
         #region Edits
         [Edit]
         public static (Product, IContext) EditProductLine(this Product p,
@@ -101,7 +118,7 @@ namespace AW.Functions
         [Edit]
         public static (Product, IContext) EditCategories(this Product p,
       ProductCategory category, ProductSubcategory subCategory, IContext context) =>
-              context.SaveAndDisplay(p with { ProductCategory = category, ProductSubcategory = subCategory });
+              context.SaveAndDisplay(p with { ProductSubcategory = subCategory });
 
         public static IList<ProductSubcategory> Choices2EditCategories(this Product p,
             ProductCategory productCategory, IContext context) =>
