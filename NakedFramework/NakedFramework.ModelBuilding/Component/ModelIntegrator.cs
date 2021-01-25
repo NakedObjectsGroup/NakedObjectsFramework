@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -18,6 +17,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
+using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFramework.ModelBuilding.Component {
@@ -116,7 +116,7 @@ namespace NakedFramework.ModelBuilding.Component {
                 return matchingActionsForObject;
             }).ToList();
 
-            var adaptedMembers = result.Select(actionSpecImmutable => new ActionToAssociationSpecAdapter(actionSpecImmutable)).Cast<IAssociationSpecImmutable>().ToList();
+            var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
 
             spec.AddContributedFields(adaptedMembers);
         }

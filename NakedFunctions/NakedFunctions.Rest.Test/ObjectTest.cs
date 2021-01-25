@@ -813,8 +813,10 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(2, parsedResult["members"].Count());
+            Assert.AreEqual(3, parsedResult["members"].Count());
             Assert.AreEqual("DisplayAsPropertyRecord { Id = 1 }", parsedResult["members"]["DisplayAsProperty"]["value"]["title"].ToString());
+
+            Assert.AreEqual("DisplayAsPropertyRecord { Id = 1 }", parsedResult["members"]["DisplayAsCollection"]["value"][0]["title"].ToString());
 
         }
 

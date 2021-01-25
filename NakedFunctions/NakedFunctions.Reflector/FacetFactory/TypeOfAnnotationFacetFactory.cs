@@ -26,7 +26,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) { }
 
         private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type methodReturnType, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!CollectionUtils.IsCollection(methodReturnType)) {
+            if (!(CollectionUtils.IsCollection(methodReturnType) || CollectionUtils.IsQueryable(methodReturnType))) {
                 return metamodel;
             }
 
