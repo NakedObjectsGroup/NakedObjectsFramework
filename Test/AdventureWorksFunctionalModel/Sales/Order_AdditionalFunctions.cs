@@ -161,8 +161,8 @@ namespace AW.Functions {
 
         public static string DisableCreateAnotherOrder(this Customer customer, IContext context) =>
           GetLastOrder(customer, context) is null ?
-                null :
-                "Customer has no previous orders. Use Create First Order.";
+                "Customer has no previous orders. Use Create First Order.":
+                null;
 
         public static SalesOrderHeader GetLastOrder(this Customer c, IContext context) {
             int cid = c.CustomerID;
