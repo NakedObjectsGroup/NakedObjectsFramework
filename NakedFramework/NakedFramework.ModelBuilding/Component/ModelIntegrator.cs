@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -54,6 +55,8 @@ namespace NakedFramework.ModelBuilding.Component {
 
             PopulateAssociatedFunctions(metamodelBuilder);
 
+            PopulateDisplayAsPropertyFunctions(metamodelBuilder);
+
             //Menus installed once rest of metamodel has been built:
             InstallMainMenus(metamodelBuilder);
             InstallObjectMenus(metamodelBuilder);
@@ -66,6 +69,9 @@ namespace NakedFramework.ModelBuilding.Component {
         private static bool IsNotStatic(ITypeSpecImmutable spec) => !IsStatic(spec);
 
         private static bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedTo(ts) == true;
+
+        private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
+
 
         private static void PopulateContributedFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
             var result = functions.AsParallel().SelectMany(functionsSpec => {
@@ -94,6 +100,37 @@ namespace NakedFramework.ModelBuilding.Component {
                 PopulateContributedFunctions(spec, functions, metamodel);
             }
         }
+
+        private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
+            var result = functions.AsParallel().SelectMany(functionsSpec => {
+                var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
+
+                var matchingActionsForObject = new List<IActionSpecImmutable>();
+
+                foreach (var sa in serviceActions) {
+                    if (IsContributedProperty(sa, spec)) {
+                        matchingActionsForObject.Add(sa);
+                    }
+                }
+
+                return matchingActionsForObject;
+            }).ToList();
+
+            var adaptedMembers = result.Select(actionSpecImmutable => new ActionToAssociationSpecAdapter(actionSpecImmutable)).Cast<IAssociationSpecImmutable>().ToList();
+
+            spec.AddContributedFields(adaptedMembers);
+        }
+
+        private static void PopulateDisplayAsPropertyFunctions(IMetamodelBuilder metamodel) {
+            // todo add facet for this 
+            var functions = metamodel.AllSpecifications.Where(IsStatic).ToArray();
+            var objects = metamodel.AllSpecifications.Where(IsNotStatic).Cast<ITypeSpecBuilder>();
+
+            foreach (var spec in objects) {
+                PopulateDisplayAsPropertyFunctions(spec, functions, metamodel);
+            }
+        }
+
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
             var nonServiceSpecs = metamodel.AllSpecifications.OfType<IObjectSpecBuilder>();

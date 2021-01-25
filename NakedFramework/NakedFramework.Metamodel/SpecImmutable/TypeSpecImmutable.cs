@@ -31,6 +31,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             Interfaces = ImmutableList<ITypeSpecImmutable>.Empty;
             subclasses = ImmutableList<ITypeSpecImmutable>.Empty;
             ContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
+            ContributedFields = ImmutableList<IAssociationSpecImmutable>.Empty;
             CollectionContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
             FinderActions = ImmutableList<IActionSpecImmutable>.Empty;
             ReflectionStatus = isRecognized ? ReflectionStatus.PlaceHolder : ReflectionStatus.PendingIntrospection;
@@ -74,6 +75,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         public IList<IActionSpecImmutable> CollectionContributedActions { get; private set; }
         public IList<IActionSpecImmutable> FinderActions { get; private set; }
         public IList<IAssociationSpecImmutable> Fields { get; private set; }
+        public IList<IAssociationSpecImmutable> ContributedFields { get; private set; }
+
         public IList<ITypeSpecImmutable> Interfaces { get; private set; }
 
         public IList<ITypeSpecImmutable> Subclasses => subclasses;
@@ -166,10 +169,9 @@ namespace NakedObjects.Meta.SpecImmutable {
             return baseType != null && IsAssignableToGenericType(baseType, genericType);
         }
 
-        public void AddContributedFunctions(IList<IActionSpecImmutable> contributedFunctions)
-        {
-            ContributedActions = ContributedActions.Union(contributedFunctions).ToImmutableList();
-        }
+        public void AddContributedFunctions(IList<IActionSpecImmutable> contributedFunctions) =>  ContributedActions = ContributedActions.Union(contributedFunctions).ToImmutableList();
+        
+        public void AddContributedFields(IList<IAssociationSpecImmutable> contributedFields) => ContributedFields = ContributedFields.Union(contributedFields).ToImmutableList();
 
         public bool IsPlaceHolder => ReflectionStatus == ReflectionStatus.PlaceHolder;
 

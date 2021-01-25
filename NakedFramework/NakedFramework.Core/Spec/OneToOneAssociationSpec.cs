@@ -140,7 +140,7 @@ namespace NakedObjects.Core.Spec {
         #endregion
 
         private INakedObjectAdapter GetAssociation(INakedObjectAdapter fromObjectAdapter) {
-            var obj = GetFacet<IPropertyAccessorFacet>().GetProperty(fromObjectAdapter);
+            var obj = GetFacet<IPropertyAccessorFacet>().GetProperty(fromObjectAdapter, Framework);
             if (obj == null) {
                 return null;
             }

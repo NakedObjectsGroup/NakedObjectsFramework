@@ -36,7 +36,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(ValidatedRecordFunctions),
             typeof(DisabledRecordFunctions),
             typeof(HiddenRecordFunctions),
-            typeof(AutoCompleteRecordFunctions)
+            typeof(AutoCompleteRecordFunctions),
+            typeof(DisplayAsPropertyRecordFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -45,7 +46,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(EnumRecord),
             typeof(GuidRecord),
             typeof(TestEnum),
-            typeof(ReferenceRecord)
+            typeof(ReferenceRecord),
+            typeof(DisplayAsPropertyRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -800,6 +802,20 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             Assert.AreEqual("Fred", resultObj["title"].ToString());
+        }
+
+        [Test]
+        public void TestGetObjectDisplayAsProperty()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<DisplayAsPropertyRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(2, parsedResult["members"].Count());
+            Assert.AreEqual("DisplayAsPropertyRecord { Id = 1 }", parsedResult["members"]["DisplayAsProperty"]["value"]["title"].ToString());
+
         }
 
     }

@@ -140,4 +140,11 @@ namespace NakedFunctions.Rest.Test.Data {
         [PageSize(2)]
         public static IQueryable<SimpleRecord> AutoComplete1WithAutoComplete(this SimpleRecord sp, [MinLength(2)]string name, IContext context) => context.Instances<SimpleRecord>();
     }
+
+
+    public static class DisplayAsPropertyRecordFunctions
+    {
+        [DisplayAsProperty]
+        public static DisplayAsPropertyRecord DisplayAsProperty(this DisplayAsPropertyRecord sp, IContext context) => sp;
+    }
 }

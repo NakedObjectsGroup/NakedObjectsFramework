@@ -7,34 +7,37 @@
 
 using System;
 using System.Reflection;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
-    public sealed class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet {
-        private readonly PropertyInfo propertyMethod;
+    public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyAccessorFacet {
+        private readonly MethodInfo method;
 
-        public PropertyAccessorFacet(PropertyInfo property, ISpecification holder)
+        public PropertyAccessorFacetViaFunction(MethodInfo method, ISpecification holder)
             : base(typeof(IPropertyAccessorFacet), holder) =>
-            propertyMethod = property;
+            this.method = method;
 
         #region IPropertyAccessorFacet Members
 
         public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework nakedObjectsFramework) {
             try {
-                return propertyMethod.GetValue(nakedObjectAdapter.GetDomainObject(), null);
+                return method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, nakedObjectsFramework));
             }
             catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException($"Exception executing {propertyMethod}", e);
+                InvokeUtils.InvocationException($"Exception executing {method}", e);
                 return null;
             }
         }
 
         #endregion
 
-        protected override string ToStringValues() => $"propertyMethod={propertyMethod}";
+        protected override string ToStringValues() => $"method={method}";
     }
 }

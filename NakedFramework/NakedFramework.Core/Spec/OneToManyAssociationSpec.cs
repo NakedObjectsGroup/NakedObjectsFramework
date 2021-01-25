@@ -51,7 +51,7 @@ namespace NakedObjects.Core.Spec {
         public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => new INakedObjectAdapter[0];
 
         private INakedObjectAdapter GetCollection(INakedObjectAdapter inObjectAdapter) {
-            var collection = GetFacet<IPropertyAccessorFacet>().GetProperty(inObjectAdapter);
+            var collection = GetFacet<IPropertyAccessorFacet>().GetProperty(inObjectAdapter, Framework);
             if (collection == null) {
                 return null;
             }

@@ -32,7 +32,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<ContributedFunctionFacetFactory>();
 
-
         private static bool IsContributedToObject(MethodInfo member) => member.IsDefined(typeof(ExtensionAttribute), false);
 
         private static Type GetContributeeType(MethodInfo member) => IsContributedToObject(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
@@ -40,15 +39,16 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // all functions are contributed to first parameter or if menu, itself
 
-            var facet = new ContributedFunctionFacet(specification, IsContributedToObject(method));
+            if (!method.IsDefined(typeof(DisplayAsPropertyAttribute), false)) {
+                ITypeSpecImmutable type;
+                (type, metamodel) = reflector.LoadSpecification(GetContributeeType(method), metamodel);
 
-            var contributeeType = GetContributeeType(method);
-            ITypeSpecImmutable type;
-            (type, metamodel) = reflector.LoadSpecification(contributeeType, metamodel);
+                var facet = new ContributedFunctionFacet(specification, IsContributedToObject(method));
+                facet.AddContributee(type);
 
-            facet.AddContributee(type);
+                FacetUtils.AddFacet(facet);
+            }
 
-            FacetUtils.AddFacet(facet);
             return metamodel;
         }
     }

@@ -30,6 +30,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
 
         void AddSubclass(ITypeSpecImmutable subclass);
         void AddContributedFunctions(IList<IActionSpecImmutable> result);
+        void AddContributedFields(IList<IAssociationSpecImmutable> result);
 
         bool IsPlaceHolder { get; }
         bool IsPendingIntrospection { get; }

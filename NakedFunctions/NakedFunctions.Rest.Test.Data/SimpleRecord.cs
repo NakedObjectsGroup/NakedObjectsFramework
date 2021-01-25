@@ -66,4 +66,11 @@ namespace NakedFunctions.Rest.Test.Data {
         public Guid Name => new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
         public override string ToString() => Name.ToString();
     }
+
+    public record DisplayAsPropertyRecord
+    {
+        [Key]
+        public int Id { get; init; }
+    }
+
 }

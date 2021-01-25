@@ -6,15 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
-        public DisplayAsPropertyFacet(ISpecification holder) : base(Type, holder) { }
+        private readonly List<ITypeSpecImmutable> objectContributees = new();
 
-        public static Type Type => typeof(IDisplayAsPropertyFacet);
+        public DisplayAsPropertyFacet(ISpecification holder, bool isContributedToObject) : base(typeof(IDisplayAsPropertyFacet), holder) =>
+            IsContributedToObject = isContributedToObject;
+
+        public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
+
+       
+
+        public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
+        public bool IsContributedToObject { get; }
     }
 }

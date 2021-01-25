@@ -543,8 +543,8 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var actionSpec = spec.ContributedActions.First();
-                var facet = actionSpec.GetFacet<IDisplayAsPropertyFacet>();
+                var propertySpec = spec.ContributedFields.First();
+                var facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
                 Assert.IsNotNull(facet);
             }
         }

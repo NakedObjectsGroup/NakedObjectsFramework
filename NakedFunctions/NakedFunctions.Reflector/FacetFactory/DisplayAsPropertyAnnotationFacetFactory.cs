@@ -5,8 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.Component;
@@ -15,18 +18,40 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class DisplayAsPropertyAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public DisplayAsPropertyAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) { }
+        private readonly ILogger<DisplayAsPropertyAnnotationFacetFactory> logger;
+
+        public DisplayAsPropertyAnnotationFacetFactory(IFacetFactoryOrder<ContributedFunctionFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Actions) =>
+            logger = loggerFactory.CreateLogger<DisplayAsPropertyAnnotationFacetFactory>();
+
+        private static bool IsContributedToObject(MethodInfo member) => member.IsDefined(typeof(ExtensionAttribute), false);
+
+        private static Type GetContributeeType(MethodInfo member) => IsContributedToObject(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            FacetUtils.AddFacet(Create(method.GetCustomAttribute<DisplayAsPropertyAttribute>(), specification));
+            // all functions are contributed to first parameter or if menu, itself
+
+            if (method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null) {
+                var displayAsPropertyFacet = new DisplayAsPropertyFacet(specification, IsContributedToObject(method));
+
+                ITypeSpecImmutable type;
+                (type, metamodel) = reflector.LoadSpecification(GetContributeeType(method), metamodel);
+
+                displayAsPropertyFacet.AddContributee(type);
+
+                FacetUtils.AddFacets(new IFacet[] {
+                    displayAsPropertyFacet,
+                    new PropertyAccessorFacetViaFunction(method, specification),
+                    new MandatoryFacetDefault(specification)
+                });
+            }
+
             return metamodel;
         }
-
-        private static IDisplayAsPropertyFacet Create(DisplayAsPropertyAttribute attribute, ISpecification holder) => attribute is null ? null : new DisplayAsPropertyFacet(holder);
     }
 }

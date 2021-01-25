@@ -11,6 +11,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFunctions.Meta.Facet;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
@@ -25,6 +26,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.ParallelReflector.Utils;
+using TypeUtils = NakedObjects.TypeUtils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
@@ -114,6 +116,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod,  ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+          
             // must be true
             if (!actionMethod.IsStatic) {
                 throw new ReflectionException($"{actionMethod.DeclaringType}.{actionMethod.Name} must be static");
@@ -195,7 +198,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private static bool IsStatic(Type type) => type.IsAbstract && type.IsSealed;
 
         public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
-            return candidates.Where(methodInfo => methodInfo.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is null &&
+            return candidates.Where(methodInfo => !classStrategy.IsIgnored(methodInfo) &&
                                                   methodInfo.IsStatic &&
                                                   IsStatic(methodInfo.DeclaringType)).ToArray();
         }

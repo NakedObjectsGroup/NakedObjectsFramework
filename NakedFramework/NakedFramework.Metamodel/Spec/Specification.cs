@@ -47,9 +47,9 @@ namespace NakedObjects.Meta.Spec {
 
         public T GetFacet<T>() where T : IFacet => (T) GetFacet(typeof(T));
 
-        public IEnumerable<IFacet> GetFacets() => facetsByClass.Values;
+        public virtual IEnumerable<IFacet> GetFacets() => facetsByClass.Values;
 
-        public void AddFacet(IFacet facet) => AddFacet(facet.FacetType, facet);
+        public virtual void AddFacet(IFacet facet) => AddFacet(facet.FacetType, facet);
 
         #endregion
 

@@ -30,6 +30,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         IList<IActionSpecImmutable> CollectionContributedActions { get; }
         IList<IActionSpecImmutable> FinderActions { get; }
         IList<IAssociationSpecImmutable> Fields { get; }
+        IList<IAssociationSpecImmutable> ContributedFields { get; }
         IList<ITypeSpecImmutable> Interfaces { get; }
         IList<ITypeSpecImmutable> Subclasses { get; }
         ITypeSpecImmutable Superclass { get; }
