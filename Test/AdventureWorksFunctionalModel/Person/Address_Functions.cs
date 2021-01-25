@@ -13,7 +13,7 @@ using System;
 
 
 namespace AW.Functions {
-  
+
     public static class Address_Functions
     {
 
@@ -23,18 +23,17 @@ namespace AW.Functions {
         [Edit]
         public static (Address, IContext) EditStateProvince(this Address a,
             CountryRegion countryRegion, StateProvince stateProvince, IContext context) =>
-                context.SaveAndDisplay(a with {StateProvince = stateProvince });
+                context.SaveAndDisplay(a with { StateProvince = stateProvince });
 
         public static IList<CountryRegion> Choices1EditStateProvince(this Address a, IContext context) =>
                 context.Instances<CountryRegion>().ToArray();
 
-        public static IList<StateProvince> Choices2EditStateProvince(this Address a, 
-            CountryRegion countryRegion, IContext context)=> 
-                countryRegion != null ? StateProvincesForCountry(countryRegion, context) 
-                : new StateProvince[] { };
+        public static IList<StateProvince> Choices2EditStateProvince(this Address a,
+            CountryRegion countryRegion, IContext context) =>
+                StateProvincesForCountry(countryRegion, context);
 
         internal static StateProvince[] StateProvincesForCountry(this CountryRegion country,
-            IContext context) => 
+            IContext context) =>
             context.Instances<StateProvince>().Where(p => p.CountryRegion.CountryRegionCode == country.CountryRegionCode).OrderBy(p => p.Name).ToArray();
 
     }

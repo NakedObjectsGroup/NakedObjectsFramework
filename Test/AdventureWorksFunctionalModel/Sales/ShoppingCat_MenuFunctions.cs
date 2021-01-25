@@ -42,11 +42,11 @@ namespace AW.Functions {
 
         public static  (SalesOrderHeader, IContext) CheckOut(IContext context) {
             var cust = GetCustomerForUser(context);
-            var (order, context2) = Order_AdditionalFunctions.CreateNewOrder(cust, true, context);
+            throw new NotImplementedException();
+            //var (order, context2) = Order_AdditionalFunctions.CreateNewOrder(cust, true, context);
             //TODO: Need to check idea of modifying an instance that is pending save from another method
             //TODO: Need to convert the following to a function
             //order.AddItemsFromCart = true;
-            return (order, context2);
         }
 
         public static string DisableCheckOut(IContext context) {

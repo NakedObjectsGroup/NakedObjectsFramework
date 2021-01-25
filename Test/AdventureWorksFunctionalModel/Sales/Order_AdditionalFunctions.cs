@@ -132,33 +132,50 @@ namespace AW.Functions {
 
         #region CreateNewOrder
 
+        //Automatically copies common header info from previous order
+        //Disabled if the customer has no previous orders
         [MemberOrder(1)]
-        public static (SalesOrderHeader, IContext) CreateNewOrder(
-            this Customer customer, [Optionally] bool copyHeaderFromLastOrder, IContext context)
+        public static (SalesOrderHeader, IContext) CreateAnotherOrder(
+            this Customer customer, IContext context)
         {
-
-            throw new NotImplementedException(); //TODO
-            //            SalesOrderHeader newOrder = null;//Container.NewTransientInstance<SalesOrderHeader>();
-            //newOrder.Customer = customer;
-
-            //if (copyHeaderFromLastOrder) {
-            //    SalesOrderHeader last = LastOrder(customer, headers);
-            //    if (last != null) {
-            //        newOrder.BillingAddress = last.BillingAddress;
-            //        newOrder.ShippingAddress = last.ShippingAddress;
-            //        newOrder.CreditCard = last.CreditCard;
-            //        newOrder.ShipMethod = last.ShipMethod;
-            //        newOrder.AccountNumber = last.AccountNumber;
-            //    }
-            //}
-            //else {
-            //    newOrder.BillingAddress = PersonRepository.AddressesFor(customer.BusinessEntity(), addresses,  "Billing").FirstOrDefault();
-            //    newOrder.ShippingAddress = PersonRepository.AddressesFor(customer.BusinessEntity(), addresses, "Shipping").FirstOrDefault();
-            //}
-            //return newOrder;
+             SalesOrderHeader last = GetLastOrder(customer, context);
+            var newOrder = new SalesOrderHeader() with
+            {
+                RevisionNumber = (byte)1,
+                OrderDate = context.Today(),
+                DueDate = context.Today().AddDays(7),
+                StatusByte = (byte)OrderStatus.InProcess,
+                OnlineOrder = false,
+                CustomerID = customer.CustomerID,
+                BillingAddress = last.BillingAddress,
+                ShippingAddress = last.ShippingAddress,
+                ShipMethodID = last.ShipMethodID,
+                CreditCard = last.CreditCard,
+                ShipMethod = last.ShipMethod,
+                AccountNumber = last.AccountNumber,
+                rowguid = context.NewGuid(),
+                ModifiedDate = context.Now()
+            };
+            return context.SaveAndDisplay(newOrder);
         }
 
-        public static string DisableCreateNewOrder(this Customer customer) =>
+        public static string DisableCreateAnotherOrder(this Customer customer, IContext context) =>
+          GetLastOrder(customer, context) is null ?
+                null :
+                "Customer has no previous orders. Use Create First Order.";
+
+        internal static SalesOrderHeader GetLastOrder(Customer c, IContext context) {
+            int cid = c.CustomerID;
+            return context.Instances<SalesOrderHeader>().Where(o => o.CustomerID == cid).
+                OrderBy(o => o.OrderDate).LastOrDefault();
+            }
+        #endregion
+
+        #region Create First Order
+        public static string CreateFirstOrder(this Customer customer) =>
+            throw new NotImplementedException();
+
+        public static string DisableCreateFirstOrder(this Customer customer) =>
             customer.SalesTerritoryID == 6 ? "Customers in Canada may not place orders directly." : null;
 
         [MemberOrder(1)]
@@ -167,10 +184,6 @@ namespace AW.Functions {
             //var qo = Container.NewViewModel<QuickOrderForm>();
             //qo.Customer = customer;
             //return qo;
-        }
-
-        public static bool Default1CreateNewOrder() {
-            return true;
         }
 
         #endregion

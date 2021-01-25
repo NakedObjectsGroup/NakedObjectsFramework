@@ -73,7 +73,6 @@ namespace AW.Functions {
         public static IList<string> Choices1CreateNewCreditCard(this Person p) =>
             new[] {"Vista","Distinguish","SuperiorCard","ColonialVoice" };
 
-        //TODO: Validate expiry date
                #endregion
 
         public static IList<CreditCard> ListCreditCards(this Person p, IQueryable<PersonCreditCard> pccs)

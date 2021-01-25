@@ -6,14 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using AW.Functions;
 using NakedFunctions;
-using static AW.Utilities;
+
 
 namespace AW.Types
 {
-    //TODO: Add a function to hide the Store or Person according to type & name both 'Details'.
-    public record Customer
+     public record Customer
     {
         [Hidden]
         public virtual int CustomerID { get; init; }

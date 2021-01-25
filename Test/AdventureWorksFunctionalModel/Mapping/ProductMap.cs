@@ -10,9 +10,6 @@ namespace AW.Mapping
             // Primary Key
             HasKey(t => t.ProductID);
 
-            //Ignores
-            Ignore(t => t.ProductCategory);
-
             // Properties
             Property(t => t.Name)
                 .IsRequired()
