@@ -23,6 +23,10 @@ namespace AW.Types
 
         public override string ToString() => $"{Status} email";
 
+        public virtual bool Equals(EmailTemplate other) => ReferenceEquals(this, other);
+
+        public override int GetHashCode() => base.GetHashCode();
+
     }
 
     public enum EmailStatus

@@ -17,6 +17,14 @@ namespace AW.Functions {
     [Named("Employees")]
     public static class Employee_MenuFunctions {
 
+        public static StaffSummary GenerateStaffSummary(IContext context)
+        {
+            var staff = context.Instances<Employee>();
+            int female = staff.Where(x => x.Gender == "F").Count();
+            int male = staff.Where(x => x.Gender == "M").Count();
+            return new() { Female = female, Male = male };
+        }
+
         [PageSize(15)]
         public static IQueryable<Employee> AllEmployees(IContext context) => context.Instances<Employee>();
 
