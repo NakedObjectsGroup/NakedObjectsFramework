@@ -149,7 +149,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public static class ViewModelFunctions {
         public static string[] DeriveKeys(this ViewModel target) => new[] {target.Name};
-        public static ViewModel CreateUsingKeys(string[] keys) => new() {Name = keys.First()};
+        public static ViewModel CreateFromKeys(string[] keys) => new() {Name = keys.First()};
         public static ViewModel UpdateName(this ViewModel vm, string name) => vm with {Name = name};
     }
 }

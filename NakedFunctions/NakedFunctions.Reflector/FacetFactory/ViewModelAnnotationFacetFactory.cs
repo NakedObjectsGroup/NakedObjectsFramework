@@ -25,7 +25,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class ViewModelAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory
     {
         private readonly ILogger<ViewModelAnnotationFacetFactory> logger;
-        private const string CreateUsingKeys = "CreateUsingKeys";
+        private const string CreateFromKeys = "CreateFromKeys";
         private const string IsEditView = "IsEditView";
         private const string DeriveKeys = "DeriveKeys";
 
@@ -36,7 +36,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static MethodInfo GetDeriveMethod(Type type) => GetMethod(type, DeriveKeys);
 
-        private static MethodInfo GetPopulateMethod(Type type) => GetMethod(type, CreateUsingKeys);
+        private static MethodInfo GetPopulateMethod(Type type) => GetMethod(type, CreateFromKeys);
 
         private static MethodInfo GetIsEditMethod(Type type) => GetMethod(type, IsEditView);
 
@@ -119,7 +119,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 case DeriveKeys when IsViewModelMatch(method):
                 case IsEditView when IsViewModelMatch(method):
                     return true;
-                case CreateUsingKeys: {
+                case CreateFromKeys: {
                     var deriveMethod = GetMethod(method.DeclaringType, DeriveKeys);
                     return deriveMethod is not null && IsViewModelMatch(deriveMethod);
                 }

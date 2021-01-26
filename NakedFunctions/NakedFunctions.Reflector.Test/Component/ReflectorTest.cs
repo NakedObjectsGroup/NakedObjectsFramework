@@ -275,17 +275,17 @@ namespace NakedFunctions.Reflector.Test.Component {
 
     public static class ViewModelFunctions {
         public static string[] DeriveKeys(this ViewModel target) => null;
-        public static ViewModel CreateUsingKeys(string[] keys) => new();
+        public static ViewModel CreateFromKeys(string[] keys) => new();
     }
 
     public static class EditViewModelFunctions {
         public static string[] DeriveKeys(this EditViewModel target) => null;
-        public static EditViewModel CreateUsingKeys(string[] keys) => new();
+        public static EditViewModel CreateFromKeys(string[] keys) => new();
     }
 
     public static class SwitchableViewModelFunctions {
         public static string[] DeriveKeys(this SwitchableViewModel target) => null;
-        public static SwitchableViewModel CreateUsingKeys(string[] keys) => new();
+        public static SwitchableViewModel CreateFromKeys(string[] keys) => new();
         public static bool IsEditView(this SwitchableViewModel target) => true;
     }
 
