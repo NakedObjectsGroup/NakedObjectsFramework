@@ -146,10 +146,7 @@ namespace NakedObjects.Core.Component {
             return adapter;
         }
 
-        public INakedObjectAdapter CreateAdapterForExistingObject(object domainObject)
-        {
-            return nakedObjectFactory.CreateAdapterForExistingObject(domainObject);
-        }
+        public INakedObjectAdapter CreateAdapterForExistingObject(object domainObject) => nakedObjectFactory.CreateAdapterForExistingObject(domainObject);
 
         #endregion
 

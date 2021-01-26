@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -29,69 +30,66 @@ namespace NakedFunctions.Reflector.FacetFactory {
                                                                                                                                                FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<ViewModelAnnotationFacetFactory>();
 
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
-            pi is not null &&
-            pi.ParameterType == toMatch;
-
-        private static bool IsSameTypeAndReturnType(MethodInfo mi, Type toMatch) {
-            var pi = mi.GetParameters().FirstOrDefault();
-
-            return pi is not null &&
-                   pi.ParameterType == toMatch &&
-                   mi.ReturnType == toMatch;
-        }
-
         private static MethodInfo GetMethod(Type type, string name) => type.GetMethods().SingleOrDefault(m => m.Name == name);
 
         private static MethodInfo GetDeriveMethod(Type type) => GetMethod(type, "DeriveKeys");
 
-        private static MethodInfo GetPopulateMethod(Type type) => GetMethod(type, "PopulateUsingKeys");
+        private static MethodInfo GetPopulateMethod(Type type) => GetMethod(type, "CreateUsingKeys");
 
         private static MethodInfo GetIsEditMethod(Type type) => GetMethod(type, "IsEditView");
 
-        private static Type GetAndValidateContributedToType(MethodInfo deriveMethod, MethodInfo populateMethod, MethodInfo isEditMethod) {
-            var t1 = FunctionalFacetFactoryHelpers.GetContributedToType(deriveMethod);
-            var t2 = FunctionalFacetFactoryHelpers.GetContributedToType(populateMethod);
-            var t3 = isEditMethod is null ? null : FunctionalFacetFactoryHelpers.GetContributedToType(isEditMethod);
+        [DoesNotReturn]
+        private static void ThrowError(string msg) => throw new ReflectionException(msg);
 
-            if (t1 != t2) {
-                throw new ReflectionException($"View model functions {deriveMethod.Name} and {populateMethod.Name} on {deriveMethod.DeclaringType} have mismatched types");
+        private static (Type, ViewModelAttribute) GetAndValidateContributedToType(MethodInfo deriveMethod, MethodInfo isEditMethod) {
+            var deriveMethodVmType = FunctionalFacetFactoryHelpers.GetContributedToType(deriveMethod);
+            if (deriveMethodVmType is null) {
+                ThrowError($"View model function {deriveMethod.Name} on {deriveMethod.DeclaringType} has missing 'this' parameter");
             }
 
-            if (t3 is not null && t3 != t1) {
-                throw new ReflectionException($"View model function {isEditMethod.Name} on {deriveMethod.DeclaringType} has mismatched types");
+            var vmAttribute = deriveMethodVmType?.GetCustomAttribute<ViewModelAttribute>();
+            var attributeFunctionsType = vmAttribute?.TypeDefiningVMFunctions;
+            if (attributeFunctionsType is null) {
+                ThrowError($"Missing ViewModelAttribute on {deriveMethodVmType}");
             }
 
-            return t1;
+            if (attributeFunctionsType != deriveMethod.DeclaringType) {
+                ThrowError($"View model function {deriveMethod.Name} and ViewModelAttribute on {deriveMethodVmType} have mismatched types");
+            }
+
+            var isEditMethodVmType = FunctionalFacetFactoryHelpers.GetContributedToType(isEditMethod);
+
+            if (isEditMethodVmType is not null && isEditMethodVmType != deriveMethodVmType) {
+                ThrowError($"View model function {isEditMethod.Name} on {isEditMethod.DeclaringType} has mismatched types");
+            }
+
+            if (isEditMethodVmType is null && vmAttribute?.Editability == VMEditability.Switchable)
+            {
+                ThrowError($"Missing IsEditView function on {attributeFunctionsType} as ViewModel has Switchable flag");
+            }
+
+            return (deriveMethodVmType, vmAttribute);
         }
 
-
         private static Action<IMetamodelBuilder> GetAddAction(Type type) {
-
             var deriveMethod = GetDeriveMethod(type);
             var populateMethod = GetPopulateMethod(type);
             var isEditMethod = GetIsEditMethod(type);
 
             if (deriveMethod is not null && populateMethod is not null) {
-                var onType = GetAndValidateContributedToType(deriveMethod, populateMethod, isEditMethod);
-                if (onType is not null) {
-                    var attribute = onType.GetCustomAttribute<ViewModelAttribute>();
-                    if ( attribute is not null && attribute.TypeDefiningVMFunctions == type) {
-                        IFacet FacetCreator(ISpecification spec) => attribute.Editability switch
-                        {
-                            //TODO: normalise the exception message?
-                            VMEditability.Switchable => isEditMethod is not null ? new ViewModelSwitchableFacetViaFunctionsConvention(spec, deriveMethod, populateMethod, isEditMethod) : throw new ReflectionException("No IsEdit function supplied for a ViewModel with switchable editability specified"),
-                            VMEditability.EditOnly => new ViewModelEditFacetViaFunctionsConvention(spec, deriveMethod, populateMethod),
-                            _ => new ViewModelFacetViaFunctionsConvention(spec, deriveMethod, populateMethod)
-                        };
+                var (onType, attribute) = GetAndValidateContributedToType(deriveMethod, isEditMethod);
 
-                        return m => {
-                            var spec = m.GetSpecification(onType);
-                            var facet = FacetCreator(spec);
-                            FacetUtils.AddFacet(facet);
-                        };
-                    }
-                }
+                IFacet FacetCreator(ISpecification spec) => attribute.Editability switch {
+                    VMEditability.Switchable => new ViewModelSwitchableFacetViaFunctionsConvention(spec, deriveMethod, populateMethod, isEditMethod),
+                    VMEditability.EditOnly => new ViewModelEditFacetViaFunctionsConvention(spec, deriveMethod, populateMethod),
+                    _ => new ViewModelFacetViaFunctionsConvention(spec, deriveMethod, populateMethod)
+                };
+
+                return m => {
+                    var spec = m.GetSpecification(onType);
+                    var facet = FacetCreator(spec);
+                    FacetUtils.AddFacet(facet);
+                };
             }
 
             return null;
