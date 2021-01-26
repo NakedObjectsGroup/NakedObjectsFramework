@@ -138,19 +138,18 @@ namespace AW.Functions {
             this Customer customer, IContext context)
         {
              SalesOrderHeader last = GetLastOrder(customer, context);
-            var newOrder = new SalesOrderHeader() with
+            var newOrder = new SalesOrderHeader() 
             {
                 RevisionNumber = (byte)1,
                 OrderDate = context.Today(),
                 DueDate = context.Today().AddDays(7),
                 StatusByte = (byte)OrderStatus.InProcess,
                 OnlineOrder = false,
-                CustomerID = customer.CustomerID,
-                BillingAddress = last.BillingAddress,
-                ShippingAddress = last.ShippingAddress,
+                CustomerID = last.CustomerID,
+                BillingAddressID = last.BillingAddressID,
+                ShippingAddressID = last.ShippingAddressID,
                 ShipMethodID = last.ShipMethodID,
-                CreditCard = last.CreditCard,
-                ShipMethod = last.ShipMethod,
+                CreditCardID = last.CreditCardID,
                 AccountNumber = last.AccountNumber,
                 rowguid = context.NewGuid(),
                 ModifiedDate = context.Now()
