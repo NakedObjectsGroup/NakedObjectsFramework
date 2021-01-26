@@ -125,21 +125,21 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void EditAction()
         {
             //Corresponds to Story #202
-            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--6&as1=open&d1=EditType");
-            var title = WaitForTitle("Volume Discount over 60");
-            var original = "Volume Discount";
-            Assert.AreEqual(original, GetPropertyValue("Type"));
-            var newType = "Clearance";
-            TypeIntoFieldWithoutClearing("#type1", newType);
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=EditQuantities");
+            var title = WaitForTitle("Mountain Tire Sale");
+            var original = "";
+            Assert.AreEqual(original, GetPropertyValue("Max Qty"));
+            var newType = "5";
+            TypeIntoFieldWithoutClearing("#maxqty1", newType);
             Click(OKButton());
             Reload();
-            Assert.AreEqual(newType, GetPropertyValue("Type"));
+            Assert.AreEqual(newType, GetPropertyValue("Max Qty"));
             OpenObjectActions();
-            OpenActionDialog("Edit Type");
-            TypeIntoFieldWithoutClearing("#type1", original);
+            OpenActionDialog("Edit Quantities");
+            TypeIntoFieldWithoutClearing("#maxqty1", original);
             Click(OKButton());
             Reload();
-            Assert.AreEqual(original, GetPropertyValue("Type"));
+            Assert.AreEqual(original, GetPropertyValue("Max Qty"));
         }
 
         //[TestMethod] 
@@ -220,7 +220,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             WaitForTitle("Kevin Homer");
             var currentStatus = GetPropertyValue("Marital Status");
             Assert.AreEqual("S", currentStatus);
-            GeminiUrl("object?i1=View&o1=AW.Types.Employee--105&as1=open&d1=EditMaritalStatus");
+            GeminiUrl("object?i1=View&o1=AW.Types.Employee--105&as1=open&d1=UpdateMaritalStatus");
             var option = "select#maritalstatus1 option";
             Assert.AreEqual("M", WaitForCssNo(option, 2).Text);
             Assert.AreEqual("S", WaitForCssNo(option, 1).Text);
@@ -228,7 +228,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             SelectDropDownOnField("select#maritalstatus1", 2);
             Click(OKButton());
             wait.Until(dr => GetPropertyValue("Marital Status") == "M");
-            GeminiUrl("object?i1=View&o1=AW.Types.Employee--105&as1=open&d1=EditMaritalStatus");
+            GeminiUrl("object?i1=View&o1=AW.Types.Employee--105&as1=open&d1=UpdateMaritalStatus");
             SelectDropDownOnField("select#maritalstatus1", 1);
             Click(OKButton());
             wait.Until(dr => GetPropertyValue("Marital Status") == "S");
