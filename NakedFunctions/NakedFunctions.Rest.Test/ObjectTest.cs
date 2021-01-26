@@ -830,10 +830,28 @@ namespace NakedFunctions.Rest.Test {
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
-            
-            Assert.AreEqual(1, parsedResult["members"].Count());
+
+            Assert.AreEqual("1", parsedResult["title"].ToString());
+
+            Assert.AreEqual(2, parsedResult["members"].Count());
+            Assert.AreEqual("1", parsedResult["members"]["Name"]["value"].ToString());
         }
 
+        [Test]
+        public void TestInvokeActionOnViewModel()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("2") } }  };
+
+            var result = api.GetInvoke(FullName<ViewModel>(), "1", nameof(ViewModelFunctions.UpdateName), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("2", resultObj["title"].ToString());
+        }
 
     }
 }
