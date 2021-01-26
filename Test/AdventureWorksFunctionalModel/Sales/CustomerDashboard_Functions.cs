@@ -12,14 +12,14 @@ using NakedFunctions;
 namespace AW.Functions {
     public static class CustomerDashboard_Functions { 
 
-        public static string[] DeriveKeys(CustomerDashboard cd) {
-            return new[] {cd.Root.CustomerID.ToString() };
-        }
+        public static string[] DeriveKeys(this CustomerDashboard cd) =>
+            new[] {cd.Root.CustomerID.ToString() };
 
-        public static CustomerDashboard PopulateUsingKeys(CustomerDashboard dashboard, string[] keys, IContext context)
+        public static CustomerDashboard CreateFromKeys(string[] keys, IContext context)
         {
             int customerId = int.Parse(keys[0]);
-            return new CustomerDashboard(context.Instances<Customer>().Single(c => c.CustomerID == customerId));
+            return new CustomerDashboard {
+                Root = context.Instances<Customer>().Single(c => c.CustomerID == customerId)};
         }
     }
 }

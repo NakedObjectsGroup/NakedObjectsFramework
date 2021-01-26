@@ -16,51 +16,44 @@ namespace AW.Functions {
 
     public static class QuickOrderForm_Functions {
 
-        public static string[] DeriveKeys(QuickOrderForm vm)
+        public static string[] DeriveKeys(this QuickOrderForm vm)
         {
-            //TODO: redo using immutable collection
             var keys = new List<string> { vm.Customer.AccountNumber };
             keys.AddRange(vm.Details.SelectMany(x => QuickOrderLine_Functions.DeriveKeys(x)));
             return keys.ToArray();
         }
 
-        public static QuickOrderForm PopulateUsingKeys(
-            QuickOrderForm vm, string[] keys, IContext context)
+        public static QuickOrderForm CreateFromKeys(string[] keys, IContext context)
         {
             var cust = context.Instances<Customer>().Single(c => c.AccountNumber == keys[0]);
             var lines = new List<QuickOrderLine>();
-            //TODO: redo as LINQ
             for (int i = 1; i < keys.Count(); i = i + 2)
             {
                 var dKeys = new[] { keys[i], keys[i + 1] };
-                var line = QuickOrderLine_Functions.PopulateUsingKeys(null, dKeys, context);
+                var line = QuickOrderLine_Functions.CreateFromKeys(dKeys, context);
                 lines.Add(line);
             }
-            return new QuickOrderForm(cust, cust.AccountNumber, lines);
-        }
-
-        public static IQueryable<QuickOrderLine> GetOrders(QuickOrderForm vm)
-        {
-            return vm.Details.AsQueryable();
+            return new QuickOrderForm {
+                Customer = cust, 
+                AccountNumber = cust.AccountNumber, 
+                Details = lines
+            };
         }
 
         public static QuickOrderForm AddDetail( 
             QuickOrderForm vm, Product product,short number)
         {
-            throw new NotImplementedException();
-            //var ol = new QuickOrderLine(product, number);
-            //var details = vm.Details;
-            //details.Add(ol); //TODO: redo using immutable collection
-            //return vm with {Details =  details};
+            var ol = new QuickOrderLine { Product = product, Number = number };
+            var details2 = new List<QuickOrderLine>(vm.Details);
+            details2.Add(ol); //TODO: redo as Immutable collection?
+            return vm with {Details =  details2};
         }
 
         public static (SalesOrderHeader, SalesOrderHeader) CreateOrder(
-            QuickOrderForm vm,
-            IQueryable<BusinessEntityAddress> addresses,
-            IQueryable<SpecialOfferProduct> sops)
+            this QuickOrderForm vm, IContext context)
         {
             throw new NotImplementedException();
-            //SalesOrderHeader soh = OrderRepository.CreateNewOrder(Customer, true, addresses);
+            //SalesOrderHeader soh = Order_AdditionalFunctions.CreateAnotherOrder(vm.Customer, context);
             //soh.Status = (byte)OrderStatus.InProcess;
             //Container.Persist(ref soh);
 

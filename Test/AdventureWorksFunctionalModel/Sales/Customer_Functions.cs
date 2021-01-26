@@ -15,16 +15,14 @@ namespace AW.Functions {
     {
 
         #region Action to test switchable view model
-        public static StoreSalesInfo ReviewSalesResponsibility()
+        public static StoreSalesInfo ReviewSalesResponsibility(this Customer c, IContext context)
         {
-            throw new NotImplementedException();
-            //var ssi = Container.NewViewModel<StoreSalesInfo>();
-            //ssi.PopulateUsingKeys(new string[] { AccountNumber, false.ToString() });
+            return StoreSalesInfo_Functions.CreateFromKeys(new string[] { c.AccountNumber, false.ToString() }, context);
             //return ssi;
         }
 
 
-        public static bool HideReviewSalesResponsibility(Customer c)
+        public static bool HideReviewSalesResponsibility(this Customer c)
         {
             return IsStore(c);
         }

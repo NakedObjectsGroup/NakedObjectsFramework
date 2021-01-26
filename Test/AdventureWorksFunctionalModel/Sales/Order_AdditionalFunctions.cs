@@ -178,13 +178,9 @@ namespace AW.Functions {
             customer.SalesTerritoryID == 6 ? "Customers in Canada may not place orders directly." : null;
 
         [MemberOrder(1)]
-        public static QuickOrderForm QuickOrder(this Customer customer) {
-            throw new NotImplementedException();
-            //var qo = Container.NewViewModel<QuickOrderForm>();
-            //qo.Customer = customer;
-            //return qo;
-        }
-
+        public static QuickOrderForm QuickOrder(this Customer customer) =>
+            new QuickOrderForm { Customer = customer };
+            
         #endregion
     }
 }

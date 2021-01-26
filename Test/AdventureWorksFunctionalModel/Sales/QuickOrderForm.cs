@@ -13,26 +13,13 @@ namespace AW.Types {
 
     [ViewModel(typeof(QuickOrderForm_Functions), VMEditability.EditOnly)]
     public record QuickOrderForm  {
-        public QuickOrderForm(Customer customer, 
-            string accountNumber,
-            ICollection<QuickOrderLine> details)
-        {
-            Customer = customer;
-            AccountNumber = accountNumber;
-            Details = details;
-        }
-
-        public QuickOrderForm()
-        {
-
-        }
 
         //TODO: Properties defined as read-only, even though the user will appear to modify them.
         [Hidden]
-        public Customer Customer { get; }
+        public Customer Customer { get; init; }
 
-        public string AccountNumber { get;  }
+        public string AccountNumber { get; init; }
 
-        public ICollection<QuickOrderLine> Details { get; }
+        public ICollection<QuickOrderLine> Details { get; init; }
     }
 }

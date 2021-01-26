@@ -14,7 +14,7 @@ namespace AW.Types
         public virtual int Male { get; init; }
 
         [MemberOrder(3)]
-        public virtual int TotalStaff { get; init; }
+        public virtual int TotalStaff => Female + Male;
 
         public override string ToString() => "Staff Summary";
     }

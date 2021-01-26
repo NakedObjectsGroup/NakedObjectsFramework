@@ -17,14 +17,8 @@ namespace AW.Types {
     [ViewModel(typeof(CustomerDashboard_Functions))]
     public record CustomerDashboard {
 
-        public CustomerDashboard(Customer cust)
-        {
-            Root = cust;
-        }
-
         [Hidden]
         public virtual Customer Root { get; init; }
-
 
         public string Name {
             get { return Customer_Functions.IsIndividual(Root) ? Root.Person.ToString() : Root.Store.Name; }

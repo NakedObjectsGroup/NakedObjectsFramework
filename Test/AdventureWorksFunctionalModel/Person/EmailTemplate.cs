@@ -6,24 +6,6 @@ namespace AW.Types
     [ViewModel(typeof(EmailTemplate_Functions), VMEditability.EditOnly)]
     public record EmailTemplate
     {
-
-        public EmailTemplate(
-            string to,
-            string from,
-            string subject,
-            string message,
-            EmailStatus status)
-        {
-            To = to;
-            From = from;
-            Subject = subject;
-            Message = message;
-            Status = status;
-        }
-
-        public EmailTemplate() { }
-
-
         [MemberOrder(10), Optionally]
         public virtual string To { get; init; }
 
@@ -36,7 +18,7 @@ namespace AW.Types
         [MemberOrder(40)]
         public virtual string Message { get; init; }
 
-
+        [MemberOrder(50)]
         public virtual EmailStatus Status { get; init; }
 
         public override string ToString() => $"{Status} email";
