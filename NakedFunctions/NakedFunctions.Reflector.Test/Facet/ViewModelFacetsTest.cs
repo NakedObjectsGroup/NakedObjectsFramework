@@ -34,46 +34,7 @@ namespace NakedFunctions.Meta.Test.Facet {
             Assert.AreEqual(testClass, testAdapter.Object);
         }
 
-        [TestMethod]
-        public void TestViewModelEditFacetViaFunctionsConvention()
-        {
-            var deriveMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Derive));
-            var populateMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Populate));
-
-            var testFacet = new ViewModelEditFacetViaFunctionsConvention(null, deriveMethod, populateMethod);
-
-            var keys = testFacet.Derive(null, null);
-
-            Assert.AreEqual(testClass.Keys, keys);
-
-            var testAdapter = new TestAdapter();
-            testFacet.Populate(keys, testAdapter, null);
-
-            Assert.AreEqual(testClass, testAdapter.Object);
-
-            Assert.IsTrue(testFacet.IsEditView(null, null));
-        }
-
-        [TestMethod]
-        public void TestViewModelSwitchableFacetViaFunctionsConvention()
-        {
-            var deriveMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Derive));
-            var populateMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Populate));
-            var editMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.IsEditable));
-
-            var testFacet = new ViewModelSwitchableFacetViaFunctionsConvention(null, deriveMethod, populateMethod, editMethod);
-
-            var keys = testFacet.Derive(null, null);
-
-            Assert.AreEqual(testClass.Keys, keys);
-
-            var testAdapter = new TestAdapter();
-            testFacet.Populate(keys, testAdapter, null);
-
-            Assert.AreEqual(testClass, testAdapter.Object);
-
-            Assert.IsFalse(testFacet.IsEditView(null, null));
-        }
+        
 
 
         private class TestAdapter : INakedObjectAdapter {

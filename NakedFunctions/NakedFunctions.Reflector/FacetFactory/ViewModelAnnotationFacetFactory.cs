@@ -22,15 +22,25 @@ using NakedObjects.Core;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class ViewModelAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory
-    {
-        private readonly ILogger<ViewModelAnnotationFacetFactory> logger;
+    public sealed class ViewModelAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory {
         private const string CreateFromKeys = "CreateFromKeys";
-        private const string IsEditView = "IsEditView";
         private const string DeriveKeys = "DeriveKeys";
+        private readonly ILogger<ViewModelAnnotationFacetFactory> logger;
 
         public ViewModelAnnotationFacetFactory(IFacetFactoryOrder<ViewModelAnnotationFacetFactory> order, ILoggerFactory loggerFactory) :
             base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) => logger = loggerFactory.CreateLogger<ViewModelAnnotationFacetFactory>();
+
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
+            switch (method.Name) {
+                case DeriveKeys when IsViewModelMatch(method):
+                case CreateFromKeys: {
+                    var deriveMethod = GetMethod(method.DeclaringType, DeriveKeys);
+                    return deriveMethod is not null && IsViewModelMatch(deriveMethod);
+                }
+                default:
+                    return false;
+            }
+        }
 
         private static MethodInfo GetMethod(Type type, string name) => type.GetMethods().SingleOrDefault(m => m.Name == name);
 
@@ -38,12 +48,10 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static MethodInfo GetPopulateMethod(Type type) => GetMethod(type, CreateFromKeys);
 
-        private static MethodInfo GetIsEditMethod(Type type) => GetMethod(type, IsEditView);
-
         [DoesNotReturn]
         private static void ThrowError(string msg) => throw new ReflectionException(msg);
 
-        private static (Type, ViewModelAttribute) GetAndValidateContributedToType(MethodInfo deriveMethod, MethodInfo isEditMethod) {
+        private static Type GetAndValidateContributedToType(MethodInfo deriveMethod) {
             var deriveMethodVmType = deriveMethod.GetContributedToType();
             if (deriveMethodVmType is null) {
                 ThrowError($"View model function {deriveMethod.Name} on {deriveMethod.DeclaringType} has missing 'this' parameter");
@@ -59,37 +67,19 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 ThrowError($"View model function {deriveMethod.Name} and ViewModelAttribute on {deriveMethodVmType} have mismatched types");
             }
 
-            var isEditMethodVmType = isEditMethod.GetContributedToType();
-
-            if (isEditMethodVmType is not null && isEditMethodVmType != deriveMethodVmType) {
-                ThrowError($"View model function {isEditMethod.Name} on {isEditMethod.DeclaringType} has mismatched types");
-            }
-
-            if (isEditMethodVmType is null && vmAttribute?.Editability == VMEditability.Switchable)
-            {
-                ThrowError($"Missing {IsEditView} function on {attributeFunctionsType} as ViewModel has Switchable flag");
-            }
-
-            return (deriveMethodVmType, vmAttribute);
+            return deriveMethodVmType;
         }
 
         private static Action<IMetamodelBuilder> GetAddAction(Type type) {
             var deriveMethod = GetDeriveMethod(type);
             var populateMethod = GetPopulateMethod(type);
-            var isEditMethod = GetIsEditMethod(type);
 
             if (deriveMethod is not null && populateMethod is not null) {
-                var (onType, attribute) = GetAndValidateContributedToType(deriveMethod, isEditMethod);
-
-                IFacet FacetCreator(ISpecification spec) => attribute.Editability switch {
-                    VMEditability.Switchable => new ViewModelSwitchableFacetViaFunctionsConvention(spec, deriveMethod, populateMethod, isEditMethod),
-                    VMEditability.EditOnly => new ViewModelEditFacetViaFunctionsConvention(spec, deriveMethod, populateMethod),
-                    _ => new ViewModelFacetViaFunctionsConvention(spec, deriveMethod, populateMethod)
-                };
+                var onType = GetAndValidateContributedToType(deriveMethod);
 
                 return m => {
                     var spec = m.GetSpecification(onType);
-                    var facet = FacetCreator(spec);
+                    var facet = new ViewModelFacetViaFunctionsConvention(spec, deriveMethod, populateMethod);
                     FacetUtils.AddFacet(facet);
                 };
             }
@@ -97,8 +87,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return null;
         }
 
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var action = GetAddAction(type);
             if (action is not null) {
                 var integrationFacet = specification.GetFacet<IIntegrationFacet>();
@@ -111,21 +100,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     integrationFacet.AddAction(action);
                 }
             }
-            return metamodel;
-        }
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            switch (method.Name) {
-                case DeriveKeys when IsViewModelMatch(method):
-                case IsEditView when IsViewModelMatch(method):
-                    return true;
-                case CreateFromKeys: {
-                    var deriveMethod = GetMethod(method.DeclaringType, DeriveKeys);
-                    return deriveMethod is not null && IsViewModelMatch(deriveMethod);
-                }
-                default:
-                    return false;
-            }
+            return metamodel;
         }
 
         private static bool IsViewModelMatch(MethodInfo method) => method.GetContributedToType()?.GetCustomAttribute<ViewModelAttribute>()?.TypeDefiningVMFunctions == method.DeclaringType;

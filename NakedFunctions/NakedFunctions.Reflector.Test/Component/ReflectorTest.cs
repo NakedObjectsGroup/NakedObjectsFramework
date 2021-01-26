@@ -219,16 +219,6 @@ namespace NakedFunctions.Reflector.Test.Component {
         public virtual SimpleClass SimpleProperty { get; init; }
     }
 
-    [ViewModel(typeof(EditViewModelFunctions), VMEditability.EditOnly)]
-    public record EditViewModel {
-        public virtual SimpleClass SimpleProperty { get; init; }
-    }
-
-    [ViewModel(typeof(SwitchableViewModelFunctions), VMEditability.Switchable)]
-    public record SwitchableViewModel {
-        public virtual SimpleClass SimpleProperty { get; init; }
-    }
-
     public class NavigableClass {
         public SimpleClass SimpleProperty { get; init; }
     }
@@ -276,17 +266,6 @@ namespace NakedFunctions.Reflector.Test.Component {
     public static class ViewModelFunctions {
         public static string[] DeriveKeys(this ViewModel target) => null;
         public static ViewModel CreateFromKeys(string[] keys) => new();
-    }
-
-    public static class EditViewModelFunctions {
-        public static string[] DeriveKeys(this EditViewModel target) => null;
-        public static EditViewModel CreateFromKeys(string[] keys) => new();
-    }
-
-    public static class SwitchableViewModelFunctions {
-        public static string[] DeriveKeys(this SwitchableViewModel target) => null;
-        public static SwitchableViewModel CreateFromKeys(string[] keys) => new();
-        public static bool IsEditView(this SwitchableViewModel target) => true;
     }
 
     public static class CreateNewFunctions
@@ -1306,62 +1285,6 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
             }
         }
-
-        [TestMethod]
-        public void ReflectEditModelFunctions()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
-                coreOptions.AddNakedObjects(EmptyObjectSetup);
-                coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(SimpleClass), typeof(EditViewModel) };
-                        options.Functions = new[] { typeof(EditViewModelFunctions) };
-                    }
-                );
-            }
-
-            var (container, host) = GetContainer(Setup);
-
-            using (host)
-            {
-                container.GetService<IModelBuilder>()?.Build();
-                var specs = AllObjectSpecImmutables(container);
-                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<EditViewModel>());
-
-                IFacet facet = spec.GetFacet<IViewModelFacet>();
-                Assert.IsNotNull(facet);
-            }
-        }
-
-        [TestMethod]
-        public void ReflectSwitchableViewModelFunctions()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
-                coreOptions.AddNakedObjects(EmptyObjectSetup);
-                coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(SimpleClass), typeof(SwitchableViewModel) };
-                        options.Functions = new[] { typeof(SwitchableViewModelFunctions) };
-                    }
-                );
-            }
-
-            var (container, host) = GetContainer(Setup);
-
-            using (host)
-            {
-                container.GetService<IModelBuilder>()?.Build();
-                var specs = AllObjectSpecImmutables(container);
-                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SwitchableViewModel>());
-
-                IFacet facet = spec.GetFacet<IViewModelFacet>();
-                Assert.IsNotNull(facet);
-            }
-        }
-
-
-
-
 
         [TestMethod]
         public void ReflectPotentFunctions()
