@@ -19,9 +19,8 @@ namespace AW.Functions {
         [MemberOrder(22)]
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public static IQueryable<SalesOrderHeader> RecentOrders(
-            this Customer customer,
-             IQueryable<SalesOrderHeader> headers) {
-            return from obj in headers
+            this Customer customer, IContext context) {
+            return from obj in context.Instances<SalesOrderHeader>()
                 where obj.Customer.CustomerID == customer.CustomerID
                 orderby obj.SalesOrderNumber descending
                 select obj;

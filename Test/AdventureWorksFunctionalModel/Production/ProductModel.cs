@@ -7,6 +7,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using AW.Functions;
 using NakedFunctions;
 using static AW.Utilities;
 
@@ -23,6 +26,14 @@ namespace AW.Types
         [Hidden]
         public virtual string CatalogDescription { get; init; }
 
+        [Named("CatalogDescription"), MemberOrder(20), MultiLine(10)]
+        public string FormattedCatalogDescription => 
+               ProductModel_Functions.CatalogDescription(this);
+
+        [MemberOrder(22)]
+        public ProductDescription LocalCultureDescription =>
+            ProductModel_Functions.LocalCultureDescription(this); 
+
         [MemberOrder(30)]
         public virtual string Instructions { get; init; }
 
@@ -34,6 +45,7 @@ namespace AW.Types
 
         [Hidden]
         public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; } = new List<ProductModelProductDescriptionCulture>();
+
 
         [Hidden]
         public virtual Guid rowguid { get; init; }

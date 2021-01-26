@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using AW.Functions;
 using NakedFunctions;
 
 
@@ -26,7 +27,7 @@ namespace AW.Types
         [MemberOrder(3)]
         public virtual string Color { get; init; }
 
-                //
+        //
         //private Image cachedPhoto;
 
         //[MemberOrder(4)]
@@ -59,6 +60,9 @@ namespace AW.Types
 
         //
 
+        [MemberOrder(12)]
+        public ProductCategory ProductCategory => Product_Functions.ProductCategory(this);
+
         [MemberOrder(20)]
         public virtual bool Make { get; init; }
 
@@ -86,11 +90,17 @@ namespace AW.Types
         [Hidden]
         public virtual UnitMeasure SizeUnit { get; init; }
 
+        [Named("Size"), MemberOrder(16)]
+        public string SizeWithUnit => Product_Functions.SizeWithUnit(this);
+
         [Hidden]
         public virtual string WeightUnitMeasureCode { get; init; }
 
         [Hidden]
         public virtual decimal? Weight { get; init; }
+
+        [Named("Weight"), MemberOrder(17)]
+        public string WeightWithUnit => Product_Functions.WeightWithUnit(this);
 
         [Hidden]
         public virtual UnitMeasure WeightUnit { get; init; }
@@ -115,7 +125,7 @@ namespace AW.Types
 
         [MemberOrder(83), Mask("d")]
         public virtual DateTime? DiscontinuedDate { get; init; }
-        
+
         [Hidden]
         public virtual int? ProductModelID { get; init; }
 

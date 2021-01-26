@@ -13,19 +13,16 @@ using AW.Types;
 
 namespace AW.Functions
 {
-    public static class ProductModelFunctions
+    public static class ProductModel_Functions
     {
-        //[DisplayAsProperty]
         [ MemberOrder(22)]
-        public static string LocalCultureDescription(ProductModel pm) =>
+        public static ProductDescription LocalCultureDescription(ProductModel pm) =>
             pm.ProductModelProductDescriptionCulture
             .Where(obj => obj.Culture.CultureID.StartsWith(CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
-            .Select(obj => obj.ProductDescription.Description)
+            .Select(obj => obj.ProductDescription)
             .FirstOrDefault();
 
-        //[DisplayAsProperty]
-        [Named("CatalogDescription"), MemberOrder(20), MultiLine(10)]
-        public static string FormattedCatalogDescription(ProductModel pm) =>
+        public static string CatalogDescription(ProductModel pm) =>
             string.IsNullOrEmpty(pm.CatalogDescription) ? "" :
             XElement.Parse(pm.CatalogDescription).Elements().Select(e => Formatted(e)).Aggregate((i, j) => i + j);
 

@@ -53,10 +53,8 @@ namespace AW.Functions {
         //Action to demonstrate use of Auto-Complete that returns a single object
         public static IQueryable<SalesOrderHeader> OrdersForCustomer(
             [DescribedAs("Enter the Account Number (AW + 8 digits) & select the customer")]Customer customer,
-            IQueryable<SalesOrderHeader> headers
-            ) {
-            return Order_AdditionalFunctions.RecentOrders(customer, headers);
-        }
+            IContext context) =>
+            Order_AdditionalFunctions.RecentOrders(customer, context);
      
         [PageSize(10)]
         public static Customer AutoComplete0OrdersForCustomer(
@@ -75,20 +73,17 @@ namespace AW.Functions {
 
         public static IQueryable<SalesOrderHeader> FindOrders(
             [Optionally] Customer customer, 
-            [Optionally] DateTime? orderDate,
-            IQueryable<SalesOrderHeader> headers)
-        {
-            return customer == null ?
-                ByDate(headers, orderDate)
-                : ByDate(OrdersForCustomer(customer, headers), orderDate);
-        }
+            [Optionally] DateTime? orderDate, IContext context) =>
+             customer == null ?
+                ByDate(context.Instances<SalesOrderHeader>(), orderDate)
+                : ByDate(OrdersForCustomer(customer, context), orderDate);
 
-        private static IQueryable<SalesOrderHeader> ByDate(IQueryable<SalesOrderHeader> headers,  DateTime? d)
-        {
-            return d == null ?
-                headers
-                : headers.Where(soh => soh.OrderDate == d);
-        }
+
+        private static IQueryable<SalesOrderHeader> ByDate(
+            IQueryable<SalesOrderHeader> orders,  DateTime? d) =>
+             d == null ?
+                orders
+                : orders.Where(soh => soh.OrderDate == d);
 
         [PageSize(10)]
         public static Customer AutoComplete0FindOrders(

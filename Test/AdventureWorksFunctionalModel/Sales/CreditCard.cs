@@ -16,16 +16,16 @@ namespace AW.Types {
         [Hidden]
         public virtual int CreditCardID { get; init; }
 
-        [MemberOrder(1)]
+        [Hidden]
         public virtual string CardType { get; init; }
 
-        [MemberOrder(2)]
+        [Hidden]
         public virtual string CardNumber { get; init; }
-        
-        [MemberOrder(3)]
+
+        [Hidden]
         public virtual byte ExpMonth { get; init; }
 
-        [MemberOrder(4)]
+        [Hidden]
         public virtual short ExpYear { get; init; }
 
         [Named("Persons"), MemberOrder(5), TableView(false, nameof(PersonCreditCard.Person))]
