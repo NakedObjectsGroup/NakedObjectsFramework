@@ -138,7 +138,7 @@ namespace AW.Functions {
             this Customer customer, IContext context)
         {
              SalesOrderHeader last = GetLastOrder(customer, context);
-            var newOrder = new SalesOrderHeader() with
+            var newOrder = new SalesOrderHeader() 
             {
                 RevisionNumber = (byte)1,
                 OrderDate = context.Today(),

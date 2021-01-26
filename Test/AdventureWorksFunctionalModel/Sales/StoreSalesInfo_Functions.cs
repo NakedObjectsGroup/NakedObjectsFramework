@@ -29,7 +29,7 @@ namespace AW.Functions
             return IsEditView(ssi);
         }
 
-        public static bool IsEditView(StoreSalesInfo ssi)
+        public static bool IsEditView(this StoreSalesInfo ssi)
         {
             return ssi.EditMode;
         }
