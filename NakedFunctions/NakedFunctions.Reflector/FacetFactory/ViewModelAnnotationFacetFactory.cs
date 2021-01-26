@@ -25,7 +25,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class ViewModelAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory
     {
         private readonly ILogger<ViewModelAnnotationFacetFactory> logger;
-        private const string CreateUsingKeys = "CreateUsingKeys";
+        private const string CreateFromKeys = "CreateFromKeys";
         private const string IsEditView = "IsEditView";
         private const string DeriveKeys = "DeriveKeys";
 
@@ -36,7 +36,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static MethodInfo GetDeriveMethod(Type type) => GetMethod(type, DeriveKeys);
 
-        private static MethodInfo GetPopulateMethod(Type type) => GetMethod(type, CreateUsingKeys);
+        private static MethodInfo GetPopulateMethod(Type type) => GetMethod(type, CreateFromKeys);
 
         private static MethodInfo GetIsEditMethod(Type type) => GetMethod(type, IsEditView);
 
@@ -44,7 +44,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private static void ThrowError(string msg) => throw new ReflectionException(msg);
 
         private static (Type, ViewModelAttribute) GetAndValidateContributedToType(MethodInfo deriveMethod, MethodInfo isEditMethod) {
-            var deriveMethodVmType = FunctionalFacetFactoryHelpers.GetContributedToType(deriveMethod);
+            var deriveMethodVmType = deriveMethod.GetContributedToType();
             if (deriveMethodVmType is null) {
                 ThrowError($"View model function {deriveMethod.Name} on {deriveMethod.DeclaringType} has missing 'this' parameter");
             }
@@ -59,7 +59,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 ThrowError($"View model function {deriveMethod.Name} and ViewModelAttribute on {deriveMethodVmType} have mismatched types");
             }
 
-            var isEditMethodVmType = FunctionalFacetFactoryHelpers.GetContributedToType(isEditMethod);
+            var isEditMethodVmType = isEditMethod.GetContributedToType();
 
             if (isEditMethodVmType is not null && isEditMethodVmType != deriveMethodVmType) {
                 ThrowError($"View model function {isEditMethod.Name} on {isEditMethod.DeclaringType} has mismatched types");
@@ -114,6 +114,20 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name is CreateUsingKeys or IsEditView or DeriveKeys;
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
+            switch (method.Name) {
+                case DeriveKeys when IsViewModelMatch(method):
+                case IsEditView when IsViewModelMatch(method):
+                    return true;
+                case CreateFromKeys: {
+                    var deriveMethod = GetMethod(method.DeclaringType, DeriveKeys);
+                    return deriveMethod is not null && IsViewModelMatch(deriveMethod);
+                }
+                default:
+                    return false;
+            }
+        }
+
+        private static bool IsViewModelMatch(MethodInfo method) => method.GetContributedToType()?.GetCustomAttribute<ViewModelAttribute>()?.TypeDefiningVMFunctions == method.DeclaringType;
     }
 }
