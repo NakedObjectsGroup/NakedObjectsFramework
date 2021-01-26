@@ -21,7 +21,7 @@ namespace AW.Functions
         public static string WeightWithUnit(this Product p) =>
             $"{p.Weight} {p.WeightUnit}";
 
-        [MemberOrder(12)]//[DisplayAsProperty]
+        [MemberOrder(12), DisplayAsProperty]
         public static ProductCategory ProductCategory(this Product p) =>
               p.ProductSubcategory is null ? null : p.ProductSubcategory.ProductCategory;
 
