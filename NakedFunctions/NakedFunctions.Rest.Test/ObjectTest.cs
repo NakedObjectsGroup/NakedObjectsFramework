@@ -37,7 +37,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(DisabledRecordFunctions),
             typeof(HiddenRecordFunctions),
             typeof(AutoCompleteRecordFunctions),
-            typeof(DisplayAsPropertyRecordFunctions)
+            typeof(DisplayAsPropertyRecordFunctions),
+            typeof(ViewModelFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -47,7 +48,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(GuidRecord),
             typeof(TestEnum),
             typeof(ReferenceRecord),
-            typeof(DisplayAsPropertyRecord)
+            typeof(DisplayAsPropertyRecord),
+            typeof(ViewModel)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -819,6 +821,19 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("DisplayAsPropertyRecord { Id = 1 }", parsedResult["members"]["DisplayAsCollection"]["value"][0]["title"].ToString());
 
         }
+
+        [Test]
+        public void TestGetViewModel()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<ViewModel>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+            
+            Assert.AreEqual(1, parsedResult["members"].Count());
+        }
+
 
     }
 }

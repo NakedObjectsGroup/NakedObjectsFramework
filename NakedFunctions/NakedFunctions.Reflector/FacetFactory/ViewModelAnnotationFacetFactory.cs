@@ -22,21 +22,23 @@ using NakedObjects.Core;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class ViewModelAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory
+    public sealed class ViewModelAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory
     {
         private readonly ILogger<ViewModelAnnotationFacetFactory> logger;
+        private const string CreateUsingKeys = "CreateUsingKeys";
+        private const string IsEditView = "IsEditView";
+        private const string DeriveKeys = "DeriveKeys";
 
-        public ViewModelAnnotationFacetFactory(IFacetFactoryOrder<ViewModelAnnotationFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory,
-                                                                                                                                               FeatureType.ObjectsAndInterfaces) =>
-            logger = loggerFactory.CreateLogger<ViewModelAnnotationFacetFactory>();
+        public ViewModelAnnotationFacetFactory(IFacetFactoryOrder<ViewModelAnnotationFacetFactory> order, ILoggerFactory loggerFactory) :
+            base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) => logger = loggerFactory.CreateLogger<ViewModelAnnotationFacetFactory>();
 
         private static MethodInfo GetMethod(Type type, string name) => type.GetMethods().SingleOrDefault(m => m.Name == name);
 
-        private static MethodInfo GetDeriveMethod(Type type) => GetMethod(type, "DeriveKeys");
+        private static MethodInfo GetDeriveMethod(Type type) => GetMethod(type, DeriveKeys);
 
-        private static MethodInfo GetPopulateMethod(Type type) => GetMethod(type, "CreateUsingKeys");
+        private static MethodInfo GetPopulateMethod(Type type) => GetMethod(type, CreateUsingKeys);
 
-        private static MethodInfo GetIsEditMethod(Type type) => GetMethod(type, "IsEditView");
+        private static MethodInfo GetIsEditMethod(Type type) => GetMethod(type, IsEditView);
 
         [DoesNotReturn]
         private static void ThrowError(string msg) => throw new ReflectionException(msg);
@@ -65,7 +67,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             if (isEditMethodVmType is null && vmAttribute?.Editability == VMEditability.Switchable)
             {
-                ThrowError($"Missing IsEditView function on {attributeFunctionsType} as ViewModel has Switchable flag");
+                ThrowError($"Missing {IsEditView} function on {attributeFunctionsType} as ViewModel has Switchable flag");
             }
 
             return (deriveMethodVmType, vmAttribute);
@@ -111,5 +113,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
             return metamodel;
         }
+
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name is CreateUsingKeys or IsEditView or DeriveKeys;
     }
 }
