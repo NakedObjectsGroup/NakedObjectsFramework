@@ -7,10 +7,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedFramework;
 
 namespace NakedFunctions.Rest.Test.Data {
-
     [PresentationHint("Hint1")]
     public record SimpleRecord {
         [Key]
@@ -18,9 +16,9 @@ namespace NakedFunctions.Rest.Test.Data {
 
         [PresentationHint("Hint2")]
         public string Name { get; init; }
-        public override string ToString() => Name;
 
         public virtual bool Equals(SimpleRecord other) => ReferenceEquals(this, other);
+        public override string ToString() => Name;
         public override int GetHashCode() => base.GetHashCode();
     }
 
@@ -34,20 +32,18 @@ namespace NakedFunctions.Rest.Test.Data {
     }
 
     public enum TestEnum {
-        ValueOne, 
+        ValueOne,
         ValueTwo
     }
 
-    public record EnumRecord
-    {
+    public record EnumRecord {
         [Key]
         public int Id { get; init; }
 
         public TestEnum TestEnum { get; set; }
     }
 
-    public record ReferenceRecord
-    {
+    public record ReferenceRecord {
         [Key]
         public int Id { get; init; }
 
@@ -57,8 +53,6 @@ namespace NakedFunctions.Rest.Test.Data {
         public override string ToString() => $"{Id}-{SimpleRecord.Id}-{DateRecord.Id}";
     }
 
-
-
     public record GuidRecord {
         [Key]
         public int Id { get; init; }
@@ -67,10 +61,17 @@ namespace NakedFunctions.Rest.Test.Data {
         public override string ToString() => Name.ToString();
     }
 
-    public record DisplayAsPropertyRecord
-    {
+    public record DisplayAsPropertyRecord {
         [Key]
         public int Id { get; init; }
     }
 
+    [ViewModel(typeof(ViewModelFunctions))]
+    public record ViewModel {
+        public string Name { get; init; }
+
+        public virtual bool Equals(ViewModel other) => ReferenceEquals(this, other);
+        public override string ToString() => Name;
+        public override int GetHashCode() => base.GetHashCode();
+    }
 }

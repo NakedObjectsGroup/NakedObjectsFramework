@@ -23,6 +23,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         public static Type GetContributedToType(MethodInfo method)
-            => method.IsDefined(typeof(ExtensionAttribute), false) ? method.GetParameters().FirstOrDefault()?.ParameterType : null;
+            => method?.IsDefined(typeof(ExtensionAttribute), false) == true ? method.GetParameters().FirstOrDefault()?.ParameterType : null;
     }
 }

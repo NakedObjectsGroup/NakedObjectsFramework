@@ -71,7 +71,7 @@ namespace NakedFunctions.Meta.Facet {
 
             return nakedObjectManager.CreateAdapterForExistingObject(result);
         }
-
+       
 
         private static (object, object)[] PersistResult(ILifecycleManager lifecycleManager,
                                                         IEnumerable<object> toPersist) =>

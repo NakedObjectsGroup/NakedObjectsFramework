@@ -127,4 +127,8 @@ namespace NakedFunctions.Rest.Test.Data {
         [PageSize(2)]
         public static IQueryable<SimpleRecord> AutoComplete0WithAutoComplete([MinLength(2)] string name, IContext context) => context.Instances<SimpleRecord>();
     }
+
+    public static class ViewModelMenuFunctions {
+        public static ViewModel GetViewModel(string name, IContext context) => new() {Name = name};
+    }
 }

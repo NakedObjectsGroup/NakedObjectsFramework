@@ -33,11 +33,13 @@ namespace NakedFunctions.Rest.Test {
             typeof(ValidatedMenuFunctions),
             typeof(DisabledMenuFunctions),
             typeof(HiddenMenuFunctions),
-            typeof(AutoCompleteMenuFunctions)
+            typeof(AutoCompleteMenuFunctions),
+            typeof(ViewModelMenuFunctions),
+            typeof(ViewModelFunctions)
         };
 
         // todo should IAlert be here or should we ignore?
-        protected override Type[] Records { get; } = {typeof(SimpleRecord), typeof(DateRecord), typeof(TestEnum)};
+        protected override Type[] Records { get; } = {typeof(SimpleRecord), typeof(DateRecord), typeof(TestEnum), typeof(ViewModel)};
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -96,7 +98,7 @@ namespace NakedFunctions.Rest.Test {
             var val = parsedResult.GetValue("value") as JArray;
 
             Assert.IsNotNull(val);
-            Assert.AreEqual(8, val.Count);
+            Assert.AreEqual(10, val.Count);
 
             var firstItem = val.First;
 
@@ -732,5 +734,20 @@ namespace NakedFunctions.Rest.Test {
             resultObj.AssertObject("Fred", FullName<SimpleRecord>(), "1");
         }
 
+      
+        [Test]
+        public void TestInvokeGetViewModel()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("1") } } };
+            var result = api.GetInvokeOnMenu(nameof(ViewModelMenuFunctions), nameof(ViewModelMenuFunctions.GetViewModel), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("1", FullName<ViewModel>(), "1");
+        }
     }
 }

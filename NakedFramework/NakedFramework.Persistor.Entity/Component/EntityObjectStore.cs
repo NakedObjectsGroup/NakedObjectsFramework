@@ -474,18 +474,15 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
-        public INakedObjectAdapter AdaptDetachedObject(object poco)
-        {
-            var objectSpec = metamodelManager.GetSpecification(poco.GetType()) as IObjectSpec;
+        public INakedObjectAdapter AdaptDetachedObject(object poco) {
+            var spec = metamodelManager.GetSpecification(poco.GetType());
 
-            if (objectSpec.IsViewModel)
-            {
-                return nakedObjectManager.GetAdapterFor(poco) ??
-                       nakedObjectManager.CreateViewModelAdapter(objectSpec, poco);
+            if (spec is IObjectSpec {IsViewModel: true} objectSpec) {
+                return nakedObjectManager.GetAdapterFor(poco) ?? nakedObjectManager.CreateViewModelAdapter(objectSpec, poco);
             }
 
             var context = GetContext(poco);
-            IOid oid = oidGenerator.CreateOid(EntityUtils.GetEntityProxiedTypeName(poco), context.GetKey(poco));
+            var oid = oidGenerator.CreateOid(EntityUtils.GetEntityProxiedTypeName(poco), context.GetKey(poco));
             return createAdapter(oid, poco);
         }
 

@@ -146,4 +146,9 @@ namespace NakedFunctions.Rest.Test.Data {
         [DisplayAsProperty]
         public static IQueryable<DisplayAsPropertyRecord> DisplayAsCollection(this DisplayAsPropertyRecord sp, IContext context) => context.Instances<DisplayAsPropertyRecord>();
     }
+
+    public static class ViewModelFunctions {
+        public static string[] DeriveKeys(this ViewModel target) => new[] {target.Name};
+        public static ViewModel CreateUsingKeys(string[] keys) => new() {Name = keys.First()};
+    }
 }
