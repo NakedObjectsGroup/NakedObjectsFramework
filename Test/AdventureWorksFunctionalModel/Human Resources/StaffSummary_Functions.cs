@@ -9,7 +9,7 @@ namespace AW.Functions
              new[] { sum.Female.ToString(), sum.Male.ToString() };
 
         public static StaffSummary CreateFromKeys(string[] keys) =>
-          new StaffSummary
+          new()
           {
               Female = Convert.ToInt32(keys[0]),
               Male = Convert.ToInt32(keys[1])

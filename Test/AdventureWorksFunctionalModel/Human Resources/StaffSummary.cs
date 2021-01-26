@@ -17,6 +17,10 @@ namespace AW.Types
         public virtual int TotalStaff => Female + Male;
 
         public override string ToString() => "Staff Summary";
+
+        public virtual bool Equals(StaffSummary other) => ReferenceEquals(this, other);
+
+        public override int GetHashCode() => base.GetHashCode();
     }
 
 }
