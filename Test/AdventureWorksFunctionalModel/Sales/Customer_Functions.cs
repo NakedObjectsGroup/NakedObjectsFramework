@@ -31,9 +31,7 @@ namespace AW.Functions {
 
         #endregion
 
-        [MemberOrder(15)]//[DisplayAsProperty]
-        public static string CustomerType(this Customer c) =>
-            c.IsIndividual() ? "Individual" : "Store";
+
 
 
         internal static BusinessEntity BusinessEntity(this Customer c)

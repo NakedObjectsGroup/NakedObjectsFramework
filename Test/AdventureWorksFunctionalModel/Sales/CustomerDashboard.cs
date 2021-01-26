@@ -30,21 +30,18 @@ namespace AW.Types {
             get { return Customer_Functions.IsIndividual(Root) ? Root.Person.ToString() : Root.Store.Name; }
         }
 
-        //[DisplayAsProperty]
         [TableView(true, "OrderDate", "TotalDue", "Status")]
-        public IList<SalesOrderHeader> RecentOrders(
-            IQueryable<SalesOrderHeader> headers)
-        {
-            return Order_AdditionalFunctions.RecentOrders(Root, headers).ToList();
-        }
+        public IList<SalesOrderHeader> RecentOrders(IContext context) =>
+            Order_AdditionalFunctions.RecentOrders(Root, context).Take(5).ToList();
 
-        //[DisplayAsProperty]
-        public decimal TotalOrderValue(
-            IQueryable<SalesOrderHeader> headers)
-        {
-            int id = Root.CustomerID;
-            return headers.Where(x => x.Customer.CustomerID == id).Sum(x => x.TotalDue);
-        }
+
+        //TODO: Needs to be calculated on creation of VM, not once displayed
+        //public decimal TotalOrderValue(
+        //    IQueryable<SalesOrderHeader> headers)
+        //{
+        //    int id = Root.CustomerID;
+        //    return headers.Where(x => x.Customer.CustomerID == id).Sum(x => x.TotalDue);
+        //}
 
         //Empty field, not - to test that fields are not editable in a VM
         public virtual string Comments { get; init; }

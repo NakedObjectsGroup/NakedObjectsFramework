@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using AW.Functions;
 using NakedFunctions;
 
 
@@ -15,6 +16,9 @@ namespace AW.Types
     {
         [Hidden]
         public virtual int CustomerID { get; init; }
+
+        [MemberOrder(15)]
+        public string CustomerType => this.IsIndividual() ? "Individual" : "Store";
 
         [DescribedAs("xxx"), MemberOrder(10)]
         public virtual string AccountNumber { get; init; }

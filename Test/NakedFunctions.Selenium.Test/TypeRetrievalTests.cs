@@ -90,7 +90,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("CreditCard--1", "**********5310");
             AccessInstanceWithTitle("Currency--AED", "Emirati Dirham");
             AccessInstanceWithTitle("CurrencyRate--1", "1.0000");
-            AccessInstanceWithTitle("Customer--1", "A Bike Store");
+            AccessInstanceWithTitle("Customer--1", "AW00000001 A Bike Store");
             AccessInstanceWithTitle("PersonCreditCard--293--17038", "PersonCreditCard: 293-17038");
             AccessInstanceWithTitle("SalesOrderDetail--43659--1", "1 x Mountain-100 Black, 42");
             AccessInstanceWithTitle("SalesOrderHeader--43659", "SO43659");

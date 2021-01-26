@@ -131,9 +131,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var prop4 = WaitForCssNo("nof-view-property", 4);
             Assert.AreEqual("List Price:", prop4.FindElement(By.CssSelector(".name")).Text);
             Assert.AreEqual("£0.00", prop4.FindElement(By.CssSelector(".value")).Text);
-            var prop17 = WaitForCssNo("nof-view-property", 17);
-            Assert.AreEqual("Sell Start Date:", prop17.FindElement(By.CssSelector(".name")).Text);
-            Assert.AreEqual("1 Jun 2002", prop17.FindElement(By.CssSelector(".value")).Text);
+            var startDate = GetPropertyValue("Sell Start Date");
+            Assert.AreEqual("1 Jun 2002", startDate);
         }
 
         //[TestMethod]
