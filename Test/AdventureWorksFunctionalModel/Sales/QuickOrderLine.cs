@@ -6,11 +6,6 @@ namespace AW.Types
     [ViewModel(typeof(QuickOrderLine_Functions))]
     public record QuickOrderLine 
     {
-        public QuickOrderLine(Product product, short number)
-        {
-            Product = product;
-            Number = number;
-        }
         [Hidden]
         public Product Product { get; init; }
 

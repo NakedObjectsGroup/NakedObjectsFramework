@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NakedFunctions;
+﻿using NakedFunctions;
 using AW.Types;
 
 namespace AW.Functions
@@ -7,21 +6,17 @@ namespace AW.Functions
     public static class StoreSalesInfo_Functions
     {
 
-        public static string[] DeriveKeys(StoreSalesInfo vm)
-        {
-            return new string[] { vm.AccountNumber, vm.EditMode.ToString() };
-        }
+        public static string[] DeriveKeys(this StoreSalesInfo vm) =>
+            new string[] { vm.AccountNumber, vm.EditMode.ToString() };
 
-        public static StoreSalesInfo PopulateUsingKeys(StoreSalesInfo vm, string[] keys, IContext context)
+        public static StoreSalesInfo CreateFromKeys(string[] keys, IContext context)
         {
             var cus = Customer_MenuFunctions.FindCustomerByAccountNumber(keys[0], context);
-            return vm with { AccountNumber = keys[0] }
-                 with
-            { SalesTerritory = cus.SalesTerritory }
-                 with
-            { SalesPerson = cus.Store?.SalesPerson }
-                 with
-            { EditMode = bool.Parse(keys[1]) };
+            return new StoreSalesInfo {
+                AccountNumber = keys[0],
+                SalesTerritory = cus.SalesTerritory,
+                SalesPerson = cus.Store?.SalesPerson,
+                EditMode = bool.Parse(keys[1]) };
         }
 
         public static StoreSalesInfo Edit(this StoreSalesInfo ssi)
@@ -45,8 +40,10 @@ namespace AW.Functions
             var st = vm.SalesTerritory;
             var sp = vm.SalesPerson;
             var sn = vm.StoreName;
-            var cus2 = cus with { SalesTerritory = st }; //TODO:   Store.SalesPerson = sp, Store.Name = sn);
-            return context.SaveAndDisplay(cus2);
+            var store2 = cus.Store with { SalesPerson = sp, Name = sn};
+            var cus2 = cus with { SalesTerritory = st, Store = store2}; 
+            
+            return (cus2, context.WithPendingSave(store2, cus2));
         }
 
         public static bool HideSave(this StoreSalesInfo ssi)

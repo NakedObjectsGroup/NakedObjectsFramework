@@ -36,10 +36,9 @@ namespace AW.Functions {
         }
 
         //To test a ViewModelEdit
-        public static EmailTemplate CreateEmail(this Person p)
-        {
-            return new EmailTemplate("", "", "", "",EmailStatus.New);
-        }
+        public static EmailTemplate CreateEmail(this Person p) =>
+            new EmailTemplate { Status = EmailStatus.New };
+
 
         public static object CreateLetter(this Person p,Address toAddress)
         {

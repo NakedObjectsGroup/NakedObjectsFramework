@@ -11,6 +11,8 @@ namespace AW.Types
         {
             Customers = customers;
         }
+
+        [Hidden]
         public IList<Customer> Customers { get; init; }
     }
 }

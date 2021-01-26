@@ -9,25 +9,10 @@ using AW.Functions;
 using NakedFunctions;
 
 namespace AW.Types {
-    //TODO: Need to think how we want to do ViewModels. Can't require methods to be implemented.
-    //Probably just need a constructor that takes all keys, as well as any required Injected params
-    [ViewModel(typeof(StoreSalesInfo_Functions))]
+ 
+    [ViewModel(typeof(StoreSalesInfo_Functions), VMEditability.Switchable)]
     public record StoreSalesInfo {
-        public StoreSalesInfo(
-            string accountNumber,
-            bool editMode,
-            string storeName,
-            SalesTerritory salesTerritory,
-            SalesPerson salesPerson) {
-            AccountNumber = accountNumber;
-            StoreName = storeName;
-            SalesTerritory = salesTerritory;
-            SalesPerson = SalesPerson;
-            EditMode = editMode;
-        }
-
-        public StoreSalesInfo() { }
-
+        
         [MemberOrder(1), ]
         public string AccountNumber { get; init; }
 
