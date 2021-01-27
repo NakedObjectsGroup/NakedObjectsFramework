@@ -10,6 +10,7 @@ using NakedFunctions;
 using AW.Types;
 
 using static AW.Helpers;
+using System;
 
 namespace AW.Functions {
     [Named("Work Orders")]
@@ -18,22 +19,21 @@ namespace AW.Functions {
         public static WorkOrder RandomWorkOrder(IContext context) => Random<WorkOrder>(context);
 
         public static (WorkOrder, IContext context) CreateNewWorkOrder(
-             [DescribedAs("product partial name")] this Product product, IContext context) =>
-             context.SaveAndDisplay(new WorkOrder() { Product = product });
+             [DescribedAs("product partial name")] Product product,
+             int orderQty,
+             DateTime startDate,
+             IContext context) =>
+             context.SaveAndDisplay(new WorkOrder() { 
+                 ProductID = product.ProductID,
+                 OrderQty = orderQty,
+                 ScrappedQty = 0,
+                 StartDate = startDate,
+                 DueDate = startDate.AddDays(7),
+                 ModifiedDate = context.Now()
+             });
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0CreateNewWorkOrder(
-            [MinLength(2)] string name, IContext context) =>
-            Product_MenuFunctions.FindProductByName(name, context);
-
-        public static(WorkOrder, IContext) CreateNewWorkOrder2(
-             [DescribedAs("product partial name")] this Product product, int orderQty, IContext context) {
-            (var wo, var context2 ) = CreateNewWorkOrder(product, context);
-            return context2.SaveAndDisplay(wo with { OrderQty = orderQty, ScrappedQty = 0 });
-        }
-
-        [PageSize(20)]
-        public static IQueryable<Product> AutoComplete0CreateNewWorkOrder2(
             [MinLength(2)] string name, IContext context) =>
             Product_MenuFunctions.FindProductByName(name, context);
     
