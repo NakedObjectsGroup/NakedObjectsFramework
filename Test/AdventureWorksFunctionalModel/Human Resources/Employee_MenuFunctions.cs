@@ -48,108 +48,51 @@ namespace AW.Functions {
             => context.Instances<Employee>().Where(e => e.NationalIDNumber == nationalIDNumber).FirstOrDefault();
 
 
-        #region CreateNewEmployeeFromContact
-        public static (Employee, IContext) CreateNewEmployeeFromContact(
-            Person contactDetails, 
-            [MaxLength(15)] string  nationalIDNumber,
-            [MaxLength(256)] string LoginID,
-            [MaxLength(50)] string jobTitle,
-            DateTime dateOfBirth,
-            string maritalStatus,
-            string gender,
-            [DefaultValue(0)] DateTime hireDate,
-            bool salaried,
-            short vacationHours,
-            IContext context) {
-            var e = new Employee {
-                BusinessEntityID = contactDetails.BusinessEntityID,
-                PersonDetails = contactDetails,
-                NationalIDNumber = nationalIDNumber,
-                JobTitle = jobTitle,
-                DateOfBirth = dateOfBirth,
-                MaritalStatus = maritalStatus,
-                Gender = gender,
-                HireDate = hireDate,
-                Salaried = salaried,
-                VacationHours = vacationHours,
-                SickLeaveHours = 0,
-                Current = true,
-                ModifiedDate = context.Now(),
-                rowguid = context.NewGuid(),
-            };
-            return context.SaveAndDisplay(e);
-        }
-        [PageSize(20)]
-        public static IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact(
-    [MinLength(2)] string name, IContext context) =>
-            context.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
-
-        public static IList<string> Choices5CreateNewEmployeeFromContact() =>
-            Employee_Functions.MaritalStatuses;
-
-        public static IList<string> Choices6CreateNewEmployeeFromContact() =>
-            Employee_Functions.Genders;
-
-        public static string Validate4CreateNewEmployeeFromContact(DateTime dob, IContext context) => 
-            Employee_Functions.ValidateDateOfBirth(dob, context);
-        #endregion
-
 
         [RenderEagerly]
         [TableView(true, "GroupName")]
         public static IQueryable<Department> ListAllDepartments(IContext context) => context.Instances<Department>();
 
  
-        public static Employee CurrentUserAsEmployee(IContext context) =>
+        internal static Employee CurrentUserAsEmployee(IContext context) =>
             context.Instances<Employee>().Where(x => x.LoginID == "adventure-works\\" + context.CurrentUser().Identity.Name).FirstOrDefault();
 
         public static Employee Me(IContext context) =>CurrentUserAsEmployee(context);
 
-        public static IQueryable<Employee> MyDepartmentalColleagues(IContext context) {
-            var me = CurrentUserAsEmployee(context);
-            return me is null ? null : me.ColleaguesInSameDept(context);
-        }
 
         public static Employee RandomEmployee(IContext context) => Random<Employee>(context);
 
         ////This method is to test use of nullable booleans
-        //public static IQueryable<Employee> ListEmployees(
-        //    
-        //    bool? current, //mandatory
-        //    [Optionally] bool? married,
-        //    [DefaultValue(false)] bool? salaried,
-        //    [Optionally] [DefaultValue(true)] bool? olderThan50,
-        //    IQueryable<Employee> employees
-        //    ) {
-        //    var emps = employees.Where(e => e.Current == current.Value);
-        //    if (married != null) {
-        //        string value = married.Value ? "M" : "S";
-        //        emps = emps.Where(e => e.MaritalStatus == value);
-        //    }
-        //    emps = emps.Where(e => e.Salaried == salaried.Value);
-        //    if (olderThan50 != null) {
-        //        var date = DateTime.Today.AddYears(-50); //Not an exact calculation!
-        //        if (olderThan50.Value) {
-        //            emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth < date);
-        //        }
-        //        else {
-        //            emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth > date);
-        //        }
-        //    }
-        //    return emps;
-        //}
+        public static IQueryable<Employee> ListEmployees(
 
-        ////This method is to test use of non-nullable booleans
-        //public static IQueryable<Employee> ListEmployees2(
-        //    
-        //    bool current,
-        //    [Optionally] bool married,
-        //    [DefaultValue(false)] bool salaried,
-        //    [DefaultValue(true)] bool olderThan50,
-        //    IQueryable<Employee> employees)
-        //{
-        //    return ListEmployees(m, current, married, salaried, olderThan50, employees);
-        //}
+            bool? current, //mandatory
+            [Optionally] bool? married,
+            [DefaultValue(false)] bool? salaried,
+            [Optionally][DefaultValue(true)] bool? olderThan50,
+            IQueryable<Employee> employees
+            )
+        {
+            var emps = employees.Where(e => e.Current == current.Value);
+            if (married != null)
+            {
+                string value = married.Value ? "M" : "S";
+                emps = emps.Where(e => e.MaritalStatus == value);
+            }
+            emps = emps.Where(e => e.Salaried == salaried.Value);
+            if (olderThan50 != null)
+            {
+                var date = DateTime.Today.AddYears(-50); //Not an exact calculation!
+                if (olderThan50.Value)
+                {
+                    emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth < date);
+                }
+                else
+                {
+                    emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth > date);
+                }
+            }
+            return emps;
+        }
 
         public static IQueryable<Shift> Shifts(IContext context) => context.Instances<Shift>();
 

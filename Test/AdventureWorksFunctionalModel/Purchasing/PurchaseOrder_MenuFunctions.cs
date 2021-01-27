@@ -126,7 +126,7 @@ namespace AW.Functions
                 RevisionNumber = 0,
                 Status = (byte)POStatus.Pending,
                 OrderPlacedByID = 1, //TODO: using Employee 1 as a default as no logged on user
-                        VendorID = vendor.BusinessEntityID,
+                VendorID = vendor.BusinessEntityID,
                 ShipMethodID = shipMethod.ShipMethodID,
                 OrderDate = context.Today(),
                 SubTotal = 0,

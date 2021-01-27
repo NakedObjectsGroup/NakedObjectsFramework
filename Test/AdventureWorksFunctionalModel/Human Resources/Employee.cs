@@ -16,6 +16,9 @@ namespace AW.Types
 
     public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate
     {
+        [Hidden]
+        public virtual int PersonDetailsID { get; init; }
+
         [MemberOrder(1)]
         public virtual Person PersonDetails { get; init; }
 
