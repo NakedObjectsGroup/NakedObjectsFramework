@@ -307,11 +307,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void AutoCompleteFunction()
         {
-            GeminiUrl("home?m1=Employee_MenuFunctions&d1=CreateNewEmployeeFromContact");
+            GeminiUrl("home?m1=WorkOrder_MenuFunctions&d1=ListWorkOrders");
             WaitForTitle("Home");
-            TypeIntoFieldWithoutClearing("input#contactdetails1", "ab");
-            Assert.AreEqual("Sam Abolrous", WaitForCssNo("nof-auto-complete .suggestions li", 4).Text);
-            Assert.AreEqual("Kim Abercrombie", WaitForCssNo("nof-auto-complete .suggestions li", 0).Text);
+            TypeIntoFieldWithoutClearing("input#product1", "fr");
+            Assert.AreEqual("Front Derailleur Linkage", WaitForCssNo("nof-auto-complete .suggestions li", 4).Text);
+            Assert.AreEqual("Freewheel", WaitForCssNo("nof-auto-complete .suggestions li", 0).Text);
         }
 
     }
