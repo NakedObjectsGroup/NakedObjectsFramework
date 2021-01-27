@@ -39,8 +39,8 @@ namespace AW.Functions {
         }
 
         //To demonstrate use of recursion to create & use multiple random numbers
-        public static IList<Person> RandomPerson(int numberRequired, IContext context) =>
-            RandomPersons(numberRequired, context.Instances<Person>().OrderBy(p => ""), context.RandomSeed());
+        public static IList<Person> RandomPersons(int numberRequired, IContext context) =>
+            RandomPersons(numberRequired, context.Instances<Person>().OrderBy(p => ""), context.RandomSeed()).ToList();
 
         //Test if an immutablelist can be returned
         internal static ImmutableList<Person> RandomPersons(
