@@ -311,14 +311,14 @@ namespace NakedFunctions.Rest.Test {
             var api = Api().AsPost();
             var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"dateRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.DateRecord/1", "dateRecord")}}};
 
-            var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.AssociateWithDateRecord), map);
+            var result = api.PostInvoke(FullName<SimpleRecord>(), "2", nameof(SimpleRecordFunctions.AssociateWithDateRecord), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             var resultObj = parsedResult["result"];
 
-            Assert.AreEqual("2-1-1", resultObj["title"].ToString());
+            Assert.AreEqual("-2-2-1", resultObj["title"].ToString());
         }
 
         [Test]
@@ -852,6 +852,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual("2", resultObj["title"].ToString());
         }
+
+
+       
+
 
     }
 }

@@ -71,63 +71,32 @@ namespace NakedFunctions.Meta.Facet {
 
             return nakedObjectManager.CreateAdapterForExistingObject(result);
         }
-       
+
 
         private static (object, object)[] PersistResult(ILifecycleManager lifecycleManager,
                                                         IEnumerable<object> toPersist) =>
-            toPersist.Select(obj => (obj, lifecycleManager.Persist(obj))).ToArray();
+            lifecycleManager.Persist(toPersist.ToArray()).Select(o => (o,o)).ToArray();
 
-        private static object ReplacePersisted(object toReturn, (object, object)[] persisted) {
-            var returnList = toReturn is IEnumerable;
-            var asEnumerable = toReturn as IEnumerable ?? new[] {toReturn};
-            var result = new List<object>();
 
-            foreach (var obj in asEnumerable) {
-                var found = false;
-                foreach (var (item1, item2) in persisted) {
-                    if (item1 == obj) {
-                        result.Add(item2);
-                        found = true;
-                        break;
-                    }
-                }
+        private static (object, Context) CastTuple(ITuple tuple) => (tuple[0], (Context)tuple[1]);
 
-                if (!found) {
-                    result.Add(obj);
-                }
-            }
-
-            return returnList ? result : result.First();
+        private object HandleContextResult((object, Context) tuple, INakedObjectsFramework framework) {
+            var (toReturn, context) = tuple;
+            PerformActions(framework.ServicesManager, framework.ServiceProvider, new[] {context.Action});
+            PersistResult(framework.LifecycleManager, context.PendingSave);
+            return toReturn;
         }
 
-        private (object, Context) HandleTuple(ITuple tuple) =>
-            (tuple[0], (Context)tuple[1]);
-
-        private object HandleContext(Context context, object toReturn,  INakedObjectsFramework framework) {
-            object[] toAct = {context.Action};
-            PerformActions(framework.ServicesManager, framework.ServiceProvider, toAct);
-
-            object[] toPersist = context.PendingSave;
-
-            var persisted = PersistResult(framework.LifecycleManager, toPersist);
-            return ReplacePersisted(toReturn, persisted);
-        }
-
-        private INakedObjectAdapter HandleInvokeResult(INakedObjectsFramework framework,
-                                                       object result) {
+        private INakedObjectAdapter HandleInvokeResult(INakedObjectsFramework framework, object result) {
             object toReturn;
-            IEnumerable<object> toPersist = new List<object>();
-
             if (result is ITuple tuple) {
                 var size = tuple.Length;
 
-                if (size < 2) {
-                    throw new InvokeException($"Invalid return type single item tuple on {ActionMethod.Name}");
+                if (size is not 2) {
+                    throw new InvokeException($"Invalid return type {size} item tuple on {ActionMethod.Name}");
                 }
 
-                Context context;
-                (toReturn, context) = HandleTuple(tuple);
-                toReturn = HandleContext(context, toReturn, framework);
+                toReturn = HandleContextResult(CastTuple(tuple), framework);
             }
             else {
                 toReturn = result;

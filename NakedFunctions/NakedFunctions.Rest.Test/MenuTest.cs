@@ -35,11 +35,12 @@ namespace NakedFunctions.Rest.Test {
             typeof(HiddenMenuFunctions),
             typeof(AutoCompleteMenuFunctions),
             typeof(ViewModelMenuFunctions),
+            typeof(ReferenceMenuFunctions),
             typeof(ViewModelFunctions)
         };
 
         // todo should IAlert be here or should we ignore?
-        protected override Type[] Records { get; } = {typeof(SimpleRecord), typeof(DateRecord), typeof(TestEnum), typeof(ViewModel)};
+        protected override Type[] Records { get; } = {typeof(SimpleRecord), typeof(DateRecord), typeof(TestEnum), typeof(ViewModel), typeof(ReferenceRecord)};
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -98,7 +99,7 @@ namespace NakedFunctions.Rest.Test {
             var val = parsedResult.GetValue("value") as JArray;
 
             Assert.IsNotNull(val);
-            Assert.AreEqual(10, val.Count);
+            Assert.AreEqual(11, val.Count);
 
             var firstItem = val.First;
 
@@ -748,6 +749,51 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             resultObj.AssertObject("1", FullName<ViewModel>(), "1");
+        }
+
+        [Test]
+        public void TestCreateNewRecordWithReferences() {
+            var api = Api().AsPost();
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNewWithExistingReferences), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Test1-2-1-1", FullName<ReferenceRecord>(), "2");
+        }
+
+        [Test]
+        public void TestUpdateRecordWithReferences()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExisting), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Test2-1-1-1", FullName<ReferenceRecord>(), "1");
+        }
+
+        [Test]
+        public void TestUpdateExistingAndReference()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExistingAndReference), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Test3-1-1-1", FullName<ReferenceRecord>(), "1");
+            Assert.AreEqual("Jill", resultObj["members"]["SimpleRecord"]["value"]["title"].ToString() );
         }
     }
 }

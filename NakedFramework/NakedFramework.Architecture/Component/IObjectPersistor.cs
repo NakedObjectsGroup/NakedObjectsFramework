@@ -38,7 +38,7 @@ namespace NakedObjects.Architecture.Component {
         void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost);
         void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
 
-        object PersistDetachedObject(object poco);
+        object[] PersistDetachedObjects(object[] toPersist);
         void AdaptDetachedObject(object poco);
     }
 }

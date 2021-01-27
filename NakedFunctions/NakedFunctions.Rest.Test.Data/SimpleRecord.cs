@@ -29,6 +29,9 @@ namespace NakedFunctions.Rest.Test.Data {
         public string Name { get; init; }
         public DateTime EndDate { get; set; } = DateTime.Now;
         public DateTime StartDate { get; set; } = DateTime.Now;
+
+        public override int GetHashCode() => base.GetHashCode();
+        public virtual bool Equals(DateRecord other) => ReferenceEquals(this, other);
     }
 
     public enum TestEnum {
@@ -47,10 +50,15 @@ namespace NakedFunctions.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public SimpleRecord SimpleRecord { get; init; }
-        public DateRecord DateRecord { get; init; }
+        public string Name { get; init; }
 
-        public override string ToString() => $"{Id}-{SimpleRecord.Id}-{DateRecord.Id}";
+        public virtual SimpleRecord SimpleRecord { get; init; }
+        public virtual DateRecord DateRecord { get; init; }
+
+        public override string ToString() => $"{Name}-{Id}-{SimpleRecord?.Id}-{DateRecord?.Id}";
+
+        public override int GetHashCode() => base.GetHashCode();
+        public virtual bool Equals(ReferenceRecord other) => ReferenceEquals(this, other);
     }
 
     public record GuidRecord {

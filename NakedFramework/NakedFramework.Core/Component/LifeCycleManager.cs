@@ -67,9 +67,9 @@ namespace NakedObjects.Core.Component {
             return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, (IObjectSpec) spec);
         }
 
-        public object Persist(object poco)
+        public object[] Persist(object[] toPersist)
         {
-            return objectPersistor.PersistDetachedObject(poco);
+            return objectPersistor.PersistDetachedObjects(toPersist);
         }
 
 

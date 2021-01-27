@@ -43,7 +43,7 @@ namespace NakedObjects.Architecture.Component {
         IOid RestoreOid(string[] encodedData, INakedObjectsFramework framework);
         INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec);
 
-        object Persist(object poco);
+        object[] Persist(object[] toPersist);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

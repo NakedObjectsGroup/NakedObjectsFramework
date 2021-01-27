@@ -191,7 +191,7 @@ namespace NakedObjects.Core.Component {
 
         public void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost) => objectStore.LoadComplexTypesIntoNakedObjectFramework(adapter, isGhost);
 
-        public object PersistDetachedObject(object poco) => objectStore.ReattachAsModified(poco);
+        public object[] PersistDetachedObjects(object[] toPersist) => objectStore.ReattachAsModified(toPersist);
 
         public void AdaptDetachedObject(object poco) => objectStore.AdaptDetachedObject(poco);
 

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace NakedFunctions.Rest.Test.Data {
@@ -130,5 +131,29 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public static class ViewModelMenuFunctions {
         public static ViewModel GetViewModel(string name, IContext context) => new() {Name = name};
+    }
+
+    public static class ReferenceMenuFunctions {
+        public static (ReferenceRecord, IContext) CreateNewWithExistingReferences(IContext context) {
+            var sr = context.Instances<SimpleRecord>().First();
+            var dr = context.Instances<DateRecord>().First();
+            return Helpers.DisplayAndSave(new ReferenceRecord {Name = "Test1", SimpleRecord = sr, DateRecord = dr}, context);
+        }
+
+        public static (ReferenceRecord, IContext) UpdateExisting(IContext context) {
+            var sr = context.Instances<ReferenceRecord>().First();
+            return Helpers.DisplayAndSave(sr with {Name = "Test2", SimpleRecord = sr.SimpleRecord, DateRecord = sr.DateRecord}, context);
+        }
+
+        public static (ReferenceRecord, IContext) UpdateExistingAndReference(IContext context) {
+            var rr = context.Instances<ReferenceRecord>().First();
+            var sr = context.Instances<SimpleRecord>().First() with {Name = "Jill"};
+            var nrr = rr with { Name = "Test3", SimpleRecord = sr, DateRecord = rr.DateRecord };
+
+            context.WithPendingSave(sr, nrr);
+
+            return (nrr, context);
+        }
+
     }
 }
