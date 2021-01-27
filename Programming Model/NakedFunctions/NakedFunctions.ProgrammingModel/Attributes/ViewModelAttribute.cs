@@ -9,28 +9,19 @@ using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     ///
+    ///     Applied at class level to e.g. MyVMType to make it a non-persisted view model.
+    ///     Initialised with a type e.g. MyVMType_Functions that must define two functions:
+    ///     - static string[] DeriveKeys(this MyVMType vm)
+    ///     - static MyVmType CreateFromKeys(string[] keys)
     /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///     </para>
-    /// </remarks>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public class ViewModelAttribute : Attribute {
 
-        public ViewModelAttribute(Type typeDefiningVMFunctions, VMEditability editability = VMEditability.ViewOnly)
+        public ViewModelAttribute(Type typeDefiningVMFunctions)
         {
             TypeDefiningVMFunctions = typeDefiningVMFunctions;
-            Editability = editability;
         }
 
-        public VMEditability Editability { get; }
-
         public Type TypeDefiningVMFunctions { get; }
-    }
-
-    public enum VMEditability
-    {
-        ViewOnly, EditOnly, Switchable
     }
 }
