@@ -46,16 +46,29 @@ namespace NakedFunctions.Rest.Test.Data {
         public TestEnum TestEnum { get; set; }
     }
 
+    public record UpdatedRecord
+    {
+        [Key]
+        public int Id { get; init; }
+
+        public string Name { get; init; }
+
+        public virtual bool Equals(SimpleRecord other) => ReferenceEquals(this, other);
+        public override string ToString() => Name;
+        public override int GetHashCode() => base.GetHashCode();
+    }
+
+
     public record ReferenceRecord {
         [Key]
         public int Id { get; init; }
 
         public string Name { get; init; }
 
-        public virtual SimpleRecord SimpleRecord { get; init; }
+        public virtual UpdatedRecord UpdatedRecord { get; init; }
         public virtual DateRecord DateRecord { get; init; }
 
-        public override string ToString() => $"{Name}-{Id}-{SimpleRecord?.Id}-{DateRecord?.Id}";
+        public override string ToString() => $"{Name}-{Id}-{UpdatedRecord?.Id}-{DateRecord?.Id}";
 
         public override int GetHashCode() => base.GetHashCode();
         public virtual bool Equals(ReferenceRecord other) => ReferenceEquals(this, other);

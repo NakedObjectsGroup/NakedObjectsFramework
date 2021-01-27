@@ -135,22 +135,33 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public static class ReferenceMenuFunctions {
         public static (ReferenceRecord, IContext) CreateNewWithExistingReferences(IContext context) {
-            var sr = context.Instances<SimpleRecord>().First();
+            var sr = context.Instances<UpdatedRecord>().First();
             var dr = context.Instances<DateRecord>().First();
-            return Helpers.DisplayAndSave(new ReferenceRecord {Name = "Test1", SimpleRecord = sr, DateRecord = dr}, context);
+            return Helpers.DisplayAndSave(new ReferenceRecord {Name = "Test1", UpdatedRecord = sr, DateRecord = dr}, context);
         }
 
         public static (ReferenceRecord, IContext) UpdateExisting(IContext context) {
             var sr = context.Instances<ReferenceRecord>().First();
-            return Helpers.DisplayAndSave(sr with {Name = "Test2", SimpleRecord = sr.SimpleRecord, DateRecord = sr.DateRecord}, context);
+            return Helpers.DisplayAndSave(sr with {Name = "Test2", UpdatedRecord = sr.UpdatedRecord, DateRecord = sr.DateRecord}, context);
         }
 
         public static (ReferenceRecord, IContext) UpdateExistingAndReference(IContext context) {
             var rr = context.Instances<ReferenceRecord>().First();
-            var sr = context.Instances<SimpleRecord>().First() with {Name = "Jill"};
-            var nrr = rr with { Name = "Test3", SimpleRecord = sr, DateRecord = rr.DateRecord };
+            var sr = context.Instances<UpdatedRecord>().First() with {Name = "Jill"};
+            var nrr = rr with { Name = "Test3", UpdatedRecord = sr, DateRecord = rr.DateRecord };
 
-            context.WithPendingSave(sr, nrr);
+            context = context.WithPendingSave(sr, nrr);
+
+            return (nrr, context);
+        }
+
+        public static (ReferenceRecord, IContext) CreateNewUpdateReference(IContext context)
+        {
+            var rr = context.Instances<ReferenceRecord>().First();
+            var sr = context.Instances<UpdatedRecord>().First() with { Name = "Janet" };
+            var nrr = new ReferenceRecord() { Name = "Test4", UpdatedRecord = sr, DateRecord = rr.DateRecord };
+
+            context = context.WithPendingSave(sr, nrr);
 
             return (nrr, context);
         }

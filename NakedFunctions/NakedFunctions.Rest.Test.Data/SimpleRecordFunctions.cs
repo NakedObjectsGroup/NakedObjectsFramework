@@ -25,11 +25,11 @@ namespace NakedFunctions.Rest.Test.Data {
             return Helpers.DisplayAndSave(new SimpleRecord {Name = name}, context);
         }
 
-        public static (ReferenceRecord, IContext) AssociateWithDateRecord(this SimpleRecord simpleRecord, DateRecord dateRecord, IContext context) {
-            return context.Instances<ReferenceRecord>().Any(x => x.SimpleRecord.Id == simpleRecord.Id && x.DateRecord.Id == dateRecord.Id)
-                ? (null, context.WithInformUser($"{simpleRecord} is already associated with {dateRecord}"))
-                : Helpers.DisplayAndSave(new ReferenceRecord() with {SimpleRecord = simpleRecord, DateRecord = dateRecord}, context);
-        }
+        //public static (ReferenceRecord, IContext) AssociateWithDateRecord(this SimpleRecord simpleRecord, DateRecord dateRecord, IContext context) {
+        //    return context.Instances<ReferenceRecord>().Any(x => x.UpdatedRecord.Id == simpleRecord.Id && x.DateRecord.Id == dateRecord.Id)
+        //        ? (null, context.WithInformUser($"{simpleRecord} is already associated with {dateRecord}"))
+        //        : Helpers.DisplayAndSave(new ReferenceRecord() with {UpdatedRecord = simpleRecord, DateRecord = dateRecord}, context);
+        //}
 
         [PageSize(20)]
         public static IQueryable<DateRecord> AutoComplete1AssociateWithDateRecord(this SimpleRecord simpleRecord, [MinLength(2)] string name, IContext context) {

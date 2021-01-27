@@ -49,7 +49,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(TestEnum),
             typeof(ReferenceRecord),
             typeof(DisplayAsPropertyRecord),
-            typeof(ViewModel)
+            typeof(ViewModel),
+            typeof(UpdatedRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -231,7 +232,7 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
 
-            //resultObj.AssertObject("Ellen", FullName<SimpleRecord>()", "4");
+            //resultObj.AssertObject("Ellen", FullName<UpdatedRecord>()", "4");
             Assert.AreEqual("Ellen", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -292,34 +293,34 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(FormatForTest(DateTime.UtcNow.AddDays(22)), psd["default"].ToString());
         }
 
-        [Test]
-        public void TestGetObjectActionAssociateDataRecord() {
-            var api = Api();
-            var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.AssociateWithDateRecord));
-            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int) HttpStatusCode.OK, sc);
-            var parsedResult = JObject.Parse(json);
+        //[Test]
+        //public void TestGetObjectActionAssociateDataRecord() {
+        //    var api = Api();
+        //    var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.AssociateWithDateRecord));
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(nameof(SimpleRecordFunctions.AssociateWithDateRecord), parsedResult["id"].ToString());
-            var parameters = parsedResult["parameters"];
-            Assert.AreEqual(1, parameters.Count());
-            var dr = parameters["dateRecord"];
-        }
+        //    Assert.AreEqual(nameof(SimpleRecordFunctions.AssociateWithDateRecord), parsedResult["id"].ToString());
+        //    var parameters = parsedResult["parameters"];
+        //    Assert.AreEqual(1, parameters.Count());
+        //    var dr = parameters["dateRecord"];
+        //}
 
-        [Test]
-        public void TestInvokeActionAssociateDataRecord() {
-            var api = Api().AsPost();
-            var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"dateRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.DateRecord/1", "dateRecord")}}};
+        //[Test]
+        //public void TestInvokeActionAssociateDataRecord() {
+        //    var api = Api().AsPost();
+        //    var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"dateRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.DateRecord/1", "dateRecord")}}};
 
-            var result = api.PostInvoke(FullName<SimpleRecord>(), "2", nameof(SimpleRecordFunctions.AssociateWithDateRecord), map);
-            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int) HttpStatusCode.OK, sc);
-            var parsedResult = JObject.Parse(json);
+        //    var result = api.PostInvoke(FullName<SimpleRecord>(), "2", nameof(SimpleRecordFunctions.AssociateWithDateRecord), map);
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
 
-            var resultObj = parsedResult["result"];
+        //    var resultObj = parsedResult["result"];
 
-            Assert.AreEqual("-2-2-1", resultObj["title"].ToString());
-        }
+        //    Assert.AreEqual("-2-2-1", resultObj["title"].ToString());
+        //}
 
         [Test]
         public void TestGetRecordActionWithChoices() {
@@ -533,7 +534,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(startDate, DateTime.Parse(sd));
             Assert.AreEqual(endDate, DateTime.Parse(ed));
 
-            //resultObj.AssertObject("Fred4", FullName<SimpleRecord>()", "1");
+            //resultObj.AssertObject("Fred4", FullName<UpdatedRecord>()", "1");
             //Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
         }
 

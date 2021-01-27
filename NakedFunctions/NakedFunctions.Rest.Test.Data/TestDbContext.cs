@@ -31,12 +31,16 @@ namespace NakedFunctions.Rest.Test.Data {
             context.SimpleRecords.Add(new SimpleRecord { Name = "Bill" });
             context.SimpleRecords.Add(new SimpleRecord { Name = "Jack" });
 
+
+            var ur = new UpdatedRecord() {Name = ""};
+            context.UpdatedRecords.Add(ur);
+
             var dr = new DateRecord();
 
             context.DateRecords.Add(dr);
             context.EnumRecords.Add(new EnumRecord());
 
-            context.ReferenceRecords.Add(new ReferenceRecord() {SimpleRecord = fred, DateRecord = dr } );
+            context.ReferenceRecords.Add(new ReferenceRecord() {UpdatedRecord = ur, DateRecord = dr } );
 
             context.GuidRecords.Add(new GuidRecord());
 
@@ -55,6 +59,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<GuidRecord> GuidRecords { get; set; }
         public DbSet<ReferenceRecord> ReferenceRecords { get; set; }
         public DbSet<DisplayAsPropertyRecord> DisplayAsPropertyRecords { get; set; }
+        public DbSet<UpdatedRecord> UpdatedRecords { get; set; }
 
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {

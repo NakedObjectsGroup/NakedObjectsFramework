@@ -40,7 +40,14 @@ namespace NakedFunctions.Rest.Test {
         };
 
         // todo should IAlert be here or should we ignore?
-        protected override Type[] Records { get; } = {typeof(SimpleRecord), typeof(DateRecord), typeof(TestEnum), typeof(ViewModel), typeof(ReferenceRecord)};
+        protected override Type[] Records { get; } = {
+            typeof(SimpleRecord),
+            typeof(DateRecord),
+            typeof(TestEnum),
+            typeof(ViewModel),
+            typeof(ReferenceRecord),
+            typeof(UpdatedRecord)
+        };
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -793,7 +800,23 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             resultObj.AssertObject("Test3-1-1-1", FullName<ReferenceRecord>(), "1");
-            Assert.AreEqual("Jill", resultObj["members"]["SimpleRecord"]["value"]["title"].ToString() );
+            Assert.AreEqual("Jill", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString() );
+        }
+
+        [Test]
+        public void TestCreateNewRecordWithUpdatedReferences()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNewUpdateReference), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Test4-3-1-1", FullName<ReferenceRecord>(), "3");
+            Assert.AreEqual("Janet", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
         }
     }
 }
