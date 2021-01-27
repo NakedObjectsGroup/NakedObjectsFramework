@@ -8,6 +8,10 @@
     color: var(--warning-color);
 }
 
+:host.multilinedialog {
+    width: auto;
+}
+
 :host.multilinedialog .co-validation {
     vertical-align: top;
     margin-top: var(--space-1);
