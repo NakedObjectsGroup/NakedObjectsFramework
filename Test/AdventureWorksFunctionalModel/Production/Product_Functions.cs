@@ -123,5 +123,13 @@ namespace AW.Functions
             : context.Instances<ProductSubcategory>().Where(psc => psc.ProductCategory.ProductCategoryID == productCategory.ProductCategoryID).ToArray();
 
         #endregion
+
+
+        public static (WorkOrder, IContext context) CreateNewWorkOrder(
+             [DescribedAs("product partial name")] this Product product,
+             int orderQty,
+             DateTime startDate,
+             IContext context) =>
+                    WorkOrder_MenuFunctions.SaveAndDisplayNewWorkOrder(product, orderQty, startDate, context);
     }
 }

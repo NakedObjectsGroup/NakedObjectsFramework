@@ -104,24 +104,39 @@ namespace AW.Functions
         #endregion
 
         #region Create New Purchase Order
-        [MemberOrder("Purchase Orders",6)]
-        public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(this Vendor vendor, IContext context) =>
-            context.SaveAndDisplay(new PurchaseOrderHeader() { 
-                Vendor = vendor,
-                RevisionNumber = 0,
-                Status = 1,
-                OrderDate = context.Today(),
-                ShipDate = context.Today()});
-
+        [MemberOrder(6)]
+        public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(
+            Vendor vendor,
+            ShipMethod shipMethod,
+            IContext context) =>
+           SaveAndDisplayNewPurchaseOrder(vendor, shipMethod, context);
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0CreateNewPurchaseOrder(
-            [MinLength(2)] string name, IContext context) =>
-            context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
+    [MinLength(2)] string name, IContext context) =>
+    context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
 
-        [MemberOrder(7)]
-        public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder2(IContext context) =>
-             context.SaveAndDisplay(new PurchaseOrderHeader() { OrderPlacedBy = null });
+
+        internal static (PurchaseOrderHeader, IContext) SaveAndDisplayNewPurchaseOrder(
+            Vendor vendor,
+            ShipMethod shipMethod,
+            IContext context) =>
+            context.SaveAndDisplay(new PurchaseOrderHeader()
+            {
+                RevisionNumber = 0,
+                Status = (byte)POStatus.Pending,
+                OrderPlacedByID = 1, //TODO: using Employee 1 as a default as no logged on user
+                        VendorID = vendor.BusinessEntityID,
+                ShipMethodID = shipMethod.ShipMethodID,
+                OrderDate = context.Today(),
+                SubTotal = 0,
+                TaxAmt = 0,
+                Freight = 0,
+                ModifiedDate = context.Now()
+            });
+
+
+
 
         #endregion
 

@@ -45,17 +45,13 @@ namespace AW.Types {
 
         #region Status
 
-        private static readonly string[] statusLabels = {"Pending", "Approved", "Rejected", "Complete"};
-
         [Hidden]
         [MemberOrder(10)]
         public virtual byte Status { get; init; }
 
         [Named("Status")]
         [MemberOrder(1)]
-        public virtual string StatusAsString {
-            get { return statusLabels[Status - 1]; }
-        }
+        public virtual POStatus StatusAsEnum => (POStatus) Status;
 
         #endregion
 
@@ -117,5 +113,10 @@ namespace AW.Types {
 		public override int GetHashCode() =>base.GetHashCode();
 
         public virtual bool Equals(PurchaseOrderHeader other) => ReferenceEquals(this, other);
+    }
+
+    public enum POStatus
+    {
+        Pending, Approved, Rejected, Complete
     }
 }
