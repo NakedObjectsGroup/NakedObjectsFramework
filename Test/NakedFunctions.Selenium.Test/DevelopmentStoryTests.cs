@@ -63,6 +63,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             DisableFunction();
             HideFunction();
             AutoCompleteFunction();
+            ViewModel1();
         }
 
         //[TestMethod]
@@ -234,7 +235,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             wait.Until(dr => GetPropertyValue("Marital Status") == "S");
         }
 
-       // [TestMethod]
+        // [TestMethod]
         public void ParameterChoicesDependent()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Address--22691&as1=open&d1=EditStateProvince");
@@ -281,7 +282,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ClearFieldThenType("input#maxqty1", "5");
             Click(OKButton());
             var msg = "Max Qty cannot be < Min Qty";
-            wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text == msg );
+            wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text == msg);
         }
 
         //[TestMethod]
@@ -307,12 +308,58 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void AutoCompleteFunction()
         {
-            GeminiUrl("home?m1=Employee_MenuFunctions&d1=CreateNewEmployeeFromContact");
+            GeminiUrl("home?m1=WorkOrder_MenuFunctions&d1=ListWorkOrders");
             WaitForTitle("Home");
-            TypeIntoFieldWithoutClearing("input#contactdetails1", "ab");
-            Assert.AreEqual("Sam Abolrous", WaitForCssNo("nof-auto-complete .suggestions li", 4).Text);
-            Assert.AreEqual("Kim Abercrombie", WaitForCssNo("nof-auto-complete .suggestions li", 0).Text);
+            TypeIntoFieldWithoutClearing("input#product1", "fr");
+            Assert.AreEqual("Front Derailleur Linkage", WaitForCssNo("nof-auto-complete .suggestions li", 4).Text);
+            Assert.AreEqual("Freewheel", WaitForCssNo("nof-auto-complete .suggestions li", 0).Text);
         }
 
+        //[TestMethod]
+        public void ViewModel1()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.StaffSummary--84--206");
+            WaitForTitle("Staff Summary");
+            Assert.AreEqual("84", GetPropertyValue("Female"));
+            Assert.AreEqual("206", GetPropertyValue("Male"));
+            Assert.AreEqual("290", GetPropertyValue("Total Staff"));
+            Reload();
+            Assert.AreEqual("84", GetPropertyValue("Female"));
+            Assert.AreEqual("206", GetPropertyValue("Male"));
+            Assert.AreEqual("290", GetPropertyValue("Total Staff"));
+        }
+
+        [TestMethod]
+        public void MultiLineActionDialog()
+        {
+            GeminiUrl("multiLineDialog?m1=SpecialOffer_MenuFunctions&d1=CreateMultipleSpecialOffers");
+            WaitForTitle("Create Multiple Special Offers");
+            WaitForCssNo(".lineDialog", 1); //i.e. 2 dialogs
+            var ok1 = WaitForCssNo("input.ok", 1);
+            var val1 = WaitForCssNo(".co-validation", 1);
+            var ok0 = WaitForCssNo("input.ok", 0);
+            var val0 = WaitForCssNo(".co-validation", 0);
+            TypeIntoFieldWithoutClearing("input#description0", "Manager's Special");
+            TypeIntoFieldWithoutClearing("input#discountpct0", "15");
+            var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
+            TypeIntoFieldWithoutClearing("input#enddate0", endDate);
+            wait.Until(d => ok0.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
+            Assert.AreEqual("", val0.Text);
+            Click(ok0);
+            wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).First().Text == "Submitted");
+            //Second line
+            TypeIntoFieldWithoutClearing("input#description1", "Manager's Special II");
+            TypeIntoFieldWithoutClearing("input#discountpct1", "12.5");
+            TypeIntoFieldWithoutClearing("input#enddate1", endDate);
+            wait.Until(d => ok1.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
+            Assert.AreEqual("", val1.Text);
+            Click(ok1);
+            wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).ElementAt(1).Text == "Submitted");
+
+
+            //Check third line has now appeared
+            WaitForCssNo(".lineDialog", 2); 
+
+        }
     }
 }

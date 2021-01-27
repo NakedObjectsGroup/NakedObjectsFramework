@@ -23,7 +23,7 @@ namespace AW.Functions {
         [TableView(true, "SalesTerritory")]
         public static IQueryable<SalesPerson> FindSalesPersonByName(      
             [Optionally] string firstName, string lastName, IContext context) {
-            IQueryable<Person> matchingPersons = Person_MenuFunctions.FindContactByName( firstName, lastName, context);
+            IQueryable<Person> matchingPersons = Person_MenuFunctions.FindPersonsByName( firstName, lastName, context);
             return from sp in context.Instances<SalesPerson>()
                 from person in matchingPersons
                 where sp.BusinessEntityID == person.BusinessEntityID

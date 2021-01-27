@@ -176,10 +176,6 @@ namespace AW.Functions {
         public static string DisableCreateFirstOrder(this Customer customer) =>
             customer.SalesTerritoryID == 6 ? "Customers in Canada may not place orders directly." : null;
 
-        [MemberOrder(1)]
-        public static QuickOrderForm QuickOrder(this Customer customer) =>
-            new QuickOrderForm { Customer = customer };
-            
         #endregion
     }
 }

@@ -75,7 +75,7 @@ namespace AW.Functions {
         public static IQueryable<Customer> FindIndividualCustomerByName(
             [Optionally] string firstName, string lastName, IContext context)
         {
-           IQueryable<Person> matchingPersons = Person_MenuFunctions.FindContactByName(firstName, lastName, context);
+           IQueryable<Person> matchingPersons = Person_MenuFunctions.FindPersonsByName(firstName, lastName, context);
             return from c in context.Instances<Customer>()
                    from p in matchingPersons
                    where c.PersonID == p.BusinessEntityID

@@ -30,8 +30,8 @@ namespace AW.Functions
         [MemberOrder("Purchase Orders",4)]
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public static IQueryable<PurchaseOrderHeader> ListPurchaseOrders(
-    this Vendor vendor, DateTime? fromDate, DateTime? toDate, IContext context) =>
-            PurchaseOrder_MenuFunctions.ListPurchaseOrders(vendor, fromDate, toDate, context);
+            this Vendor vendor, DateTime? fromDate, DateTime? toDate, IContext context) =>
+                PurchaseOrder_MenuFunctions.ListPurchaseOrders(vendor, fromDate, toDate, context);
 
 
         [PageSize(20)]
@@ -39,9 +39,14 @@ namespace AW.Functions
             this Vendor vendor, [MinLength(2)] string name, IContext context) =>
             PurchaseOrder_MenuFunctions.AutoComplete0ListPurchaseOrders(name, context);
 
-        //TODO: Should match action, ignoring any injected properties, on either action or this
+
         public static string ValidateListPurchaseOrders(
            this Vendor vendor, DateTime? fromDate, DateTime? toDate) =>
-           PurchaseOrder_MenuFunctions.ValidateListPurchaseOrders(vendor, fromDate, toDate);
+                PurchaseOrder_MenuFunctions.ValidateListPurchaseOrders(vendor, fromDate, toDate);
+
+        [MemberOrder("Purchase Orders", 5)]
+        public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(this Vendor vendor,
+           ShipMethod shipMethod, IContext context) =>
+                PurchaseOrder_MenuFunctions.SaveAndDisplayNewPurchaseOrder(vendor, shipMethod, context);
     }
 }

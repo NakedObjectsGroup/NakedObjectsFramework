@@ -14,23 +14,6 @@ namespace AW.Functions {
     public static class Customer_Functions
     {
 
-        #region Action to test switchable view model
-        public static StoreSalesInfo ReviewSalesResponsibility(this Customer c, IContext context)
-        {
-            return StoreSalesInfo_Functions.CreateFromKeys(new string[] { c.AccountNumber, false.ToString() }, context);
-            //return ssi;
-        }
-
-
-        public static bool HideReviewSalesResponsibility(this Customer c)
-        {
-            return IsStore(c);
-        }
-
-        #endregion
-
-
-
 
         internal static BusinessEntity BusinessEntity(this Customer c)
         {

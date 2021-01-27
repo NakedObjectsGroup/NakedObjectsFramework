@@ -31,5 +31,20 @@ namespace AW.Functions
         public static IList<StateProvince> Choices7CreateNewAddress(this Address a, CountryRegion countryRegion, IContext context) =>
                 Address_Functions.StateProvincesForCountry(countryRegion, context);
 
+
+        public static (BusinessEntity, IContext) CreateNewEmailAddress(
+            this BusinessEntity be,
+            [MaxLength(50)] string emailAddress, //TODO: Add RegEx for emailAddress
+            IContext context)
+        {
+            var e = new EmailAddress {
+                BusinessEntityID = be.BusinessEntityID,
+                EmailAddress1 = emailAddress,
+                rowguid = context.NewGuid(),
+                ModifiedDate = context.Now(),
+            };
+            return (be, context.WithPendingSave(e));
+        }
+
     }
 }

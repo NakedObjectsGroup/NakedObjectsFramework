@@ -35,11 +35,6 @@ namespace AW.Functions {
             return (p1, p1);
         }
 
-        //To test a ViewModelEdit
-        public static EmailTemplate CreateEmail(this Person p) =>
-            new EmailTemplate { Status = EmailStatus.New };
-
-
         public static object CreateLetter(this Person p,Address toAddress)
         {
             //No real implementation; function is for framework testing purposes only
