@@ -39,8 +39,7 @@ namespace AW.Functions {
         }
 
         //To demonstrate use of recursion to create & use multiple random numbers
-        [TableView(true, nameof(Person.AdditionalContactInfo))]
-        public static IList<Person> RandomContacts(int numberRequired, IContext context) =>
+        public static IList<Person> RandomPerson(int numberRequired, IContext context) =>
             RandomPersons(numberRequired, context.Instances<Person>().OrderBy(p => ""), context.RandomSeed());
 
         //Test if an immutablelist can be returned
