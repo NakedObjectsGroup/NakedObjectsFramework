@@ -63,6 +63,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             DisableFunction();
             HideFunction();
             AutoCompleteFunction();
+            ViewModel1();
         }
 
         //[TestMethod]
@@ -312,6 +313,20 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             TypeIntoFieldWithoutClearing("input#product1", "fr");
             Assert.AreEqual("Front Derailleur Linkage", WaitForCssNo("nof-auto-complete .suggestions li", 4).Text);
             Assert.AreEqual("Freewheel", WaitForCssNo("nof-auto-complete .suggestions li", 0).Text);
+        }
+
+        //[TestMethod]
+        public void ViewModel1()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.StaffSummary--84--206");
+            WaitForTitle("Staff Summary");
+            Assert.AreEqual("84", GetPropertyValue("Female"));
+            Assert.AreEqual("206", GetPropertyValue("Male"));
+            Assert.AreEqual("290", GetPropertyValue("Total Staff"));
+            Reload();
+            Assert.AreEqual("84", GetPropertyValue("Female"));
+            Assert.AreEqual("206", GetPropertyValue("Male"));
+            Assert.AreEqual("290", GetPropertyValue("Total Staff"));
         }
 
     }
