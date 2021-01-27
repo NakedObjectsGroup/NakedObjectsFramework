@@ -328,6 +328,5 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("206", GetPropertyValue("Male"));
             Assert.AreEqual("290", GetPropertyValue("Total Staff"));
         }
-
     }
 }

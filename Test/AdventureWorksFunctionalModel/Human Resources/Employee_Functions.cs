@@ -46,9 +46,17 @@ namespace AW.Functions
         public static (Employee, IContext) ChangeDepartmentOrShift(
            this Employee e, Department department, Shift shift, IContext context)
         {
-            var edh = CurrentAssignment(e) with { EndDate = context.Now() };
-            var newAssignment = new EmployeeDepartmentHistory()
-            { Department = department, Shift = shift, Employee = e, StartDate = context.Today() };
+            var edh = CurrentAssignment(e) with { 
+                EndDate = context.Now(), 
+                ModifiedDate = context.Now()
+            };
+            var newAssignment = new EmployeeDepartmentHistory(){
+                EmployeeID = e.BusinessEntityID,
+                DepartmentID = department.DepartmentID,
+                ShiftID = shift.ShiftID, 
+                StartDate = context.Today(),
+                ModifiedDate = context.Today()
+            };
             return (e, context.WithPendingSave(edh, newAssignment));
         }
 
