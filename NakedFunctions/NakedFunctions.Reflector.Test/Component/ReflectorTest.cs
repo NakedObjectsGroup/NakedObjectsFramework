@@ -175,6 +175,8 @@ namespace NakedFunctions.Reflector.Test.Component {
     public record HiddenClass {
         [Hidden]
         public string HiddenProperty { get; init; }
+
+        public string HiddenPropertyViaFunction { get; init; }
     }
 
     public record VersionedClass {
@@ -229,6 +231,11 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static IList<SimpleClass> SimpleFunction1(this SimpleClass target) {
             return new[] {target};
         }
+    }
+
+    public static class HideFunctions {
+        public static bool HideHiddenPropertyViaFunction(this HiddenClass target) => false;
+     
     }
 
     public static class PotentFunctions
@@ -1178,9 +1185,6 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
-
-
-
         [TestMethod]
         public void ReflectHidden()
         {
@@ -1202,9 +1206,35 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
 
-                var facet = spec.Fields.First().GetFacet<IHiddenFacet>();
+                var facet = spec.Fields.Single(f => f.Name == "Hidden Property").GetFacet<IHiddenFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(WhenTo.Always, facet.Value);
+            }
+        }
+
+        [TestMethod]
+        public void ReflectHiddenViaFunction()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(HiddenClass) };
+                        options.Functions = new Type[] { typeof(HideFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
+                var facet = spec.Fields.Single(f => f.Name == "Hidden Property Via Function").GetFacet<IHideForContextFacet>();
+                Assert.IsNotNull(facet);
+                //Assert.AreEqual(WhenTo.Always, facet.Value);
             }
         }
 
