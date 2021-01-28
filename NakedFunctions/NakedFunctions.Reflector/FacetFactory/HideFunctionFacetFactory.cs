@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
@@ -14,10 +15,12 @@ using NakedFunctions.Meta.Facet;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 
@@ -30,7 +33,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<HideFunctionFacetFactory> logger;
 
         public HideFunctionFacetFactory(IFacetFactoryOrder<HideFunctionFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
+            : base(order.Order, loggerFactory, FeatureType.Objects | FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<HideFunctionFacetFactory>();
 
         public string[] Prefixes => FixedPrefixes;
@@ -41,22 +44,71 @@ namespace NakedFunctions.Reflector.FacetFactory {
             methodInfo.Matches(name, declaringType, typeof(bool)) &&
             !InjectUtils.FilterParms(methodInfo).Any();
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private MethodInfo MethodToUse(Type declaringType, string name)
+        {
             bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType);
-
             var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
+            return methodToUse;
+        }
+
+
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var methodToUse = MethodToUse(declaringType, name);
             if (methodToUse is not null) {
                 FacetUtils.AddFacet(new HideForContextViaFunctionFacet(methodToUse, action));
+            }
+            return metamodel;
+        }
+
+        private static string HiddenName(MethodInfo action) => $"{RecognisedMethodsAndPrefixes.HidePrefix}{NameUtils.CapitalizeName(action.Name)}";
+
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var name = HiddenName(actionMethod);
+            var declaringType = actionMethod.DeclaringType;
+            return FindAndAddFacet(declaringType, name, action, metamodel);
+        }
+
+        private static Action<IMetamodelBuilder> GetAddAction(MethodInfo recognizedMethod) {
+            Action<IMetamodelBuilder> action = m => { };
+
+            var onType = recognizedMethod.GetContributedToType();
+            if (onType is not null) {
+                action = m => {
+                    var spec = m.GetSpecification(onType);
+                    var propertyName = recognizedMethod.Name.Remove(0, 4);
+                    var property = spec.Fields.SingleOrDefault(f => f.Name == NameUtils.NaturalName(propertyName));
+
+                    if (property is not null) {
+                        var facet = new HideForContextViaFunctionFacet(recognizedMethod, property);
+                        FacetUtils.AddFacet(facet);
+                    }
+                };
+            }
+
+            return action;
+        }
+
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var matchedHides = type.GetMethods().Where(m => !m.Name.StartsWith("Hide")).Where(m => MethodToUse(type, HiddenName(m)) is not null);
+            var unMatchedHides = type.GetMethods().Where(m => m.Name.StartsWith("Hide")).Except(matchedHides).ToArray();
+
+            if (unMatchedHides.Any()) {
+                var actions = unMatchedHides.Select(method => GetAddAction(method));
+                void Action(IMetamodelBuilder m) => actions.ForEach(a => a(m));
+                var integrationFacet = specification.GetFacet<IIntegrationFacet>();
+
+                if (integrationFacet is null) {
+                    integrationFacet = new IntegrationFacet(specification, Action);
+                    FacetUtils.AddFacet(integrationFacet);
+                }
+                else {
+                    integrationFacet.AddAction(Action);
+                }
             }
 
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var name = $"{RecognisedMethodsAndPrefixes.HidePrefix}{NameUtils.CapitalizeName(actionMethod.Name)}";
-            var declaringType = actionMethod.DeclaringType;
-            return FindAndAddFacet(declaringType, name, action, metamodel);
-        }
 
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.HidePrefix);
 
