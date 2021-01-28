@@ -454,7 +454,17 @@ namespace AW.Functions {
 
         //public static Address[] ChoicesShippingAddress(IContext context) => ChoicesBillingAddress(context);
 
+    //    [PageSize(20)]
+    //    public IQueryable<SalesPerson> AutoCompleteSalesPerson(
+    //[MinLength(2)] string name, IContext context) =>
+    //Sales_MenuFunctions.FindSalesPersonByName(null, name, context);
+
+
+
         #endregion
+
+
+
 
     }
 

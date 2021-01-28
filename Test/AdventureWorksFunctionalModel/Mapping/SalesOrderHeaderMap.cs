@@ -13,6 +13,7 @@ namespace AW.Mapping
 
             //Ignores
             Ignore(t => t.AddItemsFromCart);
+            Ignore(t => t.StatusByte); //TODO is it necessary to ignore this?
 
             // Properties
             Property(t => t.SalesOrderNumber)
