@@ -302,32 +302,32 @@ namespace AW.Functions {
 
         internal static bool IsInProcess(this SalesOrderHeader soh)
         {
-            return soh.Status == OrderStatus.InProcess;
+            return soh.StatusByte == 1; //OrderStatus.InProcess;
         }
 
         internal static bool IsApproved(this SalesOrderHeader soh)
         {
-            return soh.Status == OrderStatus.Approved;
+            return soh.StatusByte == 2;// OrderStatus.Approved;
         }
 
         internal static bool IsBackOrdered(this SalesOrderHeader soh)
         {
-            return soh.Status == OrderStatus.BackOrdered;
+            return soh.StatusByte == 3; // OrderStatus.BackOrdered;
         }
 
         internal static bool IsRejected(this SalesOrderHeader soh)
         {
-            return soh.Status == OrderStatus.Rejected;
+            return soh.StatusByte == 4; // OrderStatus.Rejected;
         }
 
         internal static bool IsShipped(this SalesOrderHeader soh)
         {
-            return soh.Status == OrderStatus.Shipped;
+            return soh.StatusByte == 5; // OrderStatus.Shipped;
         }
 
         internal static bool IsCancelled(this SalesOrderHeader soh)
         {
-            return soh.Status == OrderStatus.Cancelled;
+            return soh.StatusByte == 6; // OrderStatus.Cancelled;
         }
 
         //TODO: Move to Edit
@@ -454,7 +454,17 @@ namespace AW.Functions {
 
         //public static Address[] ChoicesShippingAddress(IContext context) => ChoicesBillingAddress(context);
 
+    //    [PageSize(20)]
+    //    public IQueryable<SalesPerson> AutoCompleteSalesPerson(
+    //[MinLength(2)] string name, IContext context) =>
+    //Sales_MenuFunctions.FindSalesPersonByName(null, name, context);
+
+
+
         #endregion
+
+
+
 
     }
 

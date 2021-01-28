@@ -27,8 +27,8 @@ namespace AW.Types {
         [Hidden]
         public virtual byte StatusByte { get; init; }
 
-        [MemberOrder(1)]
-        public OrderStatus Status => (OrderStatus)StatusByte;
+        //[MemberOrder(1)]
+        //public virtual OrderStatus Status { get { return (OrderStatus)StatusByte;  } }
 
         [Hidden]
         public virtual int CustomerID { get; init; }
@@ -170,10 +170,6 @@ namespace AW.Types {
         [MemberOrder(61)]
         public virtual SalesPerson SalesPerson { get; init; }
 
-        [PageSize(20)]
-        public IQueryable<SalesPerson> AutoCompleteSalesPerson(
-            [MinLength(2)] string name, IContext context) =>
-            Sales_MenuFunctions.FindSalesPersonByName(null, name, context);
 
         [Hidden]
         public virtual int? SalesTerritoryID { get; init; }
