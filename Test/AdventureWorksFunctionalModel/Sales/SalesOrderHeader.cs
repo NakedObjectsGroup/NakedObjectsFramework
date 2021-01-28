@@ -28,7 +28,7 @@ namespace AW.Types {
         public virtual byte StatusByte { get; init; }
 
         [MemberOrder(1)]
-        public virtual OrderStatus Status => (OrderStatus)StatusByte;
+        public virtual OrderStatus Status { get { return (OrderStatus)StatusByte;  } }
 
         [Hidden]
         public virtual int CustomerID { get; init; }
