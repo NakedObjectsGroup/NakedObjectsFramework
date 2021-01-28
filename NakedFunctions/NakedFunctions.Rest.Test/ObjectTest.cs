@@ -335,10 +335,11 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(1, parameters.Count());
             var choices = parameters["record"]["choices"];
 
-            Assert.AreEqual(3, choices.Count());
+            Assert.AreEqual(4, choices.Count());
             Assert.AreEqual("Fred", choices[0]["title"].ToString());
             Assert.AreEqual("Bill", choices[1]["title"].ToString());
             Assert.AreEqual("Jack", choices[2]["title"].ToString());
+            Assert.AreEqual("hide it", choices[3]["title"].ToString());
         }
 
         [Test]
@@ -410,10 +411,11 @@ namespace NakedFunctions.Rest.Test {
 
             var choices = parameters["simpleRecords"]["choices"];
 
-            Assert.AreEqual(3, choices.Count());
+            Assert.AreEqual(4, choices.Count());
             Assert.AreEqual("Fred", choices[0]["title"].ToString());
             Assert.AreEqual("Bill", choices[1]["title"].ToString());
             Assert.AreEqual("Jack", choices[2]["title"].ToString());
+            Assert.AreEqual("hide it", choices[3]["title"].ToString());
 
             var prompt = parameters["dateRecords"]["links"][0];
 
@@ -755,6 +757,31 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNotNull(parsedResult["members"]["WithHidden2"]);
         }
+
+        [Test]
+        public void TestGetRecordActionWithNotHiddenProperty()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<SimpleRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Name"]);
+        }
+
+        [Test]
+        public void TestGetRecordActionWithHiddenProperty()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<SimpleRecord>(), "4");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["Name"]);
+        }
+
 
         [Test]
         public void TestGetObjectActionWithAutoComplete()

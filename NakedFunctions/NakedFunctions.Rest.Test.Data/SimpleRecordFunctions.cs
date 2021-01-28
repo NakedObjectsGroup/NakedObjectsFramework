@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualBasic;
 
 namespace NakedFunctions.Rest.Test.Data {
     internal static class Helpers {
@@ -130,6 +131,8 @@ namespace NakedFunctions.Rest.Test.Data {
         public static SimpleRecord WithHidden2(this SimpleRecord sp, IContext context) => sp;
 
         public static bool HideWithHidden2(this SimpleRecord sp, IContext context) => false;
+
+        public static bool HideName(this SimpleRecord sp, IContext context) => sp.Name == "hide it";
     }
 
     public static class AutoCompleteRecordFunctions {

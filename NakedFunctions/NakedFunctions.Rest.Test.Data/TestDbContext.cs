@@ -31,6 +31,7 @@ namespace NakedFunctions.Rest.Test.Data {
             context.SimpleRecords.Add(fred);
             context.SimpleRecords.Add(new SimpleRecord {Name = "Bill"});
             context.SimpleRecords.Add(new SimpleRecord {Name = "Jack"});
+            context.SimpleRecords.Add(new SimpleRecord { Name = "hide it" });
 
             var ur = new UpdatedRecord {Name = ""};
             context.UpdatedRecords.Add(ur);
