@@ -6,7 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace NakedFunctions.Rest.Test.Data {
     [PresentationHint("Hint1")]
@@ -73,6 +75,23 @@ namespace NakedFunctions.Rest.Test.Data {
         public override int GetHashCode() => base.GetHashCode();
         public virtual bool Equals(ReferenceRecord other) => ReferenceEquals(this, other);
     }
+
+    public record CollectionRecord
+    {
+        [Key]
+        public int Id { get; init; }
+
+        public string Name { get; init; }
+
+        public virtual IList<UpdatedRecord> UpdatedRecords { get; init; } = new List<UpdatedRecord>();
+        
+        public override string ToString() => $"{Name}-{Id}-{UpdatedRecords.Aggregate("", (i,a) => i + a.Id)}";
+
+        public override int GetHashCode() => base.GetHashCode();
+        public virtual bool Equals(CollectionRecord other) => ReferenceEquals(this, other);
+    }
+
+
 
     public record GuidRecord {
         [Key]

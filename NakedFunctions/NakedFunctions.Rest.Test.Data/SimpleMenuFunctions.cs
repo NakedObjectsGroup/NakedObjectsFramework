@@ -166,5 +166,41 @@ namespace NakedFunctions.Rest.Test.Data {
             return (nrr, context);
         }
 
+
+
+        public static (CollectionRecord, IContext) CreateNewWithExistingCollection(IContext context)
+        {
+            var sr = context.Instances<UpdatedRecord>();
+            return Helpers.DisplayAndSave(new CollectionRecord { Name = "Test1", UpdatedRecords = sr.ToList() }, context);
+        }
+
+        public static (CollectionRecord, IContext) UpdateExistingCollectionRecord(IContext context)
+        {
+            var sr = context.Instances<CollectionRecord>().First();
+            return Helpers.DisplayAndSave(sr with { Name = "Test2", UpdatedRecords = sr.UpdatedRecords }, context);
+        }
+
+
+        public static (CollectionRecord, IContext) UpdateExistingAndCollection(IContext context)
+        {
+            var rr = context.Instances<CollectionRecord>().ToArray().Last();
+            var sr = context.Instances<UpdatedRecord>().First() with { Name = "John" };
+            var nrr = rr with { Name = "Test3" };
+
+            context = context.WithPendingSave(sr, nrr);
+
+            return (nrr, context);
+        }
+
+        public static (CollectionRecord, IContext) UpdateExistingAndAddToCollection(IContext context)
+        {
+            var rr = context.Instances<CollectionRecord>().First();
+            var sr = context.Instances<UpdatedRecord>().First() with { Name = "John" };
+            var nrr = rr with { Name = "Test3", UpdatedRecords = rr.UpdatedRecords.Union(new[] {sr}).ToList()};
+
+            context = context.WithPendingSave(sr, nrr);
+
+            return (nrr, context);
+        }
     }
 }

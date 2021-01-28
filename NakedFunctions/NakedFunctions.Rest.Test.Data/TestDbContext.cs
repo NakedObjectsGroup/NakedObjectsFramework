@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace NakedFunctions.Rest.Test.Data {
@@ -28,11 +29,10 @@ namespace NakedFunctions.Rest.Test.Data {
             var fred = new SimpleRecord {Name = "Fred"};
 
             context.SimpleRecords.Add(fred);
-            context.SimpleRecords.Add(new SimpleRecord { Name = "Bill" });
-            context.SimpleRecords.Add(new SimpleRecord { Name = "Jack" });
+            context.SimpleRecords.Add(new SimpleRecord {Name = "Bill"});
+            context.SimpleRecords.Add(new SimpleRecord {Name = "Jack"});
 
-
-            var ur = new UpdatedRecord() {Name = ""};
+            var ur = new UpdatedRecord {Name = ""};
             context.UpdatedRecords.Add(ur);
 
             var dr = new DateRecord();
@@ -40,7 +40,11 @@ namespace NakedFunctions.Rest.Test.Data {
             context.DateRecords.Add(dr);
             context.EnumRecords.Add(new EnumRecord());
 
-            context.ReferenceRecords.Add(new ReferenceRecord() {UpdatedRecord = ur, DateRecord = dr } );
+            context.ReferenceRecords.Add(new ReferenceRecord {UpdatedRecord = ur, DateRecord = dr});
+
+            //context.CollectionRecords.Add(new CollectionRecord {UpdatedRecords = new List<UpdatedRecord> {ur}});
+
+            context.CollectionRecords.Add(new CollectionRecord {  });
 
             context.GuidRecords.Add(new GuidRecord());
 
@@ -60,6 +64,8 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<ReferenceRecord> ReferenceRecords { get; set; }
         public DbSet<DisplayAsPropertyRecord> DisplayAsPropertyRecords { get; set; }
         public DbSet<UpdatedRecord> UpdatedRecords { get; set; }
+
+        public DbSet<CollectionRecord> CollectionRecords { get; set; }
 
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {

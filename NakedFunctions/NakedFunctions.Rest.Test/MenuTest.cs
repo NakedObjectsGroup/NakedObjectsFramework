@@ -46,7 +46,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(TestEnum),
             typeof(ViewModel),
             typeof(ReferenceRecord),
-            typeof(UpdatedRecord)
+            typeof(UpdatedRecord),
+            typeof(CollectionRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -817,6 +818,67 @@ namespace NakedFunctions.Rest.Test {
 
             resultObj.AssertObject("Test4-3-1-1", FullName<ReferenceRecord>(), "3");
             Assert.AreEqual("Janet", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
+        }
+
+
+        [Test]
+        public void TestCreateNewRecordWithCollection()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNewWithExistingCollection), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Test1-2-1", FullName<CollectionRecord>(), "2");
+        }
+
+        [Test]
+        public void TestUpdateRecordWithCollection()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExistingCollectionRecord), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Test2-1-", FullName<CollectionRecord>(), "1");
+        }
+
+        [Test]
+        public void TestUpdateExistingAndCollection()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExistingAndCollection), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Test3-2-", FullName<CollectionRecord>(), "2");
+        }
+
+        [Test]
+        public void TestUpdateExistingAndAddToCollection()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExistingAndAddToCollection), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Test3-1-1", FullName<CollectionRecord>(), "1");
         }
     }
 }

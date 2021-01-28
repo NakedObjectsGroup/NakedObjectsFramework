@@ -1154,6 +1154,18 @@ namespace NakedObjects.Persistor.Entity.Component {
                         }
                     }
 
+                    var colMembers = context.GetCollectionMembers(poco.GetType());
+
+                    foreach (var cm in colMembers) {
+                        var cf = poco.GetType().GetProperty(cm.Name)?.GetValue(poco, null);
+
+                        if (cf is IEnumerable list) {
+                            foreach (var o in list) {
+                                MarkObjectState(o, allChanged, context, dbContext);
+                            }
+                        }
+                    }
+
                     MarkObjectState(poco, allChanged, context, dbContext);
                 }
                 catch (ArgumentException) {
