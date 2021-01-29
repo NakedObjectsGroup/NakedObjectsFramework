@@ -161,8 +161,8 @@ namespace NakedFunctions.Rest.Test.Data {
             var sr = context.Instances<UpdatedRecord>().First() with { Name = "Janet" };
             var nrr = new ReferenceRecord() { Name = "Test4", UpdatedRecord = sr, DateRecord = rr.DateRecord };
 
-            context = context.WithPendingSave(sr, nrr);
-
+            //context = context.WithPendingSave(sr, nrr);
+            context = context.WithPendingSave(nrr);
             return (nrr, context);
         }
 
