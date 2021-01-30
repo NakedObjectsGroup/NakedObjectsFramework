@@ -162,7 +162,7 @@ namespace NakedFunctions.Rest.Test.Data {
             var nrr = new ReferenceRecord() { Name = "Test4", UpdatedRecord = sr, DateRecord = rr.DateRecord };
 
             //context = context.WithPendingSave(sr, nrr);
-            context = context.WithPendingSave(nrr);
+            context = context.WithPendingSave(nrr, sr);
             return (nrr, context);
         }
 

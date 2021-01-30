@@ -18,6 +18,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using System.Text;
 using System.Transactions;
 using Microsoft.Extensions.Logging;
@@ -689,12 +690,14 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         private class EntityAttachDetachedObjectCommand : ICreateObjectCommand {
+            private object[] AllChanged { get; set; }
             private readonly LocalContext context;
             private readonly INakedObjectAdapter nakedObjectAdapter;
             private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
             private readonly EntityObjectStore parent;
 
-            public EntityAttachDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context, EntityObjectStore parent) {
+            public EntityAttachDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, object[] allChanged,  LocalContext context, EntityObjectStore parent) {
+                AllChanged = allChanged;
                 this.context = context;
                 this.parent = parent;
                 this.nakedObjectAdapter = nakedObjectAdapter;
@@ -712,21 +715,25 @@ namespace NakedObjects.Persistor.Entity.Component {
                     return null;
                 }
 
-                if (TypeUtils.IsEntityProxy(originalObject.GetType())) {
-                    // object already proxied assume previous save failed - add object to context again 
+                //if (TypeUtils.IsEntityProxy(originalObject.GetType())) {
+                //    // object already proxied assume previous save failed - add object to context again 
 
-                    var add = true;
-                    if (context.WrappedObjectContext.ObjectStateManager.TryGetObjectStateEntry(originalObject, out var ose)) {
-                        // EF knows object so check if detached 
-                        add = ose.State == EntityState.Detached;
-                    }
+                //    var add = true;
+                //    if (context.WrappedObjectContext.ObjectStateManager.TryGetObjectStateEntry(originalObject, out var ose)) {
+                //        // EF knows object so check if detached 
+                //        add = ose.State == EntityState.Detached;
+                //    }
+                //    else {
+                //        context.GetObjectSet(originalObject.GetEntityProxiedType()).Invoke("Attach", originalObject);
+                //        //context.WrappedObjectContext.Attach(originalObject as IEntityWithKey);
+                //    }
 
-                    if (add) {
-                        context.GetObjectSet(originalObject.GetEntityProxiedType()).Invoke("AddObject", originalObject);
-                    }
+                //    if (add) {
+                //        context.GetObjectSet(originalObject.GetEntityProxiedType()).Invoke("AddObject", originalObject);
+                //    }
 
-                    return originalObject;
-                }
+                //    return originalObject;
+                //}
 
                 if (objectToProxyScratchPad.ContainsKey(originalObject)) {
                     return objectToProxyScratchPad[originalObject];
@@ -760,8 +767,8 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return First(oq.Invoke<IEnumerable>("Execute", MergeOption.OverwriteChanges));
             }
 
-            private (object, bool) GetOrCreateReferenceObject(object originalObject, object[] keys, LocalContext context) {
-                var dbObject = keys.All(EmptyKey) ? null : GetObjectByKey(keys, originalObject.GetType(), context);
+            private (object, bool) GetOrCreateProxiedObject(object originalObject, object[] keys, LocalContext context) {
+                var dbObject = keys.All(EmptyKey) ? null : GetObjectByKey(keys, originalObject.GetType().GetProxiedType(), context);
 
                 return dbObject != null ? (dbObject, true) : (context.CreateObject(originalObject.GetType()), false);
             }
@@ -771,7 +778,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
                 var persisting = keys.All(EmptyKey);
 
-                var (objectToAdd, existing) = GetOrCreateReferenceObject(originalObject, keys, context);
+                var (objectToAdd, existing) = GetOrCreateProxiedObject(originalObject, keys, context);
 
                 objectToProxyScratchPad[originalObject] = objectToAdd;
                 adapterForOriginalObjectAdapter.Persisting();
@@ -786,13 +793,18 @@ namespace NakedObjects.Persistor.Entity.Component {
                     context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", objectToAdd);
                 }
 
-                if (!existing) {
+                if (!existing)
+                {
                     ProxyReferencesAndCopyValuesToProxy(originalObject, objectToAdd);
                     context.PersistedNakedObjects.Add(proxyAdapter);
                     // remove temporary adapter for proxy (tidy and also means we will not get problem 
                     // with already known object in identity map when replacing the poco
                     parent.removeAdapter(proxyAdapter);
                     parent.replacePoco(adapterForOriginalObjectAdapter, objectToAdd);
+                }
+                else if (AllChanged.Contains(originalObject))   {
+                    // need to update
+                    ProxyReferencesAndCopyValuesToProxy(originalObject, objectToAdd);
                 }
 
                 CallPersistingPersistedForComplexObjects(proxyAdapter);
@@ -826,25 +838,26 @@ namespace NakedObjects.Persistor.Entity.Component {
                 }
             }
 
-            private void ProxyReferencesAndCopyValuesToProxy(object objectToProxy, object proxy) {
-                var nonIdMembers = context.GetNonIdMembers(objectToProxy.GetType());
-                nonIdMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
+            private void ProxyReferencesAndCopyValuesToProxy(object originalObject, object proxy) {
+                var nonIdMembers = context.GetNonIdMembers(originalObject.GetType());
+                nonIdMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
 
-                var refMembers = context.GetReferenceMembers(objectToProxy.GetType());
-                refMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, ProxyObjectIfAppropriate(pi.GetValue(objectToProxy, null)), null));
+                var refMembers = context.GetReferenceMembers(originalObject.GetType());
+                refMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, ProxyObjectIfAppropriate(pi.GetValue(originalObject, null)), null));
 
-                var colmembers = context.GetCollectionMembers(objectToProxy.GetType());
+                var colmembers = context.GetCollectionMembers(originalObject.GetType());
                 foreach (var pi in colmembers) {
                     var toCol = proxy.GetType().GetProperty(pi.Name).GetValue(proxy, null);
-                    var fromCol = (IEnumerable) pi.GetValue(objectToProxy, null);
+                    var fromCol = (IEnumerable) pi.GetValue(originalObject, null);
                     foreach (var item in fromCol) {
                         toCol.Invoke("Add", ProxyObjectIfAppropriate(item));
                     }
                 }
 
-                var notPersistedMembers = objectToProxy.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && p.GetCustomAttribute<NotPersistedAttribute>() != null).ToArray();
-                notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
+                var notPersistedMembers = originalObject.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && p.GetCustomAttribute<NotPersistedAttribute>() != null).ToArray();
+                notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
             }
+
 
             public override string ToString() => $"CreateObjectCommand [object={nakedObjectAdapter}]";
 
@@ -856,6 +869,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 {
                     context.CurrentSaveRootObjectAdapter = nakedObjectAdapter;
                     objectToProxyScratchPad.Clear();
+                    AllChanged = AllChanged.Except(new[] { nakedObjectAdapter.Object}).ToArray();
                     ProxyObjectIfAppropriate(nakedObjectAdapter.Object);
                 }
                 catch (Exception e)
@@ -1125,8 +1139,8 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EntitySaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-        public void ExecuteAttachObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
-            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
+        public void ExecuteAttachObjectCommand(INakedObjectAdapter nakedObjectAdapter, object[] allChanged) =>
+            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, allChanged, GetContext(nakedObjectAdapter), this));
 
         public void EndTransaction() {
             try {
@@ -1297,10 +1311,12 @@ namespace NakedObjects.Persistor.Entity.Component {
                 _ => false
             };
 
-        public (object,object)[] ReattachAsModified(object[] toPersist) {
+        public (object,object) ReattachAsModified(object[] toPersist) {
             // reset everything
             SetupContexts();
-            return toPersist.Select(o => ReattachAsModified(o, toPersist)).ToArray();
+            return ReattachAsModified(toPersist.First(), toPersist.Skip(1).ToArray());
+
+            // return toPersist.Select(o => ReattachAsModified(o, toPersist)).ToArray();
         }
 
         public (object, object) ReattachAsModified(object obj, object[] allChanged) {
@@ -1312,7 +1328,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
             var adapter = persisting ? createAdapter(null, obj) : AdaptDetachedObject(obj);
 
-            ExecuteAttachObjectCommand(adapter);
+            ExecuteAttachObjectCommand(adapter, allChanged);
 
             return (obj, adapter.GetDomainObject());
         }

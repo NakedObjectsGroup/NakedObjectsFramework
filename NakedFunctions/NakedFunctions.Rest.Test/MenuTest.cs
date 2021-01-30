@@ -240,6 +240,9 @@ namespace NakedFunctions.Rest.Test {
                 case "3":
                     resultObj.AssertObject("Jack", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
                     break;
+                case "4":
+                    resultObj.AssertObject("hide it", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "4");
+                    break;
                 default:
                     Assert.Fail("unexpected result");
                     break;
@@ -804,21 +807,21 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("Jill", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString() );
         }
 
-        //[Test]
-        //public void TestCreateNewRecordWithUpdatedReferences()
-        //{
-        //    var api = Api().AsPost();
-        //    var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
-        //    var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNewUpdateReference), map);
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
+        [Test]
+        public void TestCreateNewRecordWithUpdatedReferences()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNewUpdateReference), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
-        //    var resultObj = parsedResult["result"];
+            var resultObj = parsedResult["result"];
 
-        //    resultObj.AssertObject("Test4-3-1-1", FullName<ReferenceRecord>(), "3");
-        //    Assert.AreEqual("Janet", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
-        //}
+            resultObj.AssertObject("Test4-3-1-1", FullName<ReferenceRecord>(), "3");
+            Assert.AreEqual("Janet", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
+        }
 
 
         [Test]

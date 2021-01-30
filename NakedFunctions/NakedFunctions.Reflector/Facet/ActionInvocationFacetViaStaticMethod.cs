@@ -73,24 +73,25 @@ namespace NakedFunctions.Meta.Facet {
         }
 
 
-        private static (object, object)[] PersistResult(ILifecycleManager lifecycleManager,
-                                                        IEnumerable<object> toPersist) =>
-            lifecycleManager.Persist(toPersist.ToArray());
-
+        private static (object, object) PersistResult(ILifecycleManager lifecycleManager,
+                                                        object[] toPersist) {
+         
+            return toPersist.Any() ? lifecycleManager.Persist(toPersist) : (null, null);
+        }
 
         private static (object, Context) CastTuple(ITuple tuple) => (tuple[0], (Context)tuple[1]);
 
         private object HandleContextResult((object, Context) tuple, INakedObjectsFramework framework) {
             var (toReturn, context) = tuple;
             PerformActions(framework.ServicesManager, framework.ServiceProvider, new[] {context.Action});
-            var allPersisted = PersistResult(framework.LifecycleManager, context.PendingSave);
+            var (toPersist, persisted) = PersistResult(framework.LifecycleManager, context.PendingSave.ToArray());
 
-            foreach (var valueTuple in allPersisted) {
-                var (toPersist, persisted) = valueTuple;
-                if (ReferenceEquals(toPersist, toReturn)) {
-                    return persisted;
-                }
+            //foreach (var valueTuple in allPersisted) {
+            //    var (toPersist, persisted) = valueTuple;
+            if (ReferenceEquals(toPersist, toReturn)) {
+                return persisted;
             }
+            // }
 
             return toReturn;
         }
