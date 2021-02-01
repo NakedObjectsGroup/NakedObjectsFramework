@@ -1,9 +1,9 @@
-// // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and limitations under the License.
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
@@ -20,12 +20,12 @@ using NakedObjects.Persistor.Entity.Util;
 
 namespace NakedObjects.Persistor.Entity.Component {
     public class EntityAttachDetachedObjectCommand : ICreateObjectCommand {
-        private readonly EntityObjectStore.LocalContext context;
+        private readonly LocalContext context;
         private readonly INakedObjectAdapter nakedObjectAdapter;
         private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
         private readonly EntityObjectStore parent;
 
-        public EntityAttachDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, object[] allChanged, EntityObjectStore.LocalContext context, EntityObjectStore parent) {
+        public EntityAttachDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, object[] allChanged, LocalContext context, EntityObjectStore parent) {
             AllChanged = allChanged;
             this.context = context;
             this.parent = parent;
@@ -56,15 +56,15 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
-        private static IDictionary<string, object> GetMemberValueMap(Type type, object[] key, EntityObjectStore.LocalContext context, out string entitySetName) {
+        private static IDictionary<string, object> GetMemberValueMap(Type type, object[] key, LocalContext context, out string entitySetName) {
             var set = context.GetObjectSet(type).GetProperty<EntitySet>("EntitySet");
             entitySetName = $"{set.EntityContainer.Name}.{set.Name}";
             var idmembers = context.GetIdMembers(type);
             var keyValues = key;
-            return EntityObjectStore.MemberValueMap(idmembers, keyValues);
+            return ObjectContextUtils.MemberValueMap(idmembers, keyValues);
         }
 
-        public object GetObjectByKey(object[] keys, Type type, EntityObjectStore.LocalContext context) {
+        public object GetObjectByKey(object[] keys, Type type, LocalContext context) {
             var memberValueMap = GetMemberValueMap(type, keys, context, out var entitySetName);
             var oq = context.CreateQuery(type, entitySetName);
 
@@ -74,10 +74,10 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             context.GetNavigationMembers(type).Where(m => !CollectionUtils.IsCollection(m.PropertyType)).ForEach(pi => oq = oq.Invoke<object>("Include", pi.Name));
-            return EntityObjectStore.First(oq.Invoke<IEnumerable>("Execute", MergeOption.OverwriteChanges));
+            return ObjectContextUtils.First(oq.Invoke<IEnumerable>("Execute", MergeOption.OverwriteChanges));
         }
 
-        private (object, bool) GetOrCreateProxiedObject(object originalObject, object[] keys, EntityObjectStore.LocalContext context) {
+        private (object, bool) GetOrCreateProxiedObject(object originalObject, object[] keys, LocalContext context) {
             var dbObject = keys.All(EntityObjectStore.EmptyKey) ? null : GetObjectByKey(keys, originalObject.GetType().GetProxiedType(), context);
 
             return dbObject != null ? (dbObject, true) : (context.CreateObject(originalObject.GetType()), false);

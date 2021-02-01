@@ -32,7 +32,7 @@ namespace NakedObjects.Meta.Utils {
 
         // ReSharper disable once UnusedMember.Global
         // maybe called reflectively
-        public static IQueryable<T> GetInjectedQueryableValue<T>(IObjectPersistor persistor) where T : class => persistor.UntrackedInstances<T>();
+        public static IQueryable<T> GetInjectedQueryableValue<T>(IObjectPersistor persistor) where T : class => persistor.Instances<T>();
 
         private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectsFramework framework) =>
             p switch {

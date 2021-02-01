@@ -6,9 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Core;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
@@ -32,7 +36,7 @@ namespace NakedObjects.Persistor.Entity.Util {
             return ns == null ? null : context.MetadataWorkspace.GetType(name, ns, false, DataSpace.CSpace) as StructuralType;
         }
 
-        private static EntityType GetEntityType(this EntityObjectStore.LocalContext context, Type type) => context.GetStructuralType(type) as EntityType;
+        private static EntityType GetEntityType(this LocalContext context, Type type) => context.GetStructuralType(type) as EntityType;
 
         private static bool IsTypeInOSpace(this ObjectContext context, Type type) => context.MetadataWorkspace.GetItems(DataSpace.OSpace).Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType || x.BuiltInTypeKind == BuiltInTypeKind.ComplexType).OfType<EdmType>().Any(et => et.FullName == type.FullName);
 
@@ -41,10 +45,10 @@ namespace NakedObjects.Persistor.Entity.Util {
         // for the moment then workaround by attempting to create an object set.
 
         // For complex types this will only work if the parent is queried first
-        public static bool ContextKnowsType(this EntityObjectStore.LocalContext context, Type type) =>
+        public static bool ContextKnowsType(this LocalContext context, Type type) =>
             context.WrappedObjectContext.IsTypeInOSpace(type) || context.CanCreateObjectSet(type);
 
-        public static bool IdMembersAreIdentity(this EntityObjectStore.LocalContext context, Type type) {
+        public static bool IdMembersAreIdentity(this LocalContext context, Type type) {
             var et = GetEntityType(context, type);
             if (et != null) {
                 var mp = et.KeyMembers.SelectMany(m => m.MetadataProperties).Where(p => p.Name.Contains("StoreGeneratedPattern")).ToArray();
@@ -54,20 +58,20 @@ namespace NakedObjects.Persistor.Entity.Util {
             return false;
         }
 
-        private static PropertyInfo[] SafeGetMembers(this EntityObjectStore.LocalContext context, Type type, Func<EntityType, IEnumerable<EdmMember>> getMembers) {
+        private static PropertyInfo[] SafeGetMembers(this LocalContext context, Type type, Func<EntityType, IEnumerable<EdmMember>> getMembers) {
             var et = GetEntityType(context, type);
             return et != null
                 ? type.GetProperties().Join(getMembers(et), pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray()
                 : new PropertyInfo[] { };
         }
 
-        public static PropertyInfo[] GetIdMembers(this EntityObjectStore.LocalContext context, Type type) => context.SafeGetMembers(type, et => et.KeyMembers);
+        public static PropertyInfo[] GetIdMembers(this LocalContext context, Type type) => context.SafeGetMembers(type, et => et.KeyMembers);
 
-        public static PropertyInfo[] GetNavigationMembers(this EntityObjectStore.LocalContext context, Type type) => context.SafeGetMembers(type, et => et.NavigationProperties);
+        public static PropertyInfo[] GetNavigationMembers(this LocalContext context, Type type) => context.SafeGetMembers(type, et => et.NavigationProperties);
 
-        public static PropertyInfo[] GetMembers(this EntityObjectStore.LocalContext context, Type type) => context.SafeGetMembers(type, et => et.Properties);
+        public static PropertyInfo[] GetMembers(this LocalContext context, Type type) => context.SafeGetMembers(type, et => et.Properties);
 
-        public static PropertyInfo[] GetComplexMembers(this EntityObjectStore.LocalContext context, Type type) {
+        public static PropertyInfo[] GetComplexMembers(this LocalContext context, Type type) {
             var st = context.GetStructuralType(type);
             if (st != null) {
                 var cm = st.Members.Where(m => m.TypeUsage.EdmType is ComplexType);
@@ -77,13 +81,13 @@ namespace NakedObjects.Persistor.Entity.Util {
             return new PropertyInfo[] { };
         }
 
-        public static PropertyInfo[] GetReferenceMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetNavigationMembers(type).Where(x => !CollectionUtils.IsCollection(x.PropertyType)).ToArray();
+        public static PropertyInfo[] GetReferenceMembers(this LocalContext context, Type type) => context.GetNavigationMembers(type).Where(x => !CollectionUtils.IsCollection(x.PropertyType)).ToArray();
 
-        public static PropertyInfo[] GetCollectionMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetNavigationMembers(type).Where(x => CollectionUtils.IsCollection(x.PropertyType)).ToArray();
+        public static PropertyInfo[] GetCollectionMembers(this LocalContext context, Type type) => context.GetNavigationMembers(type).Where(x => CollectionUtils.IsCollection(x.PropertyType)).ToArray();
 
-        public static PropertyInfo[] GetNonIdMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
+        public static PropertyInfo[] GetNonIdMembers(this LocalContext context, Type type) => context.GetMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
 
-        public static object CreateQuery(this EntityObjectStore.LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {
+        public static object CreateQuery(this LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {
             var mostBaseType = context.GetMostBaseType(type);
             var mi = context.WrappedObjectContext.GetType().GetMethod("CreateQuery").MakeGenericMethod(mostBaseType);
             var parms = new List<object> {queryString, new ObjectParameter[] { }};
@@ -98,7 +102,7 @@ namespace NakedObjects.Persistor.Entity.Util {
             return os;
         }
 
-        public static bool CanCreateObjectSet(this EntityObjectStore.LocalContext context, Type type) {
+        public static bool CanCreateObjectSet(this LocalContext context, Type type) {
             try {
                 var mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(type);
                 mi.Invoke(context.WrappedObjectContext, null);
@@ -115,7 +119,7 @@ namespace NakedObjects.Persistor.Entity.Util {
             return false;
         }
 
-        public static ObjectQuery GetObjectSet(this EntityObjectStore.LocalContext context, Type type) {
+        public static ObjectQuery GetObjectSet(this LocalContext context, Type type) {
             var mostBaseType = context.GetMostBaseType(type);
             var mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(mostBaseType);
             var os = (ObjectQuery) mi.Invoke(context.WrappedObjectContext, null);
@@ -125,30 +129,105 @@ namespace NakedObjects.Persistor.Entity.Util {
 
         // used reflectively
         // ReSharper disable once UnusedMember.Global
-        public static IQueryable<TDerived> GetObjectSetOfType<TDerived, TBase>(this EntityObjectStore.LocalContext context) where TDerived : TBase {
+        public static IQueryable<TDerived> GetObjectSetOfType<TDerived, TBase>(this LocalContext context) where TDerived : TBase {
             var mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(typeof(TBase));
             var os = (IQueryable<TBase>) InvokeUtils.Invoke(mi, context.WrappedObjectContext, null);
             ((ObjectQuery) os).MergeOption = context.DefaultMergeOption;
             return os.OfType<TDerived>();
         }
 
-        public static object GetQueryableOfDerivedType<T>(this EntityObjectStore.LocalContext context) => context.GetQueryableOfDerivedType(typeof(T));
+        public static object GetQueryableOfDerivedType<T>(this LocalContext context) => context.GetQueryableOfDerivedType(typeof(T));
 
-        public static object GetQueryableOfDerivedType(this EntityObjectStore.LocalContext context, Type type) {
+        public static object GetQueryableOfDerivedType(this LocalContext context, Type type) {
             var mostBaseType = context.GetMostBaseType(type);
             var mi = typeof(ObjectContextUtils).GetMethod("GetObjectSetOfType").MakeGenericMethod(type, mostBaseType);
             return InvokeUtils.InvokeStatic(mi, new object[] {context});
         }
 
-        public static object CreateObject(this EntityObjectStore.LocalContext context, Type type) {
+        public static object CreateObject(this LocalContext context, Type type) {
             object objectSet = context.GetObjectSet(type);
             var methods = objectSet.GetType().GetMethods();
             var mi = methods.Single(m => m.Name == "CreateObject" && m.IsGenericMethod).MakeGenericMethod(type);
             return InvokeUtils.Invoke(mi, objectSet, null);
         }
 
-        public static object[] GetKey(this EntityObjectStore.LocalContext context, object domainObject) => context.GetIdMembers(domainObject.GetEntityProxiedType()).Select(x => x.GetValue(domainObject, null)).ToArray();
+        public static object[] GetKey(this LocalContext context, object domainObject) => context.GetIdMembers(domainObject.GetEntityProxiedType()).Select(x => x.GetValue(domainObject, null)).ToArray();
 
-        public static object[] GetKey(this EntityObjectStore.LocalContext context, INakedObjectAdapter nakedObjectAdapter) => context.GetIdMembers(nakedObjectAdapter.GetDomainObject().GetEntityProxiedType()).Select(x => x.GetValue(nakedObjectAdapter.GetDomainObject(), null)).ToArray();
+        public static object[] GetKey(this LocalContext context, INakedObjectAdapter nakedObjectAdapter) => context.GetIdMembers(nakedObjectAdapter.GetDomainObject().GetEntityProxiedType()).Select(x => x.GetValue(nakedObjectAdapter.GetDomainObject(), null)).ToArray();
+
+
+        public static object First(IEnumerable enumerable)
+        {
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            // unfortunately this cast doesn't work with entity linq
+            // return queryable.Cast<object>().FirstOrDefault();
+            foreach (var o in enumerable)
+            {
+                return o;
+            }
+
+            return null;
+        }
+
+        public static IDictionary<string, object> MemberValueMap(ICollection<PropertyInfo> idmembers, ICollection<object> keyValues)
+        {
+            if (idmembers.Count != keyValues.Count)
+            {
+                throw new NakedObjectSystemException("Member and value counts must match");
+            }
+
+            return idmembers.Zip(keyValues, (k, v) => new { Key = k, Value = v })
+                            .ToDictionary(x => x.Key.Name, x => x.Value);
+        }
+
+
+
+        public static IEnumerable<object> GetRelationshipEnds(ObjectContext context, ObjectStateEntry /*RelationshipEntry*/ ose)
+        {
+            var key0 = (EntityKey)ose.GetType().GetProperty("Key0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ose, null);
+            var key1 = (EntityKey)ose.GetType().GetProperty("Key1", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ose, null);
+
+            var o0 = context.GetObjectByKey(key0);
+            var o1 = context.GetObjectByKey(key1);
+
+            return new[] { o0, o1 };
+        }
+
+        public static IEnumerable<object> GetChangedObjectsInContext(ObjectContext context)
+        {
+            var addedOses = context.ObjectStateManager.GetObjectStateEntries(EntityState.Added).ToArray();
+            var addedOseRelationships = addedOses.Where(ose => ose.IsRelationship);
+
+            var deletedOses = context.ObjectStateManager.GetObjectStateEntries(EntityState.Deleted).ToArray();
+            var deletedOseRelationships = deletedOses.Where(ose => ose.IsRelationship);
+
+            var changedOses = context.ObjectStateManager.GetObjectStateEntries(EntityState.Modified);
+            var changedEntities = changedOses.Select(x => x.Entity).ToList();
+
+            addedOseRelationships.ForEach(x => changedEntities.AddRange(GetRelationshipEnds(context, x)));
+            deletedOseRelationships.ForEach(x => changedEntities.AddRange(GetRelationshipEnds(context, x)));
+
+            // this is here just to catch a case (adding sales reason to sales order in AdventureWorks) 
+            // which doesn't work but which should.
+            changedEntities.AddRange(GetRelationshipEndsForEntity(addedOses));
+            changedEntities.AddRange(GetRelationshipEndsForEntity(deletedOses));
+
+            // filter added and deleted entries 
+            return changedEntities.Where(x => x != null).Distinct().Where(e => {
+                context.ObjectStateManager.TryGetObjectStateEntry(e, out var ose);
+                return ose != null && ose.State != EntityState.Deleted && ose.State != EntityState.Added;
+            });
+        }
+
+        public static IEnumerable<object> GetRelationshipEndsForEntity(IEnumerable<ObjectStateEntry> addedOses)
+        {
+            var relatedends = addedOses.Where(ose => !ose.IsRelationship).SelectMany(x => x.RelationshipManager.GetAllRelatedEnds());
+            var references = relatedends.Where(x => x.GetType().GetGenericTypeDefinition() == typeof(EntityReference<>));
+            return references.Select(x => x.GetProperty<object>("Value"));
+        }
+
+        public static IEnumerable<object> GetChangedComplexObjectsInContext(LocalContext context) =>
+            context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).Select(ose => new { Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEntityProxiedType()) }).SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).Where(x => x != null).Distinct();
+
     }
 }

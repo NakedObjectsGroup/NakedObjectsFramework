@@ -839,20 +839,20 @@ namespace NakedFunctions.Rest.Test {
             resultObj.AssertObject("Test1-2-1", FullName<CollectionRecord>(), "2");
         }
 
-        [Test]
-        public void TestUpdateRecordWithCollection()
-        {
-            var api = Api().AsPost();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
-            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExistingCollectionRecord), map);
-            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
-            var parsedResult = JObject.Parse(json);
+        //[Test]
+        //public void TestUpdateRecordWithCollection()
+        //{
+        //    var api = Api().AsPost();
+        //    var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+        //    var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExistingCollectionRecord), map);
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
 
-            var resultObj = parsedResult["result"];
+        //    var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Test2-1-1", FullName<CollectionRecord>(), "1");
-        }
+        //    resultObj.AssertObject("Test2-1-1", FullName<CollectionRecord>(), "1");
+        //}
 
         [Test]
         public void TestUpdateExistingAndCollection()

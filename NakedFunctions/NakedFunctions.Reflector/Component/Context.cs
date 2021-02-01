@@ -23,7 +23,7 @@ namespace NakedFunctions.Reflector.Component {
         public object Action { get; init; }
         public object[] PendingSave { get; init; } = Array.Empty<object>();
 
-        public IQueryable<T> Instances<T>() where T : class => persistor.UntrackedInstances<T>();
+        public IQueryable<T> Instances<T>() where T : class => persistor.Instances<T>();
 
         public T GetService<T>() => provider.GetService<T>();
 

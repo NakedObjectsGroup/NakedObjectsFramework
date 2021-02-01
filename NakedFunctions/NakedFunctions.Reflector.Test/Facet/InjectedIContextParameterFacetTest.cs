@@ -24,7 +24,7 @@ namespace NakedFunctions.Meta.Test.Facet {
 
         public InjectedIContextParameterFacetTest() {
             mockFramework.SetupGet(p => p.Persistor).Returns(mockPersistor.Object);
-            mockPersistor.Setup(p => p.UntrackedInstances<object>()).Returns(testValue);
+            mockPersistor.Setup(p => p.Instances<object>()).Returns(testValue);
         }
 
         [TestMethod]
