@@ -851,7 +851,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Test2-1-", FullName<CollectionRecord>(), "1");
+            resultObj.AssertObject("Test2-1-1", FullName<CollectionRecord>(), "1");
         }
 
         [Test]

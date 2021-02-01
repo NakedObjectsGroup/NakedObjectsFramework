@@ -150,7 +150,7 @@ namespace NakedFunctions.Rest.Test.Data {
             var sr = context.Instances<UpdatedRecord>().First() with {Name = "Jill"};
             var nrr = rr with { Name = "Test3", UpdatedRecord = sr, DateRecord = rr.DateRecord };
 
-            context = context.WithPendingSave(sr, nrr);
+            context = context.WithPendingSave(nrr, sr);
 
             return (nrr, context);
         }
@@ -187,7 +187,7 @@ namespace NakedFunctions.Rest.Test.Data {
             var sr = context.Instances<UpdatedRecord>().First() with { Name = "John" };
             var nrr = rr with { Name = "Test3" };
 
-            context = context.WithPendingSave(sr, nrr);
+            context = context.WithPendingSave(nrr, sr);
 
             return (nrr, context);
         }
@@ -198,7 +198,7 @@ namespace NakedFunctions.Rest.Test.Data {
             var sr = context.Instances<UpdatedRecord>().First() with { Name = "John" };
             var nrr = rr with { Name = "Test3", UpdatedRecords = rr.UpdatedRecords.Union(new[] {sr}).ToList()};
 
-            context = context.WithPendingSave(sr, nrr);
+            context = context.WithPendingSave(nrr, sr);
 
             return (nrr, context);
         }
