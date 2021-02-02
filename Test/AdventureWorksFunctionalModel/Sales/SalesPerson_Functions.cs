@@ -15,6 +15,12 @@ namespace AW.Functions
 {
     public static class SalesPerson_Functions
     {
+        internal static (SalesPerson, IContext) UpdateSalesPerson(
+            SalesPerson original, SalesPerson updated, IContext context)
+        {
+            var updated2 = updated with { ModifiedDate = context.Now() };
+            return (updated2, context.WithUpdated(original, updated2));
+        }
 
         [MemberOrder(1)]
         public static (SalesPerson, IContext) RecalulateSalesYTD(this SalesPerson sp, IContext context)
@@ -34,15 +40,15 @@ namespace AW.Functions
             {
                 newYTD = 0;
             }
-            return context.SaveAndDisplay(sp with { SalesYTD = newYTD });
+            return UpdateSalesPerson(sp, sp with { SalesYTD = newYTD }, context);
         }
 
         [MemberOrder(2)]
         public static (SalesPerson, IContext) ChangeSalesQuota(this SalesPerson sp, decimal newQuota, IContext context)
         {
-            var newSP = sp with { SalesQuota = newQuota };
+            var uSp = sp with { SalesQuota = newQuota };
             var history = new SalesPersonQuotaHistory() with { SalesPerson = sp, SalesQuota = newQuota, QuotaDate = context.Now() };
-            return (newSP, context.WithPendingSave(newSP, history));
+            return (uSp, context.WithUpdated(sp, uSp).WithNew(history));
         }
 
         [MemberOrder(1)]
@@ -51,9 +57,9 @@ namespace AW.Functions
 
             var newHist = new SalesTerritoryHistory() with { SalesPerson = sp, SalesTerritory = newTerritory, StartDate = context.Now() };
             var prev = sp.TerritoryHistory.Where(n => n.EndDate == null).FirstOrDefault();
-            var newPrev = prev with { EndDate = context.Now() };
-            var newSp = sp with { SalesTerritory = newTerritory };
-            return (newSp, context.WithPendingSave(newSp, newPrev, newHist));
+            var uPrev = prev with { EndDate = context.Now() };
+            var uSp = sp with { SalesTerritory = newTerritory };
+            return (uSp, context.WithNew(newHist).WithUpdated(sp, uSp).WithUpdated(prev, uPrev));
         }
     }
 }

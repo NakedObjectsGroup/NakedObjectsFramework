@@ -16,11 +16,11 @@ namespace AW.Types
         [Hidden]
         public virtual int SpecialOfferID { get; init; }
 
-        [Hidden]
-        public virtual int ProductID { get; init; }
-
         [MemberOrder(1)]
         public virtual SpecialOffer SpecialOffer { get; init; }
+
+        [Hidden]
+        public virtual int ProductID { get; init; }
 
         [MemberOrder(2)]
         public virtual Product Product { get; init; }

@@ -36,8 +36,8 @@ namespace AW.Functions {
 
         public static (Product, IContext) AddToShoppingCart(Product product, IContext context) {
             string id = GetShoppingCartIDForUser(context);
-            var item = new ShoppingCartItem() with { ShoppingCartID = id, Product = product, Quantity = 1, DateCreated = context.Now()};
-            return (product, context.WithPendingSave(item).WithInformUser($"1 x {product} added to Cart"));
+            var newItem = new ShoppingCartItem() with { ShoppingCartID = id, Product = product, Quantity = 1, DateCreated = context.Now()};
+            return (product, context.WithNew(newItem).WithInformUser($"1 x {product} added to Cart"));
         }
 
         public static  (SalesOrderHeader, IContext) CheckOut(IContext context) {
@@ -98,9 +98,10 @@ namespace AW.Functions {
             SalesOrderHeader order, IContext context) {
 
             var items = Cart(context);
-            var details = items.Select(item => order.AddNewDetail(item.Product, (short) item.Quantity, context));
-            EmptyCart(context);
-            return (order, context.WithPendingSave(details));
+            var details = items.Select(item => order.CreateNewDetail(item.Product, (short) item.Quantity, context));
+            var context2 = details.Aggregate(context, (c, d) => c.WithNew(d));
+            var context3 = EmptyCart(context);
+            return (order, context3);
         }
 
         public static void RemoveItems(IQueryable<ShoppingCartItem> items) {
@@ -111,8 +112,9 @@ namespace AW.Functions {
             }
         }
 
-        public static void EmptyCart(IContext context) {
-            RemoveItems(Cart(context));
+        public static IContext EmptyCart(IContext context) {
+            throw new NotImplementedException();
+            //RemoveItems(Cart(context));
         }
 
         public static string DisableEmptyCart(IContext context) =>  DisableIfNoCustomerForUser(context);

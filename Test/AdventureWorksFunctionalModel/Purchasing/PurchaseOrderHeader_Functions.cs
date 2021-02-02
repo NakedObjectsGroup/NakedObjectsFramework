@@ -30,7 +30,7 @@ namespace AW.Functions
                 DueDate = context.Today().Date.AddDays(7),
                 ModifiedDate = context.Now()
             };
-            return (header, context.WithPendingSave(det));
+            return (header, context.WithNew(det));
         }
 
         [PageSize(10)]
@@ -51,8 +51,12 @@ namespace AW.Functions
 
         [MemberOrder(1)]
         public static (PurchaseOrderDetail, IContext) AddNewDetail(this PurchaseOrderHeader header,
-             Product prod, short qty, IContext context) =>
-               context.SaveAndDisplay(new PurchaseOrderDetail() { PurchaseOrderHeader = header, Product = prod, OrderQty = qty });
+             Product prod, short qty, IContext context)
+        {
+            var pod = new PurchaseOrderDetail() { PurchaseOrderHeader = header, Product = prod, OrderQty = qty };
+            return (pod, context.WithNew(pod));
+        }
+
 
         public static string DisableAddNewDetail(this PurchaseOrderHeader header) =>
            header.IsPending() ? null : "Cannot add to Purchase Order unless status is Pending";

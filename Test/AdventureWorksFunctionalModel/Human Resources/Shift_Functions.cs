@@ -17,8 +17,8 @@ namespace AW.Functions {
 
         public static (Shift, IContext) ChangeTimes(this Shift s, TimeSpan startTime, TimeSpan endTime, IContext context)
         {
-            var s2 = s with { StartTime = startTime } with { EndTime = endTime };
-            return context.SaveAndDisplay(s2);
+            var uS = s with { StartTime = startTime } with { EndTime = endTime };
+            return (uS, context.WithUpdated(s, uS));
         }
 
         public static TimeSpan Default1ChangeTimes(this Shift s) => new(0, 9, 0, 0);

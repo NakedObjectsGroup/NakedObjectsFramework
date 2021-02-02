@@ -36,6 +36,7 @@ namespace AW.Functions
             CurrentSpecialOffers(context).Where(s => s.MinQty <= 1);
 
         //TODO: Annotations & complementary methods
+
         [MemberOrder(4), CreateNew]
         public static (SpecialOffer, IContext) CreateNewSpecialOffer(
             [MaxLength(50)] string description,
@@ -46,18 +47,21 @@ namespace AW.Functions
             [DefaultValue(1)] DateTime startDate,
              DateTime endDate,
             IContext context)
-       => context.SaveAndDisplay(new SpecialOffer
-       {
-           Description = description,
-           DiscountPct = discountPct,
-           Type = type,
-           Category = category,
-           MinQty = minQty,
-           StartDate = startDate,
-           EndDate = endDate,
-           ModifiedDate = context.Now(),
-           rowguid = context.NewGuid()
-       });
+        {
+            var so = new SpecialOffer
+            {
+                Description = description,
+                DiscountPct = discountPct,
+                Type = type,
+                Category = category,
+                MinQty = minQty,
+                StartDate = startDate,
+                EndDate = endDate,
+                ModifiedDate = context.Now(),
+                rowguid = context.NewGuid()
+            };
+            return (so, context.WithNew(so));
+        }
 
         //public static string ValidateCreateNewSpecialOffer(
         //    [DefaultValue(1)] int minQty, [Optionally] int? maxQty) =>

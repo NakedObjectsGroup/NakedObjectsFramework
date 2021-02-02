@@ -20,10 +20,16 @@ namespace AW.Functions {
         //public static string Validate(this Address a, CountryRegion countryRegion, StateProvince stateProvince, IQueryable<StateProvince> allProvinces)
         //=> StateProvincesForCountry(countryRegion, allProvinces).Contains(stateProvince) ? null : "Invalid region";
 
+        internal static (Address, IContext) UpdateAddress(Address original, Address updated, IContext context)
+        {
+            var updated2 = updated with { ModifiedDate = context.Now() };
+            return (updated, context.WithUpdated(original, updated2));
+        }
+
         [Edit]
         public static (Address, IContext) EditStateProvince(this Address a,
             CountryRegion countryRegion, StateProvince stateProvince, IContext context) =>
-                context.SaveAndDisplay(a with { StateProvince = stateProvince });
+                UpdateAddress(a, a with { StateProvince = stateProvince }, context);
 
         public static IList<CountryRegion> Choices1EditStateProvince(this Address a, IContext context) =>
                 context.Instances<CountryRegion>().ToArray();

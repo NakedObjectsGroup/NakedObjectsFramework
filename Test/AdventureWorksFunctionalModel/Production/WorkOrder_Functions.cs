@@ -15,19 +15,24 @@ namespace AW.Functions
 {
     public static class WorkOrder_Functions
     {
+        internal static (WorkOrder, IContext) UpdateWO(WorkOrder original, WorkOrder update, IContext context)
+        {
+            var update2 = update with { ModifiedDate = context.Now() };
+            return (update2, context.WithUpdated(original, update2));
+        }
 
         public static (WorkOrder, IContext) ChangeScrappedQuantity(this WorkOrder wo, short newQty, IContext context)
-        => context.SaveAndDisplay(wo with { ScrappedQty = newQty });
+        => UpdateWO(wo, wo with { ScrappedQty = newQty }, context);
 
         public static (WorkOrder, IContext) EditDates(this WorkOrder wo, 
             DateTime startDate, DateTime dueDate, IContext context) =>
-             context.SaveAndDisplay(wo with { StartDate = startDate, DueDate = dueDate });
+             UpdateWO(wo, wo with { StartDate = startDate, DueDate = dueDate }, context);
 
         public static string ValidateEditDates(this WorkOrder wo, DateTime startDate, DateTime dueDate) =>
             startDate > dueDate ? "StartDate must be before DueDate" : null;
 
         public static (WorkOrder, IContext) EditOrderQty(this WorkOrder wo, int orderQty, IContext context) =>
-            context.SaveAndDisplay(wo with { OrderQty = orderQty });
+            UpdateWO(wo, wo with { OrderQty = orderQty }, context);
 
         public static string Validate1EditOrderQty(this WorkOrder wo, int orderQty)
         {
@@ -52,7 +57,7 @@ namespace AW.Functions
                 Location = loc,
                 OperationSequence = (short)highestSequence
             };
-            return context.SaveAndDisplay(wor);
+            return (wor, context.WithNew(wor));
         }
 
         #region Edits
@@ -60,12 +65,12 @@ namespace AW.Functions
         [Edit]
         public static (WorkOrder, IContext) EditStartDate(this WorkOrder wo,
             [DefaultValue(0)] DateTime startDate, IContext context) =>
-            context.SaveAndDisplay(wo with { StartDate = startDate });
+            UpdateWO(wo, wo with { StartDate = startDate }, context);
 
         [Edit]
         public static (WorkOrder, IContext) EditDueDate(this WorkOrder wo,
             [DefaultValue(7)] DateTime dueDate, IContext context) =>
-            context.SaveAndDisplay(wo with { DueDate = dueDate });
+            UpdateWO(wo, wo with { DueDate = dueDate }, context);
 
         #endregion
     }

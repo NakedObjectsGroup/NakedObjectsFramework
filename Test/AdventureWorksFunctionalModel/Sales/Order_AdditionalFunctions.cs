@@ -62,7 +62,8 @@ namespace AW.Functions {
 
         public static (SalesOrderHeader, IContext) AppendComment(this SalesOrderHeader order, string commentToAppend, IContext context) {
             string newComments = order.Comment == null? commentToAppend: order.Comment + "; " + commentToAppend;
-            return context.SaveAndDisplay(order with {Comment = newComments });
+            var updated = order with { Comment = newComments, ModifiedDate = context.Now() };
+            return (updated, context.WithUpdated(order, updated));
         }
 
         public static string Validate1AppendComment(this SalesOrderHeader order, string commentToAppend) {
@@ -159,7 +160,7 @@ namespace AW.Functions {
                 rowguid = context.NewGuid(),
                 ModifiedDate = context.Now()
             };
-            return (newOrder, context.WithPendingSave(newOrder));
+            return (newOrder, context.WithNew(newOrder));
         }
 
         public static string DisableCreateAnotherOrder(this Customer customer, IContext context) =>
