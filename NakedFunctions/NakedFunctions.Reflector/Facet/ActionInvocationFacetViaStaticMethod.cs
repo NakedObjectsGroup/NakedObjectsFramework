@@ -74,18 +74,21 @@ namespace NakedFunctions.Meta.Facet {
 
         private static (object, object)[] PersistResult(ILifecycleManager lifecycleManager,
                                                         object toPersist,
-                                                        (object, object) toUpdate) {
-            var updated = toUpdate.Item1 is not null ? lifecycleManager.Update(toUpdate) : (null, null);
-            var persisted = toPersist is not null ? lifecycleManager.Persist(toPersist) : (null, null);
+                                                        (object, object)[] toUpdate) {
+            var updated = toUpdate.Any() ? lifecycleManager.Update(toUpdate.First(), toUpdate.Skip(1).ToArray()) : default;
+            var persisted = toPersist is not null ? lifecycleManager.Persist(toPersist) : default;
+            //updated.Add(persisted);
             return new[] {updated, persisted};
         }
 
         private static (object, Context) CastTuple(ITuple tuple) => (tuple[0], (Context)tuple[1]);
 
+      
+
         private object HandleContextResult((object, Context) tuple, INakedObjectsFramework framework) {
             var (toReturn, context) = tuple;
             PerformActions(framework.ServicesManager, framework.ServiceProvider, new[] {context.Action});
-            var allPersisted = PersistResult(framework.LifecycleManager, context.PendingSave.SingleOrDefault(), context.PendingUpdate.SingleOrDefault());
+            var allPersisted = PersistResult(framework.LifecycleManager, context.PendingSave.SingleOrDefault(), context.PendingUpdate);
 
             foreach (var valueTuple in allPersisted) {
                 var (toPersist, persisted) = valueTuple;
@@ -98,6 +101,12 @@ namespace NakedFunctions.Meta.Facet {
         }
 
         private INakedObjectAdapter HandleInvokeResult(INakedObjectsFramework framework, object result) {
+            // if any changes made by invocation fail 
+
+            if (framework.Persistor.HasChanges()) {
+                throw new PersistFailedException($"method {ActionMethod} on {ActionMethod.DeclaringType} made database changes and so is not pure");
+            }
+
             object toReturn;
             if (result is ITuple tuple) {
                 var size = tuple.Length;

@@ -25,6 +25,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
         private readonly EntityObjectStore parent;
         private readonly object rootProxy;
+        private readonly (object, object)[] dependents = Array.Empty<(object, object)>();
 
         public EntityAttachDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context, EntityObjectStore parent) {
             this.context = context;
@@ -32,11 +33,12 @@ namespace NakedObjects.Persistor.Entity.Component {
             this.nakedObjectAdapter = nakedObjectAdapter;
         }
 
-        public EntityAttachDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, object rootProxy, LocalContext context, EntityObjectStore parent) {
+        public EntityAttachDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, object rootProxy, (object, object)[] dependents, LocalContext context, EntityObjectStore parent) {
             this.context = context;
             this.parent = parent;
             this.nakedObjectAdapter = nakedObjectAdapter;
             this.rootProxy = rootProxy;
+            this.dependents = dependents;
         }
 
         public INakedObjectAdapter OnObject() => nakedObjectAdapter;
@@ -68,8 +70,8 @@ namespace NakedObjects.Persistor.Entity.Component {
             return ObjectContextUtils.MemberValueMap(idmembers, keyValues);
         }
 
-        private object GetOrCreateProxiedObject(object originalObject, object[] keys, LocalContext context) {
-            var proxy = keys.All(EntityObjectStore.EmptyKey) ? context.CreateObject(originalObject.GetType()) : rootProxy;
+        private object GetOrCreateProxiedObject(object originalObject, object[] keys, LocalContext context, object potentialProxy) {
+            var proxy = keys.All(EntityObjectStore.EmptyKey) ? context.CreateObject(originalObject.GetType()) : potentialProxy;
 
             if (proxy is null) {
                 throw new PersistFailedException($"unexpected null proxy for {{originalObject}} type {originalObject.GetType()}");
@@ -78,10 +80,10 @@ namespace NakedObjects.Persistor.Entity.Component {
             return proxy;
         }
 
-        private object ProxyObject(object originalObject, INakedObjectAdapter adapterForOriginalObject) {
+        private object ProxyObject(object originalObject, INakedObjectAdapter adapterForOriginalObject, object potentialProxy) {
             var keys = context.GetKey(originalObject);
             var persisting = keys.All(EntityObjectStore.EmptyKey);
-            var proxy = GetOrCreateProxiedObject(originalObject, keys, context);
+            var proxy = GetOrCreateProxiedObject(originalObject, keys, context, potentialProxy);
 
             objectToProxyScratchPad[originalObject] = proxy;
 
@@ -151,7 +153,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             var adapterForOriginalObject = parent.createAdapter(null, originalObject);
-            return ProxyObject(originalObject, adapterForOriginalObject);
+            return ProxyObject(originalObject, adapterForOriginalObject, rootProxy);
         }
 
         private object ProxyReferenceIfAppropriate(object originalObject) {
@@ -164,8 +166,21 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             var adapterForOriginalObject = parent.createAdapter(null, originalObject);
-            //return ProxyObject(originalObject, adapterForOriginalObject);
-            // for moment assume all refences proxied
+       
+
+            var keys = context.GetKey(originalObject);
+            var persisting = keys.All(EntityObjectStore.EmptyKey);
+
+            if (persisting) {
+                return ProxyObject(originalObject, adapterForOriginalObject, null);
+            }
+
+            if (dependents.Select(t => t.Item1).Contains(originalObject)) {
+                // improve 
+                var proxy = dependents.Where(t => t.Item1 == originalObject).Select(t => t.Item2).SingleOrDefault();
+                return ProxyObject(originalObject, adapterForOriginalObject, proxy);
+            }
+
             return originalObject;
         }
     }

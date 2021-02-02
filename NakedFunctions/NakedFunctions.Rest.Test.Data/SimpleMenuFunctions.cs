@@ -153,10 +153,11 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static (ReferenceRecord, IContext) UpdateExistingAndReference(IContext context) {
             var rr = context.Instances<ReferenceRecord>().First();
-            var sr = context.Instances<UpdatedRecord>().First() with {Name = "Jill"};
-            var nrr = rr with { Name = "Test3", UpdatedRecord = sr, DateRecord = rr.DateRecord };
+            var ur = context.Instances<UpdatedRecord>().First();
+            var nur = ur with {Name = "Jill"};
+            var nrr = rr with { Name = "Test3", UpdatedRecord = nur, DateRecord = rr.DateRecord };
 
-            context = context.WithPendingSave(nrr, sr);
+            context = ((Context)context).WithPendingUpdate((nrr, rr), (nur, ur));
 
             return (nrr, context);
         }

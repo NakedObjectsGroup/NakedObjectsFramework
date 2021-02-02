@@ -90,10 +90,11 @@ namespace NakedObjects.Architecture.Component {
         void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool isGhost);
 
         (object, object) PersistDetachedObject(object toPersist);
-        (object, object) UpdateDetachedObject((object, object) objTuple);
+        (object, object) UpdateDetachedObject((object, object) objTuple, (object, object)[] dependents);
 
 
         INakedObjectAdapter AdaptDetachedObject(object poco);
+        bool HasChanges();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

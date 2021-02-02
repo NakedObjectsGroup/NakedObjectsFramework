@@ -512,8 +512,8 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteAttachObjectCommandPersist(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
 
-        public void ExecuteAttachObjectCommandUpdate(INakedObjectAdapter nakedObjectAdapter, object proxy) =>
-            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, proxy, GetContext(nakedObjectAdapter), this));
+        public void ExecuteAttachObjectCommandUpdate(INakedObjectAdapter nakedObjectAdapter, object proxy, (object, object)[] dependents) =>
+            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, proxy, dependents, GetContext(nakedObjectAdapter), this));
 
         public void EndTransaction() {
             try {
@@ -688,10 +688,6 @@ namespace NakedObjects.Persistor.Entity.Component {
             // todo do we need to handle multiple contexts - if so need to batch by context
             var context = GetContext(obj);
 
-            if (context.HasChanges()) {
-                throw new PersistFailedException("context already has changes");
-            }
-
             // todo is there an easier way ? 
             var persisting = context.GetKey(obj).All(EmptyKey);
 
@@ -702,28 +698,21 @@ namespace NakedObjects.Persistor.Entity.Component {
             return (obj, adapter.GetDomainObject());
         }
 
-        public (object, object) UpdateDetachedObject((object, object) objTuple) {
+        public (object, object) UpdateDetachedObject((object, object) objTuple, (object, object)[] dependents) {
             var (obj, proxy) = objTuple;
 
             // todo do we need to handle multiple contexts - if so need to batch by context
             var context = GetContext(obj);
-
-            if (context.HasChanges())
-            {
-                throw new PersistFailedException("context already has changes");
-            }
 
             // todo is there an easier way ? 
             var persisting = context.GetKey(obj).All(EmptyKey);
 
             var adapter = persisting ? createAdapter(null, obj) : AdaptDetachedObject(obj);
 
-            ExecuteAttachObjectCommandUpdate(adapter, proxy);
+            ExecuteAttachObjectCommandUpdate(adapter, proxy, dependents);
 
             return (obj, adapter.GetDomainObject());
         }
-
-
 
 
         public INakedObjectAdapter AdaptDetachedObject(object poco) {
@@ -737,6 +726,8 @@ namespace NakedObjects.Persistor.Entity.Component {
             var oid = oidGenerator.CreateOid(EntityUtils.GetEntityProxiedTypeName(poco), context.GetKey(poco));
             return createAdapter(oid, poco);
         }
+
+        public bool HasChanges() => contexts.Values.Any(c => c.HasChanges());
 
         #endregion
 

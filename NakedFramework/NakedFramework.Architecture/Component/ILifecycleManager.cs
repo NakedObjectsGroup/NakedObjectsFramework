@@ -45,7 +45,7 @@ namespace NakedObjects.Architecture.Component {
 
         (object,object) Persist(object toPersist);
 
-        (object, object) Update((object, object) toPersist);
+        (object, object) Update((object, object) toPersist, (object, object)[] dependents);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

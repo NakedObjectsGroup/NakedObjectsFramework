@@ -21,8 +21,11 @@ namespace NakedFunctions.Meta.Test.Facet {
 
         private readonly Mock<INakedObjectManager> mockNakedObjectManager = new Mock<INakedObjectManager>();
 
+        private readonly Mock<IObjectPersistor> mockPersistor = new Mock<IObjectPersistor>();
+
         public ActionInvocationFacetViaStaticMethodTest() {
             mockFramework.SetupGet(p => p.NakedObjectManager).Returns(mockNakedObjectManager.Object);
+            mockFramework.SetupGet(p => p.Persistor).Returns(mockPersistor.Object);
         }
 
         [TestMethod]

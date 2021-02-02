@@ -792,7 +792,6 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        [Ignore("")]
         public void TestUpdateExistingAndReference()
         {
             var api = Api().AsPost();

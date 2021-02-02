@@ -69,7 +69,7 @@ namespace NakedObjects.Core.Component {
 
         public (object, object) Persist(object toPersist) => objectPersistor.PersistDetachedObjects(toPersist);
 
-        public (object, object) Update((object, object) toPersist) => objectPersistor.UpdateDetachedObjects(toPersist);
+        public (object, object) Update((object, object) toPersist, (object, object)[] dependents) => objectPersistor.UpdateDetachedObjects(toPersist, dependents);
 
         /// <summary>
         ///     Factory (for transient instance)

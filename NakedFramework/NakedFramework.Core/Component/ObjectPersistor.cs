@@ -193,10 +193,11 @@ namespace NakedObjects.Core.Component {
 
         public (object,object) PersistDetachedObjects(object toPersist) => objectStore.PersistDetachedObject(toPersist);
 
-        public (object, object) UpdateDetachedObjects((object, object) toPersist) => objectStore.UpdateDetachedObject(toPersist);
+        public (object, object) UpdateDetachedObjects((object, object) toPersist, (object, object)[] dependents) => objectStore.UpdateDetachedObject(toPersist, dependents);
 
 
         public void AdaptDetachedObject(object poco) => objectStore.AdaptDetachedObject(poco);
+        public bool HasChanges() => objectStore.HasChanges();
 
         #endregion
 
