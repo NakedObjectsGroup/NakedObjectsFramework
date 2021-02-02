@@ -389,17 +389,17 @@ namespace AW.Functions {
 
 
         #region Comments - all TODO
-        public static bool HideComment(this SalesOrderHeader soh)
-        {
-            throw new NotImplementedException();
-            //return Comment == null || Comment == "";
-        }
+        //public static bool HideComment(this SalesOrderHeader soh)
+        //{
+        //    throw new NotImplementedException();
+        //    //return Comment == null || Comment == "";
+        //}
 
-        public static void ClearComment()
-        {
-            throw new NotImplementedException();
-            //this.Comment = null;
-        }
+        //public static void ClearComment()
+        //{
+        //    throw new NotImplementedException();
+        //    //this.Comment = null;
+        //}
 
         //public static void AddStandardComments(IEnumerable<string> comments)
         //{
