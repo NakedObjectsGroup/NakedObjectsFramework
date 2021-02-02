@@ -203,13 +203,15 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestInvokeUpdateAndPersistSimpleRecord() {
+        [Ignore("")]
+        public void TestInvokeUpdateAndPersistSimpleRecord()
+        {
             var api = Api().AsPut();
-            var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"name", new ScalarValue("Fred4")}}};
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("Fred4") } } };
 
             var result = api.PutInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.EditSimpleRecord), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             var resultObj = parsedResult["result"];
@@ -292,35 +294,6 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual(FormatForTest(DateTime.UtcNow.AddDays(22)), psd["default"].ToString());
         }
-
-        //[Test]
-        //public void TestGetObjectActionAssociateDataRecord() {
-        //    var api = Api();
-        //    var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.AssociateWithDateRecord));
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    Assert.AreEqual((int) HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    Assert.AreEqual(nameof(SimpleRecordFunctions.AssociateWithDateRecord), parsedResult["id"].ToString());
-        //    var parameters = parsedResult["parameters"];
-        //    Assert.AreEqual(1, parameters.Count());
-        //    var dr = parameters["dateRecord"];
-        //}
-
-        //[Test]
-        //public void TestInvokeActionAssociateDataRecord() {
-        //    var api = Api().AsPost();
-        //    var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"dateRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.DateRecord/1", "dateRecord")}}};
-
-        //    var result = api.PostInvoke(FullName<SimpleRecord>(), "2", nameof(SimpleRecordFunctions.AssociateWithDateRecord), map);
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    Assert.AreEqual((int) HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    var resultObj = parsedResult["result"];
-
-        //    Assert.AreEqual("-2-2-1", resultObj["title"].ToString());
-        //}
 
         [Test]
         public void TestGetRecordActionWithChoices() {
@@ -513,11 +486,14 @@ namespace NakedFunctions.Rest.Test {
 
 
         [Test]
-        public void TestInvokeEditDates() {
+        [Ignore("")]
+        public void TestInvokeEditDates()
+        {
             var api = Api().AsPut();
             var startDate = new DateTime(2000, 1, 1);
             var endDate = new DateTime(2001, 12, 31);
-            var map = new ArgumentMap {
+            var map = new ArgumentMap
+            {
                 Map = new Dictionary<string, IValue> {
                     {"startDate", new ScalarValue(startDate)},
                     {"endDate", new ScalarValue(endDate)}
@@ -526,7 +502,7 @@ namespace NakedFunctions.Rest.Test {
 
             var result = api.PutInvoke(FullName<DateRecord>(), "1", nameof(DateRecordFunctions.EditDates), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             var resultObj = parsedResult["result"];

@@ -509,8 +509,8 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EntitySaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-        public void ExecuteAttachObjectCommand(INakedObjectAdapter nakedObjectAdapter, object[] allChanged) =>
-            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, allChanged, GetContext(nakedObjectAdapter), this));
+        public void ExecuteAttachObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
+            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
 
         public void EndTransaction() {
             try {
@@ -681,9 +681,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 _ => false
             };
 
-        public (object,object) ReattachAsModified(object[] toPersist) => ReattachAsModified(toPersist.First(), toPersist.Skip(1).ToArray());
-
-        private (object, object) ReattachAsModified(object obj, object[] allChanged) {
+        public (object, object) ReattachAsModified(object obj) {
             // todo do we need to handle multiple contexts - if so need to batch by context
             var context = GetContext(obj);
 
@@ -696,7 +694,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
             var adapter = persisting ? createAdapter(null, obj) : AdaptDetachedObject(obj);
 
-            ExecuteAttachObjectCommand(adapter, allChanged);
+            ExecuteAttachObjectCommand(adapter);
 
             return (obj, adapter.GetDomainObject());
         }
