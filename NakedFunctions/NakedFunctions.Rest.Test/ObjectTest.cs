@@ -486,7 +486,6 @@ namespace NakedFunctions.Rest.Test {
 
 
         [Test]
-        [Ignore("")]
         public void TestInvokeEditDates()
         {
             var api = Api().AsPut();

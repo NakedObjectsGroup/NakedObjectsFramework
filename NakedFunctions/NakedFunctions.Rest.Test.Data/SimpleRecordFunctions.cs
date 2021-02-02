@@ -9,10 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualBasic;
+using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Rest.Test.Data {
     internal static class Helpers {
         internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
+
+        internal static (T, IContext) DisplayAndUpdate<T>(T obj, T proxy, IContext context) => (obj, ((Context) context).WithPendingUpdate((obj, proxy)));
     }
 
     public static class SimpleRecordFunctions {
@@ -58,7 +61,7 @@ namespace NakedFunctions.Rest.Test.Data {
     public static class DateRecordFunctions {
         [Edit]
         public static (DateRecord, IContext) EditDates(this DateRecord sp, DateTime startDate, DateTime endDate, IContext context)
-            => Helpers.DisplayAndSave(sp with {StartDate = startDate, EndDate = endDate}, context);
+            => Helpers.DisplayAndUpdate(sp with {StartDate = startDate, EndDate = endDate}, sp, context);
 
         public static DateTime Default1EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today();
 
