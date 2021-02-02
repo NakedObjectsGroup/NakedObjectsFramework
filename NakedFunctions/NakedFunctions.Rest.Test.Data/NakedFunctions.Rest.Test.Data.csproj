@@ -13,4 +13,8 @@
     <PackageReference Include="NakedFunctions.ProgrammingModel" Version="1.0.0-alpha01" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj" />
+  </ItemGroup>
+
 </Project>

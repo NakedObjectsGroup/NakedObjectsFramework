@@ -509,8 +509,11 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EntitySaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-        public void ExecuteAttachObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
+        public void ExecuteAttachObjectCommandPersist(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
+
+        public void ExecuteAttachObjectCommandUpdate(INakedObjectAdapter nakedObjectAdapter, object proxy) =>
+            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, proxy, GetContext(nakedObjectAdapter), this));
 
         public void EndTransaction() {
             try {
@@ -681,7 +684,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 _ => false
             };
 
-        public (object, object) ReattachAsModified(object obj) {
+        public (object, object) PersistDetachedObject(object obj) {
             // todo do we need to handle multiple contexts - if so need to batch by context
             var context = GetContext(obj);
 
@@ -694,10 +697,33 @@ namespace NakedObjects.Persistor.Entity.Component {
 
             var adapter = persisting ? createAdapter(null, obj) : AdaptDetachedObject(obj);
 
-            ExecuteAttachObjectCommand(adapter);
+            ExecuteAttachObjectCommandPersist(adapter);
 
             return (obj, adapter.GetDomainObject());
         }
+
+        public (object, object) UpdateDetachedObject((object, object) objTuple) {
+            var (obj, proxy) = objTuple;
+
+            // todo do we need to handle multiple contexts - if so need to batch by context
+            var context = GetContext(obj);
+
+            if (context.HasChanges())
+            {
+                throw new PersistFailedException("context already has changes");
+            }
+
+            // todo is there an easier way ? 
+            var persisting = context.GetKey(obj).All(EmptyKey);
+
+            var adapter = persisting ? createAdapter(null, obj) : AdaptDetachedObject(obj);
+
+            ExecuteAttachObjectCommandUpdate(adapter, proxy);
+
+            return (obj, adapter.GetDomainObject());
+        }
+
+
 
 
         public INakedObjectAdapter AdaptDetachedObject(object poco) {

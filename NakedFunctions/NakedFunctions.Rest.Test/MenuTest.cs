@@ -777,7 +777,6 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        [Ignore("")]
         public void TestUpdateRecordWithReferences()
         {
             var api = Api().AsPost();

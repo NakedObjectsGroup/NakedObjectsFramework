@@ -30,5 +30,15 @@ namespace NakedFunctions.Reflector.Component {
         public IContext WithPendingSave(params object[] toBeSaved) => this with {PendingSave = PendingSave.Union(toBeSaved).ToArray()};
 
         public IContext WithAction<T>(Action<T> action) => this with {Action = action};
+
+
+        // awaiting  interface changes 
+
+
+        public (object updated, object proxy)[] PendingUpdate { get; init; } = Array.Empty<(object, object)>();
+
+        public IContext WithPendingUpdate(params (object, object)[] toBeUpdated) => this with { PendingUpdate = PendingUpdate.Union(toBeUpdated).ToArray() };
+
+
     }
 }

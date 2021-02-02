@@ -89,7 +89,10 @@ namespace NakedObjects.Architecture.Component {
         INakedObjectAdapter FindByKeys(Type type, object[] keys);
         void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool isGhost);
 
-        (object, object) ReattachAsModified(object toPersist);
+        (object, object) PersistDetachedObject(object toPersist);
+        (object, object) UpdateDetachedObject((object, object) objTuple);
+
+
         INakedObjectAdapter AdaptDetachedObject(object poco);
     }
 

@@ -44,6 +44,8 @@ namespace NakedObjects.Architecture.Component {
         INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec);
 
         (object,object) Persist(object toPersist);
+
+        (object, object) Update((object, object) toPersist);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

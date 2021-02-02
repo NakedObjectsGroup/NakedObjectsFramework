@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleMenuFunctions {
@@ -141,8 +142,13 @@ namespace NakedFunctions.Rest.Test.Data {
         }
 
         public static (ReferenceRecord, IContext) UpdateExisting(IContext context) {
-            var sr = context.Instances<ReferenceRecord>().First();
-            return Helpers.DisplayAndSave(sr with {Name = "Test2", UpdatedRecord = sr.UpdatedRecord, DateRecord = sr.DateRecord}, context);
+            var rr = context.Instances<ReferenceRecord>().First();
+
+            var updated = rr with {Name = "Test2", UpdatedRecord = rr.UpdatedRecord, DateRecord = rr.DateRecord};
+
+            context = ((Context) context).WithPendingUpdate((updated, rr));
+
+            return (updated, context);
         }
 
         public static (ReferenceRecord, IContext) UpdateExistingAndReference(IContext context) {

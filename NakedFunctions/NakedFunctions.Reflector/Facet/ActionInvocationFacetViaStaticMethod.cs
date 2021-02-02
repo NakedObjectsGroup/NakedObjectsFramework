@@ -72,11 +72,12 @@ namespace NakedFunctions.Meta.Facet {
             return nakedObjectManager.CreateAdapterForExistingObject(result);
         }
 
-
-        private static (object, object) PersistResult(ILifecycleManager lifecycleManager,
-                                                        object toPersist) {
-         
-            return toPersist is not null ? lifecycleManager.Persist(toPersist) : (null, null);
+        private static (object, object)[] PersistResult(ILifecycleManager lifecycleManager,
+                                                        object toPersist,
+                                                        (object, object) toUpdate) {
+            var updated = toUpdate.Item1 is not null ? lifecycleManager.Update(toUpdate) : (null, null);
+            var persisted = toPersist is not null ? lifecycleManager.Persist(toPersist) : (null, null);
+            return new[] {updated, persisted};
         }
 
         private static (object, Context) CastTuple(ITuple tuple) => (tuple[0], (Context)tuple[1]);
@@ -84,14 +85,14 @@ namespace NakedFunctions.Meta.Facet {
         private object HandleContextResult((object, Context) tuple, INakedObjectsFramework framework) {
             var (toReturn, context) = tuple;
             PerformActions(framework.ServicesManager, framework.ServiceProvider, new[] {context.Action});
-            var (toPersist, persisted) = PersistResult(framework.LifecycleManager, context.PendingSave.SingleOrDefault());
+            var allPersisted = PersistResult(framework.LifecycleManager, context.PendingSave.SingleOrDefault(), context.PendingUpdate.SingleOrDefault());
 
-            //foreach (var valueTuple in allPersisted) {
-            //    var (toPersist, persisted) = valueTuple;
-            if (ReferenceEquals(toPersist, toReturn)) {
-                return persisted;
+            foreach (var valueTuple in allPersisted) {
+                var (toPersist, persisted) = valueTuple;
+                if (ReferenceEquals(toPersist, toReturn)) {
+                    return persisted;
+                }
             }
-            // }
 
             return toReturn;
         }
