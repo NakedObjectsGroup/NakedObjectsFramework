@@ -36,7 +36,7 @@ namespace AW.Functions
         {
             EmployeePayHistory current = CurrentEmployeePayHistory(e);
             var eph = new EmployeePayHistory() { Employee = e, RateChangeDate = context.Now(), PayFrequency = current.PayFrequency };
-            return context.SaveAndDisplay(eph);
+            return (eph, context.WithNew(eph));
         }
 
         public static EmployeePayHistory CurrentEmployeePayHistory(Employee e) => e.PayHistory.OrderByDescending(x => x.RateChangeDate).FirstOrDefault();
@@ -46,7 +46,8 @@ namespace AW.Functions
         public static (Employee, IContext) ChangeDepartmentOrShift(
            this Employee e, Department department, Shift shift, IContext context)
         {
-            var edh = CurrentAssignment(e) with { 
+            var currentAssignment = CurrentAssignment(e);
+            var updatedCA = currentAssignment with { 
                 EndDate = context.Now(), 
                 ModifiedDate = context.Now()
             };
@@ -57,7 +58,7 @@ namespace AW.Functions
                 StartDate = context.Today(),
                 ModifiedDate = context.Today()
             };
-            return (e, context.WithPendingSave(edh, newAssignment));
+            return (e, context.WithNew(newAssignment).WithUpdated(currentAssignment, updatedCA));
         }
 
         public static Department Default1ChangeDepartmentOrShift(this Employee e)
@@ -80,28 +81,31 @@ namespace AW.Functions
         #endregion
 
         #region Edit Properties
-        internal static (Employee, IContext) UpdateEmployee(Employee e, IContext context) =>
-            context.SaveAndDisplay(e with { ModifiedDate = context.Now() });
+        internal static (Employee, IContext) UpdateEmployee(Employee original, Employee updated, IContext context)
+        {
+            var updated2 =  updated with { ModifiedDate = context.Now() };
+            return (updated2, context.WithUpdated(original, updated2));
+        }
 
         [Edit]
         public static (Employee, IContext) UpdateNationalIDNumber(this Employee e, 
             [MaxLength(15)] string nationalIdNumber, IContext context) =>
-                UpdateEmployee(e with { NationalIDNumber = nationalIdNumber }, context);
+                UpdateEmployee(e, e with { NationalIDNumber = nationalIdNumber }, context);
 
         [Edit]
         public static (Employee, IContext) UpdateLoginID(this Employee e,
              [MaxLength(256)] string loginID, IContext context) =>
-                UpdateEmployee(e with { LoginID = loginID }, context);
+                UpdateEmployee(e, e with { LoginID = loginID }, context);
 
         [Edit]
         public static (Employee, IContext) UpdateJobTitle(this Employee e,
             [MaxLength(50)] string jobTitle, IContext context) =>
-                UpdateEmployee(e with { JobTitle = jobTitle }, context);
+                UpdateEmployee(e, e with { JobTitle = jobTitle }, context);
 
         [Edit]
         public static (Employee, IContext) UpdateDateOfBirth(this Employee e,
              DateTime dateOfBirth, IContext context) =>
-                UpdateEmployee(e with { DateOfBirth = dateOfBirth }, context);
+                UpdateEmployee(e, e with { DateOfBirth = dateOfBirth }, context);
 
         public static string ValidateUpdateDateOfBirth(this Employee e,
             DateTime dob, IContext context) => ValidateDateOfBirth(dob, context);
@@ -112,7 +116,7 @@ namespace AW.Functions
         [Edit]
         public static (Employee, IContext) UpdateMaritalStatus(this Employee e, 
             string maritalStatus, IContext context) =>
-                UpdateEmployee(e with { MaritalStatus = maritalStatus }, context);
+                UpdateEmployee(e, e with { MaritalStatus = maritalStatus }, context);
 
         public static IList<string> Choices1UpdateMaritalStatus(this Employee e) => MaritalStatuses;
 
@@ -121,7 +125,7 @@ namespace AW.Functions
         [Edit]
         public static (Employee, IContext) UpdateGender(
             this Employee e, string gender, IContext context) =>
-                UpdateEmployee(e with { Gender = gender }, context);
+                UpdateEmployee(e, e with { Gender = gender }, context);
 
         public static IList<string> Choices1UpdateGender(this Employee e) => Genders;
             
@@ -130,32 +134,32 @@ namespace AW.Functions
         [Edit]
         public static (Employee, IContext) UpdateHireDate(this Employee e,
              DateTime hireDate, IContext context) =>
-                UpdateEmployee(e with { HireDate = hireDate }, context);
+                UpdateEmployee(e, e with { HireDate = hireDate }, context);
 
         [Edit]
         public static (Employee, IContext) UpdateSalaried(this Employee e,
              bool salaried, IContext context) =>
-                UpdateEmployee(e with { Salaried = salaried }, context);
+                UpdateEmployee(e, e with { Salaried = salaried }, context);
 
         [Edit]
         public static (Employee, IContext) UpdateVacationHours(this Employee e,
             short vacationHours, IContext context) =>
-                UpdateEmployee(e with { VacationHours = vacationHours}, context);
+                UpdateEmployee(e, e with { VacationHours = vacationHours}, context);
 
         [Edit]
         public static (Employee, IContext) UpdateSickLeaveHours(this Employee e,
             short sickLeaveHours, IContext context) =>
-                UpdateEmployee(e with { SickLeaveHours = sickLeaveHours}, context);
+                UpdateEmployee(e, e with { SickLeaveHours = sickLeaveHours}, context);
 
 
         [Edit]
         public static (Employee, IContext) UpdateCurrent(this Employee e,
              bool current, IContext context) =>
-                UpdateEmployee(e with { Current = current}, context);
+                UpdateEmployee(e, e with { Current = current}, context);
 
         [Edit]
         public static (Employee, IContext) UpdateManager(this Employee e, Employee manager, IContext context) =>
-         UpdateEmployee(e with { Manager = manager }, context);
+         UpdateEmployee(e, e with { Manager = manager }, context);
 
         [PageSize(20)]
         public static IQueryable<Employee> AutoComplete1UpdateManager(

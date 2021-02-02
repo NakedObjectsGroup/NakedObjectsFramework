@@ -20,16 +20,23 @@ namespace AW.Functions {
         #region Add New Detail
 
         [DescribedAs("Add a new line item to the order")]
-#pragma warning disable 612,618
         [MemberOrder("Details",2)]
-#pragma warning restore 612,618
         public static (SalesOrderHeader, IContext) AddNewDetail(
                 this SalesOrderHeader soh,
                 Product product,
                 [DefaultValue(1), ValueRange(1, 999)] short quantity,
                 IContext context
-            ) {
+            )
+        {
+            
+            SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
             int stock = product.NumberInStock();
+            string warning = stock < quantity ? $"Current inventory of {product} is {stock}" : "";
+            return (soh, context.WithNew(sod).WithWarnUser(warning));
+        }
+
+        internal static SalesOrderDetail CreateNewDetail(this SalesOrderHeader soh, Product product, short quantity, IContext context)
+        {
             var sod = new SalesOrderDetail()
             {
                 SalesOrderHeader = soh,
@@ -39,7 +46,7 @@ namespace AW.Functions {
             };
             //TODO:
             //sod.Recalculate();
-            return (soh, context.WithPendingSave(sod).WithWarnUser(stock < quantity ? $"Current inventory of {product} is {stock}" : ""));
+            return sod;
         }
 
         public static string DisableAddNewDetail(this SalesOrderHeader soh)
@@ -239,11 +246,17 @@ namespace AW.Functions {
 
         //        #endregion
 
+        internal static (SalesOrderHeader, IContext) UpdateOrder(
+            SalesOrderHeader original, SalesOrderHeader updated, IContext context)
+        {
+            var updated2 = updated with { ModifiedDate = context.Now() };
+            return (updated2, context.WithUpdated(original, updated2));
+        }
         #region ApproveOrder
 
         [MemberOrder(1)]
         public static (SalesOrderHeader, IContext) ApproveOrder(this SalesOrderHeader soh, IContext context) =>
-            context.SaveAndDisplay(soh with { StatusByte = (byte)OrderStatus.Approved });
+            UpdateOrder(soh, soh with { StatusByte = (byte)OrderStatus.Approved }, context);
        
         //TODO: Remove context param from next 2
         public static bool HideApproveOrder( this SalesOrderHeader soh, IContext context) =>
@@ -447,7 +460,7 @@ namespace AW.Functions {
         #endregion
 
         public static (SalesOrderHeader, IContext) Recalculate(this SalesOrderHeader soh, IContext context) =>
-            context.SaveAndDisplay(soh with {SubTotal = soh.Details.Sum(d => d.LineTotal), TotalDue = soh.SubTotal});
+            UpdateOrder(soh, soh with {SubTotal = soh.Details.Sum(d => d.LineTotal), TotalDue = soh.SubTotal}, context);
 
         #region Edits - TODO
         //public static Address[] ChoicesBillingAddress(IContext context) => Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();

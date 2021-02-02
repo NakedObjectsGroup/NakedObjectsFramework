@@ -15,7 +15,7 @@ namespace AW.Functions {
             [Password] string newPassword, 
             [Named("New Password (Confirm)"), Password] string confirm,
             IContext context) =>
-            (be, context.WithPendingSave(CreateNewPassword(newPassword, be.BusinessEntityID, context)));
+            (be, context.WithNew(CreateNewPassword(newPassword, be.BusinessEntityID, context)));
 
         public static string ValidateChangePassword(this BusinessEntity be, 
             string oldPassword, string newPassword, string confirm, IContext context)

@@ -61,7 +61,7 @@ namespace AW.Functions {
             byte expYear = Convert.ToByte(expires.Substring(3, 2));
             var cc = new CreditCard() { CardType = cardType, CardNumber = cardNumber, ExpMonth = expMonth, ExpYear = expYear };
             var link = new PersonCreditCard() { CreditCard = cc, Person = p };
-            return (p, context.WithPendingSave(cc, link));                
+            return (p, context.WithNew(cc).WithNew(link));                
         }
 
         public static IList<string> Choices1CreateNewCreditCard(this Person p) =>
@@ -92,7 +92,7 @@ namespace AW.Functions {
 
         public static (Person, IContext) CreateNewPhoneNumber(this Person p, PhoneNumberType type,
     [RegEx(@"^([0-9][0-9\s-]+)$")] string phoneNumber, IContext context)
-            => (p, context.WithPendingSave(new PersonPhone()
+            => (p, context.WithNew(new PersonPhone()
             {
                 BusinessEntityID = p.BusinessEntityID,
                 PhoneNumberType = type,

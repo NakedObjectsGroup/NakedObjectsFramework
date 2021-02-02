@@ -47,6 +47,6 @@ namespace AW.Functions
         [MemberOrder("Purchase Orders", 5)]
         public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(this Vendor vendor,
            ShipMethod shipMethod, IContext context) =>
-                PurchaseOrder_MenuFunctions.SaveAndDisplayNewPurchaseOrder(vendor, shipMethod, context);
+                PurchaseOrder_MenuFunctions.CreateNewPurchaseOrder(vendor, shipMethod, context);
     }
 }

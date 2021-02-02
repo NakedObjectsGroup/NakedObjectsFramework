@@ -25,7 +25,7 @@ namespace AW.Functions
             IContext context)
         {
             var a = new Address() with { AddressLine1 = line1, AddressLine2 = line2, City = city, PostalCode = postCode, StateProvince = sp, ModifiedDate = context.Now(), rowguid = context.NewGuid() };
-            return context.SaveAndDisplay(a);
+            return (a, context.WithNew(a));
         }
 
     }

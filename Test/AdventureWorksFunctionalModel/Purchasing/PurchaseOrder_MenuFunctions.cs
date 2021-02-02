@@ -108,20 +108,9 @@ namespace AW.Functions
         public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(
             Vendor vendor,
             ShipMethod shipMethod,
-            IContext context) =>
-           SaveAndDisplayNewPurchaseOrder(vendor, shipMethod, context);
-
-        [PageSize(20)]
-        public static IQueryable<Vendor> AutoComplete0CreateNewPurchaseOrder(
-    [MinLength(2)] string name, IContext context) =>
-    context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
-
-
-        internal static (PurchaseOrderHeader, IContext) SaveAndDisplayNewPurchaseOrder(
-            Vendor vendor,
-            ShipMethod shipMethod,
-            IContext context) =>
-            context.SaveAndDisplay(new PurchaseOrderHeader()
+            IContext context)
+        {
+            var po = new PurchaseOrderHeader()
             {
                 RevisionNumber = 0,
                 Status = (byte)POStatus.Pending,
@@ -133,10 +122,14 @@ namespace AW.Functions
                 TaxAmt = 0,
                 Freight = 0,
                 ModifiedDate = context.Now()
-            });
+            };
+            return (po, context.WithNew(po));
+        }
 
-
-
+        [PageSize(20)]
+        public static IQueryable<Vendor> AutoComplete0CreateNewPurchaseOrder(
+    [MinLength(2)] string name, IContext context) =>
+    context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
 
         #endregion
 

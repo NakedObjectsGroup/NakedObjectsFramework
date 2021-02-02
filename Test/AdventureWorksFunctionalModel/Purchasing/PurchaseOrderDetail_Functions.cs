@@ -13,11 +13,17 @@ namespace AW.Functions {
         
     public static class PurchaseOrderDetail_Functions
     {
+        internal static (PurchaseOrderDetail, IContext) UpdatePOD(
+            PurchaseOrderDetail original, PurchaseOrderDetail updated, IContext context)
+        {
+            var updated2 = updated with { ModifiedDate = context.Now() };
+            return (updated2, context.WithUpdated(original, updated));
+        }
 
         [MemberOrder(1)]
         public static (PurchaseOrderDetail, IContext) ReceiveGoods(
             this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock, IContext context) =>
-            context.SaveAndDisplay(pod with {ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock});
+            UpdatePOD(pod, pod with {ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock}, context);
 
 
         public static int Default1ReceiveGoods(this PurchaseOrderDetail pod)=>  pod.OrderQty;

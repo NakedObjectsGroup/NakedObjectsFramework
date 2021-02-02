@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using NakedFramework;
+using NakedFunctions;
 
 namespace AW {
     internal static class Utilities {
@@ -31,6 +32,14 @@ namespace AW {
             }
             return hash;
         }
+
+        //TODO: Temporary extension method, pending availability of this method directly on IContext
+        internal static IContext WithNew(this IContext context, object obj) =>
+            context.WithPendingSave(obj);
+
+        //TODO: Temporary extension method, pending availability of this method directly on IContext
+        internal static IContext WithUpdated<T>(this IContext context, T original, T updated) =>
+            context.WithPendingSave(updated);
 
     }
 }

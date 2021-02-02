@@ -25,7 +25,7 @@ namespace AW.Functions
                 AddressTypeID = type.AddressTypeID, 
                 ModifiedDate = context.Now(), 
                 rowguid = context.NewGuid() };
-            return (a, context.WithPendingSave(a, bea));
+            return (a, context.WithNew(a).WithNew(bea));
         }
 
         public static IList<StateProvince> Choices7CreateNewAddress(this Address a, CountryRegion countryRegion, IContext context) =>
@@ -43,7 +43,7 @@ namespace AW.Functions
                 rowguid = context.NewGuid(),
                 ModifiedDate = context.Now(),
             };
-            return (be, context.WithPendingSave(e));
+            return (be, context.WithNew(e));
         }
 
     }
