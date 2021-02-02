@@ -26,7 +26,7 @@ namespace NakedFunctions.Rest.Test.Data {
             return instances.Skip(context.RandomSeed().ValueInRange(instances.Count())).FirstOrDefault();
         }
 
-        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
+        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithNew(obj));
 
         internal static Action<IAlert> WarnUser(string message) => ua => ua.WarnUser(message);
 
@@ -146,7 +146,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
             var updated = rr with {Name = "Test2", UpdatedRecord = rr.UpdatedRecord, DateRecord = rr.DateRecord};
 
-            context = ((Context) context).WithPendingUpdate((updated, rr));
+            context = context.WithUpdated(rr, updated);
 
             return (updated, context);
         }
@@ -157,7 +157,7 @@ namespace NakedFunctions.Rest.Test.Data {
             var nur = ur with {Name = "Jill"};
             var nrr = rr with { Name = "Test3", UpdatedRecord = nur, DateRecord = rr.DateRecord };
 
-            context = ((Context)context).WithPendingUpdate((nrr, rr), (nur, ur));
+            context = context.WithUpdated(rr, nrr).WithUpdated(ur, nur);
 
             return (nrr, context);
         }
@@ -165,11 +165,12 @@ namespace NakedFunctions.Rest.Test.Data {
         public static (ReferenceRecord, IContext) CreateNewUpdateReference(IContext context)
         {
             var rr = context.Instances<ReferenceRecord>().First();
-            var sr = context.Instances<UpdatedRecord>().First() with { Name = "Janet" };
-            var nrr = new ReferenceRecord() { Name = "Test4", UpdatedRecord = sr, DateRecord = rr.DateRecord };
+            var ur = context.Instances<UpdatedRecord>().First();
+            var nur = ur with { Name = "Janet" };
+            var nrr = new ReferenceRecord() { Name = "Test4", UpdatedRecord = nur, DateRecord = rr.DateRecord };
 
             //context = context.WithPendingSave(sr, nrr);
-            context = context.WithPendingSave(nrr, sr);
+            context = context.WithNew(nrr).WithUpdated(ur, nur);
             return (nrr, context);
         }
 
@@ -191,10 +192,11 @@ namespace NakedFunctions.Rest.Test.Data {
         public static (CollectionRecord, IContext) UpdateExistingAndCollection(IContext context)
         {
             var rr = context.Instances<CollectionRecord>().ToArray().Last();
-            var sr = context.Instances<UpdatedRecord>().First() with { Name = "John" };
+            var ur = context.Instances<UpdatedRecord>().First();
+            var nur = ur with { Name = "John" };
             var nrr = rr with { Name = "Test3" };
 
-            context = context.WithPendingSave(nrr, sr);
+            context = context.WithUpdated(rr, nrr).WithUpdated(ur, nur);
 
             return (nrr, context);
         }
@@ -202,10 +204,11 @@ namespace NakedFunctions.Rest.Test.Data {
         public static (CollectionRecord, IContext) UpdateExistingAndAddToCollection(IContext context)
         {
             var rr = context.Instances<CollectionRecord>().First();
-            var sr = context.Instances<UpdatedRecord>().First() with { Name = "John" };
-            var nrr = rr with { Name = "Test3", UpdatedRecords = rr.UpdatedRecords.Union(new[] {sr}).ToList()};
+            var ur = context.Instances<UpdatedRecord>().First();
+            var nur = ur with { Name = "John" };
+            var nrr = rr with { Name = "Test3", UpdatedRecords = rr.UpdatedRecords.Union(new[] {nur}).ToList()};
 
-            context = context.WithPendingSave(nrr, sr);
+            context = context.WithUpdated(rr, nrr).WithUpdated(ur, nur);
 
             return (nrr, context);
         }

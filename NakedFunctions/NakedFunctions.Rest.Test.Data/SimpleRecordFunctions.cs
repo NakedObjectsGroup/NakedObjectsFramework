@@ -13,9 +13,9 @@ using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Rest.Test.Data {
     internal static class Helpers {
-        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
+        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithNew(obj));
 
-        internal static (T, IContext) DisplayAndUpdate<T>(T obj, T proxy, IContext context) => (obj, ((Context) context).WithPendingUpdate((obj, proxy)));
+        internal static (T, IContext) DisplayAndUpdate<T>(T obj, T proxy, IContext context) => (obj, ((Context) context).WithUpdated(proxy, obj));
     }
 
     public static class SimpleRecordFunctions {

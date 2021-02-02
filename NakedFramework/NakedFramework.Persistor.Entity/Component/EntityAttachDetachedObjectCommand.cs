@@ -25,7 +25,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
         private readonly EntityObjectStore parent;
         private readonly object rootProxy;
-        private readonly (object, object)[] dependents = Array.Empty<(object, object)>();
+        private readonly (object proxy, object updated)[] dependents = Array.Empty<(object, object)>();
 
         public EntityAttachDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context, EntityObjectStore parent) {
             this.context = context;
@@ -175,9 +175,9 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return ProxyObject(originalObject, adapterForOriginalObject, null);
             }
 
-            if (dependents.Select(t => t.Item1).Contains(originalObject)) {
+            if (dependents.Select(t => t.updated).Contains(originalObject)) {
                 // improve 
-                var proxy = dependents.Where(t => t.Item1 == originalObject).Select(t => t.Item2).SingleOrDefault();
+                var proxy = dependents.Where(t => t.updated == originalObject).Select(t => t.proxy).SingleOrDefault();
                 return ProxyObject(originalObject, adapterForOriginalObject, proxy);
             }
 

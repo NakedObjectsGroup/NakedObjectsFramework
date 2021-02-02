@@ -699,7 +699,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public (object, object) UpdateDetachedObject((object, object) objTuple, (object, object)[] dependents) {
-            var (obj, proxy) = objTuple;
+            var (proxy, obj) = objTuple;
 
             // todo do we need to handle multiple contexts - if so need to batch by context
             var context = GetContext(obj);

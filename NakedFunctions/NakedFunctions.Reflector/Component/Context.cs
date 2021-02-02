@@ -21,24 +21,18 @@ namespace NakedFunctions.Reflector.Component {
         }
 
         public object Action { get; init; }
-        public object[] PendingSave { get; init; } = Array.Empty<object>();
+        public object[] PendingNew { get; init; } = Array.Empty<object>();
+
+        public (object proxy, object updated)[] PendingUpdated { get; init; } = Array.Empty<(object, object)>();
 
         public IQueryable<T> Instances<T>() where T : class => persistor.Instances<T>();
 
         public T GetService<T>() => provider.GetService<T>();
 
-        public IContext WithPendingSave(params object[] toBeSaved) => this with {PendingSave = PendingSave.Union(toBeSaved).ToArray()};
+        public IContext WithNew(object newObj) => this with { PendingNew = PendingNew.Append(newObj).ToArray() };
+
+        public IContext WithUpdated<T>(T original, T updated) => this with { PendingUpdated = PendingUpdated.Append((original, updated)).ToArray() };
 
         public IContext WithAction<T>(Action<T> action) => this with {Action = action};
-
-
-        // awaiting  interface changes 
-
-
-        public (object updated, object proxy)[] PendingUpdate { get; init; } = Array.Empty<(object, object)>();
-
-        public IContext WithPendingUpdate(params (object, object)[] toBeUpdated) => this with { PendingUpdate = PendingUpdate.Union(toBeUpdated).ToArray() };
-
-
     }
 }

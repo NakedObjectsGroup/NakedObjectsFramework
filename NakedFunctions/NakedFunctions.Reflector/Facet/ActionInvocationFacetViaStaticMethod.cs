@@ -88,7 +88,7 @@ namespace NakedFunctions.Meta.Facet {
         private object HandleContextResult((object, Context) tuple, INakedObjectsFramework framework) {
             var (toReturn, context) = tuple;
             PerformActions(framework.ServicesManager, framework.ServiceProvider, new[] {context.Action});
-            var allPersisted = PersistResult(framework.LifecycleManager, context.PendingSave.SingleOrDefault(), context.PendingUpdate);
+            var allPersisted = PersistResult(framework.LifecycleManager, context.PendingNew.SingleOrDefault(), context.PendingUpdated);
 
             foreach (var valueTuple in allPersisted) {
                 var (toPersist, persisted) = valueTuple;
