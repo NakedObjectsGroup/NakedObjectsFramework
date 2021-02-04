@@ -38,6 +38,7 @@ namespace NakedFunctions.Reflector.Extensions {
                 options.FunctionalTypes = options.FunctionalTypes.Except(enums).ToArray();
                 coreOptions.SupportedSystemTypes ??= t => t;
                 coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Union(enums).ToArray();
+                coreOptions.AdditionalUnpersistedTypes = new[] {typeof(Context), typeof(IContext), typeof(Graph), typeof(NewGraph), typeof(UpdateGraph)};
                 options.FunctionalTypes = options.FunctionalTypes.
                                                   Append(typeof(IContext)).
                                                   Append(typeof(Context)).

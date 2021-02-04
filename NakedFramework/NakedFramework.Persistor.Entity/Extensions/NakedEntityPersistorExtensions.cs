@@ -37,6 +37,9 @@ namespace NakedObjects.DependencyInjection.Extensions {
             var options = new EntityPersistorOptions();
             setupAction(options);
 
+            var unpersistedTypes = options.NotPersistedTypes();
+            options.NotPersistedTypes = () => unpersistedTypes.Union(coreOptions.AdditionalUnpersistedTypes).ToArray();
+
             coreOptions.Services.AddSingleton<IEntityObjectStoreConfiguration>(p => EntityObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
             coreOptions.Services.AddScoped<EntityOidGenerator, EntityOidGenerator>();
             coreOptions.Services.AddScoped<IOidGenerator, EntityOidGenerator>();

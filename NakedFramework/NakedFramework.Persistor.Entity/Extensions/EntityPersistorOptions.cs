@@ -16,7 +16,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public bool EnforceProxies { get; set; }  = true;
         public Func<bool> IsInitializedCheck { get; set; } = () => true;
         public int MaximumCommitCycles { get; set; } = 10;
-        public Func<Type[]> NotPersistedTypes { get; set; }  = () => new Type[] { };
+        public Func<Type[]> NotPersistedTypes { get; set; }  = () => new Type[] {};
         public bool RollBackOnError { get; set; } = false;
         public Func<IConfiguration, DbContext>[] ContextInstallers { get; set; }
         public Action<ObjectContext> CustomConfig { get; set; } = oc => { };

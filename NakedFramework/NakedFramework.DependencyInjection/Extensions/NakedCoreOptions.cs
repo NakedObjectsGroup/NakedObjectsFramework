@@ -14,6 +14,7 @@ using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.Profile;
 
 [assembly:InternalsVisibleTo("NakedFunctions.Reflector")]
+[assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity")]
 
 namespace NakedObjects.DependencyInjection.Extensions {
     public class NakedCoreOptions {
@@ -25,5 +26,6 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public Func<Type[], Type[]> SupportedSystemTypes { get; set; }
         public IServiceCollection Services { get; }
         internal Type[] AdditionalSystemTypes { get; set; } = Array.Empty<Type>();
+        internal Type[] AdditionalUnpersistedTypes { get; set; } = Array.Empty<Type>();
     }
 }

@@ -98,7 +98,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             return typeToStructuralType[type];
         }
 
-        private bool IsAlwaysUnrecognised(Type type) =>
+        public bool IsAlwaysUnrecognised(Type type) =>
             type == null ||
             type == typeof(object) ||
             type.IsGenericType ||

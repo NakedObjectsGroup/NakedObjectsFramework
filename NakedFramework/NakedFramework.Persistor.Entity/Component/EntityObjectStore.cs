@@ -218,20 +218,22 @@ namespace NakedObjects.Persistor.Entity.Component {
                 if (context.CurrentSaveRootObjectAdapter?.Spec != null) {
                     var target = context.CurrentSaveRootObjectAdapter;
                     // can be null in tests
-                    newMessage = target.Spec.GetFacet<IOnPersistingErrorCallbackFacet>().Invoke(target, exception);
+                    newMessage = target.Spec.GetFacet<IOnPersistingErrorCallbackFacet>()?.Invoke(target, exception);
                     break;
                 }
 
                 if (context.CurrentUpdateRootObjectAdapter?.Spec != null) {
                     var target = context.CurrentUpdateRootObjectAdapter;
                     // can be null in tests 
-                    newMessage = target.Spec.GetFacet<IOnUpdatingErrorCallbackFacet>().Invoke(target, exception);
+                    newMessage = target.Spec.GetFacet<IOnUpdatingErrorCallbackFacet>()?.Invoke(target, exception);
                     break;
                 }
             }
 
             // Rollback after extracting info from context - rollback clears it all
             RollBackContext();
+
+            newMessage ??= exception.Message;
 
             switch (exception) {
                 case ConcurrencyException concurrencyException:
@@ -484,8 +486,14 @@ namespace NakedObjects.Persistor.Entity.Component {
         #region IObjectStore Members
 
         public void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool parentIsGhost) {
-            if (EntityFrameworkKnowsType(adapter.Object.GetEntityProxiedType())) {
-                foreach (var pi in GetContext(adapter).GetComplexMembers(adapter.Object.GetEntityProxiedType())) {
+            var proxiedType = adapter.Object.GetEntityProxiedType();
+            
+            if (contexts.All(c => c.Value.IsAlwaysUnrecognised(proxiedType))) {
+                return;
+            }
+
+            if (EntityFrameworkKnowsType(proxiedType)) {
+                foreach (var pi in GetContext(adapter).GetComplexMembers(proxiedType)) {
                     var complexObject = pi.GetValue(adapter.Object, null);
                     if (complexObject == null) {
                         throw new NakedObjectSystemException("Complex type members should never be null");
