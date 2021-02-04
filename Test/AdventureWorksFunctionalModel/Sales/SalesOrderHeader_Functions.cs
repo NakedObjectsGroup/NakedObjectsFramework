@@ -40,7 +40,7 @@ namespace AW.Functions {
             var sod = new SalesOrderDetail()
             {
                 SalesOrderHeader = soh,
-                SalesOrderID = soh.SalesOrderID,
+                //SalesOrderID = soh.SalesOrderID,
                 OrderQty = quantity,
                 SpecialOfferProduct = Product_Functions.BestSpecialOfferProduct(product, quantity, context)
             };
