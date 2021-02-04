@@ -27,8 +27,8 @@ namespace AW.Types {
         [Hidden]
         public virtual byte StatusByte { get; init; }
 
-        //[MemberOrder(1)]
-        //public virtual OrderStatus Status { get { return (OrderStatus)StatusByte;  } }
+        [MemberOrder(1)]
+        public virtual OrderStatus Status { get { return (OrderStatus)StatusByte; } }
 
         [Hidden]
         public virtual int CustomerID { get; init; }
@@ -195,7 +195,7 @@ namespace AW.Types {
             = new List<SalesOrderHeaderSalesReason>();
 
 
-        public override string ToString() => $"{SalesOrderNumber}";
+        public override string ToString() => $"{SalesOrderNumber.Trim()}";
 
 		public override int GetHashCode() =>base.GetHashCode();
 
