@@ -185,7 +185,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public static (CollectionRecord, IContext) UpdateExistingCollectionRecord(IContext context)
         {
             var sr = context.Instances<CollectionRecord>().First();
-            return Helpers.DisplayAndSave(sr with { Name = "Test2", UpdatedRecords = sr.UpdatedRecords }, context);
+            return Helpers.DisplayAndUpdate(sr with { Name = "Test2", UpdatedRecords = sr.UpdatedRecords }, sr, context);
         }
 
 

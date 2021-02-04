@@ -684,7 +684,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 _ => false
             };
 
-        public (object, object) PersistDetachedObject(object obj) {
+        public (object, object) PersistDetachedObject(object obj, (object, object)[] dependents) {
             // todo do we need to handle multiple contexts - if so need to batch by context
             var context = GetContext(obj);
 

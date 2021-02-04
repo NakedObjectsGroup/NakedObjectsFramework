@@ -38,7 +38,11 @@ namespace NakedFunctions.Reflector.Extensions {
                 options.FunctionalTypes = options.FunctionalTypes.Except(enums).ToArray();
                 coreOptions.SupportedSystemTypes ??= t => t;
                 coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Union(enums).ToArray();
-                options.FunctionalTypes = options.FunctionalTypes.Append(typeof(IContext)).Append(typeof(Context)).Distinct().ToArray();
+                options.FunctionalTypes = options.FunctionalTypes.
+                                                  Append(typeof(IContext)).
+                                                  Append(typeof(Context)).
+                                                  Distinct().
+                                                  ToArray();
             }
 
             options.RegisterCustomTypes?.Invoke(coreOptions.Services);

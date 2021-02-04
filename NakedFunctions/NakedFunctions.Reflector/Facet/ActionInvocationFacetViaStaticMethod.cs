@@ -72,23 +72,22 @@ namespace NakedFunctions.Meta.Facet {
             return nakedObjectManager.CreateAdapterForExistingObject(result);
         }
 
-        private static (object, object)[] PersistResult(ILifecycleManager lifecycleManager,
-                                                        object toPersist,
-                                                        (object, object)[] toUpdate) {
-            var updated = toUpdate.Any() ? lifecycleManager.Update(toUpdate.First(), toUpdate.Skip(1).ToArray()) : default;
-            var persisted = toPersist is not null ? lifecycleManager.Persist(toPersist) : default;
-            //updated.Add(persisted);
-            return new[] {updated, persisted};
-        }
+        private static (object, object) HandleGraph(ILifecycleManager lifecycleManager, Graph graph) =>
+            graph switch {
+                NewGraph ng => lifecycleManager.Persist(ng.Root, ng.Updated),
+                UpdateGraph ug => lifecycleManager.Update(ug.Root, ug.Updated),
+                _ => default
+            };
+
+        private static (object, object)[] PersistResult(ILifecycleManager lifecycleManager, Graph[] graphs) =>
+            graphs.Select(g => HandleGraph(lifecycleManager, g)).ToArray();
 
         private static (object, Context) CastTuple(ITuple tuple) => (tuple[0], (Context)tuple[1]);
-
-      
 
         private object HandleContextResult((object, Context) tuple, INakedObjectsFramework framework) {
             var (toReturn, context) = tuple;
             PerformActions(framework.ServicesManager, framework.ServiceProvider, new[] {context.Action});
-            var allPersisted = PersistResult(framework.LifecycleManager, context.PendingNew.SingleOrDefault(), context.PendingUpdated);
+            var allPersisted = PersistResult(framework.LifecycleManager, context.GetGraphs());
 
             foreach (var valueTuple in allPersisted) {
                 var (toPersist, persisted) = valueTuple;
