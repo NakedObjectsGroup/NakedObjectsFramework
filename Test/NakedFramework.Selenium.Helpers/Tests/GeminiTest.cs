@@ -214,7 +214,7 @@ namespace NakedFramework.Selenium.Helpers.Tests
 
         protected IWebElement WaitForTextEquals(string cssSelector, string text)
         {
-            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text == text);
+            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text.Trim() == text.Trim());
             return WaitForCss(cssSelector);
         }
 
@@ -428,7 +428,7 @@ namespace NakedFramework.Selenium.Helpers.Tests
         protected string GetPropertyValue(string propertyName, Pane pane = Pane.Single)
         {
             var prop = GetProperty(propertyName, pane);
-            return prop.FindElement(By.CssSelector(".value")).Text;
+            return prop.FindElement(By.CssSelector(".value")).Text.Trim();
         }
 
         protected IWebElement GetProperty(string propertyName, Pane pane = Pane.Single)
