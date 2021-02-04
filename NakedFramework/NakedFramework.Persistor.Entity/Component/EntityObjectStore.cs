@@ -510,10 +510,10 @@ namespace NakedObjects.Persistor.Entity.Component {
             Execute(new EntitySaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
         public void ExecuteAttachObjectCommandPersist(INakedObjectAdapter nakedObjectAdapter, (object, object)[] dependents) =>
-            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, null, dependents,  GetContext(nakedObjectAdapter), this));
+            Execute(new EntityPersistUpdateDetachedObjectCommand(nakedObjectAdapter, null, dependents,  GetContext(nakedObjectAdapter), this));
 
         public void ExecuteAttachObjectCommandUpdate(INakedObjectAdapter nakedObjectAdapter, object proxy, (object, object)[] dependents) =>
-            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, proxy, dependents, GetContext(nakedObjectAdapter), this));
+            Execute(new EntityPersistUpdateDetachedObjectCommand(nakedObjectAdapter, proxy, dependents, GetContext(nakedObjectAdapter), this));
 
         public void EndTransaction() {
             try {

@@ -8,7 +8,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -19,21 +18,15 @@ using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Util;
 
 namespace NakedObjects.Persistor.Entity.Component {
-    public class EntityAttachDetachedObjectCommand : ICreateObjectCommand {
+    public class EntityPersistUpdateDetachedObjectCommand : IPersistenceCommand {
         private readonly LocalContext context;
         private readonly INakedObjectAdapter nakedObjectAdapter;
         private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
         private readonly EntityObjectStore parent;
         private readonly object rootProxy;
-        private readonly (object proxy, object updated)[] dependents = Array.Empty<(object, object)>();
+        private readonly (object proxy, object updated)[] dependents;
 
-        public EntityAttachDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context, EntityObjectStore parent) {
-            this.context = context;
-            this.parent = parent;
-            this.nakedObjectAdapter = nakedObjectAdapter;
-        }
-
-        public EntityAttachDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, object rootProxy, (object, object)[] dependents, LocalContext context, EntityObjectStore parent) {
+        public EntityPersistUpdateDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, object rootProxy, (object, object)[] dependents, LocalContext context, EntityObjectStore parent) {
             this.context = context;
             this.parent = parent;
             this.nakedObjectAdapter = nakedObjectAdapter;
@@ -62,15 +55,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
-        private static IDictionary<string, object> GetMemberValueMap(Type type, object[] key, LocalContext context, out string entitySetName) {
-            var set = context.GetObjectSet(type).GetProperty<EntitySet>("EntitySet");
-            entitySetName = $"{set.EntityContainer.Name}.{set.Name}";
-            var idmembers = context.GetIdMembers(type);
-            var keyValues = key;
-            return ObjectContextUtils.MemberValueMap(idmembers, keyValues);
-        }
-
-        private object GetOrCreateProxiedObject(object originalObject, object[] keys, LocalContext context, object potentialProxy) {
+        private static object GetOrCreateProxiedObject(object originalObject, object[] keys, LocalContext context, object potentialProxy) {
             var proxy = keys.All(EntityObjectStore.EmptyKey) ? context.CreateObject(originalObject.GetType()) : potentialProxy;
 
             if (proxy is null) {
@@ -169,8 +154,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             var adapterForOriginalObject = parent.createAdapter(null, originalObject);
-       
-
+            
             var keys = context.GetKey(originalObject);
             var persisting = keys.All(EntityObjectStore.EmptyKey);
 
