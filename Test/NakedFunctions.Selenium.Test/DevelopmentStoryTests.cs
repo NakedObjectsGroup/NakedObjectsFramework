@@ -131,11 +131,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var title = WaitForTitle("Mountain Tire Sale");
             var original = "";
             Assert.AreEqual(original, GetPropertyValue("Max Qty"));
-            var newType = "5";
-            TypeIntoFieldWithoutClearing("#maxqty1", newType);
+            var newQty = "5";
+            TypeIntoFieldWithoutClearing("#maxqty1", newQty);
             Click(OKButton());
             Reload();
-            Assert.AreEqual(newType, GetPropertyValue("Max Qty"));
+            Assert.AreEqual(newQty, GetPropertyValue("Max Qty"));
             OpenObjectActions();
             OpenActionDialog("Edit Quantities");
             TypeIntoFieldWithoutClearing("#maxqty1", original);

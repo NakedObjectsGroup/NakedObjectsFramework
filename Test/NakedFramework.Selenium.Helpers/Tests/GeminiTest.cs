@@ -503,7 +503,7 @@ namespace NakedFramework.Selenium.Helpers.Tests
 
         protected void AssertTopItemInListIs(string title)
         {
-            string topItem = WaitForCss(".list tr td.reference").Text;
+            string topItem = WaitForCss("tr td.reference").Text;
 
             Assert.AreEqual(title, topItem);
         }
