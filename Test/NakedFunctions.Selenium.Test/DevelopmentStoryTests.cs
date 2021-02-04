@@ -50,7 +50,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             InformUserViaIAlertService();
             EditAction();
             AccessToIClock();
-            SaveNewInstance();
             RecordsDoNotHaveEditButton();
             EnumProperty();
             EnumParam();
@@ -65,6 +64,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AutoCompleteFunction();
             ViewModel1();
             MultiLineActionDialog();
+            CreateNewObject1();
+            CreateNewObject2();
+            CreateNewObject3();
         }
 
         //[TestMethod]
@@ -131,11 +133,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var title = WaitForTitle("Mountain Tire Sale");
             var original = "";
             Assert.AreEqual(original, GetPropertyValue("Max Qty"));
-            var newType = "5";
-            TypeIntoFieldWithoutClearing("#maxqty1", newType);
+            var newQty = "5";
+            TypeIntoFieldWithoutClearing("#maxqty1", newQty);
             Click(OKButton());
             Reload();
-            Assert.AreEqual(newType, GetPropertyValue("Max Qty"));
+            Assert.AreEqual(newQty, GetPropertyValue("Max Qty"));
             OpenObjectActions();
             OpenActionDialog("Edit Quantities");
             TypeIntoFieldWithoutClearing("#maxqty1", original);
@@ -155,7 +157,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
-        public void SaveNewInstance()
+        public void CreateNewObject1()
         {
             //Corresponds to #204
             GeminiUrl("home?m1=SpecialOffer_MenuFunctions&d1=CreateNewSpecialOffer");
@@ -359,8 +361,37 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
 
             //Check third line has now appeared
-            WaitForCssNo(".lineDialog", 2); 
+            WaitForCssNo(".lineDialog", 2);
 
+        }
+
+        //[TestMethod]
+        public void CreateNewObject2()
+        {
+            GeminiUrl("home?m1=Address_MenuFunctions&d1=CreateNewAddress");
+            SelectDropDownOnField("select#type1", 2);
+            TypeIntoFieldWithoutClearing("#line11", "Dunroamin");
+            TypeIntoFieldWithoutClearing("#line21", "Elm St");
+            TypeIntoFieldWithoutClearing("#city1", "Concord");
+            var zip = (new Random()).Next(10000).ToString();
+            TypeIntoFieldWithoutClearing("#postcode1", zip);
+            SelectDropDownOnField("select#sp1", 1);
+            Click(OKButton());
+            WaitForTitle("Dunroamin...");
+            Assert.AreEqual("Dunroamin", GetPropertyValue("Address Line1"));
+            Assert.AreEqual("Alberta", GetReferenceFromProperty("State Province").Text);
+        }
+
+        //[TestMethod]
+        public void CreateNewObject3()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Customer--12211&as1=open");
+            WaitForTitle("AW00012211 Victor Romero");
+            Click(GetObjectAction("Create Another Order"));
+            WaitForView(Pane.Single, PaneType.Object);
+            var num = GetPropertyValue("Sales Order Number");
+            Assert.IsTrue(num.StartsWith("SO75"));
+            Assert.AreEqual("AW00012211 Victor Romero", GetReferenceFromProperty("Customer").Text);
         }
     }
 }
