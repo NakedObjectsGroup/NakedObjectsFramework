@@ -64,6 +64,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             HideFunction();
             AutoCompleteFunction();
             ViewModel1();
+            MultiLineActionDialog();
         }
 
         //[TestMethod]
@@ -213,7 +214,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("683de5dd-521a-47d4-a573-06a3cdb1bc5d", guid);
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void ParameterChoicesSimple()
         {
             //Corresponds to #242
@@ -329,7 +330,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("290", GetPropertyValue("Total Staff"));
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void MultiLineActionDialog()
         {
             GeminiUrl("multiLineDialog?m1=SpecialOffer_MenuFunctions&d1=CreateMultipleSpecialOffers");
