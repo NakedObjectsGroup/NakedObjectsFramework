@@ -26,11 +26,6 @@ namespace AW.Functions {
                 select obj;
         }
 
-        [MemberOrder(20)]
-        public static (SalesOrderHeader, IContext) LastOrder(this Customer customer, IContext context) {
-            var order = context.Instances<SalesOrderHeader>().Where(x => x.Customer.CustomerID == customer.CustomerID).OrderByDescending(x => x.SalesOrderNumber).FirstOrDefault();
-            return (order, context.WithInformUser("No Previous Orders"));
-        }
 
         [MemberOrder(21)]
         [TableView(true, "OrderDate", "TotalDue")]

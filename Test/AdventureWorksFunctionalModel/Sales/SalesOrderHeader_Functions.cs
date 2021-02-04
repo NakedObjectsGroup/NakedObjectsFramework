@@ -32,20 +32,28 @@ namespace AW.Functions {
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
             int stock = product.NumberInStock();
             string warning = stock < quantity ? $"Current inventory of {product} is {stock}" : "";
+            //TODO:
+            //sod.Recalculate();
             return (soh, context.WithNew(sod).WithWarnUser(warning));
         }
 
         internal static SalesOrderDetail CreateNewDetail(this SalesOrderHeader soh, Product product, short quantity, IContext context)
         {
+            var specialOfferProduct = Product_Functions.BestSpecialOfferProduct(product, quantity, context);
+            var specialOffer = Product_Functions.BestSpecialOffer(product, quantity, context);
+            var unitPrice = product.ListPrice;
+            var discount = unitPrice * specialOffer.DiscountPct;
             var sod = new SalesOrderDetail()
             {
                 SalesOrderHeader = soh,
-                //SalesOrderID = soh.SalesOrderID,
                 OrderQty = quantity,
-                SpecialOfferProduct = Product_Functions.BestSpecialOfferProduct(product, quantity, context)
+                SpecialOfferProduct = specialOfferProduct,
+                Product = product,
+                UnitPrice = unitPrice,
+                UnitPriceDiscount = discount,
+                rowguid = context.NewGuid(),
+                ModifiedDate = context.Now()
             };
-            //TODO:
-            //sod.Recalculate();
             return sod;
         }
 
