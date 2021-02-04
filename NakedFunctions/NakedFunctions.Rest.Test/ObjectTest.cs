@@ -203,7 +203,6 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        [Ignore("")]
         public void TestInvokeUpdateAndPersistSimpleRecord()
         {
             var api = Api().AsPut();

@@ -808,7 +808,6 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        [Ignore("")]
         public void TestCreateNewRecordWithUpdatedReferences()
         {
             var api = Api().AsPost();
@@ -841,7 +840,6 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        [Ignore("")]
         public void TestUpdateRecordWithCollection()
         {
             var api = Api().AsPost();
@@ -857,7 +855,6 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        [Ignore("")]
         public void TestUpdateExistingAndCollection()
         {
             var api = Api().AsPost();
@@ -873,7 +870,6 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        [Ignore("")]
         public void TestUpdateExistingAndAddToCollection()
         {
             var api = Api().AsPost();

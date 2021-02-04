@@ -509,8 +509,8 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EntitySaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-        public void ExecuteAttachObjectCommandPersist(INakedObjectAdapter nakedObjectAdapter) =>
-            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
+        public void ExecuteAttachObjectCommandPersist(INakedObjectAdapter nakedObjectAdapter, (object, object)[] dependents) =>
+            Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, null, dependents,  GetContext(nakedObjectAdapter), this));
 
         public void ExecuteAttachObjectCommandUpdate(INakedObjectAdapter nakedObjectAdapter, object proxy, (object, object)[] dependents) =>
             Execute(new EntityAttachDetachedObjectCommand(nakedObjectAdapter, proxy, dependents, GetContext(nakedObjectAdapter), this));
@@ -693,7 +693,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
             var adapter = persisting ? createAdapter(null, obj) : AdaptDetachedObject(obj);
 
-            ExecuteAttachObjectCommandPersist(adapter);
+            ExecuteAttachObjectCommandPersist(adapter, dependents);
 
             return (obj, adapter.GetDomainObject());
         }

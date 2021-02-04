@@ -22,7 +22,7 @@ namespace NakedFunctions.Rest.Test.Data {
         [Edit]
         [PresentationHint("Hint3")]
         public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, [PresentationHint("Hint4")] string name, IContext context) {
-            return Helpers.DisplayAndSave(sp with {Name = name}, context);
+            return Helpers.DisplayAndUpdate(sp with {Name = name}, sp, context);
         }
 
         public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context) {

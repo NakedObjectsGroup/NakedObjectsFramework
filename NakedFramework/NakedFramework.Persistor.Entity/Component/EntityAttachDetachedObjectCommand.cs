@@ -131,9 +131,12 @@ namespace NakedObjects.Persistor.Entity.Component {
             foreach (var pi in colmembers) {
                 var toCol = (IList) proxy.GetType().GetProperty(pi.Name).GetValue(proxy, null);
                 var fromCol = (IEnumerable) pi.GetValue(originalObject, null);
-                toCol.Clear();
-                foreach (var item in fromCol) {
-                    toCol.Invoke("Add", ProxyReferenceIfAppropriate(item));
+
+                if (!ReferenceEquals(toCol, fromCol)) {
+                    toCol.Clear();
+                    foreach (var item in fromCol) {
+                        toCol.Invoke("Add", ProxyReferenceIfAppropriate(item));
+                    }
                 }
             }
 
