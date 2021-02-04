@@ -141,6 +141,20 @@ namespace NakedFunctions.Rest.Test.Data {
             return Helpers.DisplayAndSave(new ReferenceRecord {Name = "Test1", UpdatedRecord = sr, DateRecord = dr}, context);
         }
 
+        public static (ReferenceRecord, IContext) CreateNewWithNewReferences(IContext context)
+        {
+            var sr = context.Instances<UpdatedRecord>().First();
+            var dr = context.Instances<DateRecord>().First();
+
+            var nsr = new UpdatedRecord() {Name = "Test2"};
+            var nrr = new ReferenceRecord {Name = "Test1", UpdatedRecord = nsr, DateRecord = dr};
+
+            context = context.WithNew(nrr).WithNew(nsr);
+
+            return (nrr, context);
+        }
+
+
         public static (ReferenceRecord, IContext) UpdateExisting(IContext context) {
             var rr = context.Instances<ReferenceRecord>().First();
 

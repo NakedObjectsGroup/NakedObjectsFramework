@@ -773,8 +773,25 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Test1-2-1-1", FullName<ReferenceRecord>(), "2");
+            resultObj.AssertObject("Test1-3-1-1", FullName<ReferenceRecord>(), "3");
         }
+
+        [Test]
+        public void TestCreateNewRecordNewReferences()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNewWithNewReferences), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Test1-2-2-1", FullName<ReferenceRecord>(), "2");
+            Assert.AreEqual("Test2", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
+        }
+
 
         [Test]
         public void TestUpdateRecordWithReferences()
@@ -819,7 +836,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Test4-3-1-1", FullName<ReferenceRecord>(), "3");
+            resultObj.AssertObject("Test4-4-1-1", FullName<ReferenceRecord>(), "4");
             Assert.AreEqual("Janet", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
         }
 
@@ -836,7 +853,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Test1-2-1", FullName<CollectionRecord>(), "2");
+            resultObj.AssertObject("Test1-2-12", FullName<CollectionRecord>(), "2");
         }
 
         [Test]
@@ -866,7 +883,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Test3-2-", FullName<CollectionRecord>(), "2");
+            resultObj.AssertObject("Test3-2-2", FullName<CollectionRecord>(), "2");
         }
 
         [Test]
