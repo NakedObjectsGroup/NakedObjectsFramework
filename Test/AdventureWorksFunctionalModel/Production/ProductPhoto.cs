@@ -38,7 +38,7 @@ namespace AW.Types {
         {
             get
             {
-                // fake minetype
+                // fake mimetype
                 return new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
             }
         }

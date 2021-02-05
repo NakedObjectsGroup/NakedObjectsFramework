@@ -135,39 +135,36 @@ namespace AW.Functions
 
         #endregion
 
-        //public static (Product, IContext) AddOrChangePhoto(this Product product, Image newImage, IContext context) {
-        //    var productProductPhoto = product.ProductProductPhoto.FirstOrDefault();
-        //    var productPhoto = productProductPhoto.ProductPhoto;
-        //    var newProductPhoto = productPhoto with {LargePhoto = newImage.GetResourceAsByteArray(), LargePhotoFileName = newImage.Name};
-        //    var newProductProductPhoto = new ProductProductPhoto {ProductPhoto = newProductPhoto, Product = product, ModifiedDate = DateTime.Now};
-        //    var newProduct = product with {ProductProductPhoto = new List<ProductProductPhoto> {newProductProductPhoto}};
+        public static (Product, IContext) AddOrChangePhoto(this Product product, Image newImage, IContext context)
+        {
+            var productProductPhoto = product.ProductProductPhoto.FirstOrDefault();
+            var productPhoto = productProductPhoto.ProductPhoto;
+            var newProductPhoto = productPhoto with { LargePhoto = newImage.GetResourceAsByteArray(), LargePhotoFileName = newImage.Name };
+            var newProductProductPhoto = new ProductProductPhoto { ProductPhoto = newProductPhoto, Product = product, ModifiedDate = DateTime.Now };
+            var newProduct = product with { ProductProductPhoto = new List<ProductProductPhoto> { newProductProductPhoto } };
 
-        //    context = context.WithUpdated(product, newProduct).WithUpdated(productProductPhoto, newProductProductPhoto).WithUpdated(productPhoto, newProductPhoto);
+            var newContext = context.WithUpdated(product, newProduct).WithUpdated(productProductPhoto, newProductProductPhoto).WithUpdated(productPhoto, newProductPhoto);
+            return (newProduct, newContext);
+        }
 
-        //    return (newProduct, context);
+
+        //public static (Product, IContext) AddOrChangePhoto(this Product product, Image newImage, IContext context)
+        //{
+        //    ProductPhoto pp = (from obj in product.ProductProductPhoto
+        //                      select obj.ProductPhoto).FirstOrDefault();
+        //    var pp2 = pp with
+        //    {
+        //        LargePhoto = newImage.GetResourceAsByteArray(),
+        //        LargePhotoFileName = newImage.Name
+        //    };
+        //    return (product, context.WithUpdated(pp, pp2));
         //}
-
 
         public static (WorkOrder, IContext context) CreateNewWorkOrder(
              [DescribedAs("product partial name")] this Product product,
              int orderQty,
              DateTime startDate,
              IContext context) =>
-                    WorkOrder_MenuFunctions.CreateNewWorkOrder(product, orderQty, startDate, context);
-
-
-
-        public static (Product, IContext) AddOrChangePhoto(this Product product, Image newImage, IContext context)
-        {
-            ProductPhoto pp = (from obj in product.ProductProductPhoto
-                              select obj.ProductPhoto).FirstOrDefault();
-            var pp2 = pp with
-            {
-                LargePhoto = newImage.GetResourceAsByteArray(),
-                LargePhotoFileName = newImage.Name
-            };
-            return (product, context.WithUpdated(pp, pp2));
-        }
-
+                WorkOrder_MenuFunctions.CreateNewWorkOrder(product, orderQty, startDate, context);
     }
 }
