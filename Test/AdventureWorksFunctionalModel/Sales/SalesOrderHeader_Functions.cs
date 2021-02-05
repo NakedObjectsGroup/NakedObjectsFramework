@@ -13,14 +13,13 @@ using NakedFunctions;
 
 namespace AW.Functions {
     [Named("Sales Order")]
-        public  static class SalesOrderHeader_Functions { 
+        public  static class SalesOrderHeader_Functions {
 
         #region Actions
 
         #region Add New Detail
 
-        [DescribedAs("Add a new line item to the order")]
-        [MemberOrder("Details",2)]
+        [MemberOrder(2), DescribedAs("Add a new line item to the order")]
         public static (SalesOrderHeader, IContext) AddNewDetail(
                 this SalesOrderHeader soh,
                 Product product,
