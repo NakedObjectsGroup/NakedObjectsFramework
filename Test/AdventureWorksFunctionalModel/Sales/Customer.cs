@@ -23,13 +23,7 @@ namespace AW.Types
         [DescribedAs("xxx"), MemberOrder(10)]
         public virtual string AccountNumber { get; init; }
 
-        #region Sales Territory
-        [Hidden]
-        public virtual int? SalesTerritoryID { get; init; }
 
-        [MemberOrder(20)]
-        public virtual SalesTerritory SalesTerritory { get; init; }
-        #endregion
 
         #region Store & Personal customers
 
@@ -47,6 +41,14 @@ namespace AW.Types
 
         [MemberOrder(20)]
         public virtual Person Person { get; init; }
+        #endregion
+
+        #region Sales Territory
+        [Hidden]
+        public virtual int? SalesTerritoryID { get; init; }
+
+        [MemberOrder(30)]
+        public virtual SalesTerritory SalesTerritory { get; init; }
         #endregion
 
         [Hidden]
