@@ -11,8 +11,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFramework;
+using NakedFramework.Value;
 using NakedObjects;
-using NakedObjects.Value;
 
 namespace AdventureWorksModel {
     [IconName("carton.png")]

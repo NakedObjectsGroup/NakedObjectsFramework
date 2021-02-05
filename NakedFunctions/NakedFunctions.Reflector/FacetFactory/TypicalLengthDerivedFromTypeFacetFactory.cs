@@ -11,6 +11,7 @@ using System.Collections.Immutable;
 using System.Drawing;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Value;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -21,7 +22,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Value;
 
 #pragma warning disable 612
 

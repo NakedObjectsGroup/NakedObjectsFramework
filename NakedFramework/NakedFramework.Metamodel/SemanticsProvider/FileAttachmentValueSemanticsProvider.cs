@@ -7,11 +7,12 @@
 
 using System;
 using System.IO;
+using NakedFramework.Value;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
-using NakedObjects.Value;
+
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]

@@ -7,7 +7,7 @@
 
 using System.IO;
 
-namespace NakedObjects.Value {
+namespace NakedFramework.Value {
     /// <summary>
     ///     Interface implemented by both FileAttachment and Image
     ///     (Not intended to be used directly within domain code.)

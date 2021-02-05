@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using NakedFramework.Value;
 using NakedObjects;
-using NakedObjects.Value;
 
 namespace AdventureWorksModel {
     public class ProductPhoto  {

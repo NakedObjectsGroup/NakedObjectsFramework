@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NakedFramework.Value;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -18,7 +19,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Impl.Utility;
-using NakedObjects.Value;
+
 
 namespace NakedObjects.Facade.Impl {
     public class ObjectFacade : IObjectFacade {
