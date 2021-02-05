@@ -393,5 +393,26 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.IsTrue(num.StartsWith("SO75"));
             Assert.AreEqual("AW00012211 Victor Romero", GetReferenceFromProperty("Customer").Text);
         }
+
+        [TestMethod]
+        public void CreateNewObject4()
+        {
+            GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
+            WaitForTitle("AW00012211 Victor Romero", Pane.Left);
+            Click(GetObjectAction("Create Another Order", Pane.Left));
+            WaitForView(Pane.Left, PaneType.Object);
+            var num = GetPropertyValue("Sales Order Number", Pane.Left);
+            Assert.IsTrue(num.StartsWith("SO75"));
+            OpenObjectActions(Pane.Left);
+            OpenActionDialog("Add New Detail", Pane.Left);
+            var product = WaitForCss("#pane2 .title");
+            //product.Click();
+            CopyToClipboard(product);
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
+            Click(OKButton());
+            var listIcon = WaitForCssNo("#pane1 .collection .icon.list", 0);
+            Click(listIcon);
+            wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
+        }
     }
 }

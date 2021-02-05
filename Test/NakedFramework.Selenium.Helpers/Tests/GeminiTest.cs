@@ -906,7 +906,8 @@ namespace NakedFramework.Selenium.Helpers.Tests
             WaitForTextEquals(".title", "Home");
         }
 
-        protected IWebElement WaitForTitle(string title) => WaitForTextEquals(".title", title);
+        protected IWebElement WaitForTitle(string title, Pane pane = Pane.Single) => 
+            WaitForTextEquals(CssSelectorFor(pane)+" .title", title);
 
     }
 
