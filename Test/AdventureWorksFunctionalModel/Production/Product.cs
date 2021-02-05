@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AW.Functions;
+using NakedFramework.Value;
 using NakedFunctions;
 using NakedFramework.Value;
 
@@ -53,12 +54,12 @@ namespace AW.Types
         //
 
         [MemberOrder(12)]
-        public ProductCategory ProductCategory => Product_Functions.ProductCategory(this);
+        public virtual ProductCategory ProductCategory => Product_Functions.ProductCategory(this);
 
         [MemberOrder(20)]
         public virtual bool Make { get; init; }
 
-    [MemberOrder(21)]
+        [MemberOrder(21)]
         public virtual bool FinishedGoods { get; init; }
         
         [MemberOrder(22)]
@@ -67,13 +68,13 @@ namespace AW.Types
         [MemberOrder(23)]
         public virtual short ReorderPoint { get; init; }
 
-      [MemberOrder(90), Mask("C")]
+        [MemberOrder(90), Mask("C")]
         public virtual decimal StandardCost { get; init; }
        
         [MemberOrder(11), Mask("C")]
         public virtual decimal ListPrice { get; init; }
 
-       [Hidden]
+        [Hidden]
         public virtual string Size { get; init; }
 
         [Hidden]
@@ -83,7 +84,7 @@ namespace AW.Types
         public virtual UnitMeasure SizeUnit { get; init; }
 
         [Named("Size"), MemberOrder(16)]
-        public string SizeWithUnit => Product_Functions.SizeWithUnit(this);
+        public virtual string SizeWithUnit => Product_Functions.SizeWithUnit(this);
 
         [Hidden]
         public virtual string WeightUnitMeasureCode { get; init; }
@@ -92,7 +93,7 @@ namespace AW.Types
         public virtual decimal? Weight { get; init; }
 
         [Named("Weight"), MemberOrder(17)]
-        public string WeightWithUnit => Product_Functions.WeightWithUnit(this);
+        public virtual string WeightWithUnit => Product_Functions.WeightWithUnit(this);
 
         [Hidden]
         public virtual UnitMeasure WeightUnit { get; init; }

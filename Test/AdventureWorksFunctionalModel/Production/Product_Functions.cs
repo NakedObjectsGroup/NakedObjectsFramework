@@ -135,6 +135,18 @@ namespace AW.Functions
 
         #endregion
 
+        //public static (Product, IContext) AddOrChangePhoto(this Product product, Image newImage, IContext context) {
+        //    var productProductPhoto = product.ProductProductPhoto.FirstOrDefault();
+        //    var productPhoto = productProductPhoto.ProductPhoto;
+        //    var newProductPhoto = productPhoto with {LargePhoto = newImage.GetResourceAsByteArray(), LargePhotoFileName = newImage.Name};
+        //    var newProductProductPhoto = new ProductProductPhoto {ProductPhoto = newProductPhoto, Product = product, ModifiedDate = DateTime.Now};
+        //    var newProduct = product with {ProductProductPhoto = new List<ProductProductPhoto> {newProductProductPhoto}};
+
+        //    context = context.WithUpdated(product, newProduct).WithUpdated(productProductPhoto, newProductProductPhoto).WithUpdated(productPhoto, newProductPhoto);
+
+        //    return (newProduct, context);
+        //}
+
 
         public static (WorkOrder, IContext context) CreateNewWorkOrder(
              [DescribedAs("product partial name")] this Product product,
