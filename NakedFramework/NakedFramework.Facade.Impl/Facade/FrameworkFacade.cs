@@ -1046,7 +1046,7 @@ namespace NakedObjects.Facade.Impl {
 
             var menuItems = nakedObject.Spec.Menu?.MenuItems ?? new List<IMenuItemImmutable>();
 
-            var menuActions = menuItems.SelectMany(m => GetMenuItem(m));
+            var menuActions = menuItems.SelectMany(m => GetMenuItem(m, m.Grouping));
 
             var actions = menuActions.Select(m => new {m.parent, action = GetLeaf(m.action)}).Where(a => a.action != null);
 

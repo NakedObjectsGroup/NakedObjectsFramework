@@ -124,6 +124,12 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                     AddCustomExtension(JsonPropertyNames.CustomFindMenu, true);
                 }
 
+                var grouping = PropertyContext.Property.Grouping;
+
+                if (!string.IsNullOrEmpty(grouping)) {
+                    AddCustomExtension(JsonPropertyNames.CustomPropertyGrouping, grouping);
+                }
+
                 CustomExtensions = RestUtils.AddRangeExtension(PropertyContext.Property, CustomExtensions);
             }
 

@@ -196,6 +196,8 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsNullable => WrappedSpec.ContainsFacet<INullableFacet>();
 
+        public string Grouping => WrappedSpec.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
+
         #endregion
 
         private (string, ITypeFacade) WrapChoiceParm((string name, IObjectSpec spec) parm) => (parm.name, new TypeFacade(parm.spec, FrameworkFacade, framework));

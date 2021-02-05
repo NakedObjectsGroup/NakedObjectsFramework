@@ -38,7 +38,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(HiddenRecordFunctions),
             typeof(AutoCompleteRecordFunctions),
             typeof(DisplayAsPropertyRecordFunctions),
-            typeof(ViewModelFunctions)
+            typeof(ViewModelFunctions),
+            typeof(OrderedRecordFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -50,7 +51,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(ReferenceRecord),
             typeof(DisplayAsPropertyRecord),
             typeof(ViewModel),
-            typeof(UpdatedRecord)
+            typeof(UpdatedRecord),
+            typeof(OrderedRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -147,6 +149,23 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("Hint3", parsedResult["extensions"]["x-ro-nof-presentationHint"].ToString());
             Assert.AreEqual("Hint4", parsedResult["parameters"]["name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
         }
+
+        [Test]
+        public void TestGetObjectGrouping()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<OrderedRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("name_group", parsedResult["members"]["Name"]["extensions"]["x-ro-nof-propertyGrouping"].ToString());
+            Assert.AreEqual("name1_group", parsedResult["members"]["Name1"]["extensions"]["x-ro-nof-propertyGrouping"].ToString());
+            Assert.AreEqual("function1_group", parsedResult["members"]["Function1"]["extensions"]["x-ro-nof-menuPath"].ToString());
+            Assert.AreEqual("function2_group", parsedResult["members"]["Function2"]["extensions"]["x-ro-nof-menuPath"].ToString());
+        }
+
+
 
         [Test]
         public void TestGetObjectActionCreateNew()

@@ -22,5 +22,6 @@ namespace NakedObjects.Architecture.Facet {
         string Sequence { get; }
 
         string Name { get; }
+        string Grouping { get; }
     }
 }

@@ -24,6 +24,24 @@ namespace NakedFunctions.Rest.Test.Data {
         public override int GetHashCode() => base.GetHashCode();
     }
 
+    public record OrderedRecord
+    {
+        [Key]
+        public int Id { get; init; }
+
+        [MemberOrder("name_group", 1)]
+        public string Name { get; init; }
+
+        [MemberOrder("name1_group", 2)]
+        public string Name1 { get; init; }
+
+        public virtual bool Equals(OrderedRecord other) => ReferenceEquals(this, other);
+        public override string ToString() => Name;
+        public override int GetHashCode() => base.GetHashCode();
+    }
+
+
+
     public record DateRecord {
         [Key]
         public int Id { get; init; }
