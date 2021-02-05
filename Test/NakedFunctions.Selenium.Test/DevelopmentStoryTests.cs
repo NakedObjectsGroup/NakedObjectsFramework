@@ -67,6 +67,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CreateNewObject1();
             CreateNewObject2();
             CreateNewObject3();
+            CreateNewObject3();
+            PropertyHiddenViaAHideMethod();
         }
 
         //[TestMethod]
@@ -394,7 +396,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("AW00012211 Victor Romero", GetReferenceFromProperty("Customer").Text);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void CreateNewObject4()
         {
             GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
@@ -413,6 +415,26 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var listIcon = WaitForCssNo("#pane1 .collection .icon.list", 0);
             Click(listIcon);
             wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
+        }
+
+        [TestMethod]
+        public void PropertyHiddenViaAHideMethod()
+        {
+            //An Individual Customer should not display a Store property
+            GeminiUrl("object?i1=View&o1=AW.Types.Customer--29207");
+            WaitForTitle("AW00029207 Katelyn James");
+            Assert.AreEqual("Sales Territory:", WaitForCssNo(".property .name", 3).Text);
+            Assert.AreEqual("Person:", WaitForCssNo(".property .name", 2).Text);
+            Assert.AreEqual("Customer Type:", WaitForCssNo(".property .name", 1).Text);
+            Assert.AreEqual("Account Number:", WaitForCssNo(".property .name", 0).Text);
+
+            //An Individual Customer should not display a Store property
+            GeminiUrl("object?i1=View&o1=AW.Types.Customer--29553");
+            WaitForTitle("AW00029553 Unsurpassed Bikes");
+            Assert.AreEqual("Sales Territory:", WaitForCssNo(".property .name", 3).Text);
+            Assert.AreEqual("Store:", WaitForCssNo(".property .name", 2).Text);
+            Assert.AreEqual("Customer Type:", WaitForCssNo(".property .name", 1).Text);
+            Assert.AreEqual("Account Number:", WaitForCssNo(".property .name", 0).Text);
         }
     }
 }
