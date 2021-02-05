@@ -467,7 +467,25 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             WaitForCssNo("nof-action", 7); //i.e. so we are sure menu has opened
             Assert.AreEqual("Find Individual Customer By Name", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
             Assert.AreEqual("Find Store By Name", WaitForCssNo("nof-action-list input", 3).GetAttribute("value"));
-      
+        }
+
+        [TestMethod]
+        public void ImageProperty()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Product--881");
+            WaitForTitle("Short-Sleeve Classic Jersey, S");
+            var photo = GetProperty("Photo");
+            var imgSrc = photo.FindElement(By.CssSelector("img")).GetAttribute("src");
+            Assert.IsTrue(imgSrc.StartsWith("data:image/gif;"));
+        }
+
+        [TestMethod]
+        public void ImageParameter()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Product--881&as1=open");
+            WaitForTitle("Short-Sleeve Classic Jersey, S");
+            OpenActionDialog("Add Or Change Photo");
+            WaitForCss(".value.input-control input#newimage1");
         }
     }
 }
