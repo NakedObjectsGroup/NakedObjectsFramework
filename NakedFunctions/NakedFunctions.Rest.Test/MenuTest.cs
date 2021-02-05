@@ -130,8 +130,10 @@ namespace NakedFunctions.Rest.Test {
 
             var function = members[nameof(SimpleMenuFunctions.FindByName)];
 
+            Assert.AreEqual("findbyname_group", function["extensions"]["x-ro-nof-menuPath"].ToString());
+
             function.AssertAction(nameof(SimpleMenuFunctions.FindByName));
-            function["extensions"].AssertExtensions(7); // todo add 
+            function["extensions"].AssertExtensions(8); // todo add 
 
             var links = function["links"] as JArray;
 

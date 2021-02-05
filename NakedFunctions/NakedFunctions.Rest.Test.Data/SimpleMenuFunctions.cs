@@ -13,6 +13,8 @@ using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleMenuFunctions {
+
+        [MemberOrder("findbyname_group", 1)]
         public static IQueryable<SimpleRecord> FindByName(string searchString, IContext context) {
             return context.Instances<SimpleRecord>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
         }

@@ -16,6 +16,7 @@ namespace NakedObjects.Facade.Impl {
             MenuItems = wrapped.MenuItems.Select(i => Wrap(i, facade, framework)).ToList();
             Name = wrapped.Name;
             Id = wrapped.Id;
+            Grouping = wrapped.Grouping;
         }
 
         #region IMenuFacade Members
@@ -24,6 +25,7 @@ namespace NakedObjects.Facade.Impl {
         public IList<IMenuItemFacade> MenuItems { get; }
         public string Name { get; }
         public string Id { get; }
+        public string Grouping { get; }
 
         #endregion
 

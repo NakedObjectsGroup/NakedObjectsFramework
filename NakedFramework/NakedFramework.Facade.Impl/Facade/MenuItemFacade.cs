@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Threading.Tasks.Dataflow;
 using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Facade.Impl {
@@ -13,13 +14,17 @@ namespace NakedObjects.Facade.Impl {
             Wrapped = wrapped;
             Name = wrapped.Name;
             Id = wrapped.Id;
+            Grouping = wrapped.Grouping;
         }
+
+        
 
         #region IMenuItemFacade Members
 
         public string Name { get; }
         public string Id { get; }
         public object Wrapped { get; }
+        public string Grouping { get; }
 
         #endregion
     }

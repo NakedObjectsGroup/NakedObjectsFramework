@@ -9,6 +9,7 @@ namespace NakedObjects.Facade {
     public interface IMenuItemFacade {
         string Name { get; }
         string Id { get; }
+        string Grouping { get; }
         object Wrapped { get; }
     }
 }
