@@ -71,6 +71,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             PropertyHiddenViaAHideMethod();
             SubMenuOnObject();
             SubMenuOnMainMenu();
+            ImageProperty();
+            ImageParameter();
         }
 
         //[TestMethod]
@@ -469,7 +471,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Find Store By Name", WaitForCssNo("nof-action-list input", 3).GetAttribute("value"));
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ImageProperty()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Product--881");
@@ -479,7 +481,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.IsTrue(imgSrc.StartsWith("data:image/gif;"));
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ImageParameter()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Product--881&as1=open");
