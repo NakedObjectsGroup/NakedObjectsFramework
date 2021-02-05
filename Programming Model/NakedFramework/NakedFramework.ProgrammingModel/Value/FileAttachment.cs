@@ -8,7 +8,7 @@
 using System;
 using System.IO;
 
-namespace NakedObjects.Value {
+namespace NakedFramework.Value {
     /// <summary>
     ///     Type that may be used to present a File Attachment;  contains the file content (as a byte[]), plus, optionally
     ///     the file name and the MIME type.
@@ -17,13 +17,9 @@ namespace NakedObjects.Value {
     public class FileAttachment : IStreamResource {
         private byte[] buffer;
 
-        public FileAttachment(byte[] resource, string name = null, string mimeType = null) : this(name, mimeType) {
-            LoadResourceFromByteArray(resource);
-        }
+        public FileAttachment(byte[] resource, string name = null, string mimeType = null) : this(name, mimeType) => LoadResourceFromByteArray(resource);
 
-        public FileAttachment(Stream resource, string name = null, string mimeType = null) : this(name, mimeType) {
-            LoadResourceFromStream(resource);
-        }
+        public FileAttachment(Stream resource, string name = null, string mimeType = null) : this(name, mimeType) => LoadResourceFromStream(resource);
 
         protected FileAttachment(string name = null, string mimeType = null) {
             Name = name;
@@ -42,7 +38,7 @@ namespace NakedObjects.Value {
         public string Name { get; set; }
 
         public void LoadResourceFromStream(Stream stream) {
-            if (stream != null) {
+            if (stream is not null) {
                 var len = (int) stream.Length;
                 stream.Position = 0;
                 buffer = new byte[len];
@@ -55,9 +51,7 @@ namespace NakedObjects.Value {
 
         public byte[] GetResourceAsByteArray() => buffer;
 
-        public void LoadResourceFromByteArray(byte[] byteArray) {
-            buffer = byteArray;
-        }
+        public void LoadResourceFromByteArray(byte[] byteArray) => buffer = byteArray;
 
         public override string ToString() => "FileAttachment";
 
@@ -65,13 +59,7 @@ namespace NakedObjects.Value {
 
         public string MimeType { get; set; }
 
-        public Stream GetResourceAsStream() {
-            if (buffer != null) {
-                return new MemoryStream(buffer);
-            }
-
-            return null;
-        }
+        public Stream GetResourceAsStream() => buffer is not null ? new MemoryStream(buffer) : null;
 
         #endregion
     }

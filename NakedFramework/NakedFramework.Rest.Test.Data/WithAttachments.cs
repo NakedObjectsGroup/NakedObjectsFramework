@@ -6,8 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.ComponentModel.DataAnnotations;
+using NakedFramework.Value;
 using NakedObjects;
-using NakedObjects.Value;
+
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

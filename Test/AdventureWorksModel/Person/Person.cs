@@ -13,9 +13,9 @@ using System.Security.Cryptography;
 using System.Text;
 using NakedObjects;
 using System.Collections.Generic;
-using NakedObjects.Value;
 using System.ComponentModel.DataAnnotations.Schema;
 using NakedFramework;
+using NakedFramework.Value;
 
 namespace AdventureWorksModel {
 

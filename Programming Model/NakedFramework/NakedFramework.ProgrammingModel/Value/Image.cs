@@ -8,7 +8,7 @@
 using System;
 using System.IO;
 
-namespace NakedObjects.Value {
+namespace NakedFramework.Value {
     /// <summary>
     ///     Specialised version of FileAttachment for handling images.
     /// </summary>

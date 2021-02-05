@@ -8,11 +8,11 @@
 using System;
 using System.Linq;
 using NakedFramework;
+using NakedFramework.Value;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade.Impl.Utility;
-using NakedObjects.Value;
 
 namespace NakedObjects.Facade.Impl {
     public class TypeFacade : ITypeFacade {

@@ -11,7 +11,7 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Drawing;
 using System.Linq;
-using NakedObjects.Value;
+using NakedFramework.Value;
 
 namespace NakedObjects.Core.Configuration {
     public static class ReflectorDefaults {
