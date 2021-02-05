@@ -24,6 +24,8 @@ namespace NakedObjects.Meta.Facet {
 
         public string Name { get; }
 
+        public string Grouping { get; init; }
+
         #endregion
     }
 

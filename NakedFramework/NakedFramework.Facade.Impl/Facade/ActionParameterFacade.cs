@@ -40,6 +40,8 @@ namespace NakedObjects.Facade.Impl {
 
         public int? MaxLength => WrappedSpec.GetMaxLength();
 
+        public string Grouping => "";
+
         public DataType? DataType => 
             WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType() ?? WrappedSpec.GetFacet<IPasswordFacet>()?.DataType;
 

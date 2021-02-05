@@ -16,5 +16,7 @@ namespace NakedObjects.Architecture.Menu {
         ///     Id is optional
         /// </summary>
         string Id { get; }
+
+        string Grouping { get; }
     }
 }

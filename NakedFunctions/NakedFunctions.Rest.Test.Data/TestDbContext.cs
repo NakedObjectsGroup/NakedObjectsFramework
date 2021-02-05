@@ -51,6 +51,8 @@ namespace NakedFunctions.Rest.Test.Data {
 
             context.DisplayAsPropertyRecords.Add(new DisplayAsPropertyRecord());
 
+            context.OrderedRecords.Add(new OrderedRecord());
+
             context.SaveChanges();
         }
     }
@@ -65,8 +67,8 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<ReferenceRecord> ReferenceRecords { get; set; }
         public DbSet<DisplayAsPropertyRecord> DisplayAsPropertyRecords { get; set; }
         public DbSet<UpdatedRecord> UpdatedRecords { get; set; }
-
         public DbSet<CollectionRecord> CollectionRecords { get; set; }
+        public DbSet<OrderedRecord> OrderedRecords { get; set; }
 
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {

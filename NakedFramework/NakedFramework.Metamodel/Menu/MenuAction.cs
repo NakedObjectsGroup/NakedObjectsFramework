@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
@@ -22,6 +23,8 @@ namespace NakedObjects.Meta.Menu {
         public string Name { get; set; }
         public string Id { get; set; }
         public IActionSpecImmutable Action { get; set; }
+        public string Grouping => Action.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
+
 
         #endregion
     }

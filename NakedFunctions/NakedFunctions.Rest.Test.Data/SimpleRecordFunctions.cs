@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualBasic;
 using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Rest.Test.Data {
@@ -157,5 +156,12 @@ namespace NakedFunctions.Rest.Test.Data {
         public static string[] DeriveKeys(this ViewModel target) => new[] {target.Name};
         public static ViewModel CreateFromKeys(string[] keys) => new() {Name = keys.First()};
         public static ViewModel UpdateName(this ViewModel vm, string name) => vm with {Name = name};
+    }
+
+    public static class OrderedRecordFunctions {
+        [MemberOrder("function1_group", 3)]
+        public static OrderedRecord Function1(this OrderedRecord or) => or;
+        [MemberOrder("function2_group", 2)]
+        public static OrderedRecord Function2(this OrderedRecord or) => or;
     }
 }

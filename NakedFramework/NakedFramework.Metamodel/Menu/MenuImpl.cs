@@ -208,6 +208,8 @@ namespace NakedObjects.Meta.Menu {
         /// </summary>
         public string Id { get; set; }
 
+        public string Grouping => "";
+
         //Includes both actions and sub-menus
         public IList<IMenuItemImmutable> MenuItems => items;
 
