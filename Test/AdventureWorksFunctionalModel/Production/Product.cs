@@ -7,9 +7,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AW.Functions;
 using NakedFunctions;
-
+using NakedFramework.Value;
 
 namespace AW.Types
 {
@@ -27,36 +28,27 @@ namespace AW.Types
         [MemberOrder(3)]
         public virtual string Color { get; init; }
 
-        //
-        //private Image cachedPhoto;
 
-        //[MemberOrder(4)]
-        //public virtual Image Photo
-        //{
-        //    get
-        //    {
-        //        if (cachedPhoto == null)
-        //        {
-        //            ProductPhoto p = (from obj in ProductProductPhoto
-        //                              select obj.ProductPhoto).FirstOrDefault();
+        private Image cachedPhoto;
 
-        //            if (p != null)
-        //            {
-        //                cachedPhoto = new Image(p.LargePhoto, p.LargePhotoFileName);
-        //            }
-        //        }
-        //        return cachedPhoto;
-        //    }
-        //}
+        [MemberOrder(4)]
+        public virtual Image Photo
+        {
+            get
+            {
+                if (cachedPhoto == null)
+                {
+                    ProductPhoto p = (from obj in ProductProductPhoto
+                                      select obj.ProductPhoto).FirstOrDefault();
 
-        //public void AddOrChangePhoto(Image newImage)
-        //{
-        //    ProductPhoto p = (from obj in ProductProductPhoto
-        //                      select obj.ProductPhoto).FirstOrDefault();
-
-        //    p.LargePhoto = newImage.GetResourceAsByteArray();
-        //    p.LargePhotoFileName = newImage.Name;
-        //}
+                    if (p != null)
+                    {
+                        cachedPhoto = new Image(p.LargePhoto, p.LargePhotoFileName);
+                    }
+                }
+                return cachedPhoto;
+            }
+        }
 
         //
 
