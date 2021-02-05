@@ -14,13 +14,18 @@ namespace AW.Functions {
     public static class SalesOrderDetail_Functions
     {
         //Call this from any function that updates a SalesOrderDetail
-        public static (SalesOrderDetail, IContext) Recalculate(this SalesOrderDetail sod)
+        internal static SalesOrderDetail WithRecalculatedFields(this SalesOrderDetail sod)
         {
-            throw new NotImplementedException();
-            //UnitPrice = SpecialOfferProduct.Product.ListPrice;
-            //UnitPriceDiscount = (SpecialOfferProduct.SpecialOffer.DiscountPct * UnitPrice);
-            //LineTotal = (UnitPrice - UnitPriceDiscount) * OrderQty;
-            //SalesOrderHeader.Recalculate();
+            var unitPrice = sod.SpecialOfferProduct.Product.ListPrice;
+            var discount = sod.SpecialOfferProduct.SpecialOffer.DiscountPct * unitPrice;
+            var lineTotal = (unitPrice - discount) * sod.OrderQty;
+
+            return sod with
+            {
+                UnitPrice = unitPrice,
+                UnitPriceDiscount = discount,
+                LineTotal = lineTotal
+            };
         }
 
         public static (SalesOrderDetail, IContext) ChangeQuantity(this SalesOrderDetail sod, short newQuantity, IContext context)

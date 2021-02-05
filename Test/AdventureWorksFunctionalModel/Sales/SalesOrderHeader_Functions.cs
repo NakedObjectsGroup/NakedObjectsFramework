@@ -32,9 +32,8 @@ namespace AW.Functions {
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
             int stock = product.NumberInStock();
             string warning = stock < quantity ? $"Current inventory of {product} is {stock}" : "";
-            //TODO:
-            //sod.Recalculate();
-            return (soh, context.WithNew(sod).WithWarnUser(warning));
+            return (soh, context.WithNew(sod).WithUpdated(soh, soh with { ModifiedDate = context.Now() }).WithWarnUser(warning));
+            //TODO: Recalculate Header fields - probably as a post-save action.
         }
 
         internal static SalesOrderDetail CreateNewDetail(this SalesOrderHeader soh, Product product, short quantity, IContext context)
@@ -54,7 +53,7 @@ namespace AW.Functions {
                 rowguid = context.NewGuid(),
                 ModifiedDate = context.Now()
             };
-            return sod;
+            return sod.WithRecalculatedFields();
         }
 
         public static string DisableAddNewDetail(this SalesOrderHeader soh)
@@ -467,8 +466,8 @@ namespace AW.Functions {
         //}
         #endregion
 
-        public static (SalesOrderHeader, IContext) Recalculate(this SalesOrderHeader soh, IContext context) =>
-            UpdateOrder(soh, soh with {SubTotal = soh.Details.Sum(d => d.LineTotal), TotalDue = soh.SubTotal}, context);
+        internal static SalesOrderHeader WithRecalculatedFields(this SalesOrderHeader soh) =>
+             soh with {SubTotal = soh.Details.Sum(d => d.LineTotal), TotalDue = soh.SubTotal};
 
         #region Edits - TODO
         //public static Address[] ChoicesBillingAddress(IContext context) => Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();
