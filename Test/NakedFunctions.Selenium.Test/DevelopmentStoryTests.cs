@@ -417,7 +417,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void PropertyHiddenViaAHideMethod()
         {
             //An Individual Customer should not display a Store property
@@ -435,6 +435,28 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Store:", WaitForCssNo(".property .name", 2).Text);
             Assert.AreEqual("Customer Type:", WaitForCssNo(".property .name", 1).Text);
             Assert.AreEqual("Account Number:", WaitForCssNo(".property .name", 0).Text);
+        }
+
+        [TestMethod]
+        public void SubMenuOnObject()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Vendor--1500&as1=open");
+            WaitForTitle("Morgan Bike Accessories");
+            Assert.AreEqual("Check Credit", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
+            Assert.AreEqual("Show All Products", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
+            OpenSubMenu("Purchase Orders");
+            WaitForCssNo("nof-action", 4); //i.e. so we are sure menu has opened
+            Assert.AreEqual("Create New Purchase Order", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
+            Assert.AreEqual("Open Purchase Orders", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
+            Assert.AreEqual("List Purchase Orders", WaitForCssNo("nof-action-list input", 2).GetAttribute("value"));
+
+        }
+
+        [TestMethod]
+        public void SubMenuOnMainMenu()
+        {
+            Assert.Fail(); //TODO
+
         }
     }
 }
