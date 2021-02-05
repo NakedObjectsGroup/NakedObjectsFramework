@@ -13,6 +13,7 @@ namespace NakedObjects.Facade.Impl {
             Wrapped = wrapped;
             Name = wrapped.Name;
             Id = wrapped.Id;
+            Grouping = wrapped.Grouping;
             var action = framework.MetamodelManager.GetActionSpec(wrapped.Action);
             Action = new ActionFacade(action, facade, framework, "");
         }
@@ -27,6 +28,7 @@ namespace NakedObjects.Facade.Impl {
 
         public string Name { get; }
         public string Id { get; }
+        public string Grouping { get; }
         public object Wrapped { get; }
 
         #endregion

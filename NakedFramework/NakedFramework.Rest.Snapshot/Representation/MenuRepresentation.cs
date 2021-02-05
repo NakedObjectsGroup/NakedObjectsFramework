@@ -69,7 +69,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 return action;
             }
 
-            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i)).Where(af => IsVisibleAndUsable(af.action)).ToArray();
+            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i, i.Grouping)).Where(af => IsVisibleAndUsable(af.action)).ToArray();
 
             var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, SetMenuId(a.action), Flags)).ToArray();
 
