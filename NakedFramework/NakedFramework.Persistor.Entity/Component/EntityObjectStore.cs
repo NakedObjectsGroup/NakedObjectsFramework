@@ -34,7 +34,7 @@ using NakedObjects.Persistor.Entity.Util;
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
 
 namespace NakedObjects.Persistor.Entity.Component {
-    public sealed partial class EntityObjectStore : IObjectStore, IDisposable {
+    public sealed class EntityObjectStore : IObjectStore, IDisposable {
         private readonly GetAdapterForDelegate getAdapterFor;
         internal readonly ILogger<EntityObjectStore> logger;
         private readonly IMetamodelManager metamodelManager;
