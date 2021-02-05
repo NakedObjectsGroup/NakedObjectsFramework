@@ -30,21 +30,25 @@ namespace AW.Functions
         #region BestSpecialOffer
         [DescribedAs("Determines the best discount offered by current special offers for a specified order quantity")]
         public static SpecialOffer BestSpecialOffer(
-            this Product p, [ValueRange(1, 999)] int quantity, IContext context)
-           => BestSpecialOfferProduct(p, (short)quantity, context).SpecialOffer ?? SpecialOffer_MenuFunctions.NoDiscount(context);
-
+            this Product p, [ValueRange(1, 999)] int quantity, IContext context) =>
+               BestSpecialOfferProduct(p, (short)quantity, context).SpecialOffer;
 
         public static string DisableBestSpecialOffer(this Product p, IContext context)
          => p.IsDiscontinued(context) ? "Product is discontinued" : null;
 
         internal static SpecialOfferProduct BestSpecialOfferProduct(
-            this Product p, short quantity, IContext context) =>
-            context.Instances<SpecialOfferProduct>().Where(obj => obj.Product.ProductID == p.ProductID &&
-                              obj.SpecialOffer.StartDate <= DateTime.Now &&
-                              obj.SpecialOffer.EndDate >= new DateTime(2004, 6, 1) &&
-                              obj.SpecialOffer.MinQty < quantity).
-                        OrderByDescending(obj => obj.SpecialOffer.DiscountPct)
-                        .FirstOrDefault();
+            this Product p, short quantity, IContext context)
+        {
+            //TODO: Currently this ignores end date, but this is because all special offers in the AW database,
+            //including No Discount have ended!
+            var pID = p.ProductID;
+            var today = context.Today();
+            var best = context.Instances<SpecialOfferProduct>().Where(obj => obj.Product.ProductID == p.ProductID &&
+                              obj.SpecialOffer.StartDate <= today &&
+                              obj.SpecialOffer.MinQty < quantity).OrderByDescending(obj => obj.SpecialOffer.DiscountPct).FirstOrDefault();
+            if (best is null) throw new Exception($"No Special Offers associated with {p}");
+            return best;
+        }
 
         private static bool IsDiscontinued(this Product p, IContext context) =>
             p.DiscontinuedDate != null ? p.DiscontinuedDate.Value < context.Now() : false;
