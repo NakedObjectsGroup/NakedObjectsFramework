@@ -54,12 +54,7 @@ namespace AW.Functions {
             return (c, context.WithNew(s).WithNew(c));
         }
 
-        [MemberOrder("Stores",6)]
-        public static IQueryable<Store> FindStoreOnlyByName(
-            [DescribedAs("partial match")]string name, IContext context) => 
-            context.Instances<Store>().Where(s => s.Name.ToUpper().Contains(name.ToUpper()));
-
-        [MemberOrder("Stores",7)]
+        [MemberOrder("Stores",3)]
         public static Customer RandomStore(IContext context) {
             var stores = context.Instances<Customer>().Where(t => t.StoreID != null).OrderBy(t => "");
             var random = context.RandomSeed().ValueInRange(stores.Count());
@@ -70,7 +65,7 @@ namespace AW.Functions {
 
         #region Individuals Menu
 
-        [MemberOrder(30)]
+        [MemberOrder("Individuals",1)]
         [TableView(true)] //Table view == List View
         public static IQueryable<Customer> FindIndividualCustomerByName(
             [Optionally] string firstName, string lastName, IContext context)
@@ -82,7 +77,7 @@ namespace AW.Functions {
                    select c;
         }
 
-        [MemberOrder(50)]
+        [MemberOrder("Individuals",2)]
         public static (Customer, IContext) CreateNewIndividualCustomer(
             string firstName, 
             string lastName, 
@@ -94,7 +89,7 @@ namespace AW.Functions {
             //return (indv, indv);  //TODO: check that this will persist the associated Person as well as Customer
         }
 
-        [MemberOrder(70)]
+        [MemberOrder("Individuals",3)]
         public static Customer RandomIndividual(IContext context)
         {
             var indivs = context.Instances<Customer>().Where(t => t.PersonID != null).OrderBy(t => "");

@@ -11,7 +11,7 @@ using System.Linq;
 using AW.Functions;
 using NakedFramework.Value;
 using NakedFunctions;
-
+using NakedFramework.Value;
 
 namespace AW.Types
 {
@@ -29,23 +29,29 @@ namespace AW.Types
         [MemberOrder(3)]
         public virtual string Color { get; init; }
 
+
         private Image cachedPhoto;
 
         [MemberOrder(4)]
-        public virtual Image Photo {
-            get {
-                if (cachedPhoto is null) {
-                    var p = (from obj in ProductProductPhoto
-                             select obj.ProductPhoto).FirstOrDefault();
+        public virtual Image Photo
+        {
+            get
+            {
+                if (cachedPhoto == null)
+                {
+                    ProductPhoto p = (from obj in ProductProductPhoto
+                                      select obj.ProductPhoto).FirstOrDefault();
 
-                    if (p is not null) {
+                    if (p != null)
+                    {
                         cachedPhoto = new Image(p.LargePhoto, p.LargePhotoFileName);
                     }
                 }
-
                 return cachedPhoto;
             }
         }
+
+        //
 
         [MemberOrder(12)]
         public virtual ProductCategory ProductCategory => Product_Functions.ProductCategory(this);

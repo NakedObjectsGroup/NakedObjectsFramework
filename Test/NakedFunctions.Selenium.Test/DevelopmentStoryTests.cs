@@ -69,6 +69,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CreateNewObject3();
             CreateNewObject3();
             PropertyHiddenViaAHideMethod();
+            SubMenuOnObject();
+            SubMenuOnMainMenu();
         }
 
         //[TestMethod]
@@ -417,7 +419,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void PropertyHiddenViaAHideMethod()
         {
             //An Individual Customer should not display a Store property
@@ -435,6 +437,55 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Store:", WaitForCssNo(".property .name", 2).Text);
             Assert.AreEqual("Customer Type:", WaitForCssNo(".property .name", 1).Text);
             Assert.AreEqual("Account Number:", WaitForCssNo(".property .name", 0).Text);
+        }
+
+        //[TestMethod]
+        public void SubMenuOnObject()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Vendor--1500&as1=open");
+            WaitForTitle("Morgan Bike Accessories");
+            Assert.AreEqual("Check Credit", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
+            Assert.AreEqual("Show All Products", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
+            OpenSubMenu("Purchase Orders");
+            WaitForCssNo("nof-action", 4); //i.e. so we are sure menu has opened
+            Assert.AreEqual("Create New Purchase Order", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
+            Assert.AreEqual("Open Purchase Orders", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
+            Assert.AreEqual("List Purchase Orders", WaitForCssNo("nof-action-list input", 2).GetAttribute("value"));
+
+        }
+
+        //[TestMethod]
+        public void SubMenuOnMainMenu()
+        {
+            GeminiUrl("home?m1=Customer_MenuFunctions");
+            WaitForTitle("Home");
+            WaitForCssNo("nof-action", 1);
+            Assert.AreEqual("Find Customer By Account Number", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
+            Assert.AreEqual("List Customers For Sales Territory", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
+            OpenSubMenu("Individuals");
+            OpenSubMenu("Stores");
+            WaitForCssNo("nof-action", 7); //i.e. so we are sure menu has opened
+            Assert.AreEqual("Find Individual Customer By Name", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
+            Assert.AreEqual("Find Store By Name", WaitForCssNo("nof-action-list input", 3).GetAttribute("value"));
+        }
+
+        [TestMethod]
+        public void ImageProperty()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Product--881");
+            WaitForTitle("Short-Sleeve Classic Jersey, S");
+            var photo = GetProperty("Photo");
+            var imgSrc = photo.FindElement(By.CssSelector("img")).GetAttribute("src");
+            Assert.IsTrue(imgSrc.StartsWith("data:image/gif;"));
+        }
+
+        [TestMethod]
+        public void ImageParameter()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Product--881&as1=open");
+            WaitForTitle("Short-Sleeve Classic Jersey, S");
+            OpenActionDialog("Add Or Change Photo");
+            WaitForCss(".value.input-control input#newimage1");
         }
     }
 }

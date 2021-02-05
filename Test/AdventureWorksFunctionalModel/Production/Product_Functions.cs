@@ -154,5 +154,20 @@ namespace AW.Functions
              DateTime startDate,
              IContext context) =>
                     WorkOrder_MenuFunctions.CreateNewWorkOrder(product, orderQty, startDate, context);
+
+
+
+        public static (Product, IContext) AddOrChangePhoto(this Product product, Image newImage, IContext context)
+        {
+            ProductPhoto pp = (from obj in product.ProductProductPhoto
+                              select obj.ProductPhoto).FirstOrDefault();
+            var pp2 = pp with
+            {
+                LargePhoto = newImage.GetResourceAsByteArray(),
+                LargePhotoFileName = newImage.Name
+            };
+            return (product, context.WithUpdated(pp, pp2));
+        }
+
     }
 }
