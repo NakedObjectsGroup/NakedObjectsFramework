@@ -69,6 +69,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CreateNewObject3();
             CreateNewObject3();
             PropertyHiddenViaAHideMethod();
+            SubMenuOnObject();
+            SubMenuOnMainMenu();
         }
 
         //[TestMethod]
@@ -437,7 +439,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Account Number:", WaitForCssNo(".property .name", 0).Text);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void SubMenuOnObject()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Vendor--1500&as1=open");
@@ -452,11 +454,20 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void SubMenuOnMainMenu()
         {
-            Assert.Fail(); //TODO
-
+            GeminiUrl("home?m1=Customer_MenuFunctions");
+            WaitForTitle("Home");
+            WaitForCssNo("nof-action", 1);
+            Assert.AreEqual("Find Customer By Account Number", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
+            Assert.AreEqual("List Customers For Sales Territory", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
+            OpenSubMenu("Individuals");
+            OpenSubMenu("Stores");
+            WaitForCssNo("nof-action", 7); //i.e. so we are sure menu has opened
+            Assert.AreEqual("Find Individual Customer By Name", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
+            Assert.AreEqual("Find Store By Name", WaitForCssNo("nof-action-list input", 3).GetAttribute("value"));
+      
         }
     }
 }
