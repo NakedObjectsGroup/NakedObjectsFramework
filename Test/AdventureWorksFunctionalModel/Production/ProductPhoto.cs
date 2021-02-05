@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using NakedFramework.Value;
 using NakedFunctions;
 using static AW.Utilities;
 
@@ -32,15 +32,8 @@ namespace AW.Types {
         }
 
         //TODO
-        //public virtual string LargePhotoFileName { get; init; }
-        //public virtual FileAttachment LargePhotoAsAttachment
-        //{
-        //    get
-        //    {
-        //        // fake minetype
-        //        return new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
-        //    }
-        //}
+        public virtual string LargePhotoFileName { get; set; }
+        public virtual FileAttachment LargePhotoAsAttachment => new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
 
         [Hidden]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
