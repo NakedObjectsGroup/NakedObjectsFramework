@@ -18,44 +18,38 @@ using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Util;
 
 namespace NakedObjects.Persistor.Entity.Component {
-    public class EntityPersistUpdateDetachedObjectCommand  {
+    public class EntityPersistUpdateDetachedObjectCommand {
         private readonly IDetachedObjects detachedObjects;
-        private LocalContext context;
-        private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
         private readonly EntityObjectStore parent;
+        private LocalContext context;
 
-        public EntityPersistUpdateDetachedObjectCommand(IDetachedObjects detachedObjects, EntityObjectStore parent)
-        {
+        public EntityPersistUpdateDetachedObjectCommand(IDetachedObjects detachedObjects, EntityObjectStore parent) {
             this.detachedObjects = detachedObjects;
             this.parent = parent;
         }
 
         public INakedObjectAdapter OnObject() => context.CurrentSaveRootObjectAdapter;
 
-
         private bool IsSavedOrUpdated(object obj) => detachedObjects.SavedAndUpdated.Any(t => t.original == obj);
+
+        private void ProxyIfNotAlreadySeen((object proxy, object toProxy) updateTuple, Func<object, INakedObjectAdapter> getAdapter) {
+            var (proxy, updated) = updateTuple;
+
+            if (!IsSavedOrUpdated(updated)) {
+                context = parent.GetContext(updated);
+                context.CurrentSaveRootObjectAdapter = getAdapter(updated);
+                ProxyObjectIfAppropriate(updated, proxy);
+            }
+        }
 
         public IList<(object original, object updated)> Execute() {
             try {
-
-                objectToProxyScratchPad.Clear();
-
                 foreach (var toSave in detachedObjects.ToSave) {
-                    if (!IsSavedOrUpdated(toSave)) {
-                        context = parent.GetContext(toSave);
-                        context.CurrentSaveRootObjectAdapter = parent.createAdapter(null, toSave);
-                        ProxyObjectIfAppropriate(toSave, null);
-                    }
+                    ProxyIfNotAlreadySeen((null, toSave), o => parent.createAdapter(null, o));
                 }
 
                 foreach (var updateTuple in detachedObjects.ToUpdate) {
-                    var (proxy, updated) = updateTuple;
-
-                    if (!IsSavedOrUpdated(updated)) {
-                        context = parent.GetContext(updated);
-                        context.CurrentSaveRootObjectAdapter = parent.AdaptDetachedObject(updated);
-                        ProxyObjectIfAppropriate(updated, proxy);
-                    }
+                    ProxyIfNotAlreadySeen(updateTuple, o => parent.AdaptDetachedObject(o));
                 }
 
                 return detachedObjects.SavedAndUpdated;
@@ -87,8 +81,6 @@ namespace NakedObjects.Persistor.Entity.Component {
             var keys = context.GetKey(originalObject);
             var persisting = keys.All(EntityObjectStore.EmptyKey);
             var proxy = GetOrCreateProxiedObject(originalObject, keys, context, potentialProxy);
-
-            objectToProxyScratchPad[originalObject] = proxy;
 
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
             // if not proxied this should just be the same as adapterForOriginalObject
@@ -137,14 +129,10 @@ namespace NakedObjects.Persistor.Entity.Component {
             notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
         }
 
-        public override string ToString() => $"CreateObjectCommand";
+        public override string ToString() => "CreateObjectCommand";
 
         private void ProxyObjectIfAppropriate(object originalObject, object existingProxy) {
             if (originalObject == null) {
-                return;
-            }
-
-            if (objectToProxyScratchPad.ContainsKey(originalObject)) {
                 return;
             }
 
@@ -157,12 +145,8 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return null;
             }
 
-            if (objectToProxyScratchPad.ContainsKey(originalObject)) {
-                return objectToProxyScratchPad[originalObject];
-            }
-
             var adapterForOriginalObject = parent.createAdapter(null, originalObject);
-            
+
             var keys = context.GetKey(originalObject);
             var persisting = keys.All(EntityObjectStore.EmptyKey);
 
