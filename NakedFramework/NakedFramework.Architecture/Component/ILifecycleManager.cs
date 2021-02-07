@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Persist;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
@@ -43,9 +44,7 @@ namespace NakedObjects.Architecture.Component {
         IOid RestoreOid(string[] encodedData, INakedObjectsFramework framework);
         INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec);
 
-        (object,object) Persist(object toPersist, (object, object)[] dependents);
-
-        (object, object) Update((object, object) toPersist, (object, object)[] dependents);
+        IDetachedObjects Persist(IDetachedObjects objects);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

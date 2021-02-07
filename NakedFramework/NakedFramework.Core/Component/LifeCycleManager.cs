@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Persist;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -67,10 +68,8 @@ namespace NakedObjects.Core.Component {
             return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, (IObjectSpec) spec);
         }
 
-        public (object, object) Persist(object toPersist, (object, object)[] dependents) => objectPersistor.PersistDetachedObjects(toPersist, dependents);
-
-        public (object, object) Update((object, object) toPersist, (object, object)[] dependents) => objectPersistor.UpdateDetachedObjects(toPersist, dependents);
-
+        public IDetachedObjects Persist(IDetachedObjects objects) => objectPersistor.UpdateDetachedObjects(objects);
+      
         /// <summary>
         ///     Factory (for transient instance)
         /// </summary>

@@ -20,6 +20,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Transactions;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Persist;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -113,6 +114,20 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
+        private static IDetachedObjects Execute(EntityPersistUpdateDetachedObjectCommand cmd) {
+            try {
+                return cmd.Execute();
+            }
+            catch (OptimisticConcurrencyException oce) {
+                //throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObjectAdapter = cmd.OnObject()};
+
+                throw new ConcurrencyException(ConcatenateMessages(oce), oce);
+            }
+            catch (UpdateException ue) {
+                throw new DataUpdateException(ConcatenateMessages(ue), ue);
+            }
+        }
+
         private LocalContext FindContext(Type type) =>
             contexts.Values.SingleOrDefault(c => c.GetIsOwned(type)) ??
             contexts.Values.Single(c => c.GetIsKnown(type));
@@ -126,7 +141,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
-        private LocalContext GetContext(object domainObject) => GetContext(GetTypeToUse(domainObject));
+        internal LocalContext GetContext(object domainObject) => GetContext(GetTypeToUse(domainObject));
 
         private Type GetTypeToUse(object domainObject) {
             if (domainObject == null) {
@@ -517,11 +532,11 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EntitySaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-        public void ExecuteAttachObjectCommandPersist(INakedObjectAdapter nakedObjectAdapter, (object, object)[] dependents) =>
-            Execute(new EntityPersistUpdateDetachedObjectCommand(nakedObjectAdapter, null, dependents,  GetContext(nakedObjectAdapter), this));
+        //public (object, object)[]  ExecuteAttachObjectCommandPersist(INakedObjectAdapter nakedObjectAdapter, (object, object)[] dependents) =>
+        //    Execute(new EntityPersistUpdateDetachedObjectCommand(nakedObjectAdapter, null, dependents,  GetContext(nakedObjectAdapter), this));
 
-        public void ExecuteAttachObjectCommandUpdate(INakedObjectAdapter nakedObjectAdapter, object proxy, (object, object)[] dependents) =>
-            Execute(new EntityPersistUpdateDetachedObjectCommand(nakedObjectAdapter, proxy, dependents, GetContext(nakedObjectAdapter), this));
+        public IDetachedObjects ExecuteAttachObjectCommandUpdate(IDetachedObjects objects) =>
+            Execute(new EntityPersistUpdateDetachedObjectCommand(objects, this));
 
         public void EndTransaction() {
             try {
@@ -692,34 +707,39 @@ namespace NakedObjects.Persistor.Entity.Component {
                 _ => false
             };
 
-        public (object, object) PersistDetachedObject(object obj, (object, object)[] dependents) {
-            // todo do we need to handle multiple contexts - if so need to batch by context
-            var context = GetContext(obj);
+        //public ((object, object), (object, object)[]) PersistDetachedObject(object obj, (object, object)[] dependents) {
+        //    // todo do we need to handle multiple contexts - if so need to batch by context
+        //    var context = GetContext(obj);
 
-            // todo is there an easier way ? 
-            var persisting = context.GetKey(obj).All(EmptyKey);
+        //    // todo is there an easier way ? 
+        //    var persisting = context.GetKey(obj).All(EmptyKey);
 
-            var adapter = persisting ? createAdapter(null, obj) : AdaptDetachedObject(obj);
+        //    var adapter = persisting ? createAdapter(null, obj) : AdaptDetachedObject(obj);
 
-            ExecuteAttachObjectCommandPersist(adapter, dependents);
+        //    var updatedDependents = ExecuteAttachObjectCommandPersist(adapter, dependents);
 
-            return (obj, adapter.GetDomainObject());
-        }
+        //    return ((obj, adapter.GetDomainObject()), updatedDependents);
+        //}
 
-        public (object, object) UpdateDetachedObject((object, object) objTuple, (object, object)[] dependents) {
-            var (proxy, obj) = objTuple;
+        public IDetachedObjects UpdateDetachedObjects(IDetachedObjects objects) { 
 
-            // todo do we need to handle multiple contexts - if so need to batch by context
-            var context = GetContext(obj);
 
-            // todo is there an easier way ? 
-            var persisting = context.GetKey(obj).All(EmptyKey);
 
-            var adapter = persisting ? createAdapter(null, obj) : AdaptDetachedObject(obj);
+            //var (proxy, obj) = objTuple;
 
-            ExecuteAttachObjectCommandUpdate(adapter, proxy, dependents);
+            //// todo do we need to handle multiple contexts - if so need to batch by context
+            //var context = GetContext(obj);
 
-            return (obj, adapter.GetDomainObject());
+            //// todo is there an easier way ? 
+            //var persisting = context.GetKey(obj).All(EmptyKey);
+
+            //var adapter = persisting ? createAdapter(null, obj) : AdaptDetachedObject(obj);
+
+            var updatedDependents = ExecuteAttachObjectCommandUpdate(objects);
+
+            //return ((obj, adapter.GetDomainObject()), updatedDependents);
+
+            return updatedDependents;
         }
 
 

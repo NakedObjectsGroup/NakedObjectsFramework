@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using NakedFramework.Architecture.Persist;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Spec;
@@ -89,9 +90,7 @@ namespace NakedObjects.Architecture.Component {
         INakedObjectAdapter FindByKeys(Type type, object[] keys);
         void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool isGhost);
 
-        (object, object) PersistDetachedObject(object toPersist, (object, object)[] dependents);
-        (object, object) UpdateDetachedObject((object, object) objTuple, (object, object)[] dependents);
-
+        IDetachedObjects UpdateDetachedObjects(IDetachedObjects objects);
 
         INakedObjectAdapter AdaptDetachedObject(object poco);
         bool HasChanges();

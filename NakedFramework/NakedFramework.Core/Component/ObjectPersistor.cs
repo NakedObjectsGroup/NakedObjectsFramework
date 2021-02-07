@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Persist;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -191,10 +192,7 @@ namespace NakedObjects.Core.Component {
 
         public void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost) => objectStore.LoadComplexTypesIntoNakedObjectFramework(adapter, isGhost);
 
-        public (object,object) PersistDetachedObjects(object toPersist, (object, object)[] dependents) => objectStore.PersistDetachedObject(toPersist, dependents);
-
-        public (object, object) UpdateDetachedObjects((object, object) toPersist, (object, object)[] dependents) => objectStore.UpdateDetachedObject(toPersist, dependents);
-
+        public IDetachedObjects UpdateDetachedObjects(IDetachedObjects objects) => objectStore.UpdateDetachedObjects(objects);
 
         public void AdaptDetachedObject(object poco) => objectStore.AdaptDetachedObject(poco);
         public bool HasChanges() => objectStore.HasChanges();
