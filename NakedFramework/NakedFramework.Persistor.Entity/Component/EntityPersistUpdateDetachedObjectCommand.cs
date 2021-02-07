@@ -13,7 +13,6 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Persist;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Util;
@@ -22,19 +21,8 @@ namespace NakedObjects.Persistor.Entity.Component {
     public class EntityPersistUpdateDetachedObjectCommand  {
         private readonly IDetachedObjects detachedObjects;
         private LocalContext context;
-        //private readonly INakedObjectAdapter nakedObjectAdapter;
         private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
         private readonly EntityObjectStore parent;
-        //private readonly object rootProxy;
-        //private (object proxy, object updated)[] dependents;
-
-        //public EntityPersistUpdateDetachedObjectCommand(INakedObjectAdapter nakedObjectAdapter, object rootProxy, (object, object)[] dependents, LocalContext context, EntityObjectStore parent) {
-        //    this.context = context;
-        //    this.parent = parent;
-        //    this.nakedObjectAdapter = nakedObjectAdapter;
-        //    this.rootProxy = rootProxy;
-        //    this.dependents = dependents;
-        //}
 
         public EntityPersistUpdateDetachedObjectCommand(IDetachedObjects detachedObjects, EntityObjectStore parent)
         {
@@ -42,7 +30,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             this.parent = parent;
         }
 
-        //public INakedObjectAdapter OnObject() => nakedObjectAdapter;
+        public INakedObjectAdapter OnObject() => context.CurrentSaveRootObjectAdapter;
 
 
         private bool IsSavedOrUpdated(object obj) => detachedObjects.SavedAndUpdated.Any(t => t.original == obj);
@@ -70,9 +58,6 @@ namespace NakedObjects.Persistor.Entity.Component {
                     }
                 }
 
-                //context.CurrentSaveRootObjectAdapter = nakedObjectAdapter;
-                //objectToProxyScratchPad.Clear();
-                //ProxyObjectIfAppropriate(nakedObjectAdapter.Object);
                 return detachedObjects;
             }
             catch (Exception e) {
@@ -121,24 +106,12 @@ namespace NakedObjects.Persistor.Entity.Component {
             parent.removeAdapter(proxyAdapter);
             parent.replacePoco(adapterForOriginalObject, proxy);
 
-            //CallPersistingPersistedForComplexObjects(proxyAdapter);
-
             parent.CheckProxies(proxy);
 
             detachedObjects.SavedAndUpdated.Add((originalObject, proxy));
 
             return proxy;
         }
-
-        //private void CallPersistingPersistedForComplexObjects(INakedObjectAdapter parentAdapter) {
-        //    var complexMembers = context.GetComplexMembers(parentAdapter.Object.GetEntityProxiedType());
-        //    foreach (var pi in complexMembers) {
-        //        var complexObject = pi.GetValue(parentAdapter.Object, null);
-        //        var childAdapter = parent.createAggregatedAdapter(nakedObjectAdapter, pi, complexObject);
-        //        childAdapter.Persisting();
-        //        context.PersistedNakedObjects.Add(childAdapter);
-        //    }
-        //}
 
         private void ProxyReferencesAndCopyValuesToProxy(object originalObject, object proxy) {
             var nonIdMembers = context.GetNonIdMembers(originalObject.GetType());
@@ -166,17 +139,17 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public override string ToString() => $"CreateObjectCommand";
 
-        private object ProxyObjectIfAppropriate(object originalObject, object existingProxy) {
+        private void ProxyObjectIfAppropriate(object originalObject, object existingProxy) {
             if (originalObject == null) {
-                return null;
+                return;
             }
 
             if (objectToProxyScratchPad.ContainsKey(originalObject)) {
-                return objectToProxyScratchPad[originalObject];
+                return;
             }
 
             var adapterForOriginalObject = parent.createAdapter(null, originalObject);
-            return ProxyObject(originalObject, adapterForOriginalObject, existingProxy);
+            ProxyObject(originalObject, adapterForOriginalObject, existingProxy);
         }
 
         private object ProxyReferenceIfAppropriate(object originalObject) {

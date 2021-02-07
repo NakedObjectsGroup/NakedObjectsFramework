@@ -74,35 +74,8 @@ namespace NakedFunctions.Meta.Facet {
             return nakedObjectManager.CreateAdapterForExistingObject(result);
         }
 
-        //private static (object, object) HandleGraph(ILifecycleManager lifecycleManager, Graph graph) =>
-        //    graph switch {
-        //        NewGraph ng => lifecycleManager.Persist(ng.Root, ng.Updated),
-        //        UpdateGraph ug => lifecycleManager.Update(ug.Root, ug.Updated),
-        //        _ => default
-        //    };
-
-        private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, (object proxy, object updated)[] updatedObjects) {
-            IDetachedObjects detachedObjects = new DetachedObjects(newObjects, updatedObjects);
-
-            detachedObjects = lifecycleManager.Persist(detachedObjects);
-
-            //(object, object) persisted;
-            //List<(object, object)> allPersisted = new List<(object, object)>();
-
-            //foreach (var newObject in newObjects) {
-            //   (persisted, updatedObjects) = lifecycleManager.Persist(newObject, updatedObjects);
-            //   allPersisted.Add(persisted);
-            //}
-
-            //foreach (var updatedObject in updatedObjects) {
-            //    (persisted, updatedObjects) = lifecycleManager.Update(updatedObject, updatedObjects);
-            //    allPersisted.Add(persisted);
-            //}
-
-            //return allPersisted.ToArray();
-
-            return detachedObjects.SavedAndUpdated.ToArray();
-        }
+        private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, (object proxy, object updated)[] updatedObjects) =>
+            lifecycleManager.Persist(new DetachedObjects(newObjects, updatedObjects)).SavedAndUpdated.ToArray();
 
         private static (object, Context) CastTuple(ITuple tuple) => (tuple[0], (Context)tuple[1]);
 
