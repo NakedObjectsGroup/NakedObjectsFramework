@@ -68,7 +68,7 @@ namespace NakedObjects.Core.Component {
             return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, (IObjectSpec) spec);
         }
 
-        public IDetachedObjects Persist(IDetachedObjects objects) => objectPersistor.UpdateDetachedObjects(objects);
+        public IList<(object original, object updated)> Persist(IDetachedObjects objects) => objectPersistor.UpdateDetachedObjects(objects);
       
         /// <summary>
         ///     Factory (for transient instance)

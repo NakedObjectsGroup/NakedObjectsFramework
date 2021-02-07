@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Persist;
@@ -90,7 +91,7 @@ namespace NakedObjects.Architecture.Component {
         INakedObjectAdapter FindByKeys(Type type, object[] keys);
         void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool isGhost);
 
-        IDetachedObjects UpdateDetachedObjects(IDetachedObjects objects);
+        IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects);
 
         INakedObjectAdapter AdaptDetachedObject(object poco);
         bool HasChanges();

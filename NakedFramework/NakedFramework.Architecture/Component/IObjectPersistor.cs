@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Persist;
@@ -39,7 +40,7 @@ namespace NakedObjects.Architecture.Component {
         void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost);
         void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
 
-        IDetachedObjects UpdateDetachedObjects(IDetachedObjects objects);
+        IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects);
 
         void AdaptDetachedObject(object poco);
 

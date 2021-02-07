@@ -75,7 +75,7 @@ namespace NakedFunctions.Meta.Facet {
         }
 
         private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, (object proxy, object updated)[] updatedObjects) =>
-            lifecycleManager.Persist(new DetachedObjects(newObjects, updatedObjects)).SavedAndUpdated.ToArray();
+            lifecycleManager.Persist(new DetachedObjects(newObjects, updatedObjects)).ToArray();
 
         private static (object, Context) CastTuple(ITuple tuple) => (tuple[0], (Context)tuple[1]);
 

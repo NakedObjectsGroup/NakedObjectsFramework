@@ -114,7 +114,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
-        private static IDetachedObjects Execute(EntityPersistUpdateDetachedObjectCommand cmd) {
+        private static IList<(object original, object updated)> Execute(EntityPersistUpdateDetachedObjectCommand cmd) {
             try {
                 return cmd.Execute();
             }
@@ -530,7 +530,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EntitySaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-        public IDetachedObjects ExecuteAttachObjectCommandUpdate(IDetachedObjects objects) =>
+        public IList<(object original, object updated)> ExecuteAttachObjectCommandUpdate(IDetachedObjects objects) =>
             Execute(new EntityPersistUpdateDetachedObjectCommand(objects, this));
 
         public void EndTransaction() {
@@ -702,7 +702,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 _ => false
             };
 
-        public IDetachedObjects UpdateDetachedObjects(IDetachedObjects objects) => ExecuteAttachObjectCommandUpdate(objects);
+        public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) => ExecuteAttachObjectCommandUpdate(objects);
 
         public INakedObjectAdapter AdaptDetachedObject(object poco) {
             var spec = metamodelManager.GetSpecification(poco.GetType());

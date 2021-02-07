@@ -35,7 +35,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         private bool IsSavedOrUpdated(object obj) => detachedObjects.SavedAndUpdated.Any(t => t.original == obj);
 
-        public IDetachedObjects Execute() {
+        public IList<(object original, object updated)> Execute() {
             try {
 
                 objectToProxyScratchPad.Clear();
@@ -58,7 +58,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     }
                 }
 
-                return detachedObjects;
+                return detachedObjects.SavedAndUpdated;
             }
             catch (Exception e) {
                 parent.logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
