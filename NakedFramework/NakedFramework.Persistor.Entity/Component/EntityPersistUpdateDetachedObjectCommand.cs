@@ -117,7 +117,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 var toCol = proxy.GetType().GetProperty(pi.Name).GetValue(proxy, null);
                 var fromCol = pi.GetValue(originalObject, null);
 
-                if (!ReferenceEquals(toCol, fromCol)) {
+                if (!ReferenceEquals(toCol, fromCol) && fromCol is not null) {
                     toCol.Invoke("Clear");
                     foreach (var item in (IEnumerable) fromCol) {
                         toCol.Invoke("Add", ProxyReferenceIfAppropriate(item));
