@@ -6,19 +6,19 @@ using System;
 namespace AW.Types {
     public  record Password : IHasRowGuid, IHasModifiedDate
     {
-        [Hidden]
+       // [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
-        [Hidden]
+        //[Hidden]
         public virtual BusinessEntity BusinessEntity { get; init; }
 
-        [Hidden]
+        //[Hidden]
         public virtual string PasswordHash { get; init; }
 
-        [Hidden]
+       // [Hidden]
         public virtual string PasswordSalt { get; init; }
 
-        [Hidden]
+       // [Hidden]
         public virtual Guid rowguid { get; init; }
 
         [Hidden]
