@@ -11,18 +11,18 @@ namespace AW.Functions
     {
 
         #region ChangePassword 
-        public static (BusinessEntity, IContext) ChangePassword(this BusinessEntity be,
+        public static (Person, IContext) ChangePassword(this Person p,
             [Password] string oldPassword,
             [Password] string newPassword,
             [Named("New Password (Confirm)"), Password] string confirm,
             IContext context) =>
-            (be, context.WithNew(CreateNewPassword(newPassword, be, context)));
+            (p, context.WithNew(CreateNewPassword(newPassword, p, context)));
 
-        public static string ValidateChangePassword(this BusinessEntity be,
+        public static string ValidateChangePassword(this Person p,
             string oldPassword, string newPassword, string confirm, IContext context)
         {
             var reason = "";
-            if (!MostRecentPassword(be.BusinessEntityID, context).OfferedPasswordIsCorrect(oldPassword))
+            if (!MostRecentPassword(p.BusinessEntityID, context).OfferedPasswordIsCorrect(oldPassword))
             {
                 reason += "Old Password is incorrect";
             }
@@ -42,22 +42,22 @@ namespace AW.Functions
         }
         #endregion
 
-        public static (BusinessEntity, IContext) TestPassword(this BusinessEntity be,
+        public static (BusinessEntity, IContext) TestPassword(this Person p,
           [Password] string test,
           IContext context)
         {
-            var pw = MostRecentPassword(be.BusinessEntityID, context);
+            var pw = MostRecentPassword(p.BusinessEntityID, context);
             return pw is not null && OfferedPasswordIsCorrect(pw, test) ?
-               (be, context.WithInformUser($"Entered password is correct."))
-               : (be, context.WithInformUser($"Password is incorrect (or {be} has no password)."));
+               (p, context.WithInformUser($"Entered password is correct."))
+               : (p, context.WithInformUser($"Password is incorrect (or {p} has no password)."));
         }
 
-        internal static Password CreateNewPassword(string newPassword, BusinessEntity businessEntity, IContext context)
+        internal static Password CreateNewPassword(string newPassword, Person person, IContext context)
         {
             var salt = CreateRandomSalt();
             var pw = new Password()
             {
-                BusinessEntity = businessEntity,
+                Person = person,
                 PasswordSalt = salt,
                 PasswordHash = Hashed(newPassword, salt),
                 rowguid = context.NewGuid(),
