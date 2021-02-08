@@ -15,7 +15,7 @@ namespace AW.Mapping {
             Property(t => t.rowguid).HasColumnName("rowguid");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
-            HasRequired(t => t.Person);
+           // HasRequired(t => t.Person);
         }
     }
 }

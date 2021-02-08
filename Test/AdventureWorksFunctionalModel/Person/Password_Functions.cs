@@ -57,7 +57,8 @@ namespace AW.Functions
             var salt = CreateRandomSalt();
             var pw = new Password()
             {
-                Person = person,
+                BusinessEntityID = person.BusinessEntityID,
+                //Person = person,
                 PasswordSalt = salt,
                 PasswordHash = Hashed(newPassword, salt),
                 rowguid = context.NewGuid(),
