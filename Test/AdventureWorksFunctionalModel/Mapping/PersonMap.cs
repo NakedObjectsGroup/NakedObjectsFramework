@@ -30,6 +30,7 @@ namespace AW.Mapping
             // Table & Column Mappings
             ToTable("Person", "Person");
             Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
+            Property(t => t.PersonType).HasColumnName("PersonType");
             Property(t => t.NameStyle).HasColumnName("NameStyle");
             Property(t => t.Title).HasColumnName("Title");
             Property(t => t.FirstName).HasColumnName("FirstName");
@@ -42,6 +43,7 @@ namespace AW.Mapping
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
+            HasOptional(t => t.Password).WithRequired(pw => pw.Person);
         }
     }
 }

@@ -5,26 +5,68 @@ using System.Security.Cryptography;
 using System;
 using System.Linq;
 
-namespace AW.Functions {
+namespace AW.Functions
+{
     public static class Password_Functions
     {
 
         #region ChangePassword 
-        public static (BusinessEntity, IContext) ChangePassword(this BusinessEntity be,
-            [Password] string oldPassword, 
-            [Password] string newPassword, 
+        public static (Person, IContext) ChangePassword(this Person p,
+            [Password] string oldPassword,
+            [Password] string newPassword,
             [Named("New Password (Confirm)"), Password] string confirm,
-            IContext context) =>
-            (be, context.WithNew(CreateNewPassword(newPassword, be.BusinessEntityID, context)));
+            IContext context)
+        {
+            var oldP = p.Password;
+            var salt = CreateRandomSalt();
+            var newP = oldP with
+            {
+                PasswordSalt = salt,
+                PasswordHash = Hashed(newPassword, salt),
+                ModifiedDate = context.Now()
+            };
+            return (p, context.WithUpdated(oldP, newP));
+        }
 
-        public static string ValidateChangePassword(this BusinessEntity be, 
+        public static string ValidateChangePassword(this Person p,
             string oldPassword, string newPassword, string confirm, IContext context)
         {
             var reason = "";
-            if (!MostRecentPassword(be.BusinessEntityID, context).OfferedPasswordIsCorrect(oldPassword))
+            if (p.Password.OfferedPasswordIsCorrect(oldPassword))
             {
                 reason += "Old Password is incorrect";
             }
+            reason += ValidateNewPassword(newPassword, confirm);
+            if (newPassword == oldPassword)
+            {
+                reason += "New Password should be different from Old Password";
+            }
+            return reason;
+        }
+
+        public static bool HideChangePassword(this Person p, IContext context) =>
+            p.Password is null;
+        #endregion
+
+        #region Initial Password 
+        public static (Person, IContext) CreateInitialPassword(this Person p,
+            [Password] string newPassword,
+            [Named("New Password (Confirm)"), Password] string confirm,
+            IContext context)
+        {
+            var pw = CreateNewPassword(newPassword, p, context);
+            var p2 = p with { Password = pw, ModifiedDate = context.Now() };
+            return (p, context.WithNew(pw).WithUpdated(p, p2));
+        }
+
+        public static string ValidateCreateInitialPassword(this Person p,
+             string newPassword, string confirm, IContext context) =>
+                ValidateNewPassword(newPassword, confirm);
+
+
+        internal static string ValidateNewPassword(string newPassword, string confirm)
+        {
+            var reason = "";
             if (newPassword != confirm)
             {
                 reason += "New Password and Confirmation don't match";
@@ -33,20 +75,22 @@ namespace AW.Functions {
             {
                 reason += "New Password must be at least 6 characters";
             }
-            if (newPassword == oldPassword)
-            {
-                reason += "New Password should be different from Old Password";
-            }
             return reason;
         }
+
+        public static bool HideCreateInitialPassword(this Person p, IContext context) =>
+            p.Password is not null;
+
         #endregion
 
-        internal static Password CreateNewPassword(string newPassword, int businessEntityId, IContext context)
+
+        internal static Password CreateNewPassword(string newPassword, Person person, IContext context)
         {
             var salt = CreateRandomSalt();
             var pw = new Password()
             {
-                BusinessEntityID = businessEntityId,
+                BusinessEntityID = person.BusinessEntityID,
+                Person = person,
                 PasswordSalt = salt,
                 PasswordHash = Hashed(newPassword, salt),
                 rowguid = context.NewGuid(),
@@ -81,8 +125,8 @@ namespace AW.Functions {
         }
 
 
-        internal static Password MostRecentPassword(int forBusinessEntityID, IContext context) =>
-            context.Instances<Password>().Where(p => p.BusinessEntityID == forBusinessEntityID).
-            OrderByDescending(p => p.ModifiedDate).FirstOrDefault();
+        //internal static Password MostRecentPassword(int forBusinessEntityID, IContext context) =>
+        //    context.Instances<Password>().Where(p => p.BusinessEntityID == forBusinessEntityID).
+        //    OrderByDescending(p => p.ModifiedDate).FirstOrDefault();
     }
 }
