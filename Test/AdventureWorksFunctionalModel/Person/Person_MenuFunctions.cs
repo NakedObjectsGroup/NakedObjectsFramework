@@ -39,10 +39,5 @@ namespace AW.Functions
 
         internal static Person RandomPerson(IOrderedQueryable<Person> source, IRandom random) =>
            source.Skip(random.ValueInRange(source.Count())).First();
-
-
-        //TODO: Remove - temporary exploration
-        public static IQueryable<Password> MostRecentPasswords(IContext context) =>
-            context.Instances<Password>().OrderByDescending(pw => pw.ModifiedDate);
     }
 }

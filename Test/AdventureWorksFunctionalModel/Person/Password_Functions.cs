@@ -26,6 +26,33 @@ namespace AW.Functions
             {
                 reason += "Old Password is incorrect";
             }
+            reason += ValidateNewPassword(newPassword, confirm);
+            if (newPassword == oldPassword)
+            {
+                reason += "New Password should be different from Old Password";
+            }
+            return reason;
+        }
+
+        public static bool HideChangePassword(this Person p, IContext context) =>
+            MostRecentPassword(p.BusinessEntityID, context) is null;
+        #endregion
+
+        #region Initial Password 
+        public static (Person, IContext) CreateInitialPassword(this Person p,
+            [Password] string newPassword,
+            [Named("New Password (Confirm)"), Password] string confirm,
+            IContext context) =>
+                (p, context.WithNew(CreateNewPassword(newPassword, p, context)));
+
+        public static string ValidateCreateInitialPassword(this Person p,
+             string newPassword, string confirm, IContext context) =>
+                ValidateNewPassword(newPassword, confirm);
+
+
+        internal static string ValidateNewPassword(string newPassword, string confirm)
+        {
+            var reason = "";
             if (newPassword != confirm)
             {
                 reason += "New Password and Confirmation don't match";
@@ -34,23 +61,14 @@ namespace AW.Functions
             {
                 reason += "New Password must be at least 6 characters";
             }
-            if (newPassword == oldPassword)
-            {
-                reason += "New Password should be different from Old Password";
-            }
             return reason;
         }
+
+        public static bool HideCreateInitialPassword(this Person p, IContext context) =>
+            MostRecentPassword(p.BusinessEntityID, context) is not null;
+
         #endregion
 
-        public static (BusinessEntity, IContext) TestPassword(this Person p,
-          [Password] string test,
-          IContext context)
-        {
-            var pw = MostRecentPassword(p.BusinessEntityID, context);
-            return pw is not null && OfferedPasswordIsCorrect(pw, test) ?
-               (p, context.WithInformUser($"Entered password is correct."))
-               : (p, context.WithInformUser($"Password is incorrect (or {p} has no password)."));
-        }
 
         internal static Password CreateNewPassword(string newPassword, Person person, IContext context)
         {
