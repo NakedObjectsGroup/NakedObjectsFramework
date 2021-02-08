@@ -52,8 +52,12 @@ namespace AW.Functions
         public static (Person, IContext) CreateInitialPassword(this Person p,
             [Password] string newPassword,
             [Named("New Password (Confirm)"), Password] string confirm,
-            IContext context) =>
-                (p, context.WithNew(CreateNewPassword(newPassword, p, context)));
+            IContext context)
+        {
+            var pw = CreateNewPassword(newPassword, p, context);
+            var p2 = p with { Password = pw, ModifiedDate = context.Now() };
+            return (p, context.WithNew(pw).WithUpdated(p, p2));
+        }
 
         public static string ValidateCreateInitialPassword(this Person p,
              string newPassword, string confirm, IContext context) =>

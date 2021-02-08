@@ -105,6 +105,11 @@ namespace AW.Functions {
             return indivs.Skip(random).FirstOrDefault();
         }
 
+        [MemberOrder("Individuals", 4)]
+        public static IQueryable<Customer> RecentIndividualCustomers(IContext context) =>
+         context.Instances<Customer>().Where(t => t.PersonID != null).OrderByDescending(t => t.CustomerModifiedDate);
+
+
         #endregion
 
         public static IQueryable<Customer> ListCustomersForSalesTerritory(SalesTerritory territory, IContext context)

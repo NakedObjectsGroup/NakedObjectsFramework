@@ -6,10 +6,10 @@ using System;
 namespace AW.Types {
     public  record Password : IHasRowGuid, IHasModifiedDate
     {
-        //[Hidden]
+        [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
-        //[Hidden]
+        [Hidden]
         public virtual Person Person { get; init; }
         //[Hidden]
         // public virtual Person Person { get; init; }
