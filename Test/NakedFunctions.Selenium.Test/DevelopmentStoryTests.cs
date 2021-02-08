@@ -67,7 +67,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CreateNewObject1();
             CreateNewObject2();
             CreateNewObject3();
-            CreateNewObject3();
+            CreateNewObject4();
+            CreateNewObject5();
             PropertyHiddenViaAHideMethod();
             SubMenuOnObject();
             SubMenuOnMainMenu();
@@ -160,23 +161,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var endDate = WaitForCss("input#enddate1");
             var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
             Assert.AreEqual(oneMonthOn, endDate.GetAttribute("value"));
-        }
-
-        //[TestMethod]
-        public void CreateNewObject1()
-        {
-            //Corresponds to #204
-            GeminiUrl("home?m1=SpecialOffer_MenuFunctions&d1=CreateNewSpecialOffer");
-            TypeIntoFieldWithoutClearing("input#description1", "Manager's Special");
-            TypeIntoFieldWithoutClearing("input#discountpct1", "15");
-            var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
-            TypeIntoFieldWithoutClearing("input#enddate1", endDate);
-            wait.Until(d => OKButton().GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
-            var now = DateTime.Now.ToString("d MMM yyyy HH:mm:").Substring(0, 16);
-            Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Object, "Manager's Special");
-            var modified = WaitForCssNo("nof-view-property .value", 8).Text;
-            Assert.AreEqual(now, modified.Substring(0, 16));
         }
 
         //[TestMethod]
@@ -372,6 +356,23 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
+        public void CreateNewObject1()
+        {
+            //Corresponds to #204
+            GeminiUrl("home?m1=SpecialOffer_MenuFunctions&d1=CreateNewSpecialOffer");
+            TypeIntoFieldWithoutClearing("input#description1", "Manager's Special");
+            TypeIntoFieldWithoutClearing("input#discountpct1", "15");
+            var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
+            TypeIntoFieldWithoutClearing("input#enddate1", endDate);
+            wait.Until(d => OKButton().GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
+            var now = DateTime.Now.ToString("d MMM yyyy HH:mm:").Substring(0, 16);
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Manager's Special");
+            var modified = WaitForCssNo("nof-view-property .value", 8).Text;
+            Assert.AreEqual(now, modified.Substring(0, 16));
+        }
+
+        //[TestMethod]
         public void CreateNewObject2()
         {
             GeminiUrl("home?m1=Address_MenuFunctions&d1=CreateNewAddress");
@@ -420,6 +421,24 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Click(listIcon);
             wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
         }
+
+
+        //[TestMethod]
+        public void CreateNewObject5()
+        {
+            //This story involves creation of a graph of two new objects (Store & Customer)
+            GeminiUrl("home?m1=Customer_MenuFunctions&d1=CreateNewStoreCustomer");
+            WaitForTitle("Home");
+            int rand = (new Random()).Next(1970, 2021);
+            var name = $"FooBar Frames {rand} Ltd";
+            TypeIntoFieldWithoutClearing("#name1", name);
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object);
+            Assert.IsTrue(WaitForCss(".title").Text.EndsWith(name));
+            var store = GetReferenceFromProperty("Store");
+            Assert.IsTrue(store.Text.EndsWith(name));
+        }
+
 
         //[TestMethod]
         public void PropertyHiddenViaAHideMethod()
