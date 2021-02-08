@@ -14,6 +14,9 @@ namespace AW.Types {
 
         public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
 
+        [Hidden]
+        public virtual string PersonType { get; init; }
+
         #region Name fields
 
         [MemberOrder(15),  Named("Reverse name order")] 

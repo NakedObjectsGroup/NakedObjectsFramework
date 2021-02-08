@@ -49,7 +49,7 @@ namespace AW.Functions {
         public static (Customer, IContext) CreateNewStoreCustomer(
             string name, IContext context)
         {
-            var s = new Store() with { Name = name, rowguid = context.NewGuid(), ModifiedDate = context.Now() };
+            var s = new Store() with { Name = name, rowguid = context.NewGuid(), BusinessEntityRowguid = context.NewGuid(), ModifiedDate = context.Now(), BusinessEntityModifiedDate = context.Now() };
             var c = new Customer() with { Store = s, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
             return (c, context.WithNew(c).WithNew(s));
         }
@@ -81,12 +81,20 @@ namespace AW.Functions {
         public static (Customer, IContext) CreateNewIndividualCustomer(
             string firstName, 
             string lastName, 
-            [Password] string initialPassword) {
-            throw new NotImplementedException();
-            //var person = new Person() with { FirstName = firstName, LastName = lastName }; //person.EmailPromotion = 0; person.NameStyle = false;
-            //var (person2, _) = Person_Functions.ChangePassword(person, null, initialPassword, null);
-            //var indv = new Customer(null, person2);
-            //return (indv, indv);  //TODO: check that this will persist the associated Person as well as Customer
+            IContext context) {
+            var p = new Person() with {
+                PersonType = "SC",
+                FirstName = firstName,
+                LastName = lastName,
+                NameStyle = false,
+                EmailPromotion = 0,
+                rowguid = context.NewGuid(),
+                BusinessEntityRowguid = context.NewGuid(),
+                ModifiedDate = context.Now(),
+                BusinessEntityModifiedDate = context.Now()
+            };
+            var c = new Customer() with { Person = p, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
+            return (c, context.WithNew(c).WithNew(p));
         }
 
         [MemberOrder("Individuals",3)]
