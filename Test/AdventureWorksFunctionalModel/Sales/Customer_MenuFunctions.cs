@@ -80,7 +80,8 @@ namespace AW.Functions {
         [MemberOrder("Individuals",2)]
         public static (Customer, IContext) CreateNewIndividualCustomer(
             string firstName, 
-            string lastName, 
+            string lastName,
+            [Password] string initialPassword,
             IContext context) {
             var p = new Person() with {
                 PersonType = "SC",
@@ -94,7 +95,8 @@ namespace AW.Functions {
                 BusinessEntityModifiedDate = context.Now()
             };
             var c = new Customer() with { Person = p, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
-            return (c, context.WithNew(c).WithNew(p));
+            var pw = Password_Functions.CreateNewPassword(initialPassword, p, context);
+            return (c, context.WithNew(c).WithNew(p).WithNew(pw));
         }
 
         [MemberOrder("Individuals",3)]

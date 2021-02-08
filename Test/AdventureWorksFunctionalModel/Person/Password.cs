@@ -10,6 +10,9 @@ namespace AW.Types {
         public virtual int BusinessEntityID { get; init; }
 
         [Hidden]
+        public virtual BusinessEntity BusinessEntity { get; init; }
+
+        [Hidden]
         public virtual string PasswordHash { get; init; }
 
         [Hidden]

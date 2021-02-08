@@ -5,19 +5,20 @@ using System.Security.Cryptography;
 using System;
 using System.Linq;
 
-namespace AW.Functions {
+namespace AW.Functions
+{
     public static class Password_Functions
     {
 
         #region ChangePassword 
         public static (BusinessEntity, IContext) ChangePassword(this BusinessEntity be,
-            [Password] string oldPassword, 
-            [Password] string newPassword, 
+            [Password] string oldPassword,
+            [Password] string newPassword,
             [Named("New Password (Confirm)"), Password] string confirm,
             IContext context) =>
-            (be, context.WithNew(CreateNewPassword(newPassword, be.BusinessEntityID, context)));
+            (be, context.WithNew(CreateNewPassword(newPassword, be, context)));
 
-        public static string ValidateChangePassword(this BusinessEntity be, 
+        public static string ValidateChangePassword(this BusinessEntity be,
             string oldPassword, string newPassword, string confirm, IContext context)
         {
             var reason = "";
@@ -41,12 +42,22 @@ namespace AW.Functions {
         }
         #endregion
 
-        internal static Password CreateNewPassword(string newPassword, int businessEntityId, IContext context)
+        public static (BusinessEntity, IContext) TestPassword(this BusinessEntity be,
+          [Password] string test,
+          IContext context)
+        {
+            var pw = MostRecentPassword(be.BusinessEntityID, context);
+            return pw is not null && OfferedPasswordIsCorrect(pw, test) ?
+               (be, context.WithInformUser($"Entered password is correct."))
+               : (be, context.WithInformUser($"Password is incorrect (or {be} has no password)."));
+        }
+
+        internal static Password CreateNewPassword(string newPassword, BusinessEntity businessEntity, IContext context)
         {
             var salt = CreateRandomSalt();
             var pw = new Password()
             {
-                BusinessEntityID = businessEntityId,
+                BusinessEntity = businessEntity,
                 PasswordSalt = salt,
                 PasswordHash = Hashed(newPassword, salt),
                 rowguid = context.NewGuid(),
