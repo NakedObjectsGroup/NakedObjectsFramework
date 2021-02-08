@@ -17,6 +17,7 @@ namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFunctionFacet {
         private readonly List<ITypeSpecImmutable> objectContributees = new();
+        private readonly List<IObjectSpecImmutable> collectionContributees = new();
 
         public ContributedFunctionFacet(ISpecification holder, bool isContributedToObject) : base(typeof(IContributedFunctionFacet), holder) =>
             IsContributedToObject = isContributedToObject;
@@ -29,5 +30,15 @@ namespace NakedFunctions.Meta.Facet {
         public bool IsContributedToObject { get; }
 
         #endregion
+
+        public void AddCollectionContributee(IObjectSpecBuilder type) {
+            collectionContributees.Add(type);
+        }
+
+        public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec) => collectionContributees.Any(objectSpec.IsOfType);
+
+        public void AddLocalCollectionContributee(IObjectSpecBuilder type, string pName) {
+            throw new NotImplementedException();
+        }
     }
 }
