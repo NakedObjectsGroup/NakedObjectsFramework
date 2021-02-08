@@ -43,6 +43,7 @@ namespace AW.Mapping
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
+            HasOptional(t => t.Password);
         }
     }
 }
