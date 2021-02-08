@@ -51,7 +51,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
             else {
                 var returnType = member.ReturnType;
-                (_, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
+               // (_, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
                 if (IsCollection(returnType)) {
                     logger.LogWarning($"ContributedAction attribute added to an action that returns a collection: {member.Name}");
                 }
