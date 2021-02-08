@@ -60,6 +60,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     IObjectSpecBuilder type;
                     (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
                     facet.AddCollectionContributee(type);
+                    FacetUtils.AddFacet(facet);
                 }
             }
 
@@ -97,7 +98,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     //    ? AddLocalCollectionContributedAction(reflector, p, facet, metamodel)
                     //    : AddCollectionContributedAction(reflector, method, parameterType, facet, metamodel);
 
-                    AddCollectionContributedAction(reflector, method, parameterType, facet, metamodel);
+                    metamodel = AddCollectionContributedAction(reflector, method, parameterType, facet, metamodel);
                 }
                 else
                 {

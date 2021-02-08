@@ -70,11 +70,14 @@ namespace NakedFramework.ModelBuilding.Component {
 
         private static bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedTo(ts) == true;
 
+        private static bool IsContributedFunctionToCollectionOf(IActionSpecImmutable sa, IObjectSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollectionOf(ts) == true;
+
+
+
         private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
 
-
-        private static void PopulateContributedFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
-            var result = functions.AsParallel().SelectMany(functionsSpec => {
+        private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
+            var result1 = functions.AsParallel().SelectMany(functionsSpec => {
                 var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
 
                 var matchingActionsForObject = new List<IActionSpecImmutable>();
@@ -88,13 +91,33 @@ namespace NakedFramework.ModelBuilding.Component {
                 return matchingActionsForObject;
             }).ToList();
 
-            spec.AddContributedFunctions(result);
+            if (result1.Any()) {
+                spec.AddContributedFunctions(result1);
+            }
+
+            var result2 = functions.AsParallel().SelectMany(functionsSpec => {
+                var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
+
+                var matchingActionsForCollection = new List<IActionSpecImmutable>();
+
+                foreach (var sa in serviceActions) {
+                    if (IsContributedFunctionToCollectionOf(sa, spec)) {
+                        matchingActionsForCollection.Add(sa);
+                    }
+                }
+
+                return matchingActionsForCollection;
+            }).ToList();
+
+            if (result2.Any()) {
+                spec.AddCollectionContributedActions(result2);
+            }
         }
 
         private static void PopulateAssociatedFunctions(IMetamodelBuilder metamodel) {
             // todo add facet for this 
             var functions = metamodel.AllSpecifications.Where(IsStatic).ToArray();
-            var objects = metamodel.AllSpecifications.Where(IsNotStatic).Cast<ITypeSpecBuilder>();
+            var objects = metamodel.AllSpecifications.Where(IsNotStatic).OfType<IObjectSpecBuilder>();
 
             foreach (var spec in objects) {
                 PopulateContributedFunctions(spec, functions, metamodel);

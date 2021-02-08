@@ -105,7 +105,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             if (actionContext.Target is null) {
                 spec = actionContext.Action.OnType;
                 cachedId = "";
-                CachedType = actionContext.MenuId;
+                CachedType = actionContext.MenuId ?? actionContext.Action.OnType.FullName;
             }
             else {
                 objectFacade = actionContext.Target;

@@ -53,8 +53,7 @@ namespace NakedFunctions.Reflector.Test.Component {
     public record PluralClass { }
 
     [DescribedAs("Class Description")]
-    public record DescribedAsClass
-    {
+    public record DescribedAsClass {
         [DescribedAs("Property Description")]
         public string DescribedProperty { get; init; }
     }
@@ -82,9 +81,10 @@ namespace NakedFunctions.Reflector.Test.Component {
 
     public static class TableViewFunctions {
         [TableView(true)]
-        public static IQueryable<TableViewClass> TableViewFunction(this TableViewClass dac, IContext context) => new[] { dac}.AsQueryable();
+        public static IQueryable<TableViewClass> TableViewFunction(this TableViewClass dac, IContext context) => new[] {dac}.AsQueryable();
+
         [TableView(true)]
-        public static (IQueryable<TableViewClass>, IContext) TableViewFunction1(this TableViewClass dac, IContext context) => (new[] { dac }.AsQueryable(), context);
+        public static (IQueryable<TableViewClass>, IContext) TableViewFunction1(this TableViewClass dac, IContext context) => (new[] {dac}.AsQueryable(), context);
     }
 
     [Mask("Class Mask")]
@@ -96,6 +96,10 @@ namespace NakedFunctions.Reflector.Test.Component {
     public static class MaskFunctions {
         [Mask("Function Mask")]
         public static MaskClass MaskFunction(this MaskClass dac, [Mask("Parameter Mask")] string parm, IContext context) => dac;
+    }
+
+    public static class ContributedCollectionFunctions {
+        public static IContext ContributedCollectionFunction(this IQueryable<SimpleClass> c, IContext context) => context;
     }
 
     public record OptionallyClass {
@@ -110,14 +114,12 @@ namespace NakedFunctions.Reflector.Test.Component {
     }
 
     [Named("Class Name")]
-    public record NamedClass
-    {
+    public record NamedClass {
         [Named("Property Name")]
         public string NamedProperty { get; init; }
     }
 
-    public static class NamedFunctions
-    {
+    public static class NamedFunctions {
         [Named("Function Name")]
         public static NamedClass NamedFunction(this NamedClass dac, [Named("Parameter Name")] string parm, IContext context) => dac;
     }
@@ -131,18 +133,15 @@ namespace NakedFunctions.Reflector.Test.Component {
     }
 
     [PresentationHint("Class Hint")]
-    public record HintClass
-    {
+    public record HintClass {
         [PresentationHint("Property Hint")]
         public string HintProperty { get; init; }
     }
 
-    public static class HintFunctions
-    {
+    public static class HintFunctions {
         [PresentationHint("Function Hint")]
         public static HintClass HintFunction(this HintClass dac, [PresentationHint("Parameter Hint")] string parm, IContext context) => dac;
     }
-
 
     public record MultilineClass {
         [MultiLine(1, 2)]
@@ -154,21 +153,18 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static MultilineClass MaskFunction(this MultilineClass dac, [MultiLine(5, 6)] string parm, IContext context) => dac;
     }
 
-
-    public record OrderClass
-    {
-        [MemberOrder("Property Order",0)]
+    public record OrderClass {
+        [MemberOrder("Property Order", 0)]
         public string OrderProperty { get; init; }
-        [MemberOrder("Collection Order",1)]
-        public IList<OrderClass> OrderList{ get; init; }
+
+        [MemberOrder("Collection Order", 1)]
+        public IList<OrderClass> OrderList { get; init; }
     }
 
-    public static class OrderFunctions
-    {
-        [MemberOrder("Function Order",2)]
+    public static class OrderFunctions {
+        [MemberOrder("Function Order", 2)]
         public static OrderClass MaskFunction(this OrderClass dac, IContext context) => dac;
     }
-
 
     public record HiddenClass {
         [Hidden]
@@ -182,7 +178,6 @@ namespace NakedFunctions.Reflector.Test.Component {
         public string VersionedProperty { get; init; }
     }
 
-
     [Bounded]
     public record BoundedClass { }
 
@@ -190,25 +185,22 @@ namespace NakedFunctions.Reflector.Test.Component {
         internal virtual string IgnoredProperty { get; init; }
     }
 
-    
     public static class ParameterDefaultClass {
         public static SimpleClass ParameterWithBoolDefaultFunction(this SimpleClass target, [DefaultValue(true)] bool parameter) => target;
-        public static SimpleClass ParameterWithByteDefaultFunction(this SimpleClass target, [DefaultValue((byte)66)] byte parameter) => target;
+        public static SimpleClass ParameterWithByteDefaultFunction(this SimpleClass target, [DefaultValue((byte) 66)] byte parameter) => target;
         public static SimpleClass ParameterWithCharDefaultFunction(this SimpleClass target, [DefaultValue('g')] char parameter) => target;
         public static SimpleClass ParameterWithDoubleDefaultFunction(this SimpleClass target, [DefaultValue(56.23)] double parameter) => target;
-        public static SimpleClass ParameterWithFloatDefaultFunction(this SimpleClass target, [DefaultValue((float)22.82)] float parameter) => target;
+        public static SimpleClass ParameterWithFloatDefaultFunction(this SimpleClass target, [DefaultValue((float) 22.82)] float parameter) => target;
         public static SimpleClass ParameterWithIntDefaultFunction(this SimpleClass target, [DefaultValue(72)] int parameter) => target;
-        public static SimpleClass ParameterWithLongDefaultFunction(this SimpleClass target, [DefaultValue((long)91)] long parameter) => target;
-        public static SimpleClass ParameterWithShortDefaultFunction(this SimpleClass target, [DefaultValue((short)30)] short parameter) => target;
+        public static SimpleClass ParameterWithLongDefaultFunction(this SimpleClass target, [DefaultValue((long) 91)] long parameter) => target;
+        public static SimpleClass ParameterWithShortDefaultFunction(this SimpleClass target, [DefaultValue((short) 30)] short parameter) => target;
         public static SimpleClass ParameterWithStringDefaultFunction(this SimpleClass target, [DefaultValue("a default")] string parameter) => target;
         public static SimpleClass ParameterWithDateTimeDefaultFunction(this SimpleClass target, [DefaultValue(35)] DateTime parameter) => target;
     }
 
-    public static class RangeClass
-    {
+    public static class RangeClass {
         public static SimpleClass ParameterWithRangeFunction(this SimpleClass target, [ValueRange(1, 56)] int parameter) => target;
     }
-
 
     public record SimpleClass {
         public virtual SimpleClass SimpleProperty { get; init; }
@@ -233,11 +225,9 @@ namespace NakedFunctions.Reflector.Test.Component {
 
     public static class HideFunctions {
         public static bool HideHiddenPropertyViaFunction(this HiddenClass target) => false;
-     
     }
 
-    public static class PotentFunctions
-    {
+    public static class PotentFunctions {
         public static SimpleClass QueryFunction(this SimpleClass target, IContext context) => target;
 
         public static (SimpleClass, IContext) PostFunction(this SimpleClass target, IContext context) => (target, context);
@@ -245,7 +235,6 @@ namespace NakedFunctions.Reflector.Test.Component {
         [Edit]
         public static (SimpleClass, IContext) PutFunction(this SimpleClass target, IContext context) => (target, context);
     }
-
 
     public static class SimpleInjectedFunctions {
         public static SimpleClass SimpleInjectedFunction(IQueryable<SimpleClass> injected) => injected.First();
@@ -273,14 +262,12 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static ViewModel CreateFromKeys(string[] keys) => new();
     }
 
-    public static class CreateNewFunctions
-    {
+    public static class CreateNewFunctions {
         [CreateNew]
         public static SimpleClass SimpleFunction(this SimpleClass target) => target;
     }
 
-    public static class DisplayAsPropertyFunctions
-    {
+    public static class DisplayAsPropertyFunctions {
         [DisplayAsProperty]
         public static SimpleClass SimpleFunction(this SimpleClass target) => target;
 
@@ -319,7 +306,6 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         private static string FullName<T>() => $"{typeof(T).FullName}";
-
 
         [TestMethod]
         public void ReflectNoTypes() {
@@ -365,7 +351,6 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var facet = propertySpec.GetFacet<IDisabledFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(WhenTo.Always, facet.Value);
-
             }
         }
 
@@ -435,7 +420,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 catch (AggregateException ae) {
                     var re = ae.InnerExceptions.FirstOrDefault();
                     Assert.IsInstanceOfType(re, typeof(ReflectionException));
-                    Assert.AreEqual($"Cannot reflect empty tuple on NakedFunctions.Reflector.Test.Component.UnsupportedTupleFunctions.TupleFunction", re.Message);
+                    Assert.AreEqual("Cannot reflect empty tuple on NakedFunctions.Reflector.Test.Component.UnsupportedTupleFunctions.TupleFunction", re.Message);
                 }
             }
         }
@@ -505,22 +490,19 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         [TestMethod]
-        public void ReflectCreateNewAction()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectCreateNewAction() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(SimpleClass) };
-                    options.Functions = new[] { typeof(CreateNewFunctions) };
-                }
+                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
+                        options.Functions = new[] {typeof(CreateNewFunctions)};
+                    }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
@@ -561,16 +543,12 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
-
-
         [TestMethod]
-        public void ReflectPluralClass()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectPluralClass() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(PluralClass) };
+                        options.FunctionalTypes = new[] {typeof(PluralClass)};
                         options.Functions = Array.Empty<Type>();
                     }
                 );
@@ -578,8 +556,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<PluralClass>());
@@ -589,8 +566,6 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual("Class Plural", facet.Value);
             }
         }
-
-
 
         [TestMethod]
         public void ReflectIgnoredProperty() {
@@ -619,10 +594,13 @@ namespace NakedFunctions.Reflector.Test.Component {
             Assert.IsNotNull(facet);
 
             var (defaultValue, type) = facet.GetDefault(null, null);
-            if (value is DateTime dt)
+            if (value is DateTime dt) {
                 Assert.AreEqual(dt.ToString(), defaultValue.ToString());
-            else
+            }
+            else {
                 Assert.AreEqual(value, defaultValue);
+            }
+
             Assert.AreEqual("Explicit", type.ToString());
         }
 
@@ -643,38 +621,34 @@ namespace NakedFunctions.Reflector.Test.Component {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
-                
+
                 AssertParm(spec.ContributedActions[0], true);
-                AssertParm(spec.ContributedActions[1], (byte)66);
+                AssertParm(spec.ContributedActions[1], (byte) 66);
                 AssertParm(spec.ContributedActions[2], 'g');
                 AssertParm(spec.ContributedActions[3], DateTime.UtcNow.AddDays(35));
                 AssertParm(spec.ContributedActions[4], 56.23);
-                AssertParm(spec.ContributedActions[5], (float)22.82);
+                AssertParm(spec.ContributedActions[5], (float) 22.82);
                 AssertParm(spec.ContributedActions[6], 72);
-                AssertParm(spec.ContributedActions[7], (long)91);
-                AssertParm(spec.ContributedActions[8], (short)30);
+                AssertParm(spec.ContributedActions[7], (long) 91);
+                AssertParm(spec.ContributedActions[8], (short) 30);
                 AssertParm(spec.ContributedActions[9], "a default");
-               
             }
         }
 
         [TestMethod]
-        public void ReflectRangeParameter()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectRangeParameter() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(SimpleClass) };
-                        options.Functions = new[] { typeof(RangeClass) };
+                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
+                        options.Functions = new[] {typeof(RangeClass)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
@@ -725,22 +699,19 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         [TestMethod]
-        public void ReflectRenderEagerly()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectRenderEagerly() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(RenderEagerlyClass) };
-                        options.Functions = new[] { typeof(RenderEagerlyFunctions) };
+                        options.FunctionalTypes = new[] {typeof(RenderEagerlyClass)};
+                        options.Functions = new[] {typeof(RenderEagerlyFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<RenderEagerlyClass>());
@@ -764,22 +735,19 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         [TestMethod]
-        public void ReflectTableView()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectTableView() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(TableViewClass) };
-                        options.Functions = new[] { typeof(TableViewFunctions) };
+                        options.FunctionalTypes = new[] {typeof(TableViewClass)};
+                        options.Functions = new[] {typeof(TableViewFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<TableViewClass>());
@@ -803,24 +771,20 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
-
         [TestMethod]
-        public void ReflectMask()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectMask() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(MaskClass) };
-                        options.Functions = new[] { typeof(MaskFunctions) };
+                        options.FunctionalTypes = new[] {typeof(MaskClass)};
+                        options.Functions = new[] {typeof(MaskFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<MaskClass>());
@@ -850,22 +814,19 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         [TestMethod]
-        public void ReflectOptionally()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectOptionally() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(OptionallyClass) };
-                        options.Functions = new[] { typeof(OptionallyFunctions) };
+                        options.FunctionalTypes = new[] {typeof(OptionallyClass)};
+                        options.Functions = new[] {typeof(OptionallyFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<OptionallyClass>());
@@ -877,14 +838,13 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(true, facet.IsMandatory);
                 Assert.AreEqual(false, facet.IsOptional);
-                
+
                 facet = propertySpec2.GetFacet<IMandatoryFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(false, facet.IsMandatory);
                 Assert.AreEqual(true, facet.IsOptional);
 
                 var actionSpec = spec.ContributedActions.First();
-
 
                 var parmSpec1 = actionSpec.Parameters[1];
                 var parmSpec2 = actionSpec.Parameters[2];
@@ -901,27 +861,20 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
-
-
-
-
         [TestMethod]
-        public void ReflectNamed()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectNamed() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(NamedClass) };
-                        options.Functions = new[] { typeof(NamedFunctions) };
+                        options.FunctionalTypes = new[] {typeof(NamedClass)};
+                        options.Functions = new[] {typeof(NamedFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<NamedClass>());
@@ -951,22 +904,19 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         [TestMethod]
-        public void ReflectRegex()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectRegex() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(RegexClass) };
-                        options.Functions = new[] { typeof(RegexFunctions) };
+                        options.FunctionalTypes = new[] {typeof(RegexClass)};
+                        options.Functions = new[] {typeof(RegexFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<RegexClass>());
@@ -992,24 +942,20 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
-
         [TestMethod]
-        public void ReflectPresentationHint()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectPresentationHint() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(HintClass) };
-                        options.Functions = new[] { typeof(HintFunctions) };
+                        options.FunctionalTypes = new[] {typeof(HintClass)};
+                        options.Functions = new[] {typeof(HintFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HintClass>());
@@ -1091,29 +1037,23 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
-
-
         [TestMethod]
-        public void ReflectMultiline()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectMultiline() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(MultilineClass) };
-                        options.Functions = new[] { typeof(MultiLineFunctions) };
+                        options.FunctionalTypes = new[] {typeof(MultilineClass)};
+                        options.Functions = new[] {typeof(MultiLineFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<MultilineClass>());
-
 
                 var propertySpec = spec.Fields.First();
 
@@ -1135,31 +1075,26 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(5, facet.NumberOfLines);
                 Assert.AreEqual(6, facet.Width);
-
             }
         }
 
         [TestMethod]
-        public void ReflectOrder()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectOrder() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(OrderClass) };
-                        options.Functions = new[] { typeof(OrderFunctions) };
+                        options.FunctionalTypes = new[] {typeof(OrderClass)};
+                        options.Functions = new[] {typeof(OrderFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<OrderClass>());
-
 
                 var propertySpec = spec.Fields.First();
                 var collectionSpec = spec.Fields[1];
@@ -1187,13 +1122,11 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         [TestMethod]
-        public void ReflectHidden()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectHidden() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(HiddenClass) };
+                        options.FunctionalTypes = new[] {typeof(HiddenClass)};
                         options.Functions = new Type[] { };
                     }
                 );
@@ -1201,8 +1134,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
@@ -1214,22 +1146,19 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         [TestMethod]
-        public void ReflectHiddenViaFunction()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectHiddenViaFunction() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(HiddenClass) };
-                        options.Functions = new Type[] { typeof(HideFunctions) };
+                        options.FunctionalTypes = new[] {typeof(HiddenClass)};
+                        options.Functions = new[] {typeof(HideFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
@@ -1240,13 +1169,11 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         [TestMethod]
-        public void ReflectVersioned()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectVersioned() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(VersionedClass) };
+                        options.FunctionalTypes = new[] {typeof(VersionedClass)};
                         options.Functions = new Type[] { };
                     }
                 );
@@ -1263,7 +1190,6 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
             }
         }
-
 
         [TestMethod]
         public void ReflectLifeCycleFunctions() {
@@ -1318,22 +1244,19 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         [TestMethod]
-        public void ReflectPotentFunctions()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectPotentFunctions() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(SimpleClass) };
-                        options.Functions = new[] { typeof(PotentFunctions) };
+                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
+                        options.Functions = new[] {typeof(PotentFunctions)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
@@ -1346,9 +1269,33 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNull(actionSpecs[0].GetFacet<IIdempotentFacet>());
                 Assert.IsNotNull(actionSpecs[1].GetFacet<IIdempotentFacet>());
                 Assert.IsNull(actionSpecs[2].GetFacet<IIdempotentFacet>());
-
             }
         }
 
+        [TestMethod]
+        public void ReflectContributedCollections() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
+                        options.Functions = new[] {typeof(ContributedCollectionFunctions)};
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
+
+                var actionSpecs = spec.CollectionContributedActions;
+                var facet = actionSpecs[0].GetFacet<IContributedFunctionFacet>();
+
+                Assert.IsNotNull(facet);
+                Assert.IsTrue(facet.IsContributedToCollectionOf(spec));
+            }
+        }
     }
 }

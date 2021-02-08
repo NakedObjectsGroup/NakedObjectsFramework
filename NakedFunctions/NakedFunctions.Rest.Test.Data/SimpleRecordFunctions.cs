@@ -164,4 +164,10 @@ namespace NakedFunctions.Rest.Test.Data {
         [MemberOrder("function2_group", 2)]
         public static OrderedRecord Function2(this OrderedRecord or) => or;
     }
+
+
+    public static class CollectionContributedFunctions
+    {
+        public static IContext ContributedFunction(this IQueryable<SimpleRecord> sr, IContext context) => context;
+    }
 }

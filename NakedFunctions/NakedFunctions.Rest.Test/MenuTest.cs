@@ -36,7 +36,9 @@ namespace NakedFunctions.Rest.Test {
             typeof(AutoCompleteMenuFunctions),
             typeof(ViewModelMenuFunctions),
             typeof(ReferenceMenuFunctions),
-            typeof(ViewModelFunctions)
+            typeof(ViewModelFunctions),
+            typeof(CollectionMenuFunctions),
+            typeof(CollectionContributedFunctions)
         };
 
         // todo should IAlert be here or should we ignore?
@@ -107,7 +109,7 @@ namespace NakedFunctions.Rest.Test {
             var val = parsedResult.GetValue("value") as JArray;
 
             Assert.IsNotNull(val);
-            Assert.AreEqual(11, val.Count);
+            Assert.AreEqual(13, val.Count);
 
             var firstItem = val.First;
 
@@ -901,6 +903,23 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             resultObj.AssertObject("Test3-1-1", FullName<CollectionRecord>(), "1");
+        }
+
+        [Test]
+        public void TestInvokeActionWithCollectionContribActions()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.GetInvokeOnMenu(nameof(CollectionMenuFunctions), nameof(CollectionMenuFunctions.GetQueryable), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual(1, resultObj["members"].Count());
+
+            // resultObj.AssertObject("Test3-1-1", FullName<CollectionRecord>(), "1");
         }
     }
 }

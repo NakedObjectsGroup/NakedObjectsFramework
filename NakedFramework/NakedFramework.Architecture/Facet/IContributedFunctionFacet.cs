@@ -14,5 +14,6 @@ namespace NakedObjects.Architecture.Facet {
         bool IsContributedTo(ITypeSpecImmutable spec);
 
         bool IsContributedToObject { get; }
+        bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
     }
 }

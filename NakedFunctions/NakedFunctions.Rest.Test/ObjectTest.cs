@@ -39,7 +39,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(AutoCompleteRecordFunctions),
             typeof(DisplayAsPropertyRecordFunctions),
             typeof(ViewModelFunctions),
-            typeof(OrderedRecordFunctions)
+            typeof(OrderedRecordFunctions),
+            typeof(CollectionContributedFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -874,8 +875,8 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("2", resultObj["title"].ToString());
         }
 
+      
 
-       
 
 
     }

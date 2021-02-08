@@ -229,4 +229,8 @@ namespace NakedFunctions.Rest.Test.Data {
             return (nrr, context);
         }
     }
+
+    public static class CollectionMenuFunctions {
+        public static IQueryable<SimpleRecord> GetQueryable(IContext context) => context.Instances<SimpleRecord>();
+    }
 }
