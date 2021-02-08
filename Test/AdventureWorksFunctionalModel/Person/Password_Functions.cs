@@ -86,7 +86,7 @@ namespace AW.Functions
             var pw = new Password()
             {
                 BusinessEntityID = person.BusinessEntityID,
-                //Person = person,
+                Person = person,
                 PasswordSalt = salt,
                 PasswordHash = Hashed(newPassword, salt),
                 rowguid = context.NewGuid(),
