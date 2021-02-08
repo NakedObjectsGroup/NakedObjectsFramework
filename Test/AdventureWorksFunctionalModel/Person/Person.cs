@@ -55,6 +55,9 @@ namespace AW.Types {
             nameof(PersonPhone.PhoneNumber))] 
         public virtual ICollection<PersonPhone> PhoneNumbers { get; init; }
 
+        [Hidden]
+        public virtual Password Password { get; init; }
+
         [MemberOrder(30)]
         public virtual string AdditionalContactInfo { get; init; }
 

@@ -15,14 +15,24 @@ namespace AW.Functions
             [Password] string oldPassword,
             [Password] string newPassword,
             [Named("New Password (Confirm)"), Password] string confirm,
-            IContext context) =>
-            (p, context.WithNew(CreateNewPassword(newPassword, p, context)));
+            IContext context)
+        {
+            var oldP = p.Password;
+            var salt = CreateRandomSalt();
+            var newP = oldP with
+            {
+                PasswordSalt = salt,
+                PasswordHash = Hashed(newPassword, salt),
+                ModifiedDate = context.Now()
+            };
+            return (p, context.WithUpdated(oldP, newP));
+        }
 
         public static string ValidateChangePassword(this Person p,
             string oldPassword, string newPassword, string confirm, IContext context)
         {
             var reason = "";
-            if (!MostRecentPassword(p.BusinessEntityID, context).OfferedPasswordIsCorrect(oldPassword))
+            if (p.Password.OfferedPasswordIsCorrect(oldPassword))
             {
                 reason += "Old Password is incorrect";
             }
@@ -35,7 +45,7 @@ namespace AW.Functions
         }
 
         public static bool HideChangePassword(this Person p, IContext context) =>
-            MostRecentPassword(p.BusinessEntityID, context) is null;
+            p.Password is null;
         #endregion
 
         #region Initial Password 
@@ -65,7 +75,7 @@ namespace AW.Functions
         }
 
         public static bool HideCreateInitialPassword(this Person p, IContext context) =>
-            MostRecentPassword(p.BusinessEntityID, context) is not null;
+            p.Password is not null;
 
         #endregion
 
@@ -111,8 +121,8 @@ namespace AW.Functions
         }
 
 
-        internal static Password MostRecentPassword(int forBusinessEntityID, IContext context) =>
-            context.Instances<Password>().Where(p => p.BusinessEntityID == forBusinessEntityID).
-            OrderByDescending(p => p.ModifiedDate).FirstOrDefault();
+        //internal static Password MostRecentPassword(int forBusinessEntityID, IContext context) =>
+        //    context.Instances<Password>().Where(p => p.BusinessEntityID == forBusinessEntityID).
+        //    OrderByDescending(p => p.ModifiedDate).FirstOrDefault();
     }
 }
