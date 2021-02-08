@@ -51,7 +51,7 @@ namespace AW.Functions {
         {
             var s = new Store() with { Name = name, rowguid = context.NewGuid(), ModifiedDate = context.Now() };
             var c = new Customer() with { Store = s, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
-            return (c, context.WithNew(s).WithNew(c));
+            return (c, context.WithNew(c).WithNew(s));
         }
 
         [MemberOrder("Stores",3)]
