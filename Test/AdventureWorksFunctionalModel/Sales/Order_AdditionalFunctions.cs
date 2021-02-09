@@ -41,14 +41,14 @@ namespace AW.Functions {
 
         #region Comments
 
-        public static (IList<SalesOrderHeader>, IContext) AppendComment(this IQueryable<SalesOrderHeader> toOrders, string comment, IContext context) {
-            var updates = toOrders.Select(x => new { original = x, updated = x.WithAppendedComment(comment, context) });
-            var context2 = updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
-            return (updates.Select(x => x.updated).ToList(), context2);
-        }
+        //public static (IList<SalesOrderHeader>, IContext) AppendComment(this IQueryable<SalesOrderHeader> toOrders, string comment, IContext context) {
+        //    var updates = toOrders.Select(x => new { original = x, updated = x.WithAppendedComment(comment, context) });
+        //    var context2 = updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
+        //    return (updates.Select(x => x.updated).ToList(), context2);
+        //}
 
-        public static string Validate1AppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) =>
-               toOrder.Count() > 5 ? "You may not apply the same comment to more than 5 orders at one time." : null;
+        //public static string Validate1AppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) =>
+        //       toOrder.Count() > 5 ? "You may not apply the same comment to more than 5 orders at one time." : null;
 
         public static (SalesOrderHeader, IContext) AppendComment(this SalesOrderHeader order, string commentToAppend, IContext context)
         {
@@ -66,13 +66,13 @@ namespace AW.Functions {
             return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
         }
 
-        public static void CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders, IContext context) => 
-            AppendComment(toOrders, "User unhappy", context);
+        //public static void CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders, IContext context) => 
+        //    AppendComment(toOrders, "User unhappy", context);
         
 
-        public static string DisableCommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders) {
-            return toOrders.Any(o => !o.IsShipped()) ? "Not all shipped yet" : null;
-        }
+        //public static string DisableCommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders) {
+        //    return toOrders.Any(o => !o.IsShipped()) ? "Not all shipped yet" : null;
+        //}
 
         public static void CommentAsUserUnhappy(this SalesOrderHeader order, IContext context) {
             AppendComment(order, "User unhappy", context);
@@ -82,13 +82,13 @@ namespace AW.Functions {
             return order.IsShipped() ? null : "Not shipped yet";
         }
 
-        public static void ClearComments(this IQueryable<SalesOrderHeader> toOrders) {
-            foreach (SalesOrderHeader order in toOrders) {
-                throw new NotImplementedException();
-                //TODO: 
-                //order.Comment = null;
-            }
-        }
+        //public static void ClearComments(this IQueryable<SalesOrderHeader> toOrders) {
+        //    foreach (SalesOrderHeader order in toOrders) {
+        //        throw new NotImplementedException();
+        //        //TODO: 
+        //        //order.Comment = null;
+        //    }
+        //}
 
         #endregion
 
