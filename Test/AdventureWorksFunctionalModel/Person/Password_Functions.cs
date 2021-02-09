@@ -12,8 +12,9 @@ namespace AW.Functions
         //TODO: Temporary function for testing only
         public static (Person, IContext) CheckPassword(this Person p, [Password] string offered, IContext context)
         {
-            var hash = Hashed(offered, p.Password.PasswordSalt);
-            var msg =(p.Password.OfferedPasswordIsCorrect(offered) ? "CORRECT" : "INCORRECT") +  $" Hash: {hash}";
+            var actualHash = Hashed(offered, p.Password.PasswordSalt);
+            var expectedHash = p.Password.PasswordHash;
+            var msg =p.Password.OfferedPasswordIsCorrect(offered) ? "CORRECT" : $"Exp: {expectedHash} Act: {actualHash}";
             return (p, context.WithInformUser(msg));
         }
            
@@ -111,7 +112,7 @@ namespace AW.Functions
         }
 
         internal static bool OfferedPasswordIsCorrect(this Password pw, string offered) =>
-          Hashed(offered, pw.PasswordSalt) == pw.PasswordHash;
+          Hashed(offered, pw.PasswordSalt).Trim() == pw.PasswordHash.Trim();
 
         private static string Hashed(this string password, string salt)
         {
