@@ -12,7 +12,7 @@ namespace AW.Functions
         //TODO: Temporary function for testing only
         public static (Person, IContext) CheckPassword(this Person p, [Password] string offered, IContext context)
         {
-            var hash = p.Password.PasswordHash;
+            var hash = Hashed(offered, p.Password.PasswordSalt);
             var msg =(p.Password.OfferedPasswordIsCorrect(offered) ? "CORRECT" : "INCORRECT") +  $" Hash: {hash}";
             return (p, context.WithInformUser(msg));
         }
