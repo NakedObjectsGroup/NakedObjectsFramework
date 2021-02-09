@@ -79,10 +79,14 @@ namespace NakedFunctions.Meta.Facet {
 
         private static (object, Context) CastTuple(ITuple tuple) => (tuple[0], (Context)tuple[1]);
 
-        private object HandleContextResult((object, Context) tuple, INakedObjectsFramework framework) {
-            var (toReturn, context) = tuple;
+        private (object original, object updated)[] HandleContext(Context context, INakedObjectsFramework framework) {
             PerformActions(framework.ServicesManager, framework.ServiceProvider, new[] {context.Action});
-            var allPersisted = PersistResult(framework.LifecycleManager, context.New, context.Updated);
+            return PersistResult(framework.LifecycleManager, context.New, context.Updated);
+        }
+
+        private object HandleTupleResult((object, Context) tuple, INakedObjectsFramework framework) {
+            var (toReturn, context) = tuple;
+            var allPersisted = HandleContext(context, framework);
 
             foreach (var valueTuple in allPersisted) {
                 if (ReferenceEquals(valueTuple.original, toReturn)) {
@@ -93,6 +97,11 @@ namespace NakedFunctions.Meta.Facet {
             return toReturn;
         }
 
+        private object HandleContextResult(Context context, INakedObjectsFramework framework) {
+            HandleContext(context, framework);
+            return null;
+        }
+
         private INakedObjectAdapter HandleInvokeResult(INakedObjectsFramework framework, object result) {
             // if any changes made by invocation fail 
 
@@ -100,21 +109,23 @@ namespace NakedFunctions.Meta.Facet {
                 throw new PersistFailedException($"method {ActionMethod} on {ActionMethod.DeclaringType} made database changes and so is not pure");
             }
 
-            object toReturn;
-            if (result is ITuple tuple) {
-                var size = tuple.Length;
-
-                if (size is not 2) {
-                    throw new InvokeException($"Invalid return type {size} item tuple on {ActionMethod.Name}");
-                }
-
-                toReturn = HandleContextResult(CastTuple(tuple), framework);
-            }
-            else {
-                toReturn = result;
-            }
+            var toReturn = result switch {
+                ITuple tuple => HandleTupleResult(CastTuple(ValidateTuple(tuple)), framework),
+                Context context => HandleContextResult(context, framework),
+                _ => result
+            };
 
             return AdaptResult(framework.NakedObjectManager, toReturn);
+        }
+
+        private ITuple ValidateTuple(ITuple tuple) {
+            var size = tuple.Length;
+
+            if (size is not 2) {
+                throw new InvokeException($"Invalid return type {size} item tuple on {ActionMethod.Name}");
+            }
+
+            return tuple;
         }
 
         private void PerformActions(IServicesManager servicesManager, IServiceProvider serviceProvider, IEnumerable<object> toAct) => toAct.ForEach(a => PerformAction(servicesManager, serviceProvider, a));
