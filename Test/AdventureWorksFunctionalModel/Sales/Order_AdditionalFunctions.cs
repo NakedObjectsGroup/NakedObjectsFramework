@@ -41,11 +41,12 @@ namespace AW.Functions {
 
         #region Comments
 
-        //public static (IList<SalesOrderHeader>, IContext) AppendComment(this IQueryable<SalesOrderHeader> toOrders, string comment, IContext context) {
-        //    var updates = toOrders.Select(x => new { original = x, updated = x.WithAppendedComment(comment, context) });
-        //    var context2 = updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
-        //    return (updates.Select(x => x.updated).ToList(), context2);
-        //}
+        public static (IList<SalesOrderHeader>, IContext) AppendComment(this IQueryable<SalesOrderHeader> toOrders, string comment, IContext context)
+        {
+            var updates = toOrders.Select(x => new { original = x, updated = x.WithAppendedComment(comment, context) });
+            var context2 = updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
+            return (updates.Select(x => x.updated).ToList(), context2);
+        }
 
         //public static string Validate1AppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) =>
         //       toOrder.Count() > 5 ? "You may not apply the same comment to more than 5 orders at one time." : null;
