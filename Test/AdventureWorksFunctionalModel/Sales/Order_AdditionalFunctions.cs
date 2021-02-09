@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AW.Types;
 using NakedFunctions;
@@ -40,25 +41,25 @@ namespace AW.Functions {
 
         #region Comments
 
-        public static void AppendComment(this IQueryable<SalesOrderHeader> toOrders, string commentToAppend, IContext context) {
-            foreach (SalesOrderHeader order in toOrders) {
-                AppendComment(order, commentToAppend, context);
-            }
+        public static (IList<SalesOrderHeader>, IContext) AppendComment(this IQueryable<SalesOrderHeader> toOrders, string comment, IContext context) {
+            var updates = toOrders.Select(x => new { original = x, updated = x.WithAppendedComment(comment, context) });
+            var context2 = updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
+            return (updates.Select(x => x.updated).ToList(), context2);
         }
 
-        // temp comment out
-        //public static string Validate1AppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) {
-        //    if (commentToAppend == "fail") {
-        //        return "For test purposes the comment 'fail' fails validation";
-        //    }
+        public static string Validate1AppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) =>
+               toOrder.Count() > 5 ? "You may not apply the same comment to more than 5 orders at one time." : null;
 
-        //    return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
-        //}
-
-        public static (SalesOrderHeader, IContext) AppendComment(this SalesOrderHeader order, string commentToAppend, IContext context) {
-            string newComments = order.Comment == null? commentToAppend: order.Comment + "; " + commentToAppend;
-            var updated = order with { Comment = newComments, ModifiedDate = context.Now() };
+        public static (SalesOrderHeader, IContext) AppendComment(this SalesOrderHeader order, string commentToAppend, IContext context)
+        {
+            SalesOrderHeader updated = WithAppendedComment(order, commentToAppend, context);
             return (updated, context.WithUpdated(order, updated));
+        }
+
+        internal static SalesOrderHeader WithAppendedComment(this SalesOrderHeader order, string commentToAppend, IContext context)
+        {
+            string newComments = order.Comment == null ? commentToAppend : order.Comment + "; " + commentToAppend;
+           return order with { Comment = newComments, ModifiedDate = context.Now() };
         }
 
         public static string Validate1AppendComment(this SalesOrderHeader order, string commentToAppend) {
