@@ -110,12 +110,12 @@ namespace AW.Functions
         internal static bool OfferedPasswordIsCorrect(this Password pw, string offered) =>
           Hashed(offered, pw.PasswordSalt).Trim() == pw.PasswordHash.Trim();
 
-        private static string Hashed(this string password, string salt)
+        private static string Hashed(string password, string salt)
         {
             string saltedPassword = password + salt;
-            byte[] data = Encoding.UTF8.GetBytes(saltedPassword);
+            byte[] data = Encoding.ASCII.GetBytes(saltedPassword);
             byte[] hash = SHA256.Create().ComputeHash(data);
-            char[] chars = Encoding.UTF8.GetChars(hash);
+            char[] chars = hash.Select(b => Convert.ToChar(b % 128)).ToArray();
             return new string(chars);
         }
 
