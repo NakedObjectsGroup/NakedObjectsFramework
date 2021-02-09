@@ -10,8 +10,13 @@ namespace AW.Functions
     public static class Password_Functions
     {
         //TODO: Temporary function for testing only
-        public static (Person, IContext) CheckPassword(this Person p, [Password] string offered, IContext context) =>
-            (p, context.WithInformUser(p.Password.OfferedPasswordIsCorrect(offered) ? "CORRECT" : "INCORRECT"));
+        public static (Person, IContext) CheckPassword(this Person p, [Password] string offered, IContext context)
+        {
+            var hash = p.Password.PasswordHash;
+            var msg =(p.Password.OfferedPasswordIsCorrect(offered) ? "CORRECT" : "INCORRECT") +  $" Hash: {hash}";
+            return (p, context.WithInformUser(msg));
+        }
+           
 
         #region ChangePassword 
         public static (Person, IContext) ChangePassword(this Person p,
