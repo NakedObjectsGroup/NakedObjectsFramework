@@ -28,6 +28,7 @@ namespace NakedFunctions.Meta.Facet {
 
         public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
         public bool IsContributedToObject { get; }
+        public bool IsContributedToCollection => collectionContributees.Any();
 
         #endregion
 

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
@@ -17,11 +18,12 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public ActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) { }
 
+        // todo no up link ! 
         public override LinkRepresentation[] GetLinks() =>
             new List<LinkRepresentation> {
                 CreateSelfLink(),
                 CreateUpLink(),
                 CreateActionLink()
-            }.ToArray();
+            }.Where(i => i is not null).ToArray();
     }
 }

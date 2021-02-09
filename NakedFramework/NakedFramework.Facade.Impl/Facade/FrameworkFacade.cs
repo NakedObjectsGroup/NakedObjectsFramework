@@ -123,7 +123,7 @@ namespace NakedObjects.Facade.Impl {
 
         public PropertyContextFacade GetPropertyWithCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments) => MapErrors(() => GetPropertyWithCompletions(transient.WrappedAdapter(), propertyName, arguments).ToPropertyContextFacade(this, Framework));
 
-        public ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName) => MapErrors(() => GetAction(actionName, GetServiceAsNakedObject(serviceName)).ToActionContextFacade(this, Framework));
+        public ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName) => MapErrors(() => GetActionOnService(serviceName, actionName).ToActionContextFacade(this, Framework));
 
         public ActionContextFacade GetMenuAction(string menuName, string actionName) => MapErrors(() => GetActionOnMenu(menuName, actionName).ToActionContextFacade(this, Framework));
 
@@ -147,7 +147,7 @@ namespace NakedObjects.Facade.Impl {
 
         public ActionResultContextFacade ExecuteServiceAction(IOidTranslation serviceName, string actionName, ArgumentsContextFacade arguments) =>
             MapErrors(() => {
-                var actionContext = GetInvokeActionOnService(serviceName, actionName);
+                var actionContext = GetActionOnService(serviceName, actionName);
                 return ExecuteAction(actionContext, arguments);
             });
 
@@ -805,7 +805,12 @@ namespace NakedObjects.Facade.Impl {
             return parms.Select(p => new ParameterContextFacade { Parameter = p, Action = actionFacade.Action }).ToArray();
         }
 
-        private bool IsTargetParm(IActionSpec action, IActionParameterSpec parm) => parm.Number == 0 && action.GetFacet<IContributedFunctionFacet>()?.IsContributedToObject == true;
+        private static bool IsTargetParm(IActionSpec action, IActionParameterSpec parm) =>
+            parm.Number == 0 &&
+            action.GetFacet<IContributedFunctionFacet>() switch {
+                {IsContributedToObject: true} and { IsContributedToCollection: false } => true,
+                _ => false
+            };
 
         private ParameterContext[] FilterParmsForFunctions(IActionSpec action, string uid) =>
             action.Parameters
@@ -935,6 +940,36 @@ namespace NakedObjects.Facade.Impl {
             throw new ActionResourceNotFoundNOSException(actionName);
         }
 
+        private ActionContext GetActionOnService(IOidTranslation serviceName, string actionName) {
+            // use services to determine if NO or NF. 
+            // todo hybrid systems ! 
+            if (GetServices().List.Any()) {
+                return GetAction(actionName, GetServiceAsNakedObject(serviceName));
+            }
+
+            try {
+                var typeSpec = Framework.MetamodelManager.GetSpecification(serviceName.DomainType);
+
+                var actionSpec = typeSpec?.GetActions().SingleOrDefault(a => a.Id == actionName);
+                if (actionSpec != null && actionSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true ) {
+                    var uid = FacadeUtils.GetOverloadedUId(actionSpec, actionSpec.OnSpec);
+
+                    return new ActionContext {
+                        Target = null,
+                        Action = actionSpec,
+                        VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec, uid),
+                        OverloadedUniqueId = uid
+                    };
+                }
+            }
+            catch (InvalidOperationException e) {
+                logger.LogError($"multiple actions with name '{actionName}' found on type '{serviceName.DomainType}'");
+                throw new ActionResourceNotFoundNOSException(actionName);
+            }
+
+            throw new ActionResourceNotFoundNOSException(actionName);
+        }
+
         private ActionContext GetAction(string actionName, INakedObjectAdapter nakedObject) {
             var (actionSpec, uid) = GetActionInternal(actionName, nakedObject);
             return new ActionContext {
@@ -1006,11 +1041,6 @@ namespace NakedObjects.Facade.Impl {
 
         private ActionContext GetInvokeActionOnObject(IOidTranslation objectId, string actionName) {
             var nakedObject = GetObjectAsNakedObject(objectId);
-            return GetAction(actionName, nakedObject);
-        }
-
-        private ActionContext GetInvokeActionOnService(IOidTranslation serviceName, string actionName) {
-            var nakedObject = GetServiceAsNakedObject(serviceName);
             return GetAction(actionName, nakedObject);
         }
 

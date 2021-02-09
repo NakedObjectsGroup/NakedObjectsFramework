@@ -147,6 +147,11 @@ namespace AW.Functions
             return (newProduct, newContext);
         }
 
+        public static (Product, IContext) CommentProduct(this IQueryable<Product> product,  IContext context) {
+            return (product.FirstOrDefault(), context);
+        }
+
+
 
         //public static (Product, IContext) AddOrChangePhoto(this Product product, Image newImage, IContext context)
         //{

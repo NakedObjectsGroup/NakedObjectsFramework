@@ -28,5 +28,6 @@ namespace NakedObjects.Facade {
         bool IsVisible(IObjectFacade objectFacade);
         IConsentFacade IsUsable(IObjectFacade objectFacade);
         bool IsStatic { get; }
+        bool IsQueryContributedAction { get; }
     }
 }

@@ -43,6 +43,8 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsCreateNew => WrappedSpec.ContainsFacet<ICreateNewFacet>();
 
+        public bool IsQueryContributedAction => WrappedSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
+
         public int MemberOrder => WrappedSpec.GetMemberOrder();
 
         public string MemberOrderName => WrappedSpec.GetMemberOrderName();

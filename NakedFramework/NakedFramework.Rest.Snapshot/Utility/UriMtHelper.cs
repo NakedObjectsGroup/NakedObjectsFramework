@@ -262,7 +262,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         public Uri GetInvokeUri() =>
-            spec.IsService
+            spec.IsService || action?.IsQueryContributedAction == true
                 ? GetServiceInvokeUri()
                 : spec.IsStatic
                     ? GetMenuInvokeUri()
@@ -335,7 +335,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         private Uri GetObjectMemberUri(IMemberFacade member, string memberType) => string.IsNullOrEmpty(cachedId) ? GetTransientObjectMemberUri(member, memberType) : GetPersistentObjectMemberUri(member, memberType);
 
         private Uri GetMemberUri(IMemberFacade member, string memberType) =>
-            spec.IsService
+            spec.IsService || member is IActionFacade {IsQueryContributedAction: true}
                 ? GetServiceMemberUri(member, memberType)
                 : spec.IsStatic
                     ? GetMenuMemberUri(member, memberType)
