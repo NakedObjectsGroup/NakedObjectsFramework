@@ -9,6 +9,14 @@ namespace AW.Functions
 {
     public static class Password_Functions
     {
+        //TODO: Temporary function for testing only
+        public static (Person, IContext) CheckPassword(this Person p, [Password] string offered, IContext context)
+        {
+            var hash = Hashed(offered, p.Password.PasswordSalt);
+            var msg =(p.Password.OfferedPasswordIsCorrect(offered) ? "CORRECT" : "INCORRECT") +  $" Hash: {hash}";
+            return (p, context.WithInformUser(msg));
+        }
+           
 
         #region ChangePassword 
         public static (Person, IContext) ChangePassword(this Person p,
@@ -32,15 +40,18 @@ namespace AW.Functions
             string oldPassword, string newPassword, string confirm, IContext context)
         {
             var reason = "";
-            if (p.Password.OfferedPasswordIsCorrect(oldPassword))
-            {
-                reason += "Old Password is incorrect";
-            }
+            //TODO: Temp removed validation 
+            //if (p.Password.OfferedPasswordIsCorrect(oldPassword))
+            //{
+            //    reason += "Old Password is incorrect";
+            //}
+
+            //if (newPassword == oldPassword)
+            //{
+            //    reason += "New Password should be different from Old Password";
+            //}
+
             reason += ValidateNewPassword(newPassword, confirm);
-            if (newPassword == oldPassword)
-            {
-                reason += "New Password should be different from Old Password";
-            }
             return reason;
         }
 
