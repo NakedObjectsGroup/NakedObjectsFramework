@@ -14,10 +14,10 @@ namespace AW.Functions
         {
             var actualHash = Hashed(offered, p.Password.PasswordSalt);
             var expectedHash = p.Password.PasswordHash;
-            var msg =p.Password.OfferedPasswordIsCorrect(offered) ? "CORRECT" : $"Exp: {expectedHash} Act: {actualHash}";
+            var msg = p.Password.OfferedPasswordIsCorrect(offered) ? "CORRECT" : $"Exp: {expectedHash} Act: {actualHash}";
             return (p, context.WithInformUser(msg));
         }
-           
+
 
         #region ChangePassword 
         public static (Person, IContext) ChangePassword(this Person p,
@@ -67,8 +67,7 @@ namespace AW.Functions
             IContext context)
         {
             var pw = CreateNewPassword(newPassword, p, context);
-            var p2 = p with { Password = pw, ModifiedDate = context.Now() };
-            return (p, context.WithNew(pw).WithUpdated(p, p2));
+            return (p, context.WithNew(pw));
         }
 
         public static string ValidateCreateInitialPassword(this Person p,
@@ -93,15 +92,11 @@ namespace AW.Functions
         public static bool HideCreateInitialPassword(this Person p, IContext context) =>
             p.Password is not null;
 
-        #endregion
-
-
         internal static Password CreateNewPassword(string newPassword, Person person, IContext context)
         {
             var salt = CreateRandomSalt();
             var pw = new Password()
             {
-                BusinessEntityID = person.BusinessEntityID,
                 Person = person,
                 PasswordSalt = salt,
                 PasswordHash = Hashed(newPassword, salt),
@@ -110,6 +105,7 @@ namespace AW.Functions
             };
             return pw;
         }
+        #endregion
 
         internal static bool OfferedPasswordIsCorrect(this Password pw, string offered) =>
           Hashed(offered, pw.PasswordSalt).Trim() == pw.PasswordHash.Trim();
