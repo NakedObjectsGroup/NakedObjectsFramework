@@ -124,9 +124,9 @@ namespace AW.Functions
         #region Queryable-contributed
         internal static (IList<SpecialOffer>, IContext) Change(this IQueryable<SpecialOffer> offers, Func<SpecialOffer, SpecialOffer> change, IContext context)
         {
-            var offers2 = offers.Select(x => new { original = x, updated = change(x)});
-            var context2 = offers2.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
-            return (offers2.Select(x => x.updated).ToList(), context2);
+            var updates = offers.Select(x => new { original = x, updated = change(x)});
+            var context2 = updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
+            return (updates.Select(x => x.updated).ToList(), context2);
         }
 
         //TODO: This example shows we must permit returning a List (not a queryable) for display.
@@ -134,12 +134,12 @@ namespace AW.Functions
         => Change(offers, x => x with { EndDate = toDate, ModifiedDate = context.Now() }, context);
 
 
-        public static (IList<SpecialOffer>, IContext) TerminateActiveOffers(
+        public static (object, IContext) TerminateOffers(
             this IQueryable<SpecialOffer> offers, IContext context)
         {
             var yesterday = context.Today().AddDays(-1);
-            return Change(offers.Where(x => x.EndDate > yesterday),
-                x => x with { EndDate = yesterday, ModifiedDate = context.Now() }, context);
+            (var changed, var context2) = Change(offers, x => x with { EndDate = yesterday, ModifiedDate = context.Now() }, context);
+            return (null, context2);
         }
         #endregion
     }
