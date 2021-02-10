@@ -9,7 +9,7 @@ using System;
 using AW.Types;
 using System.Linq;
 using NakedFunctions;
-
+using System.Collections.Generic;
 
 namespace AW.Functions {
     [Named("Sales Order")]
@@ -26,14 +26,33 @@ namespace AW.Functions {
                 [DefaultValue(1), ValueRange(1, 999)] short quantity,
                 IContext context
             )
-        {
-            
+        {            
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
-            int stock = product.NumberInStock();
-            string warning = stock < quantity ? $"Current inventory of {product} is {stock}" : "";
+            return (soh, context.WithNew(sod).WithUpdated(soh, soh with { ModifiedDate = context.Now() })
+                .WithFunction(soh.Recalculate()));
+        }
 
-            return (soh, context.WithNew(sod).WithUpdated(soh, soh with { ModifiedDate = context.Now() }).WithWarnUser(warning));
-            //TODO: Recalculate Header fields - probably as a post-save action.
+        internal static Func<IContext, IContext> Recalculate(this SalesOrderHeader soh)
+        {
+            return c =>
+            {
+                var subTotal = soh.Details.Sum(d => d.LineTotal);
+                var tax = subTotal * soh.GetTaxRate(c) / 100;
+                var total = subTotal + tax;
+                return c.WithUpdated(soh, soh with
+                {
+                    SubTotal = subTotal,
+                    TaxAmt = tax,
+                    TotalDue = total,
+                    ModifiedDate = c.Now()
+                });
+            };
+        }
+
+        internal static decimal GetTaxRate(this SalesOrderHeader soh, IContext context) {
+            var stateId = soh.BillingAddress.StateProvince.StateProvinceID;
+            var str = context.Instances<SalesTaxRate>().FirstOrDefault(str => str.StateProvinceID == stateId);
+            return str is null ? 0 : str.TaxRate;
         }
 
         internal static SalesOrderDetail CreateNewDetail(this SalesOrderHeader soh, Product product, short quantity, IContext context)
@@ -51,9 +70,9 @@ namespace AW.Functions {
                 UnitPrice = unitPrice,
                 UnitPriceDiscount = discount,
                 rowguid = context.NewGuid(),
-                ModifiedDate = context.Now()
+                //ModifiedDate = context.Now() //Redundant - added by WithRecalculatedFields
             };
-            return sod.WithRecalculatedFields();
+            return sod.WithRecalculatedFields(context);
         }
 
         public static string DisableAddNewDetail(this SalesOrderHeader soh)
@@ -107,58 +126,39 @@ namespace AW.Functions {
 
         //        #endregion
 
-        //#region Remove Detail
-        //public static void RemoveDetail(this SalesOrderHeader soh, SalesOrderDetail detailToRemove)
-        //{
-        //    if (soh.Details.Contains(detailToRemove))
-        //    {
-        //        Details.Remove(detailToRemove);
-        //    }
-        //}
+        #region Remove Details
+        public static (SalesOrderHeader, IContext) RemoveDetail(this SalesOrderHeader soh,
+            SalesOrderDetail detailToRemove, IContext context) =>
+                     (soh, context.WithDeleted(detailToRemove));
 
-        //public static IEnumerable<SalesOrderDetail> Choices1RemoveDetail(this SalesOrderHeader soh)
-        //{
-        //    return Details;
-        //}
 
-        //public static SalesOrderDetail Default1RemoveDetail(this SalesOrderHeader soh )
-        //{
-        //    return Details.FirstOrDefault();
-        //}
+        public static IEnumerable<SalesOrderDetail> Choices1RemoveDetail(this SalesOrderHeader soh) =>
+            soh.Details;
 
-        //[MemberOrder(3)]
-        //public void static RemoveDetails(this IEnumerable<SalesOrderDetail> details)
-        //{
-        //    foreach (SalesOrderDetail detail in details)
-        //    {
-        //        if (Details.Contains(detail))
-        //        {
-        //            Details.Remove(detail);
-        //        }
-        //    }
-        //}
-        //#endregion
+        public static SalesOrderDetail Default1RemoveDetail(this SalesOrderHeader soh) =>
+            soh.Details.First();
 
-        //        #region AdjustQuantities
-        //        [MemberOrder(4)]
-        //        public void AdjustQuantities(this IEnumerable<SalesOrderDetail> details, short newQuantity)
-        //        {
-        //            foreach (SalesOrderDetail detail in details)
-        //            {
-        //                detail.OrderQty = newQuantity;
-        //            }
-        //        }
+        public static string DisableRemoveDetail(this SalesOrderHeader soh) =>
+            soh.Details.Any() ? null : "Order has no Details.";
 
-        //        public string ValidateAdjustQuantities(IEnumerable<SalesOrderDetail> details, short newQuantity)
-        //        {
-        //            var rb = new ReasonBuilder();
-        //            rb.AppendOnCondition(details.Count(d => d.OrderQty == newQuantity) == details.Count(),
-        //                "All selected details already have specified quantity");
-        //            return rb.Reason;
-        //        }
+        [MemberOrder(3)]
+        public static (SalesOrderHeader, IContext) RemoveDetails(this SalesOrderHeader soh,
+             IEnumerable<SalesOrderDetail> details, IContext context) =>
+                 (soh, details.Aggregate(context, (c, d) => c.WithDeleted(d)));
 
-        //        #endregion
+        #endregion
 
+
+        #region Add Carrier Tracking Number
+        public static (SalesOrderHeader, IContext) AddCarrierTrackingNumber(this SalesOrderHeader soh,
+           IEnumerable<SalesOrderDetail> details, string ctn, IContext context)
+        {
+            var updates = details.Select(d => new { original = d, updated = d with { CarrierTrackingNumber = ctn, ModifiedDate = context.Now() } });          
+            return (soh, updates.Aggregate(context, (c, u) => c.WithUpdated(u.original, u.updated)));
+        }
+
+
+        #endregion
         //        #region CreateNewCreditCard
 
         //        [Hidden]
@@ -468,8 +468,6 @@ namespace AW.Functions {
         //}
         #endregion
 
-        internal static SalesOrderHeader WithRecalculatedFields(this SalesOrderHeader soh) =>
-             soh with {SubTotal = soh.Details.Sum(d => d.LineTotal), TotalDue = soh.SubTotal};
 
         #region Edits - TODO
         //public static Address[] ChoicesBillingAddress(IContext context) => Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();
@@ -484,9 +482,6 @@ namespace AW.Functions {
 
 
         #endregion
-
-
-
 
     }
 
