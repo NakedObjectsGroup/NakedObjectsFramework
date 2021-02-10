@@ -25,8 +25,8 @@ namespace AW.Functions
         }
         #region Edit
         [Edit]
-        public static (SpecialOffer, IContext) EditDescription(this SpecialOffer sp, string description, IContext context)
-        => UpdateSpecialOffer(sp, sp with { Description = description}, context);
+        public static  IContext EditDescription(this SpecialOffer sp, string description, IContext context)
+        => UpdateSpecialOffer(sp, sp with { Description = description}, context).Item2;
 
 
         [Edit]
