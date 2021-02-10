@@ -179,6 +179,11 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return null;
             }
 
+            var alreadyUpdatedProxy = AlreadyUpdatedProxy(originalObject);
+            if (alreadyUpdatedProxy is not null) {
+                return alreadyUpdatedProxy;
+            }
+
             var adapterForOriginalObject = parent.createAdapter(null, originalObject);
 
             if (detachedObjects.ToUpdate.Select(t => t.updated).Contains(originalObject)) {
