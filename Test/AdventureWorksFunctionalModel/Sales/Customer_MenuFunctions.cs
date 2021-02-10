@@ -100,10 +100,9 @@ namespace AW.Functions
                 BusinessEntityModifiedDate = context.Now()
             };
             var c = new Customer() with { Person = p, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
-            var context2 = context.WithNew(c).WithNew(p);
             return string.IsNullOrEmpty(password) ?
-                (c, context2)
-                : (c, context2.WithNew(Password_Functions.CreateNewPassword(password, p, context)));
+                (c, context.WithNew(p).WithNew(c))
+                : (c, context.WithNew(Password_Functions.CreateNewPassword(password, p, context)).WithNew(p).WithNew(c));
         }
 
         [MemberOrder("Individuals", 3)]
