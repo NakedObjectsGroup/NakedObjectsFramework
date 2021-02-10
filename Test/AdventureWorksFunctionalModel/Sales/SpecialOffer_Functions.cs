@@ -37,8 +37,8 @@ namespace AW.Functions
             DisableIfStarted(sp, context);
 
         [Edit]
-        public static (SpecialOffer, IContext) EditType(this SpecialOffer sp, string type, IContext context)
-        => UpdateSpecialOffer(sp, sp with { Type = type }, context);
+        public static IContext EditType(this SpecialOffer sp, string type, IContext context)
+        => UpdateSpecialOffer(sp, sp with { Type = type }, context).Item2;
 
         public static bool HideEditType(this SpecialOffer sp, IContext context) =>
             HideIfEnded(sp, context);
