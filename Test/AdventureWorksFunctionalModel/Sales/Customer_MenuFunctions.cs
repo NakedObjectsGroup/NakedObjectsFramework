@@ -14,10 +14,12 @@ using NakedFunctions;
 using AW.Types;
 
 
-namespace AW.Functions {
+namespace AW.Functions
+{
 
     [Named("Customers")]
-    public static class Customer_MenuFunctions {
+    public static class Customer_MenuFunctions
+    {
 
 
         //public static CustomerDashboard CustomerDashboard(
@@ -37,15 +39,15 @@ namespace AW.Functions {
 
         [PageSize(2), MemberOrder("Stores", 1)]
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
-            public static IQueryable<Customer> FindStoreByName(
-            [DescribedAs("partial match")]string name, IContext context) =>
+        public static IQueryable<Customer> FindStoreByName(
+            [DescribedAs("partial match")] string name, IContext context) =>
             from c in context.Instances<Customer>()
-                       from s in context.Instances<Store>()
-                where s.Name.ToUpper().Contains(name.ToUpper()) &&
-                        c.StoreID == s.BusinessEntityID
-                select c;
+            from s in context.Instances<Store>()
+            where s.Name.ToUpper().Contains(name.ToUpper()) &&
+                    c.StoreID == s.BusinessEntityID
+            select c;
 
-        [MemberOrder("Stores",2)]
+        [MemberOrder("Stores", 2)]
         public static (Customer, IContext) CreateNewStoreCustomer(
             string name, IContext context)
         {
@@ -54,8 +56,9 @@ namespace AW.Functions {
             return (c, context.WithNew(c).WithNew(s));
         }
 
-        [MemberOrder("Stores",3)]
-        public static Customer RandomStore(IContext context) {
+        [MemberOrder("Stores", 3)]
+        public static Customer RandomStore(IContext context)
+        {
             var stores = context.Instances<Customer>().Where(t => t.StoreID != null).OrderBy(t => "");
             var random = context.RandomSeed().ValueInRange(stores.Count());
             return stores.Skip(random).FirstOrDefault();
@@ -65,24 +68,27 @@ namespace AW.Functions {
 
         #region Individuals Menu
 
-        [MemberOrder("Individuals",1)]
+        [MemberOrder("Individuals", 1)]
         [TableView(true)] //Table view == List View
         public static IQueryable<Customer> FindIndividualCustomerByName(
             [Optionally] string firstName, string lastName, IContext context)
         {
-           IQueryable<Person> matchingPersons = Person_MenuFunctions.FindPersonsByName(firstName, lastName, context);
+            IQueryable<Person> matchingPersons = Person_MenuFunctions.FindPersonsByName(firstName, lastName, context);
             return from c in context.Instances<Customer>()
                    from p in matchingPersons
                    where c.PersonID == p.BusinessEntityID
                    select c;
         }
 
-        [MemberOrder("Individuals",2)]
+        [MemberOrder("Individuals", 2)]
         public static (Customer, IContext) CreateNewIndividualCustomer(
-            string firstName, 
+            string firstName,
             string lastName,
-            IContext context) {
-            var p = new Person() with {
+            [Optionally, Password] string password,
+            IContext context)
+        {
+            var p = new Person() with
+            {
                 PersonType = "SC",
                 FirstName = firstName,
                 LastName = lastName,
@@ -94,10 +100,13 @@ namespace AW.Functions {
                 BusinessEntityModifiedDate = context.Now()
             };
             var c = new Customer() with { Person = p, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
-            return (c, context.WithNew(c).WithNew(p));
+            var context2 = context.WithNew(c).WithNew(p);
+            return string.IsNullOrEmpty(password) ?
+                (c, context2)
+                : (c, context2.WithNew(Password_Functions.CreateNewPassword(password, p, context)));
         }
 
-        [MemberOrder("Individuals",3)]
+        [MemberOrder("Individuals", 3)]
         public static Customer RandomIndividual(IContext context)
         {
             var indivs = context.Instances<Customer>().Where(t => t.PersonID != null).OrderBy(t => "");
@@ -117,6 +126,6 @@ namespace AW.Functions {
             var id = territory.TerritoryID;
             return context.Instances<Customer>().Where(c => c.SalesTerritory.TerritoryID == id);
         }
-        
+
     }
 }
