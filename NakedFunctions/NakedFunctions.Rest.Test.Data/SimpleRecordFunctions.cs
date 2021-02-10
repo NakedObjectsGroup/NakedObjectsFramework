@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Rest.Test.Data {
@@ -170,7 +171,7 @@ namespace NakedFunctions.Rest.Test.Data {
     {
         public static IContext ContributedFunction1(this IQueryable<SimpleRecord> sr, IContext context) => context;
         public static (SimpleRecord, IContext) ContributedFunction2(this IQueryable<SimpleRecord> sr, IContext context) => (sr.FirstOrDefault(), context);
-        public static (ICollection<SimpleRecord>, IContext) ContributedFunction3(this IQueryable<SimpleRecord> sr, IContext context) => (sr.ToList(), context);
+        public static (ICollection<SimpleRecord>, IContext) ContributedFunction3(this IQueryable<SimpleRecord> sr, int count,  IContext context) => (sr.Take(count).ToList(), context);
         public static SimpleRecord ContributedFunction4(this IQueryable<SimpleRecord> sr, IContext context) => sr.FirstOrDefault();
 
         public static IContext LocalContributedFunction(this CollectionRecord cr, IEnumerable<UpdatedRecord> updatedRecords, IContext context) => context;

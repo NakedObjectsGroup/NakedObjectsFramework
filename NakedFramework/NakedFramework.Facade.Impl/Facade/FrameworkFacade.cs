@@ -1065,6 +1065,18 @@ namespace NakedObjects.Facade.Impl {
 
         private static bool IsVisible(IMemberSpec actionSpec, INakedObjectAdapter nakedObject, bool isPersisted) => isPersisted ? actionSpec.IsVisibleWhenPersistent(nakedObject) : actionSpec.IsVisible(nakedObject);
 
+        private ParameterContext[] FilterCCAParms(IActionSpec action, string uid) {
+            if (action.IsStaticFunction) {
+                return FilterParmsForFunctions(action, uid);
+            }
+
+            return action.Parameters.Select(p => new ParameterContext {
+                Action = action,
+                Parameter = p,
+                OverloadedUniqueId = uid
+            }).ToArray();
+        }
+
         private ObjectContext GetObjectContext(INakedObjectAdapter nakedObject, bool isPersisted = false) {
             if (nakedObject == null) {
                 return null;
@@ -1095,11 +1107,7 @@ namespace NakedObjects.Facade.Impl {
                     Action = a.action,
                     OverloadedUniqueId = a.uid,
                     Target = Framework.ServicesManager.GetService(a.action.OnSpec as IServiceSpec),
-                    VisibleParameters = a.action.Parameters.Select(p => new ParameterContext {
-                        Action = a.action,
-                        Parameter = p,
-                        OverloadedUniqueId = a.uid
-                    }).ToArray()
+                    VisibleParameters = FilterCCAParms(a.action, a.uid),
                 }).ToArray();
             }
 
