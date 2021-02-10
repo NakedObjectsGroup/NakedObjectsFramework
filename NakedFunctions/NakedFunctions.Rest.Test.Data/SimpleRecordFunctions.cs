@@ -169,5 +169,7 @@ namespace NakedFunctions.Rest.Test.Data {
     public static class CollectionContributedFunctions
     {
         public static IContext ContributedFunction(this IQueryable<SimpleRecord> sr, IContext context) => context;
+
+        public static IContext LocalContributedFunction(this CollectionRecord cr, IEnumerable<UpdatedRecord> updatedRecords, IContext context) => context;
     }
 }

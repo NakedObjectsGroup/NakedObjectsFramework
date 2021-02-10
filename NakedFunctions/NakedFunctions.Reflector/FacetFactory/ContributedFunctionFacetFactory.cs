@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
@@ -63,11 +64,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ContributedFunctionFacet facet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var facet = new ContributedToLocalCollectionFacet(holder);
             var elementType = p.ParameterType.GetGenericArguments()[0];
             IObjectSpecBuilder type;
             (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
             facet.AddLocalCollectionContributee(type, p.Name);
+            FacetUtils.AddFacet(facet);
             return metamodel;
         }
 
@@ -76,23 +79,50 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             if (!method.IsDefined(typeof(DisplayAsPropertyAttribute), false)) {
                 var parameterType = GetContributeeType(method);
-                ITypeSpecImmutable type;
                 var facet = new ContributedFunctionFacet(specification, IsContributedToObjectOrCollection(method));
 
-                if (IsParseable(parameterType)) {
+                if (IsParseable(parameterType))
+                {
                     logger.LogWarning($"Query Contributed Function ignored as it is added to a collection of value types : {method.Name}");
                 }
-                else if (IsCollection(parameterType)) {
+                else if (IsCollection(parameterType))
+                {
                     metamodel = AddCollectionContributedAction(reflector, method, parameterType, facet, metamodel);
                 }
-                else {
-                    (type, metamodel) = reflector.LoadSpecification(parameterType, metamodel);
-                    facet.AddContributee(type);
-                    FacetUtils.AddFacet(facet);
+                else
+                {
+                    metamodel = AddMenuOrObjectContributedFunction(reflector, metamodel, parameterType, facet);
+                    if (IsLocalCollectionContributedAction(method)) {
+                        metamodel = AddLocalCollectionContributedAction(reflector, method.GetParameters()[1], specification, metamodel);
+                    }
                 }
             }
 
             return metamodel;
+        }
+
+        private static IImmutableDictionary<string, ITypeSpecBuilder> AddMenuOrObjectContributedFunction(IReflector reflector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, Type parameterType, ContributedFunctionFacet facet) {
+            ITypeSpecImmutable type;
+            (type, metamodel) = reflector.LoadSpecification(parameterType, metamodel);
+            facet.AddContributee(type);
+            FacetUtils.AddFacet(facet);
+            return metamodel;
+        }
+
+        private static bool IsLocalCollectionContributedAction(MethodInfo method) {
+            var parms = method.GetParameters();
+
+            if (parms.Length >= 2) {
+                var parm0 = parms[0];
+                var parm1 = parms[1];
+
+                return IsContributedToObjectOrCollection(method) &&
+                       !IsCollection(parm0.ParameterType) &&
+                       CollectionUtils.IsGenericEnumerable(parm1.ParameterType) &&
+                       parm0.ParameterType.GetProperties().SingleOrDefault(p => p.Name.Equals(parm1.Name, StringComparison.CurrentCultureIgnoreCase)) is not null;
+            }
+
+            return false;
         }
     }
 }

@@ -46,35 +46,26 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public bool IsStaticFunction => ContainsFacet<IStaticFunctionFacet>();
 
-        public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) {
-            return Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));
-        }
+        public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) => 
+            Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));
 
-        public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) {
-            return Parameters.Any(parm => {
-                var facet = GetFacet<IContributedActionFacet>();
-                return facet != null && facet.IsContributedToCollectionOf(objectSpecImmutable);
-            });
-        }
+        public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) => 
+            GetFacet<IContributedActionFacet>()?.IsContributedToCollectionOf(objectSpecImmutable) == true;
 
         public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable, string id) {
             var memberOrderFacet = GetFacet<IMemberOrderFacet>();
             var directlyContributed = string.Equals(memberOrderFacet?.Name, id, StringComparison.CurrentCultureIgnoreCase);
 
-            return directlyContributed || Parameters.Any(parm => {
-                var facet = GetFacet<IContributedActionFacet>();
-                return facet != null && facet.IsContributedToLocalCollectionOf(objectSpecImmutable, id);
-            });
+            return directlyContributed ||
+                   GetFacet<IContributedToLocalCollectionFacet>()?.IsContributedToLocalCollectionOf(objectSpecImmutable, id) == true;
         }
 
         #endregion
 
         private bool HasReturn() => ReturnSpec != null;
 
-        private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
-            var facet = GetFacet<IContributedActionFacet>();
-            return facet != null && contributeeSpec.IsOfType(parmSpec) && facet.IsContributedTo(contributeeSpec);
-        }
+        private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) =>
+            GetFacet<IContributedActionFacet>()?.IsContributedTo(contributeeSpec) == true && contributeeSpec.IsOfType(parmSpec);
 
         #region ISerializable
 

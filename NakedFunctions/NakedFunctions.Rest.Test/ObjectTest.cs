@@ -53,7 +53,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(DisplayAsPropertyRecord),
             typeof(ViewModel),
             typeof(UpdatedRecord),
-            typeof(OrderedRecord)
+            typeof(OrderedRecord),
+            typeof(CollectionRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -875,7 +876,20 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("2", resultObj["title"].ToString());
         }
 
-      
+        [Test]
+        public void TestGetObjectWithLCA()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<CollectionRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(3, parsedResult["members"].Count());
+
+            Assert.AreEqual(1, parsedResult["members"]["UpdatedRecords"]["members"] .Count());
+
+        }
 
 
 

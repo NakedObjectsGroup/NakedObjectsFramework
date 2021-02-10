@@ -86,7 +86,7 @@ namespace NakedObjects.Core.Spec {
 
         public IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec, string id) {
             if (!locallyContributedActions.ContainsKey(id)) {
-                locallyContributedActions[id] = ObjectActions.Where(oa => oa.IsLocallyContributedTo(typeSpec, id)).ToArray();
+                locallyContributedActions[id] = GetActions().Where(oa => oa.IsLocallyContributedTo(typeSpec, id)).ToArray();
             }
 
             return locallyContributedActions[id];

@@ -8,14 +8,11 @@
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Facet {
-    public interface IContributedActionFacet : IFacet {
-        bool IsContributedTo(IObjectSpecImmutable spec);
-        bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
+    public interface IContributedToLocalCollectionFacet : IFacet {
+      
 
-        //Returns null if the action is to be 'top-level'
-        string SubMenuWhenContributedTo(IObjectSpecImmutable spec);
+        bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec, string id);
 
-        //Id has been included for generating UI code that is backwards-compatible with NOF 6.
-        string IdWhenContributedTo(IObjectSpecImmutable spec);
+       
     }
 }

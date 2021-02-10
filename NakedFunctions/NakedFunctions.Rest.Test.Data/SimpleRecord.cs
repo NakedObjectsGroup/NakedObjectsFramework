@@ -78,7 +78,6 @@ namespace NakedFunctions.Rest.Test.Data {
         public override int GetHashCode() => base.GetHashCode();
     }
 
-
     public record ReferenceRecord {
         [Key]
         public int Id { get; init; }
@@ -108,8 +107,6 @@ namespace NakedFunctions.Rest.Test.Data {
         public override int GetHashCode() => base.GetHashCode();
         public virtual bool Equals(CollectionRecord other) => ReferenceEquals(this, other);
     }
-
-
 
     public record GuidRecord {
         [Key]
