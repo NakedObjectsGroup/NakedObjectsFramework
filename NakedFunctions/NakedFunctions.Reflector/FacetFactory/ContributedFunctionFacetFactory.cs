@@ -120,13 +120,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 var matchingCollection = parm0.ParameterType.GetProperties().SingleOrDefault(p => p.Name.Equals(parm1.Name, StringComparison.CurrentCultureIgnoreCase));
 
                 return IsContributedToObjectOrCollection(method) &&
-                       !IsCollection(parm0.ParameterType) &&
-                       CollectionUtils.IsGenericEnumerable(parm1.ParameterType) &&
-                       matchingCollection is not null &&
-                       CollectionUtils.IsGenericEnumerable(matchingCollection.PropertyType) &&
-                       matchingCollection.PropertyType.GetGenericArguments().Single() == parm1.ParameterType.GetGenericArguments().Single() &&
-                       parm0.ParameterType.GetMethods().All(m => m.Name != $"{RecognisedMethodsAndPrefixes.ChoicesPrefix}1{method.Name}");
-
+                                    !IsCollection(parm0.ParameterType) &&
+                                    CollectionUtils.IsGenericEnumerable(parm1.ParameterType) &&
+                                    matchingCollection is not null &&
+                                    CollectionUtils.IsGenericEnumerable(matchingCollection.PropertyType) &&
+                                    matchingCollection.PropertyType.GetGenericArguments().Single() == parm1.ParameterType.GetGenericArguments().Single();
             }
 
             return false;
