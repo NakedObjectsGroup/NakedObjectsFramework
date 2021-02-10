@@ -25,8 +25,8 @@ namespace AW.Functions
         }
         #region Edit
         [Edit]
-        public static (SpecialOffer, IContext) EditDescription(this SpecialOffer sp, string description, IContext context)
-        => UpdateSpecialOffer(sp, sp with { Description = description}, context);
+        public static  IContext EditDescription(this SpecialOffer sp, string description, IContext context)
+        => UpdateSpecialOffer(sp, sp with { Description = description}, context).Item2;
 
 
         [Edit]
@@ -37,8 +37,8 @@ namespace AW.Functions
             DisableIfStarted(sp, context);
 
         [Edit]
-        public static (SpecialOffer, IContext) EditType(this SpecialOffer sp, string type, IContext context)
-        => UpdateSpecialOffer(sp, sp with { Type = type }, context);
+        public static IContext EditType(this SpecialOffer sp, string type, IContext context)
+        => UpdateSpecialOffer(sp, sp with { Type = type }, context).Item2;
 
         public static bool HideEditType(this SpecialOffer sp, IContext context) =>
             HideIfEnded(sp, context);
