@@ -917,11 +917,16 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            Assert.AreEqual(3, resultObj["members"].Count());
+            Assert.AreEqual(4, resultObj["members"].Count());
 
             Assert.IsNull(resultObj["members"]["ContributedFunction1"]["extensions"]["returnType"]);
+            Assert.AreEqual("POST", resultObj["members"]["ContributedFunction1"]["links"][1]["method"].ToString());
             Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction2"]["extensions"]["returnType"].ToString());
+            Assert.AreEqual("POST", resultObj["members"]["ContributedFunction2"]["links"][1]["method"].ToString());
             Assert.AreEqual("list", resultObj["members"]["ContributedFunction3"]["extensions"]["returnType"].ToString());
+            Assert.AreEqual("POST", resultObj["members"]["ContributedFunction3"]["links"][1]["method"].ToString());
+            Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction4"]["extensions"]["returnType"].ToString());
+            Assert.AreEqual("GET", resultObj["members"]["ContributedFunction4"]["links"][1]["method"].ToString());
 
             // resultObj.AssertObject("Test3-1-1", FullName<CollectionRecord>(), "1");
         }

@@ -33,7 +33,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             logger = loggerFactory.CreateLogger<PotencyDerivedFromSignatureFacetFactory>();
 
 
-        private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsTuple(returnType);
+        private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsTuple(returnType) && !returnType.IsAssignableTo(typeof(IContext));
 
         private static void Process(MemberInfo member, ISpecification holder) {
             if (member is MethodInfo method) {
