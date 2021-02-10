@@ -10,6 +10,7 @@ using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace NakedFunctions.Selenium.Test.FunctionTests
 {
@@ -76,6 +77,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ImageProperty();
             ImageParameter();
             QueryContributedActionReturningOnlyAContext();
+            LocalCollectionContributedAction();
         }
 
         //[TestMethod]
@@ -530,7 +532,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             WaitForCss(".value.input-control input#newimage1");
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void QueryContributedActionReturningOnlyAContext()
         {
             GeminiUrl("list?m1=SpecialOffer_MenuFunctions&a1=AllSpecialOffers&pg1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ExtendOffers");
@@ -541,13 +543,31 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var endDate = DateTime.Today.AddDays(rand).ToString("dd MMM yyyy");
             Assert.IsFalse(br.FindElements(By.CssSelector("tbody tr td")).Any(el => el.Text == endDate));
             TypeIntoFieldWithoutClearing("#todate1", endDate);
-            SelectCheckBox("#item1-0");
             SelectCheckBox("#item1-1");
             SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-3");
             Click(OKButton());
             Reload();
             WaitForCssNo("tbody tr", 10);
             Assert.AreEqual(3, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate));
+        }
+
+        //[TestMethod]
+        public void LocalCollectionContributedAction()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=List&d1=AddCarrierTrackingNumber");
+            WaitForTitle("SO53535");
+            var rnd = (new Random()).Next(100000).ToString();
+            SelectCheckBox("#details1-1");
+            SelectCheckBox("#details1-2");
+            SelectCheckBox("#details1-3");
+            TypeIntoFieldWithoutClearing("#ctn1", rnd);
+            Click(OKButton());
+            Thread.Sleep(2000); //Otherwise next line does not open the table??!
+            Click(WaitForCss(".icon.table"));         
+            WaitForCssNo("tbody tr", 10);
+            Assert.AreEqual(3, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rnd));
+
         }
     }
 }
