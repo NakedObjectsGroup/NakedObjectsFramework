@@ -30,8 +30,8 @@ namespace AW.Functions
 
 
         [Edit]
-        public static (SpecialOffer, IContext) EditDiscount(this SpecialOffer sp, decimal discountPct, IContext context)
-        => UpdateSpecialOffer(sp, sp with { DiscountPct = discountPct }, context);
+        public static IContext EditDiscount(this SpecialOffer sp, decimal discountPct, IContext context)
+        => UpdateSpecialOffer(sp, sp with { DiscountPct = discountPct }, context).Item2;
 
         public static string DisableEditDiscount(this SpecialOffer sp, IContext context) =>
             DisableIfStarted(sp, context);
