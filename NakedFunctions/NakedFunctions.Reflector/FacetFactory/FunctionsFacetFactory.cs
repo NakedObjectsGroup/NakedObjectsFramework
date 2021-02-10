@@ -105,11 +105,16 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     (onType, returnType, metamodel) = LoadReturnSpecs(t, metamodel, reflector, actionMethod);
                 }
             }
-            else {
-                if (!IsUnsupportedSystemType(reflector, returnType, metamodel)) {
-                    (onType, metamodel) = reflector.LoadSpecification(returnType, metamodel);
-                }
+            else if (returnType.IsAssignableTo(typeof(IContext))) {
+                (onType, metamodel) = reflector.LoadSpecification(typeof(void), metamodel);
             }
+            else if (!IsUnsupportedSystemType(reflector, returnType, metamodel)) {
+                (onType, metamodel) = reflector.LoadSpecification(returnType, metamodel);
+            }
+            else {
+                throw new ReflectionException($"Cannot reflect return type {returnType} on {actionMethod.DeclaringType}.{actionMethod.Name}");
+            }
+            
 
             return (onType, returnType, metamodel);
         }

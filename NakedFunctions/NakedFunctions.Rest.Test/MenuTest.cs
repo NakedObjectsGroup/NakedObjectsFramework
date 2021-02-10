@@ -917,7 +917,11 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            Assert.AreEqual(1, resultObj["members"].Count());
+            Assert.AreEqual(3, resultObj["members"].Count());
+
+            Assert.IsNull(resultObj["members"]["ContributedFunction1"]["extensions"]["returnType"]);
+            Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction2"]["extensions"]["returnType"].ToString());
+            Assert.AreEqual("list", resultObj["members"]["ContributedFunction3"]["extensions"]["returnType"].ToString());
 
             // resultObj.AssertObject("Test3-1-1", FullName<CollectionRecord>(), "1");
         }
