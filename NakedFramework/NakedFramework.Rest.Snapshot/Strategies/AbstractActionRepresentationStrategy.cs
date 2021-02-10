@@ -61,7 +61,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             RelType parentRelType;
 
             if (ActionContext.Target is not null) {
-                var parentHelper = new UriMtHelper(OidStrategy, Req, ActionContext.Target); 
+                var parentHelper = new UriMtHelper(OidStrategy, Req, ActionContext.Target);
                 parentRelType = ActionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, parentHelper) : new ObjectRelType(RelValues.Up, parentHelper);
             }
             else if (ActionContext.MenuId is not null) {
@@ -69,8 +69,8 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 parentRelType = new MenuRelType(RelValues.Up, parentHelper);
             }
             else {
-                // todo no up link !
-                return null;
+                // no parent as such create uplink to home 
+                parentRelType = new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, Req));
             }
 
             return LinkRepresentation.Create(OidStrategy, parentRelType, Flags);

@@ -24,6 +24,6 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 CreateSelfLink(),
                 CreateUpLink(),
                 CreateActionLink()
-            }.Where(i => i is not null).ToArray();
+            }.ToArray();
     }
 }
