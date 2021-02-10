@@ -31,6 +31,7 @@ namespace AW.Functions {
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
             int stock = product.NumberInStock();
             string warning = stock < quantity ? $"Current inventory of {product} is {stock}" : "";
+
             return (soh, context.WithNew(sod).WithUpdated(soh, soh with { ModifiedDate = context.Now() }).WithWarnUser(warning));
             //TODO: Recalculate Header fields - probably as a post-save action.
         }
@@ -319,6 +320,7 @@ namespace AW.Functions {
 
         #endregion
 
+        #region Status helpers
         internal static bool IsInProcess(this SalesOrderHeader soh)
         {
             return soh.StatusByte == 1; //OrderStatus.InProcess;
@@ -348,6 +350,7 @@ namespace AW.Functions {
         {
             return soh.StatusByte == 6; // OrderStatus.Cancelled;
         }
+        #endregion
 
         //TODO: Move to Edit
         public static ShipMethod DefaultShipMethod(this SalesOrderHeader soh, IContext context) => context.Instances<ShipMethod>().FirstOrDefault();

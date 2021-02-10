@@ -9,14 +9,12 @@ namespace AW.Functions
 {
     public static class Password_Functions
     {
-        //TODO: Temporary function for testing only
-        public static (Person, IContext) CheckPassword(this Person p, [Password] string offered, IContext context)
-        {
-            var actualHash = Hashed(offered, p.Password.PasswordSalt);
-            var expectedHash = p.Password.PasswordHash;
-            var msg = p.Password.OfferedPasswordIsCorrect(offered) ? "CORRECT" : $"Exp: {expectedHash} Act: {actualHash}";
-            return (p, context.WithInformUser(msg));
-        }
+        [MemberOrder("Passwords", 1)]
+        public static (Person, IContext) CheckPassword(this Person p, [Password] string offered, IContext context) =>
+         (p, context.WithInformUser(p.Password.OfferedPasswordIsCorrect(offered)? "CORRECT" : "INCORRECT"));
+
+
+        public static bool HideCheckPassword(this Person p) =>  p.Password is null;
 
 
         #region ChangePassword 
@@ -41,34 +39,27 @@ namespace AW.Functions
             string oldPassword, string newPassword, string confirm, IContext context)
         {
             var reason = "";
-            //TODO: Temp removed validation 
-            //if (p.Password.OfferedPasswordIsCorrect(oldPassword))
-            //{
-            //    reason += "Old Password is incorrect";
-            //}
-
-            //if (newPassword == oldPassword)
-            //{
-            //    reason += "New Password should be different from Old Password";
-            //}
-
+            if (p.Password.OfferedPasswordIsCorrect(oldPassword))
+            {
+                reason += "Old Password is incorrect";
+            }
+            if (newPassword == oldPassword)
+            {
+                reason += "New Password should be different from Old Password";
+            }
             reason += ValidateNewPassword(newPassword, confirm);
             return reason;
         }
 
-        public static bool HideChangePassword(this Person p, IContext context) =>
-            p.Password is null;
+        public static bool HideChangePassword(this Person p) =>  p.Password is null;
         #endregion
 
         #region Initial Password 
         public static (Person, IContext) CreateInitialPassword(this Person p,
             [Password] string newPassword,
             [Named("New Password (Confirm)"), Password] string confirm,
-            IContext context)
-        {
-            var pw = CreateNewPassword(newPassword, p, context);
-            return (p, context.WithNew(pw));
-        }
+            IContext context) =>
+                 (p, context.WithNew(CreateNewPassword(newPassword, p, context)));
 
         public static string ValidateCreateInitialPassword(this Person p,
              string newPassword, string confirm, IContext context) =>
@@ -89,13 +80,12 @@ namespace AW.Functions
             return reason;
         }
 
-        public static bool HideCreateInitialPassword(this Person p, IContext context) =>
-            p.Password is not null;
+        public static bool HideCreateInitialPassword(this Person p) =>  p.Password is not null;
 
         internal static Password CreateNewPassword(string newPassword, Person person, IContext context)
         {
             var salt = CreateRandomSalt();
-            var pw = new Password()
+            return new Password()
             {
                 Person = person,
                 PasswordSalt = salt,
@@ -103,7 +93,6 @@ namespace AW.Functions
                 rowguid = context.NewGuid(),
                 ModifiedDate = context.Now()
             };
-            return pw;
         }
         #endregion
 
@@ -131,10 +120,5 @@ namespace AW.Functions
             output.Append("=");
             return output.ToString();
         }
-
-
-        //internal static Password MostRecentPassword(int forBusinessEntityID, IContext context) =>
-        //    context.Instances<Password>().Where(p => p.BusinessEntityID == forBusinessEntityID).
-        //    OrderByDescending(p => p.ModifiedDate).FirstOrDefault();
     }
 }
