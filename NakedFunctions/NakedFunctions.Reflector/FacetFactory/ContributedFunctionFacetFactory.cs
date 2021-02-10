@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
@@ -116,10 +117,16 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 var parm0 = parms[0];
                 var parm1 = parms[1];
 
+                var matchingCollection = parm0.ParameterType.GetProperties().SingleOrDefault(p => p.Name.Equals(parm1.Name, StringComparison.CurrentCultureIgnoreCase));
+
                 return IsContributedToObjectOrCollection(method) &&
                        !IsCollection(parm0.ParameterType) &&
                        CollectionUtils.IsGenericEnumerable(parm1.ParameterType) &&
-                       parm0.ParameterType.GetProperties().SingleOrDefault(p => p.Name.Equals(parm1.Name, StringComparison.CurrentCultureIgnoreCase)) is not null;
+                       matchingCollection is not null &&
+                       CollectionUtils.IsGenericEnumerable(matchingCollection.PropertyType) &&
+                       matchingCollection.PropertyType.GetGenericArguments().Single() == parm1.ParameterType.GetGenericArguments().Single() &&
+                       parm0.ParameterType.GetMethods().All(m => m.Name != $"{RecognisedMethodsAndPrefixes.ChoicesPrefix}1{method.Name}");
+
             }
 
             return false;
