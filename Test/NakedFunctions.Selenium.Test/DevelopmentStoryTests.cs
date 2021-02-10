@@ -78,6 +78,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ImageParameter();
             QueryContributedActionReturningOnlyAContext();
             LocalCollectionContributedAction();
+            ObjectActionThatReturnsJustAContext();
         }
 
         //[TestMethod]
@@ -567,6 +568,22 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Click(WaitForCss(".icon.table"));         
             WaitForCssNo("tbody tr", 10);
             Assert.AreEqual(3, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rnd));
+        }
+
+        //[TestMethod]
+        public void ObjectActionThatReturnsJustAContext()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--5&as1=open&d1=EditDescription");
+            var original = "Volume Discount 41 to 60";
+            WaitForTitle(original);
+            var newDesc = "Volume Discount 41+";
+            TypeIntoFieldWithoutClearing("#description1", newDesc);
+            Click(OKButton());
+            WaitForTitle(newDesc);
+            OpenActionDialog("Edit Description");
+            TypeIntoFieldWithoutClearing("#description1", original);
+            Click(OKButton());
+            WaitForTitle(original);
 
         }
     }
