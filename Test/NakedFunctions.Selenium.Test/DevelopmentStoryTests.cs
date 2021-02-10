@@ -75,6 +75,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             SubMenuOnMainMenu();
             ImageProperty();
             ImageParameter();
+            QueryContributedActionReturningOnlyAContext();
         }
 
         //[TestMethod]
@@ -527,6 +528,26 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             WaitForTitle("Short-Sleeve Classic Jersey, S");
             OpenActionDialog("Add Or Change Photo");
             WaitForCss(".value.input-control input#newimage1");
+        }
+
+        [TestMethod]
+        public void QueryContributedActionReturningOnlyAContext()
+        {
+            GeminiUrl("list?m1=SpecialOffer_MenuFunctions&a1=AllSpecialOffers&pg1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ExtendOffers");
+            WaitForTitle("All Special Offers");
+            Reload();
+            WaitForCssNo("tbody tr", 10);
+            int rand = (new Random()).Next(1000);
+            var endDate = DateTime.Today.AddDays(rand).ToString("dd MMM yyyy");
+            Assert.IsFalse(br.FindElements(By.CssSelector("tbody tr td")).Any(el => el.Text == endDate));
+            TypeIntoFieldWithoutClearing("#todate1", endDate);
+            SelectCheckBox("#item1-0");
+            SelectCheckBox("#item1-1");
+            SelectCheckBox("#item1-2");
+            Click(OKButton());
+            Reload();
+            WaitForCssNo("tbody tr", 10);
+            Assert.AreEqual(3, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate));
         }
     }
 }
