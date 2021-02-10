@@ -14,7 +14,7 @@ namespace AW.Functions {
     public static class SalesOrderDetail_Functions
     {
         //Call this from any function that updates a SalesOrderDetail
-        internal static SalesOrderDetail WithRecalculatedFields(this SalesOrderDetail sod)
+        internal static SalesOrderDetail WithRecalculatedFields(this SalesOrderDetail sod, IContext context)
         {
             var unitPrice = sod.SpecialOfferProduct.Product.ListPrice;
             var discount = sod.SpecialOfferProduct.SpecialOffer.DiscountPct * unitPrice;
@@ -24,23 +24,25 @@ namespace AW.Functions {
             {
                 UnitPrice = unitPrice,
                 UnitPriceDiscount = discount,
-                LineTotal = lineTotal
+                LineTotal = lineTotal,
+                ModifiedDate = context.Now()
             };
         }
 
-        public static (SalesOrderDetail, IContext) ChangeQuantity(this SalesOrderDetail sod, short newQuantity, IContext context)
+        public static (SalesOrderDetail, IContext) ChangeQuantity(this SalesOrderDetail detail, short newQuantity, IContext context)
         {
-            throw new NotImplementedException();
-            //OrderQty = newQuantity;
-            //            IQueryable<SpecialOfferProduct> sops
-            //SpecialOfferProduct = ProductFunctions2.BestSpecialOfferProduct(Product, newQuantity, sops);
-            //Recalculate();
+            var detail2 = (detail with
+            {
+                OrderQty = newQuantity,
+                SpecialOfferProduct = Product_Functions.BestSpecialOfferProduct(detail.Product, newQuantity, context)
+            }).WithRecalculatedFields(context);
+
+            return (detail2, context.WithUpdated(detail, detail2).WithFunction(detail.SalesOrderHeader.Recalculate()));
         }
 
-        public static string DisableChangeQuantity()
-        {
-            return null;
-            //return SalesOrderHeader.DisableAddNewDetail();
-        }
+        public static string DisableChangeQuantity(this SalesOrderDetail detail) =>
+            detail.SalesOrderHeader.DisableAddNewDetail();
+
+
     }
 }
