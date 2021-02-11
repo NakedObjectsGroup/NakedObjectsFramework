@@ -126,7 +126,7 @@ namespace AW.Functions
         [Edit]
         public static (Product, IContext) EditCategories(this Product p,
       ProductCategory category, ProductSubcategory subCategory, IContext context) =>
-              UpdateProduct(p, p with { ProductSubcategory = subCategory },context);
+              UpdateProduct(p, p with { ProductSubcategory = subCategory }, context);
 
         public static IList<ProductSubcategory> Choices2EditCategories(this Product p,
             ProductCategory productCategory, IContext context) =>
@@ -147,7 +147,8 @@ namespace AW.Functions
             return (newProduct, newContext);
         }
 
-        public static (Product, IContext) CommentProduct(this IQueryable<Product> product,  IContext context) {
+        public static (Product, IContext) CommentProduct(this IQueryable<Product> product, IContext context)
+        {
             return (product.FirstOrDefault(), context);
         }
 
@@ -166,10 +167,59 @@ namespace AW.Functions
         //}
 
         public static (WorkOrder, IContext context) CreateNewWorkOrder(
-             [DescribedAs("product partial name")] this Product product,
+             this Product product,
              int orderQty,
              DateTime startDate,
              IContext context) =>
                 WorkOrder_MenuFunctions.CreateNewWorkOrder(product, orderQty, startDate, context);
+
+        public static IContext AddProductReview(this Product p,
+            [MaxLength(50)] string reviewerName,
+            [DefaultValue(0), ValueRange(-30, 0)] DateTime dateOfReview,
+            [MaxLength(50)] string emailAddress,
+            [Named("No. of Stars (1-5"), DefaultValue(5)] int rating,
+            [Optionally] string comments,
+            IContext context) =>
+                 context.WithNew(CreateReview(p, reviewerName, dateOfReview, emailAddress, rating, comments, context));
+
+        private static ProductReview CreateReview(Product p, string reviewerName, DateTime date, string emailAddress, int rating, string comments, IContext context)
+        {
+            return new ProductReview
+            {
+                Product = p,
+                ReviewerName = reviewerName,
+                ReviewDate = date,
+                EmailAddress = emailAddress,
+                Rating = rating,
+                Comments = comments,
+                ModifiedDate = context.Now()
+            };
+        }
+
+        public static List<int> Choices3AddProductReview(this Product p) => Ratings();
+
+        private static List<int> Ratings() => new List<int> { 1, 2, 3, 4, 5 };
+
+        public static string ValidateAddProductReview(this Product p, string reviewerName,
+            DateTime dateOfReview, string emailAddress, int rating, string comments) =>
+            LessThan5StarsRequiresComments(rating, comments);
+
+        private static string LessThan5StarsRequiresComments(int rating, string comments) =>
+            rating < 5 && string.IsNullOrEmpty(comments) ? "Must provide comments for rating < 5" : null;
+
+        public static IContext ReviewMultipleProducts(this IQueryable<Product> products,
+            [Named("No. of Stars (1-5"), DefaultValue(5)] int rating,
+            [Optionally] string comments,
+            IContext context) =>
+            products.Aggregate(context, (c, p) => c.WithNew(
+                CreateReview(p, "Anon.", context.Today(),  "[hidden]", rating, comments, context)));
+
+        public static List<int> Choices3ReviewMultipleProducts(this IQueryable<Product> products) =>
+            Ratings();
+
+        public static string ValidateReviewMultipleProduct(this IQueryable<Product> products, string reviewerName,
+         DateTime dateOfReview, string emailAddress, int rating, string comments) =>
+         LessThan5StarsRequiresComments(rating, comments);
+
     }
 }
