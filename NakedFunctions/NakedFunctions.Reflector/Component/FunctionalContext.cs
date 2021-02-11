@@ -6,19 +6,24 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Component;
 
 namespace NakedFunctions.Reflector.Component {
-    public record Context : IContext {
+    public record FunctionalContext : IContext {
         internal IObjectPersistor Persistor { get; init; }
         internal IServiceProvider Provider { get; init; }
 
-        public object Action { get; init; }
+
+        internal IDictionary<object, object> ProxyMap = new Dictionary<object, object>();
+
 
         internal object[] New { get; init; } = Array.Empty<object>();
         internal (object proxy, object updated)[] Updated { get; init; } = Array.Empty<(object, object)>();
+
+        public Func<IContext, IContext> PostSaveFunction { get; init; } = c => c;
 
         public IQueryable<T> Instances<T>() where T : class => Persistor.Instances<T>();
 
@@ -27,7 +32,14 @@ namespace NakedFunctions.Reflector.Component {
         public IContext WithNew(object newObj) => this with {New = New.Append(newObj).ToArray()};
 
         public IContext WithUpdated<T>(T proxy, T updated) => this with {Updated = Updated.Append((proxy, updated)).ToArray()};
+        public IContext WithPostSaveFunction(Func<IContext, IContext> function) => this with {PostSaveFunction = function};
 
-        public IContext WithAction<T>(Action<T> action) => this with {Action = action};
+        public T GetNewlySavedVersion<T>(T unsaved) where T : class {
+            if (ProxyMap.ContainsKey(unsaved)) {
+                return (T) ProxyMap[unsaved];
+            }
+
+            return null;
+        }
     }
 }

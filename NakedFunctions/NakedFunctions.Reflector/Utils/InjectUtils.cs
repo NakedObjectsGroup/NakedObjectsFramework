@@ -37,7 +37,7 @@ namespace NakedObjects.Meta.Utils {
         private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectsFramework framework) =>
             p switch {
                 _ when p.IsTargetParameter() => adapter.Object,
-                _ when p.IsInjectedParameter() => new Context() {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
+                _ when p.IsInjectedParameter() => new FunctionalContext() {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
                 _ => null
             };
 
@@ -59,7 +59,7 @@ namespace NakedObjects.Meta.Utils {
             p switch
             {
                 _ when p.IsTargetParameter() => adapter.Object,
-                _ when p.IsInjectedParameter() => new Context {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
+                _ when p.IsInjectedParameter() => new FunctionalContext {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
                 _ => parmValues[i].GetDomainObject()
             };
 

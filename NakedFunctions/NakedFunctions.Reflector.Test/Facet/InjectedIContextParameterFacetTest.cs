@@ -34,7 +34,7 @@ namespace NakedFunctions.Meta.Test.Facet {
 
             var result = testFacet.GetInjectedValue(mockFramework.Object, null);
 
-            Assert.AreEqual(result.GetType(), typeof(Context));
+            Assert.AreEqual(result.GetType(), typeof(FunctionalContext));
         }
 
         [TestMethod]

@@ -6,14 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
-using NakedFramework.Architecture.Persist;
 using NakedFramework.Core.Persist;
 using NakedFunctions.Reflector.Component;
 using NakedObjects;
@@ -74,17 +72,29 @@ namespace NakedFunctions.Meta.Facet {
             return nakedObjectManager.CreateAdapterForExistingObject(result);
         }
 
-        private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, (object proxy, object updated)[] updatedObjects) =>
-            lifecycleManager.Persist(new DetachedObjects(newObjects, updatedObjects)).ToArray();
+        private static Func<bool> GetPostSaveFunction(FunctionalContext functionalContext, INakedObjectsFramework framework) {
+            var postSaveFunction = functionalContext.PostSaveFunction;
+            var newContext = new FunctionalContext() {Persistor = functionalContext.Persistor, Provider = functionalContext.Provider};
 
-        private static (object, Context) CastTuple(ITuple tuple) => (tuple[0], (Context)tuple[1]);
-
-        private (object original, object updated)[] HandleContext(Context context, INakedObjectsFramework framework) {
-            PerformActions(framework.ServicesManager, framework.ServiceProvider, new[] {context.Action});
-            return PersistResult(framework.LifecycleManager, context.New, context.Updated);
+            return () => {
+                var innerContext = (FunctionalContext) postSaveFunction(newContext);
+                var updated = PersistResult(framework.LifecycleManager, innerContext.New, innerContext.Updated, GetPostSaveFunction(innerContext, framework));
+                return updated.Any();
+            };
         }
 
-        private object HandleTupleResult((object, Context) tuple, INakedObjectsFramework framework) {
+
+        private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, (object proxy, object updated)[] updatedObjects, Func<bool> postSaveFunction) =>
+            lifecycleManager.Persist(new DetachedObjects(newObjects, updatedObjects, postSaveFunction)).ToArray();
+
+        private static (object, FunctionalContext) CastTuple(ITuple tuple) => (tuple[0], (FunctionalContext)tuple[1]);
+
+        private (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedObjectsFramework framework) {
+            //PerformActions(framework.ServicesManager, framework.ServiceProvider, new[] {functionalContext.Action});
+            return PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
+        }
+
+        private object HandleTupleResult((object, FunctionalContext) tuple, INakedObjectsFramework framework) {
             var (toReturn, context) = tuple;
             var allPersisted = HandleContext(context, framework);
 
@@ -97,8 +107,8 @@ namespace NakedFunctions.Meta.Facet {
             return toReturn;
         }
 
-        private object HandleContextResult(Context context, INakedObjectsFramework framework) {
-            HandleContext(context, framework);
+        private object HandleContextResult(FunctionalContext functionalContext, INakedObjectsFramework framework) {
+            HandleContext(functionalContext, framework);
             return null;
         }
 
@@ -111,7 +121,7 @@ namespace NakedFunctions.Meta.Facet {
 
             var toReturn = result switch {
                 ITuple tuple => HandleTupleResult(CastTuple(ValidateTuple(tuple)), framework),
-                Context context => HandleContextResult(context, framework),
+                FunctionalContext context => HandleContextResult(context, framework),
                 _ => result
             };
 

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 
 namespace NakedFramework.Architecture.Persist {
@@ -14,5 +15,7 @@ namespace NakedFramework.Architecture.Persist {
 
        
         public List<(object original, object updated)> SavedAndUpdated { get; }
+
+        public Func<bool> PostSaveFunction { get; }
     }
 }

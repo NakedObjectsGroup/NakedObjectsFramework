@@ -21,6 +21,8 @@ using System.Text;
 using System.Transactions;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Persist;
+using NakedFramework.Core.Persist;
+using NakedFunctions;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -31,6 +33,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Persistor.Entity.Util;
+using ObjectContext = System.Data.Entity.Core.Objects.ObjectContext;
 
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
 
@@ -267,7 +270,12 @@ namespace NakedObjects.Persistor.Entity.Component {
             contexts.Values.ForEach(c => c.WrappedObjectContext.AcceptAllChanges());
         }
 
+        public Func<bool> FunctionalPostSave = () => false;
+
         private bool PostSave() {
+
+            bool changes = FunctionalPostSave();
+
             // two separate loops as PostSave may have side-affects in previously processed contexts
             contexts.Values.ForEach(c => c.PostSave(this));
             return contexts.Values.Aggregate(false, (current, c) => current || c.HasChanges());
@@ -702,7 +710,11 @@ namespace NakedObjects.Persistor.Entity.Component {
                 _ => false
             };
 
-        public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) => ExecuteAttachObjectCommandUpdate(objects);
+        public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) {
+            FunctionalPostSave = objects.PostSaveFunction;
+
+            return ExecuteAttachObjectCommandUpdate(objects);
+        }
 
         public INakedObjectAdapter AdaptDetachedObject(object poco) {
             var spec = metamodelManager.GetSpecification(poco.GetType());

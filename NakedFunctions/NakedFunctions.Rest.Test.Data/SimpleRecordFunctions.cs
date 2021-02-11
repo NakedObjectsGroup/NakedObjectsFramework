@@ -15,7 +15,7 @@ namespace NakedFunctions.Rest.Test.Data {
     internal static class Helpers {
         internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithNew(obj));
 
-        internal static (T, IContext) DisplayAndUpdate<T>(T obj, T proxy, IContext context) => (obj, ((Context) context).WithUpdated(proxy, obj));
+        internal static (T, IContext) DisplayAndUpdate<T>(T obj, T proxy, IContext context) => (obj, ((FunctionalContext) context).WithUpdated(proxy, obj));
     }
 
     public static class SimpleRecordFunctions {

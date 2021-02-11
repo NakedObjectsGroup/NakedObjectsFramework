@@ -20,8 +20,8 @@ namespace NakedFunctions {
 
         public IContext WithUpdated<T>(T original, T updated);
 
-        //Returns a copy of this context but with an Action<T> (where T is a service registered in services configuration)
-        //to be called by the framework after the function has completed.
-        public IContext WithAction<T>(Action<T> action);
+        IContext WithPostSaveFunction(Func<IContext, IContext> function);
+
+        public T GetNewlySavedVersion<T>(T unsaved) where T : class;
     }
 }

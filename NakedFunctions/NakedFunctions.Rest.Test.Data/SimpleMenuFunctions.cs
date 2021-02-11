@@ -30,12 +30,16 @@ namespace NakedFunctions.Rest.Test.Data {
 
         internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithNew(obj));
 
-        internal static Action<IAlert> WarnUser(string message) => ua => ua.WarnUser(message);
+        internal static Func<IContext, IContext> WarnUser(string message) =>
+            c => {
+                c.GetService<IAlert>().WarnUser(message);
+                return c;
+            };
 
         internal static Action<IAlert> InformUser(string message) => ua => ua.InformUser(message);
 
         internal static (T, IContext) SingleObjectWarnIfNoMatch<T>(this IQueryable<T> query, IContext context) =>
-            (query.FirstOrDefault(), query.Any() ? context : context.WithAction(WarnUser("There is no matching object")));
+            (query.FirstOrDefault(), query.Any() ? context : context.WithPostSaveFunction(WarnUser("There is no matching object")));
 
         public static (SimpleRecord, IContext) FindByNumber(string number, IContext context) {
             var id = int.Parse(number);

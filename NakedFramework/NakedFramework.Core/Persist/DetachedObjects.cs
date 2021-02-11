@@ -5,17 +5,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Persist;
 
 namespace NakedFramework.Core.Persist {
     public class DetachedObjects : IDetachedObjects {
-        public DetachedObjects(object[] toSave, (object proxy, object updated)[] toUpdate) {
+        public DetachedObjects(object[] toSave, (object proxy, object updated)[] toUpdate, Func<bool> postSaveFunction) {
             ToSave = toSave;
             ToUpdate = toUpdate;
+            PostSaveFunction = postSaveFunction;
         }
 
         public List<(object original, object updated)> SavedAndUpdated { get; } = new();
+        public Func<bool> PostSaveFunction { get; }
 
         public object[] ToSave { get; }
         public (object proxy, object updated)[] ToUpdate { get; }
