@@ -196,28 +196,27 @@ namespace AW.Functions
             };
         }
 
-        public static List<int> Choices3AddProductReview(this Product p) => Ratings();
+        public static List<int> Choices4AddProductReview(this Product p) => Ratings();
 
         private static List<int> Ratings() => new List<int> { 1, 2, 3, 4, 5 };
 
-        public static string ValidateAddProductReview(this Product p, string reviewerName,
-            DateTime dateOfReview, string emailAddress, int rating, string comments) =>
+        public static string ValidateAddProductReview(this Product p, int rating, string comments) =>
             LessThan5StarsRequiresComments(rating, comments);
 
         private static string LessThan5StarsRequiresComments(int rating, string comments) =>
             rating < 5 && string.IsNullOrEmpty(comments) ? "Must provide comments for rating < 5" : null;
 
-        public static IContext ReviewMultipleProducts(this IQueryable<Product> products,
+        public static IContext AddAnonReviews(this IQueryable<Product> products,
             [Named("No. of Stars (1-5"), DefaultValue(5)] int rating,
             [Optionally] string comments,
             IContext context) =>
             products.Aggregate(context, (c, p) => c.WithNew(
                 CreateReview(p, "Anon.", context.Today(),  "[hidden]", rating, comments, context)));
 
-        public static List<int> Choices3ReviewMultipleProducts(this IQueryable<Product> products) =>
+        public static List<int> Choices1AddAnonReviews(this IQueryable<Product> products) =>
             Ratings();
 
-        public static string ValidateReviewMultipleProduct(this IQueryable<Product> products, string reviewerName,
+        public static string ValidateAddAnonReviewst(this IQueryable<Product> products, string reviewerName,
          DateTime dateOfReview, string emailAddress, int rating, string comments) =>
          LessThan5StarsRequiresComments(rating, comments);
 
