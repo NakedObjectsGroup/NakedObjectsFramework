@@ -557,6 +557,39 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual(3, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate));
         }
 
+        [TestMethod, Ignore] //NOT currently working
+        public void QueryContributedActionWithChoicesFunction()
+        {
+            GeminiUrl("list?m1=Product_MenuFunctions&a1=AllProducts&pg1=1&ps1=20&s1_=0&c1=List&as1=open&r1=1&d1=AddAnonReviews");
+            WaitForTitle("All Products");
+            var option = "select#rating1 option";
+            Assert.AreEqual("5", WaitForCssNo(option, 4).Text);
+            Assert.AreEqual("1", WaitForCssNo(option, 0).Text);
+            SelectDropDownOnField("select#rating", 2);
+            var rand = (new Random()).Next(100000).ToString();
+            TypeIntoFieldWithoutClearing("#comments1", rand);
+            SelectCheckBox("#item1-1");
+            Click(OKButton());
+            Thread.Sleep(1000);
+            Reload();
+            WaitForCssNo("tbody tr", 10);
+            Assert.AreEqual(1, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rand));
+        }
+
+        [TestMethod, Ignore] //NOT currently working
+        public void QueryContributedActionWithCoValidation()
+        {
+            GeminiUrl("list?m1=Product_MenuFunctions&a1=AllProducts&pg1=1&ps1=20&s1_=0&c1=List&as1=open&r1=1&d1=AddAnonReviews");
+            WaitForTitle("All Products");
+            TypeIntoFieldWithoutClearing("#rating1", "4");
+            Click(OKButton());
+            Thread.Sleep(1000);
+            var expected = "Must provide comments for rating < 5";
+            var actual = WaitForCss(".co-validation");
+            Assert.AreEqual(expected, actual);
+        }
+
+
         //[TestMethod]
         public void LocalCollectionContributedAction()
         {
@@ -588,7 +621,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             TypeIntoFieldWithoutClearing("#description1", original);
             Click(OKButton());
             WaitForTitle(original);
-
         }
     }
 }
