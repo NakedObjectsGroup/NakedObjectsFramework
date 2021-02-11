@@ -65,12 +65,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AutoCompleteFunction();
             ViewModel1();
             MultiLineActionDialog();
-            CreateNewObject1();
-            CreateNewObject2();
-            CreateNewObject3();
-            CreateNewObject4();
-            CreateNewObject5();
-            CreateNewObject6();
+            CreateNewObectWithOnlyValueProperties();
+            CreateNewObjectWithAReferenceToAnotherExistingObject();
+            CreateNewObjectWithAReferenceToMultipleExistingObjects();
+            SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
+            CreateAGraphOfTwoNewRelatedObjects();
+            CreateAGraphOfObjectsThreeLevelsDeep();
             PropertyHiddenViaAHideMethod();
             SubMenuOnObject();
             SubMenuOnMainMenu();
@@ -210,7 +210,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("683de5dd-521a-47d4-a573-06a3cdb1bc5d", guid);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ParameterChoicesSimple()
         {
             //Corresponds to #242
@@ -321,6 +321,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("206", GetPropertyValue("Male"));
             Assert.AreEqual("290", GetPropertyValue("Total Staff"));
             Reload();
+            Thread.Sleep(1000);
             Assert.AreEqual("84", GetPropertyValue("Female"));
             Assert.AreEqual("206", GetPropertyValue("Male"));
             Assert.AreEqual("290", GetPropertyValue("Total Staff"));
@@ -360,7 +361,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
-        public void CreateNewObject1()
+        public void CreateNewObectWithOnlyValueProperties()
         {
             //Corresponds to #204
             GeminiUrl("home?m1=SpecialOffer_MenuFunctions&d1=CreateNewSpecialOffer");
@@ -377,7 +378,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
-        public void CreateNewObject2()
+        public void CreateNewObjectWithAReferenceToAnotherExistingObject()
         {
             GeminiUrl("home?m1=Address_MenuFunctions&d1=CreateNewAddress");
             SelectDropDownOnField("select#type1", 2);
@@ -394,7 +395,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
-        public void CreateNewObject3()
+        public void CreateNewObjectWithAReferenceToMultipleExistingObjects()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Customer--12211&as1=open");
             WaitForTitle("AW00012211 Victor Romero");
@@ -406,7 +407,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
-        public void CreateNewObject4()
+        public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
         {
             GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
             WaitForTitle("AW00012211 Victor Romero", Pane.Left);
@@ -421,16 +422,17 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CopyToClipboard(product);
             PasteIntoInputField("#pane1 .parameter .value.droppable");
             Click(OKButton());
-            var listIcon = WaitForCssNo("#pane1 .collection .icon.list", 0);
-            Click(listIcon);
+            Thread.Sleep(1000);
+            var listIcon2 = WaitForCssNo("#pane2 .collection .icon.list", 0);
+            var listIcon1 = WaitForCssNo("#pane1 .collection .icon.list", 0);           
+            Click(listIcon1); //It's opening the List on the Product!
             wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
         }
 
 
         //[TestMethod]
-        public void CreateNewObject5()
+        public void CreateAGraphOfTwoNewRelatedObjects()
         {
-            //This story involves creation of a graph of two new objects (Store & Customer)
             GeminiUrl("home?m1=Customer_MenuFunctions&d1=CreateNewStoreCustomer");
             WaitForTitle("Home");
             int rand = (new Random()).Next(1970, 2021);
@@ -444,7 +446,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
-        public void CreateNewObject6()
+        public void CreateAGraphOfObjectsThreeLevelsDeep()
         {
             //This story involves creation of a graph of three new objects (Customer, Person, Password)
             //with two levels of dependency
@@ -548,6 +550,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
             Click(OKButton());
+            Thread.Sleep(1000);
             Reload();
             WaitForCssNo("tbody tr", 10);
             Assert.AreEqual(3, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate));

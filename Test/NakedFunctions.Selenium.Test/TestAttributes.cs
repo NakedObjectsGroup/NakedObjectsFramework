@@ -88,14 +88,17 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
 
-        //[TestMethod]
+       // [TestMethod]
         public void DescribedAsFunction()
         {
             GeminiUrl("home?m1=Sales_MenuFunctions");
             WaitForTitle("Home");
-            var action1 = WaitForCssNo("nof-action-list nof-action input", 0);
-            Assert.AreEqual("Create New Sales Person", action1.GetAttribute("value"));
-            Assert.AreEqual("... from an existing Employee", action1.GetAttribute("title"));
+            OpenSubMenu("Sales");
+            var action5 = WaitForCssNo("nof-action-list nof-action input", 5);
+            Assert.AreEqual("Random Sales Person", action5.GetAttribute("value"));
+            var action0 = WaitForCssNo("nof-action-list nof-action input", 0);
+            Assert.AreEqual("Create New Sales Person", action0.GetAttribute("value"));
+            Assert.AreEqual("... from an existing Employee", action0.GetAttribute("title"));
         }
 
         //[TestMethod]
@@ -123,12 +126,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //i.e. no 'Shift ID' field showing
         }
 
-        //[TestMethod]
+       //[TestMethod]
         public void Mask()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Product--497");
             WaitForTitle("Pinch Bolt");
-            var prop4 = WaitForCssNo("nof-view-property", 4);
+            var prop4 = WaitForCssNo("nof-view-property", 5);
             Assert.AreEqual("List Price:", prop4.FindElement(By.CssSelector(".name")).Text);
             Assert.AreEqual("£0.00", prop4.FindElement(By.CssSelector(".value")).Text);
             var startDate = GetPropertyValue("Sell Start Date");
