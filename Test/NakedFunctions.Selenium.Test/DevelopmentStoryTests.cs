@@ -406,7 +406,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("AW00012211 Victor Romero", GetReferenceFromProperty("Customer").Text);
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
         {
             GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
@@ -422,9 +422,10 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CopyToClipboard(product);
             PasteIntoInputField("#pane1 .parameter .value.droppable");
             Click(OKButton());
+            Click(FullIcon());
+            WaitForView(Pane.Single, PaneType.Object);
             Thread.Sleep(1000);
-            var listIcon2 = WaitForCssNo("#pane2 .collection .icon.list", 0);
-            var listIcon1 = WaitForCssNo("#pane1 .collection .icon.list", 0);           
+            var listIcon1 = WaitForCssNo(".collection .icon.list", 0);           
             Click(listIcon1); //It's opening the List on the Product!
             wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
         }
