@@ -200,14 +200,15 @@ namespace AW.Functions
 
         private static List<int> Ratings() => new List<int> { 1, 2, 3, 4, 5 };
 
-        public static string ValidateAddProductReview(this Product p, int rating, string comments) =>
-            LessThan5StarsRequiresComments(rating, comments);
+        public static string ValidateAddProductReview(this Product p, 
+            string reviewerName, DateTime date, string emailAddress, int rating, string comments) =>
+            LessThan5StarsRequiresComment(rating, comments);
 
-        private static string LessThan5StarsRequiresComments(int rating, string comments) =>
+        private static string LessThan5StarsRequiresComment(int rating, string comments) =>
             rating < 5 && string.IsNullOrEmpty(comments) ? "Must provide comments for rating < 5" : null;
 
         public static IContext AddAnonReviews(this IQueryable<Product> products,
-            [Named("No. of Stars (1-5"), DefaultValue(5)] int rating,
+            [Named("No. of Stars (1-5)"), DefaultValue(5)] int rating,
             [Optionally] string comments,
             IContext context) =>
             products.Aggregate(context, (c, p) => c.WithNew(
@@ -216,9 +217,9 @@ namespace AW.Functions
         public static List<int> Choices1AddAnonReviews(this IQueryable<Product> products) =>
             Ratings();
 
-        public static string ValidateAddAnonReviewst(this IQueryable<Product> products, string reviewerName,
+        public static string ValidateAddAnonReviews(this IQueryable<Product> products, string reviewerName,
          DateTime dateOfReview, string emailAddress, int rating, string comments) =>
-         LessThan5StarsRequiresComments(rating, comments);
+         LessThan5StarsRequiresComment(rating, comments);
 
     }
 }
