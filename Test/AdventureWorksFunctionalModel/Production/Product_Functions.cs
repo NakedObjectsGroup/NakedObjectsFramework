@@ -217,8 +217,8 @@ namespace AW.Functions
         //public static List<int> Choices1AddAnonReviews(this IQueryable<Product> products) =>
         //    Ratings();
 
-        public static string ValidateAddAnonReviews(this IQueryable<Product> products, string reviewerName,
-         DateTime dateOfReview, string emailAddress, int rating, string comments) =>
+        public static string ValidateAddAnonReviews(this IQueryable<Product> products,
+            int rating, string comments) =>
          LessThan5StarsRequiresComment(rating, comments);
 
     }
