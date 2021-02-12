@@ -10,42 +10,38 @@ using System.Linq;
 using NakedFunctions;
 using AW.Types;
 
-
 namespace AW.Functions
 {
     public static class WorkOrder_Functions
     {
-        internal static (WorkOrder, IContext) UpdateWO(WorkOrder original, WorkOrder update, IContext context)
-        {
-            var update2 = update with { ModifiedDate = context.Now() };
-            return (update2, context.WithUpdated(original, update2));
-        }
+        internal static IContext UpdateWO(
+            WorkOrder original, WorkOrder update, IContext context) =>
+            context.WithUpdated(original, update with { ModifiedDate = context.Now() });
 
-        public static (WorkOrder, IContext) ChangeScrappedQuantity(this WorkOrder wo, short newQty, IContext context)
+        [Edit]
+        public static  IContext ChangeScrappedQuantity(this WorkOrder wo, short newQty, IContext context)
         => UpdateWO(wo, wo with { ScrappedQty = newQty }, context);
 
-        public static (WorkOrder, IContext) EditDates(this WorkOrder wo, 
+        [Edit]
+        public static IContext EditDates(this WorkOrder wo, 
             DateTime startDate, DateTime dueDate, IContext context) =>
-             UpdateWO(wo, wo with { StartDate = startDate, DueDate = dueDate }, context);
+                UpdateWO(wo, wo with { StartDate = startDate, DueDate = dueDate }, context);
 
         public static string ValidateEditDates(this WorkOrder wo, DateTime startDate, DateTime dueDate) =>
             startDate > dueDate ? "StartDate must be before DueDate" : null;
 
-        public static (WorkOrder, IContext) EditOrderQty(this WorkOrder wo, int orderQty, IContext context) =>
-            UpdateWO(wo, wo with { OrderQty = orderQty }, context);
+        [Edit]
+        public static  IContext EditOrderQty(
+            this WorkOrder wo, int orderQty, IContext context) =>
+                UpdateWO(wo, wo with { OrderQty = orderQty }, context);
 
-        public static string Validate1EditOrderQty(this WorkOrder wo, int orderQty)
-        {
-            return orderQty <= 0 ? "Order Quantity must be > 0" : null;
-        }
-
-
+        public static string Validate1EditOrderQty(this WorkOrder wo, int orderQty) =>
+             orderQty <= 0 ? "Order Quantity must be > 0" : null;
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoCompleteProduct([MinLength(2)] string name, IContext context)
-        {
-            return Product_MenuFunctions.FindProductByName(name, context);
-        }
+        public static IQueryable<Product> AutoCompleteProduct(
+            [MinLength(2)] string name, IContext context) =>
+                Product_MenuFunctions.FindProductByName(name, context);
 
         [MemberOrder(1)]
         public static (WorkOrderRouting, IContext) AddNewRouting(WorkOrder wo, Location loc, IContext context)
@@ -63,14 +59,14 @@ namespace AW.Functions
         #region Edits
 
         [Edit]
-        public static (WorkOrder, IContext) EditStartDate(this WorkOrder wo,
+        public static IContext EditStartDate(this WorkOrder wo,
             [DefaultValue(0)] DateTime startDate, IContext context) =>
             UpdateWO(wo, wo with { StartDate = startDate }, context);
 
         [Edit]
-        public static (WorkOrder, IContext) EditDueDate(this WorkOrder wo,
+        public static IContext EditDueDate(this WorkOrder wo,
             [DefaultValue(7)] DateTime dueDate, IContext context) =>
-            UpdateWO(wo, wo with { DueDate = dueDate }, context);
+               UpdateWO(wo, wo with { DueDate = dueDate }, context);
 
         #endregion
     }

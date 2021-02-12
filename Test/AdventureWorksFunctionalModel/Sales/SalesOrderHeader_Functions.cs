@@ -20,7 +20,7 @@ namespace AW.Functions {
         #region Add New Detail
 
         [MemberOrder(2), DescribedAs("Add a new line item to the order")]
-        public static (SalesOrderHeader, IContext) AddNewDetail(
+        public static IContext AddNewDetail(
                 this SalesOrderHeader soh,
                 Product product,
                 [DefaultValue(1), ValueRange(1, 999)] short quantity,
@@ -28,8 +28,7 @@ namespace AW.Functions {
             )
         {            
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
-            return (soh, context.WithNew(sod).WithUpdated(soh, soh with { ModifiedDate = context.Now() })
-                .WithPostSaveFunction(soh.Recalculate()));
+            return context.WithNew(sod).WithPostSaveFunction(soh.Recalculate());
         }
 
         internal static Func<IContext, IContext> Recalculate(this SalesOrderHeader soh)
@@ -127,9 +126,9 @@ namespace AW.Functions {
         //        #endregion
 
         #region Remove Details
-        public static (SalesOrderHeader, IContext) RemoveDetail(this SalesOrderHeader soh,
+        public static IContext RemoveDetail(this SalesOrderHeader soh,
             SalesOrderDetail detailToRemove, IContext context) =>
-                     (soh, context.WithDeleted(detailToRemove));
+                     context.WithDeleted(detailToRemove).WithPostSaveFunction(soh.Recalculate());
 
 
         public static IEnumerable<SalesOrderDetail> Choices1RemoveDetail(this SalesOrderHeader soh) =>
@@ -142,23 +141,24 @@ namespace AW.Functions {
             soh.Details.Any() ? null : "Order has no Details.";
 
         [MemberOrder(3)]
-        public static (SalesOrderHeader, IContext) RemoveDetails(this SalesOrderHeader soh,
+        public static  IContext RemoveDetails(this SalesOrderHeader soh,
              IEnumerable<SalesOrderDetail> details, IContext context) =>
-                 (soh, details.Aggregate(context, (c, d) => c.WithDeleted(d)));
+                 details.Aggregate(context, (c, d) => c.WithDeleted(d))
+                    .WithPostSaveFunction(soh.Recalculate());
 
         #endregion
 
+        public static IContext AddCarrierTrackingNumber(this SalesOrderHeader soh,
+           IEnumerable<SalesOrderDetail> details, string ctn, IContext context) =>
+             details.Select(d => new
+             {
+                 original = d,
+                 updated = d with
+                 { CarrierTrackingNumber = ctn, ModifiedDate = context.Now() }
+             })
+            .Aggregate(context, (c, u) => c.WithUpdated(u.original, u.updated));
 
-        #region Add Carrier Tracking Number
-        public static (SalesOrderHeader, IContext) AddCarrierTrackingNumber(this SalesOrderHeader soh,
-           IEnumerable<SalesOrderDetail> details, string ctn, IContext context)
-        {
-            var updates = details.Select(d => new { original = d, updated = d with { CarrierTrackingNumber = ctn, ModifiedDate = context.Now() } });          
-            return (soh, updates.Aggregate(context, (c, u) => c.WithUpdated(u.original, u.updated)));
-        }
 
-
-        #endregion
         //        #region CreateNewCreditCard
 
         //        [Hidden]
@@ -253,16 +253,14 @@ namespace AW.Functions {
 
         //        #endregion
 
-        internal static (SalesOrderHeader, IContext) UpdateOrder(
-            SalesOrderHeader original, SalesOrderHeader updated, IContext context)
-        {
-            var updated2 = updated with { ModifiedDate = context.Now() };
-            return (updated2, context.WithUpdated(original, updated2));
-        }
+        internal static IContext UpdateOrder(
+            SalesOrderHeader original, SalesOrderHeader updated, IContext context) =>
+                 context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+
         #region ApproveOrder
 
         [MemberOrder(1)]
-        public static (SalesOrderHeader, IContext) ApproveOrder(this SalesOrderHeader soh, IContext context) =>
+        public static  IContext ApproveOrder(this SalesOrderHeader soh, IContext context) =>
             UpdateOrder(soh, soh with { StatusByte = (byte)OrderStatus.Approved }, context);
        
         //TODO: Remove context param from next 2
@@ -482,6 +480,8 @@ namespace AW.Functions {
 
 
         #endregion
+
+
 
     }
 

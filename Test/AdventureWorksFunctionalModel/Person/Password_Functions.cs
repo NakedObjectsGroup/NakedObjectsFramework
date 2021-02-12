@@ -10,15 +10,17 @@ namespace AW.Functions
     public static class Password_Functions
     {
         [MemberOrder("Passwords", 1)]
-        public static (Person, IContext) CheckPassword(this Person p, [Password] string offered, IContext context) =>
-         (p, context.WithInformUser(p.Password.OfferedPasswordIsCorrect(offered)? "CORRECT" : "INCORRECT"));
+        public static IContext CheckPassword(
+            this Person p, [Password] string offered, IContext context) =>
+                context.WithInformUser(p.Password.OfferedPasswordIsCorrect(offered)?
+                    "CORRECT" : "INCORRECT");
 
 
         public static bool HideCheckPassword(this Person p) =>  p.Password is null;
 
 
         #region ChangePassword 
-        public static (Person, IContext) ChangePassword(this Person p,
+        public static IContext ChangePassword(this Person p,
             [Password] string oldPassword,
             [Password] string newPassword,
             [Named("New Password (Confirm)"), Password] string confirm,
@@ -32,7 +34,7 @@ namespace AW.Functions
                 PasswordHash = Hashed(newPassword, salt),
                 ModifiedDate = context.Now()
             };
-            return (p, context.WithUpdated(oldP, newP));
+            return context.WithUpdated(oldP, newP);
         }
 
         public static string ValidateChangePassword(this Person p,
@@ -55,11 +57,11 @@ namespace AW.Functions
         #endregion
 
         #region Initial Password 
-        public static (Person, IContext) CreateInitialPassword(this Person p,
+        public static  IContext CreateInitialPassword(this Person p,
             [Password] string newPassword,
             [Named("New Password (Confirm)"), Password] string confirm,
             IContext context) =>
-                 (p, context.WithNew(CreateNewPassword(newPassword, p, context)));
+                 context.WithNew(CreateNewPassword(newPassword, p, context));
 
         public static string ValidateCreateInitialPassword(this Person p,
              string newPassword, string confirm, IContext context) =>

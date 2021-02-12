@@ -21,5 +21,10 @@ namespace AW
         public static IContext WithDeleted(this IContext context, object toDelete) =>
             context.WithInformUser($"object {toDelete} scheduled for deletion.");
 
+        //TODO: Temporary DUMMY extension method, pending native new method on IContext.
+        public static T GetNewlySavedVersion<T>(this IContext context, T unsaved) =>
+            unsaved; //NOT what the real method will do!
+
+
     }
 }

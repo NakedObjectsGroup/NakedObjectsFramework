@@ -18,20 +18,17 @@ namespace AW.Functions
     {
         #region Add New Details
         [MemberOrder(1), MultiLine()]
-        public static (PurchaseOrderHeader, IContext) AddNewDetails(
-            this PurchaseOrderHeader header, Product prod, short qty, decimal unitPrice, IContext context)
-        {
-            var det = new PurchaseOrderDetail()
-            {
-                PurchaseOrderHeader = header,
-                Product = prod,
-                OrderQty = qty,
-                UnitPrice = unitPrice,
-                DueDate = context.Today().Date.AddDays(7),
-                ModifiedDate = context.Now()
-            };
-            return (header, context.WithNew(det));
-        }
+        public static IContext AddNewDetails(this PurchaseOrderHeader header,
+            Product prod, short qty, decimal unitPrice, IContext context) =>
+                context.WithNew(new PurchaseOrderDetail()
+                {
+                    PurchaseOrderHeader = header,
+                    Product = prod,
+                    OrderQty = qty,
+                    UnitPrice = unitPrice,
+                    DueDate = context.Today().Date.AddDays(7),
+                    ModifiedDate = context.Now()
+                });
 
         [PageSize(10)]
         public static IQueryable<Product> AutoComplete1AddNewDetails(this PurchaseOrderHeader header,
@@ -67,12 +64,17 @@ namespace AW.Functions
 
         #region Approve (Action)
 
+        internal static IContext UpdatePOH(
+            PurchaseOrderHeader original, PurchaseOrderHeader updated, IContext context) =>
+                context.WithUpdated(original, updated with
+                {
+                    ModifiedDate = context.Now(),
+                    RevisionNumber = Convert.ToByte(updated.RevisionNumber + 1)
+                });
+
         [MemberOrder(1)]
-        public static (PurchaseOrderHeader, PurchaseOrderHeader) Approve(this PurchaseOrderHeader header)
-        {
-            var header2 = header with { Status = 2 };
-            return (header2, header2);
-        }
+        public static IContext Approve(this PurchaseOrderHeader header, IContext context) =>
+            UpdatePOH(header, header with { Status = 2 }, context);
 
         public static bool HideApprove(this PurchaseOrderHeader header)
         {
@@ -88,9 +90,5 @@ namespace AW.Functions
 
         internal static bool IsPending(this PurchaseOrderHeader poh) => poh.Status == 1;
 
-        //TODO: call this from any function updating poh
-        public static PurchaseOrderHeader Updating(PurchaseOrderHeader x, IContext context) =>
-            x with { ModifiedDate = context.Now(), RevisionNumber = Convert.ToByte(x.RevisionNumber + 1) };
-
-    }
+    } 
 }
