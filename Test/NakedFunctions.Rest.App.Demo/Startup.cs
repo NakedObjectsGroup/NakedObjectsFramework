@@ -56,7 +56,7 @@ namespace NakedFunctions.Rest.App.Demo {
                 });
                 builder.AddRestfulObjects();
             });
-            
+            services.AddScoped<IPrincipalProvider, MockPrincipalProvider>();
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
                     builder
