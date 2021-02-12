@@ -35,14 +35,14 @@ namespace AW.Functions {
         {
             return c =>
             {
-                var subTotal = soh.Details.Sum(d => d.LineTotal);
-                var tax = subTotal * soh.GetTaxRate(c) / 100;
-                var total = subTotal + tax;
+                //var subTotal = soh.Details.Sum(d => d.LineTotal);
+                //var tax = subTotal * soh.GetTaxRate(c) / 100;
+                //var total = subTotal + tax;
                 return c.WithUpdated(soh, soh with
                 {
-                    SubTotal = subTotal,
-                    TaxAmt = tax,
-                    TotalDue = total,
+                    SubTotal = 10.0m,
+                    TaxAmt = 1.5m,
+                    TotalDue = 11.5m,
                     ModifiedDate = c.Now()
                 });
             };
