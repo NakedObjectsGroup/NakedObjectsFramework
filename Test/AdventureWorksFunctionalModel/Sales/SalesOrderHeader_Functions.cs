@@ -29,7 +29,7 @@ namespace AW.Functions {
         {            
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
             return (soh, context.WithNew(sod).WithUpdated(soh, soh with { ModifiedDate = context.Now() })
-                .WithFunction(soh.Recalculate()));
+                .WithPostSaveFunction(soh.Recalculate()));
         }
 
         internal static Func<IContext, IContext> Recalculate(this SalesOrderHeader soh)

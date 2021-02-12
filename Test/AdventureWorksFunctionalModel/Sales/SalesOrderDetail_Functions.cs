@@ -37,7 +37,7 @@ namespace AW.Functions {
                 SpecialOfferProduct = Product_Functions.BestSpecialOfferProduct(detail.Product, newQuantity, context)
             }).WithRecalculatedFields(context);
 
-            return (detail2, context.WithUpdated(detail, detail2).WithFunction(detail.SalesOrderHeader.Recalculate()));
+            return (detail2, context.WithUpdated(detail, detail2).WithPostSaveFunction(detail.SalesOrderHeader.Recalculate()));
         }
 
         public static string DisableChangeQuantity(this SalesOrderDetail detail) =>
