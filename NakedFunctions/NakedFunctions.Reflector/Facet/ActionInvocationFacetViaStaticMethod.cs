@@ -68,8 +68,9 @@ namespace NakedFunctions.Meta.Facet {
                 CollectionUtils.IsQueryable(result.GetType())) {
                 return nakedObjectManager.CreateAdapter(result, null, null);
             }
+            return nakedObjectManager.CreateAdapter(result, null, null);
 
-            return nakedObjectManager.CreateAdapterForExistingObject(result);
+            //return nakedObjectManager.CreateAdapterForExistingObject(result);
         }
 
         private static Func<IDictionary<object, object>, bool> GetPostSaveFunction(FunctionalContext functionalContext, INakedObjectsFramework framework) {

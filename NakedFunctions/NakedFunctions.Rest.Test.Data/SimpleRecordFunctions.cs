@@ -77,8 +77,19 @@ namespace NakedFunctions.Rest.Test.Data {
             return sp;
         }
 
-        public static SimpleRecord SimpleRecordAsCurrentUser(this SimpleRecord sp, IContext context) {
-            return sp with{Name = context.CurrentUser().Identity.Name};
+        public static (SimpleRecord, IContext) SimpleRecordAsCurrentUser(this SimpleRecord sp, IContext context) {
+            var updated = sp with { Name = context.CurrentUser().Identity.Name };
+            context = context.WithUpdated(sp, updated);
+
+            return (updated, context);
+        }
+
+        public static (SimpleRecord, IContext) SimpleRecordAsReset(this SimpleRecord sp, IContext context)
+        {
+            var updated = sp with { Name = "Fred" };
+            context = context.WithUpdated(sp, updated);
+
+            return (updated, context);
         }
     }
 
