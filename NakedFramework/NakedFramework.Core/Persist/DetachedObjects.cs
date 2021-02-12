@@ -11,14 +11,14 @@ using NakedFramework.Architecture.Persist;
 
 namespace NakedFramework.Core.Persist {
     public class DetachedObjects : IDetachedObjects {
-        public DetachedObjects(object[] toSave, (object proxy, object updated)[] toUpdate, Func<bool> postSaveFunction) {
+        public DetachedObjects(object[] toSave, (object proxy, object updated)[] toUpdate, Func<IDictionary<object, object>, bool> postSaveFunction) {
             ToSave = toSave;
             ToUpdate = toUpdate;
             PostSaveFunction = postSaveFunction;
         }
 
         public List<(object original, object updated)> SavedAndUpdated { get; } = new();
-        public Func<bool> PostSaveFunction { get; }
+        public Func<IDictionary<object, object>, bool> PostSaveFunction { get; }
 
         public object[] ToSave { get; }
         public (object proxy, object updated)[] ToUpdate { get; }

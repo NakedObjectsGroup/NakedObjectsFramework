@@ -72,19 +72,23 @@ namespace NakedFunctions.Meta.Facet {
             return nakedObjectManager.CreateAdapterForExistingObject(result);
         }
 
-        private static Func<bool> GetPostSaveFunction(FunctionalContext functionalContext, INakedObjectsFramework framework) {
+        private static Func<IDictionary<object, object>, bool> GetPostSaveFunction(FunctionalContext functionalContext, INakedObjectsFramework framework) {
             var postSaveFunction = functionalContext.PostSaveFunction;
-            var newContext = new FunctionalContext() {Persistor = functionalContext.Persistor, Provider = functionalContext.Provider};
 
-            return () => {
-                var innerContext = (FunctionalContext) postSaveFunction(newContext);
-                var updated = PersistResult(framework.LifecycleManager, innerContext.New, innerContext.Updated, GetPostSaveFunction(innerContext, framework));
-                return updated.Any();
-            };
+            if (postSaveFunction is not null) {
+                return map => {
+                    var newContext = new FunctionalContext { Persistor = functionalContext.Persistor, Provider = functionalContext.Provider, ProxyMap = map };
+                    var innerContext = (FunctionalContext) postSaveFunction(newContext);
+                    var updated = PersistResult(framework.LifecycleManager, innerContext.New, innerContext.Updated, GetPostSaveFunction(innerContext, framework));
+                    return updated.Any();
+                };
+            }
+
+            return _ => false;
         }
 
 
-        private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, (object proxy, object updated)[] updatedObjects, Func<bool> postSaveFunction) =>
+        private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, (object proxy, object updated)[] updatedObjects, Func<IDictionary<object, object>, bool> postSaveFunction) =>
             lifecycleManager.Persist(new DetachedObjects(newObjects, updatedObjects, postSaveFunction)).ToArray();
 
         private static (object, FunctionalContext) CastTuple(ITuple tuple) => (tuple[0], (FunctionalContext)tuple[1]);

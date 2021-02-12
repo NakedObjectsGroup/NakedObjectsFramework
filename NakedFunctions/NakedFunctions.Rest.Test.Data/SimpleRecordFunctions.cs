@@ -25,8 +25,32 @@ namespace NakedFunctions.Rest.Test.Data {
             return Helpers.DisplayAndUpdate(sp with {Name = name}, sp, context);
         }
 
+        [Edit]
+        public static (SimpleRecord, IContext) EditSimpleRecordWithPostPersist(this SimpleRecord sp, [PresentationHint("Hint4")] string name, IContext context) {
+            SimpleRecord updated = sp with { Name = name };
+            context = context.WithUpdated(sp, updated);
+            context = context.WithPostSaveFunction(c => {
+                var updated2 = updated with { Name = updated.Name + "Updated" };
+                c = c.WithUpdated(sp, updated2);
+                return c;
+            });
+            return (updated, context);
+        }
+
         public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context) {
             return Helpers.DisplayAndSave(new SimpleRecord {Name = name}, context);
+        }
+
+        public static (SimpleRecord, IContext) CreateSimpleRecordWithPostPersist(this SimpleRecord sp, string name, IContext context) {
+            SimpleRecord newObj = new SimpleRecord { Name = name };
+            context = context.WithNew(newObj);
+            context = context.WithPostSaveFunction(c => {
+                var original = c.GetNewlySavedVersion(newObj);
+                var updated2 = original with { Name = newObj.Name + "Updated" };
+                c = c.WithUpdated(original, updated2);
+                return c;
+            });
+            return (newObj, context);
         }
 
         //public static (ReferenceRecord, IContext) AssociateWithDateRecord(this SimpleRecord simpleRecord, DateRecord dateRecord, IContext context) {
