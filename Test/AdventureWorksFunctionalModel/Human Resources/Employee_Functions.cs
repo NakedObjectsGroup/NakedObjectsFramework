@@ -43,7 +43,7 @@ namespace AW.Functions
 
         #region ChangeDepartmentOrShift
         [MemberOrder(20)]
-        public static (Employee, IContext) ChangeDepartmentOrShift(
+        public static  IContext ChangeDepartmentOrShift(
            this Employee e, Department department, Shift shift, IContext context)
         {
             var currentAssignment = CurrentAssignment(e);
@@ -58,7 +58,7 @@ namespace AW.Functions
                 StartDate = context.Today(),
                 ModifiedDate = context.Today()
             };
-            return (e, context.WithNew(newAssignment).WithUpdated(currentAssignment, updatedCA));
+            return context.WithNew(newAssignment).WithUpdated(currentAssignment, updatedCA);
         }
 
         public static Department Default1ChangeDepartmentOrShift(this Employee e)
@@ -81,40 +81,39 @@ namespace AW.Functions
         #endregion
 
         #region Edit Properties
-        internal static (Employee, IContext) UpdateEmployee(Employee original, Employee updated, IContext context)
-        {
-            var updated2 =  updated with { ModifiedDate = context.Now() };
-            return (updated2, context.WithUpdated(original, updated2));
-        }
+        internal static IContext UpdateEmployee(
+            Employee original, Employee updated, IContext context) =>
+                context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
         [Edit]
-        public static (Employee, IContext) UpdateNationalIDNumber(this Employee e, 
+        public static  IContext UpdateNationalIDNumber(this Employee e, 
             [MaxLength(15)] string nationalIdNumber, IContext context) =>
                 UpdateEmployee(e, e with { NationalIDNumber = nationalIdNumber }, context);
 
         [Edit]
-        public static (Employee, IContext) UpdateLoginID(this Employee e,
+        public static IContext UpdateLoginID(this Employee e,
              [MaxLength(256)] string loginID, IContext context) =>
                 UpdateEmployee(e, e with { LoginID = loginID }, context);
 
         [Edit]
-        public static (Employee, IContext) UpdateJobTitle(this Employee e,
+        public static  IContext UpdateJobTitle(this Employee e,
             [MaxLength(50)] string jobTitle, IContext context) =>
                 UpdateEmployee(e, e with { JobTitle = jobTitle }, context);
 
         [Edit]
-        public static (Employee, IContext) UpdateDateOfBirth(this Employee e,
+        public static  IContext UpdateDateOfBirth(this Employee e,
              DateTime dateOfBirth, IContext context) =>
                 UpdateEmployee(e, e with { DateOfBirth = dateOfBirth }, context);
 
-        public static string ValidateUpdateDateOfBirth(this Employee e,
-            DateTime dob, IContext context) => ValidateDateOfBirth(dob, context);
+        public static string ValidateUpdateDateOfBirth(this Employee e, 
+            DateTime dob, IContext context) => 
+                ValidateDateOfBirth(dob, context);
 
         internal static string ValidateDateOfBirth(DateTime dob, IContext context) =>
             (dob > context.Today().AddYears(-16)) || (dob < context.Today().AddYears(-100)) ? "Invalid Date Of Birth" : null;
 
         [Edit]
-        public static (Employee, IContext) UpdateMaritalStatus(this Employee e, 
+        public static IContext UpdateMaritalStatus(this Employee e, 
             string maritalStatus, IContext context) =>
                 UpdateEmployee(e, e with { MaritalStatus = maritalStatus }, context);
 
@@ -123,7 +122,7 @@ namespace AW.Functions
         internal static string[] MaritalStatuses = new[] { "S", "M" };
 
         [Edit]
-        public static (Employee, IContext) UpdateGender(
+        public static IContext UpdateGender(
             this Employee e, string gender, IContext context) =>
                 UpdateEmployee(e, e with { Gender = gender }, context);
 
@@ -132,33 +131,33 @@ namespace AW.Functions
         internal static string[] Genders = new[] { "M", "F" };
 
         [Edit]
-        public static (Employee, IContext) UpdateHireDate(this Employee e,
+        public static IContext UpdateHireDate(this Employee e,
              DateTime hireDate, IContext context) =>
                 UpdateEmployee(e, e with { HireDate = hireDate }, context);
 
         [Edit]
-        public static (Employee, IContext) UpdateSalaried(this Employee e,
+        public static IContext UpdateSalaried(this Employee e,
              bool salaried, IContext context) =>
                 UpdateEmployee(e, e with { Salaried = salaried }, context);
 
         [Edit]
-        public static (Employee, IContext) UpdateVacationHours(this Employee e,
+        public static IContext UpdateVacationHours(this Employee e,
             short vacationHours, IContext context) =>
                 UpdateEmployee(e, e with { VacationHours = vacationHours}, context);
 
         [Edit]
-        public static (Employee, IContext) UpdateSickLeaveHours(this Employee e,
+        public static IContext UpdateSickLeaveHours(this Employee e,
             short sickLeaveHours, IContext context) =>
                 UpdateEmployee(e, e with { SickLeaveHours = sickLeaveHours}, context);
 
 
         [Edit]
-        public static (Employee, IContext) UpdateCurrent(this Employee e,
+        public static IContext UpdateCurrent(this Employee e,
              bool current, IContext context) =>
                 UpdateEmployee(e, e with { Current = current}, context);
 
         [Edit]
-        public static (Employee, IContext) UpdateManager(this Employee e, Employee manager, IContext context) =>
+        public static IContext UpdateManager(this Employee e, Employee manager, IContext context) =>
          UpdateEmployee(e, e with { Manager = manager }, context);
 
         [PageSize(20)]

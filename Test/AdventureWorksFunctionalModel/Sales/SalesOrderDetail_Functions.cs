@@ -29,7 +29,7 @@ namespace AW.Functions {
             };
         }
 
-        public static (SalesOrderDetail, IContext) ChangeQuantity(this SalesOrderDetail detail, short newQuantity, IContext context)
+        public static  IContext ChangeQuantity(this SalesOrderDetail detail, short newQuantity, IContext context)
         {
             var detail2 = (detail with
             {
@@ -37,7 +37,7 @@ namespace AW.Functions {
                 SpecialOfferProduct = Product_Functions.BestSpecialOfferProduct(detail.Product, newQuantity, context)
             }).WithRecalculatedFields(context);
 
-            return (detail2, context.WithUpdated(detail, detail2).WithPostSaveFunction(detail.SalesOrderHeader.Recalculate()));
+            return context.WithUpdated(detail, detail2).WithPostSaveFunction(detail.SalesOrderHeader.Recalculate());
         }
 
         public static string DisableChangeQuantity(this SalesOrderDetail detail) =>

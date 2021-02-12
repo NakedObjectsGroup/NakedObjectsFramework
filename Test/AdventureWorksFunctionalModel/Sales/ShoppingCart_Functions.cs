@@ -25,7 +25,7 @@ namespace AW.Functions {
             return ShoppingCat_MenuFunctions.Cart(context);
         }
 
-        public (Product, IContext) AddToCart(Product product, IContext context) =>  ShoppingCat_MenuFunctions.AddToShoppingCart(product, context);
+        public IContext AddToCart(Product product, IContext context) =>  ShoppingCat_MenuFunctions.AddToShoppingCart(product, context);
 
         public string DisableAddToCart(IContext context) {
             return ShoppingCat_MenuFunctions.DisableIfNoCustomerForUser(context);

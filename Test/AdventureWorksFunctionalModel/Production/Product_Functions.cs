@@ -56,7 +56,7 @@ namespace AW.Functions
         #endregion
 
         #region Associate with Special Offer
-        public static (SpecialOfferProduct, IContext) AssociateWithSpecialOffer(
+        public static IContext AssociateWithSpecialOffer(
             this Product product, SpecialOffer offer, IContext context) =>
             SpecialOffer_Functions.AssociateWithProduct(offer, product, context);
 
@@ -80,15 +80,12 @@ namespace AW.Functions
             p.ProductInventory.Sum(obj => obj.Quantity);
 
         #region Edits
-        internal static (Product, IContext) UpdateProduct(Product original, Product updated, IContext context)
-        {
-            var updated2 = updated with { ModifiedDate = context.Now() };
-            return (updated2, context.WithUpdated(original, updated2));
-        }
-
+        internal static  IContext UpdateProduct(
+            Product original, Product updated, IContext context) =>
+                 context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
         [Edit]
-        public static (Product, IContext) EditProductLine(this Product p,
+        public static  IContext EditProductLine(this Product p,
             string productLine, IContext context) =>
             UpdateProduct(p, p with { ProductLine = productLine }, context);
 
@@ -96,15 +93,15 @@ namespace AW.Functions
         => new List<string> { "R ", "M ", "T ", "S " };  // nchar(2) in database so pad right with space
 
         [Edit]
-        public static (Product, IContext) EditClass(this Product p,
+        public static IContext EditClass(this Product p,
           string @class, IContext context) =>
-          UpdateProduct(p, p with { Class = @class }, context);
+                UpdateProduct(p, p with { Class = @class }, context);
 
         public static IList<string> Choices1EditClass(this Product p) =>
             new[] { "H ", "M ", "L " }; // nchar(2) in database so pad right with space
 
         [Edit]
-        public static (Product, IContext) EditStyle(this Product p,
+        public static  IContext EditStyle(this Product p,
             string style, IContext context) =>
                 UpdateProduct(p, p with { Style = style }, context);
 
@@ -112,7 +109,7 @@ namespace AW.Functions
             new[] { "U ", "M ", "W " }; // nchar(2) in database so pad right with space
 
         [Edit]
-        public static (Product, IContext) EditProductModel(this Product p,
+        public static IContext EditProductModel(this Product p,
             ProductModel productModel, IContext context) =>
                 UpdateProduct(p, p with { ProductModel = productModel }, context);
 
@@ -124,7 +121,7 @@ namespace AW.Functions
         }
 
         [Edit]
-        public static (Product, IContext) EditCategories(this Product p,
+        public static IContext EditCategories(this Product p,
       ProductCategory category, ProductSubcategory subCategory, IContext context) =>
               UpdateProduct(p, p with { ProductSubcategory = subCategory }, context);
 
@@ -135,23 +132,15 @@ namespace AW.Functions
 
         #endregion
 
-        public static (Product, IContext) AddOrChangePhoto(this Product product, Image newImage, IContext context)
+        public static IContext AddOrChangePhoto(this Product product, Image newImage, IContext context)
         {
             var productProductPhoto = product.ProductProductPhoto.FirstOrDefault();
             var productPhoto = productProductPhoto.ProductPhoto;
             var newProductPhoto = productPhoto with { LargePhoto = newImage.GetResourceAsByteArray(), LargePhotoFileName = newImage.Name };
             var newProductProductPhoto = new ProductProductPhoto { ProductPhoto = newProductPhoto, Product = product, ModifiedDate = DateTime.Now };
             var newProduct = product with { ProductProductPhoto = new List<ProductProductPhoto> { newProductProductPhoto } };
-
-            var newContext = context.WithUpdated(product, newProduct).WithUpdated(productProductPhoto, newProductProductPhoto).WithUpdated(productPhoto, newProductPhoto);
-            return (newProduct, newContext);
+            return context.WithUpdated(product, newProduct).WithUpdated(productProductPhoto, newProductProductPhoto).WithUpdated(productPhoto, newProductPhoto);
         }
-
-        public static (Product, IContext) CommentProduct(this IQueryable<Product> product, IContext context)
-        {
-            return (product.FirstOrDefault(), context);
-        }
-
 
 
         //public static (Product, IContext) AddOrChangePhoto(this Product product, Image newImage, IContext context)

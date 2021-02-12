@@ -14,14 +14,23 @@ namespace AW.Functions {
 
     public static class ShiftFunctions {
 
+        internal static IContext UpdateShift(Shift original, Shift updated, IContext context) =>
+            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
-        public static (Shift, IContext) ChangeTimes(this Shift s, TimeSpan startTime, TimeSpan endTime, IContext context)
-        {
-            var uS = s with { StartTime = startTime } with { EndTime = endTime };
-            return (uS, context.WithUpdated(s, uS));
-        }
+        [Edit]
+        public static IContext EditTimes(this Shift s, 
+            TimeSpan startTime, TimeSpan endTime, IContext context) =>
+             UpdateShift(s, s with { StartTime = startTime, EndTime = endTime }, context);
 
-        public static TimeSpan Default1ChangeTimes(this Shift s) => new(0, 9, 0, 0);
+        public static string ValidateEditTimes(
+            this Shift s, TimeSpan startTime, TimeSpan endTime) =>
+               endTime > startTime ? null : "End time must be after start time";
+
+        [Edit]
+        public static IContext EditName(this Shift s,
+           string name, IContext context) =>
+            UpdateShift(s, s with { Name = name }, context);
+
 
     }
 }

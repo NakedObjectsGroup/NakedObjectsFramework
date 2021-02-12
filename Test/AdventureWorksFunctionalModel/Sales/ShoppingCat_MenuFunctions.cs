@@ -34,10 +34,10 @@ namespace AW.Functions {
             return GetCustomerForUser(context).CustomerID.ToString();
         }
 
-        public static (Product, IContext) AddToShoppingCart(Product product, IContext context) {
+        public static IContext AddToShoppingCart(Product product, IContext context) {
             string id = GetShoppingCartIDForUser(context);
             var newItem = new ShoppingCartItem() with { ShoppingCartID = id, Product = product, Quantity = 1, DateCreated = context.Now()};
-            return (product, context.WithNew(newItem).WithInformUser($"1 x {product} added to Cart"));
+            return  context.WithNew(newItem).WithInformUser($"1 x {product} added to Cart");
         }
 
         public static  (SalesOrderHeader, IContext) CheckOut(IContext context) {
@@ -94,14 +94,14 @@ namespace AW.Functions {
             return principal.Identity.Name;
         }
 
-        public static (SalesOrderHeader, IContext) AddAllItemsInCartToOrder(
+        public static  IContext AddAllItemsInCartToOrder(
             SalesOrderHeader order, IContext context) {
 
             var items = Cart(context);
             var details = items.Select(item => order.CreateNewDetail(item.Product, (short) item.Quantity, context));
             var context2 = details.Aggregate(context, (c, d) => c.WithNew(d));
             var context3 = EmptyCart(context);
-            return (order, context3);
+            return context3;
         }
 
         public static void RemoveItems(IQueryable<ShoppingCartItem> items) {

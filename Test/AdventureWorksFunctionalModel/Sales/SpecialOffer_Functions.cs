@@ -16,36 +16,39 @@ namespace AW.Functions
 {
     public static class SpecialOffer_Functions
     {
-        internal static (SpecialOffer, IContext) UpdateSpecialOffer(
-            SpecialOffer original, SpecialOffer updated, IContext context)
-        {
-            var updated2 = updated with { ModifiedDate = context.Now() };
-            return (updated2, context.WithUpdated(original, updated2));
+        internal static  IContext UpdateSpecialOffer(
+            SpecialOffer original, SpecialOffer updated, IContext context) =>
+                context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
-        }
         #region Edit
         [Edit]
-        public static  IContext EditDescription(this SpecialOffer sp, string description, IContext context)
-        => UpdateSpecialOffer(sp, sp with { Description = description}, context).Item2;
+        public static  IContext EditDescription(
+            this SpecialOffer sp, string description, IContext context) => 
+                UpdateSpecialOffer(sp, sp with { Description = description}, context);
 
 
         [Edit]
-        public static IContext EditDiscount(this SpecialOffer sp, decimal discountPct, IContext context)
-        => UpdateSpecialOffer(sp, sp with { DiscountPct = discountPct }, context).Item2;
+        public static IContext EditDiscount(
+            this SpecialOffer sp, decimal discountPct, IContext context) => 
+            UpdateSpecialOffer(sp, sp with { DiscountPct = discountPct }, context);
 
-        public static string DisableEditDiscount(this SpecialOffer sp, IContext context) =>
-            DisableIfStarted(sp, context);
-
-        [Edit]
-        public static IContext EditType(this SpecialOffer sp, string type, IContext context)
-        => UpdateSpecialOffer(sp, sp with { Type = type }, context).Item2;
-
-        public static bool HideEditType(this SpecialOffer sp, IContext context) =>
-            HideIfEnded(sp, context);
+        public static string DisableEditDiscount(
+            this SpecialOffer sp, IContext context) =>
+                DisableIfStarted(sp, context);
 
         [Edit]
-        public static (SpecialOffer, IContext) EditCategory(this SpecialOffer sp, string category, IContext context)
-        => UpdateSpecialOffer(sp, sp with { Category = category }, context);
+        public static IContext EditType(
+            this SpecialOffer sp, string type, IContext context) => 
+                UpdateSpecialOffer(sp, sp with { Type = type }, context);
+
+        public static bool HideEditType(
+            this SpecialOffer sp, IContext context) =>
+                HideIfEnded(sp, context);
+
+        [Edit]
+        public static IContext EditCategory(
+            this SpecialOffer sp, string category, IContext context) => 
+                UpdateSpecialOffer(sp, sp with { Category = category }, context);
 
         public static IList<string> Choices1Category(this SpecialOffer sp) => Categories;
 
@@ -59,12 +62,9 @@ namespace AW.Functions
             context.Today() > so.EndDate;
 
         [Edit]
-        public static (SpecialOffer, IContext) EditDates(
-            this SpecialOffer sp,
-            DateTime startDate,
-            DateTime endDate,
-            IContext context)                   
-        => UpdateSpecialOffer(sp, sp with { StartDate = startDate, EndDate = endDate }, context);
+        public static IContext EditDates( this SpecialOffer sp,
+            DateTime startDate, DateTime endDate, IContext context) => 
+                UpdateSpecialOffer(sp, sp with { StartDate = startDate, EndDate = endDate }, context);
 
         public static DateTime Default1EditDates(this SpecialOffer sp, IContext context) =>
             sp.StartDate;
@@ -75,10 +75,10 @@ namespace AW.Functions
         internal static DateTime DefaultEndDate(IContext context) =>
             context.GetService<IClock>().Today().AddMonths(1);
 
-    [Edit]
-        public static (SpecialOffer, IContext) EditQuantities(
-            this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
-            UpdateSpecialOffer(sp, sp with { MinQty = minQty, MaxQty = maxQty }, context);
+        [Edit]
+        public static  IContext EditQuantities(this SpecialOffer sp, 
+            [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
+                UpdateSpecialOffer(sp, sp with { MinQty = minQty, MaxQty = maxQty }, context);
 
         public static string Validate1EditQuantities(this SpecialOffer sp, int minQty) =>
             minQty < 1 ? "Must be > 0" : null;
@@ -94,18 +94,18 @@ namespace AW.Functions
 
         #region AssociateWithProduct
 
-        public static (SpecialOfferProduct, IContext) AssociateWithProduct(
+        public static IContext AssociateWithProduct(
             this SpecialOffer offer, Product product, IContext context)
         {
             var prev = context.Instances<SpecialOfferProduct>().Where(x => x.SpecialOfferID == offer.SpecialOfferID && x.ProductID == product.ProductID).Count() == 0;
             if (prev)
             {
                 var newSO = new SpecialOfferProduct() { SpecialOffer = offer, Product = product, ModifiedDate = context.Now(), rowguid = context.NewGuid() };
-                return (newSO, context.WithNew(newSO));
+                return context.WithNew(newSO);
             }
             else
             {
-                return (null, context.WithInformUser($"{offer} is already associated with { product}"));
+                return context.WithInformUser($"{offer} is already associated with { product}");
             }
         }
 

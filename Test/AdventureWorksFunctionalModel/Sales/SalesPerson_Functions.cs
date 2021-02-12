@@ -15,15 +15,12 @@ namespace AW.Functions
 {
     public static class SalesPerson_Functions
     {
-        internal static (SalesPerson, IContext) UpdateSalesPerson(
-            SalesPerson original, SalesPerson updated, IContext context)
-        {
-            var updated2 = updated with { ModifiedDate = context.Now() };
-            return (updated2, context.WithUpdated(original, updated2));
-        }
+        internal static IContext UpdateSalesPerson(
+            SalesPerson original, SalesPerson updated, IContext context) =>
+                context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
         [MemberOrder(1)]
-        public static (SalesPerson, IContext) RecalulateSalesYTD(this SalesPerson sp, IContext context)
+        public static  IContext RecalulateSalesYTD(this SalesPerson sp, IContext context)
         {
             var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
             decimal newYTD = 0;
@@ -44,22 +41,20 @@ namespace AW.Functions
         }
 
         [MemberOrder(2)]
-        public static (SalesPerson, IContext) ChangeSalesQuota(this SalesPerson sp, decimal newQuota, IContext context)
-        {
-            var uSp = sp with { SalesQuota = newQuota };
-            var history = new SalesPersonQuotaHistory() with { SalesPerson = sp, SalesQuota = newQuota, QuotaDate = context.Now() };
-            return (uSp, context.WithUpdated(sp, uSp).WithNew(history));
-        }
+        public static IContext ChangeSalesQuota(
+            this SalesPerson sp, decimal newQuota, IContext context) =>
+             UpdateSalesPerson(sp, sp with { SalesQuota = newQuota }, context)
+                .WithNew(new SalesPersonQuotaHistory() with { SalesPerson = sp, SalesQuota = newQuota, QuotaDate = context.Now() });
+
 
         [MemberOrder(1)]
-        public static (SalesPerson, IContext) ChangeSalesTerritory(this SalesPerson sp, SalesTerritory newTerritory, IContext context)
+        public static IContext ChangeSalesTerritory(this SalesPerson sp, SalesTerritory newTerritory, IContext context)
         {
-
             var newHist = new SalesTerritoryHistory() with { SalesPerson = sp, SalesTerritory = newTerritory, StartDate = context.Now() };
             var prev = sp.TerritoryHistory.Where(n => n.EndDate == null).FirstOrDefault();
             var uPrev = prev with { EndDate = context.Now() };
-            var uSp = sp with { SalesTerritory = newTerritory };
-            return (uSp, context.WithNew(newHist).WithUpdated(sp, uSp).WithUpdated(prev, uPrev));
+            var uSp = sp with { SalesTerritory = newTerritory, ModifiedDate = context.Now() };
+            return context.WithNew(newHist).WithUpdated(sp, uSp).WithUpdated(prev, uPrev);
         }
     }
 }

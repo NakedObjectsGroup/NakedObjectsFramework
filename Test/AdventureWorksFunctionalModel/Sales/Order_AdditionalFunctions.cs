@@ -51,10 +51,11 @@ namespace AW.Functions {
         //public static string ValidateAppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) =>
         //       toOrder.Count() > 5 ? "You may not apply the same comment to more than 5 orders at one time." : null;
 
-        public static (SalesOrderHeader, IContext) AppendComment(this SalesOrderHeader order, string commentToAppend, IContext context)
+        public static IContext AppendComment(
+            this SalesOrderHeader order, string commentToAppend, IContext context)
         {
             SalesOrderHeader updated = WithAppendedComment(order, commentToAppend, context);
-            return (updated, context.WithUpdated(order, updated));
+            return context.WithUpdated(order, updated);
         }
 
         internal static SalesOrderHeader WithAppendedComment(this SalesOrderHeader order, string commentToAppend, IContext context)

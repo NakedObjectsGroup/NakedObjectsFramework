@@ -19,38 +19,33 @@ namespace AW.Functions {
 
     public static class Person_Functions
     {
-     
+        internal static IContext UpdatePerson(
+            Person original, Person updated, IContext context) =>
+                context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
-        #region Actions for test purposes only
+        [Edit]
+        public static IContext EditName(this Person p, 
+            [Optionally] string title,
+            string firstName,
+            [Optionally] string middleName,
+            string lastName,
+            [Optionally] string suffix,
+            [Named("Reverse name order")] bool nameStyle,
+            IContext context) =>
+                UpdatePerson(p, p with {    
+                    Title = title,
+                    FirstName = firstName,
+                    MiddleName = middleName,
+                    LastName = lastName,
+                    Suffix = suffix,
+                    NameStyle = nameStyle,
+                }, context);
 
-        public static (Person, Person) UpdateMiddleName(this Person p, string newName)
-        {
-            var p1 = p with {MiddleName =  newName};
-            return (p1, p1);
-        }
-
-        public static (Person, Person) UpdateSuffix(this Person p, string newSuffix)
-        {
-            var p1 = p with {Suffix =  newSuffix};
-            return (p1, p1);
-        }
-
-        public static object CreateLetter(this Person p,Address toAddress)
-        {
-            //No real implementation; function is for framework testing purposes only
-            return null;
-        }
-
-        public static Address Default1CreateLetter(this Person p)
-        {
-            return p.Addresses.First().Address;
-        }
-        #endregion
 
         #region CreditCards
 
         #region CreateNewCreditCard
-        public static (Person, IContext context) CreateNewCreditCard(this Person p, 
+        public static IContext CreateNewCreditCard(this Person p, 
             string cardType,
             [RegEx("^[0-9]{16}$")][DescribedAs("No spaces")] string cardNumber,
             [RegEx("^[0-9]{2}/[0-9]{2}")][DescribedAs("mm/yy")] string expires,
@@ -61,7 +56,7 @@ namespace AW.Functions {
             byte expYear = Convert.ToByte(expires.Substring(3, 2));
             var cc = new CreditCard() { CardType = cardType, CardNumber = cardNumber, ExpMonth = expMonth, ExpYear = expYear };
             var link = new PersonCreditCard() { CreditCard = cc, Person = p };
-            return (p, context.WithNew(cc).WithNew(link));                
+            return context.WithNew(cc).WithNew(link);                
         }
 
         public static IList<string> Choices1CreateNewCreditCard(this Person p) =>
@@ -90,13 +85,15 @@ namespace AW.Functions {
         }
 
 
-        public static (Person, IContext) CreateNewPhoneNumber(this Person p, PhoneNumberType type,
-    [RegEx(@"^([0-9][0-9\s-]+)$")] string phoneNumber, IContext context)
-            => (p, context.WithNew(new PersonPhone()
-            {
-                BusinessEntityID = p.BusinessEntityID,
-                PhoneNumberType = type,
-                PhoneNumber = phoneNumber
-            }));
+        public static  IContext CreateNewPhoneNumber(this Person p, 
+            PhoneNumberType type,
+            [RegEx(@"^([0-9][0-9\s-]+)$")] string phoneNumber, 
+            IContext context)
+                => context.WithNew(new PersonPhone()
+                {
+                    BusinessEntityID = p.BusinessEntityID,
+                    PhoneNumberType = type,
+                    PhoneNumber = phoneNumber
+                });
     }
 }

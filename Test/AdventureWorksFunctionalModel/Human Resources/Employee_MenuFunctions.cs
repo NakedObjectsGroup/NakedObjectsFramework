@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using AW.Types;
 using NakedFunctions;
 
@@ -52,10 +53,12 @@ namespace AW.Functions {
         [TableView(true, "GroupName")]
         public static IQueryable<Department> ListAllDepartments(IContext context) => context.Instances<Department>();
 
- 
-        internal static Employee CurrentUserAsEmployee(IContext context) =>
-            context.Instances<Employee>().Where(x => x.LoginID == "adventure-works\\" + context.CurrentUser().Identity.Name).FirstOrDefault();
 
+        internal static Employee CurrentUserAsEmployee(IContext context)
+        {
+            string login = context.CurrentUser().Identity.Name;
+            return context.Instances<Employee>().Where(x => x.LoginID == login).FirstOrDefault();
+        }
         public static Employee Me(IContext context) =>CurrentUserAsEmployee(context);
 
 
@@ -96,6 +99,5 @@ namespace AW.Functions {
         public static IQueryable<Shift> Shifts(IContext context) => context.Instances<Shift>();
 
         public static IQueryable<JobCandidate> JobCandidates(IContext context) => context.Instances<JobCandidate>();
-
     }
 }
