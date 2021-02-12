@@ -35,12 +35,12 @@ namespace NakedObjects.Persistor.Entity.Component {
         private object AlreadyUpdatedProxy(object obj) => detachedObjects.SavedAndUpdated.Where(t => t.original == obj).Select(t => t.updated).SingleOrDefault();
 
 
-        private void ProxyIfNotAlreadySeen((object proxy, object toProxy) updateTuple, Func<object, INakedObjectAdapter> getAdapter) {
+        private void ProxyIfNotAlreadySeen((object proxy, object toProxy) updateTuple) {
             var (proxy, updated) = updateTuple;
 
             if (!IsSavedOrUpdated(updated)) {
                 context = parent.GetContext(updated);
-                context.CurrentSaveRootObjectAdapter = getAdapter(updated);
+                //context.CurrentSaveRootObjectAdapter = getAdapter(updated);
                 ProxyObjectIfAppropriate(updated, proxy);
             }
         }
@@ -74,11 +74,11 @@ namespace NakedObjects.Persistor.Entity.Component {
             ValidateDetachedObjects();
             try {
                 foreach (var toSave in detachedObjects.ToSave) {
-                    ProxyIfNotAlreadySeen((null, toSave), o => parent.createAdapter(null, o));
+                    ProxyIfNotAlreadySeen((null, toSave));
                 }
 
                 foreach (var updateTuple in detachedObjects.ToUpdate) {
-                    ProxyIfNotAlreadySeen(updateTuple, o => parent.AdaptDetachedObject(o));
+                    ProxyIfNotAlreadySeen(updateTuple);
                 }
 
                 return detachedObjects.SavedAndUpdated;
@@ -106,7 +106,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             return proxy;
         }
 
-        private object ProxyObject(object originalObject, INakedObjectAdapter adapterForOriginalObject, object potentialProxy = null) {
+        private object ProxyObject(object originalObject, object potentialProxy = null) {
 
             var alreadyUpdatedProxy = AlreadyUpdatedProxy(originalObject);
             if (alreadyUpdatedProxy is not null) {
@@ -118,21 +118,26 @@ namespace NakedObjects.Persistor.Entity.Component {
 
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
             // if not proxied this should just be the same as adapterForOriginalObject
-            var proxyAdapter = parent.createAdapter(null, proxy);
+            INakedObjectAdapter proxyAdapter = null;
+            if (persisting) {
+                 proxyAdapter = parent.createAdapter(null, proxy);
+            }
 
             SetKeyAsNecessary(originalObject, proxy);
 
             if (persisting) {
                 context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", proxy);
-                context.PersistedNakedObjects.Add(proxyAdapter);
+              //  context.PersistedNakedObjects.Add(proxyAdapter);
             }
 
             // need to update
             ProxyReferencesAndCopyValuesToProxy(originalObject, proxy);
-            parent.removeAdapter(proxyAdapter);
-            parent.replacePoco(adapterForOriginalObject, proxy);
+            if (persisting) {
+                parent.removeAdapter(proxyAdapter);
+            }
+            //parent.replacePoco(adapterForOriginalObject, proxy);
 
-            parent.CheckProxies(proxy);
+           // parent.CheckProxies(proxy);
 
             detachedObjects.SavedAndUpdated.Add((originalObject, proxy));
 
@@ -170,8 +175,8 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return;
             }
 
-            var adapterForOriginalObject = parent.createAdapter(null, originalObject);
-            ProxyObject(originalObject, adapterForOriginalObject, existingProxy);
+           // var adapterForOriginalObject = parent.createAdapter(null, originalObject);
+            ProxyObject(originalObject, existingProxy);
         }
 
         private object ProxyReferenceIfAppropriate(object originalObject) {
@@ -184,18 +189,18 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return alreadyUpdatedProxy;
             }
 
-            var adapterForOriginalObject = parent.createAdapter(null, originalObject);
+           // var adapterForOriginalObject = parent.createAdapter(null, originalObject);
 
             if (detachedObjects.ToUpdate.Select(t => t.updated).Contains(originalObject)) {
                 var (proxy, _) = detachedObjects.ToUpdate.SingleOrDefault(t => t.updated == originalObject);
-                return ProxyObject(originalObject, adapterForOriginalObject, proxy);
+                return ProxyObject(originalObject, proxy);
             }
 
             var keys = context.GetKey(originalObject);
             var persisting = keys.All(EntityObjectStore.EmptyKey);
 
             if (persisting) {
-                return ProxyObject(originalObject, adapterForOriginalObject);
+                return ProxyObject(originalObject);
             }
 
             return originalObject;
