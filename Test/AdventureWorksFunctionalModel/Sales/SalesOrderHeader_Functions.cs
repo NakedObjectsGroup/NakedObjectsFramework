@@ -28,15 +28,19 @@ namespace AW.Functions {
             )
         {            
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
-            return context.WithNew(sod).WithPostSaveFunction(soh.Recalculate());
+            return context.WithNew(sod).WithPostSaveFunction(soh.CalculateTotals());
         }
 
-        internal static Func<IContext, IContext> Recalculate(this SalesOrderHeader soh)
+        //For use only when the soh is newly saved.
+        private static Func<IContext, IContext> CalculateTotals(this SalesOrderHeader soh) =>
+           c => RecalculateTotals(c.GetNewlySavedVersion(soh)).Invoke(c);
+
+
+        //For use when new details are added or updated
+        internal static Func<IContext, IContext> RecalculateTotals(this SalesOrderHeader soh)
         {
             return c =>
             {
-                //TODO: Next line is because the soh may be a new object, in which case there are no details.
-                //When context has GetNewlySavedVersion, this needs to be used in case where soh is new
                 var subTotal = soh.Details.Any()? soh.Details.Sum(d => d.LineTotal) : 0.0m;
                 var tax = subTotal * soh.GetTaxRate(c) / 100;
                 var total = subTotal + tax;
@@ -130,7 +134,7 @@ namespace AW.Functions {
         #region Remove Details
         public static IContext RemoveDetail(this SalesOrderHeader soh,
             SalesOrderDetail detailToRemove, IContext context) =>
-                     context.WithDeleted(detailToRemove).WithPostSaveFunction(soh.Recalculate());
+                     context.WithDeleted(detailToRemove).WithPostSaveFunction(soh.RecalculateTotals());
 
 
         public static IEnumerable<SalesOrderDetail> Choices1RemoveDetail(this SalesOrderHeader soh) =>
@@ -146,7 +150,7 @@ namespace AW.Functions {
         public static  IContext RemoveDetails(this SalesOrderHeader soh,
              IEnumerable<SalesOrderDetail> details, IContext context) =>
                  details.Aggregate(context, (c, d) => c.WithDeleted(d))
-                    .WithPostSaveFunction(soh.Recalculate());
+                    .WithPostSaveFunction(soh.RecalculateTotals());
 
         #endregion
 
