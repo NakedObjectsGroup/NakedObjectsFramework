@@ -241,6 +241,23 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
+        public void TestInvokeUpdateAndPersistSimpleRecordWithPostPersist()
+        {
+            var api = Api().AsPut();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("Fred4") } } };
+
+            var result = api.PutInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.EditSimpleRecordWithPostPersist), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Fred4Updated", FullName<SimpleRecord>(), "1");
+            Assert.AreEqual("Fred4Updated", resultObj["members"]["Name"]["value"].ToString());
+        }
+
+        [Test]
         public void TestInvokeCreateSimpleRecord() {
             var api = Api().AsPost();
             var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"name", new ScalarValue("Ellen")}}};
@@ -256,6 +273,26 @@ namespace NakedFunctions.Rest.Test {
 
             //resultObj.AssertObject("Ellen", FullName<UpdatedRecord>()", "4");
             Assert.AreEqual("Ellen", resultObj["members"]["Name"]["value"].ToString());
+        }
+
+        [Test]
+        [Ignore("")]
+        public void TestInvokeCreateSimpleRecordWithPostPersist()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("Ellen") } } };
+
+            var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.CreateSimpleRecordWithPostPersist), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
+
+            //resultObj.AssertObject("Ellen", FullName<UpdatedRecord>()", "4");
+            Assert.AreEqual("EllenUpdated", resultObj["members"]["Name"]["value"].ToString());
         }
 
         [Test]

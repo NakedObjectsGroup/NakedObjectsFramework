@@ -270,11 +270,18 @@ namespace NakedObjects.Persistor.Entity.Component {
             contexts.Values.ForEach(c => c.WrappedObjectContext.AcceptAllChanges());
         }
 
-        public Func<bool> FunctionalPostSave = () => false;
+        public Func<IDictionary<object, object>, bool> FunctionalPostSave = _ => false;
+
+        private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
+
+        private IList<(object original, object updated)> SetFunctionalProxyMap(IList<(object original, object updated)> updatedTuples) {
+            functionalProxyMap = updatedTuples.ToDictionary(t => t.original, t => t.updated);
+            return updatedTuples;
+        }
 
         private bool PostSave() {
 
-            bool changes = FunctionalPostSave();
+            bool changes = FunctionalPostSave(functionalProxyMap);
 
             // two separate loops as PostSave may have side-affects in previously processed contexts
             contexts.Values.ForEach(c => c.PostSave(this));
@@ -712,8 +719,9 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) {
             FunctionalPostSave = objects.PostSaveFunction;
+            
 
-            return ExecuteAttachObjectCommandUpdate(objects);
+            return SetFunctionalProxyMap(ExecuteAttachObjectCommandUpdate(objects));
         }
 
         public INakedObjectAdapter AdaptDetachedObject(object poco) {

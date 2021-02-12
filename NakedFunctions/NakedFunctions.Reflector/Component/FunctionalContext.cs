@@ -23,7 +23,7 @@ namespace NakedFunctions.Reflector.Component {
         internal object[] New { get; init; } = Array.Empty<object>();
         internal (object proxy, object updated)[] Updated { get; init; } = Array.Empty<(object, object)>();
 
-        public Func<IContext, IContext> PostSaveFunction { get; init; } = c => c;
+        public Func<IContext, IContext> PostSaveFunction { get; init; }
 
         public IQueryable<T> Instances<T>() where T : class => Persistor.Instances<T>();
 

@@ -16,6 +16,6 @@ namespace NakedFramework.Architecture.Persist {
        
         public List<(object original, object updated)> SavedAndUpdated { get; }
 
-        public Func<bool> PostSaveFunction { get; }
+        public Func<IDictionary<object, object>, bool> PostSaveFunction { get; }
     }
 }
