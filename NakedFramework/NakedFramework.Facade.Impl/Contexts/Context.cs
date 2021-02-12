@@ -25,8 +25,8 @@ namespace NakedObjects.Facade.Impl.Contexts {
             context.ErrorCause = ErrorCause;
             context.ProposedObjectFacade = ObjectFacade.Wrap(ProposedNakedObject, facade, framework);
             context.ProposedValue = ProposedValue;
-            context.Warnings = framework.MessageBroker.Warnings;
-            context.Messages = framework.MessageBroker.Messages;
+            context.Warnings = () => framework.MessageBroker.Warnings;
+            context.Messages = () => framework.MessageBroker.Messages;
 
             return context;
         }

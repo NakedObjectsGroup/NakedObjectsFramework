@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+
 namespace NakedObjects.Facade.Contexts {
     public abstract class ContextFacade {
         public abstract string Id { get; }
@@ -15,7 +17,7 @@ namespace NakedObjects.Facade.Contexts {
         public virtual object ProposedValue { get; set; }
         public abstract ITypeFacade Specification { get; }
         public abstract ITypeFacade ElementSpecification { get; }
-        public virtual string[] Warnings { get; set; }
-        public virtual string[] Messages { get; set; }
+        public virtual Func<string[]> Warnings { get; set; }
+        public virtual Func<string[]> Messages { get; set; }
     }
 }

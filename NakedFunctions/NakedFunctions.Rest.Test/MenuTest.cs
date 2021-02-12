@@ -254,7 +254,7 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        [Ignore("")]
+       
         public void TestInvokeMenuActionThatGeneratesWarningNoObject() {
             var api = Api().AsPost();
             var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"number", new ScalarValue("5")}}};

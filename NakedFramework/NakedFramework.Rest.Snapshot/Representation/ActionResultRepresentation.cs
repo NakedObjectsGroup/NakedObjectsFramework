@@ -58,8 +58,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         private void SetExtensions(ActionResultContextFacade actionResult) {
             var exts = new Dictionary<string, object>();
 
-            AddIfPresent(exts, actionResult.Warnings, JsonPropertyNames.CustomWarnings);
-            AddIfPresent(exts, actionResult.Messages, JsonPropertyNames.CustomMessages);
+            AddIfPresent(exts, actionResult.Warnings(), JsonPropertyNames.CustomWarnings);
+            AddIfPresent(exts, actionResult.Messages(), JsonPropertyNames.CustomMessages);
 
             Extensions = exts.Count > 0 ? RestUtils.CreateMap(exts) : new MapRepresentation();
         }
