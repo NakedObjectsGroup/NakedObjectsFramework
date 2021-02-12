@@ -163,13 +163,19 @@ namespace AW.Functions
                 WorkOrder_MenuFunctions.CreateNewWorkOrder(product, orderQty, startDate, context);
 
         public static IContext AddProductReview(this Product p,
-            [MaxLength(50)] string reviewerName,
             [DefaultValue(0), ValueRange(-30, 0)] DateTime dateOfReview,
-            [MaxLength(50)] string emailAddress,
             [Named("No. of Stars (1-5"), DefaultValue(5)] int rating,
             [Optionally] string comments,
             IContext context) =>
-                 context.WithNew(CreateReview(p, reviewerName, dateOfReview, emailAddress, rating, comments, context));
+             context.WithNew(CreateReview(
+                    p, 
+                    context.CurrentUser().Identity.Name, 
+                    dateOfReview, 
+                    "[private]", 
+                    rating, 
+                    comments, 
+                    context));
+  
 
         private static ProductReview CreateReview(Product p, string reviewerName, DateTime date, string emailAddress, int rating, string comments, IContext context)
         {

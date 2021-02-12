@@ -622,5 +622,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Click(OKButton());
             WaitForTitle(original);
         }
+
+        [TestMethod]
+        public void OverriddenPrincipalProviderService()
+        {
+            GeminiUrl("home");
+            WaitForTitle("Home");
+            OpenMainMenuAction("Employees", "Me");
+            WaitForView(Pane.Single, PaneType.Object);
+            Assert.AreEqual("Ken Sánchez",WaitForCss(".title").Text);
+        }
     }
 }
