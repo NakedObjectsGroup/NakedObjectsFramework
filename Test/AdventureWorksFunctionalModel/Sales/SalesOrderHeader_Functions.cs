@@ -35,14 +35,16 @@ namespace AW.Functions {
         {
             return c =>
             {
-                //var subTotal = soh.Details.Sum(d => d.LineTotal);
-                //var tax = subTotal * soh.GetTaxRate(c) / 100;
-                //var total = subTotal + tax;
+                //TODO: Next line is because the soh may be a new object, in which case there are no details.
+                //When context has GetNewlySavedVersion, this needs to be used in case where soh is new
+                var subTotal = soh.Details.Any()? soh.Details.Sum(d => d.LineTotal) : 0.0m;
+                var tax = subTotal * soh.GetTaxRate(c) / 100;
+                var total = subTotal + tax;
                 return c.WithUpdated(soh, soh with
                 {
-                    SubTotal = 10.0m,
-                    TaxAmt = 1.5m,
-                    TotalDue = 11.5m,
+                    SubTotal = subTotal,
+                    TaxAmt = tax,
+                    TotalDue = total,
                     ModifiedDate = c.Now()
                 });
             };
