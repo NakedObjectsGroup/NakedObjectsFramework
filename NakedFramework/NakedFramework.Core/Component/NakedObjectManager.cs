@@ -146,8 +146,6 @@ namespace NakedObjects.Core.Component {
             return adapter;
         }
 
-        public INakedObjectAdapter CreateAdapterForExistingObject(object domainObject) => nakedObjectFactory.CreateAdapterForExistingObject(domainObject);
-
         #endregion
 
         private IOid GetOidForService(string name, string typeName) => oidGenerator.CreateOid(typeName, new object[] {0});

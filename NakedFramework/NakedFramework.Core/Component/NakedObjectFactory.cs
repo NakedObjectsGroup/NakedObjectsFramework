@@ -32,13 +32,5 @@ namespace NakedObjects.Core.Component {
 
             return new NakedObjectAdapter(obj, oid, framework, loggerFactory, loggerFactory.CreateLogger<NakedObjectAdapter>());
         }
-
-        public INakedObjectAdapter CreateAdapterForExistingObject(object obj)
-        {
-            //Assert.AssertTrue(isInitialized);
-            framework.Persistor.AdaptDetachedObject(obj);
-            return framework.NakedObjectManager.GetAdapterFor(obj);
-
-        }
     }
 }

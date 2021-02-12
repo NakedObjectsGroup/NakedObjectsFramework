@@ -924,7 +924,7 @@ let internal makePropertyMemberFullNoDetails (mName : string) fName desc opt (oV
         TProperty(JsonPropertyNames.Extensions, exts);
         TProperty(JsonPropertyNames.Links, TArray([  ]))]
 
-let internal makePropertyMemberGuid oType (oName : string) (mName : string) (oValue : TObject) tName =
+let internal makePropertyMemberGuid oType (oName : string) (mName : string) (oValue : TObject) =
                
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName

@@ -15,6 +15,8 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
+#pragma warning disable 618
+#pragma warning disable SYSLIB0011
 
 namespace NakedObjects.Meta.Component {
     [Serializable]
@@ -32,6 +34,7 @@ namespace NakedObjects.Meta.Component {
             using var fs = File.Open(file, FileMode.Open);
             IFormatter formatter = new BinaryFormatter();
             var data = (SerializedData) formatter.Deserialize(fs);
+
             specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
 
             mainMenus = data.MenuValues.ToImmutableList();

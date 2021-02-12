@@ -23,7 +23,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Meta.Facet {
     [Serializable]
@@ -59,26 +58,15 @@ namespace NakedFunctions.Meta.Facet {
 
         public override bool IsQueryOnly { get; }
 
-        private static INakedObjectAdapter AdaptResult(INakedObjectManager nakedObjectManager, object result) {
-            if (result is null) {
-                return null;
-            }
-
-            if (CollectionUtils.IsCollection(result.GetType()) ||
-                CollectionUtils.IsQueryable(result.GetType())) {
-                return nakedObjectManager.CreateAdapter(result, null, null);
-            }
-            return nakedObjectManager.CreateAdapter(result, null, null);
-
-            //return nakedObjectManager.CreateAdapterForExistingObject(result);
-        }
+        private static INakedObjectAdapter AdaptResult(INakedObjectManager nakedObjectManager, object result) =>
+            result is null ? null : nakedObjectManager.CreateAdapter(result, null, null);
 
         private static Func<IDictionary<object, object>, bool> GetPostSaveFunction(FunctionalContext functionalContext, INakedObjectsFramework framework) {
             var postSaveFunction = functionalContext.PostSaveFunction;
 
             if (postSaveFunction is not null) {
                 return map => {
-                    var newContext = new FunctionalContext { Persistor = functionalContext.Persistor, Provider = functionalContext.Provider, ProxyMap = map };
+                    var newContext = new FunctionalContext {Persistor = functionalContext.Persistor, Provider = functionalContext.Provider, ProxyMap = map};
                     var innerContext = (FunctionalContext) postSaveFunction(newContext);
                     var updated = PersistResult(framework.LifecycleManager, innerContext.New, innerContext.Updated, GetPostSaveFunction(innerContext, framework));
                     return updated.Any();
@@ -88,18 +76,15 @@ namespace NakedFunctions.Meta.Facet {
             return _ => false;
         }
 
-
         private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, (object proxy, object updated)[] updatedObjects, Func<IDictionary<object, object>, bool> postSaveFunction) =>
             lifecycleManager.Persist(new DetachedObjects(newObjects, updatedObjects, postSaveFunction)).ToArray();
 
-        private static (object, FunctionalContext) CastTuple(ITuple tuple) => (tuple[0], (FunctionalContext)tuple[1]);
+        private static (object, FunctionalContext) CastTuple(ITuple tuple) => (tuple[0], (FunctionalContext) tuple[1]);
 
-        private (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedObjectsFramework framework) {
-            //PerformActions(framework.ServicesManager, framework.ServiceProvider, new[] {functionalContext.Action});
-            return PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
-        }
+        private static (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedObjectsFramework framework) =>
+            PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
 
-        private object HandleTupleResult((object, FunctionalContext) tuple, INakedObjectsFramework framework) {
+        private static object HandleTupleResult((object, FunctionalContext) tuple, INakedObjectsFramework framework) {
             var (toReturn, context) = tuple;
             var allPersisted = HandleContext(context, framework);
 
@@ -112,7 +97,7 @@ namespace NakedFunctions.Meta.Facet {
             return toReturn;
         }
 
-        private object HandleContextResult(FunctionalContext functionalContext, INakedObjectsFramework framework) {
+        private static object HandleContextResult(FunctionalContext functionalContext, INakedObjectsFramework framework) {
             HandleContext(functionalContext, framework);
             return null;
         }
@@ -141,39 +126,6 @@ namespace NakedFunctions.Meta.Facet {
             }
 
             return tuple;
-        }
-
-        private void PerformActions(IServicesManager servicesManager, IServiceProvider serviceProvider, IEnumerable<object> toAct) => toAct.ForEach(a => PerformAction(servicesManager, serviceProvider, a));
-
-        private static object GetInjectedService(IServicesManager servicesManager, IServiceProvider serviceProvider, Type injectType) {
-            return servicesManager.GetServices().Select(no => no.Object).SingleOrDefault(service => injectType.IsInstanceOfType(service)) ??
-                   serviceProvider.GetService(injectType);
-        }
-
-
-        private void PerformAction(IServicesManager servicesManager, IServiceProvider serviceProvider, object action) {
-            if (action is not null) {
-                var injectType = GetInjectArgumentType(action);
-
-                var injectedService = GetInjectedService(servicesManager, serviceProvider, injectType);
-
-                if (injectedService != null) {
-                    var f = typeof(InjectUtils).GetMethod("PerformAction")?.MakeGenericMethod(injectType);
-                    f?.Invoke(null, new object[] {action, injectedService});
-                }
-                else {
-                    throw new InvokeException($"Failed to get service for injection argument type {injectType} on action {ActionMethod.Name}");
-                }
-            }
-        }
-
-        private Type GetInjectArgumentType(object action) {
-            try {
-                return action.GetType().GetGenericArguments().Single();
-            }
-            catch (Exception e) {
-                throw new InvokeException($"Failed to get Single injection argument for action on {ActionMethod.Name}", e);
-            }
         }
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
