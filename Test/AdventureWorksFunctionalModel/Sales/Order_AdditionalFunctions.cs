@@ -130,6 +130,20 @@ namespace AW.Functions {
 
         #endregion
 
+        #region QuickOrder 
+        public static (SalesOrderHeader, IContext) QuickOrder(this Customer customer, 
+             Product product,
+             short quantity,
+             IContext context)
+        {
+            var (order, context2) = CreateAnotherOrder(customer, context);
+            var context3 = order.AddNewDetail(product, quantity, context2);
+            return (order, context3);
+            //TODO: context3.WithPostSaveFunction(context.GetNewlySavedVersion(order).Recalculate)
+        }
+
+        #endregion
+
         #region CreateNewOrder
 
         //Automatically copies common header info from previous order
