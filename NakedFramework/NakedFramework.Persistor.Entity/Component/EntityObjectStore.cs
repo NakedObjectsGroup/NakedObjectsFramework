@@ -21,8 +21,6 @@ using System.Text;
 using System.Transactions;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Persist;
-using NakedFramework.Core.Persist;
-using NakedFunctions;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -719,21 +717,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) {
             FunctionalPostSave = objects.PostSaveFunction;
-            
-
             return SetFunctionalProxyMap(ExecuteAttachObjectCommandUpdate(objects));
-        }
-
-        public INakedObjectAdapter AdaptDetachedObject(object poco) {
-            var spec = metamodelManager.GetSpecification(poco.GetType());
-
-            if (spec is IObjectSpec {IsViewModel: true} objectSpec) {
-                return nakedObjectManager.GetAdapterFor(poco) ?? nakedObjectManager.CreateViewModelAdapter(objectSpec, poco);
-            }
-
-            var context = GetContext(poco);
-            var oid = oidGenerator.CreateOid(EntityUtils.GetEntityProxiedTypeName(poco), context.GetKey(poco));
-            return createAdapter(oid, poco);
         }
 
         public bool HasChanges() => contexts.Values.Any(c => c.HasChanges());

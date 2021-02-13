@@ -931,7 +931,7 @@ namespace NakedObjects.Facade.Impl {
                         };
                     }
                 }
-                catch (InvalidOperationException e) {
+                catch (InvalidOperationException) {
                     logger.LogError($"multiple actions with name '{actionName}' found on menu '{menuName}'");
                     throw new ActionResourceNotFoundNOSException(actionName);
                 }
@@ -962,7 +962,7 @@ namespace NakedObjects.Facade.Impl {
                     };
                 }
             }
-            catch (InvalidOperationException e) {
+            catch (InvalidOperationException) {
                 logger.LogError($"multiple actions with name '{actionName}' found on type '{serviceName.DomainType}'");
                 throw new ActionResourceNotFoundNOSException(actionName);
             }
@@ -1030,7 +1030,7 @@ namespace NakedObjects.Facade.Impl {
                         return ac;
                     }
                 }
-                catch (InvalidOperationException e) {
+                catch (InvalidOperationException) {
                     logger.LogError($"multiple actions with name '{actionName}' found on menu '{menuName}'");
                     throw new ActionResourceNotFoundNOSException(actionName);
                 }

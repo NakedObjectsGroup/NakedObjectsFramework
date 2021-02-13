@@ -20,7 +20,6 @@ namespace NakedObjects.Architecture.Component {
     ///     inheritance.
     /// </summary>
     public interface IObjectPersistor {
-        IQueryable<T> UntrackedInstances<T>() where T : class;
         IQueryable<T> Instances<T>() where T : class;
         IQueryable Instances(Type type);
         IQueryable Instances(IObjectSpec spec);
@@ -39,11 +38,7 @@ namespace NakedObjects.Architecture.Component {
         IEnumerable GetBoundedSet(IObjectSpec spec);
         void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost);
         void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
-
         IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects);
-
-        void AdaptDetachedObject(object poco);
-
         bool HasChanges();
     }
 }

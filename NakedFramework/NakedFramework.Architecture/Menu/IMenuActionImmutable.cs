@@ -14,6 +14,5 @@ namespace NakedObjects.Architecture.Menu {
     /// </summary>
     public interface IMenuActionImmutable : IMenuItemImmutable {
         IActionSpecImmutable Action { get; }
-        string Grouping { get; }
     }
 }

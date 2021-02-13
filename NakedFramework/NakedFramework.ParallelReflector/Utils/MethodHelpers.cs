@@ -19,6 +19,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+#pragma warning disable 612
 
 namespace NakedObjects.ParallelReflector.Utils {
     public static class MethodHelpers {

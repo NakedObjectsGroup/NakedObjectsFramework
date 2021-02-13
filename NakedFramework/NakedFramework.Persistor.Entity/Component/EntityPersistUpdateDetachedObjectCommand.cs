@@ -34,13 +34,11 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         private object AlreadyUpdatedProxy(object obj) => detachedObjects.SavedAndUpdated.Where(t => t.original == obj).Select(t => t.updated).SingleOrDefault();
 
-
         private void ProxyIfNotAlreadySeen((object proxy, object toProxy) updateTuple) {
             var (proxy, updated) = updateTuple;
 
             if (!IsSavedOrUpdated(updated)) {
                 context = parent.GetContext(updated);
-                //context.CurrentSaveRootObjectAdapter = getAdapter(updated);
                 ProxyObjectIfAppropriate(updated, proxy);
             }
         }
@@ -69,7 +67,6 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
-
         public IList<(object original, object updated)> Execute() {
             ValidateDetachedObjects();
             try {
@@ -96,7 +93,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
-        private static object GetOrCreateProxiedObject(object originalObject,  LocalContext context, object potentialProxy) {
+        private static object GetOrCreateProxiedObject(object originalObject, LocalContext context, object potentialProxy) {
             var proxy = potentialProxy ?? context.CreateObject(originalObject.GetType());
 
             if (proxy is null) {
@@ -107,7 +104,6 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         private object ProxyObject(object originalObject, object potentialProxy = null) {
-
             var alreadyUpdatedProxy = AlreadyUpdatedProxy(originalObject);
             if (alreadyUpdatedProxy is not null) {
                 return alreadyUpdatedProxy;
@@ -117,17 +113,15 @@ namespace NakedObjects.Persistor.Entity.Component {
             var proxy = GetOrCreateProxiedObject(originalObject, context, potentialProxy);
 
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
-            // if not proxied this should just be the same as adapterForOriginalObject
             INakedObjectAdapter proxyAdapter = null;
             if (persisting) {
-                 proxyAdapter = parent.createAdapter(null, proxy);
+                proxyAdapter = parent.createAdapter(null, proxy);
             }
 
             SetKeyAsNecessary(originalObject, proxy);
 
             if (persisting) {
                 context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", proxy);
-              //  context.PersistedNakedObjects.Add(proxyAdapter);
             }
 
             // need to update
@@ -135,9 +129,6 @@ namespace NakedObjects.Persistor.Entity.Component {
             if (persisting) {
                 parent.removeAdapter(proxyAdapter);
             }
-            //parent.replacePoco(adapterForOriginalObject, proxy);
-
-           // parent.CheckProxies(proxy);
 
             detachedObjects.SavedAndUpdated.Add((originalObject, proxy));
 
@@ -171,12 +162,9 @@ namespace NakedObjects.Persistor.Entity.Component {
         public override string ToString() => "CreateObjectCommand";
 
         private void ProxyObjectIfAppropriate(object originalObject, object existingProxy) {
-            if (originalObject == null) {
-                return;
+            if (originalObject is not null) {
+                ProxyObject(originalObject, existingProxy);
             }
-
-           // var adapterForOriginalObject = parent.createAdapter(null, originalObject);
-            ProxyObject(originalObject, existingProxy);
         }
 
         private object ProxyReferenceIfAppropriate(object originalObject) {
@@ -189,8 +177,6 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return alreadyUpdatedProxy;
             }
 
-           // var adapterForOriginalObject = parent.createAdapter(null, originalObject);
-
             if (detachedObjects.ToUpdate.Select(t => t.updated).Contains(originalObject)) {
                 var (proxy, _) = detachedObjects.ToUpdate.SingleOrDefault(t => t.updated == originalObject);
                 return ProxyObject(originalObject, proxy);
@@ -199,11 +185,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             var keys = context.GetKey(originalObject);
             var persisting = keys.All(EntityObjectStore.EmptyKey);
 
-            if (persisting) {
-                return ProxyObject(originalObject);
-            }
-
-            return originalObject;
+            return persisting ? ProxyObject(originalObject) : originalObject;
         }
     }
 }

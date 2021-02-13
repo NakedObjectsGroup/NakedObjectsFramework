@@ -40,8 +40,6 @@ namespace NakedObjects.Core.Component {
 
         #region IObjectPersistor Members
 
-        public IQueryable<T> UntrackedInstances<T>() where T : class => GetInstances<T>(false);
-
         public IQueryable<T> Instances<T>() where T : class => GetInstances<T>(true);
 
         public IQueryable Instances(Type type) => GetInstances(type);
@@ -194,7 +192,6 @@ namespace NakedObjects.Core.Component {
 
         public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) => objectStore.UpdateDetachedObjects(objects);
 
-        public void AdaptDetachedObject(object poco) => objectStore.AdaptDetachedObject(poco);
         public bool HasChanges() => objectStore.HasChanges();
 
         #endregion

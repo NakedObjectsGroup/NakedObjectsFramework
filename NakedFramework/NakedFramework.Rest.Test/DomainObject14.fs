@@ -360,7 +360,7 @@ let GetWithGuidKeyObject(api : RestfulObjectsControllerBase) =
                    ([ TProperty
                           ("Id",                            
                            TObjectJson
-                               (makePropertyMemberGuid "objects" oName "Id" (TObjectVal(key)) (ttc "System.Guid") )) ]))
+                               (makePropertyMemberGuid "objects" oName "Id" (TObjectVal(key)) )) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Guid Key"))
