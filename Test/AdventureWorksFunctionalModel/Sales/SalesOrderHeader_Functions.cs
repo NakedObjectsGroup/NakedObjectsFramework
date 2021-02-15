@@ -28,7 +28,7 @@ namespace AW.Functions {
             )
         {            
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
-            return context.WithNew(sod).WithPostSaveFunction(soh.CalculateTotals());
+            return context.WithNew(sod).WithPostSaveFunction(soh.RecalculateTotals());
         }
 
         //For use only when the soh is newly saved.

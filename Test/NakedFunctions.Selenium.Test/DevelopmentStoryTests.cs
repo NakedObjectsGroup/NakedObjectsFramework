@@ -408,7 +408,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("AW00012211 Victor Romero", GetReferenceFromProperty("Customer").Text);
         }
 
-       // [TestMethod]
+       [TestMethod]
         public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
         {
             GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
