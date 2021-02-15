@@ -1267,7 +1267,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNull(actionSpecs[1].GetFacet<IQueryOnlyFacet>());
                 Assert.IsNotNull(actionSpecs[2].GetFacet<IQueryOnlyFacet>());
                 Assert.IsNull(actionSpecs[0].GetFacet<IIdempotentFacet>());
-                Assert.IsNotNull(actionSpecs[1].GetFacet<IIdempotentFacet>());
+                Assert.IsNull(actionSpecs[1].GetFacet<IIdempotentFacet>());
                 Assert.IsNull(actionSpecs[2].GetFacet<IIdempotentFacet>());
             }
         }
