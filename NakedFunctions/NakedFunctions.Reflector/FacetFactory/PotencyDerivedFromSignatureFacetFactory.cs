@@ -37,10 +37,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static void Process(MemberInfo member, ISpecification holder) {
             if (member is MethodInfo method) {
-                if (member.GetCustomAttribute<EditAttribute>() is not null) {
-                    FacetUtils.AddFacet(new IdempotentFacet(holder));
-                }
-                else if (IsSideEffectFree(method.ReturnType)) {
+                if (IsSideEffectFree(method.ReturnType)) {
                     FacetUtils.AddFacet(new QueryOnlyFacet(holder));
                 }
             }
