@@ -48,40 +48,14 @@ namespace AW.Functions {
                    // WithUpdated(detail, detail with { SalesOrderHeader = soh2, ModifiedDate = context.Now() });
             });
 
-        internal static T Resolve<T>(T obj) {
-            foreach (var p in obj.GetType().GetProperties())
-            {
-                var sink = p.GetValue(obj, null);
-            }
+        public static IContext UpdateModifiedDateOnOrder(this SalesOrderDetail detail, IContext context) {
+            var soh = detail.SalesOrderHeader;
 
-            return obj;
-        }
-
-
-        public static IContext UpdateModifiedDateOnOrder(this SalesOrderDetail detail, IContext context)
-        {
-            var soh =   detail.SalesOrderHeader;
-
-            //foreach (var p in soh.GetType().GetProperties())
-            //{
-            //    var sink = p.GetValue(soh, null);
-            //}
-
-            return context.WithUpdated(soh, Resolve(soh) with {
-                ModifiedDate = context.Now(),
-                //Customer = soh.Customer,
-                //BillingAddress = soh.BillingAddress,
-                //ShippingAddress = soh.ShippingAddress,
-                //CurrencyRate = soh.CurrencyRate,
-                //CreditCard = soh.CreditCard,
-                //SalesPerson = soh.SalesPerson,
-                //SalesTerritory = soh.SalesTerritory,
-                //Details = soh.Details,
-                //SalesOrderHeaderSalesReason = soh.SalesOrderHeaderSalesReason,
+            return context.WithUpdated(soh, context.Resolve(soh) with {
+                ModifiedDate = context.Now()
             });
         }
         
-
 
         private static IContext WithUpdatedTotal(SalesOrderDetail detail, IContext c) => c.WithUpdated(detail, detail with
             { LineTotal = (detail.UnitPrice - detail.UnitPriceDiscount) * detail.OrderQty,
