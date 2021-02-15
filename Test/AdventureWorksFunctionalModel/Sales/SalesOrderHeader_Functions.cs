@@ -42,7 +42,7 @@ namespace AW.Functions {
             return c =>
             {
                 var subTotal = soh.Details.Any()? soh.Details.Sum(d => d.LineTotal) : 0.0m;  //TODO: Works if just return 0.0m !
-                var tax = subTotal * soh.GetTaxRate(c) / 100;
+                var tax = subTotal;// * soh.GetTaxRate(c) / 100;
                 var total = subTotal + tax;
                 return c.WithUpdated(soh, soh with
                 {
