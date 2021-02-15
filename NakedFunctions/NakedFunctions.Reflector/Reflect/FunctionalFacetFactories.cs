@@ -64,7 +64,8 @@ namespace NakedFunctions.Reflector.Reflect {
                 typeof(TypeOfAnnotationFacetFactory),
                 typeof(TableViewAnnotationFacetFactory),
                 typeof(TypicalLengthDerivedFromTypeFacetFactory),
-                typeof(PresentationHintAnnotationFacetFactory)
+                typeof(PresentationHintAnnotationFacetFactory),
+                typeof(EditAnnotationFacetFactory)
             };
     }
 }
