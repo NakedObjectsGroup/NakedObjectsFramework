@@ -45,6 +45,8 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsQueryContributedAction => WrappedSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
 
+        public string[] EditProperties => WrappedSpec.GetFacet<IEditPropertiesFacet>()?.Properties ?? Array.Empty<string>();
+
         public int MemberOrder => WrappedSpec.GetMemberOrder();
 
         public string MemberOrderName => WrappedSpec.GetMemberOrderName();
