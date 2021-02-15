@@ -13,6 +13,9 @@ namespace AW.Functions {
 
     public static class SalesOrderDetail_Functions
     {
+
+        public static IContext Recalculate(this SalesOrderDetail sod, IContext context) =>
+            context.WithUpdated(sod, sod.WithRecalculatedFields(context));
         //Call this from any function that updates a SalesOrderDetail
         internal static SalesOrderDetail WithRecalculatedFields(this SalesOrderDetail sod, IContext context)
         {
@@ -43,14 +46,14 @@ namespace AW.Functions {
 
         public static IContext RecalculateHeader(this SalesOrderDetail detail, IContext context) =>
             context.WithDeferred(c => {
-                var soh2 = detail.SalesOrderHeader.Recalculated(c);
-                return c.WithUpdated(soh2, soh2);
-                   // WithUpdated(detail, detail with { SalesOrderHeader = soh2, ModifiedDate = context.Now() });
+                var soh = context.Resolve(detail.SalesOrderHeader);
+                var soh2 = soh.Recalculated(context);
+                return c.WithUpdated(soh, soh2);
+                   
             });
 
         public static IContext UpdateModifiedDateOnOrder(this SalesOrderDetail detail, IContext context) {
             var soh = detail.SalesOrderHeader;
-
             return context.WithUpdated(soh, context.Resolve(soh) with {
                 ModifiedDate = context.Now()
             });
