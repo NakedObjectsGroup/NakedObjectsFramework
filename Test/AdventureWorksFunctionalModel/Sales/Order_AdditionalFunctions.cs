@@ -139,7 +139,7 @@ namespace AW.Functions {
             var (order, context2) = CreateAnotherOrder(customer, context);
             var context3 = order.AddNewDetail(product, quantity, context2);
             return (order, context3);
-            //TODO: context3.WithPostSaveFunction(context.GetNewlySavedVersion(order).Recalculate)
+            //TODO: context3.WithDeferred(context.Reload(order).Recalculate)
         }
 
         #endregion

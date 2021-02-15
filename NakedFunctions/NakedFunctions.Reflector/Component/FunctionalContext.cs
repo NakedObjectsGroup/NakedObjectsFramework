@@ -13,12 +13,9 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedFunctions.Reflector.Component {
     public record FunctionalContext : IContext {
+        internal IDictionary<object, object> ProxyMap = new Dictionary<object, object>();
         internal IObjectPersistor Persistor { get; init; }
         internal IServiceProvider Provider { get; init; }
-
-
-        internal IDictionary<object, object> ProxyMap = new Dictionary<object, object>();
-
 
         internal object[] New { get; init; } = Array.Empty<object>();
         internal (object proxy, object updated)[] Updated { get; init; } = Array.Empty<(object, object)>();
@@ -32,14 +29,16 @@ namespace NakedFunctions.Reflector.Component {
         public IContext WithNew(object newObj) => this with {New = New.Append(newObj).ToArray()};
 
         public IContext WithUpdated<T>(T proxy, T updated) => this with {Updated = Updated.Append((proxy, updated)).ToArray()};
-        public IContext WithPostSaveFunction(Func<IContext, IContext> function) => this with {PostSaveFunction = function};
+        public IContext WithDeferred(Func<IContext, IContext> function) => this with {PostSaveFunction = function};
 
-        public T GetNewlySavedVersion<T>(T unsaved) where T : class {
-            if (ProxyMap.ContainsKey(unsaved)) {
-                return (T) ProxyMap[unsaved];
+        public T Reload<T>(T unsaved) where T : class => ProxyMap.ContainsKey(unsaved) ? (T) ProxyMap[unsaved] : Persistor.ValidateProxy(unsaved);
+
+        public T Resolve<T>(T obj) where T : class {
+            foreach (var p in obj.GetType().GetProperties()) {
+                var sink = p.GetValue(obj, null);
             }
 
-            return Persistor.ValidateProxy(unsaved);
+            return obj;
         }
     }
 }

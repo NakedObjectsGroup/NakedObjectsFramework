@@ -20,8 +20,10 @@ namespace NakedFunctions {
 
         public IContext WithUpdated<T>(T original, T updated);
 
-        IContext WithPostSaveFunction(Func<IContext, IContext> function);
+        IContext WithDeferred(Func<IContext, IContext> function);
 
-        public T GetNewlySavedVersion<T>(T unsaved) where T : class;
+        public T Reload<T>(T unsaved) where T : class;
+
+        public T Resolve<T>(T unResolved) where T : class;
     }
 }

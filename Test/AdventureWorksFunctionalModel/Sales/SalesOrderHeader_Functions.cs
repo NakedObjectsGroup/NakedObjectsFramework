@@ -18,7 +18,7 @@ namespace AW.Functions {
         //TODO: temp method to test post save function
         public static IContext NewComment(this SalesOrderHeader soh, string comment, IContext context) =>
             context.WithUpdated(soh, soh with { Comment = comment, ModifiedDate = context.Now() }).
-            WithPostSaveFunction(c => c.WithUpdated(soh, soh with {
+            WithDeferred(c => c.WithUpdated(soh, soh with {
                 RevisionNumber = (byte) (soh.RevisionNumber + 1 ),
                 ModifiedDate = context.Now()
             }));
@@ -26,10 +26,10 @@ namespace AW.Functions {
         public static IContext RecalculateFields(this SalesOrderHeader soh, IContext context)
         {
             var context2 = NewComment(soh, "Recalculated", context);
-            return context2.WithPostSaveFunction(c => c.WithUpdated(soh, soh.Recalculated(c)));
+            return context2.WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
         }
 
-       
+
         #region Actions
 
         #region Add New Detail
@@ -43,7 +43,7 @@ namespace AW.Functions {
             )
         {            
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
-            return context.WithNew(sod).WithPostSaveFunction(c => c.WithUpdated(soh, soh.Recalculated(c)));
+            return context.WithNew(sod).WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
         }
 
         internal static SalesOrderHeader Recalculated(this SalesOrderHeader soh, IContext c)
@@ -62,7 +62,7 @@ namespace AW.Functions {
 
         //For use only when the soh is newly saved.
         private static Func<IContext, IContext> CalculateTotals(this SalesOrderHeader soh) =>
-           c => RecalculateTotals(c.GetNewlySavedVersion(soh)).Invoke(c);
+           c => RecalculateTotals(c.Reload(soh)).Invoke(c);
 
 
         //For use when new details are added or updated
@@ -163,7 +163,7 @@ namespace AW.Functions {
         #region Remove Details
         public static IContext RemoveDetail(this SalesOrderHeader soh,
             SalesOrderDetail detailToRemove, IContext context) =>
-                     context.WithDeleted(detailToRemove).WithPostSaveFunction(soh.RecalculateTotals());
+                     context.WithDeleted(detailToRemove).WithDeferred(soh.RecalculateTotals());
 
 
         public static IEnumerable<SalesOrderDetail> Choices1RemoveDetail(this SalesOrderHeader soh) =>
@@ -179,7 +179,7 @@ namespace AW.Functions {
         public static  IContext RemoveDetails(this SalesOrderHeader soh,
              IEnumerable<SalesOrderDetail> details, IContext context) =>
                  details.Aggregate(context, (c, d) => c.WithDeleted(d))
-                    .WithPostSaveFunction(soh.RecalculateTotals());
+                    .WithDeferred(soh.RecalculateTotals());
 
         #endregion
 

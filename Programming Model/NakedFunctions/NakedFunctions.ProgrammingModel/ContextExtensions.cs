@@ -11,13 +11,13 @@ using System.Security.Principal;
 namespace NakedFunctions {
     public static class ContextExtensions {
         public static IContext WithWarnUser(this IContext context, string message)
-            => context.WithPostSaveFunction(c => {
+            => context.WithDeferred(c => {
                 c.GetService<IAlert>().WarnUser(message);
                 return c;
             });
 
         public static IContext WithInformUser(this IContext context, string message)
-            => context.WithPostSaveFunction(c => {
+            => context.WithDeferred(c => {
                 c.GetService<IAlert>().InformUser(message);
                 return c;
             });

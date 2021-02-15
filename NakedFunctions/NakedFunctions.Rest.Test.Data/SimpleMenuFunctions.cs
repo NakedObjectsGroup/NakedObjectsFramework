@@ -39,7 +39,7 @@ namespace NakedFunctions.Rest.Test.Data {
         internal static Action<IAlert> InformUser(string message) => ua => ua.InformUser(message);
 
         internal static (T, IContext) SingleObjectWarnIfNoMatch<T>(this IQueryable<T> query, IContext context) =>
-            (query.FirstOrDefault(), query.Any() ? context : context.WithPostSaveFunction(WarnUser("There is no matching object")));
+            (query.FirstOrDefault(), query.Any() ? context : context.WithDeferred(WarnUser("There is no matching object")));
 
         public static (SimpleRecord, IContext) FindByNumber(string number, IContext context) {
             var id = int.Parse(number);

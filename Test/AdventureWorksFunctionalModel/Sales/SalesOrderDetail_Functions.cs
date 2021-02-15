@@ -37,21 +37,48 @@ namespace AW.Functions {
                 SpecialOfferProduct = Product_Functions.BestSpecialOfferProduct(detail.Product, newQuantity, context)
             }).WithRecalculatedFields(context);
 
-            return context.WithUpdated(detail, detail2);//.WithPostSaveFunction(c => SalesOrderHeader_Functions.Recalculate(detail.SalesOrderHeader, c));
+            return context.WithUpdated(detail, detail2);//.WithDeferred(c => SalesOrderHeader_Functions.Recalculate(detail.SalesOrderHeader, c));
             //next step, possibly update the Sod with new Soh
         }
 
         public static IContext RecalculateHeader(this SalesOrderDetail detail, IContext context) =>
-            context.WithPostSaveFunction(c => {
+            context.WithDeferred(c => {
                 var soh2 = detail.SalesOrderHeader.Recalculated(c);
                 return c.WithUpdated(soh2, soh2);
                    // WithUpdated(detail, detail with { SalesOrderHeader = soh2, ModifiedDate = context.Now() });
             });
 
+        internal static T Resolve<T>(T obj) {
+            foreach (var p in obj.GetType().GetProperties())
+            {
+                var sink = p.GetValue(obj, null);
+            }
+
+            return obj;
+        }
+
+
         public static IContext UpdateModifiedDateOnOrder(this SalesOrderDetail detail, IContext context)
         {
-            var soh = detail.SalesOrderHeader;
-            return context.WithUpdated(soh, soh with { ModifiedDate = context.Now() });
+            var soh =   detail.SalesOrderHeader;
+
+            //foreach (var p in soh.GetType().GetProperties())
+            //{
+            //    var sink = p.GetValue(soh, null);
+            //}
+
+            return context.WithUpdated(soh, Resolve(soh) with {
+                ModifiedDate = context.Now(),
+                //Customer = soh.Customer,
+                //BillingAddress = soh.BillingAddress,
+                //ShippingAddress = soh.ShippingAddress,
+                //CurrencyRate = soh.CurrencyRate,
+                //CreditCard = soh.CreditCard,
+                //SalesPerson = soh.SalesPerson,
+                //SalesTerritory = soh.SalesTerritory,
+                //Details = soh.Details,
+                //SalesOrderHeaderSalesReason = soh.SalesOrderHeaderSalesReason,
+            });
         }
         
 
