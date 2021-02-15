@@ -39,7 +39,7 @@ namespace NakedFunctions.Reflector.Component {
                 return (T) ProxyMap[unsaved];
             }
 
-            return null;
+            return Persistor.ValidateProxy(unsaved);
         }
     }
 }

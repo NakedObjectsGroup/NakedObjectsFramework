@@ -40,5 +40,6 @@ namespace NakedObjects.Architecture.Component {
         void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
         IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects);
         bool HasChanges();
+        T ValidateProxy<T>(T toCheck) where T : class;
     }
 }

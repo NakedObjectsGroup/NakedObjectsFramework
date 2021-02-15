@@ -26,12 +26,32 @@ namespace NakedFunctions.Rest.Test.Data {
         }
 
         [Edit]
-        public static (SimpleRecord, IContext) EditSimpleRecordWithPostPersist(this SimpleRecord sp, [PresentationHint("Hint4")] string name, IContext context) {
+        public static (SimpleRecord, IContext) EditSimpleRecordWithPostPersist(this SimpleRecord sp, string name, IContext context) {
             SimpleRecord updated = sp with { Name = name };
             context = context.WithUpdated(sp, updated);
             context = context.WithPostSaveFunction(c => {
                 var updated2 = updated with { Name = updated.Name + "Updated" };
                 c = c.WithUpdated(sp, updated2);
+                return c;
+            });
+            return (updated, context);
+        }
+
+        [Edit]
+        public static (SimpleRecord, IContext) EditSimpleRecordWithRepeatedPostPersist(this SimpleRecord sp, string name, IContext context) {
+            var updated = sp with {Name = name};
+            context = context.WithUpdated(sp, updated);
+            context = context.WithPostSaveFunction(c => {
+                var updated2 = updated with {Name = updated.Name + "Updated"};
+                c = c.WithUpdated(sp, updated2).WithPostSaveFunction(cc => {
+                    var updated3 = updated2 with {Name = updated.Name + "Updated" + "Updated" };
+                    cc = cc.WithUpdated(sp, updated3).WithPostSaveFunction(ccc => {
+                        var updated4 = updated3 with { Name = updated.Name + "Updated" + "Updated" + "Updated" };
+                        ccc = ccc.WithUpdated(sp, updated4);
+                        return ccc;
+                    });
+                    return cc;
+                });
                 return c;
             });
             return (updated, context);
@@ -48,6 +68,26 @@ namespace NakedFunctions.Rest.Test.Data {
                 var original = c.GetNewlySavedVersion(newObj);
                 var updated2 = original with { Name = newObj.Name + "Updated" };
                 c = c.WithUpdated(original, updated2);
+                return c;
+            });
+            return (newObj, context);
+        }
+
+        public static (SimpleRecord, IContext) CreateSimpleRecordWithRepeatedPostPersist(this SimpleRecord sp, string name, IContext context) {
+            var newObj = new SimpleRecord {Name = name};
+            context = context.WithNew(newObj);
+            context = context.WithPostSaveFunction(c => {
+                var original = c.GetNewlySavedVersion(newObj);
+                var updated2 = original with {Name = newObj.Name + "Updated"};
+                c = c.WithUpdated(original, updated2).WithPostSaveFunction(cc => {
+                    var updated3 = updated2 with {Name = newObj.Name + "Updated"};
+                    cc = cc.WithUpdated(original, updated3).WithPostSaveFunction(ccc => {
+                        var updated4 = updated3 with {Name = newObj.Name + "Updated"};
+                        ccc = ccc.WithUpdated(original, updated4);
+                        return ccc;
+                    });
+                    return cc;
+                });
                 return c;
             });
             return (newObj, context);

@@ -722,6 +722,19 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public bool HasChanges() => contexts.Values.Any(c => c.HasChanges());
 
+        public T ValidateProxy<T>(T toCheck) where T : class {
+            var toCheckType = toCheck.GetType();
+            if (!TypeUtils.IsEntityProxy(toCheckType)) {
+                var context = GetContext(toCheck);
+                if (context is null || context.GetReferenceMembers(toCheckType).Any() || context.GetCollectionMembers(toCheckType).Any()) {
+                    throw new PersistFailedException($"{toCheck}  type {toCheckType} is not proxy but has reference members or is unknown to EF");
+                }
+            }
+
+            return toCheck;
+        }
+
+
         #endregion
 
         #region for testing only
