@@ -15,6 +15,21 @@ namespace AW.Functions {
     [Named("Sales Order")]
         public  static class SalesOrderHeader_Functions {
 
+        //TODO: temp method to test post save function
+        public static IContext NewComment(this SalesOrderHeader soh, string comment, IContext context) =>
+            context.WithUpdated(soh, soh with { Comment = comment, ModifiedDate = context.Now() }).
+            WithPostSaveFunction(c => c.WithUpdated(soh, soh with {
+                RevisionNumber = (byte) (soh.RevisionNumber + 1 ),
+                ModifiedDate = context.Now()
+            }));
+
+        public static IContext RecalculateFields(this SalesOrderHeader soh, IContext context)
+        {
+            var context2 = NewComment(soh, "Recalculated", context);
+            return context2.WithPostSaveFunction(c => c.WithUpdated(soh, soh.Recalculated(c)));
+        }
+
+       
         #region Actions
 
         #region Add New Detail
@@ -28,7 +43,21 @@ namespace AW.Functions {
             )
         {            
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
-            return context.WithNew(sod).WithPostSaveFunction(soh.RecalculateTotals());
+            return context.WithNew(sod).WithPostSaveFunction(c => c.WithUpdated(soh, soh.Recalculated(c)));
+        }
+
+        internal static SalesOrderHeader Recalculated(this SalesOrderHeader soh, IContext c)
+        {
+            var subTotal = soh.Details.Any() ? soh.Details.Sum(d => d.LineTotal) : 0.0m;  //TODO: Works if just return 0.0m !
+            var tax = subTotal * soh.GetTaxRate(c) / 100;
+            var total = subTotal + tax;
+            return soh with
+            {
+                SubTotal = subTotal,
+                TaxAmt = tax,
+                TotalDue = total,
+                ModifiedDate = c.Now()
+            };
         }
 
         //For use only when the soh is newly saved.
@@ -42,7 +71,7 @@ namespace AW.Functions {
             return c =>
             {
                 var subTotal = soh.Details.Any()? soh.Details.Sum(d => d.LineTotal) : 0.0m;  //TODO: Works if just return 0.0m !
-                var tax = subTotal;// * soh.GetTaxRate(c) / 100;
+                var tax = subTotal * soh.GetTaxRate(c) / 100;
                 var total = subTotal + tax;
                 return c.WithUpdated(soh, soh with
                 {

@@ -29,7 +29,7 @@ namespace AW.Functions {
             };
         }
 
-        public static  IContext ChangeQuantity(this SalesOrderDetail detail, short newQuantity, IContext context)
+        public static IContext ChangeQuantity(this SalesOrderDetail detail, short newQuantity, IContext context)
         {
             var detail2 = (detail with
             {
@@ -37,12 +37,30 @@ namespace AW.Functions {
                 SpecialOfferProduct = Product_Functions.BestSpecialOfferProduct(detail.Product, newQuantity, context)
             }).WithRecalculatedFields(context);
 
-            return context.WithUpdated(detail, detail2).WithPostSaveFunction(detail.SalesOrderHeader.RecalculateTotals());
+            return context.WithUpdated(detail, detail2);//.WithPostSaveFunction(c => SalesOrderHeader_Functions.Recalculate(detail.SalesOrderHeader, c));
+            //next step, possibly update the Sod with new Soh
         }
+
+        public static IContext RecalculateHeader(this SalesOrderDetail detail, IContext context) =>
+            context.WithPostSaveFunction(c => {
+                var soh2 = detail.SalesOrderHeader.Recalculated(c);
+                return c.WithUpdated(soh2, soh2);
+                   // WithUpdated(detail, detail with { SalesOrderHeader = soh2, ModifiedDate = context.Now() });
+            });
+
+        public static IContext UpdateModifiedDateOnOrder(this SalesOrderDetail detail, IContext context)
+        {
+            var soh = detail.SalesOrderHeader;
+            return context.WithUpdated(soh, soh with { ModifiedDate = context.Now() });
+        }
+        
+
+
+        private static IContext WithUpdatedTotal(SalesOrderDetail detail, IContext c) => c.WithUpdated(detail, detail with
+            { LineTotal = (detail.UnitPrice - detail.UnitPriceDiscount) * detail.OrderQty,
+            ModifiedDate = c.Now() });
 
         public static string DisableChangeQuantity(this SalesOrderDetail detail) =>
             detail.SalesOrderHeader.DisableAddNewDetail();
-
-
     }
 }
