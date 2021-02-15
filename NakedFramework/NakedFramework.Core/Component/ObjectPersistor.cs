@@ -194,6 +194,8 @@ namespace NakedObjects.Core.Component {
 
         public bool HasChanges() => objectStore.HasChanges();
 
+        public T ValidateProxy<T>(T toCheck) where T : class => objectStore.ValidateProxy(toCheck);
+
         #endregion
 
         private IQueryable<T> GetInstances<T>(bool tracked = true) where T : class => objectStore.GetInstances<T>(tracked);

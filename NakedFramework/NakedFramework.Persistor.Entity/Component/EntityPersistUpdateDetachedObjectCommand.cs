@@ -97,7 +97,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             var proxy = potentialProxy ?? context.CreateObject(originalObject.GetType());
 
             if (proxy is null) {
-                throw new PersistFailedException($"unexpected null proxy for {{originalObject}} type {originalObject.GetType()}");
+                throw new PersistFailedException($"unexpected null proxy for {originalObject} type {originalObject.GetType()}");
             }
 
             return proxy;
