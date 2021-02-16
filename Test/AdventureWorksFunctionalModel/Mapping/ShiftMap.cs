@@ -22,7 +22,7 @@ namespace AW.Mapping
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.StartTime).HasColumnName("StartTime");
             Property(t => t.EndTime).HasColumnName("EndTime");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
         }
     }
 }

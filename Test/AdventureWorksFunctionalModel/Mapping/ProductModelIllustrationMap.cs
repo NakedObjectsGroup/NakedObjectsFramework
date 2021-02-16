@@ -22,7 +22,7 @@ namespace AW.Mapping
             ToTable("ProductModelIllustration", "Production");
             Property(t => t.ProductModelID).HasColumnName("ProductModelID");
             Property(t => t.IllustrationID).HasColumnName("IllustrationID");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Illustration)

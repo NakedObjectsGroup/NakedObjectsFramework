@@ -47,7 +47,7 @@ namespace AW.Functions
                     c.StoreID == s.BusinessEntityID
             select c;
 
-        [MemberOrder("Stores", 2)]
+        [MemberOrder("Stores", 2), CreateNew]
         public static (Customer, IContext) CreateNewStoreCustomer(
             string name, IContext context)
         {
@@ -80,7 +80,7 @@ namespace AW.Functions
                    select c;
         }
 
-        [MemberOrder("Individuals", 2)]
+        [MemberOrder("Individuals", 2), CreateNew]
         public static (Customer, IContext) CreateNewIndividualCustomer(
             string firstName,
             string lastName,

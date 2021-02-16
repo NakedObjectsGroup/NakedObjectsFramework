@@ -20,7 +20,7 @@ namespace AW.Mapping
             Property(t => t.AddressTypeID).HasColumnName("AddressTypeID");
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
         }
     }
 }

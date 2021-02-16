@@ -24,7 +24,7 @@ namespace AW.Mapping
             ToTable("UnitMeasure", "Production");
             Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
         }
     }
 }

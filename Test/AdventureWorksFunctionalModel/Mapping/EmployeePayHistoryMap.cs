@@ -21,7 +21,7 @@ namespace AW.Mapping
             Property(t => t.RateChangeDate).HasColumnName("RateChangeDate");
             Property(t => t.Rate).HasColumnName("Rate");
             Property(t => t.PayFrequency).HasColumnName("PayFrequency");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Employee)

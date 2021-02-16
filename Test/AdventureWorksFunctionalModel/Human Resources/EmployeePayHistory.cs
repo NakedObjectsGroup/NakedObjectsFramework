@@ -30,7 +30,7 @@ namespace AW.Types
         public virtual Employee Employee { get; init; }
 
         [MemberOrder(99)]
-        //[Versioned]
+        [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}";

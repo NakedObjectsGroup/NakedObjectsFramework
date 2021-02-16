@@ -29,7 +29,7 @@ namespace AW.Types
         public virtual DateTime? EndDate { get; init; }
 
         [MemberOrder(99)]
-        //[Versioned]
+        [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]

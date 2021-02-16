@@ -19,7 +19,7 @@ namespace AW.Mapping
             ToTable("ContactType", "Person");
             Property(t => t.ContactTypeID).HasColumnName("ContactTypeID");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
         }
     }
 }

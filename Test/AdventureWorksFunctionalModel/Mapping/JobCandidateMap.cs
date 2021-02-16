@@ -16,7 +16,7 @@ namespace AW.Mapping
             Property(t => t.JobCandidateID).HasColumnName("JobCandidateID");
             Property(t => t.EmployeeID).HasColumnName("BusinessEntityID");
             Property(t => t.Resume).HasColumnName("Resume");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasOptional(t => t.Employee).WithMany().HasForeignKey(t => t.EmployeeID);

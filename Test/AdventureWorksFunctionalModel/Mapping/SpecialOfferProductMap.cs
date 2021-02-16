@@ -23,7 +23,7 @@ namespace AW.Mapping
             Property(t => t.SpecialOfferID).HasColumnName("SpecialOfferID");
             Property(t => t.ProductID).HasColumnName("ProductID");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product)

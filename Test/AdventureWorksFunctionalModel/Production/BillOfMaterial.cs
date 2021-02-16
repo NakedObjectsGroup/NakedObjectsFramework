@@ -34,7 +34,7 @@ namespace AW.Types
         public virtual UnitMeasure UnitMeasure { get; init; }
 
         [MemberOrder(99)]
-        //[Versioned]
+        [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"BillOfMaterial: {BillOfMaterialID}";

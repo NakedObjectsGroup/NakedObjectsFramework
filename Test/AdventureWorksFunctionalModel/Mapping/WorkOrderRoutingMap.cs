@@ -34,7 +34,7 @@ namespace AW.Mapping
             Property(t => t.ActualResourceHrs).HasColumnName("ActualResourceHrs");
             Property(t => t.PlannedCost).HasColumnName("PlannedCost");
             Property(t => t.ActualCost).HasColumnName("ActualCost");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Location).WithMany().HasForeignKey(t => t.LocationID);
