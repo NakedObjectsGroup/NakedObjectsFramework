@@ -25,7 +25,10 @@ namespace AW.Functions {
             )
         {            
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
-            return context.WithNew(sod).WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
+            return context.WithNew(sod).WithDeferred(c => {
+                var soh2 = c.Reload(soh);
+                return c.WithUpdated(soh2, soh2.Recalculated(c));
+            });
         }
 
         public static string DisableAddNewDetail(this SalesOrderHeader soh)
@@ -47,17 +50,14 @@ namespace AW.Functions {
         internal static SalesOrderDetail CreateNewDetail(this SalesOrderHeader soh, Product product, short quantity, IContext context)
         {
             var specialOfferProduct = Product_Functions.BestSpecialOfferProduct(product, quantity, context);
-            var specialOffer = Product_Functions.BestSpecialOffer(product, quantity, context);
-            var unitPrice = product.ListPrice;
-            var discount = unitPrice * specialOffer.DiscountPct;
             return new SalesOrderDetail()
             {
                 SalesOrderHeader = soh,
                 OrderQty = quantity,
                 SpecialOfferProduct = specialOfferProduct,
                 Product = product,
-                UnitPrice = unitPrice,
-                UnitPriceDiscount = discount,
+                UnitPrice = product.ListPrice,
+                UnitPriceDiscount = specialOfferProduct.SpecialOffer.DiscountPct,
                 rowguid = context.NewGuid(),
                 ModifiedDate = context.Now()
             };
