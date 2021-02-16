@@ -34,7 +34,7 @@ namespace AW.Mapping
             Property(t => t.CostYTD).HasColumnName("CostYTD");
             Property(t => t.CostLastYear).HasColumnName("CostLastYear");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
         }
     }
 }

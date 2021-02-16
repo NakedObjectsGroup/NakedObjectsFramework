@@ -24,7 +24,7 @@ namespace AW.Mapping
             ToTable("Currency", "Sales");
             Property(t => t.CurrencyCode).HasColumnName("CurrencyCode");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
         }
     }
 }

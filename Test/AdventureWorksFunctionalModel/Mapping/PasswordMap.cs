@@ -13,7 +13,7 @@ namespace AW.Mapping {
             Property(t => t.PasswordHash).HasColumnName("PasswordHash");
             Property(t => t.PasswordSalt).HasColumnName("PasswordSalt");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
             HasRequired(pw => pw.Person);
             }
     }
