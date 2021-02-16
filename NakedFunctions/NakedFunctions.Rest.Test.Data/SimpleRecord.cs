@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using NakedFramework;
 
 namespace NakedFunctions.Rest.Test.Data {
     [PresentationHint("Hint1")]
@@ -33,6 +34,9 @@ namespace NakedFunctions.Rest.Test.Data {
 
         [MemberOrder("name1_group", 2)]
         public string Name1 { get; init; }
+
+        [Hidden]
+        public string Name2 { get; init; }
 
         public virtual bool Equals(OrderedRecord other) => ReferenceEquals(this, other);
         public override string ToString() => Name;

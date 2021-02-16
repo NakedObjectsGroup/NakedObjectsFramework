@@ -21,10 +21,14 @@ namespace NakedFunctions.Meta.Facet {
 
         public static Type Type => typeof(ICreateNewFacet);
 
+        private static bool IsNotHidden(IAssociationSpec spec) => string.IsNullOrWhiteSpace(spec.GetFacet<IHiddenFacet>()?.HidesForState(false));
+
         public string[] OrderedProperties(INakedObjectsFramework framework) {
-            var spec = (IObjectSpec) framework.MetamodelManager.GetSpecification(toCreate);
-            var fields = spec.Properties;
-            return fields.Select(f => f.Name).ToArray();
+            if (framework.MetamodelManager.GetSpecification(toCreate) is IObjectSpec spec) {
+                return spec.Properties.Where(IsNotHidden).Select(f => f.Name).ToArray();
+            }
+
+            return Array.Empty<string>();
         }
     }
 }
