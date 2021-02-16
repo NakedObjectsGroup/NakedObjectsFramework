@@ -68,7 +68,7 @@ namespace NakedFunctions.Meta.Facet {
                 return map => {
                     var newContext = new FunctionalContext {Persistor = functionalContext.Persistor, Provider = functionalContext.Provider, ProxyMap = map};
                     var innerContext = (FunctionalContext) postSaveFunction(newContext);
-                    var updated = PersistResult(framework.LifecycleManager, innerContext.New, innerContext.Updated, GetPostSaveFunction(innerContext, framework));
+                    var updated = PersistResult(framework.LifecycleManager, innerContext.New, innerContext.Deleted, innerContext.Updated, GetPostSaveFunction(innerContext, framework));
                     return updated.Any();
                 };
             }
@@ -76,13 +76,13 @@ namespace NakedFunctions.Meta.Facet {
             return _ => false;
         }
 
-        private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, (object proxy, object updated)[] updatedObjects, Func<IDictionary<object, object>, bool> postSaveFunction) =>
-            lifecycleManager.Persist(new DetachedObjects(newObjects, updatedObjects, postSaveFunction)).ToArray();
+        private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, object[] deletedObjects, (object proxy, object updated)[] updatedObjects, Func<IDictionary<object, object>, bool> postSaveFunction) =>
+            lifecycleManager.Persist(new DetachedObjects(newObjects, deletedObjects, updatedObjects, postSaveFunction)).ToArray();
 
         private static (object, FunctionalContext) CastTuple(ITuple tuple) => (tuple[0], (FunctionalContext) tuple[1]);
 
         private static (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedObjectsFramework framework) =>
-            PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
+            PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Deleted,  functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
 
         private static object HandleTupleResult((object, FunctionalContext) tuple, INakedObjectsFramework framework) {
             var (toReturn, context) = tuple;

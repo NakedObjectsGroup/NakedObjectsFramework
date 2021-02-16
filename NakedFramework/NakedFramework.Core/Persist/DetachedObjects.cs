@@ -11,8 +11,9 @@ using NakedFramework.Architecture.Persist;
 
 namespace NakedFramework.Core.Persist {
     public class DetachedObjects : IDetachedObjects {
-        public DetachedObjects(object[] toSave, (object proxy, object updated)[] toUpdate, Func<IDictionary<object, object>, bool> postSaveFunction) {
+        public DetachedObjects(object[] toSave, object[] toDelete, (object proxy, object updated)[] toUpdate, Func<IDictionary<object, object>, bool> postSaveFunction) {
             ToSave = toSave;
+            ToDelete = toDelete;
             ToUpdate = toUpdate;
             PostSaveFunction = postSaveFunction;
         }
@@ -20,6 +21,7 @@ namespace NakedFramework.Core.Persist {
         public List<(object original, object updated)> SavedAndUpdated { get; } = new();
         public Func<IDictionary<object, object>, bool> PostSaveFunction { get; }
 
+        public object[] ToDelete { get; }
         public object[] ToSave { get; }
         public (object proxy, object updated)[] ToUpdate { get; }
     }
