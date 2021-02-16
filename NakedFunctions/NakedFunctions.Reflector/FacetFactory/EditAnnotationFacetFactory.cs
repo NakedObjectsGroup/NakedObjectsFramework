@@ -30,7 +30,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private PropertyInfo[] MatchingProperties(MethodInfo method) {
             var allParms = method.GetParameters();
             var toMatchParms = allParms.Where(p => !p.IsInjectedParameter() && !p.IsTargetParameter()).ToArray();
-            var matchedProperties = Array.Empty<PropertyInfo>();
 
             if (toMatchParms.Any()) {
                 var firstParm = allParms.First();

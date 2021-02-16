@@ -275,6 +275,22 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static IQueryable<SimpleClass> SimpleFunctionCollection(this SimpleClass target, IContext context) => context.Instances<SimpleClass>();
     }
 
+    public record EditClass {
+        public virtual SimpleClass SimpleProperty { get; init; }
+
+        public virtual int IntProperty { get; init; }
+
+        public virtual string StringProperty { get; init; }
+
+        public virtual string NotMatchedProperty { get; init; }
+    }
+
+    public static class EditClassFunctions {
+        [Edit]
+        public static IContext EditFunction(this EditClass target, SimpleClass simpleProperty, int intProperty, string stringProperty, IContext context) => context;
+    }
+
+
     [TestClass]
     public class ReflectorTest {
         private Action<IServiceCollection> TestHook { get; } = services => { };
@@ -1297,5 +1313,41 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsTrue(facet.IsContributedToCollectionOf(spec));
             }
         }
+
+        [TestMethod]
+        public void ReflectEditAnnotation ()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(EditClass) , typeof(SimpleClass) };
+                        options.Functions = new[] { typeof(EditClassFunctions) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<EditClass>());
+
+                var actionSpecs = spec.ContributedActions;
+                var facet = actionSpecs[0].GetFacet<IEditPropertiesFacet>();
+
+                Assert.IsNotNull(facet);
+                var matched = facet.Properties;
+
+                Assert.AreEqual(3, matched.Length);
+
+                Assert.AreEqual("SimpleProperty", matched[0]);
+                Assert.AreEqual("IntProperty", matched[1]);
+                Assert.AreEqual("StringProperty", matched[2]);
+            }
+        }
+
     }
 }
