@@ -52,7 +52,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
             context.OrderedRecords.Add(new OrderedRecord());
 
-            context.EditRecords.Add(new EditRecord());
+            context.EditRecords.Add(new EditRecord() {Name = "Jane", SimpleRecord = fred, NotMatched = "no"}  );
 
             context.SaveChanges();
         }

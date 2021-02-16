@@ -121,7 +121,7 @@ namespace NakedFunctions.Rest.Test {
             var parameters = parsedResult["parameters"];
             Assert.AreEqual(1, parameters.Count());
             var parameter = parameters["name"];
-            Assert.AreEqual(2, parameter.Count());
+            Assert.AreEqual(3, parameter.Count());
             var links = parameter["links"];
             var extensions = parameter["extensions"];
             Assert.AreEqual(0, links.Count());
@@ -936,7 +936,12 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual(nameof(EditRecordFunctions.EditFunction), parsedResult["id"].ToString());
 
-            Assert.AreEqual("Name,SimpleRecord", parsedResult["extensions"]["x-ro-nof-editProperties"].ToString());
+            Assert.AreEqual("SimpleRecord,Name", parsedResult["extensions"]["x-ro-nof-editProperties"].ToString());
+
+
+            Assert.AreEqual("Fred", parsedResult["parameters"]["simpleRecord"]["default"]["title"].ToString());
+            Assert.AreEqual("Jane", parsedResult["parameters"]["name"]["default"].ToString());
+            Assert.IsNull(parsedResult["parameters"]["another"]["default"]);
         }
     }
 }

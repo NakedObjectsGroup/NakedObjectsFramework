@@ -1066,7 +1066,8 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<EditClass>());
 
                 var actionSpecs = spec.ContributedActions;
-                var facet = actionSpecs[0].GetFacet<IEditPropertiesFacet>();
+                var actionSpec = actionSpecs[0];
+                var facet = actionSpec.GetFacet<IEditPropertiesFacet>();
 
                 Assert.IsNotNull(facet);
                 var matched = facet.Properties;
@@ -1076,6 +1077,23 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual("SimpleProperty", matched[0]);
                 Assert.AreEqual("IntProperty", matched[1]);
                 Assert.AreEqual("StringProperty", matched[2]);
+
+                var parameterSpecs = actionSpec.Parameters;
+
+                var eFacet = parameterSpecs[0].GetFacet<IActionDefaultsFacet>();
+                Assert.IsNull(eFacet);
+
+                eFacet = parameterSpecs[1].GetFacet<IActionDefaultsFacet>();
+                Assert.IsNotNull(eFacet);
+                
+                eFacet = parameterSpecs[3].GetFacet<IActionDefaultsFacet>();
+                Assert.IsNotNull(eFacet);
+
+                eFacet = parameterSpecs[3].GetFacet<IActionDefaultsFacet>();
+                Assert.IsNotNull(eFacet);
+
+                eFacet = parameterSpecs[4].GetFacet<IActionDefaultsFacet>();
+                Assert.IsNull(eFacet);
             }
         }
     }
