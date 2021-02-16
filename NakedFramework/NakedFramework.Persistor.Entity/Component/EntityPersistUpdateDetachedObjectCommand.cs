@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Persist;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core;
+using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Util;
 
@@ -78,12 +79,25 @@ namespace NakedObjects.Persistor.Entity.Component {
                     ProxyIfNotAlreadySeen(updateTuple);
                 }
 
+                foreach (var toDelete in detachedObjects.ToDelete) {
+                    DeleteObject(toDelete);
+                }
+
+
                 return detachedObjects.SavedAndUpdated;
             }
             catch (Exception e) {
                 parent.logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
                 throw;
             }
+        }
+
+        private void DeleteObject(object toDelete) {
+            var adapter = parent.createAdapter(null, toDelete);
+            context = parent.GetContext(toDelete);
+            context.WrappedObjectContext.DeleteObject(toDelete);
+            adapter.ResolveState.Handle(Events.DestroyEvent);
+
         }
 
         private void SetKeyAsNecessary(object objectToProxy, object proxy) {

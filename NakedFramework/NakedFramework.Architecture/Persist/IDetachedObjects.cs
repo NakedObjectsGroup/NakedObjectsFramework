@@ -12,8 +12,8 @@ namespace NakedFramework.Architecture.Persist {
     public interface IDetachedObjects {
         public object[] ToSave { get; }
         public (object proxy, object updated)[] ToUpdate { get; }
+        public object[] ToDelete { get; }
 
-       
         public List<(object original, object updated)> SavedAndUpdated { get; }
 
         public Func<IDictionary<object, object>, bool> PostSaveFunction { get; }
