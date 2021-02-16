@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Rest.Test.Data {
@@ -21,16 +20,14 @@ namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleRecordFunctions {
         [Edit]
         [PresentationHint("Hint3")]
-        public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, [PresentationHint("Hint4")] string name, IContext context) {
-            return Helpers.DisplayAndUpdate(sp with {Name = name}, sp, context);
-        }
+        public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, [PresentationHint("Hint4")] string name, IContext context) => Helpers.DisplayAndUpdate(sp with {Name = name}, sp, context);
 
         [Edit]
         public static (SimpleRecord, IContext) EditSimpleRecordWithPostPersist(this SimpleRecord sp, string name, IContext context) {
-            SimpleRecord updated = sp with { Name = name };
+            var updated = sp with {Name = name};
             context = context.WithUpdated(sp, updated);
             context = context.WithDeferred(c => {
-                var updated2 = updated with { Name = updated.Name + "Updated" };
+                var updated2 = updated with {Name = updated.Name + "Updated"};
                 c = c.WithUpdated(sp, updated2);
                 return c;
             });
@@ -44,9 +41,9 @@ namespace NakedFunctions.Rest.Test.Data {
             context = context.WithDeferred(c => {
                 var updated2 = updated with {Name = updated.Name + "Updated"};
                 c = c.WithUpdated(sp, updated2).WithDeferred(cc => {
-                    var updated3 = updated2 with {Name = updated.Name + "Updated" + "Updated" };
+                    var updated3 = updated2 with {Name = updated.Name + "Updated" + "Updated"};
                     cc = cc.WithUpdated(sp, updated3).WithDeferred(ccc => {
-                        var updated4 = updated3 with { Name = updated.Name + "Updated" + "Updated" + "Updated" };
+                        var updated4 = updated3 with {Name = updated.Name + "Updated" + "Updated" + "Updated"};
                         ccc = ccc.WithUpdated(sp, updated4);
                         return ccc;
                     });
@@ -57,16 +54,14 @@ namespace NakedFunctions.Rest.Test.Data {
             return (updated, context);
         }
 
-        public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context) {
-            return Helpers.DisplayAndSave(new SimpleRecord {Name = name}, context);
-        }
+        public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context) => Helpers.DisplayAndSave(new SimpleRecord {Name = name}, context);
 
         public static (SimpleRecord, IContext) CreateSimpleRecordWithPostPersist(this SimpleRecord sp, string name, IContext context) {
-            SimpleRecord newObj = new SimpleRecord { Name = name };
+            var newObj = new SimpleRecord {Name = name};
             context = context.WithNew(newObj);
             context = context.WithDeferred(c => {
                 var original = c.Reload(newObj);
-                var updated2 = original with { Name = newObj.Name + "Updated" };
+                var updated2 = original with {Name = newObj.Name + "Updated"};
                 c = c.WithUpdated(original, updated2);
                 return c;
             });
@@ -104,29 +99,22 @@ namespace NakedFunctions.Rest.Test.Data {
             return context.Instances<DateRecord>().Where(simpleRecord => simpleRecord.Name.ToUpper().StartsWith(name.ToUpper()));
         }
 
-        public static SimpleRecord EnumParmSimpleRecord(this SimpleRecord sp, TestEnum eParm, IContext context) {
-            return sp;
-        }
+        public static SimpleRecord EnumParmSimpleRecord(this SimpleRecord sp, TestEnum eParm, IContext context) => sp;
 
-        public static SimpleRecord PasswordParmSimpleRecord(this SimpleRecord sp, [Password] string parm, IContext context) {
-            return sp;
-        }
+        public static SimpleRecord PasswordParmSimpleRecord(this SimpleRecord sp, [Password] string parm, IContext context) => sp;
 
         [CreateNew]
-        public static SimpleRecord CreateNewFunction(this SimpleRecord sp, IContext context) {
-            return sp;
-        }
+        public static SimpleRecord CreateNewFunction(this SimpleRecord sp, IContext context) => sp;
 
         public static (SimpleRecord, IContext) SimpleRecordAsCurrentUser(this SimpleRecord sp, IContext context) {
-            var updated = sp with { Name = context.CurrentUser().Identity.Name };
+            var updated = sp with {Name = context.CurrentUser().Identity.Name};
             context = context.WithUpdated(sp, updated);
 
             return (updated, context);
         }
 
-        public static (SimpleRecord, IContext) SimpleRecordAsReset(this SimpleRecord sp, IContext context)
-        {
-            var updated = sp with { Name = "Fred" };
+        public static (SimpleRecord, IContext) SimpleRecordAsReset(this SimpleRecord sp, IContext context) {
+            var updated = sp with {Name = "Fred"};
             context = context.WithUpdated(sp, updated);
 
             return (updated, context);
@@ -150,6 +138,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IList<SimpleRecord> Choices1WithChoices(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>().ToList();
 
         public static SimpleRecord WithChoicesWithParameters(this SimpleRecord sp, SimpleRecord record, int parm1, string parm2, IContext context) => record;
+
         public static IList<SimpleRecord> Choices1WithChoicesWithParameters(this SimpleRecord sp, int parm1, string parm2, IContext context) =>
             context.Instances<SimpleRecord>().Where(sr => sr.Name.StartsWith(parm2)).Take(parm1).ToList();
 
@@ -179,6 +168,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public static string Validate1WithValidation(this SimpleRecord sp, int validate1, IContext context) => validate1 == 1 ? "" : "invalid";
 
         public static SimpleRecord WithCrossValidation(this SimpleRecord sp, int validate1, string validate2, IContext context) => sp;
+
         public static string ValidateWithCrossValidation(this SimpleRecord sp, int validate1, string validate2, IContext context) =>
             validate1 == int.Parse(validate2) ? "" : $"invalid: {validate1}:{validate2}";
 
@@ -186,9 +176,9 @@ namespace NakedFunctions.Rest.Test.Data {
         public static string Validate1WithValidationNoContext(this SimpleRecord sp, int validate1) => validate1 == 1 ? "" : "invalid";
 
         public static SimpleRecord WithCrossValidationNoContext(this SimpleRecord sp, int validate1, string validate2, IContext context) => sp;
+
         public static string ValidateWithCrossValidationNoContext(this SimpleRecord sp, int validate1, string validate2) =>
             validate1 == int.Parse(validate2) ? "" : $"invalid: {validate1}:{validate2}";
-
     }
 
     public static class DisabledRecordFunctions {
@@ -237,18 +227,22 @@ namespace NakedFunctions.Rest.Test.Data {
     public static class OrderedRecordFunctions {
         [MemberOrder("function1_group", 3)]
         public static OrderedRecord Function1(this OrderedRecord or) => or;
+
         [MemberOrder("function2_group", 2)]
         public static OrderedRecord Function2(this OrderedRecord or) => or;
     }
 
-
-    public static class CollectionContributedFunctions
-    {
+    public static class CollectionContributedFunctions {
         public static IContext ContributedFunction1(this IQueryable<SimpleRecord> sr, IContext context) => context;
         public static (SimpleRecord, IContext) ContributedFunction2(this IQueryable<SimpleRecord> sr, IContext context) => (sr.FirstOrDefault(), context);
-        public static (ICollection<SimpleRecord>, IContext) ContributedFunction3(this IQueryable<SimpleRecord> sr, int count,  IContext context) => (sr.Take(count).ToList(), context);
+        public static (ICollection<SimpleRecord>, IContext) ContributedFunction3(this IQueryable<SimpleRecord> sr, int count, IContext context) => (sr.Take(count).ToList(), context);
         public static SimpleRecord ContributedFunction4(this IQueryable<SimpleRecord> sr, IContext context) => sr.FirstOrDefault();
 
         public static IContext LocalContributedFunction(this CollectionRecord cr, IEnumerable<UpdatedRecord> updatedRecords, IContext context) => context;
+    }
+
+    public static class EditRecordFunctions {
+        [Edit]
+        public static IContext EditFunction(this EditRecord er, SimpleRecord simpleRecord, string name, string another, IContext context) => context;
     }
 }

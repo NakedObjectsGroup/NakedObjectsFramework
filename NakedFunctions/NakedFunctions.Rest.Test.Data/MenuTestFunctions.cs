@@ -7,13 +7,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Rest.Test.Data {
-    public static class SimpleMenuFunctions {
-
+    public static class MenuTestFunctions {
         [MemberOrder("findbyname_group", 1)]
         public static IQueryable<SimpleRecord> FindByName(string searchString, IContext context) {
             return context.Instances<SimpleRecord>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
@@ -62,6 +59,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IList<SimpleRecord> Choices0WithChoices(IContext context) => context.Instances<SimpleRecord>().ToList();
 
         public static SimpleRecord WithChoicesWithParameters(SimpleRecord record, int parm1, string parm2, IContext context) => record;
+
         public static IList<SimpleRecord> Choices0WithChoicesWithParameters(int parm1, string parm2, IContext context) =>
             context.Instances<SimpleRecord>().Where(sr => sr.Name.StartsWith(parm2)).Take(parm1).ToList();
 
@@ -70,15 +68,14 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IQueryable<DateRecord> Choices1WithMultipleChoices(IEnumerable<SimpleRecord> simpleRecords, IContext context) => context.Instances<DateRecord>();
 
         public static SimpleRecord WithChoicesNoContext(SimpleRecord record, IContext context) => record;
-        public static IList<SimpleRecord> Choices0WithChoicesNoContext() => new List<SimpleRecord> {  };
+        public static IList<SimpleRecord> Choices0WithChoicesNoContext() => new List<SimpleRecord>();
 
         public static SimpleRecord WithChoicesWithParametersNoContext(SimpleRecord record, int parm1, string parm2, IContext context) => record;
-        public static IList<SimpleRecord> Choices0WithChoicesWithParametersNoContext(int parm1, string parm2) => new List<SimpleRecord> { };
+        public static IList<SimpleRecord> Choices0WithChoicesWithParametersNoContext(int parm1, string parm2) => new List<SimpleRecord>();
 
         public static IQueryable<SimpleRecord> WithMultipleChoicesNoContext(IEnumerable<SimpleRecord> simpleRecords, IEnumerable<DateRecord> dateRecords, IContext context) => simpleRecords.AsQueryable();
-        public static IQueryable<SimpleRecord> Choices0WithMultipleChoicesNoContext() => new List<SimpleRecord> {  }.AsQueryable();
+        public static IQueryable<SimpleRecord> Choices0WithMultipleChoicesNoContext() => new List<SimpleRecord>().AsQueryable();
         public static IQueryable<DateRecord> Choices1WithMultipleChoicesNoContext(IEnumerable<SimpleRecord> simpleRecords) => new List<DateRecord>().AsQueryable();
-
     }
 
     public static class DefaultedMenuFunctions {
@@ -128,8 +125,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public static bool HideWithHidden2(IContext context) => false;
     }
 
-    public static class AutoCompleteMenuFunctions
-    {
+    public static class AutoCompleteMenuFunctions {
         public static SimpleRecord WithAutoComplete(SimpleRecord simpleRecord, IContext context) => simpleRecord;
 
         [PageSize(2)]
@@ -147,19 +143,17 @@ namespace NakedFunctions.Rest.Test.Data {
             return Helpers.DisplayAndSave(new ReferenceRecord {Name = "Test1", UpdatedRecord = sr, DateRecord = dr}, context);
         }
 
-        public static (ReferenceRecord, IContext) CreateNewWithNewReferences(IContext context)
-        {
+        public static (ReferenceRecord, IContext) CreateNewWithNewReferences(IContext context) {
             var sr = context.Instances<UpdatedRecord>().First();
             var dr = context.Instances<DateRecord>().First();
 
-            var nsr = new UpdatedRecord() {Name = "Test2"};
+            var nsr = new UpdatedRecord {Name = "Test2"};
             var nrr = new ReferenceRecord {Name = "Test1", UpdatedRecord = nsr, DateRecord = dr};
 
             context = context.WithNew(nrr).WithNew(nsr);
 
             return (nrr, context);
         }
-
 
         public static (ReferenceRecord, IContext) UpdateExisting(IContext context) {
             var rr = context.Instances<ReferenceRecord>().First();
@@ -175,58 +169,50 @@ namespace NakedFunctions.Rest.Test.Data {
             var rr = context.Instances<ReferenceRecord>().First();
             var ur = context.Instances<UpdatedRecord>().First();
             var nur = ur with {Name = "Jill"};
-            var nrr = rr with { Name = "Test3", UpdatedRecord = nur, DateRecord = rr.DateRecord };
+            var nrr = rr with {Name = "Test3", UpdatedRecord = nur, DateRecord = rr.DateRecord};
 
             context = context.WithUpdated(rr, nrr).WithUpdated(ur, nur);
 
             return (nrr, context);
         }
 
-        public static (ReferenceRecord, IContext) CreateNewUpdateReference(IContext context)
-        {
+        public static (ReferenceRecord, IContext) CreateNewUpdateReference(IContext context) {
             var rr = context.Instances<ReferenceRecord>().First();
             var ur = context.Instances<UpdatedRecord>().First();
-            var nur = ur with { Name = "Janet" };
-            var nrr = new ReferenceRecord() { Name = "Test4", UpdatedRecord = nur, DateRecord = rr.DateRecord };
+            var nur = ur with {Name = "Janet"};
+            var nrr = new ReferenceRecord {Name = "Test4", UpdatedRecord = nur, DateRecord = rr.DateRecord};
 
             //context = context.WithPendingSave(sr, nrr);
             context = context.WithNew(nrr).WithUpdated(ur, nur);
             return (nrr, context);
         }
 
-
-
-        public static (CollectionRecord, IContext) CreateNewWithExistingCollection(IContext context)
-        {
+        public static (CollectionRecord, IContext) CreateNewWithExistingCollection(IContext context) {
             var sr = context.Instances<UpdatedRecord>();
-            return Helpers.DisplayAndSave(new CollectionRecord { Name = "Test1", UpdatedRecords = sr.ToList() }, context);
+            return Helpers.DisplayAndSave(new CollectionRecord {Name = "Test1", UpdatedRecords = sr.ToList()}, context);
         }
 
-        public static (CollectionRecord, IContext) UpdateExistingCollectionRecord(IContext context)
-        {
+        public static (CollectionRecord, IContext) UpdateExistingCollectionRecord(IContext context) {
             var sr = context.Instances<CollectionRecord>().First();
-            return Helpers.DisplayAndUpdate(sr with { Name = "Test2", UpdatedRecords = sr.UpdatedRecords }, sr, context);
+            return Helpers.DisplayAndUpdate(sr with {Name = "Test2", UpdatedRecords = sr.UpdatedRecords}, sr, context);
         }
 
-
-        public static (CollectionRecord, IContext) UpdateExistingAndCollection(IContext context)
-        {
+        public static (CollectionRecord, IContext) UpdateExistingAndCollection(IContext context) {
             var rr = context.Instances<CollectionRecord>().ToArray().Last();
             var ur = context.Instances<UpdatedRecord>().First();
-            var nur = ur with { Name = "John" };
-            var nrr = rr with { Name = "Test3" };
+            var nur = ur with {Name = "John"};
+            var nrr = rr with {Name = "Test3"};
 
             context = context.WithUpdated(rr, nrr).WithUpdated(ur, nur);
 
             return (nrr, context);
         }
 
-        public static (CollectionRecord, IContext) UpdateExistingAndAddToCollection(IContext context)
-        {
+        public static (CollectionRecord, IContext) UpdateExistingAndAddToCollection(IContext context) {
             var rr = context.Instances<CollectionRecord>().First();
             var ur = context.Instances<UpdatedRecord>().First();
-            var nur = ur with { Name = "John" };
-            var nrr = rr with { Name = "Test3", UpdatedRecords = rr.UpdatedRecords.Union(new[] {nur}).ToList()};
+            var nur = ur with {Name = "John"};
+            var nrr = rr with {Name = "Test3", UpdatedRecords = rr.UpdatedRecords.Union(new[] {nur}).ToList()};
 
             context = context.WithUpdated(rr, nrr).WithUpdated(ur, nur);
 

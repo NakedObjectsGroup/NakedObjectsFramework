@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace NakedFunctions.Rest.Test.Data {
@@ -31,7 +30,7 @@ namespace NakedFunctions.Rest.Test.Data {
             context.SimpleRecords.Add(fred);
             context.SimpleRecords.Add(new SimpleRecord {Name = "Bill"});
             context.SimpleRecords.Add(new SimpleRecord {Name = "Jack"});
-            context.SimpleRecords.Add(new SimpleRecord { Name = "hide it" });
+            context.SimpleRecords.Add(new SimpleRecord {Name = "hide it"});
 
             var ur = new UpdatedRecord {Name = ""};
             context.UpdatedRecords.Add(ur);
@@ -45,13 +44,15 @@ namespace NakedFunctions.Rest.Test.Data {
 
             //context.CollectionRecords.Add(new CollectionRecord {UpdatedRecords = new List<UpdatedRecord> {ur}});
 
-            context.CollectionRecords.Add(new CollectionRecord {  });
+            context.CollectionRecords.Add(new CollectionRecord());
 
             context.GuidRecords.Add(new GuidRecord());
 
             context.DisplayAsPropertyRecords.Add(new DisplayAsPropertyRecord());
 
             context.OrderedRecords.Add(new OrderedRecord());
+
+            context.EditRecords.Add(new EditRecord());
 
             context.SaveChanges();
         }
@@ -69,7 +70,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<UpdatedRecord> UpdatedRecords { get; set; }
         public DbSet<CollectionRecord> CollectionRecords { get; set; }
         public DbSet<OrderedRecord> OrderedRecords { get; set; }
-
+        public DbSet<EditRecord> EditRecords { get; set; }
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
             Database.SetInitializer(new DatabaseInitializer<T>());
@@ -82,8 +83,7 @@ namespace NakedFunctions.Rest.Test.Data {
         protected override void OnModelCreating(DbModelBuilder modelBuilder) => OnModelCreating<MenuDbContext>(modelBuilder);
     }
 
-    public class ObjectDbContext : TestDbContext
-    {
+    public class ObjectDbContext : TestDbContext {
         public ObjectDbContext() : base(Constants.CsObject) { }
         public static void Delete() => Database.Delete(Constants.CsObject);
         protected override void OnModelCreating(DbModelBuilder modelBuilder) => OnModelCreating<ObjectDbContext>(modelBuilder);

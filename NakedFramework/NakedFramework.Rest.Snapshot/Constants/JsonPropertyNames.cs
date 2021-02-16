@@ -79,6 +79,7 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         public const string CustomFindMenu = "x-ro-nof-findMenu";
         public const string CustomCreateNew = "x-ro-nof-createNew";
         public const string CustomPropertyGrouping = "x-ro-nof-propertyGrouping";
+        public const string CustomEditProperties = "x-ro-nof-editProperties";
 
         public const string CustomWarnings = "x-ro-nof-warnings";
         public const string CustomMessages = "x-ro-nof-messages";

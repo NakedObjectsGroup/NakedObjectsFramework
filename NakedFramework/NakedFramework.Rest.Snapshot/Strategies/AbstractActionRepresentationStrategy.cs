@@ -125,6 +125,13 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 ext[JsonPropertyNames.CustomCreateNew] = true;
             }
 
+            var editProperties = ActionContext.Action.EditProperties;
+
+            if (editProperties.Any()) {
+                ext ??= new Dictionary<string, object>();
+                ext[JsonPropertyNames.CustomEditProperties] = string.Join(',', editProperties);
+            }
+
             return ext;
         }
 
