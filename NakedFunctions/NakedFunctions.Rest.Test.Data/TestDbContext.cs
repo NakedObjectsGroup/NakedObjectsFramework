@@ -54,6 +54,10 @@ namespace NakedFunctions.Rest.Test.Data {
 
             context.EditRecords.Add(new EditRecord() {Name = "Jane", SimpleRecord = fred, NotMatched = "no"}  );
 
+            context.DeleteRecords.Add(new DeleteRecord());
+            context.DeleteRecords.Add(new DeleteRecord());
+
+
             context.SaveChanges();
         }
     }
@@ -71,6 +75,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<CollectionRecord> CollectionRecords { get; set; }
         public DbSet<OrderedRecord> OrderedRecords { get; set; }
         public DbSet<EditRecord> EditRecords { get; set; }
+        public DbSet<DeleteRecord> DeleteRecords { get; set; }
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
             Database.SetInitializer(new DatabaseInitializer<T>());

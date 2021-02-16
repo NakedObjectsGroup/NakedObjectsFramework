@@ -41,7 +41,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(ViewModelFunctions),
             typeof(OrderedRecordFunctions),
             typeof(CollectionContributedFunctions),
-            typeof(EditRecordFunctions)
+            typeof(EditRecordFunctions),
+            typeof(DeleteRecordFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -56,7 +57,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(UpdatedRecord),
             typeof(OrderedRecord),
             typeof(CollectionRecord),
-            typeof(EditRecord)
+            typeof(EditRecord),
+            typeof(DeleteRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -236,6 +238,29 @@ namespace NakedFunctions.Rest.Test {
             resultObj.AssertObject("Fred4", FullName<SimpleRecord>(), "1");
             Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
         }
+
+        [Test]
+        public void TestInvokeDeleteRecord()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> () };
+
+            var result = api.PostInvoke(FullName<DeleteRecord>(), "1", nameof(DeleteRecordFunctions.DeleteFunction), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        }
+
+        [Test]
+        public void TestInvokeDeleteRecordAndReturn()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+
+            var result = api.PostInvoke(FullName<DeleteRecord>(), "1", nameof(DeleteRecordFunctions.DeleteFunctionAndReturn), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        }
+
 
         [Test]
         public void TestInvokeUpdateAndPersistSimpleRecordWithPostPersist() {

@@ -245,4 +245,15 @@ namespace NakedFunctions.Rest.Test.Data {
         [Edit]
         public static IContext EditFunction(this EditRecord er, SimpleRecord simpleRecord, string name, string another, IContext context) => context;
     }
+
+    public static class DeleteRecordFunctions {
+        public static IContext DeleteFunction(this DeleteRecord dr, IContext context) {
+            return context.WithDeleted(dr);
+        }
+
+        public static (DeleteRecord, IContext) DeleteFunctionAndReturn(this DeleteRecord dr, IContext context)
+        {
+            return (dr, context.WithDeleted(dr));
+        }
+    }
 }

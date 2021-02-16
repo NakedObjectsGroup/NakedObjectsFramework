@@ -25,6 +25,16 @@ namespace NakedFunctions.Rest.Test.Data {
         public override int GetHashCode() => base.GetHashCode();
     }
 
+    public record DeleteRecord
+    {
+        [Key]
+        public int Id { get; init; }
+
+        public virtual bool Equals(SimpleRecord other) => ReferenceEquals(this, other);
+        public override string ToString() => "";
+        public override int GetHashCode() => base.GetHashCode();
+    }
+
     public record OrderedRecord {
         [Key]
         public int Id { get; init; }
