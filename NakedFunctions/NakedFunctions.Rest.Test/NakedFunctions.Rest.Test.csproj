@@ -27,6 +27,5 @@
     <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 
- 
 
 </Project>

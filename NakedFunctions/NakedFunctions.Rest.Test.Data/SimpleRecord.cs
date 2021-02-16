@@ -24,8 +24,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public override int GetHashCode() => base.GetHashCode();
     }
 
-    public record OrderedRecord
-    {
+    public record OrderedRecord {
         [Key]
         public int Id { get; init; }
 
@@ -40,8 +39,6 @@ namespace NakedFunctions.Rest.Test.Data {
         public override int GetHashCode() => base.GetHashCode();
     }
 
-
-
     public record DateRecord {
         [Key]
         public int Id { get; init; }
@@ -49,9 +46,9 @@ namespace NakedFunctions.Rest.Test.Data {
         public string Name { get; init; }
         public DateTime EndDate { get; set; } = DateTime.Now;
         public DateTime StartDate { get; set; } = DateTime.Now;
+        public virtual bool Equals(DateRecord other) => ReferenceEquals(this, other);
 
         public override int GetHashCode() => base.GetHashCode();
-        public virtual bool Equals(DateRecord other) => ReferenceEquals(this, other);
     }
 
     public enum TestEnum {
@@ -66,8 +63,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public TestEnum TestEnum { get; set; }
     }
 
-    public record UpdatedRecord
-    {
+    public record UpdatedRecord {
         [Key]
         public int Id { get; init; }
 
@@ -86,26 +82,25 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public virtual UpdatedRecord UpdatedRecord { get; init; }
         public virtual DateRecord DateRecord { get; init; }
+        public virtual bool Equals(ReferenceRecord other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{Name}-{Id}-{UpdatedRecord?.Id}-{DateRecord?.Id}";
 
         public override int GetHashCode() => base.GetHashCode();
-        public virtual bool Equals(ReferenceRecord other) => ReferenceEquals(this, other);
     }
 
-    public record CollectionRecord
-    {
+    public record CollectionRecord {
         [Key]
         public int Id { get; init; }
 
         public string Name { get; init; }
 
         public virtual IList<UpdatedRecord> UpdatedRecords { get; init; } = new List<UpdatedRecord>();
-        
-        public override string ToString() => $"{Name}-{Id}-{UpdatedRecords.Aggregate("", (i,a) => i + a.Id)}";
+        public virtual bool Equals(CollectionRecord other) => ReferenceEquals(this, other);
+
+        public override string ToString() => $"{Name}-{Id}-{UpdatedRecords.Aggregate("", (i, a) => i + a.Id)}";
 
         public override int GetHashCode() => base.GetHashCode();
-        public virtual bool Equals(CollectionRecord other) => ReferenceEquals(this, other);
     }
 
     public record GuidRecord {
@@ -130,17 +125,16 @@ namespace NakedFunctions.Rest.Test.Data {
         public override int GetHashCode() => base.GetHashCode();
     }
 
-    public record EditRecord
-    {
+    public record EditRecord {
         [Key]
         public int Id { get; init; }
 
         public string Name { get; init; }
-        
+
         public SimpleRecord SimpleRecord { get; set; }
 
         public string NotMatched { get; init; }
 
-        public override string ToString() => Name.ToString();
+        public override string ToString() => Name;
     }
 }

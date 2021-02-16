@@ -21,8 +21,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(parameters, action["parameters"].ToString());
         }
 
-        public static void AssertAction(this JToken action, string id)
-        {
+        public static void AssertAction(this JToken action, string id) {
             action.AssertMember("action", id);
         }
 
@@ -57,7 +56,6 @@ namespace NakedFunctions.Rest.Test {
                             href);
         }
 
-
         public static void AssertServiceInvokeLink(this JToken link, string arguments, string method, string service, string id) {
             Assert.AreEqual(5, link.Count());
             link.AssertInvokeLink(arguments,
@@ -66,15 +64,13 @@ namespace NakedFunctions.Rest.Test {
                                   $"http://localhost/services/{service}/actions/{id}/invoke");
         }
 
-        public static void AssertMenuInvokeLink(this JToken link, string arguments, string method, string menu, string id)
-        {
+        public static void AssertMenuInvokeLink(this JToken link, string arguments, string method, string menu, string id) {
             Assert.AreEqual(5, link.Count());
             link.AssertInvokeLink(arguments,
                                   method,
                                   id,
                                   $"http://localhost/menus/{menu}/actions/{id}/invoke");
         }
-
 
         public static void AssertObjectInvokeLink(this JToken link, string arguments, string method, string type, string instance, string id) {
             Assert.AreEqual(5, link.Count());
@@ -84,9 +80,7 @@ namespace NakedFunctions.Rest.Test {
                                   $"http://localhost/objects/{type}/{instance}/actions/{id}/invoke");
         }
 
-     
-        public static void AssertObjectElementLink(this JToken link, string title, string method, string type, string instance)
-        {
+        public static void AssertObjectElementLink(this JToken link, string title, string method, string type, string instance) {
             Assert.AreEqual(5, link.Count());
             Assert.AreEqual(title, link["title"].ToString());
             link.AssertLink(method,
@@ -95,12 +89,11 @@ namespace NakedFunctions.Rest.Test {
                             $"http://localhost/objects/{type}/{instance}");
         }
 
-
         public static void AssertExtensions(this JToken extensions, int count) {
             Assert.AreEqual(count, extensions.Count());
         }
 
-        public static void AssertObject(this JToken obj, string title,  string type, string instance) {
+        public static void AssertObject(this JToken obj, string title, string type, string instance) {
             Assert.AreEqual(instance, obj["instanceId"].ToString());
             Assert.AreEqual(type, obj["domainType"].ToString());
             Assert.AreEqual(title, obj["title"].ToString());
