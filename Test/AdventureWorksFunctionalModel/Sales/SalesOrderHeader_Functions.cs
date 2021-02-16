@@ -15,25 +15,7 @@ namespace AW.Functions {
     [Named("Sales Order")]
         public  static class SalesOrderHeader_Functions {
 
-        //TODO: temp method to test post save function
-        public static IContext NewComment(this SalesOrderHeader soh, string comment, IContext context) =>
-            context.WithUpdated(soh, soh with { Comment = comment, ModifiedDate = context.Now() }).
-            WithDeferred(c => c.WithUpdated(soh, soh with {
-                RevisionNumber = (byte) (soh.RevisionNumber + 1 ),
-                ModifiedDate = context.Now()
-            }));
-
-        public static IContext RecalculateFields(this SalesOrderHeader soh, IContext context)
-        {
-            var context2 = NewComment(soh, "Recalculated", context);
-            return context2.WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
-        }
-
-
-        #region Actions
-
         #region Add New Detail
-
         [MemberOrder(2), DescribedAs("Add a new line item to the order")]
         public static IContext AddNewDetail(
                 this SalesOrderHeader soh,
@@ -43,70 +25,10 @@ namespace AW.Functions {
             )
         {            
             SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
-            return context.WithNew(sod).WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
-        }
-
-        internal static SalesOrderHeader Recalculated(this SalesOrderHeader soh, IContext c)
-        {
-            var subTotal = soh.Details.Any() ? soh.Details.Sum(d => d.LineTotal) : 0.0m;  //TODO: Works if just return 0.0m !
-            var tax = subTotal * soh.GetTaxRate(c) / 100;
-            var total = subTotal + tax;
-            return soh with
-            {
-                SubTotal = subTotal,
-                TaxAmt = tax,
-                TotalDue = total,
-                ModifiedDate = c.Now()
-            };
-        }
-
-        //For use only when the soh is newly saved.
-        private static Func<IContext, IContext> CalculateTotals(this SalesOrderHeader soh) =>
-           c => RecalculateTotals(c.Reload(soh)).Invoke(c);
-
-
-        //For use when new details are added or updated
-        internal static Func<IContext, IContext> RecalculateTotals(this SalesOrderHeader soh)
-        {
-            return c =>
-            {
-                var subTotal = soh.Details.Any()? soh.Details.Sum(d => d.LineTotal) : 0.0m;  //TODO: Works if just return 0.0m !
-                var tax = subTotal * soh.GetTaxRate(c) / 100;
-                var total = subTotal + tax;
-                return c.WithUpdated(soh, soh with
-                {
-                    SubTotal = subTotal,
-                    TaxAmt = tax,
-                    TotalDue = total,
-                    ModifiedDate = c.Now()
-                });
-            };
-        }
-
-        internal static decimal GetTaxRate(this SalesOrderHeader soh, IContext context) {
-            var stateId = soh.BillingAddress.StateProvince.StateProvinceID;
-            var str = context.Instances<SalesTaxRate>().FirstOrDefault(str => str.StateProvinceID == stateId);
-            return str is null ? 0 : str.TaxRate;
-        }
-
-        internal static SalesOrderDetail CreateNewDetail(this SalesOrderHeader soh, Product product, short quantity, IContext context)
-        {
-            var specialOfferProduct = Product_Functions.BestSpecialOfferProduct(product, quantity, context);
-            var specialOffer = Product_Functions.BestSpecialOffer(product, quantity, context);
-            var unitPrice = product.ListPrice;
-            var discount = unitPrice * specialOffer.DiscountPct;
-            var sod = new SalesOrderDetail()
-            {
-                SalesOrderHeader = soh,
-                OrderQty = quantity,
-                SpecialOfferProduct = specialOfferProduct,
-                Product = product,
-                UnitPrice = unitPrice,
-                UnitPriceDiscount = discount,
-                rowguid = context.NewGuid(),
-                //ModifiedDate = context.Now() //Redundant - added by WithRecalculatedFields
-            };
-            return sod.WithRecalculatedFields(context);
+            return context.WithNew(sod).WithDeferred(c => {
+                var soh2 = c.Reload(soh);
+                return c.WithUpdated(soh2, soh2.Recalculated(c));
+            });
         }
 
         public static string DisableAddNewDetail(this SalesOrderHeader soh)
@@ -119,10 +41,50 @@ namespace AW.Functions {
         }
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoComplete0AddNewDetail(this SalesOrderHeader soh, [MinLength(2)] string name, IContext context) => 
-            Product_MenuFunctions.FindProductByName( name, context);
+        public static IQueryable<Product> AutoComplete1AddNewDetail(this SalesOrderHeader soh,
+            [MinLength(2)] string name, IContext context) =>
+            Product_MenuFunctions.FindProductByName(name, context);
 
         #endregion
+
+        internal static SalesOrderDetail CreateNewDetail(this SalesOrderHeader soh, Product product, short quantity, IContext context)
+        {
+            var specialOfferProduct = Product_Functions.BestSpecialOfferProduct(product, quantity, context);
+            return new SalesOrderDetail()
+            {
+                SalesOrderHeader = soh,
+                OrderQty = quantity,
+                SpecialOfferProduct = specialOfferProduct,
+                Product = product,
+                UnitPrice = product.ListPrice,
+                UnitPriceDiscount = specialOfferProduct.SpecialOffer.DiscountPct,
+                rowguid = context.NewGuid(),
+                ModifiedDate = context.Now()
+            };
+        }
+
+        internal static SalesOrderHeader Recalculated(this SalesOrderHeader soh, IContext c)
+        {
+            var subTotal = soh.Details.Any() ? soh.Details.Sum(d => d.LineTotal) : 0.0m;
+            var tax = subTotal * soh.GetTaxRate(c) / 100;
+            var total = subTotal + tax;
+            return soh with
+            {
+                SubTotal = subTotal,
+                TaxAmt = tax,
+                TotalDue = total,
+                ModifiedDate = c.Now()
+            };
+        }
+
+        internal static decimal GetTaxRate(this SalesOrderHeader soh, IContext context)
+        {
+            var stateId = soh.BillingAddress.StateProvince.StateProvinceID;
+            var str = context.Instances<SalesTaxRate>().FirstOrDefault(str => str.StateProvinceID == stateId);
+            return str is null ? 0 : str.TaxRate;
+        }
+
+
 
         //        #region Add New Details
         //        [DescribedAs("Add multiple line items to the order")]
@@ -163,7 +125,8 @@ namespace AW.Functions {
         #region Remove Details
         public static IContext RemoveDetail(this SalesOrderHeader soh,
             SalesOrderDetail detailToRemove, IContext context) =>
-                     context.WithDeleted(detailToRemove).WithDeferred(soh.RecalculateTotals());
+                     context.WithDeleted(detailToRemove)
+                     .WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
 
 
         public static IEnumerable<SalesOrderDetail> Choices1RemoveDetail(this SalesOrderHeader soh) =>
@@ -179,7 +142,7 @@ namespace AW.Functions {
         public static  IContext RemoveDetails(this SalesOrderHeader soh,
              IEnumerable<SalesOrderDetail> details, IContext context) =>
                  details.Aggregate(context, (c, d) => c.WithDeleted(d))
-                    .WithDeferred(soh.RecalculateTotals());
+                    .WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
 
         #endregion
 
@@ -351,7 +314,6 @@ namespace AW.Functions {
 
         //        #endregion
 
-        #endregion
 
         #region Status helpers
         internal static bool IsInProcess(this SalesOrderHeader soh)
@@ -428,8 +390,6 @@ namespace AW.Functions {
             return null;
         }
 
-
-
         #region Comments - all TODO
         //public static bool HideComment(this SalesOrderHeader soh)
         //{
@@ -501,7 +461,6 @@ namespace AW.Functions {
         //}
         #endregion
 
-
         #region Edits - TODO
         //public static Address[] ChoicesBillingAddress(IContext context) => Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();
 
@@ -515,9 +474,6 @@ namespace AW.Functions {
 
 
         #endregion
-
-
-
     }
 
 }

@@ -13,56 +13,24 @@ namespace AW.Functions {
 
     public static class SalesOrderDetail_Functions
     {
-
-        public static IContext Recalculate(this SalesOrderDetail sod, IContext context) =>
-            context.WithUpdated(sod, sod.WithRecalculatedFields(context));
-        //Call this from any function that updates a SalesOrderDetail
-        internal static SalesOrderDetail WithRecalculatedFields(this SalesOrderDetail sod, IContext context)
-        {
-            var unitPrice = sod.SpecialOfferProduct.Product.ListPrice;
-            var discount = sod.SpecialOfferProduct.SpecialOffer.DiscountPct * unitPrice;
-            var lineTotal = (unitPrice - discount) * sod.OrderQty;
-
-            return sod with
-            {
-                UnitPrice = unitPrice,
-                UnitPriceDiscount = discount,
-                LineTotal = lineTotal,
-                ModifiedDate = context.Now()
-            };
-        }
-
         public static IContext ChangeQuantity(this SalesOrderDetail detail, short newQuantity, IContext context)
         {
-            var detail2 = (detail with
+            var sop = Product_Functions.BestSpecialOfferProduct(detail.Product, newQuantity, context);
+            var detail2 = detail with
             {
                 OrderQty = newQuantity,
-                SpecialOfferProduct = Product_Functions.BestSpecialOfferProduct(detail.Product, newQuantity, context)
-            }).WithRecalculatedFields(context);
-
-            return context.WithUpdated(detail, detail2);//.WithDeferred(c => SalesOrderHeader_Functions.Recalculate(detail.SalesOrderHeader, c));
-            //next step, possibly update the Sod with new Soh
-        }
-
-        public static IContext RecalculateHeader(this SalesOrderDetail detail, IContext context) =>
-            context.WithDeferred(c => {
-                var soh = context.Resolve(detail.SalesOrderHeader);
-                var soh2 = soh.Recalculated(context);
-                return c.WithUpdated(soh, soh2);
-                   
-            });
-
-        public static IContext UpdateModifiedDateOnOrder(this SalesOrderDetail detail, IContext context) {
-            var soh = detail.SalesOrderHeader;
-            return context.WithUpdated(soh, context.Resolve(soh) with {
+                SpecialOfferProduct = sop,
+                UnitPrice = detail.Product.ListPrice,
+                UnitPriceDiscount = sop.SpecialOffer.DiscountPct,
                 ModifiedDate = context.Now()
-            });
+            };
+            return context.WithUpdated(detail, detail2).WithDeferred(
+                c => {
+                    var soh = c.Resolve(detail.SalesOrderHeader);
+                    return c.WithUpdated(soh, soh.Recalculated(c));
+                    }
+                );
         }
-        
-
-        private static IContext WithUpdatedTotal(SalesOrderDetail detail, IContext c) => c.WithUpdated(detail, detail with
-            { LineTotal = (detail.UnitPrice - detail.UnitPriceDiscount) * detail.OrderQty,
-            ModifiedDate = c.Now() });
 
         public static string DisableChangeQuantity(this SalesOrderDetail detail) =>
             detail.SalesOrderHeader.DisableAddNewDetail();

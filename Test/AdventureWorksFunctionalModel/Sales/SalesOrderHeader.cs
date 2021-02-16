@@ -195,7 +195,7 @@ namespace AW.Types {
             = new List<SalesOrderHeaderSalesReason>();
 
 
-        public override string ToString() => $"{SalesOrderNumber.Trim()}";
+        public override string ToString() => $"{SalesOrderNumber}";
 
 		public override int GetHashCode() =>base.GetHashCode();
 
