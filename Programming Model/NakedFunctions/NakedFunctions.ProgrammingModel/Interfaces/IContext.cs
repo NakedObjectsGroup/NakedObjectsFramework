@@ -20,6 +20,8 @@ namespace NakedFunctions {
 
         public IContext WithUpdated<T>(T original, T updated);
 
+        public IContext WithDeleted(object deleteObj);
+
         IContext WithDeferred(Func<IContext, IContext> function);
 
         public T Reload<T>(T unsaved) where T : class;
