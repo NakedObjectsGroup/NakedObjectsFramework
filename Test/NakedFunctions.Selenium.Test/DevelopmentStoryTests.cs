@@ -52,6 +52,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectContributedAction();
             InformUserViaIAlertService();
             EditAction();
+            EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
             AccessToIClock();
             RecordsDoNotHaveEditButton();
             EnumProperty();
@@ -186,6 +187,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Click(OKButton());
             Reload();
             Assert.AreEqual(original, GetPropertyValue("Max Qty"));
+        }
+
+        //[TestMethod]
+        public void EditActionWithDefaultSuppliedAutomaticallyByEditAttribute()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditDescription");
+            var title = WaitForTitle("Road-650 Overstock");
+            var input = WaitForCss("#description1");
+            Assert.AreEqual("Road-650 Overstock", input.GetAttribute("value"));
         }
 
         //[TestMethod] 
