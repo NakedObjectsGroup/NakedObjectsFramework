@@ -30,7 +30,7 @@ namespace AW.Mapping
             Property(t => t.ReceivedQty).HasColumnName("ReceivedQty");
             Property(t => t.RejectedQty).HasColumnName("RejectedQty");
             Property(t => t.StockedQty).HasColumnName("StockedQty").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);

@@ -29,7 +29,7 @@ namespace AW.Mapping
             Property(t => t.ToCurrencyCode).HasColumnName("ToCurrencyCode");
             Property(t => t.AverageRate).HasColumnName("AverageRate");
             Property(t => t.EndOfDayRate).HasColumnName("EndOfDayRate");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);

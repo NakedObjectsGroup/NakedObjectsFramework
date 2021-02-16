@@ -37,7 +37,7 @@ namespace AW.Types {
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99)]
-        //[Versioned]
+        [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Quantity} in {Location} - {Shelf}";

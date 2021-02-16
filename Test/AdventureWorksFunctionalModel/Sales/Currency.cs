@@ -20,7 +20,7 @@ namespace AW.Types
         public virtual string Name { get; init; }
 
         [Hidden]
-        //[Versioned]
+        [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;

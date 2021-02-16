@@ -32,7 +32,7 @@ namespace AW.Types {
         public virtual ICollection<PersonCreditCard> PersonLinks { get; init; }  = new List<PersonCreditCard>();
 
         [MemberOrder(99)]
-        //[Versioned]
+        [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => CreditCard_Functions.ObfuscatedNumber(this);

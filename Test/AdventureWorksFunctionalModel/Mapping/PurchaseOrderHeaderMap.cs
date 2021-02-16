@@ -25,7 +25,7 @@ namespace AW.Mapping
             Property(t => t.TaxAmt).HasColumnName("TaxAmt");
             Property(t => t.Freight).HasColumnName("Freight");
             Property(t => t.TotalDue).HasColumnName("TotalDue").HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Computed);
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.OrderPlacedBy).WithMany().HasForeignKey(t => t.OrderPlacedByID);

@@ -24,7 +24,7 @@ namespace AW.Mapping
             ToTable("Culture", "Production");
             Property(t => t.CultureID).HasColumnName("CultureID");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
         }
     }
 }
