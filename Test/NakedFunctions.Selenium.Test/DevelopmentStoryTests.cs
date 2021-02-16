@@ -46,6 +46,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void AllWorkingStories()
         {
             RetrieveObjectViaMenuAction();
+            ObjectActionThatReturnsJustAContext();
+            OverriddenPrincipalProviderService();
             UseOfRandomSeedGenerator();
             ObjectContributedAction();
             InformUserViaIAlertService();
@@ -68,7 +70,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CreateNewObectWithOnlyValueProperties();
             CreateNewObjectWithAReferenceToAnotherExistingObject();
             CreateNewObjectWithAReferenceToMultipleExistingObjects();
-            SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
             CreateAGraphOfTwoNewRelatedObjects();
             CreateAGraphOfObjectsThreeLevelsDeep();
             PropertyHiddenViaAHideMethod();
@@ -77,11 +78,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ImageProperty();
             ImageParameter();
             QueryContributedActionReturningOnlyAContext();
+            LocalCollectionContributedAction();
+            SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
             //QueryContributedActionWithCoValidation();
             //QueryContributedActionWithChoicesFunction();
-            LocalCollectionContributedAction();
-            ObjectActionThatReturnsJustAContext();
-            OverriddenPrincipalProviderService();
+
         }
 
         //[TestMethod]
@@ -94,6 +95,32 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Product By Name");
             AssertTopItemInListIs("Handlebar Tube");
+        }
+
+        //[TestMethod]
+        public void ObjectActionThatReturnsJustAContext()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--5&as1=open&d1=EditDescription");
+            var original = "Volume Discount 41 to 60";
+            WaitForTitle(original);
+            var newDesc = "Volume Discount 41+";
+            TypeIntoFieldWithoutClearing("#description1", newDesc);
+            Click(OKButton());
+            WaitForTitle(newDesc);
+            OpenActionDialog("Edit Description");
+            TypeIntoFieldWithoutClearing("#description1", original);
+            Click(OKButton());
+            WaitForTitle(original);
+        }
+
+        //[TestMethod]
+        public void OverriddenPrincipalProviderService()
+        {
+            GeminiUrl("home");
+            WaitForTitle("Home");
+            OpenMainMenuAction("Employees", "Me");
+            WaitForView(Pane.Single, PaneType.Object);
+            Assert.AreEqual("Ken Sánchez", WaitForCss(".title").Text);
         }
 
         //[TestMethod]
@@ -408,31 +435,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("AW00012211 Victor Romero", GetReferenceFromProperty("Customer").Text);
         }
 
-       [TestMethod]
-        public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
-        {
-            GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
-            WaitForTitle("AW00012211 Victor Romero", Pane.Left);
-            Click(GetObjectAction("Create Another Order", Pane.Left));
-            WaitForView(Pane.Left, PaneType.Object);
-            var num = GetPropertyValue("Sales Order Number", Pane.Left);
-            Assert.IsTrue(num.StartsWith("SO75"));
-            OpenObjectActions(Pane.Left);
-            OpenActionDialog("Add New Detail", Pane.Left);
-            var product = WaitForCss("#pane2 .title");
-            //product.Click();
-            CopyToClipboard(product);
-            PasteIntoInputField("#pane1 .parameter .value.droppable");
-            Click(OKButton());
-            Click(FullIcon());
-            WaitForView(Pane.Single, PaneType.Object);
-            Thread.Sleep(1000);
-            var listIcon1 = WaitForCssNo(".collection .icon.list", 0);           
-            Click(listIcon1); //It's opening the List on the Product!
-            wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
-        }
-
-
         //[TestMethod]
         public void CreateAGraphOfTwoNewRelatedObjects()
         {
@@ -559,6 +561,47 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate) >= 3);
         }
 
+        //[TestMethod]
+        public void LocalCollectionContributedAction()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=List&d1=AddCarrierTrackingNumber");
+            WaitForTitle("SO53535");
+            var rnd = (new Random()).Next(100000).ToString();
+            SelectCheckBox("#details1-1");
+            SelectCheckBox("#details1-2");
+            SelectCheckBox("#details1-3");
+            TypeIntoFieldWithoutClearing("#ctn1", rnd);
+            Click(OKButton());
+            Thread.Sleep(2000); //Otherwise next line does not open the table??!
+            Click(WaitForCss(".icon.table"));
+            WaitForCssNo("tbody tr", 10);
+            Assert.AreEqual(3, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rnd));
+        }
+
+       // [TestMethod]
+        public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
+        {
+            GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
+            WaitForTitle("AW00012211 Victor Romero", Pane.Left);
+            Click(GetObjectAction("Create Another Order", Pane.Left));
+            WaitForView(Pane.Left, PaneType.Object);
+            var num = GetPropertyValue("Sales Order Number", Pane.Left);
+            Assert.IsTrue(num.StartsWith("SO75"));
+            OpenObjectActions(Pane.Left);
+            OpenActionDialog("Add New Detail", Pane.Left);
+            var product = WaitForCss("#pane2 .title");
+            //product.Click();
+            CopyToClipboard(product);
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
+            Click(OKButton());
+            Click(FullIcon());
+            WaitForView(Pane.Single, PaneType.Object);
+            Thread.Sleep(1000);
+            var listIcon1 = WaitForCssNo(".collection .icon.list", 0);
+            Click(listIcon1); //It's opening the List on the Product!
+            wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
+        }
+
         [TestMethod, Ignore] //NOT currently working
         public void QueryContributedActionWithChoicesFunction()
         {
@@ -592,47 +635,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
 
-        //[TestMethod]
-        public void LocalCollectionContributedAction()
-        {
-            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=List&d1=AddCarrierTrackingNumber");
-            WaitForTitle("SO53535");
-            var rnd = (new Random()).Next(100000).ToString();
-            SelectCheckBox("#details1-1");
-            SelectCheckBox("#details1-2");
-            SelectCheckBox("#details1-3");
-            TypeIntoFieldWithoutClearing("#ctn1", rnd);
-            Click(OKButton());
-            Thread.Sleep(2000); //Otherwise next line does not open the table??!
-            Click(WaitForCss(".icon.table"));         
-            WaitForCssNo("tbody tr", 10);
-            Assert.AreEqual(3, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rnd));
-        }
 
-        //[TestMethod]
-        public void ObjectActionThatReturnsJustAContext()
-        {
-            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--5&as1=open&d1=EditDescription");
-            var original = "Volume Discount 41 to 60";
-            WaitForTitle(original);
-            var newDesc = "Volume Discount 41+";
-            TypeIntoFieldWithoutClearing("#description1", newDesc);
-            Click(OKButton());
-            WaitForTitle(newDesc);
-            OpenActionDialog("Edit Description");
-            TypeIntoFieldWithoutClearing("#description1", original);
-            Click(OKButton());
-            WaitForTitle(original);
-        }
 
-        //[TestMethod]
-        public void OverriddenPrincipalProviderService()
-        {
-            GeminiUrl("home");
-            WaitForTitle("Home");
-            OpenMainMenuAction("Employees", "Me");
-            WaitForView(Pane.Single, PaneType.Object);
-            Assert.AreEqual("Ken Sánchez",WaitForCss(".title").Text);
-        }
+
     }
 }
