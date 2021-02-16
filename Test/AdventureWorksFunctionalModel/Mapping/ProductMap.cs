@@ -71,7 +71,7 @@ namespace AW.Mapping
             Property(t => t.SellEndDate).HasColumnName("SellEndDate");
             Property(t => t.DiscontinuedDate).HasColumnName("DiscontinuedDate");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
             HasOptional(t => t.ProductModel)

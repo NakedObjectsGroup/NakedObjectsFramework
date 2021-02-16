@@ -21,7 +21,7 @@ namespace AW.Mapping
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.CostRate).HasColumnName("CostRate");
             Property(t => t.Availability).HasColumnName("Availability");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
         }
     }
 }

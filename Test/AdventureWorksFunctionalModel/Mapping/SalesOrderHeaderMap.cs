@@ -60,7 +60,7 @@ namespace AW.Mapping
             Property(t => t.TotalDue).HasColumnName("TotalDue").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed); ;
             Property(t => t.Comment).HasColumnName("Comment");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);
