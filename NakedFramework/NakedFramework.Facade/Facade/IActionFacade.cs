@@ -18,7 +18,7 @@ namespace NakedObjects.Facade {
         string Description { get; }
         bool IsQueryOnly { get; }
         bool IsIdempotent { get; }
-        bool IsCreateNew { get; }
+        string[] CreateNewProperties { get; }
         bool IsContributed { get; }
         int MemberOrder { get; }
         (bool title, string[] columns)? TableViewData { get; }

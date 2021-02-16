@@ -49,7 +49,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(ViewModel),
             typeof(ReferenceRecord),
             typeof(UpdatedRecord),
-            typeof(CollectionRecord)
+            typeof(CollectionRecord),
+            typeof(OrderedRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -434,7 +435,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual("True", parsedResult["extensions"]["x-ro-nof-createNew"].ToString());
+            Assert.AreEqual("Name,Name1,Id", parsedResult["extensions"]["x-ro-nof-createNew"].ToString());
         }
 
         [Test]

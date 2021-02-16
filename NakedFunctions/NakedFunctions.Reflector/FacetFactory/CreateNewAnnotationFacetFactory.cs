@@ -5,16 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
@@ -22,11 +24,27 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            FacetUtils.AddFacet(Create(method.GetCustomAttribute<CreateNewAttribute>(), specification));
-            return metamodel;
+        private static bool IsCollectionOrNull(Type type) =>
+            type is null ||
+            CollectionUtils.IsGenericEnumerable(type) ||
+            type.IsArray ||
+            CollectionUtils.IsCollectionButNotArray(type);
+
+        private static Type ToCreateType(MethodInfo method) {
+            var returnType = FacetUtils.IsTuple(method.ReturnType) ? method.ReturnType.GetGenericArguments().First() : null;
+            return IsCollectionOrNull(returnType) ? null : returnType;
         }
 
-        private static ICreateNewFacet Create(CreateNewAttribute attribute, ISpecification holder) => attribute is null ? null : new CreateNewFacet(holder);
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            if (method.IsDefined(typeof(CreateNewAttribute), false)) {
+                var toCreateType = ToCreateType(method);
+
+                if (toCreateType is not null) {
+                    FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
+                }
+            }
+
+            return metamodel;
+        }
     }
 }

@@ -251,7 +251,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
     public static class CreateNewFunctions {
         [CreateNew]
-        public static SimpleClass SimpleFunction(this SimpleClass target) => target;
+        public static (SimpleClass, IContext) SimpleFunction(this SimpleClass target, IContext context) => (target, context);
     }
 
     public static class DisplayAsPropertyFunctions {

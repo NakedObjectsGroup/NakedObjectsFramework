@@ -6,5 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Architecture.Facet {
-    public interface ICreateNewFacet : IMarkerFacet {}
+    public interface ICreateNewFacet : IFacet {
+        public string[] OrderedProperties(INakedObjectsFramework framework);
+    }
 }

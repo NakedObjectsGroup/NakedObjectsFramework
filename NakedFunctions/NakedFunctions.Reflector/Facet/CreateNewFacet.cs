@@ -6,15 +6,25 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
+using NakedObjects;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Meta.Facet {
     [Serializable]
-    public sealed class CreateNewFacet : MarkerFacetAbstract, ICreateNewFacet {
-        public CreateNewFacet(ISpecification holder) : base(Type, holder) { }
+    public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
+        private readonly Type toCreate;
+
+        public CreateNewFacet(Type toCreate, ISpecification holder) : base(Type, holder) => this.toCreate = toCreate;
 
         public static Type Type => typeof(ICreateNewFacet);
+
+        public string[] OrderedProperties(INakedObjectsFramework framework) {
+            var spec = (IObjectSpec) framework.MetamodelManager.GetSpecification(toCreate);
+            var fields = spec.Properties;
+            return fields.Select(f => f.Name).ToArray();
+        }
     }
 }

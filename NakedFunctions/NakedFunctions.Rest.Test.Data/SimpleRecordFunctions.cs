@@ -103,9 +103,6 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static SimpleRecord PasswordParmSimpleRecord(this SimpleRecord sp, [Password] string parm, IContext context) => sp;
 
-        [CreateNew]
-        public static SimpleRecord CreateNewFunction(this SimpleRecord sp, IContext context) => sp;
-
         public static (SimpleRecord, IContext) SimpleRecordAsCurrentUser(this SimpleRecord sp, IContext context) {
             var updated = sp with {Name = context.CurrentUser().Identity.Name};
             context = context.WithUpdated(sp, updated);
@@ -230,6 +227,9 @@ namespace NakedFunctions.Rest.Test.Data {
 
         [MemberOrder("function2_group", 2)]
         public static OrderedRecord Function2(this OrderedRecord or) => or;
+
+        [CreateNew]
+        public static (OrderedRecord, IContext) CreateNewFunction(this OrderedRecord sp, IContext context) => (sp, context);
     }
 
     public static class CollectionContributedFunctions {

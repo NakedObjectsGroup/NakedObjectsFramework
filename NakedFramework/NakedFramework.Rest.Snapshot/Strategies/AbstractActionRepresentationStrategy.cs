@@ -120,9 +120,11 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 ext[JsonPropertyNames.CustomMultipleLines] = multipleLines.Value;
             }
 
-            if (ActionContext.Action.IsCreateNew) {
+            var createNewProperties = ActionContext.Action.CreateNewProperties;
+
+            if (createNewProperties.Any()) {
                 ext ??= new Dictionary<string, object>();
-                ext[JsonPropertyNames.CustomCreateNew] = true;
+                ext[JsonPropertyNames.CustomCreateNew] = string.Join(',', createNewProperties); ;
             }
 
             var editProperties = ActionContext.Action.EditProperties;

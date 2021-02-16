@@ -41,7 +41,7 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsIdempotent => WrappedSpec.ContainsFacet<IIdempotentFacet>();
 
-        public bool IsCreateNew => WrappedSpec.ContainsFacet<ICreateNewFacet>();
+        public string[] CreateNewProperties => WrappedSpec.GetFacet<ICreateNewFacet>()?.OrderedProperties(framework) ?? Array.Empty<string>();
 
         public bool IsQueryContributedAction => WrappedSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
 
