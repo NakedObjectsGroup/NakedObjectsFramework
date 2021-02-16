@@ -40,7 +40,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(DisplayAsPropertyRecordFunctions),
             typeof(ViewModelFunctions),
             typeof(OrderedRecordFunctions),
-            typeof(CollectionContributedFunctions)
+            typeof(CollectionContributedFunctions),
+            typeof(EditRecordFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -54,7 +55,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(ViewModel),
             typeof(UpdatedRecord),
             typeof(OrderedRecord),
-            typeof(CollectionRecord)
+            typeof(CollectionRecord),
+            typeof(EditRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -986,6 +988,19 @@ namespace NakedFunctions.Rest.Test {
 
         }
 
+        [Test]
+        public void TestGetObjectActionWithEdit()
+        {
+            var api = Api();
+            var result = api.GetAction(FullName<EditRecord>(), "1", nameof(EditRecordFunctions.EditFunction));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(EditRecordFunctions.EditFunction), parsedResult["id"].ToString());
+           
+            Assert.AreEqual("Name,SimpleRecord", parsedResult["extensions"]["x-ro-nof-editProperties"].ToString());
+        }
 
 
     }

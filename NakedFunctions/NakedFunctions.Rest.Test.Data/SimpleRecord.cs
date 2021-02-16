@@ -129,4 +129,18 @@ namespace NakedFunctions.Rest.Test.Data {
         public override string ToString() => Name;
         public override int GetHashCode() => base.GetHashCode();
     }
+
+    public record EditRecord
+    {
+        [Key]
+        public int Id { get; init; }
+
+        public string Name { get; init; }
+        
+        public SimpleRecord SimpleRecord { get; set; }
+
+        public string NotMatched { get; init; }
+
+        public override string ToString() => Name.ToString();
+    }
 }

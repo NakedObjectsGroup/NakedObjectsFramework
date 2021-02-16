@@ -53,6 +53,8 @@ namespace NakedFunctions.Rest.Test.Data {
 
             context.OrderedRecords.Add(new OrderedRecord());
 
+            context.EditRecords.Add(new EditRecord());
+
             context.SaveChanges();
         }
     }
@@ -69,6 +71,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<UpdatedRecord> UpdatedRecords { get; set; }
         public DbSet<CollectionRecord> CollectionRecords { get; set; }
         public DbSet<OrderedRecord> OrderedRecords { get; set; }
+        public DbSet<EditRecord> EditRecords { get; set; }
 
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
