@@ -32,9 +32,9 @@ namespace AW.Types {
         #region UnitPriceDiscount
 
         
-        [Named("Discount")]
+        [Named("Discount %")]
         [MemberOrder(30)]
-        [Mask("C")]
+        [Mask("P")]
         public virtual decimal UnitPriceDiscount { get; init; }
 
         #endregion

@@ -20,22 +20,21 @@ namespace AW.Functions {
         [MemberOrder(22)]
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public static IQueryable<SalesOrderHeader> RecentOrders(
-            this Customer customer, IContext context) {
-            return from obj in context.Instances<SalesOrderHeader>()
+            this Customer customer, IContext context) =>
+                from obj in context.Instances<SalesOrderHeader>()
                 where obj.Customer.CustomerID == customer.CustomerID
                 orderby obj.SalesOrderNumber descending
                 select obj;
-        }
 
 
         [MemberOrder(21)]
         [TableView(true, "OrderDate", "TotalDue")]
         public static IQueryable<SalesOrderHeader> OpenOrders(
-            this Customer customer,
-            IQueryable<SalesOrderHeader> headers)
+            this Customer customer, IQueryable<SalesOrderHeader> headers)
         {
             var id = customer.CustomerID;
-            return headers.Where(x => x.Customer.CustomerID == id && x.StatusByte <= 3).OrderByDescending(x => x.SalesOrderNumber);
+            return headers.Where(x => x.Customer.CustomerID == id && x.StatusByte <= 3)
+                .OrderByDescending(x => x.SalesOrderNumber);
         }
 
 
@@ -131,20 +130,27 @@ namespace AW.Functions {
         #endregion
 
         #region QuickOrder 
-        public static (SalesOrderHeader, IContext) QuickOrder(this Customer customer, 
-             Product product,
-             short quantity,
-             IContext context)
+        public static (SalesOrderHeader, IContext) QuickOrder(this Customer customer,
+             Product product, short quantity, IContext context)
         {
-            var (order, context2) = CreateAnotherOrder(customer, context);
-            var context3 = order.AddNewDetail(product, quantity, context2);
-            return (order, context3);
-            //TODO: context3.WithDeferred(context.Reload(order).Recalculate)
+            SalesOrderHeader order = NewOrderFrom(context, GetLastOrder(customer, context));
+            SalesOrderDetail detail = order.CreateNewDetail(product, quantity, context);
+            return (order, context.WithNew(order).WithNew(detail).WithDeferred(
+                    c => { var o = c.Reload(order); return c.WithUpdated(o, o.Recalculated(c));
+                    }));
         }
 
-        #endregion
+        [PageSize(20)]
+        public static IQueryable<Product> AutoComplete1QuickOrder(this SalesOrderHeader soh,
+               [MinLength(2)] string name, IContext context) =>
+                    Product_MenuFunctions.FindProductByName(name, context);
 
-        #region CreateNewOrder
+        public static string DisableQuickOrder(this Customer customer, IContext context) =>
+            customer.DisableCreateAnotherOrder(context);
+
+        #endregion 
+
+        #region CreateAnotherOrder
 
         //Automatically copies common header info from previous order
         //Disabled if the customer has no previous orders
@@ -152,30 +158,28 @@ namespace AW.Functions {
         public static (SalesOrderHeader, IContext) CreateAnotherOrder(
             this Customer customer, IContext context)
         {
-             SalesOrderHeader last = GetLastOrder(customer, context);
-            var newOrder = new SalesOrderHeader() 
+            SalesOrderHeader newOrder = NewOrderFrom(context, GetLastOrder(customer, context));
+            return (newOrder, context.WithNew(newOrder));
+        }
+
+        private static SalesOrderHeader NewOrderFrom(IContext context, SalesOrderHeader previous) =>
+            new SalesOrderHeader()
             {
-                RevisionNumber = (byte) 1,
+                RevisionNumber = (byte)1,
                 OrderDate = context.Today(),
                 DueDate = context.Today().AddDays(7),
                 StatusByte = (byte)OrderStatus.InProcess,
                 OnlineOrder = false,
-                //CustomerID = last.CustomerID,
-                Customer = last.Customer,
-                //BillingAddressID = last.BillingAddressID,
-                BillingAddress = last.BillingAddress,
-                //ShippingAddressID = last.ShippingAddressID,
-                ShippingAddress = last.ShippingAddress,
-                //ShipMethodID = last.ShipMethodID,
-                ShipMethod = last.ShipMethod,
-                //CreditCardID = last.CreditCardID,
-                CreditCard = last.CreditCard,
-                AccountNumber = last.AccountNumber,
+                Customer = previous.Customer,
+                BillingAddress = previous.BillingAddress,
+                ShippingAddress = previous.ShippingAddress,
+                ShipMethod = previous.ShipMethod,
+                CreditCard = previous.CreditCard,
+                AccountNumber = previous.AccountNumber,
                 rowguid = context.NewGuid(),
                 ModifiedDate = context.Now()
             };
-            return (newOrder, context.WithNew(newOrder));
-        }
+
 
         public static string DisableCreateAnotherOrder(this Customer customer, IContext context) =>
           GetLastOrder(customer, context) is null ?
