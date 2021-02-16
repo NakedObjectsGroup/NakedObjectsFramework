@@ -80,6 +80,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             QueryContributedActionReturningOnlyAContext();
             LocalCollectionContributedAction();
             SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
+            UseOfDeferredFunctionIncludingReload();
+            UseOfResolveMethodInADeferredFunction();
             //QueryContributedActionWithCoValidation();
             //QueryContributedActionWithChoicesFunction();
 
@@ -590,7 +592,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             OpenObjectActions(Pane.Left);
             OpenActionDialog("Add New Detail", Pane.Left);
             var product = WaitForCss("#pane2 .title");
-            //product.Click();
             CopyToClipboard(product);
             PasteIntoInputField("#pane1 .parameter .value.droppable");
             Click(OKButton());
@@ -598,8 +599,65 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             WaitForView(Pane.Single, PaneType.Object);
             Thread.Sleep(1000);
             var listIcon1 = WaitForCssNo(".collection .icon.list", 0);
-            Click(listIcon1); //It's opening the List on the Product!
+            Click(listIcon1);
             wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
+        }
+
+        //[TestMethod]
+        public void UseOfDeferredFunctionIncludingReload()
+        {
+            GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
+            WaitForTitle("AW00012211 Victor Romero", Pane.Left);
+            Click(GetObjectAction("Create Another Order", Pane.Left));
+            WaitForView(Pane.Left, PaneType.Object);
+            var num = GetPropertyValue("Sales Order Number", Pane.Left);
+            Assert.IsTrue(num.StartsWith("SO75"));
+            OpenObjectActions(Pane.Left);
+            OpenActionDialog("Add New Detail", Pane.Left);
+            ClearFieldThenType("#quantity1", "10");
+            var product = WaitForCss("#pane2 .title");
+            CopyToClipboard(product);
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
+            Click(OKButton());
+            Click(FullIcon());
+            WaitForView(Pane.Single, PaneType.Object);
+            Assert.AreEqual("£297.41", GetPropertyValue("Sub Total"));
+            Assert.AreEqual("£297.41", GetPropertyValue("Total Due"));
+        }
+
+        [TestMethod]
+        public void UseOfResolveMethodInADeferredFunction()
+        {
+            GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
+            WaitForTitle("AW00012211 Victor Romero", Pane.Left);
+            Click(GetObjectAction("Create Another Order", Pane.Left));
+            WaitForView(Pane.Left, PaneType.Object);
+            var num = GetPropertyValue("Sales Order Number", Pane.Left);
+            Assert.IsTrue(num.StartsWith("SO75"));
+            OpenObjectActions(Pane.Left);
+            OpenActionDialog("Add New Detail", Pane.Left);
+            var product = WaitForCss("#pane2 .title");
+            CopyToClipboard(product);
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
+            Click(OKButton());
+            Click(FullIcon());
+            WaitForView(Pane.Single, PaneType.Object);
+            Thread.Sleep(1000);
+            var listIcon1 = WaitForCssNo(".collection .icon.list", 0);
+            Click(listIcon1);
+            //var detail = wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).First(el => el.Text == "1 x Sport-100 Helmet, Red"));
+            var detail = WaitForCssNo("tbody tr td", 1);
+            Assert.AreEqual("1 x Sport-100 Helmet, Red", detail.Text);
+            Assert.AreEqual("£29.74", GetPropertyValue("Sub Total", Pane.Left));
+            RightClick(detail);
+            WaitForView(Pane.Right, PaneType.Object, "1 x Sport-100 Helmet, Red");
+            OpenObjectActions(Pane.Right);
+            OpenActionDialog("Change Quantity", Pane.Right);
+            TypeIntoFieldWithoutClearing("#newquantity2", "2");
+            Click(OKButton());
+            Thread.Sleep(500);
+            Assert.AreEqual("£59.48", GetPropertyValue("Sub Total", Pane.Left));
+
         }
 
         [TestMethod, Ignore] //NOT currently working
