@@ -17,9 +17,5 @@ namespace AW
             return instances.Skip(context.RandomSeed().ValueInRange(instances.Count())).FirstOrDefault();
         }
 
-        //TODO: Temporary DUMMY extension method, pending native new method on IContext.
-        public static IContext WithDeleted(this IContext context, object toDelete) =>
-            context.WithInformUser($"object {toDelete} scheduled for deletion.");
-
     }
 }
