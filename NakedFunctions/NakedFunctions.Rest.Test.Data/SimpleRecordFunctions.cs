@@ -238,7 +238,19 @@ namespace NakedFunctions.Rest.Test.Data {
         public static (ICollection<SimpleRecord>, IContext) ContributedFunction3(this IQueryable<SimpleRecord> sr, int count, IContext context) => (sr.Take(count).ToList(), context);
         public static SimpleRecord ContributedFunction4(this IQueryable<SimpleRecord> sr, IContext context) => sr.FirstOrDefault();
 
+        public static SimpleRecord ContributedFunction5(this IQueryable<SimpleRecord> sr, SimpleRecord psr, IContext context) => sr.FirstOrDefault();
+
+        public static IList<SimpleRecord> Choices1ContributedFunction5(this IQueryable<SimpleRecord> sr, IContext context) => context.Instances<SimpleRecord>().ToList();
+
+        public static SimpleRecord ContributedFunction6(this IQueryable<SimpleRecord> sr, IContext context) => sr.FirstOrDefault();
+
+        public static bool HideContributedFunction6(this IQueryable<SimpleRecord> sr, IContext context) => true;
+
         public static IContext LocalContributedFunction(this CollectionRecord cr, IEnumerable<UpdatedRecord> updatedRecords, IContext context) => context;
+
+        public static IContext LocalContributedFunction1(this CollectionRecord cr, IEnumerable<UpdatedRecord> updatedRecords, SimpleRecord psr, IContext context) => context;
+
+        public static IList<SimpleRecord> Choices2LocalContributedFunction1(this CollectionRecord cr, IContext context) => context.Instances<SimpleRecord>().ToList();
 
         [MemberOrder("UpdatedRecords", 1)]
         public static IContext LocalContributedFunctionByMemberOrder(this CollectionRecord cr, IContext context) => context;

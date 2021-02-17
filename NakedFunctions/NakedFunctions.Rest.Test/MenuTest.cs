@@ -881,7 +881,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            Assert.AreEqual(4, resultObj["members"].Count());
+            Assert.AreEqual(5, resultObj["members"].Count());
 
             Assert.IsNull(resultObj["members"]["ContributedFunction1"]["extensions"]["returnType"]);
             Assert.AreEqual("POST", resultObj["members"]["ContributedFunction1"]["links"][1]["method"].ToString());
@@ -898,6 +898,10 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction4"]["extensions"]["returnType"].ToString());
             Assert.AreEqual("GET", resultObj["members"]["ContributedFunction4"]["links"][1]["method"].ToString());
             Assert.AreEqual(1, resultObj["members"]["ContributedFunction4"]["parameters"].Count());
+
+            Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction5"]["extensions"]["returnType"].ToString());
+            Assert.AreEqual(4, resultObj["members"]["ContributedFunction5"]["parameters"]["psr"]["choices"].Count());
+
         }
     }
 }
