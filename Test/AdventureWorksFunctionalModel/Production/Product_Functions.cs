@@ -216,5 +216,18 @@ namespace AW.Functions
         //    int rating, string comments) =>
         // LessThan5StarsRequiresComment(rating, comments);
 
+        [DisplayAsProperty, MemberOrder(11)]
+        public static ProductDescription Description(this Product product) =>
+            ProductModel_Functions.LocalCultureDescription(product.ProductModel);
+
+        //This implementation is deli
+        [DisplayAsProperty]
+        public static ICollection<SpecialOffer> SpecialOffers(this IProduct product, IContext context) {
+            //Implementation uses context to check that this works
+            int pid = product.ProductID;
+            return context.Instances<SpecialOfferProduct>().Where(sop => sop.ProductID == pid).Select(sop => sop.SpecialOffer).ToList();
+            //Simpler implementation would be just:
+            //product.SpecialOfferProduct.Select(sop => sop.SpecialOffer).ToList();
+            }
     }
 }
