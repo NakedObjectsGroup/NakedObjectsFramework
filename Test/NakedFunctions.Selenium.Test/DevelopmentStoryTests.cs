@@ -85,6 +85,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             UseOfResolveMethodInADeferredFunction();
             WithDelete();
             WithMultipleDeletes();
+            ObjectActionRenderedWithinCollection();
             //QueryContributedActionWithCoValidation();
             //QueryContributedActionWithChoicesFunction();
 
@@ -745,6 +746,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Remove Details", remove.GetAttribute("value"));
             Click(remove);
             wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "1 Item");
+        }
+
+        //[TestMethod]
+        public void ObjectActionRenderedWithinCollection()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--44868&c1_Details=List");
+            WaitForView(Pane.Single, PaneType.Object);
+            var change = WaitForCssNo("nof-collection nof-action input", 2);
+            Assert.AreEqual("Change A Quantity", change.GetAttribute("value"));      
         }
 
         [TestMethod, Ignore] //NOT currently working
