@@ -80,12 +80,12 @@ namespace AW.Functions
             p.ProductInventory.Sum(obj => obj.Quantity);
 
         #region Edits
-        internal static  IContext UpdateProduct(
+        internal static IContext UpdateProduct(
             Product original, Product updated, IContext context) =>
                  context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
         [Edit]
-        public static  IContext EditProductLine(this Product p,
+        public static IContext EditProductLine(this Product p,
             string productLine, IContext context) =>
             UpdateProduct(p, p with { ProductLine = productLine }, context);
 
@@ -101,7 +101,7 @@ namespace AW.Functions
             new[] { "H ", "M ", "L " }; // nchar(2) in database so pad right with space
 
         [Edit]
-        public static  IContext EditStyle(this Product p,
+        public static IContext EditStyle(this Product p,
             string style, IContext context) =>
                 UpdateProduct(p, p with { Style = style }, context);
 
@@ -168,14 +168,14 @@ namespace AW.Functions
             [Optionally] string comments,
             IContext context) =>
              context.WithNew(CreateReview(
-                    p, 
-                    context.CurrentUser().Identity.Name, 
-                    dateOfReview, 
-                    "[private]", 
-                    rating, 
-                    comments, 
+                    p,
+                    context.CurrentUser().Identity.Name,
+                    dateOfReview,
+                    "[private]",
+                    rating,
+                    comments,
                     context));
-  
+
 
         private static ProductReview CreateReview(Product p, string reviewerName, DateTime date, string emailAddress, int rating, string comments, IContext context)
         {
@@ -195,7 +195,7 @@ namespace AW.Functions
 
         private static List<int> Ratings() => new List<int> { 1, 2, 3, 4, 5 };
 
-        public static string ValidateAddProductReview(this Product p, 
+        public static string ValidateAddProductReview(this Product p,
             string reviewerName, DateTime date, string emailAddress, int rating, string comments) =>
             LessThan5StarsRequiresComment(rating, comments);
 
@@ -207,7 +207,7 @@ namespace AW.Functions
             [Optionally] string comments,
             IContext context) =>
             products.Aggregate(context, (c, p) => c.WithNew(
-                CreateReview(p, "Anon.", context.Today(),  "[hidden]", rating, comments, context)));
+                CreateReview(p, "Anon.", context.Today(), "[hidden]", rating, comments, context)));
 
         public static List<int> Choices1AddAnonReviews(this IQueryable<Product> products) =>
             Ratings();
@@ -222,12 +222,19 @@ namespace AW.Functions
 
         //This implementation is deli
         [DisplayAsProperty]
-        public static ICollection<SpecialOffer> SpecialOffers(this IProduct product, IContext context) {
+        public static ICollection<SpecialOffer> SpecialOffers(this IProduct product, IContext context)
+        {
             //Implementation uses context to check that this works
             int pid = product.ProductID;
             return context.Instances<SpecialOfferProduct>().Where(sop => sop.ProductID == pid).Select(sop => sop.SpecialOffer).ToList();
             //Simpler implementation would be just:
             //product.SpecialOfferProduct.Select(sop => sop.SpecialOffer).ToList();
-            }
+        }
+
+        internal static Image Photo(Product product)
+        {
+            ProductPhoto p = product.ProductProductPhoto.Select(p => p.ProductPhoto).FirstOrDefault();
+            return p is null ? null : new Image(p.LargePhoto, p.LargePhotoFileName);
+        }
     }
 }
