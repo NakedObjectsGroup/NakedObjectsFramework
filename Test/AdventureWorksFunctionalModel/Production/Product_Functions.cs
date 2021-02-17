@@ -218,7 +218,7 @@ namespace AW.Functions
 
         [DisplayAsProperty, MemberOrder(11)]
         public static ProductDescription Description(this Product product) =>
-            ProductModel_Functions.LocalCultureDescription(product.ProductModel);
+           product.ProductModel is null ? null : ProductModel_Functions.LocalCultureDescription(product.ProductModel);
 
         //This implementation is deli
         [DisplayAsProperty]

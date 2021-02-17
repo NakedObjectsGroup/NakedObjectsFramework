@@ -15,10 +15,10 @@ namespace AW.Functions
 {
     public static class ProductModel_Functions
     {
-        [ MemberOrder(22)]
+        [MemberOrder(22)]
         public static ProductDescription LocalCultureDescription(ProductModel pm) =>
-            pm.ProductModelProductDescriptionCulture
-            .Where(obj => obj.Culture.CultureID.StartsWith(CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
+                pm.ProductModelProductDescriptionCulture
+            .Where(obj => obj.Culture != null && obj.Culture.CultureID.StartsWith(CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
             .Select(obj => obj.ProductDescription)
             .FirstOrDefault();
 
