@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects {
@@ -21,11 +23,12 @@ namespace NakedObjects {
         INakedObjectManager NakedObjectManager { get; }
         IServicesManager ServicesManager { get; }
         IObjectPersistor Persistor { get; }
-        IReflector Reflector { get; }
+        IEnumerable<IReflector> Reflectors { get; }
         IMetamodelManager MetamodelManager { get; }
         IDomainObjectInjector DomainObjectInjector { get; }
         ITransactionManager TransactionManager { get; }
         IFrameworkResolver FrameworkResolver { get; }
         IServiceProvider ServiceProvider { get; }
+        string[] ServerTypes { get; }
     }
 }

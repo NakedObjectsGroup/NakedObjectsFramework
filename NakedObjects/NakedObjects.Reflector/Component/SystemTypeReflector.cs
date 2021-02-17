@@ -36,6 +36,7 @@ namespace NakedObjects.Reflector.Component {
         private ICoreConfiguration CoreConfiguration { get; }
 
         public override bool ConcurrencyChecking => false;
+        public override string Name { get; } = "Naked Framework";
         public override bool IgnoreCase => false;
 
         protected override IIntrospector GetNewIntrospector() => new SystemTypeIntrospector(this, LoggerFactory.CreateLogger<SystemTypeIntrospector>());

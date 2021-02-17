@@ -147,6 +147,7 @@ namespace NakedObjects.ParallelReflector.Component {
         #region IReflector Members
 
         public abstract bool ConcurrencyChecking { get; }
+        public abstract string Name { get; }
         public int Order { get; init; }
         public abstract bool IgnoreCase { get; }
 

@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Component;
@@ -19,7 +21,7 @@ namespace NakedObjects.Service {
                                      IServicesManager servicesManager,
                                      INakedObjectManager nakedObjectManager,
                                      IObjectPersistor persistor,
-                                     IReflector reflector,
+                                     IEnumerable<IReflector> reflectors,
                                      IMetamodelManager metamodelManagerManager,
                                      IDomainObjectInjector domainObjectInjector,
                                      NakedObjectFactory nakedObjectFactory,
@@ -34,7 +36,7 @@ namespace NakedObjects.Service {
             ServicesManager = servicesManager;
             NakedObjectManager = nakedObjectManager;
             Persistor = persistor;
-            Reflector = reflector;
+            Reflectors = reflectors;
             MetamodelManager = metamodelManagerManager;
             DomainObjectInjector = domainObjectInjector;
             TransactionManager = transactionManager;
@@ -67,9 +69,11 @@ namespace NakedObjects.Service {
 
         public IObjectPersistor Persistor { get; }
 
-        public IReflector Reflector { get; }
+        public IEnumerable<IReflector> Reflectors { get; }
 
         public IMetamodelManager MetamodelManager { get; }
+
+        public string[] ServerTypes => Reflectors.Select(r => r.Name).ToArray();
 
         #endregion
     }
