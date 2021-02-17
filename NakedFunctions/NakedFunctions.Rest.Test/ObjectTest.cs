@@ -256,7 +256,7 @@ namespace NakedFunctions.Rest.Test {
             var api = Api().AsPost();
             var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
 
-            var result = api.PostInvoke(FullName<DeleteRecord>(), "1", nameof(DeleteRecordFunctions.DeleteFunctionAndReturn), map);
+            var result = api.PostInvoke(FullName<DeleteRecord>(), "2", nameof(DeleteRecordFunctions.DeleteFunctionAndReturn), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
         }

@@ -253,6 +253,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static (DeleteRecord, IContext) DeleteFunctionAndReturn(this DeleteRecord dr, IContext context)
         {
+
             return (dr, context.WithDeleted(dr));
         }
     }
