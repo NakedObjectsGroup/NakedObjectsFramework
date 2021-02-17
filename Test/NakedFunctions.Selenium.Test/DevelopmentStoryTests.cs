@@ -79,6 +79,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ImageProperty();
             ImageParameter();
             QueryContributedActionReturningOnlyAContext();
+
             LocalCollectionContributedAction();
             SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
             UseOfDeferredFunctionIncludingReload();
@@ -86,9 +87,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             WithDelete();
             WithMultipleDeletes();
             ObjectActionRenderedWithinCollection();
-            //QueryContributedActionWithCoValidation();
-            //QueryContributedActionWithChoicesFunction();
-
+            QueryContributedActionWithChoicesFunction();
+            QueryContributedActionWithCoValidation();
         }
 
         //[TestMethod]
@@ -592,7 +592,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual(3, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rnd));
         }
 
-       // [TestMethod]
+        // [TestMethod]
         public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
         {
             GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
@@ -637,7 +637,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("£297.41", GetPropertyValue("Total Due"));
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void UseOfResolveMethodInADeferredFunction()
         {
             GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
@@ -757,35 +757,36 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Change A Quantity", change.GetAttribute("value"));      
         }
 
-        [TestMethod, Ignore] //NOT currently working
+        //[TestMethod]
         public void QueryContributedActionWithChoicesFunction()
         {
             GeminiUrl("list?m1=Product_MenuFunctions&a1=AllProducts&pg1=1&ps1=20&s1_=0&c1=List&as1=open&r1=1&d1=AddAnonReviews");
             WaitForTitle("All Products");
+            Reload();
             var option = "select#rating1 option";
             Assert.AreEqual("5", WaitForCssNo(option, 4).Text);
             Assert.AreEqual("1", WaitForCssNo(option, 0).Text);
-            SelectDropDownOnField("select#rating", 2);
+            SelectDropDownOnField("select#rating1", 4);
             var rand = (new Random()).Next(100000).ToString();
             TypeIntoFieldWithoutClearing("#comments1", rand);
             SelectCheckBox("#item1-1");
             Click(OKButton());
-            Thread.Sleep(1000);
-            Reload();
-            WaitForCssNo("tbody tr", 10);
-            Assert.AreEqual(1, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rand));
+            GeminiUrl("object?i1=View&o1=AW.Types.Product--2&c1_ProductReviews=Table");
+            wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Any(td => td.Text == rand));
         }
 
-        [TestMethod, Ignore] //NOT currently working
+        //[TestMethod]
         public void QueryContributedActionWithCoValidation()
         {
             GeminiUrl("list?m1=Product_MenuFunctions&a1=AllProducts&pg1=1&ps1=20&s1_=0&c1=List&as1=open&r1=1&d1=AddAnonReviews");
             WaitForTitle("All Products");
-            TypeIntoFieldWithoutClearing("#rating1", "4");
+            Reload();
+            SelectDropDownOnField("select#rating1", 3);
+            SelectCheckBox("#item1-1");
             Click(OKButton());
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             var expected = "Must provide comments for rating < 5";
-            var actual = WaitForCss(".co-validation");
+            var actual = WaitForCss(".co-validation").Text;
             Assert.AreEqual(expected, actual);
         }
     }
