@@ -167,6 +167,9 @@ namespace AW.Functions {
         public static List<SalesOrderDetail> Choices1ChangeAQuantity(this SalesOrderHeader soh) =>
             soh.Details.ToList();
 
+        public static string DisableChangeAQuantity(this SalesOrderHeader soh) =>
+            soh.DisableAddNewDetail();
+
         //        #region CreateNewCreditCard
 
         //        [Hidden]
