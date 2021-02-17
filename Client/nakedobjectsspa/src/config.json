@@ -2,35 +2,51 @@
     "authenticate": false,
     "authClientId" : "bB8ln8mh8hVb5kxnpTowceMb0t25Owl9",
     "authDomain" : "nakedobjects.eu.auth0.com",
-    "appPath": "https://nakedfunctionsdemo.azurewebsites.net/",
+    "appPath": "http://localhost:53271/",
     "logoffUrl": "",
     "urlShortCuts": [ "http://localhost:5000", "AdventureWorksModel" ],
     "doUrlValidation": true,
     "applicationName" : "Adventureworks Demo",
     "clearCacheOnChange": true,
     "colors": {
-        "typeMap": {
-            "AdventureWorksModel.Customer": 1,
-            "AdventureWorksModel.Product": 4,
-            "AdventureWorksModel.Employee": 5,
-            "AdventureWorksModel.SalesPerson": 6,
-            "AdventureWorksModel.SpecialOffer": 7,
-            "AdventureWorksModel.Vendor": 9,
-            "AdventureWorksModel.WorkOrder": 12
-        },
         "regexArray": [
+            {
+                "regex": ".*Customer.*",
+                "color": 1
+            },
             {
                 "regex": ".*SalesOrder.*",
                 "color": 2
             },
             {
+                "regex": ".*Product.*",
+                "color": 4
+            },
+            {
+                "regex": ".*Employee.*",
+                "color": 5
+            },
+            {
+                "regex": ".*SalesPerson.*",
+                "color": 6
+            },
+            {
+                "regex": ".*SpecialOffer.*",
+                "color": 7
+            },
+            {
+                "regex": ".*Vendot.*",
+                "color": 9
+            },
+            {
                 "regex": ".*PurchaseOrder.*",
                 "color": 10
+            },
+            {
+                "regex": ".*WorkOrder.*",
+                "color": 12
             }
         ],
-        "subtypeMap": {
-            "AdventureWorksModel.BusinessEntity": 8
-        },
         "default": 0
     },
     "masks": {
