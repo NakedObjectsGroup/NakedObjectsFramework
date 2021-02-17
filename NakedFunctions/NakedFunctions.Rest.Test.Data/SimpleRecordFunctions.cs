@@ -239,6 +239,9 @@ namespace NakedFunctions.Rest.Test.Data {
         public static SimpleRecord ContributedFunction4(this IQueryable<SimpleRecord> sr, IContext context) => sr.FirstOrDefault();
 
         public static IContext LocalContributedFunction(this CollectionRecord cr, IEnumerable<UpdatedRecord> updatedRecords, IContext context) => context;
+
+        [MemberOrder("UpdatedRecords", 1)]
+        public static IContext LocalContributedFunctionByMemberOrder(this CollectionRecord cr, IContext context) => context;
     }
 
     public static class EditRecordFunctions {

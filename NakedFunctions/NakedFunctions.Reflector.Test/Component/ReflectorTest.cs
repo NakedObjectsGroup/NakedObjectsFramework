@@ -850,13 +850,13 @@ namespace NakedFunctions.Reflector.Test.Component {
 
                 var facet = propertySpec.GetFacet<IMemberOrderFacet>();
                 Assert.IsNotNull(facet);
-                Assert.AreEqual("", facet.Name);
+                Assert.AreEqual("Property Order", facet.Name);
                 Assert.AreEqual("Property Order", facet.Grouping);
                 Assert.AreEqual("0", facet.Sequence);
 
                 facet = collectionSpec.GetFacet<IMemberOrderFacet>();
                 Assert.IsNotNull(facet);
-                Assert.AreEqual("", facet.Name);
+                Assert.AreEqual("Collection Order", facet.Name);
                 Assert.AreEqual("Collection Order", facet.Grouping);
                 Assert.AreEqual("1", facet.Sequence);
 
@@ -864,7 +864,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
                 facet = actionSpec.GetFacet<IMemberOrderFacet>();
                 Assert.IsNotNull(facet);
-                Assert.AreEqual("", facet.Name);
+                Assert.AreEqual("Function Order", facet.Name);
                 Assert.AreEqual("Function Order", facet.Grouping);
                 Assert.AreEqual("2", facet.Sequence);
             }
