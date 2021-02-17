@@ -71,10 +71,6 @@ namespace AW.Functions {
             AppendCommentToOrders(toOrders, "User unhappy", context);
 
 
-        //public static string DisableCommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders) {
-        //    return toOrders.Any(o => !o.IsShipped()) ? "Not all shipped yet" : null;
-        //}
-
         public static void CommentAsUserUnhappy(this SalesOrderHeader order, IContext context) {
             AppendComment(order, "User unhappy", context);
         }
