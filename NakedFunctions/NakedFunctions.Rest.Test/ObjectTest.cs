@@ -261,6 +261,14 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
         }
 
+        [Test]
+        public void TestInvokeDeleteRecordAndReturnDeleted()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<DeleteRecord>(), "2");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.NotFound, sc);
+        }
 
         [Test]
         public void TestInvokeUpdateAndPersistSimpleRecordWithPostPersist() {
