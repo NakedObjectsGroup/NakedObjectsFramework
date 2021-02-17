@@ -14,6 +14,7 @@ namespace NakedObjects.Facade {
         IOidTranslator OidTranslator { get; }
         IOidStrategy OidStrategy { get; }
         IMessageBrokerFacade MessageBroker { get; }
+        string[] ServerTypes { get; }
         void Start();
         void End(bool success);
         IPrincipal GetUser();

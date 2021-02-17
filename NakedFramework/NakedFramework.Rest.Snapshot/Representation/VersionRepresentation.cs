@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         private VersionRepresentation(IOidStrategy oidStrategy, HttpRequest req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SelfRelType = new VersionRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
-            SetScalars();
+            SetScalars(oidStrategy);
             SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(oidStrategy, req)));
             SetOptionalCapabilities(capabilitiesMap);
             SetExtensions();
@@ -58,10 +59,15 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return string.IsNullOrWhiteSpace(version) ? $"Failed to read {resource}" : version;
         }
 
-        private void SetScalars() {
+        private void SetScalars(IOidStrategy oidStrategy) {
+            var serverTypes = oidStrategy.FrameworkFacade.ServerTypes;
             var assembly = Assembly.GetExecutingAssembly();
             SpecVersion = GetVersion(assembly, "specversion");
-            ImplVersion = GetVersion(assembly, "implversion");
+            var versions = GetVersion(assembly, "implversion").Split(",");
+
+            var sv = versions.Where(v => serverTypes.Any(st => v.StartsWith(st)));
+
+            ImplVersion = string.Join(", ", sv);
         }
 
         private void SetOptionalCapabilities(IDictionary<string, string> capabilitiesMap) {

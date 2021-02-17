@@ -50,6 +50,7 @@ namespace NakedFunctions.Reflector.Component {
         protected override IIntrospector GetNewIntrospector() => new FunctionalIntrospector(this, LoggerFactory.CreateLogger<FunctionalIntrospector>());
 
         public override bool ConcurrencyChecking => functionalReflectorConfiguration.ConcurrencyChecking;
+        public override string Name { get; } = "Naked Functions";
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var records = functionalReflectorConfiguration.Types;
