@@ -157,6 +157,14 @@ namespace AW.Functions {
             .Aggregate(context, (c, u) => c.WithUpdated(u.original, u.updated));
 
 
+        [MemberOrder("Details",1)] //Places action within the Details collection
+        public static IContext ChangeAQuantity(this SalesOrderHeader soh, 
+            SalesOrderDetail detail, short newQuantity, IContext context) =>
+                 detail.ChangeQuantity(newQuantity, context);
+
+        public static List<SalesOrderDetail> Choices1ChangeAQuantity(this SalesOrderHeader soh) =>
+            soh.Details.ToList();
+
         //        #region CreateNewCreditCard
 
         //        [Hidden]
