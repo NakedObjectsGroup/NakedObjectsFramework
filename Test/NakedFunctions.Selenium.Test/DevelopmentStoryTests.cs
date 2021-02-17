@@ -83,6 +83,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
             UseOfDeferredFunctionIncludingReload();
             UseOfResolveMethodInADeferredFunction();
+            WithDelete();
+            WithMultipleDeletes();
             //QueryContributedActionWithCoValidation();
             //QueryContributedActionWithChoicesFunction();
 
@@ -107,11 +109,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var original = "Volume Discount 41 to 60";
             WaitForTitle(original);
             var newDesc = "Volume Discount 41+";
-            TypeIntoFieldWithoutClearing("#description1", newDesc);
+            ClearFieldThenType("#description1", newDesc);
             Click(OKButton());
             WaitForTitle(newDesc);
             OpenActionDialog("Edit Description");
-            TypeIntoFieldWithoutClearing("#description1", original);
+            ClearFieldThenType("#description1", original);
             Click(OKButton());
             WaitForTitle(original);
         }
@@ -178,12 +180,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var title = WaitForTitle("Road-650 Overstock");
             var original = GetPropertyValue("Max Qty");
             var newQty = original+"1";
-            TypeIntoFieldWithoutClearing("#maxqty1", newQty);
+            ClearFieldThenType("#maxqty1", newQty);
             Click(OKButton());
             Thread.Sleep(1000);
             Assert.AreEqual(newQty, GetPropertyValue("Max Qty"));
             OpenActionDialog("Edit Quantities");
-            TypeIntoFieldWithoutClearing("#maxqty1", original);
+            ClearFieldThenType("#maxqty1", original);
             Click(OKButton());
             Reload();
             Assert.AreEqual(original, GetPropertyValue("Max Qty"));
@@ -261,14 +263,13 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("S", currentStatus);
             GeminiUrl("object?i1=View&o1=AW.Types.Employee--105&as1=open&d1=UpdateMaritalStatus");
             var option = "select#maritalstatus1 option";
-            Assert.AreEqual("M", WaitForCssNo(option, 2).Text);
-            Assert.AreEqual("S", WaitForCssNo(option, 1).Text);
-            Assert.AreEqual("*", WaitForCssNo(option, 0).Text);
-            SelectDropDownOnField("select#maritalstatus1", 2);
+            Assert.AreEqual("M", WaitForCssNo(option, 1).Text);
+            Assert.AreEqual("S", WaitForCssNo(option, 0).Text);
+            SelectDropDownOnField("select#maritalstatus1", 1);
             Click(OKButton());
             wait.Until(dr => GetPropertyValue("Marital Status") == "M");
             GeminiUrl("object?i1=View&o1=AW.Types.Employee--105&as1=open&d1=UpdateMaritalStatus");
-            SelectDropDownOnField("select#maritalstatus1", 1);
+            SelectDropDownOnField("select#maritalstatus1", 0);
             Click(OKButton());
             wait.Until(dr => GetPropertyValue("Marital Status") == "S");
         }
@@ -652,7 +653,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Click(OKButton());
             Click(FullIcon());
             WaitForView(Pane.Single, PaneType.Object);
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             var listIcon1 = WaitForCssNo(".collection .icon.list", 0);
             Click(listIcon1);
             //var detail = wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).First(el => el.Text == "1 x Sport-100 Helmet, Red"));
@@ -668,6 +669,82 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Thread.Sleep(500);
             Assert.AreEqual("£59.48", GetPropertyValue("Sub Total", Pane.Left));
 
+        }
+        //[TestMethod]
+        public void WithDelete()
+        {
+            GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
+            WaitForView(Pane.Left, PaneType.Object, "AW00012211 Victor Romero");
+            WaitForView(Pane.Right, PaneType.Object, "Sport-100 Helmet, Red");
+            Click(GetObjectAction("Create Another Order", Pane.Left));
+            GetProperty("Sales Order Number", Pane.Left);
+            OpenObjectActions(Pane.Left);
+            OpenActionDialog("Add New Detail", Pane.Left);
+            var product = WaitForCss("#pane2 .title");
+            CopyToClipboard(product);
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
+            Click(OKButton());
+            wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "1 Item");
+            OpenActionDialog("Remove Detail", Pane.Left);
+            Click(OKButton());
+            wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).Count(el => el.Text == "Empty") == 2);
+
+
+        }
+
+        //[TestMethod]
+        public void WithMultipleDeletes()
+        {
+            //Build an order
+            GeminiUrl(@"object/list?i1=View&o1=AW.Types.Customer--29861&as1=open&m2=Product_MenuFunctions&a2=ListProductsByCategory&pg2=1&ps2=20&s2_=0&c2=List&pm2_category=%7B""href"":""___0%2Fobjects%2FAW.Types.ProductCategory%2F1""%7D&pm2_subCategory=null");
+            WaitForTitle("AW00029861 Hardware Components", Pane.Left);
+            WaitForTitle("List Products By Category", Pane.Right);
+            Click(GetObjectAction("Create Another Order", Pane.Left));
+            GetProperty("Sales Order Number", Pane.Left);
+            OpenObjectActions(Pane.Left);
+
+            //Add detail 1
+            Reload(Pane.Right);
+            OpenActionDialog("Add New Detail", Pane.Left);
+            var p0 = WaitForCssNo("tr td.reference", 0);
+            Assert.AreEqual("Road-150 Red, 62", p0.Text);
+            CopyToClipboard(p0);
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
+            Click(OKButton());
+            wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "1 Item");
+            
+            //Add detail 2
+            Reload(Pane.Right);
+            OpenActionDialog("Add New Detail", Pane.Left);
+            var p1 = WaitForCssNo("tr td.reference", 1);
+            Assert.AreEqual("Road-150 Red, 44", p1.Text);
+            CopyToClipboard(p1);
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
+            Click(OKButton());
+            wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "2 Items");
+
+            //Add detail 3
+            Reload(Pane.Right);
+            OpenActionDialog("Add New Detail", Pane.Left);
+            var p2 = WaitForCssNo("tr td.reference", 2);
+            Assert.AreEqual("Road-150 Red, 48", p2.Text);
+            CopyToClipboard(p2);
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
+            Click(OKButton());
+            wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "3 Items");
+
+            Click(FullIcon());
+            WaitForView(Pane.Single, PaneType.Object);
+            var listIcon1 = WaitForCssNo(".collection .icon.list", 0);
+            Click(listIcon1);
+
+            SelectCheckBox("#details1-0");
+            SelectCheckBox("#details1-2");
+
+            var remove = WaitForCssNo("nof-collection nof-action input", 0);
+            Assert.AreEqual("Remove Details", remove.GetAttribute("value"));
+            Click(remove);
+            wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "1 Item");
         }
 
         [TestMethod, Ignore] //NOT currently working
@@ -701,10 +778,5 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var actual = WaitForCss(".co-validation");
             Assert.AreEqual(expected, actual);
         }
-
-
-
-
-
     }
 }
