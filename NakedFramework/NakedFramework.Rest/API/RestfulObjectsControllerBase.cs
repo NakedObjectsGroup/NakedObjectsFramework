@@ -13,10 +13,12 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Rest.API;
 using NakedObjects.Rest.Model;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Representations;
@@ -27,12 +29,14 @@ namespace NakedObjects.Rest {
     public class RestfulObjectsControllerBase : ControllerBase {
         private readonly ILogger logger;
         private readonly ILoggerFactory loggerFactory;
+        private readonly IConfiguration config;
 
         #region constructor and properties
 
-        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade, ILogger logger, ILoggerFactory loggerFactory) {
+        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade, ILogger logger, ILoggerFactory loggerFactory, IConfiguration config) {
             this.logger = logger;
             this.loggerFactory = loggerFactory;
+            this.config = config;
             FrameworkFacade = frameworkFacade;
             OidStrategy = frameworkFacade.OidStrategy;
         }
@@ -123,7 +127,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult GetMenus() => InitAndHandleErrors(SnapshotFactory.MenusSnapshot(OidStrategy, FrameworkFacade.GetMainMenus, Request, GetFlags(this)));
 
-        public virtual ActionResult GetVersion() => InitAndHandleErrors(SnapshotFactory.VersionSnapshot(OidStrategy, GetOptionalCapabilities, Request, GetFlags(this)));
+        public virtual ActionResult GetVersion() => InitAndHandleErrors(SnapshotFactory.VersionSnapshot(OidStrategy, GetOptionalCapabilities(), Request, GetFlags(this)));
 
         public virtual ActionResult GetService(string serviceName) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetServiceByName(serviceName), Request, GetFlags(this)));
 
@@ -338,6 +342,19 @@ namespace NakedObjects.Rest {
         #endregion
 
         #region helpers
+
+        private string OverrideFromConfig(string key, string existingValue) => config.GetSection("NakedObjects")[key] ?? existingValue;
+
+        private Func<IDictionary<string, string>> GetOptionalCapabilities() {
+            return () => {
+                var map = ControllerHelpers.GetOptionalCapabilities();
+                foreach (var (key, value) in map) {
+                    map[key] = OverrideFromConfig(key, value);
+                }
+                return map;
+            };
+        }
+
 
         private static string GetIfMatchTag(HttpRequest request) {
             var headers = request.GetTypedHeaders();

@@ -10,13 +10,14 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Rest;
 
 namespace NakedFunctions.Rest.Test {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(IFrameworkFacade ff, ILogger<RestfulObjectsControllerBase> l, ILoggerFactory lf) : base(ff, l, lf) { }
+        public RestfulObjectsController(IFrameworkFacade ff, ILogger<RestfulObjectsControllerBase> l, ILoggerFactory lf, IConfiguration c) : base(ff, l, lf, c) { }
     }
 
     public static class Helpers {

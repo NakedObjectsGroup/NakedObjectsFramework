@@ -10,6 +10,7 @@ open NakedObjects.Facade
 open NakedObjects.Rest
 open RestfulObjects.Test.Data
 open Microsoft.Extensions.Logging
+open Microsoft.Extensions.Configuration
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer = @"Data Source=(localdb)\MSSQLLocalDB;"
@@ -37,7 +38,7 @@ let CodeFirstSetup() =
 let mapper = new TestTypeCodeMapper()
 let keyMapper = new TestKeyCodeMapper()
 
-type RestfulObjectsController(ff: IFrameworkFacade, l : ILogger<RestfulObjectsControllerBase>, lf : ILoggerFactory) = 
+type RestfulObjectsController(ff: IFrameworkFacade, l : ILogger<RestfulObjectsControllerBase>, lf : ILoggerFactory, c : IConfiguration) = 
     class
-        inherit RestfulObjectsControllerBase(ff, l, lf)
+        inherit RestfulObjectsControllerBase(ff, l, lf, c)
  end
