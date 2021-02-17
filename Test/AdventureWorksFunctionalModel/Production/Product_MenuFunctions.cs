@@ -10,6 +10,7 @@ using NakedFunctions;
 using AW.Types;
 
 using static AW.Helpers;
+using System.Collections.Generic;
 
 namespace AW.Functions
 {
@@ -33,5 +34,17 @@ namespace AW.Functions
         [MemberOrder(4)]
         public static IQueryable<Product> AllProducts(IContext context) => context.Instances<Product>();
 
+        [MemberOrder(5)]
+        public static IQueryable<Product> ListProductsByCategory(
+            ProductCategory category, [Optionally] ProductSubcategory subCategory, IContext context)
+        {
+            int catId = category.ProductCategoryID;
+            int subId = subCategory is null ? 0 : subCategory.ProductSubcategoryID;
+            return context.Instances<Product>().Where(p => p.ProductSubcategory.ProductCategoryID == catId 
+                && (subId == 0 || p.ProductSubcategoryID.Value == subId));
+        }
+
+        public static List<ProductSubcategory> Choices1ListProductsByCategory(ProductCategory category) =>
+            category.ProductSubcategory.ToList();
     }
 }
