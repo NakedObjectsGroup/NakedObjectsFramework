@@ -27,7 +27,7 @@ namespace NakedObjects.Meta.Utils {
 
         public static bool IsInjectedParameter(this ParameterInfo p) => p.ParameterType.IsAssignableTo(typeof(IContext));
 
-        public static bool IsTargetParameter(this ParameterInfo p) => p.Position == 0 && p.Member.IsExtensionMethod();
+        public static bool IsTargetParameter(this ParameterInfo p) => p.Position == 0 && p.Member.IsExtensionMethod() && !CollectionUtils.IsGenericQueryable(p.ParameterType);
 
 
         // ReSharper disable once UnusedMember.Global

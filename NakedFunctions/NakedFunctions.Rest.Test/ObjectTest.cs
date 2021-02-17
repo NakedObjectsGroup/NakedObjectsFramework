@@ -956,10 +956,12 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual(3, parsedResult["members"].Count());
 
-            Assert.AreEqual(2, parsedResult["members"]["UpdatedRecords"]["members"].Count());
+            Assert.AreEqual(3, parsedResult["members"]["UpdatedRecords"]["members"].Count());
 
             Assert.IsNotNull(parsedResult["members"]["UpdatedRecords"]["members"]["LocalContributedFunction"]);
             Assert.IsNotNull(parsedResult["members"]["UpdatedRecords"]["members"]["LocalContributedFunctionByMemberOrder"]);
+
+            Assert.AreEqual(4, parsedResult["members"]["UpdatedRecords"]["members"]["LocalContributedFunction1"]["parameters"]["psr"]["choices"].Count());
         }
 
         [Test]
