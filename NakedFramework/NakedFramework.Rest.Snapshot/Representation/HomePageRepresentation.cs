@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
@@ -36,15 +37,19 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         private void SetLinks(HttpRequest req) {
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(OidStrategy, SelfRelType, Flags),
-                LinkRepresentation.Create(OidStrategy, new UserRelType(new UriMtHelper(OidStrategy, req)), Flags),
-                LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Services, SegmentValues.Services, new UriMtHelper(OidStrategy, req)), Flags),
-                LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Menus, SegmentValues.Menus, new UriMtHelper(OidStrategy, req)), Flags),
-                LinkRepresentation.Create(OidStrategy, new VersionRelType(new UriMtHelper(OidStrategy, req)), Flags)
+                LinkRepresentation.Create(OidStrategy, new UserRelType(new UriMtHelper(OidStrategy, req)), Flags)
             };
+
+            if (OidStrategy.FrameworkFacade.GetServices().List.Any()) {
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Services, SegmentValues.Services, new UriMtHelper(OidStrategy, req)), Flags));
+            }
+
+            tempLinks.Add(LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Menus, SegmentValues.Menus, new UriMtHelper(OidStrategy, req)), Flags));
+            tempLinks.Add(LinkRepresentation.Create(OidStrategy, new VersionRelType(new UriMtHelper(OidStrategy, req)), Flags));
 
             Links = tempLinks.ToArray();
         }
 
-        public static HomePageRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags) => new HomePageRepresentation(oidStrategy, req, flags);
+        public static HomePageRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags) => new(oidStrategy, req, flags);
     }
 }
