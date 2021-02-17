@@ -123,6 +123,7 @@ namespace AW.Functions {
         //        #endregion
 
         #region Remove Details
+
         public static IContext RemoveDetail(this SalesOrderHeader soh,
             SalesOrderDetail detailToRemove, IContext context) =>
                      context.WithDeleted(detailToRemove)
@@ -138,7 +139,7 @@ namespace AW.Functions {
         public static string DisableRemoveDetail(this SalesOrderHeader soh) =>
             soh.Details.Any() ? null : "Order has no Details.";
 
-        [MemberOrder(3)]
+        [MemberOrder("Details", 1)]
         public static  IContext RemoveDetails(this SalesOrderHeader soh,
              IEnumerable<SalesOrderDetail> details, IContext context) =>
                  details.Aggregate(context, (c, d) => c.WithDeleted(d))
@@ -146,6 +147,7 @@ namespace AW.Functions {
 
         #endregion
 
+        [MemberOrder("Details", 2)]
         public static IContext AddCarrierTrackingNumber(this SalesOrderHeader soh,
            IEnumerable<SalesOrderDetail> details, string ctn, IContext context) =>
              details.Select(d => new
@@ -157,7 +159,7 @@ namespace AW.Functions {
             .Aggregate(context, (c, u) => c.WithUpdated(u.original, u.updated));
 
 
-        [MemberOrder("Details",1)] //Places action within the Details collection
+        [MemberOrder("Details",3)] //Places action within the Details collection
         public static IContext ChangeAQuantity(this SalesOrderHeader soh, 
             SalesOrderDetail detail, short newQuantity, IContext context) =>
                  detail.ChangeQuantity(newQuantity, context);
