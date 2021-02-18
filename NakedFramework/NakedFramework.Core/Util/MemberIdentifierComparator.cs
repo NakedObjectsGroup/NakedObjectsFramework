@@ -9,12 +9,12 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta.Utils
+namespace NakedFramework.Core.Util
 {
     /// <summary>
     ///     Compares <see cref="IMemberSpecImmutable" /> by <see cref="ISpecification.Identifier" />
     /// </summary>
-    internal class MemberIdentifierComparator<T> : IComparer<T> where T : IMemberSpecImmutable {
+    internal class MemberIdentifierComparator<T> : IComparer<T> where T : ISpecification {
         #region IComparer<T> Members
 
         public int Compare(T o1, T o2) => o1.Identifier.CompareTo(o2.Identifier);

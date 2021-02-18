@@ -127,7 +127,11 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public record DisplayAsPropertyRecord {
         [Key]
+        [MemberOrder(2)]
         public int Id { get; init; }
+        [MemberOrder(0)]
+        public string Name { get; init; }
+        public override string ToString() => Id.ToString();
     }
 
     [ViewModel(typeof(ViewModelFunctions))]

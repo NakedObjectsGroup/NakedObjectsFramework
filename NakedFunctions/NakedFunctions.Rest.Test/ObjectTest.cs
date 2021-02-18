@@ -911,10 +911,17 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(3, parsedResult["members"].Count());
-            Assert.AreEqual("DisplayAsPropertyRecord { Id = 1 }", parsedResult["members"]["DisplayAsProperty"]["value"]["title"].ToString());
+            Assert.AreEqual(4, parsedResult["members"].Count());
+            Assert.AreEqual("1", parsedResult["members"]["DisplayAsProperty"]["value"]["title"].ToString());
 
-            Assert.AreEqual("DisplayAsPropertyRecord { Id = 1 }", parsedResult["members"]["DisplayAsCollection"]["value"][0]["title"].ToString());
+            Assert.AreEqual("1", parsedResult["members"]["DisplayAsCollection"]["value"][0]["title"].ToString());
+
+            // check ordering
+
+            Assert.IsTrue(parsedResult["members"].ToArray()[0].ToString().StartsWith("\"Name"));
+            Assert.IsTrue(parsedResult["members"].ToArray()[1].ToString().StartsWith("\"DisplayAsProperty"));
+            Assert.IsTrue(parsedResult["members"].ToArray()[2].ToString().StartsWith("\"Id"));
+            Assert.IsTrue(parsedResult["members"].ToArray()[3].ToString().StartsWith("\"DisplayAsCollection"));
         }
 
         [Test]

@@ -11,15 +11,14 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-
-namespace NakedObjects.Meta.Utils {
+namespace NakedFramework.Core.Util {
     /// <summary>
     ///     Compares by <see cref="IMemberOrderFacet" /> obtained from each <see cref="IMemberSpecImmutable" />
     /// </summary>
     /// <para>
     ///     If there is no attribute on either member, then will compare the members by name instead.
     /// </para>
-    public class MemberOrderComparator<T> : IComparer<T> where T : IMemberSpecImmutable {
+    public class MemberOrderComparator<T> : IComparer<T> where T : ISpecification {
         private readonly MemberIdentifierComparator<T> fallbackComparator = new MemberIdentifierComparator<T>();
 
         #region IComparer<T> Members

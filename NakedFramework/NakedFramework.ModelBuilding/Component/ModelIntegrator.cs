@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Core.Util;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -18,7 +19,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.Meta.Utils;
+
 
 namespace NakedFramework.ModelBuilding.Component {
     public class ModelIntegrator : IModelIntegrator {
@@ -139,9 +140,11 @@ namespace NakedFramework.ModelBuilding.Component {
                 return matchingActionsForObject;
             }).ToList();
 
-            var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
-
-            spec.AddContributedFields(adaptedMembers);
+            if (result.Any()) {
+                var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
+                var orderedFields = spec.Fields.Union(adaptedMembers).OrderBy(f => f, new MemberOrderComparator<IAssociationSpecImmutable>()).ToList();
+                spec.AddContributedFields(orderedFields);
+            }
         }
 
         private static void PopulateDisplayAsPropertyFunctions(IMetamodelBuilder metamodel) {

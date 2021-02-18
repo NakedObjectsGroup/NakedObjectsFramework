@@ -208,11 +208,14 @@ namespace NakedFunctions.Rest.Test.Data {
     }
 
     public static class DisplayAsPropertyRecordFunctions {
+     
         [DisplayAsProperty]
-        public static DisplayAsPropertyRecord DisplayAsProperty(this DisplayAsPropertyRecord sp, IContext context) => sp;
+        [MemberOrder(3)]
+        public static IQueryable<DisplayAsPropertyRecord> DisplayAsCollection(this DisplayAsPropertyRecord sp, IContext context) => context.Instances<DisplayAsPropertyRecord>();
 
         [DisplayAsProperty]
-        public static IQueryable<DisplayAsPropertyRecord> DisplayAsCollection(this DisplayAsPropertyRecord sp, IContext context) => context.Instances<DisplayAsPropertyRecord>();
+        [MemberOrder(1)]
+        public static DisplayAsPropertyRecord DisplayAsProperty(this DisplayAsPropertyRecord sp, IContext context) => sp;
     }
 
     public static class ViewModelFunctions {

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Core.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -25,8 +26,6 @@ namespace NakedObjects.Core.Spec {
         private IActionSpec[] contributedActions;
         private IActionSpec[] finderActions;
         private IAssociationSpec[] objectFields;
-        private IAssociationSpec[] contributedFields;
-        private IAssociationSpec[] combinedFields;
 
         public ObjectSpec(SpecFactory memberFactory,
                           IObjectSpecImmutable innerSpec,
@@ -36,8 +35,6 @@ namespace NakedObjects.Core.Spec {
 
         private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions);
 
-        private IAssociationSpec[] ContributedFields => contributedFields ??= MemberFactory.CreateAssociationSpecs(InnerSpec.ContributedFields);
-
         #region IObjectSpec Members
 
         private IAssociationSpec[] ObjectFields
@@ -45,7 +42,7 @@ namespace NakedObjects.Core.Spec {
             get { return objectFields ??= InnerSpec.Fields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray(); }
         }
 
-        public IAssociationSpec[] Properties => GetFields();
+        public IAssociationSpec[] Properties => ObjectFields;
 
         public IAssociationSpec GetProperty(string id) {
             try {
@@ -54,19 +51,6 @@ namespace NakedObjects.Core.Spec {
             catch (InvalidOperationException) {
                 throw new ReflectionException(logger.LogAndReturn($"No field called '{id}' in '{SingularName}'"));
             }
-        }
-
-        private IAssociationSpec[] GetFields()
-        {
-            if (combinedFields == null)
-            {
-                var ca = new List<IAssociationSpec>();
-                ca.AddRange(ObjectFields);
-                ca.AddRange(ContributedFields);
-                combinedFields = ca.ToArray();
-            }
-
-            return combinedFields;
         }
 
         public override IActionSpec[] GetActions() {

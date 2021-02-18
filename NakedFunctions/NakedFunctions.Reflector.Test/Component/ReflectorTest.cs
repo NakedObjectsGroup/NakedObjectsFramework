@@ -280,12 +280,12 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var propertySpec = spec.ContributedFields[0];
+                var propertySpec = spec.Fields[0];
                 var facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(false, propertySpec.ReturnSpec.IsCollection);
 
-                propertySpec = spec.ContributedFields[1];
+                propertySpec = spec.Fields[1];
                 facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(true, propertySpec.ReturnSpec.IsCollection);
