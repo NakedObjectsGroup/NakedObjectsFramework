@@ -1017,5 +1017,21 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("list", parsedResult["extensions"]["returnType"].ToString());
             Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", parsedResult["extensions"]["elementType"].ToString());
         }
+
+        [Test]
+        public void TestInvokeActionWithImmutableList()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+
+            var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(ImmutableCollectionRecordFunctions.CollectionReturn), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual(4, resultObj["value"].Count());
+        }
     }
 }
