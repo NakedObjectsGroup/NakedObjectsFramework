@@ -73,8 +73,6 @@ namespace NakedFramework.ModelBuilding.Component {
 
         private static bool IsContributedFunctionToCollectionOf(IActionSpecImmutable sa, IObjectSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollectionOf(ts) == true;
 
-
-
         private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
 
         private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
@@ -93,22 +91,7 @@ namespace NakedFramework.ModelBuilding.Component {
             }).ToList();
 
             if (objectContribActions.Any()) {
-                var names = objectContribActions.Select(s => s.Name).ToArray();
-                var distinctNames = names.Distinct().ToArray();
-
-                if (names.Length != distinctNames.Length) {
-                    var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
-                    var errors = new List<string>();
-
-                    foreach (var name in duplicates) {
-                        var duplicateActions = objectContribActions.Where(s => s.Name == name);
-                        var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
-                        errors.Add(error);
-                    }
-
-                    throw new ReflectionException(string.Join(", ", errors));
-                }
-
+                ErrorOnDuplicates(objectContribActions);
                 spec.AddContributedFunctions(objectContribActions);
             }
 
@@ -127,9 +110,50 @@ namespace NakedFramework.ModelBuilding.Component {
             }).ToList();
 
             if (collectionContribActions.Any()) {
+                ErrorOnDuplicates(collectionContribActions);
                 spec.AddCollectionContributedActions(collectionContribActions);
             }
         }
+
+        private static void ErrorOnDuplicates(IList<IActionSpecImmutable> actions) {
+            var names = actions.Select(s => s.Name).ToArray();
+            var distinctNames = names.Distinct().ToArray();
+
+            if (names.Length != distinctNames.Length) {
+                var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
+                var errors = new List<string>();
+
+                foreach (var name in duplicates) {
+                    var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
+                    var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
+                    errors.Add(error);
+                }
+
+                throw new ReflectionException(string.Join(", ", errors));
+            }
+        }
+
+        private static void ErrorOnDuplicates(IList<IAssociationSpecImmutable> actions)
+        {
+            var names = actions.Select(s => s.Name).ToArray();
+            var distinctNames = names.Distinct().ToArray();
+
+            if (names.Length != distinctNames.Length)
+            {
+                var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
+                var errors = new List<string>();
+
+                foreach (var name in duplicates)
+                {
+                    var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
+                    var error = duplicateActions.Aggregate("Name clash between properties defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
+                    errors.Add(error);
+                }
+
+                throw new ReflectionException(string.Join(", ", errors));
+            }
+        }
+
 
         private static void PopulateAssociatedFunctions(IMetamodelBuilder metamodel) {
             // todo add facet for this 
@@ -159,6 +183,7 @@ namespace NakedFramework.ModelBuilding.Component {
             if (result.Any()) {
                 var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
                 var orderedFields = spec.Fields.Union(adaptedMembers).OrderBy(f => f, new MemberOrderComparator<IAssociationSpecImmutable>()).ToList();
+                ErrorOnDuplicates(orderedFields);
                 spec.AddContributedFields(orderedFields);
             }
         }

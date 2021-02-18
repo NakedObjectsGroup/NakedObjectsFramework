@@ -146,6 +146,31 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
+        public void TestGetObjectDuplicates()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<SimpleRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Duplicate"]);
+        }
+
+        [Test]
+        public void TestGetCollectionDuplicate() {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.GetQueryable), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["result"]["members"]["Duplicate"]);
+        }
+
+
+        [Test]
         public void TestGetObjectActionHints() {
             var api = Api();
             var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.EditSimpleRecord));

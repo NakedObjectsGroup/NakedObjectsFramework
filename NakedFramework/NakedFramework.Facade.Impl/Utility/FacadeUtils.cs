@@ -66,6 +66,11 @@ namespace NakedObjects.Facade.Impl.Utility {
             return overloadedActions.Where(oa => oa.action == action).Select(oa => oa.uid).SingleOrDefault();
         }
 
+        public static string GetOverloadedUId(IActionSpec action, IActionSpec[] actions) {
+            var overloadedActions = GetOverloadedActionsAndUIds(actions);
+            return overloadedActions.Where(oa => oa.action == action).Select(oa => oa.uid).SingleOrDefault();
+        }
+
         public static (IActionSpec spec, string uid)[] GetActionsandUidFromSpec(ITypeSpec spec) =>
             spec.GetActionLeafNodes().Select(action => (action, GetOverloadedUId(action, spec))).ToArray();
     }

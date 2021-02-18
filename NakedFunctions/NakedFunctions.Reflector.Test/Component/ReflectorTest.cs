@@ -1146,7 +1146,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 }
                 catch (ReflectionException e)
                 {
-                    Assert.AreEqual("Name clash between user actions defined on NakedFunctions.Reflector.Test.Component.DuplicateFunctions2.Function and NakedFunctions.Reflector.Test.Component.DuplicateFunctions1.Function", e.Message);
+                    Assert.AreEqual("Name clash between user actions defined on NakedFunctions.Reflector.Test.Component.DuplicateFunctions1.Function and NakedFunctions.Reflector.Test.Component.DuplicateFunctions2.Function", e.Message);
                     throw;
                 }
             }
