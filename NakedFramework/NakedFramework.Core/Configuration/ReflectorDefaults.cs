@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Drawing;
@@ -66,6 +67,8 @@ namespace NakedObjects.Core.Configuration {
             typeof(ICollection<>),
             typeof(IEnumerable<>),
             typeof(IQueryable<>),
+            typeof(IImmutableList<>),
+            typeof(ImmutableList<>),
             typeof(HashSet<>),
             typeof(EntityCollection<>),
             // WhereEnumerableIterator

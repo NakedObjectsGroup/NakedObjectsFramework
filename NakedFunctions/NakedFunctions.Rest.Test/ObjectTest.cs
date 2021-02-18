@@ -42,7 +42,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(OrderedRecordFunctions),
             typeof(CollectionContributedFunctions),
             typeof(EditRecordFunctions),
-            typeof(DeleteRecordFunctions)
+            typeof(DeleteRecordFunctions),
+            typeof(ImmutableCollectionRecordFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -987,6 +988,34 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("Fred", parsedResult["parameters"]["simpleRecord"]["default"]["title"].ToString());
             Assert.AreEqual("Jane", parsedResult["parameters"]["name"]["default"].ToString());
             Assert.IsNull(parsedResult["parameters"]["another"]["default"]);
+        }
+
+        [Test]
+        public void TestGetObjectActionWithImmutableList()
+        {
+            var api = Api();
+            var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(ImmutableCollectionRecordFunctions.CollectionReturn));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ImmutableCollectionRecordFunctions.CollectionReturn), parsedResult["id"].ToString());
+            Assert.AreEqual("list", parsedResult["extensions"]["returnType"].ToString());
+            Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", parsedResult["extensions"]["elementType"].ToString());
+        }
+
+        [Test]
+        public void TestGetObjectActionWithImmutableList1()
+        {
+            var api = Api();
+            var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(ImmutableCollectionRecordFunctions.CollectionReturn1));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ImmutableCollectionRecordFunctions.CollectionReturn1), parsedResult["id"].ToString());
+            Assert.AreEqual("list", parsedResult["extensions"]["returnType"].ToString());
+            Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", parsedResult["extensions"]["elementType"].ToString());
         }
     }
 }

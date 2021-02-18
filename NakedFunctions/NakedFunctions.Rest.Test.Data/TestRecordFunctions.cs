@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using NakedFunctions.Reflector.Component;
 
@@ -267,5 +268,10 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IContext DeleteFunction(this DeleteRecord dr, IContext context) => context.WithDeleted(dr);
 
         public static (DeleteRecord, IContext) DeleteFunctionAndReturn(this DeleteRecord dr, IContext context) => (dr, context.WithDeleted(dr));
+    }
+
+    public static class ImmutableCollectionRecordFunctions {
+        public static IImmutableList<SimpleRecord> CollectionReturn(this SimpleRecord dr, IContext context) => context.Instances<SimpleRecord>().ToImmutableList();
+        public static (IImmutableList<SimpleRecord>, IContext) CollectionReturn1(this SimpleRecord dr, IContext context) => (context.Instances<SimpleRecord>().ToImmutableList(), context);
     }
 }
