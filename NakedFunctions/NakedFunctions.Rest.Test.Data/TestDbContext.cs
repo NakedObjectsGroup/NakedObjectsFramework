@@ -52,11 +52,10 @@ namespace NakedFunctions.Rest.Test.Data {
 
             context.OrderedRecords.Add(new OrderedRecord());
 
-            context.EditRecords.Add(new EditRecord() {Name = "Jane", SimpleRecord = fred, NotMatched = "no"}  );
+            context.EditRecords.Add(new EditRecord {Name = "Jane", SimpleRecord = fred, NotMatched = "no"});
 
             context.DeleteRecords.Add(new DeleteRecord());
             context.DeleteRecords.Add(new DeleteRecord());
-
 
             context.SaveChanges();
         }

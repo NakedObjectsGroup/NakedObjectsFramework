@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using NakedFramework;
 
 namespace NakedFunctions.Rest.Test.Data {
     [PresentationHint("Hint1")]
@@ -25,8 +24,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public override int GetHashCode() => base.GetHashCode();
     }
 
-    public record DeleteRecord
-    {
+    public record DeleteRecord {
         [Key]
         public int Id { get; init; }
 
@@ -129,8 +127,10 @@ namespace NakedFunctions.Rest.Test.Data {
         [Key]
         [MemberOrder(2)]
         public int Id { get; init; }
+
         [MemberOrder(0)]
         public string Name { get; init; }
+
         public override string ToString() => Id.ToString();
     }
 

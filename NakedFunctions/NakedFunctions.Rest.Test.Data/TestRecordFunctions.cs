@@ -208,7 +208,6 @@ namespace NakedFunctions.Rest.Test.Data {
     }
 
     public static class DisplayAsPropertyRecordFunctions {
-     
         [DisplayAsProperty]
         [MemberOrder(3)]
         public static IQueryable<DisplayAsPropertyRecord> DisplayAsCollection(this DisplayAsPropertyRecord sp, IContext context) => context.Instances<DisplayAsPropertyRecord>();
@@ -265,14 +264,8 @@ namespace NakedFunctions.Rest.Test.Data {
     }
 
     public static class DeleteRecordFunctions {
-        public static IContext DeleteFunction(this DeleteRecord dr, IContext context) {
-            return context.WithDeleted(dr);
-        }
+        public static IContext DeleteFunction(this DeleteRecord dr, IContext context) => context.WithDeleted(dr);
 
-        public static (DeleteRecord, IContext) DeleteFunctionAndReturn(this DeleteRecord dr, IContext context)
-        {
-
-            return (dr, context.WithDeleted(dr));
-        }
+        public static (DeleteRecord, IContext) DeleteFunctionAndReturn(this DeleteRecord dr, IContext context) => (dr, context.WithDeleted(dr));
     }
 }
