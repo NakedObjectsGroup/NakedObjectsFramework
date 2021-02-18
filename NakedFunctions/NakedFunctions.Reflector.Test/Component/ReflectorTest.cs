@@ -1085,7 +1085,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
                 eFacet = parameterSpecs[1].GetFacet<IActionDefaultsFacet>();
                 Assert.IsNotNull(eFacet);
-                
+
                 eFacet = parameterSpecs[3].GetFacet<IActionDefaultsFacet>();
                 Assert.IsNotNull(eFacet);
 
@@ -1094,6 +1094,61 @@ namespace NakedFunctions.Reflector.Test.Component {
 
                 eFacet = parameterSpecs[4].GetFacet<IActionDefaultsFacet>();
                 Assert.IsNull(eFacet);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ReflectionException), "string")]
+        public void ReflectDuplicateFunctionsSameType() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
+                        options.Functions = new[] {typeof(DuplicateFunctions)};
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host) {
+                try {
+                    container.GetService<IModelBuilder>()?.Build();
+                }
+                catch (ReflectionException e) {
+                    Assert.AreEqual("Name clash between user actions defined on NakedFunctions.Reflector.Test.Component.DuplicateFunctions.Function and NakedFunctions.Reflector.Test.Component.DuplicateFunctions.Function", e.Message);
+                    throw;
+                }
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ReflectionException), "string")]
+        public void ReflectDuplicateFunctionsDifferentType()
+        {
+            static void Setup(NakedCoreOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(EmptyObjectSetup);
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(SimpleClass) };
+                        options.Functions = new[] { typeof(DuplicateFunctions1), typeof(DuplicateFunctions2) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                try
+                {
+                    container.GetService<IModelBuilder>()?.Build();
+                }
+                catch (ReflectionException e)
+                {
+                    Assert.AreEqual("Name clash between user actions defined on NakedFunctions.Reflector.Test.Component.DuplicateFunctions2.Function and NakedFunctions.Reflector.Test.Component.DuplicateFunctions1.Function", e.Message);
+                    throw;
+                }
             }
         }
     }

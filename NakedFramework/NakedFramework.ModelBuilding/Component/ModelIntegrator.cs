@@ -78,7 +78,7 @@ namespace NakedFramework.ModelBuilding.Component {
         private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
 
         private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
-            var result1 = functions.AsParallel().SelectMany(functionsSpec => {
+            var objectContribActions = functions.AsParallel().SelectMany(functionsSpec => {
                 var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
 
                 var matchingActionsForObject = new List<IActionSpecImmutable>();
@@ -92,11 +92,27 @@ namespace NakedFramework.ModelBuilding.Component {
                 return matchingActionsForObject;
             }).ToList();
 
-            if (result1.Any()) {
-                spec.AddContributedFunctions(result1);
+            if (objectContribActions.Any()) {
+                var names = objectContribActions.Select(s => s.Name).ToArray();
+                var distinctNames = names.Distinct().ToArray();
+
+                if (names.Length != distinctNames.Length) {
+                    var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
+                    var errors = new List<string>();
+
+                    foreach (var name in duplicates) {
+                        var duplicateActions = objectContribActions.Where(s => s.Name == name);
+                        var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
+                        errors.Add(error);
+                    }
+
+                    throw new ReflectionException(string.Join(", ", errors));
+                }
+
+                spec.AddContributedFunctions(objectContribActions);
             }
 
-            var result2 = functions.AsParallel().SelectMany(functionsSpec => {
+            var collectionContribActions = functions.AsParallel().SelectMany(functionsSpec => {
                 var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
 
                 var matchingActionsForCollection = new List<IActionSpecImmutable>();
@@ -110,8 +126,8 @@ namespace NakedFramework.ModelBuilding.Component {
                 return matchingActionsForCollection;
             }).ToList();
 
-            if (result2.Any()) {
-                spec.AddCollectionContributedActions(result2);
+            if (collectionContribActions.Any()) {
+                spec.AddCollectionContributedActions(collectionContribActions);
             }
         }
 

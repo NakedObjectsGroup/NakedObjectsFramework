@@ -276,4 +276,17 @@ namespace NakedFunctions.Reflector.Test.Component {
         [Edit]
         public static IContext EditFunction(this EditClass target, SimpleClass simpleProperty, int intProperty, string stringProperty, IContext context) => context;
     }
+
+    public static class DuplicateFunctions {
+        public static SimpleClass Function(this SimpleClass sr) => sr;
+        public static SimpleClass Function(this SimpleClass sr, IContext c) => sr;
+    }
+
+    public static class DuplicateFunctions1 {
+        public static SimpleClass Function(this SimpleClass sr) => sr;
+    }
+
+    public static class DuplicateFunctions2 {
+        public static SimpleClass Function(this SimpleClass sr) => sr;
+    }
 }

@@ -274,4 +274,5 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IImmutableList<SimpleRecord> CollectionReturn(this SimpleRecord dr, IContext context) => context.Instances<SimpleRecord>().ToImmutableList();
         public static (IImmutableList<SimpleRecord>, IContext) CollectionReturn1(this SimpleRecord dr, IContext context) => (context.Instances<SimpleRecord>().ToImmutableList(), context);
     }
+
 }
