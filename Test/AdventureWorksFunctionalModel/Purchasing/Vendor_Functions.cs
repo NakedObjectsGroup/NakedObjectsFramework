@@ -4,15 +4,15 @@ using AW.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Collections.Immutable;
 
 namespace AW.Functions
 {
     public static class Vendor_Functions
     {
         [MemberOrder(1)]
-        public static List<Product> ShowAllProducts(this Vendor vendor) =>
-            vendor.Products.Select(vp => vp.Product).ToList();
+        public static ImmutableList<Product> ShowAllProducts(this Vendor vendor) =>
+            vendor.Products.Select(vp => vp.Product).ToImmutableList();
 
         //Not implemented.  Action is to test disable function only.
         [MemberOrder(2), DescribedAs("Get report from credit agency")]
