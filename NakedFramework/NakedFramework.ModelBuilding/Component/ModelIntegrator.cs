@@ -135,7 +135,7 @@ namespace NakedFramework.ModelBuilding.Component {
 
         private static void ErrorOnDuplicates(IList<IAssociationSpecImmutable> actions)
         {
-            var names = actions.Select(s => s.Name).ToArray();
+            var names = actions.Select(s => s.Identifier.MemberName).ToArray();
             var distinctNames = names.Distinct().ToArray();
 
             if (names.Length != distinctNames.Length)
