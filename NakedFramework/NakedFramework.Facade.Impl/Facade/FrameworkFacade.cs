@@ -1105,7 +1105,7 @@ namespace NakedObjects.Facade.Impl {
                 var elementSpec = Framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 var cca = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
 
-                ccaContexts = cca.Select(a => new {action = a, uid = FacadeUtils.GetOverloadedUId(MatchingActionSpecOnService(a), cca)}).Select(a => new ActionContext {
+                ccaContexts = cca.Select(a => new {action = a, uid = FacadeUtils.GetOverloadedUId(MatchingActionSpecOnService(a), a.OnSpec, cca)}).Select(a => new ActionContext {
                     Action = a.action,
                     OverloadedUniqueId = a.uid,
                     Target = Framework.ServicesManager.GetService(a.action.OnSpec as IServiceSpec),
