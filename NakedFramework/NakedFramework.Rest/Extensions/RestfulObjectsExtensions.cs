@@ -7,6 +7,8 @@
 
 using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Rest.Configuration;
 using NakedObjects.DependencyInjection.Extensions;
 
 namespace NakedObjects.Rest.Extensions {
@@ -15,17 +17,30 @@ namespace NakedObjects.Rest.Extensions {
             var options = new RestfulObjectsOptions();
             setupAction?.Invoke(options);
 
-            // TODO configure with config object ?
-            RestfulObjectsControllerBase.DebugWarnings = options.DebugWarnings;
-            RestfulObjectsControllerBase.IsReadOnly = options.IsReadOnly;
-            RestfulObjectsControllerBase.CacheSettings = options.CacheSettings;
-            RestfulObjectsControllerBase.AcceptHeaderStrict = options.AcceptHeaderStrict;
-            RestfulObjectsControllerBase.DefaultPageSize = options.DefaultPageSize;
-            RestfulObjectsControllerBase.InlineDetailsInActionMemberRepresentations = options.InlineDetailsInActionMemberRepresentations;
-            RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations = options.InlineDetailsInCollectionMemberRepresentations;
-            RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations = options.InlineDetailsInPropertyMemberRepresentations;
+            coreOptions.Services.AddSingleton<IRestfulObjectsConfiguration>(p => RestfulObjectsConfiguration(options));
         }
 
+        private static RestfulObjectsConfiguration RestfulObjectsConfiguration(RestfulObjectsOptions options) {
+            var config = new RestfulObjectsConfiguration {
+                DebugWarnings = options.DebugWarnings,
+                IsReadOnly = options.IsReadOnly,
+                CacheSettings = options.CacheSettings,
+                AcceptHeaderStrict = options.AcceptHeaderStrict,
+                DefaultPageSize = options.DefaultPageSize,
+                InlineDetailsInActionMemberRepresentations = options.InlineDetailsInActionMemberRepresentations,
+                InlineDetailsInCollectionMemberRepresentations = options.InlineDetailsInCollectionMemberRepresentations,
+                InlineDetailsInPropertyMemberRepresentations = options.InlineDetailsInPropertyMemberRepresentations,
+                ProtoPersistentObjects = options.ProtoPersistentObjects,
+                DeleteObjects = options.DeleteObjects,
+                ValidateOnly = options.ValidateOnly,
+                DomainModel = options.DomainModel,
+                BlobsClobs = options.BlobsClobs,
+                InlinedMemberRepresentations = options.InlinedMemberRepresentations,
+                AllowMutatingActionOnImmutableObject = options.AllowMutatingActionOnImmutableObject
+            };
+
+            return config;
+        }
 
         public static void UseRestfulObjects(this IApplicationBuilder app, string restRoot = "") {
             restRoot ??= "";

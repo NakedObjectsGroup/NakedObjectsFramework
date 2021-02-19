@@ -26,6 +26,7 @@ open Newtonsoft.Json
 open NakedObjects.Rest.Snapshot.Utility
 open Microsoft.Extensions.Configuration
 open NakedFramework
+open NakedFramework.Rest.Configuration
 
 type NullStringHasher() = 
     interface IStringHasher with
@@ -100,7 +101,6 @@ type Tests() =
         
         [<OneTimeSetUp>]
         member x.FixtureSetup() =
-            RestSnapshot.DebugWarnings <- false
             CodeFirstSetup()
             NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
         
@@ -110,7 +110,7 @@ type Tests() =
         
         [<TearDown>]
         member x.TearDown() =        
-            RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
+            resetCache x.api
         
         [<OneTimeTearDown>]
         member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
@@ -118,6 +118,7 @@ type Tests() =
         member x.api =
             let sp = x.GetConfiguredContainer()
             let api = sp.GetService<RestfulObjectsController>()
+            setDebugWarnings api false
             setMockContext api sp
         
         [<Test>]

@@ -26,5 +26,6 @@
     <ProjectReference Include="..\NakedFramework.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
     <ProjectReference Include="..\..\NakedFunctions\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj" />
     <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
+    <ProjectReference Include="..\NakedFramework.Rest\NakedFramework.Rest.csproj" />
   </ItemGroup>
 </Project>

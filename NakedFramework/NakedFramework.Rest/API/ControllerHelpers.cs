@@ -13,6 +13,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Net.Http.Headers;
+using NakedFramework.Rest.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Model;
@@ -263,14 +264,14 @@ namespace NakedObjects.Rest.API {
             }
         }
 
-        public static IDictionary<string, string> GetOptionalCapabilities() =>
+        public static IDictionary<string, string> GetOptionalCapabilities(IRestfulObjectsConfiguration config) =>
             new Dictionary<string, string> {
-                {"protoPersistentObjects", "yes"},
-                {"deleteObjects", "no"},
-                {"validateOnly", "yes"},
-                {"domainModel", "simple"},
-                {"blobsClobs", "attachments"},
-                {"inlinedMemberRepresentations", "yes"}
+                {"protoPersistentObjects", config.ProtoPersistentObjects ? "yes" : "no"},
+                {"deleteObjects", config.DeleteObjects ? "yes" : "no"},
+                {"validateOnly", config.ValidateOnly ? "yes" : "no"},
+                {"domainModel", config.DomainModel},
+                {"blobsClobs", config.BlobsClobs},
+                {"inlinedMemberRepresentations", config.InlinedMemberRepresentations ? "yes" : "no"}
             };
 
         public static T HandleMalformed<T>(Func<T> f) {
@@ -301,8 +302,8 @@ namespace NakedObjects.Rest.API {
             }
         }
 
-        public static void RejectRequestIfReadOnly() {
-            if (RestfulObjectsControllerBase.IsReadOnly) {
+        public static void RejectRequestIfReadOnly(RestfulObjectsControllerBase controller) {
+            if (controller.IsReadOnly) {
                 var msg = DebugFilter(() => "In readonly mode");
                 throw new ValidationException((int) HttpStatusCode.Forbidden, msg);
             }
@@ -335,30 +336,34 @@ namespace NakedObjects.Rest.API {
                 controller.Page,
                 controller.PageSize,
                 controller.DomainModel,
-                RestfulObjectsControllerBase.InlineDetailsInActionMemberRepresentations,
-                RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations,
-                controller.InlinePropertyDetails ?? RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations,
+                controller.InlineDetailsInActionMemberRepresentations,
+                controller.InlineDetailsInCollectionMemberRepresentations,
+                controller.InlinePropertyDetails ?? controller.InlineDetailsInPropertyMemberRepresentations,
                 controller.InlineCollectionItems.HasValue && controller.InlineCollectionItems.Value,
-                RestfulObjectsControllerBase.AllowMutatingActionOnImmutableObject);
+                controller.AllowMutatingActionOnImmutableObject,
+                controller.AcceptHeaderStrict, 
+                controller.DebugWarnings);
 
-        public static RestControlFlags GetFlags(Arguments arguments) {
+        public static RestControlFlags GetFlags(Arguments arguments, RestfulObjectsControllerBase controller) {
             if (arguments.IsMalformed || arguments.ReservedArguments == null) {
                 var msg = $"Malformed arguments : {DebugFilter(() => arguments.IsMalformed ? arguments.MalformedReason : "Reserved args = null")}"; // todo i18n
                 throw new BadRequestNOSException(msg);
             }
 
-            return GetFlagsFromArguments(arguments.ReservedArguments);
+            return GetFlagsFromArguments(arguments.ReservedArguments, controller);
         }
 
-        public static RestControlFlags GetFlagsFromArguments(ReservedArguments reservedArguments) =>
+        public static RestControlFlags GetFlagsFromArguments(ReservedArguments reservedArguments, RestfulObjectsControllerBase controller) =>
             RestControlFlags.FlagsFromArguments(reservedArguments.ValidateOnly,
                 reservedArguments.Page,
                 reservedArguments.PageSize,
                 reservedArguments.DomainModel,
-                RestfulObjectsControllerBase.InlineDetailsInActionMemberRepresentations,
-                RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations,
-                reservedArguments.InlinePropertyDetails ?? RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations,
+                controller.InlineDetailsInActionMemberRepresentations,
+                controller.InlineDetailsInCollectionMemberRepresentations,
+                reservedArguments.InlinePropertyDetails ?? controller.InlineDetailsInPropertyMemberRepresentations,
                 reservedArguments.InlineCollectionItems.HasValue && reservedArguments.InlineCollectionItems.Value,
-                RestfulObjectsControllerBase.AllowMutatingActionOnImmutableObject);
+                controller.AllowMutatingActionOnImmutableObject, 
+                controller.AcceptHeaderStrict,
+                controller.DebugWarnings);
     }
 }

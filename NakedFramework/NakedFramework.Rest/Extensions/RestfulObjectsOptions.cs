@@ -10,7 +10,7 @@ namespace NakedObjects.Rest.Extensions {
         public bool DebugWarnings { get; set; } = true;
 
         // to make whole application 'read only' 
-        public bool IsReadOnly { get; set; }
+        public bool IsReadOnly { get; set; } = false;
 
         // to change cache settings (transactional, user, non-expiring) where 0 = no-cache
         // 0, 3600, 86400 are the defaults 
@@ -18,16 +18,26 @@ namespace NakedObjects.Rest.Extensions {
         public (int, int, int) CacheSettings { get; set; } = (0, 3600, 86400);
 
         // make Accept header handling non-strict (RO spec 2.4.4)
-        public bool AcceptHeaderStrict { get; set; }
+        public bool AcceptHeaderStrict { get; set; } = true;
 
         // to change the size limit on returned collections. The default value is 20.  Specifying 0 means 'unlimited'.
-        public int DefaultPageSize { get; set; } = 50;
+        public int DefaultPageSize { get; set; } = 20;
 
         // These flags control Member Representations - if true the 'details' will be included 
         // in the the member. This will increase the size of the initial representation but reduce 
         // the number of messages.   
-        public bool InlineDetailsInActionMemberRepresentations { get; set; }
-        public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
-        public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
+        public bool InlineDetailsInActionMemberRepresentations { get; set; } = true;
+        public bool InlineDetailsInCollectionMemberRepresentations { get; set; } = true;
+        public bool InlineDetailsInPropertyMemberRepresentations { get; set; } = true;
+
+        public bool AllowMutatingActionOnImmutableObject { get; set; } = false;
+
+        // overrides for flags 
+        public bool ProtoPersistentObjects { get; set; } = true;
+        public bool DeleteObjects { get; set; }  = false;
+        public bool ValidateOnly { get; set; } = true;
+        public string DomainModel { get; set; } = "simple";
+        public string BlobsClobs { get; set; } = "attachments";
+        public bool InlinedMemberRepresentations { get; set; } = true;
     }
 }

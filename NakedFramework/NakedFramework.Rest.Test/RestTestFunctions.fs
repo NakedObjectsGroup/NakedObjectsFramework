@@ -1599,3 +1599,15 @@ let internal expectedUser =
       TProperty(JsonPropertyNames.UserName, TObjectVal("Test"))
       TProperty(JsonPropertyNames.Roles, TArray([]))
       TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+
+let resetCache (api : RestfulObjectsControllerBase) =
+    let config = api.GetConfig()
+    config.CacheSettings  <- (0, 3600, 86400)
+    api.ResetConfig(config)
+    ()
+
+let setDebugWarnings (api : RestfulObjectsControllerBase) flag =
+    let config = api.GetConfig()
+    config.DebugWarnings  <- flag
+    api.ResetConfig(config)
+    ()

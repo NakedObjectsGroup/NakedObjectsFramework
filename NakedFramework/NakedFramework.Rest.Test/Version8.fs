@@ -66,7 +66,7 @@ let NotAcceptableGetVersion(api : RestfulObjectsControllerBase) =
    assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
 
    let msg = 
-       if (RestSnapshot.DebugWarnings) 
+       if (api.DebugWarnings) 
        then "199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/version \""
        else "199 RestfulObjects \"Enable DebugWarnings to see message\""
 

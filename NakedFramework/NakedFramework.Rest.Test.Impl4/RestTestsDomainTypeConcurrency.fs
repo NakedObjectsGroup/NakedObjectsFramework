@@ -103,7 +103,6 @@ type Tests() =
         
         [<OneTimeSetUp>]
         member x.FixtureSetup() =
-           RestSnapshot.DebugWarnings <- false
            CodeFirstSetup()
            NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
            ctt <- fun code -> mapper.TypeStringFromCode(code)
@@ -117,7 +116,7 @@ type Tests() =
         
         [<TearDown>]
         member x.TearDown() =        
-          RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
+          resetCache x.api
         
         [<OneTimeTearDown>]
         member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
@@ -125,6 +124,7 @@ type Tests() =
         member x.api =
           let sp = x.GetConfiguredContainer()
           let api = sp.GetService<RestfulObjectsController>()
+          setDebugWarnings api false
           setMockContext api sp
         
         [<Test>]

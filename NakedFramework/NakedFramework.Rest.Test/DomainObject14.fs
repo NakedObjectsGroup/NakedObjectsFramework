@@ -251,8 +251,9 @@ let GetMostSimpleObjectConfiguredCaching(api : RestfulObjectsControllerBase) =
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
     let oid = ktc "1"
     let oName = sprintf "%s/%s" oType oid
-
-    RestfulObjectsControllerBase.CacheSettings <- (2, 100, 200)
+    let config = api.GetConfig()
+    config.CacheSettings  <- (2, 100, 200)
+    api.ResetConfig(config)
    
     let url = sprintf "http://localhost/objects/%s/%s" oType oid
     jsonSetGetMsg api.Request url

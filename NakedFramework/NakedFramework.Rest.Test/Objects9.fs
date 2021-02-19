@@ -2051,11 +2051,11 @@ let PersistMostSimpleTransientObjectMalformedMemberArgs(api : RestfulObjectsCont
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonPersist
 
     let msg = 
-        if (RestSnapshot.DebugWarnings) 
+        if (api.DebugWarnings) 
         then "199 RestfulObjects \"Malformed arguments : Unable to cast object of type 'Newtonsoft.Json.Linq.JValue' to type 'Newtonsoft.Json.Linq.JObject'"
         else "199 RestfulObjects \"Malformed arguments : Enable DebugWarnings to see message\""
 
-    if (RestSnapshot.DebugWarnings) then 
+    if (api.DebugWarnings) then 
         Assert.AreEqual(msg, headers.Headers.["Warning"].ToString().Substring(0, 140))
     else 
         Assert.AreEqual(msg, headers.Headers.["Warning"].ToString())

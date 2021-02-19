@@ -11,6 +11,7 @@ open NakedObjects.Rest
 open RestfulObjects.Test.Data
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.Configuration
+open NakedFramework.Rest.Configuration
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer = @"Data Source=(localdb)\MSSQLLocalDB;"
@@ -27,7 +28,6 @@ let csRTZ = server + @"Initial Catalog=RestTestZ;Integrated Security=True;"
 let csRTD = server + @"Initial Catalog=RestTestD;Integrated Security=True;"
 let csRTDT = server + @"Initial Catalog=RestTestDT;Integrated Security=True;"
 
-
 type CodeFirstInitializer() = 
     inherit System.Data.Entity.DropCreateDatabaseAlways<CodeFirstContextLocal>()
 
@@ -38,7 +38,7 @@ let CodeFirstSetup() =
 let mapper = new TestTypeCodeMapper()
 let keyMapper = new TestKeyCodeMapper()
 
-type RestfulObjectsController(ff: IFrameworkFacade, l : ILogger<RestfulObjectsControllerBase>, lf : ILoggerFactory, c : IConfiguration) = 
+type RestfulObjectsController(ff: IFrameworkFacade, l : ILogger<RestfulObjectsControllerBase>, lf : ILoggerFactory, c : IRestfulObjectsConfiguration) = 
     class
         inherit RestfulObjectsControllerBase(ff, l, lf, c)
  end

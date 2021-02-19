@@ -51,6 +51,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
         public bool InlineCollectionItems { get; set; }
         public bool AllowMutatingActionsOnImmutableObject { get; set; }
+        public bool AcceptHeaderStrict { get; set; }
+        public bool DebugWarnings { get; set; }
+
 
         private static bool GetBool(object value) =>
             value switch {
@@ -99,7 +102,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                                                           bool inlineDetailsInCollectionMemberRepresentations,
                                                           bool inlineDetailsInPropertyMemberRepresentations,
                                                           bool inlineCollectionItems,
-                                                          bool allowMutatingActionsOnImmutableObjects) =>
+                                                          bool allowMutatingActionsOnImmutableObjects,
+                                                          bool acceptHeaderStrict,
+                                                          bool debugWarnings) =>
             new RestControlFlags {
                 ValidateOnly = validateOnly,
                 FollowLinks = false,
@@ -111,7 +116,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 InlineDetailsInCollectionMemberRepresentations = inlineDetailsInCollectionMemberRepresentations,
                 InlineDetailsInPropertyMemberRepresentations = inlineDetailsInPropertyMemberRepresentations,
                 InlineCollectionItems = inlineCollectionItems,
-                AllowMutatingActionsOnImmutableObject = allowMutatingActionsOnImmutableObjects
+                AllowMutatingActionsOnImmutableObject = allowMutatingActionsOnImmutableObjects,
+                AcceptHeaderStrict = acceptHeaderStrict,
+                DebugWarnings = debugWarnings
             };
     }
 }

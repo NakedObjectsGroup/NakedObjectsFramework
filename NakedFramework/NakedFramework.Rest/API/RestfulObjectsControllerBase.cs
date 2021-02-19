@@ -10,12 +10,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using NakedFramework.Rest.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.API;
@@ -25,62 +26,59 @@ using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;
 using static NakedObjects.Rest.API.ControllerHelpers;
 
+[assembly: InternalsVisibleTo("NakedFramework.Rest.Test")]
+[assembly: InternalsVisibleTo("NakedFramework.Rest.Test.Impl1")]
+[assembly: InternalsVisibleTo("NakedFramework.Rest.Test.Impl2")]
+[assembly: InternalsVisibleTo("NakedFramework.Rest.Test.Impl3")]
+[assembly: InternalsVisibleTo("NakedFramework.Rest.Test.Impl4")]
+
 namespace NakedObjects.Rest {
     public class RestfulObjectsControllerBase : ControllerBase {
         private readonly ILogger logger;
         private readonly ILoggerFactory loggerFactory;
-        private readonly IConfiguration config;
+        private IRestfulObjectsConfiguration config;
 
         #region constructor and properties
 
-        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade, ILogger logger, ILoggerFactory loggerFactory, IConfiguration config) {
+        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade, ILogger logger, ILoggerFactory loggerFactory, IRestfulObjectsConfiguration config) {
             this.logger = logger;
             this.loggerFactory = loggerFactory;
-            this.config = config;
+            ResetConfig(config);
             FrameworkFacade = frameworkFacade;
             OidStrategy = frameworkFacade.OidStrategy;
         }
 
-        static RestfulObjectsControllerBase() {
-            // defaults 
-            CacheSettings = (0, 3600, 86400);
-            DefaultPageSize = 20;
-            InlineDetailsInActionMemberRepresentations = true;
-            InlineDetailsInCollectionMemberRepresentations = true;
-            InlineDetailsInPropertyMemberRepresentations = true;
-            AllowMutatingActionOnImmutableObject = false;
+        // internal for testing
+        internal void ResetConfig(IRestfulObjectsConfiguration newConfig) {
+            config = newConfig;
+            RestControlFlags.ConfiguredPageSize = config.DefaultPageSize;
+            RestSnapshot.DebugFilter = config.DebugWarnings 
+                ? (Func<Func<string>, string>) (f => f()) 
+                : _ => "Enable DebugWarnings to see message";
         }
 
-        public static bool IsReadOnly { get; set; }
+        internal IRestfulObjectsConfiguration GetConfig() => config;
 
-        public static bool InlineDetailsInActionMemberRepresentations { get; set; }
+        public bool IsReadOnly => config.IsReadOnly;
 
-        public static bool InlineDetailsInCollectionMemberRepresentations { get; set; }
+        public bool InlineDetailsInActionMemberRepresentations => config.InlineDetailsInActionMemberRepresentations;
 
-        public static bool InlineDetailsInPropertyMemberRepresentations { get; set; }
+        public bool InlineDetailsInCollectionMemberRepresentations => config.InlineDetailsInCollectionMemberRepresentations;
+
+        public bool InlineDetailsInPropertyMemberRepresentations => config.InlineDetailsInPropertyMemberRepresentations;
 
         // cache settings in seconds, 0 = no cache, "no, short, long")   
-        public static (int, int, int) CacheSettings { get; set; }
+        public (int, int, int) CacheSettings => config.CacheSettings;
 
-        public static int DefaultPageSize {
-            get => RestControlFlags.ConfiguredPageSize;
-            set => RestControlFlags.ConfiguredPageSize = value;
-        }
+        public int DefaultPageSize => config.DefaultPageSize;
 
-        public static bool AcceptHeaderStrict {
-            get => RestSnapshot.AcceptHeaderStrict;
-            set => RestSnapshot.AcceptHeaderStrict = value;
-        }
+        public bool AcceptHeaderStrict => config.AcceptHeaderStrict;
 
-        public static bool DebugWarnings
-        {
-            get => RestSnapshot.DebugWarnings;
-            set => RestSnapshot.DebugWarnings = value;
-        }
+        public bool DebugWarnings => config.DebugWarnings;
 
         protected IFrameworkFacade FrameworkFacade { get; set; }
         public IOidStrategy OidStrategy { get; set; }
-        public static bool AllowMutatingActionOnImmutableObject { get; set; }
+        public bool AllowMutatingActionOnImmutableObject => config.AllowMutatingActionOnImmutableObject;
 
         #endregion
 
@@ -196,7 +194,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult PutObject(string domainType, string instanceId, ArgumentMap arguments) {
             (Func<RestSnapshot>, bool) PutObject() {
-                RejectRequestIfReadOnly();
+                RejectRequestIfReadOnly(this);
                 var (argsContext, flags) = ProcessArgumentMap(arguments, true, false);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.PutObjectAndValidate(domainType, instanceId, argsContext);
@@ -208,7 +206,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult PostPersist(string domainType, PersistArgumentMap arguments) {
             (Func<RestSnapshot>, bool) PersistObject() {
-                RejectRequestIfReadOnly();
+                RejectRequestIfReadOnly(this);
                 var (argsContext, flags) = ProcessPersistArguments(arguments);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.PersistObjectAndValidate(domainType, argsContext, flags);
@@ -228,7 +226,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
             (Func<RestSnapshot>, bool) PutProperty() {
-                RejectRequestIfReadOnly();
+                RejectRequestIfReadOnly(this);
                 var (argContext, flags) = ProcessArgument(argument);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.PutPropertyAndValidate(domainType, instanceId, propertyName, argContext);
@@ -240,7 +238,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult DeleteProperty(string domainType, string instanceId, string propertyName) {
             (Func<RestSnapshot>, bool) DeleteProperty() {
-                RejectRequestIfReadOnly();
+                RejectRequestIfReadOnly(this);
                 var (argContext, flags) = ProcessDeleteArgument();
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.DeletePropertyAndValidate(domainType, instanceId, propertyName, argContext);
@@ -257,7 +255,7 @@ namespace NakedObjects.Rest {
         private ActionResult Invoke(string domainType, string instanceId, string actionName, ArgumentMap arguments, bool queryOnly) {
             (Func<RestSnapshot>, bool) Execute() {
                 if (!queryOnly) {
-                    RejectRequestIfReadOnly();
+                    RejectRequestIfReadOnly(this);
                 }
 
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, queryOnly);
@@ -278,7 +276,7 @@ namespace NakedObjects.Rest {
         private ActionResult InvokeOnService(string serviceName, string actionName, ArgumentMap arguments, bool queryOnly) {
             (Func<RestSnapshot>, bool) Execute() {
                 if (!queryOnly) {
-                    RejectRequestIfReadOnly();
+                    RejectRequestIfReadOnly(this);
                 }
 
                 // ignore concurrency always true here
@@ -297,7 +295,7 @@ namespace NakedObjects.Rest {
             {
                 if (!queryOnly)
                 {
-                    RejectRequestIfReadOnly();
+                    RejectRequestIfReadOnly(this);
                 }
 
                 // ignore concurrency always true here
@@ -343,18 +341,7 @@ namespace NakedObjects.Rest {
 
         #region helpers
 
-        private string OverrideFromConfig(string key, string existingValue) => config.GetSection("NakedObjects")[key] ?? existingValue;
-
-        private Func<IDictionary<string, string>> GetOptionalCapabilities() {
-            return () => {
-                var map = ControllerHelpers.GetOptionalCapabilities();
-                foreach (var (key, value) in map) {
-                    map[key] = OverrideFromConfig(key, value);
-                }
-                return map;
-            };
-        }
-
+        private Func<IDictionary<string, string>> GetOptionalCapabilities() => () => ControllerHelpers.GetOptionalCapabilities(config);
 
         private static string GetIfMatchTag(HttpRequest request) {
             var headers = request.GetTypedHeaders();
@@ -494,7 +481,7 @@ namespace NakedObjects.Rest {
             };
         }
 
-        private ActionResult ErrorResult(Exception e) => RepresentationResult(SnapshotFactory.ErrorSnapshot(OidStrategy, FrameworkFacade, e, Request)());
+        private ActionResult ErrorResult(Exception e) => RepresentationResult(SnapshotFactory.ErrorSnapshot(OidStrategy, FrameworkFacade, e, Request, GetFlags(this))());
 
         private ResponseHeaders GetResponseHeaders() => ControllerContext.HttpContext.Response.GetTypedHeaders();
 
@@ -516,10 +503,10 @@ namespace NakedObjects.Rest {
             };
         }
 
-        private (object, RestControlFlags) ExtractValueAndFlags(SingleValueArgument argument) =>
+        private (object, RestControlFlags) ExtractValueAndFlags(SingleValueArgument argument, RestfulObjectsControllerBase controller) =>
             HandleMalformed(() => {
                 ValidateArguments(argument);
-                var flags = argument.ReservedArguments == null ? GetFlags(this) : GetFlags(argument);
+                var flags = argument.ReservedArguments == null ? GetFlags(this) : GetFlags(argument, controller);
                 var parm = argument.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
                 return (parm, flags);
             });
@@ -534,14 +521,14 @@ namespace NakedObjects.Rest {
             HandleMalformed(() => {
                 ValidateArguments(arguments, errorIfNone);
                 var dictionary = arguments.Map.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy));
-                return (dictionary, GetFlags(arguments));
+                return (dictionary, GetFlags(arguments, this));
             });
 
         private (IDictionary<string, object>, RestControlFlags) ExtractValuesAndFlags(PromptArgumentMap arguments, bool errorIfNone) =>
             HandleMalformed(() => {
                 ValidateArguments(arguments, errorIfNone);
                 var dictionary = arguments.MemberMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy));
-                return (dictionary, GetFlags(arguments));
+                return (dictionary, GetFlags(arguments, this));
             });
 
         private TypeActionInvokeContext GetIsTypeOf(string actionName, string typeName, ArgumentMap arguments) {
@@ -602,7 +589,7 @@ namespace NakedObjects.Rest {
         }
 
         private (ArgumentContextFacade, RestControlFlags) ProcessArgument(SingleValueArgument argument) {
-            var (value, flags) = ExtractValueAndFlags(argument);
+            var (value, flags) = ExtractValueAndFlags(argument, this);
             return (new ArgumentContextFacade {
                 Digest = GetIfMatchTag(Request),
                 Value = value,

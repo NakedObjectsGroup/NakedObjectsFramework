@@ -34,6 +34,7 @@ using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.Profile;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflector.Extensions;
+using NakedObjects.Rest.Extensions;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
@@ -125,6 +126,8 @@ namespace NakedObjects.Xat {
                 options.Functions = Functions;
             };
 
+        protected virtual Action<RestfulObjectsOptions> RestfulObjectsOptions => options => {};
+
 
         protected virtual Action<NakedCoreOptions> NakedCoreOptions =>
             builder => {
@@ -136,8 +139,8 @@ namespace NakedObjects.Xat {
                 builder.AddEntityPersistor(PersistorOptions);
                 builder.AddNakedObjects(NakedObjectsOptions);
                 builder.AddNakedFunctions(NakedFunctionsOptions);
+                builder.AddRestfulObjects(RestfulObjectsOptions);
             };
-
 
 
         private IHostBuilder CreateHostBuilder(string[] args) =>
