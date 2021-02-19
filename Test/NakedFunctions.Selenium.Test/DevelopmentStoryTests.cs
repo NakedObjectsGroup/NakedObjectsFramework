@@ -801,5 +801,27 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var last = WaitForCssNo("tbody tr", 8);
             Assert.AreEqual(@"HL Touring Seat/Saddle", last.Text);
         }
+
+        [TestMethod]
+        public void DisplayAsProperty()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Product--790");
+            WaitForView(Pane.Single, PaneType.Object, "Road-250 Red, 48");
+            var props = br.FindElements(By.CssSelector("nof-view-property .name"));
+            Assert.AreEqual(24, props.Count());
+            Assert.AreEqual("Product Model:", props[4].Text);
+            Assert.AreEqual("Description:", props[5].Text); //DisplayAsProperty
+            Assert.AreEqual("List Price:", props[6].Text);
+            var desc = WaitForCssNo("nof-view-property", 5).FindElement(By.CssSelector(".reference")).Text;
+            Assert.AreEqual("Alluminum-alloy frame provides a light, stiff ride, whether you are racing in the velodrome or on a demanding club ride on country roads.", desc);
+            var cols = br.FindElements(By.CssSelector("nof-collection .name"));
+            Assert.AreEqual(3, cols.Count());
+            Assert.AreEqual("Product Reviews:", cols[0].Text);
+            Assert.AreEqual("Special Offers:", cols[1].Text); //DisplayAsProperty
+            Assert.AreEqual("Product Inventory:", cols[2].Text);
+            var offers = WaitForCssNo("nof-collection .details", 1).Text;
+            Assert.AreEqual("2 Items", offers);
+        }
+
     }
 }
