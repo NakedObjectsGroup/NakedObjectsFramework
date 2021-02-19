@@ -220,8 +220,7 @@ namespace AW.Functions
         public static ProductDescription Description(this Product product) =>
            product.ProductModel is null ? null : ProductModel_Functions.LocalCultureDescription(product.ProductModel);
 
-        //This implementation is deli
-        [DisplayAsProperty]
+        [DisplayAsProperty, MemberOrder(110)]
         public static ICollection<SpecialOffer> SpecialOffers(this IProduct product, IContext context)
         {
             //Implementation uses context to check that this works

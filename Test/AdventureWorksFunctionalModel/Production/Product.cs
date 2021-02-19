@@ -7,19 +7,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AW.Functions;
 using NakedFramework.Value;
 using NakedFunctions;
-using NakedFramework.Value;
 
 namespace AW.Types
 {
     public record Product : IProduct, IHasModifiedDate, IHasRowGuid
     {
-        [Hidden]
-        public virtual int ProductID { get; init; }
- 
+        #region Visible properties
         [MemberOrder(1)]
         public virtual string Name { get; init; }
    
@@ -32,8 +28,34 @@ namespace AW.Types
         [MemberOrder(4)]
         public virtual Image Photo => Product_Functions.Photo(this);
 
-        [MemberOrder(12)]
+        [MemberOrder(10)]
+        public virtual ProductModel ProductModel { get; init; }
+
+        //MemberOrder 11 -  See Product_Functions.Description
+
+        [MemberOrder(12), Mask("C")]
+        public virtual decimal ListPrice { get; init; }
+
+        [MemberOrder(13)]
         public virtual ProductCategory ProductCategory => Product_Functions.ProductCategory(this);
+
+        [MemberOrder(14)]
+        public virtual ProductSubcategory ProductSubcategory { get; init; }
+
+        [MemberOrder(15)]
+        public virtual string ProductLine { get; init; }
+
+        [Named("Size"), MemberOrder(16)]
+        public virtual string SizeWithUnit => Product_Functions.SizeWithUnit(this);
+
+        [Named("Weight"), MemberOrder(17)]
+        public virtual string WeightWithUnit => Product_Functions.WeightWithUnit(this);
+
+        [MemberOrder(18)]
+        public virtual string Style { get; init; }
+
+        [MemberOrder(19)]
+        public virtual string Class { get; init; }
 
         [MemberOrder(20)]
         public virtual bool Make { get; init; }
@@ -47,11 +69,41 @@ namespace AW.Types
         [MemberOrder(23)]
         public virtual short ReorderPoint { get; init; }
 
+        [MemberOrder(24)]
+        public virtual int DaysToManufacture { get; init; }
+
+        [MemberOrder(81), Mask("d")]
+        public virtual DateTime SellStartDate { get; init; }
+
+        [MemberOrder(82), Mask("d")]
+        public virtual DateTime? SellEndDate { get; init; }
+
+        [MemberOrder(83), Mask("d")]
+        public virtual DateTime? DiscontinuedDate { get; init; }
+
         [MemberOrder(90), Mask("C")]
         public virtual decimal StandardCost { get; init; }
-       
-        [MemberOrder(11), Mask("C")]
-        public virtual decimal ListPrice { get; init; }
+
+        [MemberOrder(99), Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
+#endregion
+
+        #region Visible Collections
+        [MemberOrder(100)]
+        [TableView(true, nameof(ProductReview.Rating), nameof(ProductReview.Comments))]
+        public virtual ICollection<ProductReview> ProductReviews { get; init; } = new List<ProductReview>();
+
+        [MemberOrder(120), RenderEagerly, TableView(false,
+    nameof(Types.ProductInventory.Quantity),
+    nameof(Types.ProductInventory.Location),
+    nameof(Types.ProductInventory.Shelf),
+    nameof(Types.ProductInventory.Bin))]
+        public virtual ICollection<ProductInventory> ProductInventory { get; init; } = new List<ProductInventory>();
+        #endregion
+
+        #region Hidden Properties & Collections
+        [Hidden]
+        public virtual int ProductID { get; init; }
 
         [Hidden]
         public virtual string Size { get; init; }
@@ -62,78 +114,30 @@ namespace AW.Types
         [Hidden]
         public virtual UnitMeasure SizeUnit { get; init; }
 
-        [Named("Size"), MemberOrder(16)]
-        public virtual string SizeWithUnit => Product_Functions.SizeWithUnit(this);
-
         [Hidden]
         public virtual string WeightUnitMeasureCode { get; init; }
 
         [Hidden]
         public virtual decimal? Weight { get; init; }
 
-        [Named("Weight"), MemberOrder(17)]
-        public virtual string WeightWithUnit => Product_Functions.WeightWithUnit(this);
-
         [Hidden]
         public virtual UnitMeasure WeightUnit { get; init; }
   
-        [MemberOrder(24)] 
-        public virtual int DaysToManufacture { get; init; }
-
-        [MemberOrder(14)]
-        public virtual string ProductLine { get; init; }
-
-        [MemberOrder(19)]
-        public virtual string Class { get; init; }
-        
-        [MemberOrder(18)]
-        public virtual string Style { get; init; }
-               
-        [MemberOrder(81),Mask("d")]
-        public virtual DateTime SellStartDate { get; init; }
-
-        [MemberOrder(82),Mask("d")]
-        public virtual DateTime? SellEndDate { get; init; }
-
-        [MemberOrder(83), Mask("d")]
-        public virtual DateTime? DiscontinuedDate { get; init; }
-
         [Hidden]
         public virtual int? ProductModelID { get; init; }
-
-        [MemberOrder(10)]
-        public virtual ProductModel ProductModel { get; init; }
-        
+     
         [Hidden]
         public virtual int? ProductSubcategoryID { get; init; }
-
-        [MemberOrder(12)]
-        public virtual ProductSubcategory ProductSubcategory { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        [MemberOrder(99)]
-        [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
-   
         [Hidden]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
         
-
-        [TableView(true, nameof(ProductReview.Rating), nameof(ProductReview.Comments))]
-        public virtual ICollection<ProductReview> ProductReviews { get; init; } = new List<ProductReview>();
-
-        [RenderEagerly, TableView(false, 
-            nameof(Types.ProductInventory.Quantity),
-            nameof(Types.ProductInventory.Location),
-            nameof(Types.ProductInventory.Shelf),
-            nameof(Types.ProductInventory.Bin))]
-        public virtual ICollection<ProductInventory> ProductInventory { get; init; } = new List<ProductInventory>();
-
-
         [Hidden]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; } = new List<SpecialOfferProduct>();
+        #endregion
 
         public override string ToString()=> Name;
 

@@ -89,6 +89,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectActionRenderedWithinCollection();
             QueryContributedActionWithChoicesFunction();
             QueryContributedActionWithCoValidation();
+            ActionReturingImmutableList();
+            DisplayAsProperty();
         }
 
         //[TestMethod]
@@ -789,5 +791,52 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var actual = WaitForCss(".co-validation").Text;
             Assert.AreEqual(expected, actual);
         }
+
+        //[TestMethod]
+        public void ActionReturingImmutableList()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Vendor--1696&as1=open");
+            WaitForTitle("Chicago City Saddles");
+            Click(GetObjectAction("Show All Products"));
+            WaitForView(Pane.Single, PaneType.List, "Show All Products");
+            var last = WaitForCssNo("tbody tr", 8);
+            Assert.AreEqual(@"HL Touring Seat/Saddle", last.Text);
+        }
+
+       // [TestMethod]
+        public void DisplayAsProperty()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Product--790");
+            WaitForView(Pane.Single, PaneType.Object, "Road-250 Red, 48");
+            var props = br.FindElements(By.CssSelector("nof-view-property .name"));
+            Assert.AreEqual(24, props.Count());
+            Assert.AreEqual("Product Model:", props[4].Text);
+            Assert.AreEqual("Description:", props[5].Text); //DisplayAsProperty
+            Assert.AreEqual("List Price:", props[6].Text);
+            var desc = WaitForCssNo("nof-view-property", 5).FindElement(By.CssSelector(".reference")).Text;
+            Assert.AreEqual("Alluminum-alloy frame provides a light, stiff ride, whether you are racing in the velodrome or on a demanding club ride on country roads.", desc);
+            var cols = br.FindElements(By.CssSelector("nof-collection .name"));
+            Assert.AreEqual(3, cols.Count());
+            Assert.AreEqual("Product Reviews:", cols[0].Text);
+            Assert.AreEqual("Special Offers:", cols[1].Text); //DisplayAsProperty
+            Assert.AreEqual("Product Inventory:", cols[2].Text);
+            var offers = WaitForCssNo("nof-collection .details", 1).Text;
+            Assert.AreEqual("2 Items", offers);
+        }
+
+        [TestMethod, Ignore]
+        public void QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType()
+        {
+            GeminiUrl("list?m1=Order_MenuFunctions&a1=OrdersInProcess&pg1=1&ps1=20&s1_=0&c1=List");
+            WaitForView(Pane.Single, PaneType.List, "Orders In Process");
+            OpenActionDialog("Append Comment");
+            WaitForCss("input#commenttoappend1");
+
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--73266&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "SO73266");
+            OpenActionDialog("Append Comment");
+            WaitForCss("input#commenttoappend1");
+        }
+
     }
 }

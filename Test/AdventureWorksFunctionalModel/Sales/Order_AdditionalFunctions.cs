@@ -40,11 +40,10 @@ namespace AW.Functions {
 
         #region Comments
 
-        public static (IList<SalesOrderHeader>, IContext) AppendCommentToOrders(this IQueryable<SalesOrderHeader> toOrders, string comment, IContext context)
+        public static IContext AppendComment(this IQueryable<SalesOrderHeader> toOrders, string comment, IContext context)
         {
             var updates = toOrders.Select(x => new { original = x, updated = x.WithAppendedComment(comment, context) });
-            var context2 = updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
-            return (updates.Select(x => x.updated).ToList(), context2);
+            return updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
         }
 
         //public static string ValidateAppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) =>
@@ -68,7 +67,7 @@ namespace AW.Functions {
         }
 
         public static void CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders, IContext context) =>
-            AppendCommentToOrders(toOrders, "User unhappy", context);
+            AppendComment(toOrders, "User unhappy", context);
 
 
         public static void CommentAsUserUnhappy(this SalesOrderHeader order, IContext context) {
@@ -79,15 +78,18 @@ namespace AW.Functions {
             return order.IsShipped() ? null : "Not shipped yet";
         }
 
-        public static void ClearComments(this IQueryable<SalesOrderHeader> toOrders)
+        public static IContext ClearComments(this IQueryable<SalesOrderHeader> toOrders, IContext context)
         {
-            foreach (SalesOrderHeader order in toOrders)
-            {
-                throw new NotImplementedException();
-                //TODO: 
-                //order.Comment = null;
-            }
+            var updates = toOrders.Select(x => new { original = x, updated = WithClearedComments(x, context) });
+            return updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
         }
+
+        public static IContext ClearComments(this SalesOrderHeader order, IContext context) =>
+            context.WithUpdated(order, WithClearedComments(order, context));
+
+        internal static SalesOrderHeader WithClearedComments(SalesOrderHeader order, IContext context) =>
+            order with { Comment = "", ModifiedDate = context.Now() };
+
 
         #endregion
 
