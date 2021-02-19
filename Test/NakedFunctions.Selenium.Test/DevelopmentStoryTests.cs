@@ -90,6 +90,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             QueryContributedActionWithChoicesFunction();
             QueryContributedActionWithCoValidation();
             ActionReturingImmutableList();
+            DisplayAsProperty();
         }
 
         //[TestMethod]
@@ -802,7 +803,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual(@"HL Touring Seat/Saddle", last.Text);
         }
 
-        [TestMethod]
+       // [TestMethod]
         public void DisplayAsProperty()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Product--790");
@@ -821,6 +822,20 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Product Inventory:", cols[2].Text);
             var offers = WaitForCssNo("nof-collection .details", 1).Text;
             Assert.AreEqual("2 Items", offers);
+        }
+
+        [TestMethod, Ignore]
+        public void QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType()
+        {
+            GeminiUrl("list?m1=Order_MenuFunctions&a1=OrdersInProcess&pg1=1&ps1=20&s1_=0&c1=List");
+            WaitForView(Pane.Single, PaneType.List, "Orders In Process");
+            OpenActionDialog("Append Comment");
+            WaitForCss("input#commenttoappend1");
+
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--73266&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "SO73266");
+            OpenActionDialog("Append Comment");
+            WaitForCss("input#commenttoappend1");
         }
 
     }
