@@ -89,6 +89,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectActionRenderedWithinCollection();
             QueryContributedActionWithChoicesFunction();
             QueryContributedActionWithCoValidation();
+            ActionReturingImmutableList();
         }
 
         //[TestMethod]
@@ -788,6 +789,17 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var expected = "Must provide comments for rating < 5";
             var actual = WaitForCss(".co-validation").Text;
             Assert.AreEqual(expected, actual);
+        }
+
+        //[TestMethod]
+        public void ActionReturingImmutableList()
+        {
+            GeminiUrl("object?i1=View&o1=AW.Types.Vendor--1696&as1=open");
+            WaitForTitle("Chicago City Saddles");
+            Click(GetObjectAction("Show All Products"));
+            WaitForView(Pane.Single, PaneType.List, "Show All Products");
+            var last = WaitForCssNo("tbody tr", 8);
+            Assert.AreEqual(@"HL Touring Seat/Saddle", last.Text);
         }
     }
 }
