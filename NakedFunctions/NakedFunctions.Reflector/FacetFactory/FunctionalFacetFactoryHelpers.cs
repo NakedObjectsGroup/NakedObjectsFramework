@@ -21,8 +21,5 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             return method.GetParameters()[paramNum].IsInjectedParameter();
         }
-
-        public static Type GetContributedToType(this MethodInfo method)
-            => method?.IsDefined(typeof(ExtensionAttribute), false) == true ? method.GetParameters().FirstOrDefault()?.ParameterType : null;
     }
 }

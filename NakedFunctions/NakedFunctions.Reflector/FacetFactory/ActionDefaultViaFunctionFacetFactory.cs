@@ -35,12 +35,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindDefaultMethod(Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindDefaultMethod(Type declaringType, Type targetType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var name = $"{RecognisedMethodsAndPrefixes.ParameterDefaultPrefix}{i}{capitalizedName}";
                 var paramType = paramTypes[i];
 
-                bool Matcher(MethodInfo mi) => mi.Matches(name, declaringType, paramType);
+                bool Matcher(MethodInfo mi) => mi.Matches(name, declaringType, paramType, targetType);
 
                 var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
@@ -58,11 +58,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
             var declaringType = actionMethod.DeclaringType;
+            var targetType = actionMethod.ContributedToType();
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
             if (action is IActionSpecImmutable actionSpecImmutable) {
                 var actionParameters = actionSpecImmutable.Parameters;
-                metamodel = FindDefaultMethod(declaringType, capitalizedName, paramTypes, actionParameters, metamodel);
+                metamodel = FindDefaultMethod(declaringType, targetType, capitalizedName, paramTypes, actionParameters, metamodel);
             }
 
             return metamodel;

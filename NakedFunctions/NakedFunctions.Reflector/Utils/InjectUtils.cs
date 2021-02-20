@@ -20,15 +20,15 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Utils {
     public static class InjectUtils {
 
-        public static ParameterInfo[] FilterParms(MethodInfo m) =>
-            m.GetParameters().Where(p => !p.IsInjectedParameter() && (!m.IsDefined(typeof(ExtensionAttribute), false) || p.Position > 0)).ToArray();
+        public static ParameterInfo[] FilterParms(MethodInfo m) => m.GetParameters().Where(p => !(p.IsInjectedParameter() || p.IsTargetParameter())).ToArray();
 
         public static bool IsExtensionMethod(this MemberInfo m) => m.IsDefined(typeof(ExtensionAttribute), false);
 
         public static bool IsInjectedParameter(this ParameterInfo p) => p.ParameterType.IsAssignableTo(typeof(IContext));
 
-        public static bool IsTargetParameter(this ParameterInfo p) => p.Position == 0 && p.Member.IsExtensionMethod() && !CollectionUtils.IsGenericQueryable(p.ParameterType);
+        public static bool IsTargetParameter(this ParameterInfo p) => p.Position == 0 && p.Member.IsExtensionMethod();
 
+        public static Type ContributedToType(this MethodInfo m) => m.GetParameters().SingleOrDefault(IsTargetParameter)?.ParameterType;
 
         // ReSharper disable once UnusedMember.Global
         // maybe called reflectively
@@ -36,7 +36,7 @@ namespace NakedObjects.Meta.Utils {
 
         private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectsFramework framework) =>
             p switch {
-                _ when p.IsTargetParameter() => adapter.Object,
+                _ when p.IsTargetParameter() => adapter?.Object,
                 _ when p.IsInjectedParameter() => new FunctionalContext() {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
                 _ => null
             };
@@ -58,7 +58,7 @@ namespace NakedObjects.Meta.Utils {
         private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectAdapter[] parmValues, int i, INakedObjectsFramework framework) =>
             p switch
             {
-                _ when p.IsTargetParameter() => adapter.Object,
+                _ when p.IsTargetParameter() => adapter?.Object,
                 _ when p.IsInjectedParameter() => new FunctionalContext {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
                 _ => parmValues[i].GetDomainObject()
             };

@@ -9,13 +9,15 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.Utils {
     public static class FactoryUtils {
-        public static bool Matches(this MethodInfo methodInfo, string name, Type declaringType, Type returnType) =>
+        public static bool Matches(this MethodInfo methodInfo, string name, Type declaringType, Type returnType, Type targetType) =>
             methodInfo.Name == name &&
             methodInfo.DeclaringType == declaringType &&
-            methodInfo.ReturnType == returnType;
+            methodInfo.ReturnType == returnType &&
+            methodInfo.ContributedToType() == targetType;
 
         public static MethodInfo FindComplementaryMethod(Type declaringType, string name, Func<MethodInfo, bool> matcher, ILogger logger) {
             var complementaryMethods = declaringType.GetMethods().Where(matcher).ToArray();

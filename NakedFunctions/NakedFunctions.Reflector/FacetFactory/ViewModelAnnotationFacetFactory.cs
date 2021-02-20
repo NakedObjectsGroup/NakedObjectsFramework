@@ -52,7 +52,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private static void ThrowError(string msg) => throw new ReflectionException(msg);
 
         private static Type GetAndValidateContributedToType(MethodInfo deriveMethod) {
-            var deriveMethodVmType = deriveMethod.GetContributedToType();
+            var deriveMethodVmType = deriveMethod.ContributedToType();
             if (deriveMethodVmType is null) {
                 ThrowError($"View model function {deriveMethod.Name} on {deriveMethod.DeclaringType} has missing 'this' parameter");
             }
@@ -104,6 +104,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static bool IsViewModelMatch(MethodInfo method) => method.GetContributedToType()?.GetCustomAttribute<ViewModelAttribute>()?.TypeDefiningVMFunctions == method.DeclaringType;
+        private static bool IsViewModelMatch(MethodInfo method) => method.ContributedToType()?.GetCustomAttribute<ViewModelAttribute>()?.TypeDefiningVMFunctions == method.DeclaringType;
     }
 }

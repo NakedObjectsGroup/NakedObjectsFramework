@@ -36,7 +36,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private void FindAutoCompleteMethodAndAddFacet(Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
+        private void FindAutoCompleteMethodAndAddFacet(Type type, Type targetType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 // only support on strings and reference types
                 var paramType = paramTypes[i];
@@ -44,7 +44,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     var name = $"{RecognisedMethodsAndPrefixes.AutoCompletePrefix}{i}{capitalizedName}";
                     //returning an IQueryable ...
                     //.. or returning a single object
-                    var method = FindAutoCompleteMethodWithReturnTypes(type, name, paramType);
+                    var method = FindAutoCompleteMethodWithReturnTypes(type, name, paramType, targetType);
 
                     if (method is not null) {
                         var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
@@ -60,13 +60,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
         }
 
-        private MethodInfo FindAutoCompleteMethodWithReturnTypes(Type type, string name, Type paramType) {
-            var method = FindAutoCompleteMethod(type, name, typeof(IQueryable<>).MakeGenericType(paramType)) ??
-                         FindAutoCompleteMethod(type, name, paramType);
+        private MethodInfo FindAutoCompleteMethodWithReturnTypes(Type type, string name, Type paramType, Type targetType) {
+            var method = FindAutoCompleteMethod(type, name, typeof(IQueryable<>).MakeGenericType(paramType), targetType) ??
+                         FindAutoCompleteMethod(type, name, paramType, targetType);
 
             //... or returning an enumerable of string
             if (method is null && TypeUtils.IsString(paramType)) {
-                method = FindAutoCompleteMethod(type, name, typeof(IEnumerable<string>));
+                method = FindAutoCompleteMethod(type, name, typeof(IEnumerable<string>), targetType);
             }
 
             return method;
@@ -77,12 +77,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return actualParams.Length == 1 && actualParams.First() == typeof(string);
         }
 
-        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type returnType) =>
-            methodInfo.Matches(name, type, returnType) &&
+        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type returnType, Type targetType) =>
+            methodInfo.Matches(name, type, returnType, targetType) &&
             MatchParams(methodInfo);
 
-        private MethodInfo FindAutoCompleteMethod(Type declaringType, string name, Type returnType) {
-            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, returnType);
+        private MethodInfo FindAutoCompleteMethod(Type declaringType, string name, Type returnType, Type targetType) {
+            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, returnType, targetType);
             return FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
         }
 
@@ -91,11 +91,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
             var declaringType = actionMethod.DeclaringType;
+            var targetType = actionMethod.ContributedToType();
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
             if (action is IActionSpecImmutable actionSpecImmutable) {
                 var actionParameters = actionSpecImmutable.Parameters;
-                FindAutoCompleteMethodAndAddFacet(declaringType, capitalizedName, paramTypes, actionParameters);
+                FindAutoCompleteMethodAndAddFacet(declaringType, targetType, capitalizedName, paramTypes, actionParameters);
             }
 
             return metamodel;
