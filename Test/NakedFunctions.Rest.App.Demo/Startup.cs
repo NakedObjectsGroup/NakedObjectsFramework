@@ -54,11 +54,7 @@ namespace NakedFunctions.Rest.App.Demo {
                     options.FunctionalTypes = AWModelConfig.FunctionalTypes();
                     options.Functions = AWModelConfig.Functions();
                 });
-                builder.AddRestfulObjects(options => {
-                    options.InlineDetailsInCollectionMemberRepresentations = false;
-                    options.InlineDetailsInActionMemberRepresentations = false;
-                    options.InlineDetailsInPropertyMemberRepresentations = false;
-                });
+                builder.AddRestfulObjects(_ => { });
             });
             services.AddScoped<IPrincipalProvider, MockPrincipalProvider>();
             services.AddCors(options => {
