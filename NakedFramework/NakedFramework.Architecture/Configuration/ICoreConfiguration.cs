@@ -18,5 +18,7 @@ namespace NakedObjects.Architecture.Configuration {
         Func<IMenuFactory, IMenu[]> MainMenus { get; }
 
         List<Type> SupportedSystemTypes { get; }
+
+        int HashMapCapacity { get; }
     }
 }

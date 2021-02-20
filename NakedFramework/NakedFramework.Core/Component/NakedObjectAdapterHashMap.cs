@@ -7,32 +7,21 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
 
 namespace NakedObjects.Core.Component {
     public sealed class NakedObjectAdapterHashMap : INakedObjectAdapterMap {
-        private readonly int capacity = 10;
+        private readonly int capacity;
         private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
-        private readonly ILogger<NakedObjectAdapterHashMap> logger;
 
         public NakedObjectAdapterHashMap() => domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
 
         // used by DI
         // ReSharper disable once UnusedMember.Global
-        public NakedObjectAdapterHashMap(IConfiguration config,
-                                         ILogger<NakedObjectAdapterHashMap> logger) : this() {
-            this.logger = logger;
-            var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
-            if (capacityFromConfig == null) {
-                logger.LogWarning($"NakedObjects:HashMapCapacity not set defaulting to {capacity}");
-            }
-            else {
-                capacity = int.Parse(capacityFromConfig);
-            }
-
+        public NakedObjectAdapterHashMap(ICoreConfiguration config) : this() {
+            capacity = config.HashMapCapacity;
             domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
         }
 

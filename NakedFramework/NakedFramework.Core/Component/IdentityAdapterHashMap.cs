@@ -7,10 +7,9 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
 
 namespace NakedObjects.Core.Component {
     public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {
@@ -21,16 +20,8 @@ namespace NakedObjects.Core.Component {
 
         // used by DI
         // ReSharper disable once UnusedMember.Global
-        public IdentityAdapterHashMap(IConfiguration config,
-                                      ILogger<FlatPersistAlgorithm> logger) : this() {
-            var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
-            if (capacityFromConfig == null) {
-                logger.LogWarning($"NakedObjects:HashMapCapacity not set defaulting to {capacity}");
-            }
-            else {
-                capacity = int.Parse(capacityFromConfig);
-            }
-
+        public IdentityAdapterHashMap(ICoreConfiguration config) : this() {
+            capacity = config.HashMapCapacity;
             adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
         }
 

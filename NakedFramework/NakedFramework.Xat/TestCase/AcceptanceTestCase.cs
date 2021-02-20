@@ -382,9 +382,7 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual IDictionary<string, string> Configuration() =>
-            new Dictionary<string, string> {
-                {"NakedObjects:HashMapCapacity", "10"}
-            };
+            new Dictionary<string, string>();
     }
 
     // Copyright (c) Naked Objects Group Ltd.
