@@ -20,6 +20,6 @@ namespace NakedObjects.Facade.Contexts {
 
         public IActionFacade Action { get; set; }
 
-        public string MenuId { get; init; }
+        public string MenuId { get; set; }
     }
 }
