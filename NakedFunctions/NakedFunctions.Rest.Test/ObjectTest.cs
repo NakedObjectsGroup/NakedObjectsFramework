@@ -313,12 +313,11 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        [Ignore("pending impl")]
         public void TestInvokeUpdateAndPersistSimpleRecordWithRepeatedPostPersist() {
-            var api = Api().AsPut();
+            var api = Api().AsPost();
             var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"name", new ScalarValue("Fred5")}}};
 
-            var result = api.PutInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.EditSimpleRecordWithRepeatedPostPersist), map);
+            var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.EditSimpleRecordWithRepeatedPostPersist), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -366,7 +365,6 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        [Ignore("pending impl")]
         public void TestInvokeCreateSimpleRecordWithRepeatedPostPersist() {
             var api = Api().AsPost();
             var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"name", new ScalarValue("Ellen")}}};
@@ -381,7 +379,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
 
             //resultObj.AssertObject("Ellen", FullName<UpdatedRecord>()", "4");
-            Assert.AreEqual("EllenUpdatedUpdated", resultObj["members"]["Name"]["value"].ToString());
+            Assert.AreEqual("EllenUpdatedUpdatedUpdated", resultObj["members"]["Name"]["value"].ToString());
         }
 
         [Test]

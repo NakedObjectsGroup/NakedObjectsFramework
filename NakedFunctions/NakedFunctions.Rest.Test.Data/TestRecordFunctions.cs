@@ -42,9 +42,9 @@ namespace NakedFunctions.Rest.Test.Data {
             context = context.WithDeferred(c => {
                 var updated2 = updated with {Name = updated.Name + "Updated"};
                 c = c.WithUpdated(sp, updated2).WithDeferred(cc => {
-                    var updated3 = updated2 with {Name = updated.Name + "Updated" + "Updated"};
+                    var updated3 = updated2 with {Name = updated2.Name + "Updated"};
                     cc = cc.WithUpdated(sp, updated3).WithDeferred(ccc => {
-                        var updated4 = updated3 with {Name = updated.Name + "Updated" + "Updated" + "Updated"};
+                        var updated4 = updated3 with {Name = updated3.Name + "Updated"};
                         ccc = ccc.WithUpdated(sp, updated4);
                         return ccc;
                     });
@@ -71,14 +71,13 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static (SimpleRecord, IContext) CreateSimpleRecordWithRepeatedPostPersist(this SimpleRecord sp, string name, IContext context) {
             var newObj = new SimpleRecord {Name = name};
-            context = context.WithNew(newObj);
-            context = context.WithDeferred(c => {
+            context = context.WithNew(newObj).WithDeferred(c => {
                 var original = c.Reload(newObj);
                 var updated2 = original with {Name = newObj.Name + "Updated"};
                 c = c.WithUpdated(original, updated2).WithDeferred(cc => {
-                    var updated3 = updated2 with {Name = newObj.Name + "Updated"};
+                    var updated3 = cc.Resolve(updated2) with {Name = updated2.Name + "Updated"};
                     cc = cc.WithUpdated(original, updated3).WithDeferred(ccc => {
-                        var updated4 = updated3 with {Name = newObj.Name + "Updated"};
+                        var updated4 = ccc.Resolve(updated3) with {Name = updated3.Name + "Updated"};
                         ccc = ccc.WithUpdated(original, updated4);
                         return ccc;
                     });
