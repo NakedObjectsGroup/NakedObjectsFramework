@@ -80,12 +80,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ImageParameter();
             QueryContributedActionReturningOnlyAContext();
             QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
-            //LocalCollectionContributedAction();
+            LocalCollectionContributedAction();
             SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
             UseOfDeferredFunctionIncludingReload();
             UseOfResolveMethodInADeferredFunction();
             WithDelete();
-            //WithMultipleDeletes();
+            WithMultipleDeletes();
             ObjectActionRenderedWithinCollection();
             QueryContributedActionWithChoicesFunction();
             QueryContributedActionWithCoValidation();
@@ -591,7 +591,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             WaitForCss("input#commenttoappend1");
         }
 
-        [TestMethod, Ignore]
+        //[TestMethod]
         public void LocalCollectionContributedAction()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=List&d1=AddCarrierTrackingNumber");
@@ -709,7 +709,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
         }
 
-        [TestMethod, Ignore]
+        //[TestMethod]
         public void WithMultipleDeletes()
         {
             //Build an order
