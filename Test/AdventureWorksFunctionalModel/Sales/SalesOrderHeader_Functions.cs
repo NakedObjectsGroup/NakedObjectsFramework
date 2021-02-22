@@ -134,7 +134,7 @@ namespace AW.Functions {
             soh.Details;
 
         public static SalesOrderDetail Default1RemoveDetail(this SalesOrderHeader soh) =>
-            soh.Details.First();
+            soh.Details.FirstOrDefault();
 
         public static string DisableRemoveDetail(this SalesOrderHeader soh) =>
             soh.Details.Any() ? null : "Order has no Details.";

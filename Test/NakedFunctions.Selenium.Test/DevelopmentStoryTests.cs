@@ -79,7 +79,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ImageProperty();
             ImageParameter();
             QueryContributedActionReturningOnlyAContext();
-
+            QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
             LocalCollectionContributedAction();
             SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
             UseOfDeferredFunctionIncludingReload();
@@ -577,6 +577,19 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate) >= 3);
         }
 
+        // [TestMethod]
+        public void QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType()
+        {
+            GeminiUrl("list?m1=Order_MenuFunctions&a1=OrdersInProcess&pg1=1&ps1=20&s1_=0&c1=List&as1=open&d1=AppendComment");
+            Reload();
+            WaitForCss("input#comment1");
+
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--73266&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "SO73266");
+            OpenActionDialog("Append Comment");
+            WaitForCss("input#commenttoappend1");
+        }
+
         //[TestMethod]
         public void LocalCollectionContributedAction()
         {
@@ -822,20 +835,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Product Inventory:", cols[2].Text);
             var offers = WaitForCssNo("nof-collection .details", 1).Text;
             Assert.AreEqual("2 Items", offers);
-        }
-
-        [TestMethod, Ignore]
-        public void QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType()
-        {
-            GeminiUrl("list?m1=Order_MenuFunctions&a1=OrdersInProcess&pg1=1&ps1=20&s1_=0&c1=List");
-            WaitForView(Pane.Single, PaneType.List, "Orders In Process");
-            OpenActionDialog("Append Comment");
-            WaitForCss("input#commenttoappend1");
-
-            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--73266&as1=open");
-            WaitForView(Pane.Single, PaneType.Object, "SO73266");
-            OpenActionDialog("Append Comment");
-            WaitForCss("input#commenttoappend1");
         }
 
     }

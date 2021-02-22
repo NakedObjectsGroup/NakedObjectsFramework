@@ -126,14 +126,13 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //i.e. no 'Shift ID' field showing
         }
 
-       //[TestMethod]
+      // [TestMethod]
         public void Mask()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Product--497");
             WaitForTitle("Pinch Bolt");
-            var prop4 = WaitForCssNo("nof-view-property", 5);
-            Assert.AreEqual("List Price:", prop4.FindElement(By.CssSelector(".name")).Text);
-            Assert.AreEqual("£0.00", prop4.FindElement(By.CssSelector(".value")).Text);
+            var listPrice = GetPropertyValue("List Price");
+            Assert.AreEqual("£0.00", listPrice);
             var startDate = GetPropertyValue("Sell Start Date");
             Assert.AreEqual("1 Jun 2002", startDate);
         }
