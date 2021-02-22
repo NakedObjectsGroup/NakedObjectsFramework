@@ -473,9 +473,11 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
+        private static bool FieldIsPersisted(IAssociationSpec field) => !(field.ContainsFacet<INotPersistedFacet>() || field.ContainsFacet<IDisplayAsPropertyFacet>());
+
         // invoked reflectively; do not remove !
         public int Count<T>(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field, INakedObjectManager manager) where T : class {
-            if (!nakedObjectAdapter.ResolveState.IsTransient() && !field.ContainsFacet<INotPersistedFacet>()) {
+            if (!nakedObjectAdapter.ResolveState.IsTransient() && FieldIsPersisted(field)) {
                 using var dbContext = new DbContext(GetContext(nakedObjectAdapter).WrappedObjectContext, false);
                 // check this is an EF collection 
                 try {
