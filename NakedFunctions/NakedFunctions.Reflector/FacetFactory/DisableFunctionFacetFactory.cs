@@ -37,12 +37,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         #region IMethodFilteringFacetFactory Members
 
-        private static bool Matches(MethodInfo methodInfo, string name, Type declaringType) =>
-            methodInfo.Matches(name, declaringType, typeof(string)) &&
+        private static bool Matches(MethodInfo methodInfo, string name, Type declaringType, Type targetType) =>
+            methodInfo.Matches(name, declaringType, typeof(string), targetType) &&
             !InjectUtils.FilterParms(methodInfo).Any();
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType);
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, Type targetType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, targetType);
             var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
             if (methodToUse is not null) {
                 FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(methodToUse, action));
@@ -54,7 +54,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var name = $"{RecognisedMethodsAndPrefixes.DisablePrefix}{NameUtils.CapitalizeName(actionMethod.Name)}";
             var declaringType = actionMethod.DeclaringType;
-            return FindAndAddFacet(declaringType, name, action, metamodel);
+            var targetType = actionMethod.ContributedToType();
+            return FindAndAddFacet(declaringType, targetType, name, action, metamodel);
         }
 
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.DisablePrefix);

@@ -28,5 +28,7 @@ namespace NakedObjects.Core.Configuration {
         /// </remarks>
         ///
         public List<Type> SupportedSystemTypes { get; set; } = ReflectorDefaults.DefaultSystemTypes.ToList();
+
+        public int HashMapCapacity { get; set; }
     }
 }

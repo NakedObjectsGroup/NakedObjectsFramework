@@ -25,7 +25,9 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public Func<IMenuFactory, IMenu[]> MainMenus { get; set; }
         public Func<Type[], Type[]> SupportedSystemTypes { get; set; }
         public IServiceCollection Services { get; }
+        public int HashMapCapacity { get; set; } = 10;
         internal Type[] AdditionalSystemTypes { get; set; } = Array.Empty<Type>();
         internal Type[] AdditionalUnpersistedTypes { get; set; } = Array.Empty<Type>();
+
     }
 }

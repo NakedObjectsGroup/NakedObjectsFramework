@@ -33,6 +33,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
                 config.SupportedSystemTypes = options.SupportedSystemTypes(config.SupportedSystemTypes.ToArray()).Union(options.AdditionalSystemTypes).ToList();
             }
 
+            config.HashMapCapacity = options.HashMapCapacity;
             return config;
         }
 

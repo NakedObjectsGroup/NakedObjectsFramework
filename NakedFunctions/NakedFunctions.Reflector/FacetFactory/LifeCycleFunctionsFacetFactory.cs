@@ -54,7 +54,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             Action<IMetamodelBuilder> action = m => { };
 
             if (recognizedMethod is not null) {
-                var onType = FunctionalFacetFactoryHelpers.GetContributedToType(recognizedMethod);
+                var onType = InjectUtils.ContributedToType(recognizedMethod);
                 if (onType is not null) {
                     var facetCreator = matchingFacet[methodName];
                     action = m => {

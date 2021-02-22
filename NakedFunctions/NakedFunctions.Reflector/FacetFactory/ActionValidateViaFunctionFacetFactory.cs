@@ -47,12 +47,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return actualParams.Zip(toMatch).All(i => i.First == i.Second);
         }
 
-        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type[] paramTypes) =>
-            methodInfo.Matches(name, type, typeof(string)) &&
+        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type targetType, Type[] paramTypes) =>
+            methodInfo.Matches(name, type, typeof(string), targetType) &&
             MatchParams(methodInfo, paramTypes);
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacetToParameterValidateMethod(Type declaringType, string name, Type paramType, ISpecificationBuilder parameter, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, new[] {paramType});
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacetToParameterValidateMethod(Type declaringType, Type targetType, string name, Type paramType, ISpecificationBuilder parameter, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, targetType, new[] {paramType});
             var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
             if (methodToUse is not null) {
@@ -63,8 +63,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacetToActionValidateMethod(Type declaringType, string name, Type[] paramTypes, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, paramTypes);
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacetToActionValidateMethod(Type declaringType, Type targetType, string name, Type[] paramTypes, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, targetType, paramTypes);
             var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
             if (methodToUse is not null) {
@@ -77,17 +77,19 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var name = $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{NameUtils.CapitalizeName(actionMethod.Name)}";
             var declaringType = actionMethod.DeclaringType;
+            var targetType = actionMethod.ContributedToType();
             var parameters = InjectUtils.FilterParms(actionMethod).Select(p => p.ParameterType).ToArray();
 
-            return FindAndAddFacetToActionValidateMethod(declaringType, name, parameters, action, metamodel);
+            return FindAndAddFacetToActionValidateMethod(declaringType, targetType, name, parameters, action, metamodel);
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo actionMethod, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var name = $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{paramNum}{NameUtils.CapitalizeName(actionMethod.Name)}";
             var declaringType = actionMethod.DeclaringType;
+            var targetType = actionMethod.ContributedToType();
             var parameter = actionMethod.GetParameters()[paramNum];
 
-            return FindAndAddFacetToParameterValidateMethod(declaringType, name, parameter.ParameterType, holder, metamodel);
+            return FindAndAddFacetToParameterValidateMethod(declaringType, targetType, name, parameter.ParameterType, holder, metamodel);
         }
 
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.ValidatePrefix);

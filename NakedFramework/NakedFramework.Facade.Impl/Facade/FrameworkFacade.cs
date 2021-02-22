@@ -125,7 +125,7 @@ namespace NakedObjects.Facade.Impl {
 
         public PropertyContextFacade GetPropertyWithCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments) => MapErrors(() => GetPropertyWithCompletions(transient.WrappedAdapter(), propertyName, arguments).ToPropertyContextFacade(this, Framework));
 
-        public ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName) => MapErrors(() => GetActionOnService(serviceName, actionName).ToActionContextFacade(this, Framework));
+        public ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName) => MapErrors(() => GetActionOnService(serviceName, actionName, null).ToActionContextFacade(this, Framework));
 
         public ActionContextFacade GetMenuAction(string menuName, string actionName) => MapErrors(() => GetActionOnMenu(menuName, actionName).ToActionContextFacade(this, Framework));
 
@@ -149,7 +149,7 @@ namespace NakedObjects.Facade.Impl {
 
         public ActionResultContextFacade ExecuteServiceAction(IOidTranslation serviceName, string actionName, ArgumentsContextFacade arguments) =>
             MapErrors(() => {
-                var actionContext = GetActionOnService(serviceName, actionName);
+                var actionContext = GetActionOnService(serviceName, actionName, arguments);
                 return ExecuteAction(actionContext, arguments);
             });
 
@@ -942,7 +942,9 @@ namespace NakedObjects.Facade.Impl {
             throw new ActionResourceNotFoundNOSException(actionName);
         }
 
-        private ActionContext GetActionOnService(IOidTranslation serviceName, string actionName) {
+        private static bool IsContributedToCollection(IActionSpec actionSpec) => actionSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
+
+        private ActionContext GetActionOnService(IOidTranslation serviceName, string actionName, ArgumentsContextFacade argumentsContextFacade) {
             // use services to determine if NO or NF. 
             // todo hybrid systems ! 
             if (GetServices().List.Any()) {
@@ -951,16 +953,20 @@ namespace NakedObjects.Facade.Impl {
 
             try {
                 var typeSpec = Framework.MetamodelManager.GetSpecification(serviceName.DomainType);
-
-                var actionSpec = typeSpec?.GetActions().SingleOrDefault(a => a.Id == actionName);
-                if (actionSpec != null && actionSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true ) {
-                    var uid = FacadeUtils.GetOverloadedUId(actionSpec, actionSpec.OnSpec);
+                var actionSpec = typeSpec?.GetActions().Where(IsContributedToCollection).SingleOrDefault(a => a.Id == actionName);
+                
+                if (actionSpec is not null) {
+                    var targetKey = actionSpec.Parameters.First().Id;
+                    INakedObjectAdapter target = null; 
+                    if (argumentsContextFacade?.Values.ContainsKey(targetKey) == true) {
+                        var rawTarget =  ((IEnumerable)argumentsContextFacade.Values[targetKey]).AsQueryable();
+                        target = Framework.NakedObjectManager.CreateAdapter(rawTarget, null, null);
+                    }
 
                     return new ActionContext {
-                        Target = null,
+                        Target = target,
                         Action = actionSpec,
-                        VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec, uid),
-                        OverloadedUniqueId = uid
+                        VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec, "")
                     };
                 }
             }
