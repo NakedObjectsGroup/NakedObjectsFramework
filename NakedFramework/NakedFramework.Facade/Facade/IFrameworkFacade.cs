@@ -47,6 +47,7 @@ namespace NakedObjects.Facade {
         // Do not remove; used in custom code
         void Inject(object toInject);
         (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "");
-       
+
+        ActionContextFacade[] GetLocallyContributedActions(PropertyContextFacade propertyContext);
     }
 }

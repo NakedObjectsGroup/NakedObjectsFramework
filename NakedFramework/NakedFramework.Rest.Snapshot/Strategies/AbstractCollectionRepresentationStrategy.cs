@@ -97,15 +97,9 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             };
 
         public virtual InlineActionRepresentation[] GetActions() {
-            if (!PropertyContext.Target.IsTransient) {
-                var lcas = PropertyContext.Target.Specification.GetLocallyContributedActions(PropertyContext.Property.ElementSpecification, PropertyContext.Property.Id);
-
-                if (lcas.Any()) {
-                    return lcas.Select(a => InlineActionRepresentation.Create(OidStrategy, Req, ActionContext(a, PropertyContext.Target), Flags)).ToArray();
-                }
-            }
-
-            return new InlineActionRepresentation[] { };
+            return !PropertyContext.Target.IsTransient 
+                ? OidStrategy.FrameworkFacade.GetLocallyContributedActions(PropertyContext).Select(a => InlineActionRepresentation.Create(OidStrategy, Req, a, Flags)).ToArray() 
+                : System.Array.Empty<InlineActionRepresentation>();
         }
     }
 }

@@ -171,6 +171,13 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
+        public ActionContextFacade[] GetLocallyContributedActions(PropertyContextFacade propertyContext) =>
+            propertyContext.Target.Specification.GetLocallyContributedActions(propertyContext.Property.ElementSpecification, propertyContext.Property.Id).Select(a => ((ActionFacade) a).WrappedSpec).Select(a => new ActionContext {
+                MenuPath = "",
+                Target = propertyContext.Target.WrappedAdapter(),
+                Action = a,
+                VisibleParameters = FilterCCAParms(a, "")
+            }.ToActionContextFacade(this, Framework)).ToArray();
 
         #endregion
 
