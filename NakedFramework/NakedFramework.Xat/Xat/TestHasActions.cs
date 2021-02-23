@@ -9,13 +9,13 @@ using System;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFramework;
+using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Xat {
     internal abstract class TestHasActions : ITestHasActions {
         protected TestHasActions(ITestObjectFactory factory) => Factory = factory;
 

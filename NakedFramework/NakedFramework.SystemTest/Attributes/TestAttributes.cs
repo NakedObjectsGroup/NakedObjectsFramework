@@ -16,11 +16,11 @@ using System.Threading;
 using SystemTest.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework;
+using NakedFramework.Xat.Interface;
 using NakedObjects;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Services;
-using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 #pragma warning disable 612

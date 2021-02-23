@@ -16,10 +16,11 @@ open System.Data.Entity.Core.Objects.DataClasses
 open SystemTestCode
 open TestCode
 open Microsoft.Extensions.Configuration
+open NakedFramework.Xat.TestCase
 
 [<TestFixture>]
 type DomainSystemTests() = 
-    inherit NakedObjects.Xat.AcceptanceTestCase()
+    inherit AcceptanceTestCase()
 
     override x.ContextInstallers = 
         [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext) |]
@@ -94,7 +95,7 @@ type DomainSystemTests() =
                                 typeof<CountryRegionCurrency> |]
     
     [<OneTimeSetUpAttribute>]
-    member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
+    member x.SetupFixture() = AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     
     [<SetUp>]
     member x.SetupTest() = x.StartTest()
@@ -103,7 +104,7 @@ type DomainSystemTests() =
     member x.TearDownTest() = ()
     
     [<OneTimeTearDown>]
-    member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
+    member x.TearDownFixture() = AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
     member x.GetScrapReasonDomainObject() = 
         let srs = x.NakedObjectsFramework.Persistor.Instances<ScrapReason>()

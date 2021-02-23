@@ -9,10 +9,10 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Services;
-using NakedObjects.Xat;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global

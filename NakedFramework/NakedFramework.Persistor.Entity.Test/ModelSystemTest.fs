@@ -18,10 +18,11 @@ open System.Linq
 open SystemTestCode
 open TestCode
 open Microsoft.Extensions.Configuration
+open NakedFramework.Xat.TestCase
 
 [<TestFixture>]
 type ModelSystemTests() = 
-    inherit NakedObjects.Xat.AcceptanceTestCase()
+    inherit AcceptanceTestCase()
     
     //override x.Persistor = 
     //    let config = new EntityObjectStoreConfiguration()
@@ -46,7 +47,7 @@ type ModelSystemTests() =
                                 typeof<SimpleDatabase.AbstractTestCode>  |]
   
     [<OneTimeSetUpAttribute>]
-    member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
+    member x.SetupFixture() = AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     
     [<SetUp>]
     member x.SetupTest() = x.StartTest()
@@ -55,7 +56,7 @@ type ModelSystemTests() =
     member x.TearDownTest() = ()
     
     [<OneTimeTearDown>]
-    member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
+    member x.TearDownFixture() = AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
     member x.CreatePerson() = 
         let setter (p : Person) = 

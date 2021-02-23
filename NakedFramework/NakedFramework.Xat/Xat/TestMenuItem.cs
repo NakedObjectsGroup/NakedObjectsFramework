@@ -6,9 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Menu;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Xat {
     public class TestMenuItem : ITestMenuItem {
         private readonly ITestObjectFactory factory;
         private readonly IMenuItemImmutable item;

@@ -12,13 +12,13 @@ using System.Data.Entity;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Xat.TestCase;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 using NakedObjects.Services;
-using NakedObjects.Xat;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global

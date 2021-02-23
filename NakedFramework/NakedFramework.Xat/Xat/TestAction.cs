@@ -9,11 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Xat.Interface;
+using NakedFramework.Xat.TestCase;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Xat {
     internal class TestAction : ITestAction {
         private readonly IActionSpec actionSpec;
         private readonly ITestObjectFactory factory;

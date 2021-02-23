@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Interface {
     public interface ITestMenu {
         ITestMenu AssertNameEquals(string name);
         ITestMenu AssertItemCountIs(int count);

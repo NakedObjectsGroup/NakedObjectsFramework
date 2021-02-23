@@ -7,6 +7,8 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Xat.Interface;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
@@ -16,7 +18,7 @@ using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Xat {
     public class TestProperty : ITestProperty {
         private readonly ITestObjectFactory factory;
         private readonly INakedObjectsFramework framework;

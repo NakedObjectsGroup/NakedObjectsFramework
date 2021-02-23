@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Interface {
     public interface ITestAction {
         string Name { get; }
         string SubMenu { get; }

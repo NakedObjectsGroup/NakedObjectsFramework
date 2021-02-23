@@ -8,9 +8,9 @@
 using System;
 using System.ComponentModel;
 using System.Data.Entity;
+using NakedFramework.Xat.Interface;
 using NakedObjects.Services;
 using NakedObjects.SystemTest;
-using NakedObjects.Xat;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global

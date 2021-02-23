@@ -20,10 +20,11 @@ open SystemTestCode
 open TestCode
 open TestCodeOnly
 open Microsoft.Extensions.Configuration
+open NakedFramework.Xat.TestCase
 
 [<TestFixture>]
 type CodeSystemTests() = 
-    inherit NakedObjects.Xat.AcceptanceTestCase()
+    inherit AcceptanceTestCase()
 
     override x.ContextInstallers = 
         [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new CodeFirstContext(csCS) :> Data.Entity.DbContext) |]
@@ -41,7 +42,7 @@ type CodeSystemTests() =
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = 
         CodeFirstSetup()
-        NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
+        AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     
     [<SetUp>]
     member x.SetupTest() = x.StartTest()
@@ -50,7 +51,7 @@ type CodeSystemTests() =
     member x.TearDownTest() = x.EndTest()
     
     [<OneTimeTearDown>]
-    member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
+    member x.TearDownFixture() = AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
     member x.GetPersonDomainObject() = 
         let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()

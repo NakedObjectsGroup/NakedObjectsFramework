@@ -9,12 +9,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Xat {
     internal class TestCollection : ITestCollection {
         private readonly IEnumerable<ITestObject> wrappedCollection;
 

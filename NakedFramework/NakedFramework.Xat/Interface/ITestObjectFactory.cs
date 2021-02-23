@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Interface {
     /// <summary>
     ///     Creates test objects for XAT
     ///     This interface is not used by XAT2.

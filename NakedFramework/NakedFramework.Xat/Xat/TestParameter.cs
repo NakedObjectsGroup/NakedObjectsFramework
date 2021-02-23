@@ -8,10 +8,11 @@
 using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Xat {
     internal class TestParameter : ITestParameter {
         private readonly ITestObjectFactory factory;
         private readonly ITestHasActions owningObject;

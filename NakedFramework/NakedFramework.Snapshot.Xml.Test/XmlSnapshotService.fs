@@ -13,7 +13,6 @@ open NakedObjects.Services
 open NakedObjects.Snapshot
 open NakedObjects.Snapshot.Xml.Service
 open NakedObjects.Snapshot.Xml.Utility
-open NakedObjects.Xat
 open NUnit.Framework
 open Snapshot.Xml.Test
 open System
@@ -22,6 +21,7 @@ open System.IO
 open System.Text.RegularExpressions
 open System.Xml.Linq
 open Microsoft.Extensions.Configuration
+open NakedFramework.Xat.TestCase
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"

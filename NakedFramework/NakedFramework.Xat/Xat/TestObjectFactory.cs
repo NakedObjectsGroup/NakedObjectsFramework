@@ -7,13 +7,15 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Xat.Interface;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Xat {
     public class TestObjectFactory : ITestObjectFactory {
         private readonly INakedObjectsFramework framework;
       

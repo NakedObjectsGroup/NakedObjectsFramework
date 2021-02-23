@@ -20,6 +20,7 @@ open System.Security.Principal
 open TestCode
 open TestData
 open Microsoft.Extensions.Configuration
+open NakedFramework.Xat.TestCase
 
 let assemblyName = "NakedFramework.Persistor.Test.Data"
 
@@ -123,7 +124,7 @@ type TestDataInitializer() =
 
 [<TestFixture>]
 type EntityTestSuite() = 
-    inherit NakedObjects.Xat.AcceptanceTestCase()
+    inherit AcceptanceTestCase()
 
     override x.EnforceProxies = false
 
@@ -147,7 +148,7 @@ type EntityTestSuite() =
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = 
         System.Data.Entity.Database.SetInitializer(new TestDataInitializer())
-        NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
+        AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     
     [<SetUp>]
     member x.SetupTest() = x.StartTest()
@@ -156,7 +157,7 @@ type EntityTestSuite() =
     member x.TearDownTest() = x.EndTest()
     
     [<OneTimeTearDown>]
-    member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
+    member x.TearDownFixture() = AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
     override x.Fixtures = [| box (new TestDataFixture()) |]
      

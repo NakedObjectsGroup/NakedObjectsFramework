@@ -7,9 +7,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using NakedFramework.Xat.Interface;
+using NakedFramework.Xat.Xat;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.TestCase {
     public static class XatUtils {
         private static ITestNaked AsTestNaked(this object parameter, INakedObjectManager manager) => parameter is ITestNaked testNaked ? testNaked : new TestParameterObject(manager, parameter);
 

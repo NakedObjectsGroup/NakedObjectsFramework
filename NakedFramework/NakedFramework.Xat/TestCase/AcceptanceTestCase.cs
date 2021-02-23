@@ -20,13 +20,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFramework;
+using NakedFramework.Xat.Interface;
+using NakedFramework.Xat.Xat;
 using NakedFunctions.Reflector.Extensions;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
-using NakedObjects.Core.Fixture;
 using NakedObjects.Core.Util;
 using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Meta.Audit;
@@ -36,7 +37,7 @@ using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Rest.Extensions;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.TestCase {
     public abstract class AcceptanceTestCase {
         private FixtureServices fixtureServices;
 
@@ -128,7 +129,6 @@ namespace NakedObjects.Xat {
 
         protected virtual Action<RestfulObjectsOptions> RestfulObjectsOptions => options => {};
 
-
         protected virtual Action<NakedCoreOptions> NakedCoreOptions =>
             builder => {
                 builder.MainMenus = MainMenus;
@@ -137,16 +137,18 @@ namespace NakedObjects.Xat {
                 builder.ProfileConfiguration = ProfileConfiguration;
                 builder.SupportedSystemTypes = SupportedSystemTypes;
                 AddPersistor(builder);
-                builder.AddNakedObjects(NakedObjectsOptions);
-                builder.AddNakedFunctions(NakedFunctionsOptions);
-                builder.AddRestfulObjects(RestfulObjectsOptions);
+                AddNakedObjects(builder);
+                AddNakedFunctions(builder);
+                AddRestfulObjects(builder);
             };
 
-        protected virtual Action<NakedCoreOptions> AddPersistor =>
-            builder => {
-                builder.AddEntityPersistor(PersistorOptions);
-            };
+        protected virtual Action<NakedCoreOptions> AddPersistor => builder => builder.AddEntityPersistor(PersistorOptions);
 
+        protected virtual Action<NakedCoreOptions> AddNakedObjects => builder => builder.AddNakedObjects(NakedObjectsOptions);
+
+        protected virtual Action<NakedCoreOptions> AddNakedFunctions => builder => builder.AddNakedFunctions(NakedFunctionsOptions);
+
+        protected virtual Action<NakedCoreOptions> AddRestfulObjects => builder => builder.AddRestfulObjects(RestfulObjectsOptions); 
 
         private IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)

@@ -26,6 +26,7 @@ open Newtonsoft.Json
 open NakedObjects.Rest.Snapshot.Utility
 open Microsoft.Extensions.Configuration
 open NakedFramework
+open NakedFramework.Xat.TestCase
 
 type NullStringHasher() = 
     interface IStringHasher with
@@ -36,7 +37,7 @@ type NullStringHasher() =
 [<TestFixture>]
 type Tests() = 
     class
-        inherit NakedObjects.Xat.AcceptanceTestCase()
+        inherit AcceptanceTestCase()
         
         override x.ObjectTypes = 
             [| typeof<Immutable>
@@ -101,7 +102,7 @@ type Tests() =
         [<OneTimeSetUp>]
         member x.FixtureSetup() =
             CodeFirstSetup()
-            NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
+            AcceptanceTestCase.InitializeNakedObjectsFramework(x)
                
         [<SetUp>]
         member x.Setup() = 
@@ -112,7 +113,7 @@ type Tests() =
             resetCache x.api
                
         [<OneTimeTearDown>]
-        member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
+        member x.FixtureTearDown() = AcceptanceTestCase.CleanupNakedObjectsFramework(x)
                
         member x.api =
             let sp = x.GetConfiguredContainer()

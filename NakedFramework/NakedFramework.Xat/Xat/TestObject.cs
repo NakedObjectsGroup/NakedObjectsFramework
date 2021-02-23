@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -16,7 +17,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Xat {
     internal class TestObject : TestHasActions, ITestObject {
         private readonly ILifecycleManager lifecycleManager;
         private readonly IObjectPersistor persistor;
@@ -74,7 +75,7 @@ namespace NakedObjects.Xat {
 
         public ITestObject AssertIsType(Type expected) {
             var actualType = NakedObject.GetDomainObject().GetType();
-            actualType = TypeUtils.IsProxy(actualType) ? actualType.BaseType : actualType;
+            actualType = NakedObjects.TypeUtils.IsProxy(actualType) ? actualType.BaseType : actualType;
             Assert.IsTrue(actualType == expected, "Expected type " + expected + " but got " + actualType);
             return this;
         }

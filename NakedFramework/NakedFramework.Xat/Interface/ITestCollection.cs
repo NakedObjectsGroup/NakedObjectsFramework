@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Interface {
     public interface ITestCollection : ITestNaked, IEnumerable<ITestObject> {
         ITestCollection AssertIsEmpty();
         ITestCollection AssertIsNotEmpty();

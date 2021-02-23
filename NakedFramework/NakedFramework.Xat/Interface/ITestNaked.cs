@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Interface {
     public interface ITestNaked {
         INakedObjectAdapter NakedObject { get; }
         string Title { get; }

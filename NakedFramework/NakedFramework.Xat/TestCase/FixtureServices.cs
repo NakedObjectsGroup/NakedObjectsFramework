@@ -8,7 +8,7 @@
 using System;
 using System.Threading;
 
-namespace NakedObjects.Core.Fixture {
+namespace NakedFramework.Xat.TestCase {
     public class FixtureServices {
         public FixtureServices() => Clock = FixtureClock.Initialize();
 

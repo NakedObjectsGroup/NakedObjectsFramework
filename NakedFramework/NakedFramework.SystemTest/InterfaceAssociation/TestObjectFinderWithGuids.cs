@@ -9,9 +9,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
+using NakedFramework.Xat.Interface;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
-using NakedObjects.Xat;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global

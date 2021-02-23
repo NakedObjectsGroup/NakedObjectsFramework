@@ -7,9 +7,10 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Menu;
 
-namespace NakedObjects.Xat {
+namespace NakedFramework.Xat.Xat {
     internal class TestMenu : ITestMenu {
         private readonly ITestObjectFactory factory;
         private readonly IMenuImmutable menu;
