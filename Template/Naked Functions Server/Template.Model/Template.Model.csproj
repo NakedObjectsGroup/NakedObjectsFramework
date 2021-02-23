@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Human Resources - NO\**" />
+    <Compile Remove="NakedFunctions\**" />
+    <Compile Remove="Person - NO\**" />
+    <Compile Remove="Production - NO\**" />
+    <Compile Remove="Purchasing - NO\**" />
+    <Compile Remove="Sales - NO\**" />
+    <EmbeddedResource Remove="Human Resources - NO\**" />
+    <EmbeddedResource Remove="NakedFunctions\**" />
+    <EmbeddedResource Remove="Person - NO\**" />
+    <EmbeddedResource Remove="Production - NO\**" />
+    <EmbeddedResource Remove="Purchasing - NO\**" />
+    <EmbeddedResource Remove="Sales - NO\**" />
+    <None Remove="Human Resources - NO\**" />
+    <None Remove="NakedFunctions\**" />
+    <None Remove="Person - NO\**" />
+    <None Remove="Production - NO\**" />
+    <None Remove="Purchasing - NO\**" />
+    <None Remove="Sales - NO\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="NakedFunctions.ProgrammingModel" Version="1.0.0-alpha01" />
+  </ItemGroup>
+
+</Project>

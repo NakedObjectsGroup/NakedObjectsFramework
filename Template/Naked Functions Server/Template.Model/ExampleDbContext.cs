@@ -1,8 +1,8 @@
 ﻿
 using System.Data.Entity;
-using Template.Model;
+using Template.Model.Types;
 
-namespace Template.DataBase
+namespace Template.Model
 {
     public class ExampleDbContext : DbContext
     {
