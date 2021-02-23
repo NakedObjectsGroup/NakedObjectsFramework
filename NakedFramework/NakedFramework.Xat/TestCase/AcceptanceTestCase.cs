@@ -136,10 +136,15 @@ namespace NakedObjects.Xat {
                 builder.AuditConfiguration = AuditConfiguration;
                 builder.ProfileConfiguration = ProfileConfiguration;
                 builder.SupportedSystemTypes = SupportedSystemTypes;
-                builder.AddEntityPersistor(PersistorOptions);
+                AddPersistor(builder);
                 builder.AddNakedObjects(NakedObjectsOptions);
                 builder.AddNakedFunctions(NakedFunctionsOptions);
                 builder.AddRestfulObjects(RestfulObjectsOptions);
+            };
+
+        protected virtual Action<NakedCoreOptions> AddPersistor =>
+            builder => {
+                builder.AddEntityPersistor(PersistorOptions);
             };
 
 
