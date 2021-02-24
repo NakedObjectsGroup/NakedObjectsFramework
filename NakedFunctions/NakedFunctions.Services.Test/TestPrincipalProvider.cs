@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Component;
@@ -22,7 +21,7 @@ namespace NakedFunctions.Services.Test {
             mockSession.Setup(s => s.Principal).Returns(testPrincipal);
             IPrincipalProvider principalProvider = new PrincipalProvider(mockSession.Object);
 
-            Assert.AreEqual<IPrincipal>(testPrincipal, principalProvider.CurrentUser);
+            Assert.AreEqual(testPrincipal, principalProvider.CurrentUser);
         }
     }
 }
