@@ -33,31 +33,45 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         public string GroupFullName => "";
 
-        #region IMemberSpecImmutable Members
+        public string GetHelp()
+        {
+            return null;
+        }
 
-        public override IIdentifier Identifier => new IdentifierNull(this);
+        public IConsent IsUsableDeclaratively()
+        {
+            return Allow.Default;
+        }
 
-        public string Name { get; }
+        public IConsent IsUsableForSession(ISession session)
+        {
+            return Allow.Default;
+        }
 
-        public string Description { get; }
+        public IConsent IsUsable(INakedObjectAdapter target)
+        {
+            return null;
+        }
 
-        #endregion
+        public bool IsVisibleDeclaratively()
+        {
+            return false;
+        }
 
-        public string GetHelp() => null;
+        public bool IsVisibleForSession(ISession session)
+        {
+            return false;
+        }
 
-        public IConsent IsUsableDeclaratively() => Allow.Default;
+        public bool IsVisible(INakedObjectAdapter target)
+        {
+            return false;
+        }
 
-        public IConsent IsUsableForSession(ISession session) => Allow.Default;
-
-        public IConsent IsUsable(INakedObjectAdapter target) => null;
-
-        public bool IsVisibleDeclaratively() => false;
-
-        public bool IsVisibleForSession(ISession session) => false;
-
-        public bool IsVisible(INakedObjectAdapter target) => false;
-
-        public override string ToString() => Name;
+        public override string ToString()
+        {
+            return Name;
+        }
 
         #region Nested type: IdentifierNull
 
@@ -70,10 +84,23 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
                 : base("", "") =>
                 this.owner = owner;
 
-            public override string ToString() => owner.Name;
+            public override string ToString()
+            {
+                return owner.Name;
+            }
         }
 
         #endregion
+
+        #endregion
+
+        #region IMemberSpecImmutable Members
+
+        public override IIdentifier Identifier => new IdentifierNull(this);
+
+        public string Name { get; }
+
+        public string Description { get; }
 
         #endregion
 

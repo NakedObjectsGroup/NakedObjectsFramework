@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestEagerlyAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = annotationFacetFactory.Process(Reflector,typeof(Customer2), MethodRemover, Specification, metamodel);
+            metamodel = annotationFacetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
@@ -46,7 +46,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "Coll");
-            metamodel = annotationFacetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
@@ -60,7 +60,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer1), "Act");
-            metamodel = annotationFacetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
+            metamodel = annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
@@ -74,7 +74,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "Prop");
-            metamodel = annotationFacetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
@@ -87,7 +87,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestEagerlyNotPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = annotationFacetFactory.Process(Reflector,typeof(Customer1), MethodRemover, Specification, metamodel);
+            metamodel = annotationFacetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -98,7 +98,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer2), "Coll");
-            metamodel = annotationFacetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -109,7 +109,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer2), "Act");
-            metamodel = annotationFacetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
+            metamodel = annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -120,7 +120,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer2), "Prop");
-            metamodel = annotationFacetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -147,7 +147,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public IList<Customer1> Coll { get; set; }
 
             [Eagerly(Do.Rendering)]
-            public IList<Customer1> Act() => new List<Customer1>();
+            public IList<Customer1> Act()
+            {
+                return new List<Customer1>();
+            }
         }
 
         #endregion
@@ -159,7 +162,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public int Prop { get; set; }
             public IList<Customer1> Coll { get; set; }
 
-            public IList<Customer1> Act() => new List<Customer1>();
+            public IList<Customer1> Act()
+            {
+                return new List<Customer1>();
+            }
         }
 
         #endregion

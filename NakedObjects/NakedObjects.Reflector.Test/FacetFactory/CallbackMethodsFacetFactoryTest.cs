@@ -19,7 +19,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Service;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -53,7 +52,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var loggerFactory = new Mock<ILoggerFactory>().Object;
             var logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
 
-            INakedObjectsFramework framework = new Mock<INakedObjectsFramework>().Object;
+            var framework = new Mock<INakedObjectsFramework>().Object;
 
             return new NakedObjectAdapter(obj, null, framework, loggerFactory, logger);
         }
@@ -149,7 +148,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var method = FindMethod(typeof(Customer10), "OnPersistingError", new[] {typeof(Exception)});
             Assert.IsNull(method);
-            metamodel = facetFactory.Process(Reflector,typeof(Customer10), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer10), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IOnPersistingErrorCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OnPersistingErrorCallbackFacetNull);
@@ -200,7 +199,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var method = FindMethod(typeof(Customer10), "OnUpdatingError", new[] {typeof(Exception)});
             Assert.IsNull(method);
-            metamodel = facetFactory.Process(Reflector,typeof(Customer10), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer10), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IOnUpdatingErrorCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OnUpdatingErrorCallbackFacetNull);
@@ -241,7 +240,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestSavedLifecycleMethodNotPickedUpOn() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector,typeof(Customer10), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer10), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPersistedCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PersistedCallbackFacetNull);
@@ -252,7 +251,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestSavingLifecycleMethodNotPickedUpOn() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector,typeof(Customer9), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer9), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPersistingCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PersistingCallbackFacetNull);

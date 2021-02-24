@@ -41,7 +41,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var manager = new Mock<INakedObjectManager>().Object;
             var loggerFactory = new Mock<ILoggerFactory>().Object;
             var logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
-            INakedObjectsFramework framework = new Mock<INakedObjectsFramework>().Object;
+            var framework = new Mock<INakedObjectsFramework>().Object;
 
             return new NakedObjectAdapter(obj, null, framework, loggerFactory, logger);
         }
@@ -60,7 +60,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestIconNameFromAttribute() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector,typeof(Customer1), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetAnnotation);
@@ -114,7 +114,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: Customer
 
         private class Customer {
-            public string IconName() => "TestName";
+            public string IconName()
+            {
+                return "TestName";
+            }
         }
 
         #endregion
@@ -130,8 +133,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         [IconName("AttributeName")]
         private class Customer2 {
-// ReSharper disable once UnusedMember.Local
-            public string IconName() => "TestName";
+            // ReSharper disable once UnusedMember.Local
+            public string IconName()
+            {
+                return "TestName";
+            }
         }
 
         #endregion

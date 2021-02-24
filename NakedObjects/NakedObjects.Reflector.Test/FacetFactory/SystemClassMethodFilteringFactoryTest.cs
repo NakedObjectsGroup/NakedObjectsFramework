@@ -48,7 +48,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestFilterActions() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var config = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
+            var config = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
 
             var classStrategy = new ObjectClassStrategy(config);
 
@@ -122,16 +122,16 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var cache = new ImmutableInMemorySpecCache();
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var config = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
+            var config = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
 
             facetFactory = new SystemClassMethodFilteringFactory(GetOrder<SystemClassMethodFilteringFactory>(), LoggerFactory);
-            var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] { facetFactory });
+            var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] {facetFactory});
             var classStrategy = new ObjectClassStrategy(config);
             var metamodel = new Metamodel(cache, null);
             var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            Reflector = new ObjectReflector(objectFactFactorySet, classStrategy,  metamodel, config, new IFacetDecorator[] { }, mockLoggerFactory, mockLogger);
+            Reflector = new ObjectReflector(objectFactFactorySet, classStrategy, metamodel, config, Array.Empty<IFacetDecorator>(), mockLoggerFactory, mockLogger);
         }
 
         [TestCleanup]

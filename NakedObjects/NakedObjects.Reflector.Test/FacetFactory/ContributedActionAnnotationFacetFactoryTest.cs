@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Service), "Action1");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
@@ -62,7 +62,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action2");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
@@ -74,7 +74,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action3");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ContributedActionFacet);
@@ -87,7 +87,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action4");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ContributedActionFacet);

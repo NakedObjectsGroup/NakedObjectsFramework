@@ -27,15 +27,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
-        private readonly Mock<ILifecycleManager> mockLifecycleManager = new Mock<ILifecycleManager>();
-        private readonly Mock<INakedObjectManager> mockManager = new Mock<INakedObjectManager>();
-        private readonly Mock<IObjectPersistor> mockPersistor = new Mock<IObjectPersistor>();
+        private readonly Mock<ILifecycleManager> mockLifecycleManager = new();
+        private readonly Mock<INakedObjectManager> mockManager = new();
+        private readonly Mock<IObjectPersistor> mockPersistor = new();
         private readonly IOid oid = new Mock<IOid>().Object;
         private readonly IObjectPersistor persistor;
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly ISpecification specification = new Mock<ISpecification>().Object;
 
-        INakedObjectsFramework framework = new Mock<INakedObjectsFramework>().Object;
+        private readonly INakedObjectsFramework framework = new Mock<INakedObjectsFramework>().Object;
 
         public CollectionFacetsTest() {
             lifecycleManager = mockLifecycleManager.Object;
@@ -44,7 +44,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             mockManager.Setup(mm => mm.CreateAdapter(It.IsAny<object>(), null, null)).Returns<object, IOid, IVersion>((obj, oid, ver) => AdapterFor(obj));
         }
 
-        private INakedObjectAdapter AdapterFor(object obj) => new NakedObjectAdapter(obj, oid, framework, loggerFactory, logger);
+        private INakedObjectAdapter AdapterFor(object obj)
+        {
+            return new NakedObjectAdapter(obj, oid, framework, loggerFactory, logger);
+        }
 
         private void Size(ICollectionFacet collectionFacet, INakedObjectAdapter collection) {
             Assert.AreEqual(2, collectionFacet.AsEnumerable(collection, manager).Count());
@@ -123,8 +126,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         [TestMethod]
         public void ArrayInitAllEmpty() {
-            var testArray = new string[] { };
-            var testArray1 = new string[] { };
+            var testArray = System.Array.Empty<string>();
+            var testArray1 = System.Array.Empty<string>();
             var testArrayFacet = new ArrayFacet(specification);
             var testAdaptedArray = AdapterFor(testArray);
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
@@ -132,7 +135,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         [TestMethod]
         public void ArrayInitEmpty() {
-            var testArray = new string[] { };
+            var testArray = System.Array.Empty<string>();
             var testArray1 = new[] {"element2", "element3"};
             var testArrayFacet = new ArrayFacet(specification);
             var testAdaptedArray = AdapterFor(testArray);
@@ -142,7 +145,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestMethod]
         public void ArrayInitToEmpty() {
             var testArray = new[] {"element1", "element2"};
-            var testArray1 = new string[] { };
+            var testArray1 = System.Array.Empty<string>();
             var testArrayFacet = new ArrayFacet(specification);
             var testAdaptedArray = AdapterFor(testArray);
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
@@ -200,7 +203,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestMethod]
         public void CollectionInitAllEmpty() {
             var testCollection = new ArrayList();
-            var testCollection1 = new string[] { };
+            var testCollection1 = System.Array.Empty<string>();
             var testCollectionFacet = new CollectionFacet(specification);
             var testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
@@ -218,7 +221,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestMethod]
         public void CollectionInitToEmpty() {
             var testCollection = new ArrayList {"element1", "element2"};
-            var testCollection1 = new string[] { };
+            var testCollection1 = System.Array.Empty<string>();
             var testCollectionFacet = new CollectionFacet(specification);
             var testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
@@ -286,7 +289,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestMethod]
         public void GenericCollectionInitAllEmpty() {
             var testCollection = new List<string>();
-            var testCollection1 = new string[] { };
+            var testCollection1 = System.Array.Empty<string>();
             var testCollectionFacet = new GenericCollectionFacet(specification);
             var testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
@@ -304,7 +307,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestMethod]
         public void GenericCollectionInitToEmpty() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollection1 = new string[] { };
+            var testCollection1 = System.Array.Empty<string>();
             var testCollectionFacet = new GenericCollectionFacet(specification);
             var testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);

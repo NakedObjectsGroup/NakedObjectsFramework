@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestApplyValidationNotPickup() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector,typeof(Customer1), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
@@ -40,7 +40,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestApplyValidationPickup() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector,typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ValidateProgrammaticUpdatesFacetAnnotation);

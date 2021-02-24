@@ -22,6 +22,7 @@ using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {
+        protected IClassStrategy ClassStrategy = new ObjectClassStrategy(null);
         private ILogger<AbstractFacetFactoryTest> logger;
         protected ILoggerFactory LoggerFactory;
         protected IMetamodelManager Metamodel;
@@ -29,12 +30,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private Mock<IMetamodelManager> mockMetadata;
         private Mock<IMethodRemover> mockMethodRemover;
         private Mock<IReflector> mockReflector;
-        
+
         protected IReflector Reflector;
         protected ISpecificationBuilder Specification;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
-        protected IClassStrategy ClassStrategy = new ObjectClassStrategy(null);
 
         public virtual void SetUp() {
             Specification = new TestSpecification();
@@ -53,16 +53,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             mockMethodRemover.Setup(remover => remover.RemoveMethods(It.IsAny<IList<MethodInfo>>()));
 
             mockReflector.Setup(reflector =>
-                reflector.LoadSpecification(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+                                    reflector.LoadSpecification(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
 
             mockReflector.Setup(reflector =>
-                reflector.LoadSpecification<ITypeSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+                                    reflector.LoadSpecification<ITypeSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
 
             mockReflector.Setup(reflector =>
-                reflector.LoadSpecification<IObjectSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t,   IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+                                    reflector.LoadSpecification<IObjectSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
 
             mockReflector.Setup(reflector => reflector.ClassStrategy).Returns(ClassStrategy);
-
         }
 
         public virtual void TearDown() {
@@ -71,11 +70,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Reflector = null;
         }
 
-        protected IFacetFactoryOrder<T> GetOrder<T>() => 
-            new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories());
+        protected IFacetFactoryOrder<T> GetOrder<T>()
+        {
+            return new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories());
+        }
 
-
-        protected static bool Contains<T>(T[] array, T val) => array.Contains(val);
+        protected static bool Contains<T>(T[] array, T val)
+        {
+            return array.Contains(val);
+        }
 
         protected MethodInfo FindMethod(Type type, string methodName, Type[] parameterTypes) {
             try {
@@ -131,7 +134,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             }
         }
 
-        protected MethodInfo FindMethod(Type type, string methodName) => FindMethod(type, methodName, Type.EmptyTypes);
+        protected MethodInfo FindMethod(Type type, string methodName)
+        {
+            return FindMethod(type, methodName, Type.EmptyTypes);
+        }
 
         protected void AssertRemovedCalled(int count) {
             mockMethodRemover.Verify(remover => remover.RemoveMethod(It.IsAny<MethodInfo>()), Times.Exactly(count));

@@ -45,7 +45,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
-            metamodel = facetFactory.ProcessParams(Reflector,method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITypicalLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TypicalLengthFacetAnnotation);
@@ -58,7 +58,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestTypicalLengthAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector,typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITypicalLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TypicalLengthFacetAnnotation);
@@ -72,7 +72,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITypicalLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TypicalLengthFacetAnnotation);

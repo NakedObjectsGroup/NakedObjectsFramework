@@ -122,7 +122,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer), "SomeAction");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
@@ -139,7 +139,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction1");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
@@ -156,7 +156,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction2");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
@@ -174,7 +174,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var type = typeof(Customer16);
             var actionMethod = FindMethod(type, "SomeAction");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
             var (_, expectedSpec) = Reflector.LoadSpecification(type, null);
@@ -187,8 +187,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer15), "SomeAction");
-            //   reflector.LoadSpecification(typeof(string));
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
             var (_, expectedSpec) = Reflector.LoadSpecification(typeof(string), null);
@@ -201,8 +200,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer14), "SomeAction");
-            //     reflector.setLoadSpecificationClassReturn(voidNoSpec);
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
             var (_, expectedSpec) = Reflector.LoadSpecification(typeof(void), null);
@@ -215,7 +213,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethodIgnoreParms(typeof(Customer1), "AnActionWithNullableParm");
-            metamodel = facetFactory.ProcessParams(Reflector,method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INullableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NullableFacetAlways);
@@ -228,7 +226,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var method = FindMethodIgnoreParms(typeof(Customer25), "SomeAction");
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector,method, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, facetHolderWithParms, metamodel);
             var facet = facetHolderWithParms.Parameters[0].GetFacet(typeof(IAjaxFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AjaxFacet);
@@ -286,7 +284,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethodIgnoreParms(typeof(Customer1), "AnActionWithoutNullableParm");
-            metamodel = facetFactory.ProcessParams(Reflector,method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INullableFacet));
             Assert.IsNull(facet);
             Assert.AreEqual(0, metamodel.Count);
@@ -325,7 +323,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(CustomerStatic), "SomeAction", new[] {typeof(int), typeof(long)});
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForSessionFacetNone);
@@ -337,7 +335,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(CustomerStatic), "SomeAction", new[] {typeof(int), typeof(long)});
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForSessionFacetNone);
@@ -401,12 +399,12 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer13), "SomeAction", new[] {typeof(int), typeof(long), typeof(long)});
-            var choices0Method = FindMethod(typeof(Customer13), "Choices0SomeAction", new Type[] { });
-            var choices1Method = FindMethod(typeof(Customer13), "Choices1SomeAction", new Type[] { });
-            var choices2Method = FindMethod(typeof(Customer13), "Choices2SomeAction", new Type[] { });
+            var choices0Method = FindMethod(typeof(Customer13), "Choices0SomeAction", Array.Empty<Type>());
+            var choices1Method = FindMethod(typeof(Customer13), "Choices1SomeAction", Array.Empty<Type>());
+            var choices2Method = FindMethod(typeof(Customer13), "Choices2SomeAction", Array.Empty<Type>());
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
 
@@ -437,10 +435,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var actionMethod = FindMethod(typeof(Customer30), "SomeAction", new[] {typeof(int), typeof(long), typeof(long)});
             var choices0Method1 = FindMethod(typeof(Customer30), "Choices0SomeAction", new[] {typeof(long), typeof(long)});
             var choices0Method2 = FindMethod(typeof(Customer30), "Choices0SomeAction", new[] {typeof(long)});
-            var choices0Method3 = FindMethod(typeof(Customer30), "Choices0SomeAction", new Type[] { });
+            var choices0Method3 = FindMethod(typeof(Customer30), "Choices0SomeAction", Array.Empty<Type>());
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method1, facetHolderWithParms.Parameters[0]);
 
@@ -459,10 +457,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var actionMethod = FindMethod(typeof(Customer30), "SomeAction", new[] {typeof(int), typeof(long), typeof(long)});
             var choices0Method = FindMethod(typeof(Customer30), "Choices0SomeAction", new[] {typeof(long), typeof(long)});
             var choices1Method = FindMethod(typeof(Customer30), "Choices1SomeAction", new[] {typeof(long)});
-            var choices2Method = FindMethod(typeof(Customer30), "Choices2SomeAction", new Type[] { });
+            var choices2Method = FindMethod(typeof(Customer30), "Choices2SomeAction", Array.Empty<Type>());
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
 
@@ -493,7 +491,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var actionMethod = FindMethod(typeof(Customer21), "SomeAction", new[] {typeof(int), typeof(long), typeof(long)});
             var choices0Method = FindMethod(typeof(Customer21), "ChoicesSomeAction", new[] {typeof(int)});
             var choices1Method = FindMethod(typeof(Customer21), "ChoicesSomeAction", new[] {typeof(long)});
-            var choices2Method = FindMethod(typeof(Customer21), "Choices2SomeAction", new Type[] { });
+            var choices2Method = FindMethod(typeof(Customer21), "Choices2SomeAction", Array.Empty<Type>());
 
             var facetHolderWithParms = CreateHolderWithParms();
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -525,9 +523,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer11), "SomeAction", new[] {typeof(int), typeof(long), typeof(long)});
-            var default0Method = FindMethod(typeof(Customer11), "Default0SomeAction", new Type[] { });
-            var default1Method = FindMethod(typeof(Customer11), "Default1SomeAction", new Type[] { });
-            var default2Method = FindMethod(typeof(Customer11), "Default2SomeAction", new Type[] { });
+            var default0Method = FindMethod(typeof(Customer11), "Default0SomeAction", Array.Empty<Type>());
+            var default1Method = FindMethod(typeof(Customer11), "Default1SomeAction", Array.Empty<Type>());
+            var default2Method = FindMethod(typeof(Customer11), "Default2SomeAction", Array.Empty<Type>());
 
             var facetHolderWithParms = CreateHolderWithParms();
 
@@ -562,7 +560,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var actionMethod = FindMethod(typeof(Customer22), "SomeAction", new[] {typeof(int), typeof(long), typeof(long)});
             var default0Method = FindMethod(typeof(Customer22), "DefaultSomeAction", new[] {typeof(int)});
             var default1Method = FindMethod(typeof(Customer22), "DefaultSomeAction", new[] {typeof(long)});
-            var default2Method = FindMethod(typeof(Customer22), "Default2SomeAction", new Type[] { });
+            var default2Method = FindMethod(typeof(Customer22), "Default2SomeAction", Array.Empty<Type>());
 
             var facetHolderWithParms = CreateHolderWithParms();
 
@@ -827,7 +825,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer1), "AnActionWithNamedAnnotation");
-            metamodel = facetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is INamedFacet);
@@ -835,32 +833,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.AreEqual("An Action With Named Annotation", namedFacet.NaturalName);
             Assert.AreEqual(0, metamodel.Count);
         }
-
-        //[TestMethod]
-        //public void TestFindActions() {
-        //    ObjectReflectorConfiguration.NoValidate = true;
-
-        //    var config = new ObjectReflectorConfiguration(new Type[] { typeof(Customer34) }, new Type[] { });
-
-        //    var classStrategy = new ObjectClassStrategy(config);
-
-        //    var methods = typeof(Customer34).GetMethods().ToList();
-        //    var actions = facetFactory.FindActions(methods, classStrategy);
-
-        //    var expectedNames = new List<string> {
-        //        "ActionWithNoParameters",
-        //        "ActionWithOneGoodParameter",
-        //        "ActionWithTwoGoodParameter",
-        //        "ActionWithNullableParameter",
-        //        "ToString",
-        //        "Equals",
-        //        "GetHashCode"
-        //    };
-
-        //    Assert.AreEqual(expectedNames.Count, actions.Count);
-
-        //    expectedNames.ForEach(n => Assert.IsTrue(actions.Select(a => a.Name).Contains(n)));
-        //}
 
         #region Setup/Teardown
 
@@ -895,91 +867,160 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer11 {
             public void SomeAction(int x, long y, long z) { }
 
-            public int Default0SomeAction() => 0;
+            public int Default0SomeAction()
+            {
+                return 0;
+            }
 
             [Executed(Where.Remotely)]
-            public long Default1SomeAction() => 0;
+            public long Default1SomeAction()
+            {
+                return 0;
+            }
 
             [Executed(Where.Locally)]
-            public long Default2SomeAction() => 0;
+            public long Default2SomeAction()
+            {
+                return 0;
+            }
         }
 
         private class Customer22 {
             public void SomeAction(int x, long y, long z) { }
 
-            public int DefaultSomeAction(int x) => 0;
+            public int DefaultSomeAction(int x)
+            {
+                return 0;
+            }
 
             [Executed(Where.Remotely)]
-            public long DefaultSomeAction(long y) => 0;
+            public long DefaultSomeAction(long y)
+            {
+                return 0;
+            }
 
             [Executed(Where.Locally)]
-            public long Default2SomeAction() => 0;
+            public long Default2SomeAction()
+            {
+                return 0;
+            }
         }
 
         private class Customer13 {
             public void SomeAction(int x, long y, long z) { }
 
-            public int[] Choices0SomeAction() => new int[0];
+            public int[] Choices0SomeAction()
+            {
+                return Array.Empty<int>();
+            }
 
             [Executed(Where.Remotely)]
-            public long[] Choices1SomeAction() => new long[0];
+            public long[] Choices1SomeAction()
+            {
+                return Array.Empty<long>();
+            }
 
             [Executed(Where.Locally)]
-            public long[] Choices2SomeAction() => new long[0];
+            public long[] Choices2SomeAction()
+            {
+                return Array.Empty<long>();
+            }
         }
 
         private class Customer26 {
             public void SomeAction(string x, Customer26 y, long z) { }
 
-            public IQueryable<string> AutoComplete0SomeAction(string name) => new string[0].AsQueryable();
+            public IQueryable<string> AutoComplete0SomeAction(string name)
+            {
+                return Array.Empty<string>().AsQueryable();
+            }
 
-            public IQueryable<Customer26> AutoComplete1SomeAction(string name) => new Customer26[0].AsQueryable();
+            public IQueryable<Customer26> AutoComplete1SomeAction(string name)
+            {
+                return Array.Empty<Customer26>().AsQueryable();
+            }
 
-            public IQueryable<long> AutoComplete2SomeAction(string name) => new long[0].AsQueryable();
+            public IQueryable<long> AutoComplete2SomeAction(string name)
+            {
+                return Array.Empty<long>().AsQueryable();
+            }
         }
 
         private class Customer27 {
             public void SomeAction(string x, string y, string z) { }
 
-            public IQueryable<int> AutoComplete0SomeAction(string name) => new int[0].AsQueryable();
+            public IQueryable<int> AutoComplete0SomeAction(string name)
+            {
+                return Array.Empty<int>().AsQueryable();
+            }
 
-            public IQueryable<string> AutoComplete1SomeAction() => new string[0].AsQueryable();
+            public IQueryable<string> AutoComplete1SomeAction()
+            {
+                return Array.Empty<string>().AsQueryable();
+            }
 
-            public IQueryable<string> AutoComplete2SomeAction(int name) => new string[0].AsQueryable();
+            public IQueryable<string> AutoComplete2SomeAction(int name)
+            {
+                return Array.Empty<string>().AsQueryable();
+            }
         }
 
         private class Customer28 {
             public void SomeAction(string x, Customer26 y, long z) { }
 
             [PageSize(33)]
-            public IQueryable<string> AutoComplete0SomeAction([MinLength(2)] string name) => new string[0].AsQueryable();
+            public IQueryable<string> AutoComplete0SomeAction([MinLength(2)] string name)
+            {
+                return Array.Empty<string>().AsQueryable();
+            }
 
             [PageSize(66)]
-            public IQueryable<Customer26> AutoComplete1SomeAction([MinLength(3)] string name) => new Customer26[0].AsQueryable();
+            public IQueryable<Customer26> AutoComplete1SomeAction([MinLength(3)] string name)
+            {
+                return Array.Empty<Customer26>().AsQueryable();
+            }
         }
 
         private class Customer30 {
             public void SomeAction(int x, long y, long z) { }
 
-            public int[] Choices0SomeAction(long y, long z) => new int[0];
+            public int[] Choices0SomeAction(long y, long z)
+            {
+                return Array.Empty<int>();
+            }
 
             [Executed(Where.Remotely)]
-            public long[] Choices1SomeAction(long z) => new long[0];
+            public long[] Choices1SomeAction(long z)
+            {
+                return Array.Empty<long>();
+            }
 
             [Executed(Where.Locally)]
-            public long[] Choices2SomeAction() => new long[0];
+            public long[] Choices2SomeAction()
+            {
+                return Array.Empty<long>();
+            }
         }
 
         private class Customer21 {
             public void SomeAction(int x, long y, long z) { }
 
-            public int[] ChoicesSomeAction(int x) => new int[0];
+            public int[] ChoicesSomeAction(int x)
+            {
+                return Array.Empty<int>();
+            }
 
             [Executed(Where.Remotely)]
-            public long[] ChoicesSomeAction(long y) => new long[0];
+            public long[] ChoicesSomeAction(long y)
+            {
+                return Array.Empty<long>();
+            }
 
             [Executed(Where.Locally)]
-            public long[] Choices2SomeAction() => new long[0];
+            public long[] Choices2SomeAction()
+            {
+                return Array.Empty<long>();
+            }
         }
 
         private class Customer14 {
@@ -987,77 +1028,125 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         private class Customer15 {
-            public string SomeAction() => null;
+            public string SomeAction()
+            {
+                return null;
+            }
         }
 
         private class Customer16 {
-            public string SomeAction() => null;
+            public string SomeAction()
+            {
+                return null;
+            }
         }
 
         private class Customer8 {
             public void SomeAction() { }
 
-            public string ValidateSomeAction() => null;
+            public string ValidateSomeAction()
+            {
+                return null;
+            }
         }
 
         private class Customer9 {
             public void SomeAction(int x, int y) { }
 
-            public string ValidateSomeAction(int x, int y) => null;
+            public string ValidateSomeAction(int x, int y)
+            {
+                return null;
+            }
         }
 
         private class Customer10 {
             public void SomeActionOne() { }
 
-            public bool HideSomeActionOne() => false;
+            public bool HideSomeActionOne()
+            {
+                return false;
+            }
 
             public void SomeActionTwo(int x) { }
 
-            public bool HideSomeActionTwo() => false;
+            public bool HideSomeActionTwo()
+            {
+                return false;
+            }
 
             public void SomeActionThree(int x) { }
 
-            public bool HideSomeActionThree() => false;
+            public bool HideSomeActionThree()
+            {
+                return false;
+            }
 
             public void SomeActionFour(int x, int y) { }
 
-            public bool HideSomeActionFour() => false;
+            public bool HideSomeActionFour()
+            {
+                return false;
+            }
         }
 
         private class Customer12 {
             public void SomeActionOne() { }
 
-            public string DisableSomeActionOne() => "";
+            public string DisableSomeActionOne()
+            {
+                return "";
+            }
 
             public void SomeActionTwo(int x) { }
 
-            public string DisableSomeActionTwo() => "";
+            public string DisableSomeActionTwo()
+            {
+                return "";
+            }
 
             public void SomeActionThree(int x) { }
 
-            public string DisableSomeActionThree() => "";
+            public string DisableSomeActionThree()
+            {
+                return "";
+            }
 
             public void SomeActionFour(int x, int y) { }
 
-            public string DisableSomeActionFour() => "";
+            public string DisableSomeActionFour()
+            {
+                return "";
+            }
         }
 
         private class Customer18 {
-            public string DisableActionDefault() => "";
+            public string DisableActionDefault()
+            {
+                return "";
+            }
 
             public void SomeActionTwo(int x) { }
 
-            public string DisableSomeActionTwo() => "";
+            public string DisableSomeActionTwo()
+            {
+                return "";
+            }
 
             public void SomeActionThree(int x) { }
         }
 
         private class Customer19 {
-            public bool HideActionDefault() => false;
+            public bool HideActionDefault()
+            {
+                return false;
+            }
 
             public void SomeActionTwo(int x) { }
 
-            public bool HideSomeActionTwo() => false;
+            public bool HideSomeActionTwo()
+            {
+                return false;
+            }
 
             public void SomeActionThree(int x) { }
         }
@@ -1065,9 +1154,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public class CustomerStatic {
             public void SomeAction(int x, long y) { }
 
-            public static bool HideSomeAction(IPrincipal principal) => true;
+            public static bool HideSomeAction(IPrincipal principal)
+            {
+                return true;
+            }
 
-            public static string DisableSomeAction(IPrincipal principal) => "disabled for this user";
+            public static string DisableSomeAction(IPrincipal principal)
+            {
+                return "disabled for this user";
+            }
 
             public static void OtherAction(int x, long y) { }
         }
@@ -1075,35 +1170,59 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer17 {
             public void SomeAction(int x, long y, long z) { }
 
-            public string Validate0SomeAction(int x) => "failed";
+            public string Validate0SomeAction(int x)
+            {
+                return "failed";
+            }
 
-            public string Validate1SomeAction(long x) => null;
+            public string Validate1SomeAction(long x)
+            {
+                return null;
+            }
         }
 
         private class Customer20 {
             public void SomeAction(int x, long y, long z) { }
 
-            public string ValidateSomeAction(int x) => "failed";
+            public string ValidateSomeAction(int x)
+            {
+                return "failed";
+            }
 
-            public string ValidateSomeAction(long y) => null;
+            public string ValidateSomeAction(long y)
+            {
+                return null;
+            }
         }
 
         private class Customer23 {
             public void SomeAction(int x, long y, long z) { }
 
             [Executed(Ajax.Enabled)]
-            public string ValidateSomeAction(int x) => "failed";
+            public string ValidateSomeAction(int x)
+            {
+                return "failed";
+            }
 
-            public string ValidateSomeAction(long y) => null;
+            public string ValidateSomeAction(long y)
+            {
+                return null;
+            }
         }
 
         private class Customer24 {
             public void SomeAction(int x, long y, long z) { }
 
             [Executed(Ajax.Disabled)]
-            public string ValidateSomeAction(int x) => "failed";
+            public string ValidateSomeAction(int x)
+            {
+                return "failed";
+            }
 
-            public string ValidateSomeAction(long y) => null;
+            public string ValidateSomeAction(long y)
+            {
+                return null;
+            }
         }
 
         private class Customer25 {
@@ -1115,18 +1234,33 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer32 {
             public void SomeAction(string x, ICustomer y, long z) { }
 
-            public IQueryable<string> AutoComplete0SomeAction(string name) => new string[0].AsQueryable();
+            public IQueryable<string> AutoComplete0SomeAction(string name)
+            {
+                return Array.Empty<string>().AsQueryable();
+            }
 
-            public IQueryable<ICustomer> AutoComplete1SomeAction(string name) => new ICustomer[0].AsQueryable();
+            public IQueryable<ICustomer> AutoComplete1SomeAction(string name)
+            {
+                return Array.Empty<ICustomer>().AsQueryable();
+            }
 
-            public IQueryable<long> AutoComplete2SomeAction(string name) => new long[0].AsQueryable();
+            public IQueryable<long> AutoComplete2SomeAction(string name)
+            {
+                return Array.Empty<long>().AsQueryable();
+            }
         }
 
         private class Customer33 {
-            public IQueryable<Customer33> SomeQueryableAction1() => null;
+            public IQueryable<Customer33> SomeQueryableAction1()
+            {
+                return null;
+            }
 
             [QueryOnly]
-            public IEnumerable<Customer33> SomeQueryableAction2() => null;
+            public IEnumerable<Customer33> SomeQueryableAction2()
+            {
+                return null;
+            }
         }
 
         private class Customer34 {

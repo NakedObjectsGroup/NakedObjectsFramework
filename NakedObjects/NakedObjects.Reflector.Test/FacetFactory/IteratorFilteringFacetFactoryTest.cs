@@ -14,7 +14,6 @@ using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -24,7 +23,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
     public class IteratorFilteringFacetFactoryTest : AbstractFacetFactoryTest {
         private IteratorFilteringFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes => new Type[] { };
+        protected override Type[] SupportedTypes => Array.Empty<Type>();
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -69,7 +68,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer : IEnumerable {
             #region IEnumerable Members
 
-            public IEnumerator GetEnumerator() => null;
+            public IEnumerator GetEnumerator()
+            {
+                return null;
+            }
 
             #endregion
 

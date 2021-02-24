@@ -43,7 +43,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer9), "SomeAction");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
@@ -61,7 +61,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
@@ -78,7 +78,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer4), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
@@ -95,7 +95,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer10), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
@@ -119,8 +119,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: Customer3
 
         private class Customer3 {
-// ReSharper disable once UnusedMember.Local
-            public IList<Order> SomeAction() => null;
+            // ReSharper disable once UnusedMember.Local
+            public IList<Order> SomeAction()
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -137,8 +140,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: Customer9
 
         private class Customer9 {
-// ReSharper disable once UnusedMember.Local
-            public Order[] SomeAction() => null;
+            // ReSharper disable once UnusedMember.Local
+            public Order[] SomeAction()
+            {
+                return null;
+            }
         }
 
         #endregion

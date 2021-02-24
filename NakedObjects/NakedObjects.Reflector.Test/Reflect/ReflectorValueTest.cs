@@ -20,23 +20,17 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflector.Component;
-using NakedObjects.Reflector.Component;
-using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Test.Reflect {
     [TestClass]
     public class ReflectorValueTest : AbstractReflectorTest {
-
-        protected override IReflector Reflector(Metamodel metamodel, ILoggerFactory lf)
-        {
+        protected override IReflector Reflector(Metamodel metamodel, ILoggerFactory lf) {
             var config = new CoreConfiguration();
             ClassStrategy = new SystemTypeClassStrategy(config);
             var systemTypeFacetFactorySet = new SystemTypeFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>());
             var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
-            return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy) ClassStrategy, metamodel, config, new IFacetDecorator[] { }, lf, mockLogger1);
+            return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy) ClassStrategy, metamodel, config, System.Array.Empty<IFacetDecorator>(), lf, mockLogger1);
         }
-
 
         protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
@@ -44,7 +38,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             (_, metamodel) = reflector.LoadSpecification(typeof(string), metamodel);
 
             (_, metamodel) = ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(IEnumerable<char>), metamodel);
-            return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(string), metamodel);
+            return ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(string), metamodel);
         }
 
         [TestMethod]

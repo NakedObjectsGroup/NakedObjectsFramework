@@ -36,7 +36,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer6), "SomeAction");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.UntilPersisted, hiddenFacetAbstract.Value);
@@ -58,7 +58,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer2), "SomeAction");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacet);
@@ -71,7 +71,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacet);
@@ -84,7 +84,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacet);
@@ -97,7 +97,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
@@ -109,7 +109,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer4), "SomeAction");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
@@ -121,7 +121,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer5), "SomeAction");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.OncePersisted, hiddenFacetAbstract.Value);
@@ -133,7 +133,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer10), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
@@ -145,7 +145,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer8), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacet);
@@ -158,7 +158,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer7), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacet);
@@ -171,7 +171,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer9), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);

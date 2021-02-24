@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             var objectReflector = (ObjectReflector) reflector;
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             (_, metamodel) = reflector.LoadSpecification(typeof(List<TestPoco>), metamodel);
-            return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(List<TestPoco>), metamodel);
+            return ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(List<TestPoco>), metamodel);
         }
 
         [TestMethod]

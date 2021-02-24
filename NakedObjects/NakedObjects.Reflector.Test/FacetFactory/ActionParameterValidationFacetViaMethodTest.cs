@@ -63,8 +63,14 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
     internal class Customer17 {
         public void SomeAction(int x, long y, long z) { }
 
-        public string Validate0SomeAction(int x) => x > 0 ? null : "must be positive";
+        public string Validate0SomeAction(int x)
+        {
+            return x > 0 ? null : "must be positive";
+        }
 
-        public string Validate1SomeAction(long x) => null;
+        public string Validate1SomeAction(long x)
+        {
+            return null;
+        }
     }
 }

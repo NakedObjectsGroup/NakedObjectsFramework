@@ -39,7 +39,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             var identifier = new IdentifierImpl("Customer1", "SomeAction");
             var actionPeer = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, null, null);
-            metamodel = new FallbackFacetFactory(GetOrder<FallbackFacetFactory>(), null).Process(Reflector,actionMethod, MethodRemover, actionPeer, metamodel);
+            metamodel = new FallbackFacetFactory(GetOrder<FallbackFacetFactory>(), null).Process(Reflector, actionMethod, MethodRemover, actionPeer, metamodel);
             var facet = actionPeer.GetFacet(typeof(IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetDefault);
@@ -64,7 +64,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer), "SomeAction");
-            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetAnnotation);
@@ -78,8 +78,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         private class Customer {
             [PageSize(7)]
-// ReSharper disable once UnusedMember.Local
-            public IQueryable<Customer> SomeAction() => null;
+            // ReSharper disable once UnusedMember.Local
+            public IQueryable<Customer> SomeAction()
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -87,8 +90,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: Customer1
 
         private class Customer1 {
-// ReSharper disable once UnusedMember.Local
-            public IQueryable<Customer1> SomeAction() => null;
+            // ReSharper disable once UnusedMember.Local
+            public IQueryable<Customer1> SomeAction()
+            {
+                return null;
+            }
         }
 
         #endregion

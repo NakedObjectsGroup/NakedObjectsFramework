@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer2), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -55,7 +55,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer2), "OrdersAction");
-            metamodel = facetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -66,7 +66,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer2), "Orders1");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -77,7 +77,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer2), "OrdersAction1");
-            metamodel = facetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -88,7 +88,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -106,7 +106,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer1), "OrdersAction");
-            metamodel = facetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -124,7 +124,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "Orders1");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -142,7 +142,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer1), "OrdersAction1");
-            metamodel = facetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -160,7 +160,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer1), "OrdersAction2");
-            metamodel = facetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -176,7 +176,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer1), "OrdersAction3");
-            metamodel = facetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             Assert.IsNotNull(metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
@@ -195,7 +195,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer1), "OrdersAction4");
-            metamodel = facetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -213,7 +213,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "Orders2");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -239,19 +239,34 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public ICollection<Order> Orders2 { get; set; }
 
             [TableView(false, "col5", "col6")]
-            public Order[] OrdersAction() => null;
+            public Order[] OrdersAction()
+            {
+                return null;
+            }
 
             [TableView(true, "col7", "col8")]
-            public ICollection<Order> OrdersAction1() => null;
+            public ICollection<Order> OrdersAction1()
+            {
+                return null;
+            }
 
             [TableView(true)]
-            public ICollection<Order> OrdersAction2() => null;
+            public ICollection<Order> OrdersAction2()
+            {
+                return null;
+            }
 
             [TableView(true, "col7", "col8")]
-            public IQueryable<Order> OrdersAction3() => null;
+            public IQueryable<Order> OrdersAction3()
+            {
+                return null;
+            }
 
             [TableView(true, "col7", "col8", "col7", "col8")]
-            public IQueryable<Order> OrdersAction4() => null;
+            public IQueryable<Order> OrdersAction4()
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -262,9 +277,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public Order[] Orders { get; set; }
             public ICollection<Order> Orders1 { get; set; }
 
-            public Order[] OrdersAction() => null;
+            public Order[] OrdersAction()
+            {
+                return null;
+            }
 
-            public ICollection<Order> OrdersAction1() => null;
+            public ICollection<Order> OrdersAction1()
+            {
+                return null;
+            }
         }
 
         #endregion

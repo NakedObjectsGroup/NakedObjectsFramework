@@ -49,7 +49,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestMethodsMarkedIgnoredAreRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector,typeof(Customer1), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
             AssertRemovedCalled(2);
             Assert.IsNotNull(metamodel);
         }
@@ -90,15 +90,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var cache = new ImmutableInMemorySpecCache();
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var reflectorConfiguration = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
+            var reflectorConfiguration = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
             facetFactory = new RemoveIgnoredMethodsFacetFactory(GetOrder<RemoveIgnoredMethodsFacetFactory>(), LoggerFactory);
-            var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] { facetFactory });
+            var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] {facetFactory});
             var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
             var metamodel = new Metamodel(cache, null);
             var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            Reflector = new ObjectReflector(objectFactFactorySet, classStrategy,  metamodel, reflectorConfiguration, new IFacetDecorator[] { }, mockLoggerFactory, mockLogger);
+            Reflector = new ObjectReflector(objectFactFactorySet, classStrategy, metamodel, reflectorConfiguration, Array.Empty<IFacetDecorator>(), mockLoggerFactory, mockLogger);
         }
 
         [TestCleanup]

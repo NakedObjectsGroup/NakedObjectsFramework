@@ -8,7 +8,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Core.Util;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -25,7 +24,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Setup/Teardown
 
         [TestInitialize]
-        public virtual void SetUp() => comparator = new MemberOrderComparator<MemberPeerStub>();
+        public virtual void SetUp()
+        {
+            comparator = new MemberOrderComparator<MemberPeerStub>();
+        }
 
         #endregion
 

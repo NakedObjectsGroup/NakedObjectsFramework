@@ -43,7 +43,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer6), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(ITypeOfFacet)));
             Assert.IsNotNull(metamodel);
         }
@@ -63,7 +63,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(CustomerStatic), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAlways);
@@ -75,7 +75,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(CustomerStatic), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForSessionFacetNone);
@@ -87,7 +87,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
@@ -99,7 +99,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
@@ -111,7 +111,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer3), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
@@ -123,7 +123,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer4), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
@@ -135,7 +135,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer2), "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
@@ -148,7 +148,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var type = typeof(Customer18);
             var property = FindProperty(type, "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IIsASetFacet));
             Assert.IsNotNull(facet);
             Assert.IsInstanceOfType(facet, typeof(IsASetFacet));
@@ -161,7 +161,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var type = typeof(Customer17);
             var property = FindProperty(type, "Orders");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IIsASetFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -228,7 +228,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public void AddToOrders(Order o) { }
 
-            public string ValidateAddToOrders(Order o) => null;
+            public string ValidateAddToOrders(Order o)
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -240,7 +243,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public void RemoveFromOrders(Order o) { }
 
-            public string ValidateRemoveFromOrders(Order o) => null;
+            public string ValidateRemoveFromOrders(Order o)
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -350,23 +356,47 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public class CustomerStatic {
             public IList Orders => null;
 
-            public static string NameOrders() => "Most Recent Orders";
+            public static string NameOrders()
+            {
+                return "Most Recent Orders";
+            }
 
-            public static string DescriptionOrders() => "Some old description";
+            public static string DescriptionOrders()
+            {
+                return "Some old description";
+            }
 
-            public static bool AlwaysHideOrders() => true;
+            public static bool AlwaysHideOrders()
+            {
+                return true;
+            }
 
-            public static bool ProtectOrders() => true;
+            public static bool ProtectOrders()
+            {
+                return true;
+            }
 
-            public static bool HideOrders(IPrincipal principal) => true;
+            public static bool HideOrders(IPrincipal principal)
+            {
+                return true;
+            }
 
-            public static string DisableOrders(IPrincipal principal) => "disabled for this user";
+            public static string DisableOrders(IPrincipal principal)
+            {
+                return "disabled for this user";
+            }
 
             public static void OtherOrders() { }
 
-            public static bool AlwaysHideOtherOrders() => false;
+            public static bool AlwaysHideOtherOrders()
+            {
+                return false;
+            }
 
-            public static bool ProtectOtherOrders() => false;
+            public static bool ProtectOtherOrders()
+            {
+                return false;
+            }
         }
 
         #endregion

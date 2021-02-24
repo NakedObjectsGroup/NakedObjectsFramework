@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
     public class ComplementaryMethodsFilteringFacetFactoryTest : AbstractFacetFactoryTest {
         private ComplementaryMethodsFilteringFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes => new Type[] { };
+        protected override Type[] SupportedTypes => Array.Empty<Type>();
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -131,7 +131,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         [TestMethod]
         public void TestFiltersValidateAction() {
-            var actionMethod = FindMethod(typeof(ActionClass), "ValidateAnAction", new Type[] { });
+            var actionMethod = FindMethod(typeof(ActionClass), "ValidateAnAction", Array.Empty<Type>());
             Assert.IsTrue(facetFactory.Filters(actionMethod, null));
         }
 
@@ -257,7 +257,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         [TestMethod]
         public void TestLeavesValidateActionIfNoAction() {
-            var actionMethod = FindMethod(typeof(NoActionClass), "ValidateAnAction", new Type[] { });
+            var actionMethod = FindMethod(typeof(NoActionClass), "ValidateAnAction", Array.Empty<Type>());
             Assert.IsFalse(facetFactory.Filters(actionMethod, null));
         }
 
@@ -282,23 +282,50 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: ActionClass
 
         private class ActionClass : BaseActionClass {
-            public override string ValidateAnAction() => string.Empty;
+            public override string ValidateAnAction()
+            {
+                return string.Empty;
+            }
 
-            public override string DisableAnAction() => null;
+            public override string DisableAnAction()
+            {
+                return null;
+            }
 
-            public override bool HideAnAction() => false;
+            public override bool HideAnAction()
+            {
+                return false;
+            }
 
-            public override IList<string> Choices0AnAction() => null;
+            public override IList<string> Choices0AnAction()
+            {
+                return null;
+            }
 
-            public override string Default0AnAction() => null;
+            public override string Default0AnAction()
+            {
+                return null;
+            }
 
-            public override string Validate0AnAction(string parm) => null;
+            public override string Validate0AnAction(string parm)
+            {
+                return null;
+            }
 
-            public override IList<string> ChoicesAnAction(string parm) => null;
+            public override IList<string> ChoicesAnAction(string parm)
+            {
+                return null;
+            }
 
-            public override string DefaultAnAction(string parm) => null;
+            public override string DefaultAnAction(string parm)
+            {
+                return null;
+            }
 
-            public override string ValidateAnAction(string parm) => null;
+            public override string ValidateAnAction(string parm)
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -310,23 +337,50 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 // ReSharper disable once UnusedParameter.Local
             public void AnAction(string parm) { }
 
-            public virtual string ValidateAnAction() => string.Empty;
+            public virtual string ValidateAnAction()
+            {
+                return string.Empty;
+            }
 
-            public virtual string DisableAnAction() => null;
+            public virtual string DisableAnAction()
+            {
+                return null;
+            }
 
-            public virtual bool HideAnAction() => false;
+            public virtual bool HideAnAction()
+            {
+                return false;
+            }
 
-            public virtual IList<string> Choices0AnAction() => null;
+            public virtual IList<string> Choices0AnAction()
+            {
+                return null;
+            }
 
-            public virtual string Default0AnAction() => null;
+            public virtual string Default0AnAction()
+            {
+                return null;
+            }
 
-            public virtual string Validate0AnAction(string parm) => null;
+            public virtual string Validate0AnAction(string parm)
+            {
+                return null;
+            }
 
-            public virtual IList<string> ChoicesAnAction(string parm) => null;
+            public virtual IList<string> ChoicesAnAction(string parm)
+            {
+                return null;
+            }
 
-            public virtual string DefaultAnAction(string parm) => null;
+            public virtual string DefaultAnAction(string parm)
+            {
+                return null;
+            }
 
-            public virtual string ValidateAnAction(string parm) => null;
+            public virtual string ValidateAnAction(string parm)
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -346,9 +400,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class BaseCollectionClass1 {
             public virtual ICollection<string> ACollection { get; set; }
 
-            public virtual string ValidateAddToACollection(string value) => null;
+            public virtual string ValidateAddToACollection(string value)
+            {
+                return null;
+            }
 
-            public virtual string ValidateRemoveFromACollection(string value) => null;
+            public virtual string ValidateRemoveFromACollection(string value)
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -356,23 +416,50 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: BaseNoActionClass
 
         private class BaseNoActionClass {
-            public virtual string ValidateAnAction() => string.Empty;
+            public virtual string ValidateAnAction()
+            {
+                return string.Empty;
+            }
 
-            public virtual string DisableAnAction() => null;
+            public virtual string DisableAnAction()
+            {
+                return null;
+            }
 
-            public virtual bool HideAnAction() => false;
+            public virtual bool HideAnAction()
+            {
+                return false;
+            }
 
-            public virtual IList<string> Choices0AnAction() => null;
+            public virtual IList<string> Choices0AnAction()
+            {
+                return null;
+            }
 
-            public virtual string Default0AnAction() => null;
+            public virtual string Default0AnAction()
+            {
+                return null;
+            }
 
-            public virtual string Validate0AnAction(string parm) => null;
+            public virtual string Validate0AnAction(string parm)
+            {
+                return null;
+            }
 
-            public virtual IList<string> ChoicesAnAction(string parm) => null;
+            public virtual IList<string> ChoicesAnAction(string parm)
+            {
+                return null;
+            }
 
-            public virtual string DefaultAnAction(string parm) => null;
+            public virtual string DefaultAnAction(string parm)
+            {
+                return null;
+            }
 
-            public virtual string ValidateAnAction(string parm) => null;
+            public virtual string ValidateAnAction(string parm)
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -389,9 +476,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: BaseNoCollectionClass1
 
         private class BaseNoCollectionClass1 {
-            public virtual string ValidateAddToACollection(string value) => null;
+            public virtual string ValidateAddToACollection(string value)
+            {
+                return null;
+            }
 
-            public virtual string ValidateRemoveFromACollection(string value) => null;
+            public virtual string ValidateRemoveFromACollection(string value)
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -399,20 +492,38 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: BaseNoPropertyClass
 
         private class BaseNoPropertyClass {
-            public virtual bool MeaninglessPrefixAProperty() => false;
+            public virtual bool MeaninglessPrefixAProperty()
+            {
+                return false;
+            }
 
             public virtual void ModifyAProperty(Type value) { }
             public virtual void ClearAProperty() { }
 
-            public virtual IList<string> ChoicesAProperty() => null;
+            public virtual IList<string> ChoicesAProperty()
+            {
+                return null;
+            }
 
-            public virtual string DefaultAProperty() => string.Empty;
+            public virtual string DefaultAProperty()
+            {
+                return string.Empty;
+            }
 
-            public virtual string ValidateAProperty(string prop) => string.Empty;
+            public virtual string ValidateAProperty(string prop)
+            {
+                return string.Empty;
+            }
 
-            public virtual string DisableAProperty() => null;
+            public virtual string DisableAProperty()
+            {
+                return null;
+            }
 
-            public virtual bool HideAProperty() => false;
+            public virtual bool HideAProperty()
+            {
+                return false;
+            }
         }
 
         #endregion
@@ -422,20 +533,38 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class BasePropertyClass {
             public virtual string AProperty { get; set; }
 
-            public virtual bool MeaninglessPrefixAProperty() => false;
+            public virtual bool MeaninglessPrefixAProperty()
+            {
+                return false;
+            }
 
             public virtual void ModifyAProperty(Type value) { }
             public virtual void ClearAProperty() { }
 
-            public virtual IList<string> ChoicesAProperty() => null;
+            public virtual IList<string> ChoicesAProperty()
+            {
+                return null;
+            }
 
-            public virtual string DefaultAProperty() => string.Empty;
+            public virtual string DefaultAProperty()
+            {
+                return string.Empty;
+            }
 
-            public virtual string ValidateAProperty(string prop) => string.Empty;
+            public virtual string ValidateAProperty(string prop)
+            {
+                return string.Empty;
+            }
 
-            public virtual string DisableAProperty() => null;
+            public virtual string DisableAProperty()
+            {
+                return null;
+            }
 
-            public virtual bool HideAProperty() => false;
+            public virtual bool HideAProperty()
+            {
+                return false;
+            }
         }
 
         #endregion
@@ -452,9 +581,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: CollectionClass1
 
         private class CollectionClass1 : BaseCollectionClass1 {
-            public override string ValidateAddToACollection(string value) => null;
+            public override string ValidateAddToACollection(string value)
+            {
+                return null;
+            }
 
-            public override string ValidateRemoveFromACollection(string value) => null;
+            public override string ValidateRemoveFromACollection(string value)
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -462,23 +597,50 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: NoActionClass
 
         private class NoActionClass : BaseNoActionClass {
-            public override string ValidateAnAction() => string.Empty;
+            public override string ValidateAnAction()
+            {
+                return string.Empty;
+            }
 
-            public override string DisableAnAction() => null;
+            public override string DisableAnAction()
+            {
+                return null;
+            }
 
-            public override bool HideAnAction() => false;
+            public override bool HideAnAction()
+            {
+                return false;
+            }
 
-            public override IList<string> Choices0AnAction() => null;
+            public override IList<string> Choices0AnAction()
+            {
+                return null;
+            }
 
-            public override string Default0AnAction() => null;
+            public override string Default0AnAction()
+            {
+                return null;
+            }
 
-            public override string Validate0AnAction(string parm) => null;
+            public override string Validate0AnAction(string parm)
+            {
+                return null;
+            }
 
-            public override IList<string> ChoicesAnAction(string parm) => null;
+            public override IList<string> ChoicesAnAction(string parm)
+            {
+                return null;
+            }
 
-            public override string DefaultAnAction(string parm) => null;
+            public override string DefaultAnAction(string parm)
+            {
+                return null;
+            }
 
-            public override string ValidateAnAction(string parm) => null;
+            public override string ValidateAnAction(string parm)
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -495,9 +657,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: NoCollectionClass1
 
         private class NoCollectionClass1 : BaseNoCollectionClass1 {
-            public override string ValidateAddToACollection(string value) => null;
+            public override string ValidateAddToACollection(string value)
+            {
+                return null;
+            }
 
-            public override string ValidateRemoveFromACollection(string value) => null;
+            public override string ValidateRemoveFromACollection(string value)
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -505,20 +673,38 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: NoPropertyClass
 
         private class NoPropertyClass : BaseNoPropertyClass {
-            public override bool MeaninglessPrefixAProperty() => false;
+            public override bool MeaninglessPrefixAProperty()
+            {
+                return false;
+            }
 
             public override void ModifyAProperty(Type value) { }
             public override void ClearAProperty() { }
 
-            public override IList<string> ChoicesAProperty() => null;
+            public override IList<string> ChoicesAProperty()
+            {
+                return null;
+            }
 
-            public override string DefaultAProperty() => string.Empty;
+            public override string DefaultAProperty()
+            {
+                return string.Empty;
+            }
 
-            public override string ValidateAProperty(string prop) => string.Empty;
+            public override string ValidateAProperty(string prop)
+            {
+                return string.Empty;
+            }
 
-            public override string DisableAProperty() => null;
+            public override string DisableAProperty()
+            {
+                return null;
+            }
 
-            public override bool HideAProperty() => false;
+            public override bool HideAProperty()
+            {
+                return false;
+            }
         }
 
         #endregion
@@ -526,20 +712,38 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: PropertyClass
 
         private class PropertyClass : BasePropertyClass {
-            public override bool MeaninglessPrefixAProperty() => false;
+            public override bool MeaninglessPrefixAProperty()
+            {
+                return false;
+            }
 
             public override void ModifyAProperty(Type value) { }
             public override void ClearAProperty() { }
 
-            public override IList<string> ChoicesAProperty() => null;
+            public override IList<string> ChoicesAProperty()
+            {
+                return null;
+            }
 
-            public override string DefaultAProperty() => string.Empty;
+            public override string DefaultAProperty()
+            {
+                return string.Empty;
+            }
 
-            public override string ValidateAProperty(string prop) => string.Empty;
+            public override string ValidateAProperty(string prop)
+            {
+                return string.Empty;
+            }
 
-            public override string DisableAProperty() => null;
+            public override string DisableAProperty()
+            {
+                return null;
+            }
 
-            public override bool HideAProperty() => false;
+            public override bool HideAProperty()
+            {
+                return false;
+            }
         }
 
         #endregion

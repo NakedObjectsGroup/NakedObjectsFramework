@@ -42,7 +42,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Test), nameof(Test.NoAnnotation));
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDataTypeFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -53,7 +53,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Test), nameof(Test.DataTypeAnnotation));
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DataTypeFacetAnnotation);
@@ -67,7 +67,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Test), nameof(Test.CustomDataTypeAnnotation));
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DataTypeFacetAnnotation);
@@ -81,7 +81,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Test), nameof(Test.NoAnnotationMethod), new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector,method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -92,7 +92,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Test), nameof(Test.DataTypeAnnotationMethod), new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector,method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DataTypeFacetAnnotation);
@@ -106,7 +106,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Test), nameof(Test.CustomDataTypeMethod), new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector,method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DataTypeFacetAnnotation);

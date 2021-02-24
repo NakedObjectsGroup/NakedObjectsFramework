@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -50,7 +49,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.AreEqual(isAbstract, facet.Flag);
         }
-
 
         private void AssertVoid(bool isVoid) {
             var facet = Specification.GetFacet<ITypeIsVoidFacet>();
@@ -130,7 +128,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             AssertInterface(false);
             AssertStatic(true);
         }
-
 
         private sealed class SealedTestClass { }
 

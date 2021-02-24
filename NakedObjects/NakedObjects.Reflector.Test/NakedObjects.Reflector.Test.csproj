@@ -33,6 +33,5 @@
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 
- 
 
 </Project>

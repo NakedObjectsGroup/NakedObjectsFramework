@@ -35,17 +35,32 @@ using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.Reflector.Test.Reflect {
     public class NullMenuFactory : IMenuFactory {
-        public IMenu NewMenu(string name) => null;
+        public IMenu NewMenu(string name)
+        {
+            return null;
+        }
 
         #region IMenuFactory Members
 
-        public IMenu NewMenu<T>(bool addAllActions, string name = null) => null;
+        public IMenu NewMenu<T>(bool addAllActions, string name = null)
+        {
+            return null;
+        }
 
-        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => null;
+        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null)
+        {
+            return null;
+        }
 
-        public IMenu NewMenu(string name, string id) => null;
+        public IMenu NewMenu(string name, string id)
+        {
+            return null;
+        }
 
-        public IMenu NewMenu(string name, string id, Type defaultType, bool addAllActions = false) => null;
+        public IMenu NewMenu(string name, string id, Type defaultType, bool addAllActions = false)
+        {
+            return null;
+        }
 
         #endregion
     }
@@ -63,13 +78,15 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         private Action<IServiceCollection> TestHook { get; set; } = services => { };
 
-        private IHostBuilder CreateHostBuilder(string[] args, Action<NakedCoreOptions> setup) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) => { RegisterTypes(services, setup); });
+        private IHostBuilder CreateHostBuilder(string[] args, Action<NakedCoreOptions> setup)
+        {
+            return Host.CreateDefaultBuilder(args)
+.ConfigureServices((hostContext, services) => { RegisterTypes(services, setup); });
+        }
 
         protected (IServiceProvider, IHost) GetContainer(Action<NakedCoreOptions> setup) {
             ImmutableSpecFactory.ClearCache();
-            var hostBuilder = CreateHostBuilder(new string[] { }, setup).Build();
+            var hostBuilder = CreateHostBuilder(Array.Empty<string>(), setup).Build();
             return (hostBuilder.Services, hostBuilder);
         }
 
@@ -411,7 +428,10 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 //Assert.AreEqual(16, order.Order);
             }
 
-            public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
+            public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
+            {
+                return metamodel;
+            }
         }
 
         #endregion
@@ -422,11 +442,10 @@ namespace NakedObjects.Reflector.Test.Reflect {
             private readonly BoundedAnnotationFacetFactory originalFactory;
 
             public ReplacementDelegatingBoundedAnnotationFacetFactory(IFacetFactoryOrder<BoundedAnnotationFacetFactory> order, BoundedAnnotationFacetFactory originalFactory, ILoggerFactory loggerFactory)
-                : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) {
+                : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
                 this.originalFactory = originalFactory;
-                //Assert.AreEqual(17, order.Order);
-            }
 
+            //Assert.AreEqual(17, order.Order);
             public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
                 Assert.IsNotNull(originalFactory);
                 return metamodel;
@@ -444,26 +463,50 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
             #region ISet<T> Members
 
-            public IEnumerator<T> GetEnumerator() => wrapped.GetEnumerator();
+            public IEnumerator<T> GetEnumerator()
+            {
+                return wrapped.GetEnumerator();
+            }
 
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
 
             public void UnionWith(IEnumerable<T> other) { }
             public void IntersectWith(IEnumerable<T> other) { }
             public void ExceptWith(IEnumerable<T> other) { }
             public void SymmetricExceptWith(IEnumerable<T> other) { }
 
-            public bool IsSubsetOf(IEnumerable<T> other) => false;
+            public bool IsSubsetOf(IEnumerable<T> other)
+            {
+                return false;
+            }
 
-            public bool IsSupersetOf(IEnumerable<T> other) => false;
+            public bool IsSupersetOf(IEnumerable<T> other)
+            {
+                return false;
+            }
 
-            public bool IsProperSupersetOf(IEnumerable<T> other) => false;
+            public bool IsProperSupersetOf(IEnumerable<T> other)
+            {
+                return false;
+            }
 
-            public bool IsProperSubsetOf(IEnumerable<T> other) => false;
+            public bool IsProperSubsetOf(IEnumerable<T> other)
+            {
+                return false;
+            }
 
-            public bool Overlaps(IEnumerable<T> other) => false;
+            public bool Overlaps(IEnumerable<T> other)
+            {
+                return false;
+            }
 
-            public bool SetEquals(IEnumerable<T> other) => false;
+            public bool SetEquals(IEnumerable<T> other)
+            {
+                return false;
+            }
 
             public bool Add(T item) {
                 wrapped.Add(item);
@@ -478,11 +521,17 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 wrapped.Clear();
             }
 
-            public bool Contains(T item) => false;
+            public bool Contains(T item)
+            {
+                return false;
+            }
 
             public void CopyTo(T[] array, int arrayIndex) { }
 
-            public bool Remove(T item) => false;
+            public bool Remove(T item)
+            {
+                return false;
+            }
 
             public int Count => wrapped.Count;
 
@@ -509,7 +558,10 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
             public virtual void Action() { }
 
-            public virtual string HideAction() => null;
+            public virtual string HideAction()
+            {
+                return null;
+            }
         }
 
         #endregion

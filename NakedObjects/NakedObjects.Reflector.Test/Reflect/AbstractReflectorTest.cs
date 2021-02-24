@@ -53,7 +53,6 @@ namespace NakedObjects.Reflector.Test.Reflect {
         protected IImmutableDictionary<string, ITypeSpecBuilder> Metamodel;
         protected IObjectSpecImmutable Specification;
 
-
         protected IFacetFactory[] FacetFactories =>
             new[] {
                 NewFacetFactory<FallbackFacetFactory>(),
@@ -137,27 +136,30 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 NewFacetFactory<CollectionFacetFactory>()
             };
 
-        private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T) Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()) , MockLoggerFactory);
-
-        protected static void AssertIsInstanceOfType<T>(object o) => Assert.IsInstanceOfType(o, typeof(T));
-
-        protected virtual IReflector Reflector(Metamodel metamodel, ILoggerFactory lf) {
-            var config = new ObjectReflectorConfiguration(new[] { typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList) }, new Type[] { });
-            var objectFactFactorySet = new ObjectFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
-            
-            ClassStrategy = new ObjectClassStrategy(config);
-            var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
-            return  new ObjectReflector(objectFactFactorySet, (ObjectClassStrategy) ClassStrategy, metamodel, config, new IFacetDecorator[] { }, lf, mockLogger1);
+        private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory
+        {
+            return (T)Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), MockLoggerFactory);
         }
 
+        protected static void AssertIsInstanceOfType<T>(object o)
+        {
+            Assert.IsInstanceOfType(o, typeof(T));
+        }
+
+        protected virtual IReflector Reflector(Metamodel metamodel, ILoggerFactory lf) {
+            var config = new ObjectReflectorConfiguration(new[] {typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList)}, Array.Empty<Type>());
+            var objectFactFactorySet = new ObjectFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
+
+            ClassStrategy = new ObjectClassStrategy(config);
+            var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
+            return new ObjectReflector(objectFactFactorySet, (ObjectClassStrategy) ClassStrategy, metamodel, config, Array.Empty<IFacetDecorator>(), lf, mockLogger1);
+        }
 
         [TestInitialize]
         public virtual void SetUp() {
             var cache = new ImmutableInMemorySpecCache();
             ObjectReflectorConfiguration.NoValidate = true;
 
-          
-           
             var mockLogger = new Mock<ILogger<Metamodel>>().Object;
 
             var metamodel = new Metamodel(cache, mockLogger);
@@ -191,9 +193,15 @@ namespace NakedObjects.Reflector.Test.Reflect {
             Assert.Fail("Spec missing: " + type.FullName);
         }
 
-        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) => specs.SingleOrDefault(s => s.FullName == type.FullName);
+        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs)
+        {
+            return specs.SingleOrDefault(s => s.FullName == type.FullName);
+        }
 
-        public static void AssertSpec(Type type, ITypeSpecBuilder[] specs) => AssertSpec(type, GetSpec(type, specs));
+        public static void AssertSpec(Type type, ITypeSpecBuilder[] specs)
+        {
+            AssertSpec(type, GetSpec(type, specs));
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -83,7 +83,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer10 {
             public string FirstName => null;
 
-            public string[] ChoicesFirstName() => null;
+            public string[] ChoicesFirstName()
+            {
+                return null;
+            }
         }
 
         // ReSharper disable InconsistentNaming
@@ -91,39 +94,57 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public string FirstName => null;
 
             [Executed(Where.Remotely)]
-            public string[] ChoicesFirstName() => null;
+            public string[] ChoicesFirstName()
+            {
+                return null;
+            }
         }
 
         private class Customer10l {
             public string FirstName => null;
 
             [Executed(Where.Locally)]
-            public string[] ChoicesFirstName() => null;
+            public string[] ChoicesFirstName()
+            {
+                return null;
+            }
         }
 
         private class Customer11 {
             public string FirstName => null;
 
-            public string DefaultFirstName() => null;
+            public string DefaultFirstName()
+            {
+                return null;
+            }
         }
 
         private class Customer11r {
             public string FirstName => null;
 
             [Executed(Where.Remotely)]
-            public string DefaultFirstName() => null;
+            public string DefaultFirstName()
+            {
+                return null;
+            }
         }
 
         private class Customer11l {
             public string FirstName => null;
 
             [Executed(Where.Locally)]
-            public string DefaultFirstName() => null;
+            public string DefaultFirstName()
+            {
+                return null;
+            }
         }
 
         private class Customer12 {
             public string FirstName => null; // ReSharper disable UnusedParameter.Local
-            public string ValidateFirstName(string firstName) => null;
+            public string ValidateFirstName(string firstName)
+            {
+                return null;
+            }
         }
 
         private class Customer13 {
@@ -131,9 +152,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string SecondName => null;
 
-            public bool HideFirstName() => false;
+            public bool HideFirstName()
+            {
+                return false;
+            }
 
-            public bool HideSecondName() => false;
+            public bool HideSecondName()
+            {
+                return false;
+            }
         }
 
         private class Customer14 {
@@ -141,9 +168,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string SecondName => null;
 
-            public bool HidePropertyDefault() => false;
+            public bool HidePropertyDefault()
+            {
+                return false;
+            }
 
-            public bool HideSecondName() => false;
+            public bool HideSecondName()
+            {
+                return false;
+            }
         }
 
         private class Customer15 {
@@ -151,9 +184,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string SecondName => null;
 
-            public string DisableFirstName(string firstName) => null;
+            public string DisableFirstName(string firstName)
+            {
+                return null;
+            }
 
-            public string DisableSecondName() => null;
+            public string DisableSecondName()
+            {
+                return null;
+            }
         }
 
         private class Customer16 {
@@ -161,9 +200,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string SecondName => null;
 
-            public string DisablePropertyDefault() => null;
+            public string DisablePropertyDefault()
+            {
+                return null;
+            }
 
-            public string DisableSecondName() => null;
+            public string DisableSecondName()
+            {
+                return null;
+            }
         }
 
         private class Customer17 {
@@ -171,7 +216,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string LastName => null;
 
-            public string[] ChoicesFirstName(string lastName) => null;
+            public string[] ChoicesFirstName(string lastName)
+            {
+                return null;
+            }
         }
 
         private class Customer18 {
@@ -179,23 +227,35 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string LastName => null;
 
-            public string[] ChoicesFirstName() => null;
+            public string[] ChoicesFirstName()
+            {
+                return null;
+            }
 
-            public string[] ChoicesFirstName(string lastName) => null;
+            public string[] ChoicesFirstName(string lastName)
+            {
+                return null;
+            }
         }
 
         private class Customer19 {
             public string FirstName => null;
 
             [Executed(Ajax.Disabled)]
-            public string ValidateFirstName(string firstName) => null;
+            public string ValidateFirstName(string firstName)
+            {
+                return null;
+            }
         }
 
         private class Customer20 {
             public string FirstName => null;
 
             [Executed(Ajax.Enabled)]
-            public string ValidateFirstName(string firstName) => null;
+            public string ValidateFirstName(string firstName)
+            {
+                return null;
+            }
         }
 
         private class Customer2 {
@@ -245,59 +305,101 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             }
 
             // set required otherwise marked as DisabledFacetAlways          
-            public static string NameFirstName() => "Given name";
+            public static string NameFirstName()
+            {
+                return "Given name";
+            }
 
-            public static string DescriptionFirstName() => "Some old description";
+            public static string DescriptionFirstName()
+            {
+                return "Some old description";
+            }
 
-            public static bool AlwaysHideFirstName() => true;
+            public static bool AlwaysHideFirstName()
+            {
+                return true;
+            }
 
-            public static bool ProtectFirstName() => true;
+            public static bool ProtectFirstName()
+            {
+                return true;
+            }
 
-            public static bool HideFirstName(IPrincipal principal) => true;
+            public static bool HideFirstName(IPrincipal principal)
+            {
+                return true;
+            }
 
-            public static string DisableFirstName(IPrincipal principal) => "disabled for this user";
+            public static string DisableFirstName(IPrincipal principal)
+            {
+                return "disabled for this user";
+            }
 
             // set required otherwise marked as DisabledFacetAlways    
-            public static bool AlwaysHideLastName() => false;
+            public static bool AlwaysHideLastName()
+            {
+                return false;
+            }
 
-            public static bool ProtectLastName() => false;
+            public static bool ProtectLastName()
+            {
+                return false;
+            }
         }
 
         private class Customer21 {
             public string FirstName => null;
 
-            public IQueryable<string> AutoCompleteFirstName(string name) => null;
+            public IQueryable<string> AutoCompleteFirstName(string name)
+            {
+                return null;
+            }
         }
 
         private class Customer22 {
             public string FirstName => null;
 
-            public IEnumerable<string> AutoCompleteFirstName(string name) => null;
+            public IEnumerable<string> AutoCompleteFirstName(string name)
+            {
+                return null;
+            }
         }
 
         private class Customer23 {
             public string FirstName => null;
 
-            public IQueryable<string> AutoCompleteFirstName() => null;
+            public IQueryable<string> AutoCompleteFirstName()
+            {
+                return null;
+            }
         }
 
         private class Customer24 {
             public string FirstName => null;
 
-            public IQueryable<string> AutoCompleteFirstName(int name) => null;
+            public IQueryable<string> AutoCompleteFirstName(int name)
+            {
+                return null;
+            }
         }
 
         private class Customer25 {
             public string FirstName => null;
 
-            public IQueryable<string> AutoCompletFirstName(string name) => null;
+            public IQueryable<string> AutoCompletFirstName(string name)
+            {
+                return null;
+            }
         }
 
         private class Customer26 {
             public string FirstName => null;
 
             [PageSize(33)]
-            public IQueryable<string> AutoCompleteFirstName([MinLength(3)] string name) => null;
+            public IQueryable<string> AutoCompleteFirstName([MinLength(3)] string name)
+            {
+                return null;
+            }
         }
 
         public interface NameInterface {
@@ -307,7 +409,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer27 {
             public NameInterface FirstName => null;
 
-            public IQueryable<NameInterface> AutoCompleteFirstName(string name) => null;
+            public IQueryable<NameInterface> AutoCompleteFirstName(string name)
+            {
+                return null;
+            }
         }
 
         [TestMethod]
@@ -315,7 +420,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer2), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IAjaxFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AjaxFacet);
@@ -439,15 +544,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer23), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IAutoCompleteFacet)));
 
             property = FindProperty(typeof(Customer24), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IAutoCompleteFacet)));
 
             property = FindProperty(typeof(Customer25), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IAutoCompleteFacet)));
             Assert.IsNotNull(metamodel);
         }
@@ -458,7 +563,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer10), "FirstName");
             var propertyChoicesMethod = FindMethod(typeof(Customer10), "ChoicesFirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacet);
@@ -475,9 +580,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer18), "FirstName");
-            var propertyChoicesMethod1 = FindMethod(typeof(Customer18), "ChoicesFirstName", new Type[] { });
+            var propertyChoicesMethod1 = FindMethod(typeof(Customer18), "ChoicesFirstName", Array.Empty<Type>());
             var propertyChoicesMethod2 = FindMethod(typeof(Customer18), "ChoicesFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacet);
@@ -496,7 +601,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer10l), "FirstName");
             var propertyChoicesMethod = FindMethod(typeof(Customer10l), "ChoicesFirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacet);
@@ -515,7 +620,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer10r), "FirstName");
             var propertyChoicesMethod = FindMethod(typeof(Customer10r), "ChoicesFirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacet);
@@ -534,7 +639,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer17), "FirstName");
             var propertyChoicesMethod = FindMethod(typeof(Customer17), "ChoicesFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacet);
@@ -605,7 +710,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer16), "FirstName");
-            var hideMethod = FindMethod(typeof(Customer16), "DisablePropertyDefault", new Type[0]);
+            var hideMethod = FindMethod(typeof(Customer16), "DisablePropertyDefault", Array.Empty<Type>());
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisableForContextFacet));
             Assert.IsNotNull(facet);
@@ -621,7 +726,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer16), "SecondName");
-            var hideMethod = FindMethod(typeof(Customer16), "DisableSecondName", new Type[0]);
+            var hideMethod = FindMethod(typeof(Customer16), "DisableSecondName", Array.Empty<Type>());
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisableForContextFacet));
             Assert.IsNotNull(facet);
@@ -637,7 +742,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer15), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisableForContextFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -648,7 +753,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer15), "SecondName");
-            var hideMethod = FindMethod(typeof(Customer15), "DisableSecondName", new Type[0]);
+            var hideMethod = FindMethod(typeof(Customer15), "DisableSecondName", Array.Empty<Type>());
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisableForContextFacet));
             Assert.IsNotNull(facet);
@@ -674,7 +779,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer14), "FirstName");
-            var hideMethod = FindMethod(typeof(Customer14), "HidePropertyDefault", new Type[0]);
+            var hideMethod = FindMethod(typeof(Customer14), "HidePropertyDefault", Array.Empty<Type>());
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForContextFacet));
             Assert.IsNotNull(facet);
@@ -690,7 +795,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer14), "SecondName");
-            var hideMethod = FindMethod(typeof(Customer14), "HideSecondName", new Type[] { });
+            var hideMethod = FindMethod(typeof(Customer14), "HideSecondName", Array.Empty<Type>());
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForContextFacet));
             Assert.IsNotNull(facet);
@@ -705,7 +810,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer13), "SecondName");
-            var hideMethod = FindMethod(typeof(Customer13), "HideSecondName", new Type[] { });
+            var hideMethod = FindMethod(typeof(Customer13), "HideSecondName", Array.Empty<Type>());
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForContextFacet));
             Assert.IsNotNull(facet);
@@ -721,7 +826,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer13), "FirstName");
-            var hideMethod = FindMethod(typeof(Customer13), "HideFirstName", new Type[0]);
+            var hideMethod = FindMethod(typeof(Customer13), "HideFirstName", Array.Empty<Type>());
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForContextFacet));
             Assert.IsNotNull(facet);
@@ -753,7 +858,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer2), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyInitializationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IPropertyInitializationFacet);
@@ -765,7 +870,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(CustomerStatic), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForSessionFacetNone);
@@ -777,7 +882,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(CustomerStatic), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForSessionFacetNone);
@@ -804,7 +909,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
@@ -832,7 +937,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertySetterFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertySetterFacetViaSetterMethod);
@@ -844,7 +949,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer3), "FirstName");
-            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(INotPersistedFacet)));
             Assert.IsNull(Specification.GetFacet(typeof(IDisabledFacet)));
             Assert.IsNotNull(metamodel);
