@@ -9,22 +9,16 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Component;
-using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
-using NakedFramework.ParallelReflector.Reflect;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
-using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Extensions {
     public static class NakedObjectsExtensions {
-       
-
         private static ObjectReflectorConfiguration ObjectReflectorConfig(NakedObjectsOptions options) {
             ObjectReflectorConfiguration.NoValidate = options.NoValidate;
             return new ObjectReflectorConfiguration(options.Types, options.Services, options.ConcurrencyCheck);
@@ -36,11 +30,9 @@ namespace NakedObjects.Reflector.Extensions {
 
             options.RegisterCustomTypes?.Invoke(coreOptions.Services);
 
-
             coreOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
             coreOptions.Services.AddSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
             coreOptions.Services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
-           
 
             coreOptions.Services.AddSingleton<IReflector, ObjectReflector>();
             coreOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));

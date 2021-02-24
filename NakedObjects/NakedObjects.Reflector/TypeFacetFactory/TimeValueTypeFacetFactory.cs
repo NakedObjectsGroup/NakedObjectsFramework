@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.TypeFacetFactory {
     public sealed class TimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public TimeValueTypeFacetFactory(IFacetFactoryOrder<TimeValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!TimeValueSemanticsProvider.IsAdaptedType(type)) {
                 return metamodel;
             }

@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture.Configuration {
+namespace NakedObjects.Reflector.Configuration {
     public interface IObjectReflectorConfiguration {
         /// <summary>
         ///     This is expected to contain any domain types that are not directly accessible by navigating the actions on the

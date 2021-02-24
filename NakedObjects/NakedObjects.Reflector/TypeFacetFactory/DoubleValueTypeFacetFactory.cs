@@ -18,12 +18,12 @@ namespace NakedObjects.Reflector.TypeFacetFactory {
     public sealed class DoubleValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public DoubleValueTypeFacetFactory(IFacetFactoryOrder<DoubleValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!DoubleValueSemanticsProvider.IsAdaptedType(type)) {
                 return metamodel;
             }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(DoubleValueSemanticsProvider.AdaptedType,  metamodel);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(DoubleValueSemanticsProvider.AdaptedType, metamodel);
             AddValueFacets(new DoubleValueSemanticsProvider(oSpec, specification), specification);
             return mm;
         }

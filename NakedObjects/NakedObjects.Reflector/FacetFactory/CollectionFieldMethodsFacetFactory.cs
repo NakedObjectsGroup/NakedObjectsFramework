@@ -24,8 +24,7 @@ using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class CollectionFieldMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory
-    {
+    public sealed class CollectionFieldMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ModifyPrefix
         };
@@ -35,12 +34,18 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
+        public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
+            var collectionTypes = BuildCollectionTypes(candidates, classStrategy);
+            candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToArray();
+            return PropertiesToBeIntrospected(candidates, classStrategy);
+        }
+
         private IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
             candidates.Where(property => property.HasPublicGetter() &&
                                          !classStrategy.IsIgnored(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = property.Name;
             var type = property.DeclaringType;
 
@@ -50,8 +55,8 @@ namespace NakedObjects.Reflector.FacetFactory {
 
             MethodHelpers.AddHideForSessionFacetNone(facets, collection);
             MethodHelpers.AddDisableFacetAlways(facets, collection);
-            MethodHelpers.FindDefaultHideMethod(reflector,  facets, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
-            MethodHelpers.FindAndRemoveHideMethod(reflector,  facets, type, MethodType.Object, capitalizedName, collection, LoggerFactory, methodRemover);
+            MethodHelpers.FindDefaultHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
+            MethodHelpers.FindAndRemoveHideMethod(reflector, facets, type, MethodType.Object, capitalizedName, collection, LoggerFactory, methodRemover);
             FacetUtils.AddFacets(facets);
             return metamodel;
         }
@@ -68,12 +73,6 @@ namespace NakedObjects.Reflector.FacetFactory {
                                                 !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
                                                 !classStrategy.IsIgnored(property) &&
                                                 !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToArray();
-        }
-
-        public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            var collectionTypes = BuildCollectionTypes(candidates, classStrategy);
-            candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToArray();
-            return PropertiesToBeIntrospected(candidates, classStrategy);
         }
     }
 }

@@ -7,7 +7,6 @@
 
 using System;
 using System.Linq;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core;
 
 namespace NakedObjects.Reflector.Configuration {
@@ -16,7 +15,6 @@ namespace NakedObjects.Reflector.Configuration {
         public ObjectReflectorConfiguration(Type[] typesToIntrospect,
                                             Type[] services,
                                             bool concurrencyChecking = true) {
-            
             TypesToIntrospect = typesToIntrospect;
             Services = services;
             IgnoreCase = false;

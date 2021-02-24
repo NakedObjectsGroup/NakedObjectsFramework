@@ -35,13 +35,13 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<TitleMethodFacetFactory>();
 
-        public  string[] Prefixes => FixedPrefixes;
+        public string[] Prefixes => FixedPrefixes;
 
         /// <summary>
         ///     If no title or ToString can be used then will use Facets provided by
         ///     <see cref="FallbackFacetFactory" /> instead.
         /// </summary>
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             IList<MethodInfo> attributedMethods = new List<MethodInfo>();
             foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
                 if (propertyInfo.GetCustomAttribute<TitleAttribute>() is not null) {
@@ -79,9 +79,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 var maskMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] {typeof(string)});
 
-                
                 methodRemover.SafeRemoveMethod(maskMethod);
-                
 
                 // todo does this make sense ? 
                 if (titleFacet is null && toStringMethod is not null) {

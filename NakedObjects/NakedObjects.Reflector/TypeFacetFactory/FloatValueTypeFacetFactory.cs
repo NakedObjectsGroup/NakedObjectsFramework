@@ -18,12 +18,12 @@ namespace NakedObjects.Reflector.TypeFacetFactory {
     public sealed class FloatValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public FloatValueTypeFacetFactory(IFacetFactoryOrder<FloatValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!FloatValueSemanticsProvider.IsAdaptedType(type)) {
                 return metamodel;
             }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(FloatValueSemanticsProvider.AdaptedType,  metamodel);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(FloatValueSemanticsProvider.AdaptedType, metamodel);
             AddValueFacets(new FloatValueSemanticsProvider(oSpec, specification), specification);
             return mm;
         }

@@ -11,10 +11,10 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflector.Component;
+using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Component {
@@ -55,7 +55,6 @@ namespace NakedObjects.Reflector.Component {
             return specDictionary;
         }
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

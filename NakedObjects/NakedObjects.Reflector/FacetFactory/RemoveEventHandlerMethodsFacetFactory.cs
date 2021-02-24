@@ -25,14 +25,14 @@ namespace NakedObjects.Reflector.FacetFactory {
         public RemoveEventHandlerMethodsFacetFactory(IFacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FindAndRemoveEventHandlerMethods(type, methodRemover);
             return metamodel;
         }
 
         private static void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
             if (mi is not null) {
-                MethodHelpers.SafeRemoveMethod(methodRemover, mi);
+                methodRemover.SafeRemoveMethod(mi);
             }
         }
 

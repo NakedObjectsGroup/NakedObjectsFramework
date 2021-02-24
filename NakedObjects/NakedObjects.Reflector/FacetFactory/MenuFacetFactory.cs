@@ -30,12 +30,12 @@ namespace NakedObjects.Reflector.FacetFactory {
         public MenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public  string[] Prefixes => FixedPrefixes;
+        public string[] Prefixes => FixedPrefixes;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null);
             methodRemover.SafeRemoveMethod(method);
-            var facet = method is not null ? (IFacet)new MenuFacetViaMethod(method, specification) : new MenuFacetDefault(specification);
+            var facet = method is not null ? (IFacet) new MenuFacetViaMethod(method, specification) : new MenuFacetDefault(specification);
             FacetUtils.AddFacet(facet);
             return metamodel;
         }

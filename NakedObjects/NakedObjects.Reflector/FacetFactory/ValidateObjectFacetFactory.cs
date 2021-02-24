@@ -35,7 +35,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<ValidateObjectFacetFactory>();
 
-        public  string[] Prefixes => FixedPrefixes;
+        public string[] Prefixes => FixedPrefixes;
 
         private static bool ContainsField(string name, Type type, IClassStrategy classStrategy) =>
             type.GetProperties().Any(p => p.Name.Equals(name, StringComparison.Ordinal) &&
@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                                           !CollectionUtils.IsCollection(p.PropertyType) &&
                                           !CollectionUtils.IsQueryable(p.PropertyType));
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
             var methods = MethodHelpers.FindMethods(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix, typeof(string));
 
