@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedFunctions.Meta.Test.Facet {
+namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class ActionDefaultsFacetViaFunctionTest {
         private const string TestValue = "defaultvalue";

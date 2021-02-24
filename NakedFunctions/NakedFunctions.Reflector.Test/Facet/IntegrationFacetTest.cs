@@ -10,11 +10,10 @@ using Moq;
 using NakedFunctions.Meta.Facet;
 using NakedObjects;
 
-namespace NakedFunctions.Meta.Test.Facet {
+namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class IntegrationFacetTest {
-        private readonly Mock<INakedObjectsFramework> mockFramework = new Mock<INakedObjectsFramework>();
-
+        private readonly Mock<INakedObjectsFramework> mockFramework = new();
 
         [TestMethod]
         public void TestIntegrate() {

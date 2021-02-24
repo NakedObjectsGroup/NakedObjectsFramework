@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedFunctions.Meta.Test.Facet {
+namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class ActionChoicesFacetViaFunctionTest {
         private static readonly string[] TestValue = {"one", "two"};

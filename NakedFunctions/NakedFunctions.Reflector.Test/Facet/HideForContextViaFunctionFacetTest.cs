@@ -10,7 +10,7 @@ using Moq;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedFunctions.Meta.Test.Facet {
+namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class HideForContextViaFunctionFacetTest {
         private static readonly string TestValue = NakedObjects.Resources.NakedObjects.Hidden;

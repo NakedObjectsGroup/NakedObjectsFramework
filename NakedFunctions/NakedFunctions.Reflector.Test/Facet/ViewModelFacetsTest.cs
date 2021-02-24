@@ -12,16 +12,16 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedFunctions.Meta.Test.Facet {
+namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class ViewModelFacetsTest {
-     
+        private static readonly TestClass testClass = new("1", "2");
 
         [TestMethod]
         public void TestViewModelFacetViaFunctionsConvention() {
             var deriveMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Derive));
             var populateMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Populate));
-           
+
             var testFacet = new ViewModelFacetViaFunctionsConvention(null, deriveMethod, populateMethod);
 
             var keys = testFacet.Derive(null, null);
@@ -33,9 +33,6 @@ namespace NakedFunctions.Meta.Test.Facet {
 
             Assert.AreEqual(testClass, testAdapter.Object);
         }
-
-        
-
 
         private class TestAdapter : INakedObjectAdapter {
             public object Object { get; private set; }
@@ -67,18 +64,11 @@ namespace NakedFunctions.Meta.Test.Facet {
             public object UpdatedAndReturn() => throw new NotImplementedException();
         }
 
-
-        private static TestClass testClass = new TestClass("1", "2");
-
-
         private record TestClass {
+            public TestClass(params string[] keys) => Keys = keys;
+
             public string[] Keys { get; }
-
-            public TestClass(params string[] keys) {
-                Keys = keys;
-            }
         }
-
 
         public static class TestViewModelClass {
             public static object Derive() => testClass.Keys;

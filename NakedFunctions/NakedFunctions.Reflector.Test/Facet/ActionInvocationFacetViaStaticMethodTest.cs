@@ -13,15 +13,15 @@ using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
-namespace NakedFunctions.Meta.Test.Facet {
+namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class ActionInvocationFacetViaStaticMethodTest {
-        private static readonly object TestValue = new object();
-        private readonly Mock<INakedObjectsFramework> mockFramework = new Mock<INakedObjectsFramework>();
+        private static readonly object TestValue = new();
+        private readonly Mock<INakedObjectsFramework> mockFramework = new();
 
-        private readonly Mock<INakedObjectManager> mockNakedObjectManager = new Mock<INakedObjectManager>();
+        private readonly Mock<INakedObjectManager> mockNakedObjectManager = new();
 
-        private readonly Mock<IObjectPersistor> mockPersistor = new Mock<IObjectPersistor>();
+        private readonly Mock<IObjectPersistor> mockPersistor = new();
 
         public ActionInvocationFacetViaStaticMethodTest() {
             mockFramework.SetupGet(p => p.NakedObjectManager).Returns(mockNakedObjectManager.Object);

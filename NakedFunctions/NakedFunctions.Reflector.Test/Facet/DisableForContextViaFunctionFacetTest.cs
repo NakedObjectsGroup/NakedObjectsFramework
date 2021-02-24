@@ -8,7 +8,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Meta.Facet;
 
-namespace NakedFunctions.Meta.Test.Facet {
+namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class DisableForContextViaFunctionFacetTest {
         private static readonly string TestValue = "disabled";

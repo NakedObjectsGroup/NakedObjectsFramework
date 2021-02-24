@@ -8,14 +8,13 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Meta.Facet;
 
-namespace NakedFunctions.Meta.Test.Facet {
+namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class CallBackFacetsTest {
         private static readonly object TestValuePersisting = "Persisting";
         private static readonly object TestValuePersisted = "Persisted";
         private static readonly object TestValueUpdating = "Updating";
         private static readonly object TestValueUpdated = "Updated";
-
 
         [TestMethod]
         public void TestCallBackPersisting() {

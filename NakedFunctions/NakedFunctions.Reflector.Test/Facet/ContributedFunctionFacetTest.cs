@@ -10,15 +10,14 @@ using Moq;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedFunctions.Meta.Test.Facet {
+namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class ContributedFunctionFacetTest {
-        private readonly Mock<ITypeSpecImmutable> mockSpec = new Mock<ITypeSpecImmutable>();
+        private readonly Mock<ITypeSpecImmutable> mockSpec = new();
 
         public ContributedFunctionFacetTest() {
             mockSpec.Setup(s => s.IsOfType(mockSpec.Object)).Returns(true);
         }
-
 
         [TestMethod]
         public void TestContributee() {

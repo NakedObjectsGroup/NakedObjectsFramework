@@ -1124,28 +1124,23 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         [ExpectedException(typeof(ReflectionException), "string")]
-        public void ReflectDuplicateFunctionsDifferentType()
-        {
-            static void Setup(NakedCoreOptions coreOptions)
-            {
+        public void ReflectDuplicateFunctionsDifferentType() {
+            static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.AddNakedObjects(EmptyObjectSetup);
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] { typeof(SimpleClass) };
-                        options.Functions = new[] { typeof(DuplicateFunctions1), typeof(DuplicateFunctions2) };
+                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
+                        options.Functions = new[] {typeof(DuplicateFunctions1), typeof(DuplicateFunctions2)};
                     }
                 );
             }
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
-                try
-                {
+            using (host) {
+                try {
                     container.GetService<IModelBuilder>()?.Build();
                 }
-                catch (ReflectionException e)
-                {
+                catch (ReflectionException e) {
                     Assert.AreEqual("Name clash between user actions defined on NakedFunctions.Reflector.Test.Component.DuplicateFunctions1.Function and NakedFunctions.Reflector.Test.Component.DuplicateFunctions2.Function", e.Message);
                     throw;
                 }

@@ -14,7 +14,7 @@ using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 
-namespace NakedFunctions.Meta.Test.Facet {
+namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class InjectedIContextParameterFacetTest {
         private readonly Mock<INakedObjectsFramework> mockFramework = new();
@@ -28,8 +28,7 @@ namespace NakedFunctions.Meta.Test.Facet {
         }
 
         [TestMethod]
-        public void TestInjected()
-        {
+        public void TestInjected() {
             var testFacet = new InjectedIContextParameterFacet(null);
 
             var result = testFacet.GetInjectedValue(mockFramework.Object, null);
