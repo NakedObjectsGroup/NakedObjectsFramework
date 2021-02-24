@@ -28,7 +28,7 @@ namespace AW.Functions {
         {
             var employees = context.Instances<Employee>();
             var persons = context.Instances<Person>().
-                    Where(p => firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper()) &&
+                    Where(p => (firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper())) &&
                         p.LastName.ToUpper().StartsWith(lastName.ToUpper()));
 
             return from emp in employees

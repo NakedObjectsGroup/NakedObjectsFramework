@@ -10,13 +10,13 @@
     "clearCacheOnChange": true,
     "colors": {
         "typeMap": {
-            "AdventureWorksModel.Customer": 1,
-            "AdventureWorksModel.Product": 4,
-            "AdventureWorksModel.Employee": 5,
-            "AdventureWorksModel.SalesPerson": 6,
-            "AdventureWorksModel.SpecialOffer": 7,
-            "AdventureWorksModel.Vendor": 9,
-            "AdventureWorksModel.WorkOrder": 12
+            "AW.Types.Customer": 1,
+            "AW.Types.Product": 4,
+            "AW.Types.Employee": 5,
+            "AW.Types.SalesPerson": 6,
+            "AW.Types.SpecialOffer": 7,
+            "AW.Types.Vendor": 9,
+            "AW.Types.WorkOrder": 12
         },
         "regexArray": [
             {
@@ -29,7 +29,7 @@
             }
         ],
         "subtypeMap": {
-            "AdventureWorksModel.BusinessEntity": 8
+            "AW.Types.BusinessEntity": 8
         },
         "default": 0
     },
