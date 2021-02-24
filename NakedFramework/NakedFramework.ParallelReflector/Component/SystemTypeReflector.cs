@@ -10,14 +10,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using NakedFramework.ParallelReflector.Reflect;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflector.Component;
-using NakedObjects.Reflector.Reflect;
 
-namespace NakedObjects.Reflector.Component {
+namespace NakedFramework.ParallelReflector.Component {
     public sealed class SystemTypeReflector : AbstractParallelReflector {
         public SystemTypeReflector(SystemTypeFacetFactorySet systemTypeFacetFactorySet,
                                    SystemTypeClassStrategy systemTypeClassStrategy,

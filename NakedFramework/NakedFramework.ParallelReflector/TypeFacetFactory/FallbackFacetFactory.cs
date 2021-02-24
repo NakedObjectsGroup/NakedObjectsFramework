@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -19,21 +20,28 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedFramework.ParallelReflector.TypeFacetFactory {
     /// <summary>
     ///     Central point for providing some kind of default for any  <see cref="IFacet" />s required by the Naked Objects
     ///     Framework itself.
     /// </summary>
-    public sealed class FallbackFacetFactory : ObjectFacetFactoryProcessor {
+    public sealed class FallbackFacetFactory : SystemTypeFacetFactoryProcessor
+    {
         public FallbackFacetFactory(IFacetFactoryOrder<FallbackFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Everything) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var namedFacet = new NamedFacetInferred(type.Name, specification);
+            var pluralName = NameUtils.PluralName(namedFacet.NaturalName);
+            var pluralFacet = new PluralFacetInferred(pluralName, specification);
+
             FacetUtils.AddFacets(
                 new IFacet[] {
                     new DescribedAsFacetNone(specification),
                     new ImmutableFacetNever(specification),
-                    new TitleFacetNone(specification)
+                    new TitleFacetNone(specification),
+                    namedFacet,
+                    pluralFacet
                 });
             return metamodel;
         }

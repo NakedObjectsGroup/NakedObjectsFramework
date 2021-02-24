@@ -8,21 +8,15 @@
 
 using System;
 using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.TypeFacetFactory;
+
 
 namespace NakedObjects.Reflector.Reflect {
     public static class ObjectFacetFactories {
         public static Type[] StandardFacetFactories() =>
             new[] {
-                typeof(FallbackFacetFactory),
-                typeof(IteratorFilteringFacetFactory),
-                typeof(SystemClassMethodFilteringFactory),
-                typeof(SystemClassPropertyFilteringFactory),
-                typeof(RemoveSuperclassMethodsFacetFactory),
                 typeof(RemoveDynamicProxyMethodsFacetFactory),
                 typeof(RemoveEventHandlerMethodsFacetFactory),
                 typeof(RemoveIgnoredMethodsFacetFactory),
-                typeof(TypeMarkerFacetFactory),
                 // must be before any other FacetFactories that install MandatoryFacet.class facets
                 typeof(MandatoryDefaultFacetFactory),
                 typeof(PropertyValidateDefaultFacetFactory),
@@ -80,28 +74,6 @@ namespace NakedObjects.Reflector.Reflect {
                 typeof(TypicalLengthAnnotationFacetFactory),
                 typeof(EagerlyAnnotationFacetFactory),
                 typeof(PresentationHintAnnotationFacetFactory),
-                typeof(BooleanValueTypeFacetFactory),
-                typeof(ByteValueTypeFacetFactory),
-                typeof(SbyteValueTypeFacetFactory),
-                typeof(ShortValueTypeFacetFactory),
-                typeof(IntValueTypeFacetFactory),
-                typeof(LongValueTypeFacetFactory),
-                typeof(UShortValueTypeFacetFactory),
-                typeof(UIntValueTypeFacetFactory),
-                typeof(ULongValueTypeFacetFactory),
-                typeof(FloatValueTypeFacetFactory),
-                typeof(DoubleValueTypeFacetFactory),
-                typeof(DecimalValueTypeFacetFactory),
-                typeof(CharValueTypeFacetFactory),
-                typeof(DateTimeValueTypeFacetFactory),
-                typeof(TimeValueTypeFacetFactory),
-                typeof(StringValueTypeFacetFactory),
-                typeof(GuidValueTypeFacetFactory),
-                typeof(EnumValueTypeFacetFactory),
-                typeof(FileAttachmentValueTypeFacetFactory),
-                typeof(ImageValueTypeFacetFactory),
-                typeof(ArrayValueTypeFacetFactory<byte>),
-                typeof(CollectionFacetFactory),
                 typeof(MenuFacetFactory)
             };
     }

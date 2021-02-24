@@ -18,14 +18,15 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedFramework.ParallelReflector.TypeFacetFactory {
     /// <summary>
     ///     Removes all methods inherited from <see cref="object" />
     /// </summary>
     /// <para>
     ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
     /// </para>
-    public sealed class RemoveSuperclassMethodsFacetFactory : ObjectFacetFactoryProcessor {
+    public sealed class RemoveSuperclassMethodsFacetFactory : SystemTypeFacetFactoryProcessor
+    {
         public RemoveSuperclassMethodsFacetFactory(IFacetFactoryOrder<RemoveSuperclassMethodsFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Objects) { }
 

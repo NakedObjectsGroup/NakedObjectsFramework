@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.ParallelReflector.Component;
 
-namespace NakedObjects.Reflector.Component {
+namespace NakedFramework.ParallelReflector.Component {
     /// <summary>
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>

@@ -7,30 +7,25 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
+using NakedObjects.Meta.SemanticsProvider;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class ImmutableAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public ImmutableAnnotationFacetFactory(IFacetFactoryOrder<ImmutableAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+namespace NakedFramework.ParallelReflector.TypeFacetFactory {
+    public sealed class BooleanValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+        public BooleanValueTypeFacetFactory(IFacetFactoryOrder<BooleanValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<ImmutableAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
-            return metamodel;
-        }
+            if (!BooleanValueSemanticsProvider.IsAdaptedType(type)) {
+                return metamodel;
+            }
 
-        private static IImmutableFacet Create(ImmutableAttribute attribute, ISpecification holder) => attribute == null 
-            ? null 
-            : new ImmutableFacetAnnotation(attribute.Value, holder);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(BooleanValueSemanticsProvider.AdaptedType,  metamodel);
+            AddValueFacets(new BooleanValueSemanticsProvider(oSpec, specification), specification);
+            return mm;
+        }
     }
 }

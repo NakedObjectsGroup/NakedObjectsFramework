@@ -14,6 +14,8 @@ namespace NakedObjects.Meta.Facet {
     public sealed class ExecutedFacetDefault : ExecutedFacetAbstract {
         public ExecutedFacetDefault(ISpecification holder)
             : base(Where.Default, holder) { }
+
+        public override bool IsNoOp => true;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

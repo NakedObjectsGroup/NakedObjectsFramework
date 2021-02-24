@@ -67,7 +67,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         public string FullName { get; private set; }
         public string ShortName { get; private set; }
 
-        public IMenuImmutable ObjectMenu => GetFacet<IMenuFacet>().GetMenu();
+        public IMenuImmutable ObjectMenu => GetFacet<IMenuFacet>()?.GetMenu();
 
         public IList<IActionSpecImmutable> ObjectActions { get; private set; }
         public IList<IActionSpecImmutable> ContributedActions { get; private set; }

@@ -24,6 +24,7 @@
     <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedFramework.Metamodel\NakedFramework.Metamodel.csproj" />
     <ProjectReference Include="..\NakedFramework.ModelBuilding\NakedFramework.ModelBuilding.csproj" />
+    <ProjectReference Include="..\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
   </ItemGroup>
 
  

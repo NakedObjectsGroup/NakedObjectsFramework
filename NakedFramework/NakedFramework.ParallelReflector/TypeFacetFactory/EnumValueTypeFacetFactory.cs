@@ -10,27 +10,26 @@ using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
+using NakedObjects.Meta.SemanticsProvider;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class ImmutableAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public ImmutableAnnotationFacetFactory(IFacetFactoryOrder<ImmutableAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+namespace NakedFramework.ParallelReflector.TypeFacetFactory {
+    public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+        public EnumValueTypeFacetFactory(IFacetFactoryOrder<EnumValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<ImmutableAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
-            return metamodel;
-        }
+            if (!typeof(Enum).IsAssignableFrom(type)) {
+                return metamodel;
+            }
 
-        private static IImmutableFacet Create(ImmutableAttribute attribute, ISpecification holder) => attribute == null 
-            ? null 
-            : new ImmutableFacetAnnotation(attribute.Value, holder);
+            var semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type,  metamodel);
+            var semanticsProvider = Activator.CreateInstance(semanticsProviderType, oSpec, specification);
+            var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
+            method.Invoke(null, new[] {semanticsProvider, specification});
+            return mm;
+        }
     }
 }

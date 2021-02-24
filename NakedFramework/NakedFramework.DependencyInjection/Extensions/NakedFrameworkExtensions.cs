@@ -10,6 +10,9 @@ using System.Linq;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.ParallelReflector.Component;
+using NakedFramework.ParallelReflector.FacetFactory;
+using NakedFramework.ParallelReflector.Reflect;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
@@ -60,6 +63,10 @@ namespace NakedObjects.DependencyInjection.Extensions {
 
             services.AddSingleton<ICoreConfiguration>(p => CoreConfig(options));
 
+            services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(TypeFacetFactories.FacetFactories());
+            services.AddSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
+            services.AddSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
+            services.AddSingleton<IReflector, SystemTypeReflector>();
 
             // frameworkFacade
             services.AddTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();

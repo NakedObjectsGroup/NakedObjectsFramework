@@ -6,13 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
+using NakedFramework.ParallelReflector.FacetFactory;
+using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.DependencyInjection.FacetFactory {
+
+    
     public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {
+        private static string Group(Type type) =>
+            type.FullName?.Contains("FallbackFacetFactory") == true
+                ? "AGroup"
+                : !type.IsAssignableTo(typeof(SystemTypeFacetFactoryProcessor))
+                    ? "BGroup"
+                    : "CGroup";
+
         private readonly Type[] facetFactories;
 
-        public FacetFactoryOrder(FacetFactoryTypesProvider facetFactories) => this.facetFactories = facetFactories.FacetFactoryTypes;
+        public FacetFactoryOrder(FacetFactoryTypesProvider facetFactories) =>
+            this.facetFactories = facetFactories.FacetFactoryTypes.GroupBy(Group).OrderBy(kvp => kvp.Key).SelectMany(kvp => kvp).ToArray();
 
         public int Order => Array.IndexOf(facetFactories, typeof(T));
     }

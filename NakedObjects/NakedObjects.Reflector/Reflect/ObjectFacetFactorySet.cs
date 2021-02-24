@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using NakedFramework.ParallelReflector.FacetFactory;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;

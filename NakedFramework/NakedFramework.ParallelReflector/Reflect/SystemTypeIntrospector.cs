@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflector.Reflect;
 
-namespace NakedObjects.Reflector.Reflect {
+namespace NakedFramework.ParallelReflector.Reflect {
     public class SystemTypeIntrospector : Introspector {
         public SystemTypeIntrospector(IReflector reflector, ILogger<SystemTypeIntrospector> logger) : base(reflector, logger) { }
 

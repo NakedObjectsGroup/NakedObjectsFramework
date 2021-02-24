@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -19,14 +20,14 @@ using NakedObjects.Core.Util;
 using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedFramework.ParallelReflector.TypeFacetFactory {
     /// <summary>
     ///     Designed to simply filter out <see cref="IEnumerable.GetEnumerator" /> method if it exists.
     /// </summary>
     /// <para>
     ///     Does not add any <see cref="IFacet" />s
     /// </para>
-    public sealed class IteratorFilteringFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+    public sealed class IteratorFilteringFacetFactory : SystemTypeFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
         private static readonly string[] FixedPrefixes;
 
         static IteratorFilteringFacetFactory() => FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.GetEnumeratorMethod};

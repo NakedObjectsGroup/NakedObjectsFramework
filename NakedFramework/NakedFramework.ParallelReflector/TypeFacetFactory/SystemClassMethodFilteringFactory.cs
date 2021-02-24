@@ -12,12 +12,12 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedFramework.ParallelReflector.TypeFacetFactory {
     /// <summary>
     ///     This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a
     ///     string.
     /// </summary>
-    public sealed class SystemClassMethodFilteringFactory : ObjectFacetFactoryProcessor, IMethodFilteringFacetFactory {
+    public sealed class SystemClassMethodFilteringFactory : SystemTypeFacetFactoryProcessor, IMethodFilteringFacetFactory {
         public SystemClassMethodFilteringFactory(IFacetFactoryOrder<SystemClassMethodFilteringFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Actions) { }
 

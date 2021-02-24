@@ -16,6 +16,8 @@ namespace NakedObjects.Meta.Facet {
         public ImmutableFacetNever(ISpecification holder)
             : base(WhenTo.Never, holder) { }
 
+        public override bool IsNoOp => true;
+
         /// <summary>
         ///     Always returns <c>null</c>
         /// </summary>

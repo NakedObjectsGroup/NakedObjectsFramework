@@ -11,6 +11,8 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NakedFramework.ParallelReflector.FacetFactory;
+using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
@@ -18,7 +20,6 @@ using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
-using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Reflect;
 
 // ReSharper disable UnusedMember.Global

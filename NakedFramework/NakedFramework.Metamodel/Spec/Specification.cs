@@ -55,6 +55,11 @@ namespace NakedObjects.Meta.Spec {
 
         private void AddFacet(Type facetType, IFacet facet) {
             var existingFacet = GetFacet(facetType);
+
+            if (facet.IsNoOp && !existingFacet?.IsNoOp == true) { 
+                return;
+            }
+
             if (existingFacet == null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
                 facetsByClass = facetsByClass.SetItem(facetType, facet);
             }

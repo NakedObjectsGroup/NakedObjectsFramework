@@ -19,8 +19,9 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class CollectionFacetFactory : ObjectFacetFactoryProcessor {
+namespace NakedFramework.ParallelReflector.TypeFacetFactory {
+    public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor
+    {
         public CollectionFacetFactory(IFacetFactoryOrder<CollectionFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 

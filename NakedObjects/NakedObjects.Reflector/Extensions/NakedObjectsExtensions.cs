@@ -9,6 +9,9 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Component;
+using NakedFramework.ParallelReflector.Component;
+using NakedFramework.ParallelReflector.FacetFactory;
+using NakedFramework.ParallelReflector.Reflect;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;
@@ -37,10 +40,8 @@ namespace NakedObjects.Reflector.Extensions {
             coreOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
             coreOptions.Services.AddSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
             coreOptions.Services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
-            coreOptions.Services.AddSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
-            coreOptions.Services.AddSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
+           
 
-            coreOptions.Services.AddSingleton<IReflector, SystemTypeReflector>();
             coreOptions.Services.AddSingleton<IReflector, ObjectReflector>();
             coreOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
             coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.Services));

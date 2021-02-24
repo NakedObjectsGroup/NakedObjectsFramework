@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework;
 using NakedFramework.Xat.TestCase;
 using NakedFunctions.Rest.Test.Data;
+using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
@@ -72,6 +73,8 @@ namespace NakedFunctions.Rest.Test {
             services.AddMvc(options => options.EnableEndpointRouting = false)
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
         }
+
+        protected override Action<NakedCoreOptions> AddNakedObjects => _ => { };
 
         [SetUp]
         public void SetUp() => StartTest();

@@ -10,15 +10,15 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using NakedFramework.ParallelReflector.FacetFactory;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflector.FacetFactory;
-using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Reflect {
+namespace NakedFramework.ParallelReflector.Reflect {
     public sealed class SystemTypeFacetFactorySet : IFacetFactorySet {
         private readonly IList<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
         private readonly IDictionary<FeatureType, IList<IObjectFacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<IObjectFacetFactoryProcessor>>();

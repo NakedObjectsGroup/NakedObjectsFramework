@@ -13,7 +13,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Reflector.FacetFactory
+namespace NakedFramework.ParallelReflector.FacetFactory
 {
     public interface IObjectFacetFactoryProcessor : IFacetFactory
     {
