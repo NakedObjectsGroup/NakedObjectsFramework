@@ -15,13 +15,15 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     public class TestObjectFactory : ITestObjectFactory {
         private readonly INakedObjectsFramework framework;
-      
-        public TestObjectFactory(INakedObjectsFramework framework) {
-            this.framework = framework;
-        }
+
+        public TestObjectFactory(INakedObjectsFramework framework) => this.framework = framework;
+
+        public ITestService CreateTestService(INakedObjectAdapter service) => new TestService(service, this);
+
+        private static ITestValue CreateTestValue(INakedObjectAdapter nakedObjectAdapter) => new TestValue(nakedObjectAdapter);
 
         #region ITestObjectFactory Members
 
@@ -77,7 +79,7 @@ namespace NakedFramework.Xat.Xat {
                 throw new Exception("Action is not on a known service");
             }
 
-            var serviceSpec = (IServiceSpec)framework.MetamodelManager.GetSpecification(objectIm);
+            var serviceSpec = (IServiceSpec) framework.MetamodelManager.GetSpecification(objectIm);
             var service = framework.ServicesManager.GetService(serviceSpec);
             var testService = CreateTestService(service);
             return CreateTestAction(actionSpecImm, testService);
@@ -90,10 +92,6 @@ namespace NakedFramework.Xat.Xat {
         public ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject) => new TestParameter(parameterSpec, owningObject, this);
 
         #endregion
-
-        public ITestService CreateTestService(INakedObjectAdapter service) => new TestService(service, this);
-
-        private static ITestValue CreateTestValue(INakedObjectAdapter nakedObjectAdapter) => new TestValue(nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

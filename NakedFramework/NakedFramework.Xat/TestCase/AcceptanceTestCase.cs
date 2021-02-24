@@ -21,7 +21,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Xat.Interface;
-using NakedFramework.Xat.Xat;
+using NakedFramework.Xat.TestObjects;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
@@ -39,6 +39,7 @@ using NakedObjects.Rest.Extensions;
 
 namespace NakedFramework.Xat.TestCase {
     public abstract class AcceptanceTestCase {
+        private static IHost host;
         private FixtureServices fixtureServices;
 
         protected IServiceProvider RootServiceProvider;
@@ -86,13 +87,11 @@ namespace NakedFramework.Xat.TestCase {
             get { return new Type[] { }; }
         }
 
-        protected virtual Type[] Records
-        {
+        protected virtual Type[] Records {
             get { return new Type[] { }; }
         }
 
-        protected virtual Type[] Functions
-        {
+        protected virtual Type[] Functions {
             get { return new Type[] { }; }
         }
 
@@ -127,7 +126,7 @@ namespace NakedFramework.Xat.TestCase {
                 options.Functions = Functions;
             };
 
-        protected virtual Action<RestfulObjectsOptions> RestfulObjectsOptions => options => {};
+        protected virtual Action<RestfulObjectsOptions> RestfulObjectsOptions => options => { };
 
         protected virtual Action<NakedCoreOptions> NakedCoreOptions =>
             builder => {
@@ -148,7 +147,7 @@ namespace NakedFramework.Xat.TestCase {
 
         protected virtual Action<NakedCoreOptions> AddNakedFunctions => builder => builder.AddNakedFunctions(NakedFunctionsOptions);
 
-        protected virtual Action<NakedCoreOptions> AddRestfulObjects => builder => builder.AddRestfulObjects(RestfulObjectsOptions); 
+        protected virtual Action<NakedCoreOptions> AddRestfulObjects => builder => builder.AddRestfulObjects(RestfulObjectsOptions);
 
         private IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
@@ -158,9 +157,7 @@ namespace NakedFramework.Xat.TestCase {
                     };
                     configBuilder.Add(config);
                 })
-                .ConfigureServices((hostContext, services) => {
-                    RegisterTypes(services);
-                });
+                .ConfigureServices((hostContext, services) => { RegisterTypes(services); });
 
         /// <summary>
         ///     Gets the configured service provider
@@ -172,7 +169,7 @@ namespace NakedFramework.Xat.TestCase {
         protected virtual void StartTest() {
             ServiceScope = RootServiceProvider.CreateScope();
             scopeServiceProvider = ServiceScope.ServiceProvider;
-            NakedObjectsFramework = scopeServiceProvider.GetService<INakedObjectsFramework>(); 
+            NakedObjectsFramework = scopeServiceProvider.GetService<INakedObjectsFramework>();
             LoggerFactory = scopeServiceProvider.GetService<ILoggerFactory>();
         }
 
@@ -358,8 +355,6 @@ namespace NakedFramework.Xat.TestCase {
             SetUser(username, new string[] { });
         }
 
-        private static IHost host;
-
         protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
             host = tc.CreateHostBuilder(new string[] { }).Build();
             tc.RootServiceProvider = host.Services;
@@ -380,7 +375,6 @@ namespace NakedFramework.Xat.TestCase {
         }
 
         protected virtual void RegisterTypes(IServiceCollection services) {
-
             services.AddNakedFramework(NakedCoreOptions);
 
             //Externals

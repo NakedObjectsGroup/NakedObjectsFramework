@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     internal class TestParameterObject : ITestValue {
         private readonly object domainObject;
         private readonly INakedObjectManager manager;

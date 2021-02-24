@@ -52,18 +52,18 @@ namespace NakedFramework.Xat.TestCase {
             /// <summary>
             ///     Create a return new FixtureClock
             /// </summary>
-            public static FixtureClock Initialize() => new FixtureClock();
+            public static FixtureClock Initialize() => new();
 
             /// <summary>
             ///     Set time - leaving date unchanged
             /// </summary>
             public void SetTime(int hour, int min) {
                 time = new DateTime(time.Year,
-                    time.Month,
-                    time.Day,
-                    hour,
-                    min,
-                    0);
+                                    time.Month,
+                                    time.Day,
+                                    hour,
+                                    min,
+                                    0);
             }
 
             /// <summary>

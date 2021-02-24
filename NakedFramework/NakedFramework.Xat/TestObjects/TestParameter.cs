@@ -12,7 +12,7 @@ using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     internal class TestParameter : ITestParameter {
         private readonly ITestObjectFactory factory;
         private readonly ITestHasActions owningObject;

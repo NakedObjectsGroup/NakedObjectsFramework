@@ -17,7 +17,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     internal class TestObject : TestHasActions, ITestObject {
         private readonly ILifecycleManager lifecycleManager;
         private readonly IObjectPersistor persistor;
@@ -30,6 +30,15 @@ namespace NakedFramework.Xat.Xat {
             this.transactionManager = transactionManager;
             NakedObject = nakedObjectAdapter;
         }
+
+        public override bool Equals(object obj) {
+            var testObject = obj as TestObject;
+            return testObject != null && testObject.NakedObject == NakedObject;
+        }
+
+        public override string ToString() => NakedObject == null ? "" : NakedObject.ToString();
+
+        public override int GetHashCode() => NakedObject.GetHashCode();
 
         #region ITestObject Members
 
@@ -159,15 +168,6 @@ namespace NakedFramework.Xat.Xat {
         }
 
         #endregion
-
-        public override bool Equals(object obj) {
-            var testObject = obj as TestObject;
-            return testObject != null && testObject.NakedObject == NakedObject;
-        }
-
-        public override string ToString() => NakedObject == null ? "" : NakedObject.ToString();
-
-        public override int GetHashCode() => NakedObject.GetHashCode();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

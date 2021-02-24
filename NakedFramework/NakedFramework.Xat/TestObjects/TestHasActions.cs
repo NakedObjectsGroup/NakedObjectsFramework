@@ -15,11 +15,69 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     internal abstract class TestHasActions : ITestHasActions {
         protected TestHasActions(ITestObjectFactory factory) => Factory = factory;
 
         protected ITestObjectFactory Factory { get; }
+
+        private ITestAction[] ActionsWithFriendlyName(string friendlyName) {
+            return Actions.Where(x => x.Name == friendlyName).ToArray();
+        }
+
+        private ITestAction[] ActionsForMethodName(string methodName) {
+            return NakedObject.Spec.GetActions().Where(
+                                  a => a.GetFacet<IActionInvocationFacet>().ActionMethod.Name.Split('.').Last() == methodName)
+                              .Select(x => Factory.CreateTestAction(x, this)).ToArray();
+        }
+
+        // ReSharper disable UnusedParameter.Local
+        private static void AssertErrors(ITestAction[] actions, string actionName, string condition = "") {
+            // ReSharper restore UnusedParameter.Local
+            if (!actions.Any()) {
+                Assert.Fail("No Action named '{0}'{1}", actionName, condition);
+            }
+
+            if (actions.Length > 1) {
+                Assert.Fail("{0} Actions named '{1}' found{2}", actions.Length, actionName, condition);
+            }
+        }
+
+        public ITestObject AssertIsDescribedAs(string expected) {
+            var description = NakedObject.Spec.Description;
+            Assert.IsTrue(expected.Equals(description), $"Description expected: '{expected}' actual: '{description}'");
+            return (ITestObject) this;
+        }
+
+        public ITestObject AssertIsImmutable() {
+            var spec = NakedObject.Spec;
+            var facet = spec.GetFacet<IImmutableFacet>();
+
+            var immutable = facet.Value == WhenTo.Always || facet.Value == WhenTo.OncePersisted && NakedObject.ResolveState.IsPersistent();
+
+            Assert.IsTrue(immutable, "Not immutable");
+            return (ITestObject) this;
+        }
+
+        public override string ToString() {
+            if (NakedObject == null) {
+                return $"{base.ToString()} null";
+            }
+
+            return $"{base.ToString()} {NakedObject.Spec.ShortName}/{NakedObject}";
+        }
+
+        private static string AppendActions(IActionSpec[] actionsSpec) {
+            var order = new StringBuilder();
+            for (var i = 0; i < actionsSpec.Length; i++) {
+                var actionSpec = actionsSpec[i];
+                var name = actionSpec.Name;
+                order.Append(name);
+                order.Append(i < actionsSpec.Length - 1 ? ", " : "");
+            }
+
+            return order.ToString();
+        }
 
         #region ITestHasActions Members
 
@@ -94,64 +152,6 @@ namespace NakedFramework.Xat.Xat {
         }
 
         #endregion
-
-        private ITestAction[] ActionsWithFriendlyName(string friendlyName) {
-            return Actions.Where(x => x.Name == friendlyName).ToArray();
-        }
-
-        private ITestAction[] ActionsForMethodName(string methodName) {
-            return NakedObject.Spec.GetActions().Where(
-                    a => a.GetFacet<IActionInvocationFacet>().ActionMethod.Name.Split('.').Last() == methodName)
-                .Select(x => Factory.CreateTestAction(x, this)).ToArray();
-        }
-
-        // ReSharper disable UnusedParameter.Local
-        private static void AssertErrors(ITestAction[] actions, string actionName, string condition = "") {
-            // ReSharper restore UnusedParameter.Local
-            if (!actions.Any()) {
-                Assert.Fail("No Action named '{0}'{1}", actionName, condition);
-            }
-
-            if (actions.Length > 1) {
-                Assert.Fail("{0} Actions named '{1}' found{2}", actions.Length, actionName, condition);
-            }
-        }
-
-        public ITestObject AssertIsDescribedAs(string expected) {
-            var description = NakedObject.Spec.Description;
-            Assert.IsTrue(expected.Equals(description), $"Description expected: '{expected}' actual: '{description}'");
-            return (ITestObject) this;
-        }
-
-        public ITestObject AssertIsImmutable() {
-            var spec = NakedObject.Spec;
-            var facet = spec.GetFacet<IImmutableFacet>();
-
-            var immutable = facet.Value == WhenTo.Always || facet.Value == WhenTo.OncePersisted && NakedObject.ResolveState.IsPersistent();
-
-            Assert.IsTrue(immutable, "Not immutable");
-            return (ITestObject) this;
-        }
-
-        public override string ToString() {
-            if (NakedObject == null) {
-                return $"{base.ToString()} null";
-            }
-
-            return $"{base.ToString()} {NakedObject.Spec.ShortName}/{NakedObject}";
-        }
-
-        private static string AppendActions(IActionSpec[] actionsSpec) {
-            var order = new StringBuilder();
-            for (var i = 0; i < actionsSpec.Length; i++) {
-                var actionSpec = actionsSpec[i];
-                var name = actionSpec.Name;
-                order.Append(name);
-                order.Append(i < actionsSpec.Length - 1 ? ", " : "");
-            }
-
-            return order.ToString();
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

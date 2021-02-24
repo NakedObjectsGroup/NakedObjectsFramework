@@ -18,23 +18,29 @@ using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     public class TestProperty : ITestProperty {
         private readonly ITestObjectFactory factory;
-        private readonly INakedObjectsFramework framework;
         private readonly IAssociationSpec field;
+        private readonly INakedObjectsFramework framework;
         private readonly INakedObjectManager manager;
         private readonly ITestHasActions owningObject;
         private readonly IObjectPersistor persistor;
 
         public TestProperty(IAssociationSpec field, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectsFramework framework) {
-            this.persistor = framework.Persistor;
+            persistor = framework.Persistor;
             this.field = field;
             this.owningObject = owningObject;
             this.factory = factory;
             this.framework = framework;
-            this.manager = framework.NakedObjectManager;
+            manager = framework.NakedObjectManager;
         }
+
+        private void ResetLastMessage() {
+            LastMessage = string.Empty;
+        }
+
+        private bool IsNotParseable() => field.ReturnSpec.GetFacet<IParseableFacet>() == null;
 
         #region ITestProperty Members
 
@@ -42,7 +48,7 @@ namespace NakedFramework.Xat.Xat {
 
         public string Id => field.Id;
 
-        public string Title => field.PropertyTitle(field.GetNakedObject(owningObject.NakedObject),framework);
+        public string Title => field.PropertyTitle(field.GetNakedObject(owningObject.NakedObject), framework);
 
         public ITestNaked Content {
             get {
@@ -112,7 +118,7 @@ namespace NakedFramework.Xat.Xat {
             var testNakedObjectAdapter = testObject.NakedObject;
 
             Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec),
-                $"Can't clear a {testObject.NakedObject.Spec.ShortName} from the {Name} field (which accepts {field.ReturnSpec})");
+                          $"Can't clear a {testObject.NakedObject.Spec.ShortName} from the {Name} field (which accepts {field.ReturnSpec})");
 
             var nakedObjectAdapter = owningObject.NakedObject;
 
@@ -212,12 +218,6 @@ namespace NakedFramework.Xat.Xat {
         }
 
         #endregion
-
-        private void ResetLastMessage() {
-            LastMessage = string.Empty;
-        }
-
-        private bool IsNotParseable() => field.ReturnSpec.GetFacet<IParseableFacet>() == null;
 
         #region Asserts
 

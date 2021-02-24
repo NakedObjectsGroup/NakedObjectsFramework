@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Menu;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     public class TestMenuItem : ITestMenuItem {
         private readonly ITestObjectFactory factory;
         private readonly IMenuItemImmutable item;

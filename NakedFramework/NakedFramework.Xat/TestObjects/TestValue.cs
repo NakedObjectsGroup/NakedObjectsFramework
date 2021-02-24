@@ -8,13 +8,15 @@
 using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedFramework.Xat.Xat {
-    internal class TestService : TestHasActions, ITestService {
-        public TestService(INakedObjectAdapter service, ITestObjectFactory factory) : base(factory) => NakedObject = service;
+namespace NakedFramework.Xat.TestObjects {
+    internal class TestValue : ITestValue {
+        public TestValue(INakedObjectAdapter nakedObjectAdapter) => NakedObject = nakedObjectAdapter;
 
-        #region ITestService Members
+        #region ITestValue Members
 
-        public override string Title => NakedObject.TitleString();
+        public string Title => NakedObject.TitleString();
+
+        public INakedObjectAdapter NakedObject { get; }
 
         #endregion
     }

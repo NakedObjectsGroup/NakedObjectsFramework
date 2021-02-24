@@ -16,13 +16,12 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     internal class TestAction : ITestAction {
         private readonly IActionSpec actionSpec;
         private readonly ITestObjectFactory factory;
         private readonly INakedObjectsFramework framework;
         private readonly ITestHasActions owningObject;
-       
 
         public TestAction(INakedObjectsFramework framework, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory)
             : this(framework, string.Empty, actionSpec, owningObject, factory) { }
@@ -33,6 +32,56 @@ namespace NakedFramework.Xat.Xat {
             this.owningObject = owningObject;
             this.factory = factory;
             this.actionSpec = actionSpec;
+        }
+
+        private ITestNaked DoInvoke(int page, params object[] parameters) {
+            ResetLastMessage();
+            AssertIsValidWithParms(parameters);
+            var parameterObjectsAdapter = parameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x.NakedObject).ToArray();
+
+            var parms = actionSpec.RealParameters(owningObject.NakedObject, parameterObjectsAdapter);
+            var target = actionSpec.RealTarget(owningObject.NakedObject);
+            var result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, framework);
+
+            if (result == null) {
+                return null;
+            }
+
+            if (result.Spec.IsCollection) {
+                return factory.CreateTestCollection(result);
+            }
+
+            return factory.CreateTestObject(result);
+        }
+
+        private ITestNaked DoInvoke(params object[] parameters) {
+            ResetLastMessage();
+            AssertIsValidWithParms(parameters);
+            var parameterObjectsAdapter = parameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x.NakedObject).ToArray();
+            INakedObjectAdapter result = null;
+            try {
+                result = actionSpec.Execute(owningObject.NakedObject, parameterObjectsAdapter);
+            }
+            catch (ArgumentException) {
+                Assert.Fail("Invalid Argument(s)");
+            }
+            catch (InvalidCastException) {
+                Assert.Fail("Invalid Argument(s)");
+            }
+
+            if (result == null) {
+                return null;
+            }
+
+            if (result.Spec.IsCollection && !result.Spec.IsParseable) {
+                return factory.CreateTestCollection(result);
+            }
+
+            return factory.CreateTestObject(result);
+        }
+
+        private void ResetLastMessage() {
+            LastMessage = string.Empty;
         }
 
         #region ITestAction Members
@@ -96,56 +145,6 @@ namespace NakedFramework.Xat.Xat {
         }
 
         #endregion
-
-        private ITestNaked DoInvoke(int page, params object[] parameters) {
-            ResetLastMessage();
-            AssertIsValidWithParms(parameters);
-            var parameterObjectsAdapter = parameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x.NakedObject).ToArray();
-
-            var parms = actionSpec.RealParameters(owningObject.NakedObject, parameterObjectsAdapter);
-            var target = actionSpec.RealTarget(owningObject.NakedObject);
-            var result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, framework);
-
-            if (result == null) {
-                return null;
-            }
-
-            if (result.Spec.IsCollection) {
-                return factory.CreateTestCollection(result);
-            }
-
-            return factory.CreateTestObject(result);
-        }
-
-        private ITestNaked DoInvoke(params object[] parameters) {
-            ResetLastMessage();
-            AssertIsValidWithParms(parameters);
-            var parameterObjectsAdapter = parameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x.NakedObject).ToArray();
-            INakedObjectAdapter result = null;
-            try {
-                result = actionSpec.Execute(owningObject.NakedObject, parameterObjectsAdapter);
-            }
-            catch (ArgumentException) {
-                Assert.Fail("Invalid Argument(s)");
-            }
-            catch (InvalidCastException) {
-                Assert.Fail("Invalid Argument(s)");
-            }
-
-            if (result == null) {
-                return null;
-            }
-
-            if (result.Spec.IsCollection && !result.Spec.IsParseable) {
-                return factory.CreateTestCollection(result);
-            }
-
-            return factory.CreateTestObject(result);
-        }
-
-        private void ResetLastMessage() {
-            LastMessage = string.Empty;
-        }
 
         #region Asserts
 

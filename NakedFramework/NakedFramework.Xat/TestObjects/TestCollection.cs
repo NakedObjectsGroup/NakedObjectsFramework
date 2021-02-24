@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     internal class TestCollection : ITestCollection {
         private readonly IEnumerable<ITestObject> wrappedCollection;
 

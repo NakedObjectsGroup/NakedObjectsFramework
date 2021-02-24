@@ -8,7 +8,7 @@
 using System.Security.Principal;
 using NakedObjects.Core.Authentication;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     // Allow principal to be changed - only for test use 
 
     public class TestSession : WindowsSession {

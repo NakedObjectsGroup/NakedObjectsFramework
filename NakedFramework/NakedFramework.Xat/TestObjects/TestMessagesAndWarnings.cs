@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 
-namespace NakedFramework.Xat.Xat {
+namespace NakedFramework.Xat.TestObjects {
     public static class TestMessagesAndWarnings {
         /// <summary>
         ///     Messages written by <see cref="IDomainObjectContainer.InformUser" /> - This clears once read !
