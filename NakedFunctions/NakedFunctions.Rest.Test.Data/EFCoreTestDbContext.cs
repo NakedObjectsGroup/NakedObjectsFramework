@@ -5,11 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.IdentityModel.Protocols;
-using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class EFCoreConstants {
@@ -67,9 +63,8 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public abstract class EFCoreTestDbContext : DbContext {
         private readonly string cs;
-        protected EFCoreTestDbContext(string cs) {
-            this.cs = cs;
-        }
+
+        protected EFCoreTestDbContext(string cs) => this.cs = cs;
 
         public DbSet<SimpleRecord> SimpleRecords { get; set; }
         public DbSet<DateRecord> DateRecords { get; set; }
@@ -83,19 +78,17 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<EditRecord> EditRecords { get; set; }
         public DbSet<DeleteRecord> DeleteRecords { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(cs);
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            var fred = new SimpleRecord { Id = 1,  Name = "Fred" };
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            var fred = new SimpleRecord {Id = 1, Name = "Fred"};
 
             modelBuilder.Entity<SimpleRecord>().HasData(fred);
-            modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord { Id = 2, Name = "Bill" });
-            modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord { Id = 3, Name = "Jack" });
-            modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord { Id = 4, Name = "hide it" });
+            modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 2, Name = "Bill"});
+            modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 3, Name = "Jack"});
+            modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 4, Name = "hide it"});
 
             //var ur = new UpdatedRecord { Name = "" };
             //modelBuilder.Entity<UpdatedRecord>().HasData(ur);
@@ -121,13 +114,10 @@ namespace NakedFunctions.Rest.Test.Data {
 
             //modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord());
             //modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord());
-
-
         }
     }
 
-    public class EFCoreMenuDbContext : EFCoreTestDbContext
-    {
+    public class EFCoreMenuDbContext : EFCoreTestDbContext {
         public EFCoreMenuDbContext() : base(Constants.CsMenu) { }
         public void Delete() => Database.EnsureDeleted();
 
@@ -135,10 +125,10 @@ namespace NakedFunctions.Rest.Test.Data {
         //protected override void OnModelCreating(ModelBuilder modelBuilder) => OnModelCreating<MenuDbContext>(modelBuilder);
     }
 
-    public class EFCoreObjectDbContext : EFCoreTestDbContext
-    {
+    public class EFCoreObjectDbContext : EFCoreTestDbContext {
         public EFCoreObjectDbContext() : base(Constants.CsObject) { }
         public void Delete() => Database.EnsureDeleted();
+
         public void Create() => Database.EnsureCreated();
         //protected override void OnModelCreating(ModelBuilder modelBuilder) => OnModelCreating<ObjectDbContext>(modelBuilder);
     }

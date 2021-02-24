@@ -63,6 +63,8 @@ namespace NakedFunctions.Rest.Test {
         protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
             new Func<IConfiguration, DbContext>[] {config => new MenuDbContext()};
 
+        protected override Action<NakedCoreOptions> AddNakedObjects => _ => { };
+
         private static string FullName<T>() => typeof(T).FullName;
 
         protected override IMenu[] MainMenus(IMenuFactory factory) => Functions.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
@@ -73,8 +75,6 @@ namespace NakedFunctions.Rest.Test {
             services.AddMvc(options => options.EnableEndpointRouting = false)
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
         }
-
-        protected override Action<NakedCoreOptions> AddNakedObjects => _ => { };
 
         [SetUp]
         public void SetUp() => StartTest();
@@ -904,7 +904,6 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction5"]["extensions"]["returnType"].ToString());
             Assert.AreEqual(4, resultObj["members"]["ContributedFunction5"]["parameters"]["psr"]["choices"].Count());
-
         }
     }
 }

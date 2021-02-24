@@ -72,14 +72,14 @@ namespace NakedFunctions.Rest.Test {
         protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
             new Func<IConfiguration, DbContext>[] {config => new ObjectDbContext()};
 
+        protected override Action<NakedCoreOptions> AddNakedObjects => _ => { };
+
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
             services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
             services.AddMvc(options => options.EnableEndpointRouting = false)
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
         }
-
-        protected override Action<NakedCoreOptions> AddNakedObjects => _ => { };
 
         [SetUp]
         public void SetUp() => StartTest();
@@ -149,12 +149,11 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestGetObjectDuplicates()
-        {
+        public void TestGetObjectDuplicates() {
             var api = Api();
             var result = api.GetObject(FullName<SimpleRecord>(), "1");
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.IsNotNull(parsedResult["members"]["Duplicate"]);
@@ -163,15 +162,14 @@ namespace NakedFunctions.Rest.Test {
         [Test]
         public void TestGetCollectionDuplicate() {
             var api = Api();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
             var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.GetQueryable), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.IsNotNull(parsedResult["result"]["members"]["Duplicate"]);
         }
-
 
         [Test]
         public void TestGetObjectActionHints() {
@@ -269,34 +267,31 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestInvokeDeleteRecord()
-        {
+        public void TestInvokeDeleteRecord() {
             var api = Api().AsPost();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue> () };
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
 
             var result = api.PostInvoke(FullName<DeleteRecord>(), "1", nameof(DeleteRecordFunctions.DeleteFunction), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
         }
 
         [Test]
-        public void TestInvokeDeleteRecordAndReturn()
-        {
+        public void TestInvokeDeleteRecordAndReturn() {
             var api = Api().AsPost();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
 
             var result = api.PostInvoke(FullName<DeleteRecord>(), "2", nameof(DeleteRecordFunctions.DeleteFunctionAndReturn), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
         }
 
         [Test]
-        public void TestInvokeDeleteRecordAndReturnDeleted()
-        {
+        public void TestInvokeDeleteRecordAndReturnDeleted() {
             var api = Api();
             var result = api.GetObject(FullName<DeleteRecord>(), "2");
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.NotFound, sc);
+            Assert.AreEqual((int) HttpStatusCode.NotFound, sc);
         }
 
         [Test]
@@ -1013,19 +1008,17 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual("SimpleRecord,Name", parsedResult["extensions"]["x-ro-nof-editProperties"].ToString());
 
-
             Assert.AreEqual("Fred", parsedResult["parameters"]["simpleRecord"]["default"]["title"].ToString());
             Assert.AreEqual("Jane", parsedResult["parameters"]["name"]["default"].ToString());
             Assert.IsNull(parsedResult["parameters"]["another"]["default"]);
         }
 
         [Test]
-        public void TestGetObjectActionWithImmutableList()
-        {
+        public void TestGetObjectActionWithImmutableList() {
             var api = Api();
             var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(ImmutableCollectionRecordFunctions.CollectionReturn));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(ImmutableCollectionRecordFunctions.CollectionReturn), parsedResult["id"].ToString());
@@ -1034,12 +1027,11 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestGetObjectActionWithImmutableList1()
-        {
+        public void TestGetObjectActionWithImmutableList1() {
             var api = Api();
             var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(ImmutableCollectionRecordFunctions.CollectionReturn1));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(ImmutableCollectionRecordFunctions.CollectionReturn1), parsedResult["id"].ToString());
@@ -1048,14 +1040,13 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestInvokeActionWithImmutableList()
-        {
+        public void TestInvokeActionWithImmutableList() {
             var api = Api();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
 
             var result = api.GetInvoke(FullName<SimpleRecord>(), "1", nameof(ImmutableCollectionRecordFunctions.CollectionReturn), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             var resultObj = parsedResult["result"];
