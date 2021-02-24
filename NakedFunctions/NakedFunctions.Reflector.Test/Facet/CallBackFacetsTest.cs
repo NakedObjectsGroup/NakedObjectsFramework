@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Facet;
 
 namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]

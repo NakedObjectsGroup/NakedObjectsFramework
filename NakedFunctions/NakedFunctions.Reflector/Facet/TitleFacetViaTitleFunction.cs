@@ -7,22 +7,21 @@
 
 using System;
 using System.Reflection;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class TitleFacetViaTitleFunction : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
         public TitleFacetViaTitleFunction(MethodInfo method, ISpecification holder) : base(holder) => this.method = method;
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter,  INakedObjectsFramework framework) =>
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) =>
             method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, framework)) as string;
 
         #region IImperativeFacet Members

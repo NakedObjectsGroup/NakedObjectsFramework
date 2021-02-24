@@ -8,7 +8,7 @@
 using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Facet;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -17,12 +17,11 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class InjectedAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory
-    {
+    public sealed class InjectedAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public InjectedAnnotationFacetFactory(IFacetFactoryOrder<InjectedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {
                 FacetUtils.AddFacet(new InjectedFacet(holder));
             }

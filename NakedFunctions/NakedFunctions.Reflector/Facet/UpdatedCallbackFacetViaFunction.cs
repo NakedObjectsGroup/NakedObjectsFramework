@@ -8,15 +8,14 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class UpdatedCallbackFacetViaFunction : UpdatedCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
@@ -30,7 +29,7 @@ namespace NakedFunctions.Meta.Facet {
         }
 
         public override object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) =>
-            method.Invoke(null, method.GetParameterValues(nakedObjectAdapter,framework));
+            method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, framework));
 
         protected override string ToStringValues() => $"method={method}";
 

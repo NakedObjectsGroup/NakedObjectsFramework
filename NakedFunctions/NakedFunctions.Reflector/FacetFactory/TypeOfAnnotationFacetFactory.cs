@@ -25,7 +25,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public TypeOfAnnotationFacetFactory(IFacetFactoryOrder<TypeOfAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) { }
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type methodReturnType, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type methodReturnType, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!(CollectionUtils.IsCollection(methodReturnType) || CollectionUtils.IsQueryable(methodReturnType))) {
                 return metamodel;
             }
@@ -51,10 +51,10 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
             Process(reflector, method.ReturnType, specification, metamodel);
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
             property.HasPublicGetter()
                 ? Process(reflector, property.PropertyType, specification, metamodel)
                 : metamodel;

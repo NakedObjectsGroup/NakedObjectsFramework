@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class InjectedIContextParameterFacet : FacetAbstract, IInjectedParameterFacet {
         public InjectedIContextParameterFacet(ISpecification holder) : base(Type, holder) { }

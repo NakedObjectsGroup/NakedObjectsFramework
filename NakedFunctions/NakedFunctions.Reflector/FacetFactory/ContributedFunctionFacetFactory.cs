@@ -11,8 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
-using NakedFunctions.Meta.Facet;
-using NakedObjects;
+using NakedFunctions.Reflector.Facet;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
@@ -82,16 +81,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 var parameterType = GetContributeeType(method);
                 var facet = new ContributedFunctionFacet(specification, IsContributedToObjectOrCollection(method));
 
-                if (IsParseable(parameterType))
-                {
+                if (IsParseable(parameterType)) {
                     logger.LogWarning($"Query Contributed Function ignored as it is added to a collection of value types : {method.Name}");
                 }
-                else if (IsCollection(parameterType))
-                {
+                else if (IsCollection(parameterType)) {
                     metamodel = AddCollectionContributedAction(reflector, method, parameterType, facet, metamodel);
                 }
-                else
-                {
+                else {
                     metamodel = AddMenuOrObjectContributedFunction(reflector, metamodel, parameterType, facet);
                     if (IsLocalCollectionContributedAction(method)) {
                         metamodel = AddLocalCollectionContributedAction(reflector, method.GetParameters()[1], specification, metamodel);
@@ -120,11 +116,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 var matchingCollection = parm0.ParameterType.GetProperties().SingleOrDefault(p => p.Name.Equals(parm1.Name, StringComparison.CurrentCultureIgnoreCase));
 
                 return IsContributedToObjectOrCollection(method) &&
-                                    !IsCollection(parm0.ParameterType) &&
-                                    CollectionUtils.IsGenericEnumerable(parm1.ParameterType) &&
-                                    matchingCollection is not null &&
-                                    CollectionUtils.IsGenericEnumerable(matchingCollection.PropertyType) &&
-                                    matchingCollection.PropertyType.GetGenericArguments().Single() == parm1.ParameterType.GetGenericArguments().Single();
+                       !IsCollection(parm0.ParameterType) &&
+                       CollectionUtils.IsGenericEnumerable(parm1.ParameterType) &&
+                       matchingCollection is not null &&
+                       CollectionUtils.IsGenericEnumerable(matchingCollection.PropertyType) &&
+                       matchingCollection.PropertyType.GetGenericArguments().Single() == parm1.ParameterType.GetGenericArguments().Single();
             }
 
             return false;

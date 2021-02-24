@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedObjects;
@@ -24,14 +23,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
     ///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
     ///     <see cref="QueryOnlyAttribute" /> or <see cref="NakedObjects.IdempotentAttribute" /> annotation
     /// </summary>
-    public sealed class PotencyDerivedFromSignatureFacetFactory : FunctionalFacetFactoryProcessor
-    {
+    public sealed class PotencyDerivedFromSignatureFacetFactory : FunctionalFacetFactoryProcessor {
         private readonly ILogger<PotencyDerivedFromSignatureFacetFactory> logger;
 
         public PotencyDerivedFromSignatureFacetFactory(IFacetFactoryOrder<PotencyDerivedFromSignatureFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<PotencyDerivedFromSignatureFacetFactory>();
-
 
         private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsTuple(returnType) && !returnType.IsAssignableTo(typeof(IContext));
 
@@ -43,7 +40,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, specification);
             return metamodel;
         }

@@ -24,7 +24,7 @@ using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
         private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
@@ -82,7 +82,7 @@ namespace NakedFunctions.Meta.Facet {
         private static (object, FunctionalContext) CastTuple(ITuple tuple) => (tuple[0], (FunctionalContext) tuple[1]);
 
         private static (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedObjectsFramework framework) =>
-            PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Deleted,  functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
+            PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Deleted, functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
 
         private static object HandleTupleResult((object, FunctionalContext) tuple, INakedObjectsFramework framework) {
             var (toReturn, context) = tuple;

@@ -7,7 +7,7 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedFunctions.Reflector.Test.Facet {

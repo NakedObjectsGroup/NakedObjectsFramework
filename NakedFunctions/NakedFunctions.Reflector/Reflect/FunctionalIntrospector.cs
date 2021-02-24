@@ -17,13 +17,13 @@ using NakedObjects.ParallelReflector.Reflect;
 
 namespace NakedFunctions.Reflector.Reflect {
     public sealed class FunctionalIntrospector : Introspector, IIntrospector {
+        public FunctionalIntrospector(IReflector reflector, ILogger<FunctionalIntrospector> logger) : base(reflector, logger) { }
+
         protected override bool ReturnOrParameterTypesUnsupported(MethodInfo method, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var types = method.GetParameters().Select(pi => pi.ParameterType);
-            return IsUnsupportedSystemType(method.ReturnType, metamodel) && !method.ReturnType.IsAssignableTo(typeof(ITuple))  ||
-                types.Any(t => IsUnsupportedSystemType(t, metamodel));
+            return IsUnsupportedSystemType(method.ReturnType, metamodel) && !method.ReturnType.IsAssignableTo(typeof(ITuple)) ||
+                   types.Any(t => IsUnsupportedSystemType(t, metamodel));
         }
-
-        public FunctionalIntrospector(IReflector reflector, ILogger<FunctionalIntrospector> logger) : base(reflector, logger) { }
 
         protected override IImmutableDictionary<string, ITypeSpecBuilder> ProcessType(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
             ((FunctionalFacetFactorySet) FacetFactorySet).Process(Reflector, IntrospectedType, new IntrospectorMethodRemover(Methods), spec, metamodel);

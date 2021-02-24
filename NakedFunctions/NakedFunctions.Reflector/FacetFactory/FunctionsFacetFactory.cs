@@ -11,8 +11,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFramework;
-using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Facet;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -26,7 +25,6 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.ParallelReflector.Utils;
-using TypeUtils = NakedObjects.TypeUtils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
@@ -41,10 +39,10 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters) =>
             logger = loggerFactory.CreateLogger<FunctionsFacetFactory>();
 
-        public  string[] Prefixes => FixedPrefixes;
+        public string[] Prefixes => FixedPrefixes;
 
         private static bool IsQueryOnly(MethodInfo method) =>
-            method.GetCustomAttribute<NakedObjects.IdempotentAttribute>() is null &&
+            method.GetCustomAttribute<IdempotentAttribute>() is null &&
             method.GetCustomAttribute<QueryOnlyAttribute>() is not null;
 
         // separate methods to reproduce old reflector behaviour
@@ -88,7 +86,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static bool IsUnsupportedSystemType(IReflector reflector, Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => FasterTypeUtils.IsSystem(type) && !reflector.FindSpecification(type, metamodel);
 
-
         private static (ITypeSpecBuilder, Type, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector, MethodInfo actionMethod) {
             ITypeSpecBuilder onType = null;
 
@@ -114,14 +111,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
             else {
                 throw new ReflectionException($"Cannot reflect return type {returnType} on {actionMethod.DeclaringType}.{actionMethod.Name}");
             }
-            
 
             return (onType, returnType, metamodel);
         }
 
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod,  ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-          
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // must be true
             if (!actionMethod.IsStatic) {
                 throw new ReflectionException($"{actionMethod.DeclaringType}.{actionMethod.Name} must be static");
@@ -169,7 +163,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
             var facets = new List<IFacet>();
 
@@ -179,7 +173,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             ITypeSpecBuilder returnSpec;
             (returnSpec, metamodel) = reflector.LoadSpecification(parameter.ParameterType, metamodel);
-
 
             if (!(returnSpec is IObjectSpecImmutable)) {
                 throw new ReflectionException($"{returnSpec.Identifier} must be Object spec");

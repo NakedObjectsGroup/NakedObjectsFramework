@@ -5,13 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     public class IntegrationFacet : AbstractIntegrationFacet {
         private Action<IMetamodelBuilder> toExecute;
         public IntegrationFacet(ISpecification holder, Action<IMetamodelBuilder> toExecute) : base(holder) => this.toExecute = toExecute;

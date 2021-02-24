@@ -10,18 +10,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
         private const int DefaultPageSize = 50;
@@ -69,6 +68,7 @@ namespace NakedFunctions.Meta.Facet {
                         if (!CollectionUtils.IsCollection(autoComplete.GetType())) {
                             return new[] {autoComplete};
                         }
+
                         throw new NakedObjectDomainException($"Must return IQueryable or a single object from autoComplete method: {method.Name}");
                     }
                 }

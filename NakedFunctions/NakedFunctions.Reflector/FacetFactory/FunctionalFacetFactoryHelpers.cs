@@ -5,15 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using NakedObjects.Meta.Utils;
+using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public static class FunctionalFacetFactoryHelpers {
-
         public static bool IsInjectedParameter(MethodInfo method, int paramNum) {
             if (method.IsDefined(typeof(ExtensionAttribute), false) && paramNum == 0) {
                 return false;

@@ -11,15 +11,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using NakedFunctions;
 using NakedFunctions.Reflector.Component;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Meta.Utils {
+namespace NakedFunctions.Reflector.Utils {
     public static class InjectUtils {
-
         public static ParameterInfo[] FilterParms(MethodInfo m) => m.GetParameters().Where(p => !(p.IsInjectedParameter() || p.IsTargetParameter())).ToArray();
 
         public static bool IsExtensionMethod(this MemberInfo m) => m.IsDefined(typeof(ExtensionAttribute), false);
@@ -37,12 +36,12 @@ namespace NakedObjects.Meta.Utils {
         private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectsFramework framework) =>
             p switch {
                 _ when p.IsTargetParameter() => adapter?.Object,
-                _ when p.IsInjectedParameter() => new FunctionalContext() {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
+                _ when p.IsInjectedParameter() => new FunctionalContext {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
                 _ => null
             };
 
         private static object GetMatchingParameter(this ParameterInfo p, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
-            if (parameterNameValues != null &&  parameterNameValues.ContainsKey(p.Name.ToLower())) {
+            if (parameterNameValues != null && parameterNameValues.ContainsKey(p.Name.ToLower())) {
                 return parameterNameValues[p.Name.ToLower()].Object;
             }
 
@@ -51,22 +50,19 @@ namespace NakedObjects.Meta.Utils {
 
         private static INakedObjectAdapter GetNext(this IEnumerator parmValues) {
             parmValues.MoveNext();
-             return( INakedObjectAdapter) parmValues.Current;
+            return (INakedObjectAdapter) parmValues.Current;
         }
 
-
         private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectAdapter[] parmValues, int i, INakedObjectsFramework framework) =>
-            p switch
-            {
+            p switch {
                 _ when p.IsTargetParameter() => adapter?.Object,
                 _ when p.IsInjectedParameter() => new FunctionalContext {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
                 _ => parmValues[i].GetDomainObject()
             };
 
-
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework)).ToArray();
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) => 
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) =>
             method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? p.GetMatchingParameter(parameterNameValues)).ToArray();
 
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string autocomplete, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? autocomplete).ToArray();
@@ -80,6 +76,6 @@ namespace NakedObjects.Meta.Utils {
 
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string[] keys, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? keys).ToArray();
 
-        public static void PerformAction<T>(object action, T toInject) => ((Action<T>)action)(toInject);
+        public static void PerformAction<T>(object action, T toInject) => ((Action<T>) action)(toInject);
     }
 }

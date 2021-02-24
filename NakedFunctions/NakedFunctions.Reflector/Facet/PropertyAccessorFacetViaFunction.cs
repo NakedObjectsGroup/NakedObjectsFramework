@@ -7,15 +7,15 @@
 
 using System;
 using System.Reflection;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyAccessorFacet {
         private readonly MethodInfo method;

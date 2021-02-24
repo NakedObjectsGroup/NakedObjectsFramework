@@ -11,7 +11,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Facet;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -54,7 +55,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             Action<IMetamodelBuilder> action = m => { };
 
             if (recognizedMethod is not null) {
-                var onType = InjectUtils.ContributedToType(recognizedMethod);
+                var onType = recognizedMethod.ContributedToType();
                 if (onType is not null) {
                     var facetCreator = matchingFacet[methodName];
                     action = m => {
@@ -68,7 +69,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return action;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var actions = Prefixes.Select(methodName => GetAddAction(type, methodName));
             void Action(IMetamodelBuilder m) => actions.ForEach(a => a(m));
             var integrationFacet = specification.GetFacet<IIntegrationFacet>();
@@ -81,7 +82,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 integrationFacet.AddAction(Action);
             }
 
-            
             return metamodel;
         }
 

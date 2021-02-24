@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly PropertyInfo property;

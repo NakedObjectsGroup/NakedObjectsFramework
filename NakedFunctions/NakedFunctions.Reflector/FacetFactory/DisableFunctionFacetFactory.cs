@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Component;

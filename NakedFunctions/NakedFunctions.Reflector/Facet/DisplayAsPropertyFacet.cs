@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
         private readonly List<ITypeSpecImmutable> objectContributees = new();
@@ -21,11 +21,9 @@ namespace NakedFunctions.Meta.Facet {
         public DisplayAsPropertyFacet(ISpecification holder, bool isContributedToObject) : base(typeof(IDisplayAsPropertyFacet), holder) =>
             IsContributedToObject = isContributedToObject;
 
-        public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
-
-       
-
         public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
         public bool IsContributedToObject { get; }
+
+        public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
     }
 }

@@ -8,8 +8,8 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFunctions.Meta.Facet;
 using NakedFunctions.Reflector.Component;
+using NakedFunctions.Reflector.Facet;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;

@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -17,9 +17,8 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ActionValidationViaFunctionFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
@@ -41,6 +40,7 @@ namespace NakedFunctions.Meta.Facet {
 
         public string InvalidReason(INakedObjectAdapter target, INakedObjectsFramework framework, INakedObjectAdapter[] proposedArguments) =>
             (string) InvokeUtils.InvokeStatic(method, method.GetParameterValues(target, proposedArguments, framework));
+
         #endregion
 
         #region IImperativeFacet Members

@@ -7,14 +7,17 @@
 
 using System;
 using System.Reflection;
+using NakedFunctions.Reflector.Utils;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Meta.Utils;
+using NakedObjects.Meta;
+using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ActionParameterValidationViaFunctionFacet : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;

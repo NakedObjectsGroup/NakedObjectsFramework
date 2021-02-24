@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class EditPropertiesFacet : FacetAbstract, IEditPropertiesFacet {
         public EditPropertiesFacet(ISpecification holder, string[] properties) : base(Type, holder) => Properties = properties;

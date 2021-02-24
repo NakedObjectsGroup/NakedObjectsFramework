@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -15,9 +16,8 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;

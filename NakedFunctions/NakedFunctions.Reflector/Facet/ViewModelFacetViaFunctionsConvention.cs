@@ -7,15 +7,14 @@
 
 using System;
 using System.Reflection;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstract {
         private readonly MethodInfo deriveFunction;
@@ -40,7 +39,7 @@ namespace NakedFunctions.Meta.Facet {
         public override void Populate(string[] keys,
                                       INakedObjectAdapter nakedObjectAdapter,
                                       INakedObjectsFramework framework) {
-            var newVm = populateFunction.Invoke(null, populateFunction.GetParameterValues(nakedObjectAdapter, keys,framework));
+            var newVm = populateFunction.Invoke(null, populateFunction.GetParameterValues(nakedObjectAdapter, keys, framework));
             nakedObjectAdapter.ReplacePoco(newVm);
         }
     }

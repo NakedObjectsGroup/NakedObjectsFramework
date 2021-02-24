@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.Utils {
     public static class FactoryUtils {

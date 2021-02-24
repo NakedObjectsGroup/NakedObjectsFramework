@@ -8,15 +8,14 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class UpdatingCallbackFacetViaFunction : UpdatingCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;

@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFunctionFacet {
         private readonly List<IObjectSpecImmutable> collectionContributees = new();

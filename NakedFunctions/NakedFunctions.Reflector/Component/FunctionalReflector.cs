@@ -35,6 +35,11 @@ namespace NakedFunctions.Reflector.Component {
             Order = 2;
         }
 
+        public override bool IgnoreCase => functionalReflectorConfiguration.IgnoreCase;
+
+        public override bool ConcurrencyChecking => functionalReflectorConfiguration.ConcurrencyChecking;
+        public override string Name { get; } = "Naked Functions";
+
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectFunctionalTypes(Type[] records, Type[] functions, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var allFunctionalTypes = records.Union(functions).ToArray();
 
@@ -46,11 +51,7 @@ namespace NakedFunctions.Reflector.Component {
                 : specDictionary;
         }
 
-        public override bool IgnoreCase => functionalReflectorConfiguration.IgnoreCase;
         protected override IIntrospector GetNewIntrospector() => new FunctionalIntrospector(this, LoggerFactory.CreateLogger<FunctionalIntrospector>());
-
-        public override bool ConcurrencyChecking => functionalReflectorConfiguration.ConcurrencyChecking;
-        public override string Name { get; } = "Naked Functions";
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var records = functionalReflectorConfiguration.Types;

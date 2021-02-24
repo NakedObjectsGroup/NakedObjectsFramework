@@ -49,7 +49,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
                                          !classStrategy.IsIgnored(property)).ToList();
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            
             var facets = new List<IFacet> {new PropertyAccessorFacet(property, specification)};
 
             if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {

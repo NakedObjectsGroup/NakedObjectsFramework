@@ -26,22 +26,21 @@ namespace NakedFunctions.Reflector.FacetFactory {
     ///     which don't require mandatory semantics will potentially replace these where the
     ///     property or parameter is annotated or otherwise indicated as being optional.
     /// </para>
-    public sealed class MandatoryDefaultFacetFactory : FunctionalFacetFactoryProcessor
-    {
+    public sealed class MandatoryDefaultFacetFactory : FunctionalFacetFactoryProcessor {
         public MandatoryDefaultFacetFactory(IFacetFactoryOrder<MandatoryDefaultFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacet(Create(specification));
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacet(Create(specification));
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacet(Create(holder));
             return metamodel;
         }

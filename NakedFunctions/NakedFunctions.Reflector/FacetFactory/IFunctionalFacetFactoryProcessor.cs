@@ -12,10 +12,8 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedFunctions.Reflector.FacetFactory
-{
-    public interface IFunctionalFacetFactoryProcessor : IFacetFactory
-    {
+namespace NakedFunctions.Reflector.FacetFactory {
+    public interface IFunctionalFacetFactoryProcessor : IFacetFactory {
         //  AbstractParallelReflector
         /// <summary>
         ///     Process the class, and return the updated metamodel
@@ -53,6 +51,5 @@ namespace NakedFunctions.Reflector.FacetFactory
         /// <param name="holder">to attach the facets to</param>
         /// <param name="metamodel">current metamodel</param>
         IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
     }
 }

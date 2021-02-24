@@ -6,12 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
@@ -44,19 +43,18 @@ namespace NakedFunctions.Reflector.FacetFactory {
             methodInfo.Matches(name, declaringType, typeof(bool), targetType) &&
             !InjectUtils.FilterParms(methodInfo).Any();
 
-        private MethodInfo MethodToUse(Type declaringType, Type targetType,  string name)
-        {
+        private MethodInfo MethodToUse(Type declaringType, Type targetType, string name) {
             bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, targetType);
             var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
             return methodToUse;
         }
 
-
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, Type targetType,  string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var methodToUse = MethodToUse(declaringType,  targetType, name);
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, Type targetType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var methodToUse = MethodToUse(declaringType, targetType, name);
             if (methodToUse is not null) {
                 FacetUtils.AddFacet(new HideForContextViaFunctionFacet(methodToUse, action));
             }
+
             return metamodel;
         }
 
@@ -66,7 +64,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             var name = HiddenName(actionMethod);
             var declaringType = actionMethod.DeclaringType;
             var targetType = actionMethod.ContributedToType();
-            return FindAndAddFacet(declaringType,  targetType, name, action, metamodel);
+            return FindAndAddFacet(declaringType, targetType, name, action, metamodel);
         }
 
         private static Action<IMetamodelBuilder> GetAddAction(MethodInfo recognizedMethod) {
@@ -109,7 +107,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             return metamodel;
         }
-
 
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.HidePrefix);
 

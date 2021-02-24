@@ -11,7 +11,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Facet;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -22,12 +23,11 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class EditAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private ILogger<EditAnnotationFacetFactory> logger;
+        private readonly ILogger<EditAnnotationFacetFactory> logger;
 
         public EditAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters) {
+            : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters) =>
             logger = loggerFactory.CreateLogger<EditAnnotationFacetFactory>();
-        }
 
         private static bool IsContext(Type t) => t.IsAssignableTo(typeof(IContext));
 

@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
         private readonly Type toCreate;
@@ -21,8 +21,6 @@ namespace NakedFunctions.Meta.Facet {
 
         public static Type Type => typeof(ICreateNewFacet);
 
-        private static bool IsNotHidden(IAssociationSpec spec) => string.IsNullOrWhiteSpace(spec.GetFacet<IHiddenFacet>()?.HidesForState(false));
-
         public string[] OrderedProperties(INakedObjectsFramework framework) {
             if (framework.MetamodelManager.GetSpecification(toCreate) is IObjectSpec spec) {
                 return spec.Properties.Where(IsNotHidden).Select(f => f.Name).ToArray();
@@ -30,5 +28,7 @@ namespace NakedFunctions.Meta.Facet {
 
             return Array.Empty<string>();
         }
+
+        private static bool IsNotHidden(IAssociationSpec spec) => string.IsNullOrWhiteSpace(spec.GetFacet<IHiddenFacet>()?.HidesForState(false));
     }
 }

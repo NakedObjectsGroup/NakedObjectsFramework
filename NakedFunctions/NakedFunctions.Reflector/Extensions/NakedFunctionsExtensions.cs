@@ -17,7 +17,6 @@ using NakedFunctions.Reflector.Reflect;
 using NakedFunctions.Services;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Core.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.Extensions;
 
@@ -25,7 +24,6 @@ namespace NakedFunctions.Reflector.Extensions {
     public static class NakedFunctionsExtensions {
         public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
             new(options.FunctionalTypes, options.Functions, options.ConcurrencyCheck);
-
 
         public static void AddNakedFunctions(this NakedCoreOptions coreOptions, Action<NakedFunctionsOptions> setupAction) {
             var options = new NakedFunctionsOptions();
@@ -39,11 +37,7 @@ namespace NakedFunctions.Reflector.Extensions {
                 coreOptions.SupportedSystemTypes ??= t => t;
                 coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Union(enums).ToArray();
                 coreOptions.AdditionalUnpersistedTypes = new[] {typeof(FunctionalContext), typeof(IContext)};
-                options.FunctionalTypes = options.FunctionalTypes.
-                                                  Append(typeof(IContext)).
-                                                  Append(typeof(FunctionalContext)).
-                                                  Distinct().
-                                                  ToArray();
+                options.FunctionalTypes = options.FunctionalTypes.Append(typeof(IContext)).Append(typeof(FunctionalContext)).Distinct().ToArray();
             }
 
             options.RegisterCustomTypes?.Invoke(coreOptions.Services);
@@ -57,8 +51,7 @@ namespace NakedFunctions.Reflector.Extensions {
             coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
         }
 
-        public static void RegisterWellKnownServices(IServiceCollection services)
-        {
+        public static void RegisterWellKnownServices(IServiceCollection services) {
             services.AddScoped<IAlert, Alert>();
             services.AddScoped<IClock, Clock>();
             services.AddScoped<IGuidGenerator, GuidGenerator>();

@@ -14,7 +14,6 @@ namespace NakedFunctions.Reflector.Configuration {
         public FunctionalReflectorConfiguration(Type[] types,
                                                 Type[] functions,
                                                 bool concurrencyChecking = true) {
-            
             Types = types;
             Functions = functions;
             ConcurrencyChecking = concurrencyChecking;
@@ -28,7 +27,7 @@ namespace NakedFunctions.Reflector.Configuration {
         public Type[] Types { get; }
         public Type[] Functions { get; }
 
-        public Type[] Services =>  new Type[] { };
+        public Type[] Services => new Type[] { };
         public bool ConcurrencyChecking { get; }
         public bool IgnoreCase { get; }
 

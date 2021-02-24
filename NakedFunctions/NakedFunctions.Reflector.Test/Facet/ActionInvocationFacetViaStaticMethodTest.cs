@@ -8,7 +8,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Facet;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;

@@ -26,36 +26,35 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<MaxLengthAnnotationFacetFactory>();
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute =  type.GetCustomAttribute<MaxLengthAttribute>();
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var attribute = type.GetCustomAttribute<MaxLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
         private void Process(MemberInfo member, ISpecification holder) {
-            var attribute =  member.GetCustomAttribute<MaxLengthAttribute>();
+            var attribute = member.GetCustomAttribute<MaxLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, specification);
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(property, specification);
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
-            var attribute =  parameter.GetCustomAttribute<MaxLengthAttribute>();
+            var attribute = parameter.GetCustomAttribute<MaxLengthAttribute>();
 
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-        private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) => attribute is null ? null : new MaxLengthFacetAnnotation((int)attribute.Value, holder);
-
+        private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) => attribute is null ? null : new MaxLengthFacetAnnotation(attribute.Value, holder);
     }
 }

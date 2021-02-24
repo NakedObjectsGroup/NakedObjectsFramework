@@ -9,7 +9,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -31,7 +30,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             logger = loggerFactory.CreateLogger<TableViewAnnotationFacetFactory>();
 
         private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
-            
             if (FacetUtils.IsTuple(methodReturnType)) {
                 methodReturnType = methodReturnType.GetGenericArguments().First();
             }

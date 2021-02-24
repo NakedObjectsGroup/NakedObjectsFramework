@@ -11,17 +11,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet {
+namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, IImperativeFacet {
         private readonly MethodInfo choicesMethod;
@@ -29,7 +28,7 @@ namespace NakedFunctions.Meta.Facet {
         private readonly string[] parameterNames;
 
         public ActionChoicesFacetViaFunction(MethodInfo choicesMethod,
-                                             (string, IObjectSpecImmutable)[] parameterNamesAndTypes, 
+                                             (string, IObjectSpecImmutable)[] parameterNamesAndTypes,
                                              Type choicesType,
                                              ISpecification holder,
                                              bool isMultiple = false)
@@ -51,7 +50,7 @@ namespace NakedFunctions.Meta.Facet {
             try {
                 if (choicesMethod.Invoke(null, choicesMethod.GetParameterValues(nakedObjectAdapter,
                                                                                 parameterNameValues,
-                                                                               framework)) is IEnumerable options) {
+                                                                                framework)) is IEnumerable options) {
                     return options.Cast<object>().ToArray();
                 }
 

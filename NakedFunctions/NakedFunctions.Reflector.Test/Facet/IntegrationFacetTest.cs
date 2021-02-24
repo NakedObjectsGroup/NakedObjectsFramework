@@ -7,7 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Facet;
 using NakedObjects;
 
 namespace NakedFunctions.Reflector.Test.Facet {
