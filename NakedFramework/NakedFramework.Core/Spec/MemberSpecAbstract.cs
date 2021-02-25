@@ -31,6 +31,10 @@ namespace NakedFramework.Core.Spec {
 
         public abstract IObjectSpec ElementSpec { get; }
 
+        public override string ToString() => "id=" + Id + ",name='" + Name + "'";
+
+        protected internal virtual IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
+
         #region IMemberSpec Members
 
         public virtual string Id { get; }
@@ -87,10 +91,6 @@ namespace NakedFramework.Core.Spec {
         public bool IsNullable => memberSpecImmutable.ContainsFacet(typeof(INullableFacet));
 
         #endregion
-
-        public override string ToString() => "id=" + Id + ",name='" + Name + "'";
-
-        protected internal virtual IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

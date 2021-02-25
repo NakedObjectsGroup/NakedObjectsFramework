@@ -21,10 +21,10 @@ using NakedFramework.Metamodel.SpecImmutable;
 namespace NakedFramework.ModelBuilding.Component {
     public class ModelIntegrator : IModelIntegrator {
         private readonly ICoreConfiguration coreConfiguration;
-        private readonly IAllServiceList serviceList;
         private readonly ILogger<ModelIntegrator> logger;
         private readonly IMenuFactory menuFactory;
         private readonly IMetamodelBuilder metamodelBuilder;
+        private readonly IAllServiceList serviceList;
 
         public ModelIntegrator(IMetamodelBuilder metamodelBuilder,
                                IMenuFactory menuFactory,
@@ -37,7 +37,6 @@ namespace NakedFramework.ModelBuilding.Component {
             this.coreConfiguration = coreConfiguration;
             this.serviceList = serviceList;
         }
-
 
         public void Integrate() {
             // new way of doing things =- introduce integration facets
@@ -130,18 +129,15 @@ namespace NakedFramework.ModelBuilding.Component {
             }
         }
 
-        private static void ErrorOnDuplicates(IList<IAssociationSpecImmutable> actions)
-        {
+        private static void ErrorOnDuplicates(IList<IAssociationSpecImmutable> actions) {
             var names = actions.Select(s => s.Identifier.MemberName).ToArray();
             var distinctNames = names.Distinct().ToArray();
 
-            if (names.Length != distinctNames.Length)
-            {
+            if (names.Length != distinctNames.Length) {
                 var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
                 var errors = new List<string>();
 
-                foreach (var name in duplicates)
-                {
+                foreach (var name in duplicates) {
                     var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
                     var error = duplicateActions.Aggregate("Name clash between properties defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
                     errors.Add(error);
@@ -150,7 +146,6 @@ namespace NakedFramework.ModelBuilding.Component {
                 throw new ReflectionException(string.Join(", ", errors));
             }
         }
-
 
         private static void PopulateAssociatedFunctions(IMetamodelBuilder metamodel) {
             // todo add facet for this 
@@ -194,7 +189,6 @@ namespace NakedFramework.ModelBuilding.Component {
                 PopulateDisplayAsPropertyFunctions(spec, functions, metamodel);
             }
         }
-
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
             var nonServiceSpecs = metamodel.AllSpecifications.OfType<IObjectSpecBuilder>();

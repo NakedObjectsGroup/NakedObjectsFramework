@@ -96,7 +96,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                 custom[JsonPropertyNames.CustomMultipleLines] = multipleLines;
             }
 
-            if (parameter.IsFindMenuEnabled != null && parameter.IsFindMenuEnabled.Value){
+            if (parameter.IsFindMenuEnabled != null && parameter.IsFindMenuEnabled.Value) {
                 custom ??= new Dictionary<string, object>();
                 custom[JsonPropertyNames.CustomFindMenu] = true;
             }
@@ -104,22 +104,22 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             custom = RestUtils.AddRangeExtension(parameter.AsField, custom);
 
             Extensions = RestUtils.GetExtensions(parameter.Name,
-                parameter.Description,
-                null,
-                null,
-                null,
-                null,
-                !parameter.IsMandatory,
-                parameter.MaxLength,
-                parameter.Pattern,
-                null,
-                parameter.DataType,
-                parameter.PresentationHint,
-                custom,
-                parameter.Specification,
-                parameter.ElementType,
-                OidStrategy,
-                true);
+                                                 parameter.Description,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 !parameter.IsMandatory,
+                                                 parameter.MaxLength,
+                                                 parameter.Pattern,
+                                                 null,
+                                                 parameter.DataType,
+                                                 parameter.PresentationHint,
+                                                 custom,
+                                                 parameter.Specification,
+                                                 parameter.ElementType,
+                                                 OidStrategy,
+                                                 true);
         }
 
         private static bool IsUnconditionalChoices(FieldFacadeAdapter parameter) =>

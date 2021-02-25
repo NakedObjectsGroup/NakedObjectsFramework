@@ -155,46 +155,37 @@ namespace NakedFramework.Persistor.Entity.Util {
 
         public static object[] GetKey(this LocalContext context, INakedObjectAdapter nakedObjectAdapter) => context.GetIdMembers(nakedObjectAdapter.GetDomainObject().GetEntityProxiedType()).Select(x => x.GetValue(nakedObjectAdapter.GetDomainObject(), null)).ToArray();
 
-
-        public static object First(IEnumerable enumerable)
-        {
+        public static object First(IEnumerable enumerable) {
             // ReSharper disable once LoopCanBeConvertedToQuery
             // unfortunately this cast doesn't work with entity linq
             // return queryable.Cast<object>().FirstOrDefault();
-            foreach (var o in enumerable)
-            {
+            foreach (var o in enumerable) {
                 return o;
             }
 
             return null;
         }
 
-        public static IDictionary<string, object> MemberValueMap(ICollection<PropertyInfo> idmembers, ICollection<object> keyValues)
-        {
-            if (idmembers.Count != keyValues.Count)
-            {
+        public static IDictionary<string, object> MemberValueMap(ICollection<PropertyInfo> idmembers, ICollection<object> keyValues) {
+            if (idmembers.Count != keyValues.Count) {
                 throw new NakedObjectSystemException("Member and value counts must match");
             }
 
-            return idmembers.Zip(keyValues, (k, v) => new { Key = k, Value = v })
+            return idmembers.Zip(keyValues, (k, v) => new {Key = k, Value = v})
                             .ToDictionary(x => x.Key.Name, x => x.Value);
         }
 
-
-
-        public static IEnumerable<object> GetRelationshipEnds(ObjectContext context, ObjectStateEntry /*RelationshipEntry*/ ose)
-        {
-            var key0 = (EntityKey)ose.GetType().GetProperty("Key0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ose, null);
-            var key1 = (EntityKey)ose.GetType().GetProperty("Key1", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ose, null);
+        public static IEnumerable<object> GetRelationshipEnds(ObjectContext context, ObjectStateEntry /*RelationshipEntry*/ ose) {
+            var key0 = (EntityKey) ose.GetType().GetProperty("Key0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ose, null);
+            var key1 = (EntityKey) ose.GetType().GetProperty("Key1", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ose, null);
 
             var o0 = context.GetObjectByKey(key0);
             var o1 = context.GetObjectByKey(key1);
 
-            return new[] { o0, o1 };
+            return new[] {o0, o1};
         }
 
-        public static IEnumerable<object> GetChangedObjectsInContext(ObjectContext context)
-        {
+        public static IEnumerable<object> GetChangedObjectsInContext(ObjectContext context) {
             var addedOses = context.ObjectStateManager.GetObjectStateEntries(EntityState.Added).ToArray();
             var addedOseRelationships = addedOses.Where(ose => ose.IsRelationship);
 
@@ -219,15 +210,13 @@ namespace NakedFramework.Persistor.Entity.Util {
             });
         }
 
-        public static IEnumerable<object> GetRelationshipEndsForEntity(IEnumerable<ObjectStateEntry> addedOses)
-        {
+        public static IEnumerable<object> GetRelationshipEndsForEntity(IEnumerable<ObjectStateEntry> addedOses) {
             var relatedends = addedOses.Where(ose => !ose.IsRelationship).SelectMany(x => x.RelationshipManager.GetAllRelatedEnds());
             var references = relatedends.Where(x => x.GetType().GetGenericTypeDefinition() == typeof(EntityReference<>));
             return references.Select(x => x.GetProperty<object>("Value"));
         }
 
         public static IEnumerable<object> GetChangedComplexObjectsInContext(LocalContext context) =>
-            context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).Select(ose => new { Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEntityProxiedType()) }).SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).Where(x => x != null).Distinct();
-
+            context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).Select(ose => new {Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEntityProxiedType())}).SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).Where(x => x != null).Distinct();
     }
 }

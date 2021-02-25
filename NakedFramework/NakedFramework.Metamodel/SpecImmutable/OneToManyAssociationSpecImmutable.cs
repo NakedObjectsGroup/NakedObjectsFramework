@@ -26,6 +26,8 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             this.defaultElementSpec = defaultElementSpec;
         }
 
+        public override string ToString() => $"OneToManyAssociation [name=\"{Identifier}\",Type={ReturnSpec} ]";
+
         #region IOneToManyAssociationSpecImmutable Members
 
         /// <summary>
@@ -41,8 +43,6 @@ namespace NakedFramework.Metamodel.SpecImmutable {
         public override IObjectSpecImmutable OwnerSpec { get; }
 
         #endregion
-
-        public override string ToString() => $"OneToManyAssociation [name=\"{Identifier}\",Type={ReturnSpec} ]";
 
         #region ISerializable
 

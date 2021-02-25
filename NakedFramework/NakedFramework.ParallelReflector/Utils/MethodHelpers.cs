@@ -116,7 +116,7 @@ namespace NakedFramework.ParallelReflector.Utils {
             }
         }
 
-        public static void FindDefaultDisableMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory ) {
+        public static void FindDefaultDisableMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory) {
             var method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
             if (method != null) {
                 facets.Add(new DisableForContextFacet(method, specification, loggerFactory.CreateLogger<DisableForContextFacet>()));

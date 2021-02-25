@@ -25,7 +25,7 @@ namespace NakedFramework.Architecture.Component {
 
         bool IgnoreCase { get; }
         bool ConcurrencyChecking { get; }
-        IClassStrategy ClassStrategy { get;  }
+        IClassStrategy ClassStrategy { get; }
         IFacetFactorySet FacetFactorySet { get; }
 
         IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
@@ -35,7 +35,7 @@ namespace NakedFramework.Architecture.Component {
         /// <summary>
         ///     For when you know the expected subclass of the Spec
         /// </summary>
-        (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type,  IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable;
+        (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable;
 
         bool FindSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
     }

@@ -25,7 +25,7 @@ namespace NakedFramework.Core.Resolve {
 
         #endregion
 
-        private readonly List<HistoryEvent> history = new List<HistoryEvent>();
+        private readonly List<HistoryEvent> history = new();
 
         public ResolveStateMachine(INakedObjectAdapter owner, ISession session) {
             CurrentState = States.NewState;
@@ -36,23 +36,6 @@ namespace NakedFramework.Core.Resolve {
         private ISession Session { get; }
         private INakedObjectAdapter Owner { get; }
         public bool FullTrace { get; set; }
-
-        #region IResolveStateMachine Members
-
-        public IResolveState CurrentState { get; private set; }
-
-        public void Handle(IResolveEvent rEvent) {
-            var newState = CurrentState.Handle(rEvent, Owner, this, Session);
-            history.Add(new HistoryEvent(CurrentState, newState, rEvent, FullTrace));
-            CurrentState = newState;
-        }
-
-        public void AddHistoryNote(string note) {
-            var lastEvent = history.LastOrDefault();
-            lastEvent?.AddNote(note);
-        }
-
-        #endregion
 
         public override string ToString() => CurrentState.ToString();
 
@@ -88,6 +71,23 @@ namespace NakedFramework.Core.Resolve {
                 var notes = Notes.Aggregate("", (s1, s2) => s1 + ":" + s2);
                 return $"Transition from: {StartState} to: {EndState} by: {Event} at: {TimeStamp} with: {notes}";
             }
+        }
+
+        #endregion
+
+        #region IResolveStateMachine Members
+
+        public IResolveState CurrentState { get; private set; }
+
+        public void Handle(IResolveEvent rEvent) {
+            var newState = CurrentState.Handle(rEvent, Owner, this, Session);
+            history.Add(new HistoryEvent(CurrentState, newState, rEvent, FullTrace));
+            CurrentState = newState;
+        }
+
+        public void AddHistoryNote(string note) {
+            var lastEvent = history.LastOrDefault();
+            lastEvent?.AddNote(note);
         }
 
         #endregion
@@ -221,6 +221,10 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
+            private void InitialiseEventMap() {
+                EventMap[Events.EndResolvingEvent] = (no, rsm, s) => this;
+            }
+
             #region IResolveState Members
 
             public override string Name => "Destroyed";
@@ -228,10 +232,6 @@ namespace NakedFramework.Core.Resolve {
             public override string Code => "D";
 
             #endregion
-
-            private void InitialiseEventMap() {
-                EventMap[Events.EndResolvingEvent] = (no, rsm, s) => this;
-            }
         }
 
         #endregion
@@ -242,14 +242,6 @@ namespace NakedFramework.Core.Resolve {
             public GhostState() {
                 InitialiseEventMap();
             }
-
-            #region IResolveState Members
-
-            public override string Name => "Ghost";
-
-            public override string Code => "PG";
-
-            #endregion
 
             private void InitialiseEventMap() {
                 EventMap[Events.DestroyEvent] = (no, rsm, s) => States.DestroyedState;
@@ -263,6 +255,14 @@ namespace NakedFramework.Core.Resolve {
                 EventMap[Events.StartSetupEvent] = (no, rsm, s) => States.ResolvingState;
                 EventMap[Events.StartPartSetupEvent] = (no, rsm, s) => States.ResolvingPartState;
             }
+
+            #region IResolveState Members
+
+            public override string Name => "Ghost";
+
+            public override string Code => "PG";
+
+            #endregion
         }
 
         #endregion
@@ -274,14 +274,6 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
-            #region IResolveState Members
-
-            public override string Name => "New";
-
-            public override string Code => "N";
-
-            #endregion
-
             private void InitialiseEventMap() {
                 EventMap[Events.InitializeTransientEvent] = (no, rsm, s) => States.TransientState;
                 EventMap[Events.InitializePersistentEvent] = (no, rsm, s) => States.GhostState;
@@ -291,6 +283,14 @@ namespace NakedFramework.Core.Resolve {
                     return States.ResolvedState;
                 };
             }
+
+            #region IResolveState Members
+
+            public override string Name => "New";
+
+            public override string Code => "N";
+
+            #endregion
         }
 
         #endregion
@@ -302,14 +302,6 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
-            #region IResolveState Members
-
-            public override string Name => "Part Resolved";
-
-            public override string Code => "Pr";
-
-            #endregion
-
             private void InitialiseEventMap() {
                 EventMap[Events.DestroyEvent] = (no, rsm, s) => States.DestroyedState;
                 EventMap[Events.StartPartResolvingEvent] = (no, rsm, s) => States.ResolvingPartState;
@@ -319,6 +311,14 @@ namespace NakedFramework.Core.Resolve {
                 EventMap[Events.StartSetupEvent] = (no, rsm, s) => States.ResolvingState;
                 EventMap[Events.StartPartSetupEvent] = (no, rsm, s) => States.ResolvingPartState;
             }
+
+            #region IResolveState Members
+
+            public override string Name => "Part Resolved";
+
+            public override string Code => "Pr";
+
+            #endregion
         }
 
         #endregion
@@ -363,14 +363,6 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
-            #region IResolveState Members
-
-            public override string Name => "Resolved";
-
-            public override string Code => "PR";
-
-            #endregion
-
             private void InitialiseEventMap() {
                 EventMap[Events.DestroyEvent] = (no, rsm, s) => States.DestroyedState;
                 EventMap[Events.StartUpdatingEvent] = (no, rsm, s) => States.UpdatingState;
@@ -379,6 +371,14 @@ namespace NakedFramework.Core.Resolve {
                 EventMap[Events.StartSetupEvent] = (no, rsm, s) => States.UpdatingState;
                 EventMap[Events.StartPartSetupEvent] = (no, rsm, s) => States.UpdatingState;
             }
+
+            #region IResolveState Members
+
+            public override string Name => "Resolved";
+
+            public override string Code => "PR";
+
+            #endregion
         }
 
         #endregion
@@ -390,6 +390,13 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
+            private void InitialiseEventMap() {
+                EventMap[Events.EndPartResolvingEvent] = (no, rsm, s) => States.PartResolvedState;
+                EventMap[Events.EndResolvingEvent] = (no, rsm, s) => States.ResolvedState;
+                EventMap[Events.EndSetupEvent] = (no, rsm, s) => States.PartResolvedState;
+                EventMap[Events.EndPartSetupEvent] = (no, rsm, s) => States.PartResolvedState;
+            }
+
             #region IResolveState Members
 
             public override string Name => "Resolving Part";
@@ -397,13 +404,6 @@ namespace NakedFramework.Core.Resolve {
             public override string Code => "P~r";
 
             #endregion
-
-            private void InitialiseEventMap() {
-                EventMap[Events.EndPartResolvingEvent] = (no, rsm, s) => States.PartResolvedState;
-                EventMap[Events.EndResolvingEvent] = (no, rsm, s) => States.ResolvedState;
-                EventMap[Events.EndSetupEvent] = (no, rsm, s) => States.PartResolvedState;
-                EventMap[Events.EndPartSetupEvent] = (no, rsm, s) => States.PartResolvedState;
-            }
         }
 
         #endregion
@@ -415,14 +415,6 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
-            #region IResolveState Members
-
-            public override string Name => "Resolving";
-
-            public override string Code => "P~R";
-
-            #endregion
-
             private void InitialiseEventMap() {
                 EventMap[Events.EndResolvingEvent] = (no, rsm, s) => {
                     Loaded(no, rsm, s);
@@ -432,6 +424,14 @@ namespace NakedFramework.Core.Resolve {
                 EventMap[Events.EndPartSetupEvent] = (no, rsm, s) => States.ResolvedState;
                 EventMap[Events.DestroyEvent] = (no, rsm, s) => States.DestroyedState;
             }
+
+            #region IResolveState Members
+
+            public override string Name => "Resolving";
+
+            public override string Code => "P~R";
+
+            #endregion
         }
 
         #endregion
@@ -443,6 +443,10 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
+            private void InitialiseEventMap() {
+                EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.GhostState;
+            }
+
             #region IResolveState Members
 
             public override string Name => "Serializing Resolved";
@@ -450,10 +454,6 @@ namespace NakedFramework.Core.Resolve {
             public override string Code => "SG";
 
             #endregion
-
-            private void InitialiseEventMap() {
-                EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.GhostState;
-            }
         }
 
         #endregion
@@ -465,6 +465,10 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
+            private void InitialiseEventMap() {
+                EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.PartResolvedState;
+            }
+
             #region IResolveState Members
 
             public override string Name => "Serializing Part Resolved";
@@ -472,10 +476,6 @@ namespace NakedFramework.Core.Resolve {
             public override string Code => "Sr";
 
             #endregion
-
-            private void InitialiseEventMap() {
-                EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.PartResolvedState;
-            }
         }
 
         #endregion
@@ -487,6 +487,10 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
+            private void InitialiseEventMap() {
+                EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.ResolvedState;
+            }
+
             #region IResolveState Members
 
             public override string Name => "Serializing Resolved";
@@ -494,10 +498,6 @@ namespace NakedFramework.Core.Resolve {
             public override string Code => "SR";
 
             #endregion
-
-            private void InitialiseEventMap() {
-                EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.ResolvedState;
-            }
         }
 
         #endregion
@@ -509,6 +509,12 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
+            private void InitialiseEventMap() {
+                EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.TransientState;
+                EventMap[Events.EndSetupEvent] = (no, rsm, s) => States.TransientState;
+                EventMap[Events.EndPartSetupEvent] = (no, rsm, s) => States.TransientState;
+            }
+
             #region IResolveState Members
 
             public override string Name => "Serializing Transient";
@@ -516,12 +522,6 @@ namespace NakedFramework.Core.Resolve {
             public override string Code => "ST";
 
             #endregion
-
-            private void InitialiseEventMap() {
-                EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.TransientState;
-                EventMap[Events.EndSetupEvent] = (no, rsm, s) => States.TransientState;
-                EventMap[Events.EndPartSetupEvent] = (no, rsm, s) => States.TransientState;
-            }
         }
 
         #endregion
@@ -533,6 +533,13 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
+            private void InitialiseEventMap() {
+                EventMap[Events.StartResolvingEvent] = (no, rsm, s) => States.ResolvingState;
+                EventMap[Events.StartSerializingEvent] = (no, rsm, s) => States.SerializingTransientState;
+                EventMap[Events.StartSetupEvent] = (no, rsm, s) => States.SerializingTransientState;
+                EventMap[Events.StartPartSetupEvent] = (no, rsm, s) => States.SerializingTransientState;
+            }
+
             #region IResolveState Members
 
             public override string Name => "Transient";
@@ -540,13 +547,6 @@ namespace NakedFramework.Core.Resolve {
             public override string Code => "T";
 
             #endregion
-
-            private void InitialiseEventMap() {
-                EventMap[Events.StartResolvingEvent] = (no, rsm, s) => States.ResolvingState;
-                EventMap[Events.StartSerializingEvent] = (no, rsm, s) => States.SerializingTransientState;
-                EventMap[Events.StartSetupEvent] = (no, rsm, s) => States.SerializingTransientState;
-                EventMap[Events.StartPartSetupEvent] = (no, rsm, s) => States.SerializingTransientState;
-            }
         }
 
         #endregion
@@ -558,6 +558,12 @@ namespace NakedFramework.Core.Resolve {
                 InitialiseEventMap();
             }
 
+            private void InitialiseEventMap() {
+                EventMap[Events.EndUpdatingEvent] = (no, rsm, s) => States.ResolvedState;
+                EventMap[Events.EndSetupEvent] = (no, rsm, s) => States.ResolvedState;
+                EventMap[Events.EndPartSetupEvent] = (no, rsm, s) => States.ResolvedState;
+            }
+
             #region IResolveState Members
 
             public override string Name => "Updating";
@@ -565,12 +571,6 @@ namespace NakedFramework.Core.Resolve {
             public override string Code => "PU";
 
             #endregion
-
-            private void InitialiseEventMap() {
-                EventMap[Events.EndUpdatingEvent] = (no, rsm, s) => States.ResolvedState;
-                EventMap[Events.EndSetupEvent] = (no, rsm, s) => States.ResolvedState;
-                EventMap[Events.EndPartSetupEvent] = (no, rsm, s) => States.ResolvedState;
-            }
         }
 
         #endregion

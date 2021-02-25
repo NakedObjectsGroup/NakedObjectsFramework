@@ -38,7 +38,6 @@ namespace NakedFramework.ParallelReflector.Reflect {
         protected IReflector Reflector { get; set; }
         protected MethodInfo[] Methods { get; set; }
 
-
         protected IClassStrategy ClassStrategy { get; init; }
 
         protected IFacetFactorySet FacetFactorySet { get; init; }
@@ -46,7 +45,6 @@ namespace NakedFramework.ParallelReflector.Reflect {
         protected Type[] InterfacesTypes => IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray();
 
         protected Type SuperclassType => IntrospectedType.BaseType;
-
 
         public Type IntrospectedType { get; protected set; }
 
@@ -69,18 +67,6 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
         public ITypeSpecBuilder[] Interfaces { get; set; }
         public ITypeSpecBuilder Superclass { get; set; }
-
-
-        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessType(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
-        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(PropertyInfo property, IOneToManyAssociationSpecImmutable collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
-        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessProperty(PropertyInfo property, IOneToOneAssociationSpecImmutable referenceProperty, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
-        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessAction(MethodInfo actionMethod, MethodInfo[] actions, IActionSpecImmutable action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
-        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessParameter(MethodInfo actionMethod, int i, IActionParameterSpecImmutable param, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
 
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!NakedObjects.TypeUtils.IsPublic(typeToIntrospect)) {
@@ -125,6 +111,16 @@ namespace NakedFramework.ParallelReflector.Reflect {
             return metamodel;
         }
 
+        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessType(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(PropertyInfo property, IOneToManyAssociationSpecImmutable collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessProperty(PropertyInfo property, IOneToOneAssociationSpecImmutable referenceProperty, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessAction(MethodInfo actionMethod, MethodInfo[] actions, IActionSpecImmutable action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessParameter(MethodInfo actionMethod, int i, IActionParameterSpecImmutable param, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
         protected void AddAsSubclass(ITypeSpecImmutable spec) => Superclass?.AddSubclass(spec);
 
         private static IList<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable => members.OrderBy(m => m, new MemberOrderComparator<T>()).ToArray();
@@ -151,7 +147,6 @@ namespace NakedFramework.ParallelReflector.Reflect {
             OrderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
             return metamodel;
         }
-
 
         protected MethodInfo[] GetNonPropertyMethods() {
             // no better way to do this (ie no flag that indicates getter/setter)
@@ -180,14 +175,13 @@ namespace NakedFramework.ParallelReflector.Reflect {
             return (collectionSpecs.Union(refSpecs).ToArray(), metamodel);
         }
 
-
         protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (var property in collectionProperties) {
                 var returnType = property.PropertyType;
                 if (IsUnsupportedSystemType(returnType, metamodel)) {
-                   // logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {returnType}");
+                    // logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {returnType}");
                 }
                 else {
                     IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
@@ -211,7 +205,6 @@ namespace NakedFramework.ParallelReflector.Reflect {
             return (specs, metamodel);
         }
 
-
         protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specs = new List<IAssociationSpecImmutable>();
 
@@ -219,7 +212,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
                 var propertyType = property.PropertyType;
 
                 if (IsUnsupportedSystemType(propertyType, metamodel)) {
-                   // logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {propertyType}");
+                    // logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {propertyType}");
                 }
                 else {
                     // create a reference property spec
@@ -267,12 +260,10 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
                 // actions are potentially being nulled within this loop
                 if (actionMethod != null) {
-
                     if (ReturnOrParameterTypesUnsupported(actionMethod, metamodel)) {
                         //logger.LogInformation($"Ignoring action: {actionMethod} on type: {actionMethod.DeclaringType}");
                     }
                     else {
-
                         var fullMethodName = actionMethod.Name;
 
                         var parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
@@ -309,7 +300,6 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
             return (actionSpecs.ToArray(), metamodel);
         }
-
 
         #region Nested type: IntrospectorMethodRemover
 

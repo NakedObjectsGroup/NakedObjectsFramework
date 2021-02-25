@@ -25,6 +25,8 @@ namespace NakedFramework.Metamodel.Facet {
 
         protected MenuImpl Menu { get; set; }
 
+        protected static string GetMenuName(ITypeSpecImmutable spec) => spec is IServiceSpecImmutable ? spec.GetFacet<INamedFacet>().NaturalName : Model.ActionsMenuName;
+
         #region IMenuFacet Members
 
         public IMenuImmutable GetMenu() => Menu;
@@ -32,7 +34,5 @@ namespace NakedFramework.Metamodel.Facet {
         public abstract void CreateMenu(IMetamodelBuilder metamodel);
 
         #endregion
-
-        protected static string GetMenuName(ITypeSpecImmutable spec) => spec is IServiceSpecImmutable ? spec.GetFacet<INamedFacet>().NaturalName : Model.ActionsMenuName;
     }
 }

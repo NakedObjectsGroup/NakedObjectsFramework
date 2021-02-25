@@ -31,8 +31,7 @@ namespace NakedFramework.Metamodel.Facet {
             };
 
         private string HiddenReason(bool persisted) =>
-            Value switch
-            {
+            Value switch {
                 WhenTo.Always => NakedObjects.Resources.NakedObjects.AlwaysHidden,
                 WhenTo.Never => null,
                 WhenTo.UntilPersisted when !persisted => NakedObjects.Resources.NakedObjects.HiddenUntilPersisted,
@@ -40,9 +39,8 @@ namespace NakedFramework.Metamodel.Facet {
                 _ => null
             };
 
-
         public string Hides(IInteractionContext ic) => HiddenReason(ic.Target);
-        
+
         public string HidesForState(bool persisted) => HiddenReason(persisted);
 
         public System.Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));

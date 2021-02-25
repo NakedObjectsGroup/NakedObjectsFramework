@@ -36,6 +36,57 @@ namespace NakedFramework.Core.Interactions {
             ProposedArguments = arguments;
         }
 
+        /// <summary>
+        ///     Factory method to create an an <see cref="InteractionContext" /> to represent
+        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.MemberAccess" />  reading a property.
+        /// </summary>
+        public static InteractionContext AccessMember(INakedObjectsFramework framework,
+                                                      bool programmatic,
+                                                      INakedObjectAdapter target,
+                                                      IIdentifier memberIdentifier) =>
+            new(InteractionType.MemberAccess,
+                framework,
+                programmatic,
+                target,
+                memberIdentifier,
+                null,
+                null);
+
+        /// <summary>
+        ///     Factory method to create an an <see cref="InteractionContext" /> to represent
+        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.PropertyParamModify" />  modifying a property
+        ///     or parameter.
+        /// </summary>
+        public static InteractionContext ModifyingPropParam(INakedObjectsFramework framework,
+                                                            bool programmatic,
+                                                            INakedObjectAdapter target,
+                                                            IIdentifier propertyIdentifier,
+                                                            INakedObjectAdapter proposedArgument) =>
+            new(InteractionType.PropertyParamModify,
+                framework,
+                programmatic,
+                target,
+                propertyIdentifier,
+                proposedArgument,
+                null);
+
+        /// <summary>
+        ///     Factory method to create an an <see cref="InteractionContext" /> to represent
+        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ActionInvoke" />  invoking an action.
+        /// </summary>
+        public static InteractionContext InvokingAction(INakedObjectsFramework framework,
+                                                        bool programmatic,
+                                                        INakedObjectAdapter target,
+                                                        IIdentifier actionIdentifier,
+                                                        INakedObjectAdapter[] arguments) =>
+            new(InteractionType.ActionInvoke,
+                framework,
+                programmatic,
+                target,
+                actionIdentifier,
+                null,
+                arguments);
+
         #region IInteractionContext Members
 
         /// <summary>
@@ -121,56 +172,6 @@ namespace NakedFramework.Core.Interactions {
         public bool TypeEquals(InteractionType other) => InteractionType.Equals(other);
 
         #endregion
-
-        /// <summary>
-        ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.MemberAccess" />  reading a property.
-        /// </summary>
-        public static InteractionContext AccessMember(INakedObjectsFramework framework,
-                                                      bool programmatic,
-                                                      INakedObjectAdapter target,
-                                                      IIdentifier memberIdentifier) =>
-            new InteractionContext(InteractionType.MemberAccess,
-                framework,
-                programmatic,
-                target,
-                memberIdentifier,
-                null,
-                null);
-
-        /// <summary>
-        ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.PropertyParamModify" />  modifying a property or parameter.
-        /// </summary>
-        public static InteractionContext ModifyingPropParam(INakedObjectsFramework framework,
-                                                            bool programmatic,
-                                                            INakedObjectAdapter target,
-                                                            IIdentifier propertyIdentifier,
-                                                            INakedObjectAdapter proposedArgument) =>
-            new InteractionContext(InteractionType.PropertyParamModify,
-               framework,
-                programmatic,
-                target,
-                propertyIdentifier,
-                proposedArgument,
-                null);
-
-        /// <summary>
-        ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ActionInvoke" />  invoking an action.
-        /// </summary>
-        public static InteractionContext InvokingAction(INakedObjectsFramework framework,
-                                                        bool programmatic,
-                                                        INakedObjectAdapter target,
-                                                        IIdentifier actionIdentifier,
-                                                        INakedObjectAdapter[] arguments) =>
-            new InteractionContext(InteractionType.ActionInvoke,
-                framework,
-                programmatic,
-                target,
-                actionIdentifier,
-                null,
-                arguments);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

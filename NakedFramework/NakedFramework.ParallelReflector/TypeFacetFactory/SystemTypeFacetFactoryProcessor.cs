@@ -17,21 +17,16 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    public abstract class SystemTypeFacetFactoryProcessor : FacetFactoryAbstract, IObjectFacetFactoryProcessor
-    {
+    public abstract class SystemTypeFacetFactoryProcessor : FacetFactoryAbstract, IObjectFacetFactoryProcessor {
         protected SystemTypeFacetFactoryProcessor(int numericOrder,
-                                              ILoggerFactory loggerFactory,
-                                              FeatureType featureTypes) : base(numericOrder, loggerFactory, featureTypes) { }
-
+                                                  ILoggerFactory loggerFactory,
+                                                  FeatureType featureTypes) : base(numericOrder, loggerFactory, featureTypes) { }
 
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
-
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
-
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
-
 
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
     }

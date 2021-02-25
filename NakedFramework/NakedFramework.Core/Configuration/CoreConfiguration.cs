@@ -25,7 +25,6 @@ namespace NakedFramework.Core.Configuration {
         /// <remarks>
         ///     These types will always be introspected and so are implicitly 'whitelisted'
         /// </remarks>
-        ///
         public List<Type> SupportedSystemTypes { get; set; } = ReflectorDefaults.DefaultSystemTypes.ToList();
 
         public int HashMapCapacity { get; set; }

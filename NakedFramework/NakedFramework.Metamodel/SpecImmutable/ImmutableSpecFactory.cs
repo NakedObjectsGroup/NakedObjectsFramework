@@ -12,7 +12,7 @@ using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.SpecImmutable {
     public static class ImmutableSpecFactory {
-        private static readonly Dictionary<Type, ITypeSpecBuilder> SpecCache = new Dictionary<Type, ITypeSpecBuilder>();
+        private static readonly Dictionary<Type, ITypeSpecBuilder> SpecCache = new();
 
         public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec, IIdentifier identifier) => new ActionParameterSpecImmutable(spec, identifier);
 
@@ -44,12 +44,12 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService, bool isRecognized) =>
             isService
-                ? (ITypeSpecBuilder)CreateServiceSpecImmutable(type, isRecognized)
+                ? (ITypeSpecBuilder) CreateServiceSpecImmutable(type, isRecognized)
                 : CreateObjectSpecImmutable(type, isRecognized);
 
-        public static IAssociationSpecImmutable CreateSpecAdapter(IActionSpecImmutable  actionSpecImmutable) =>
-            actionSpecImmutable.ReturnSpec.IsCollection 
-                ? (IAssociationSpecImmutable) new ActionToCollectionSpecAdapter(actionSpecImmutable) 
+        public static IAssociationSpecImmutable CreateSpecAdapter(IActionSpecImmutable actionSpecImmutable) =>
+            actionSpecImmutable.ReturnSpec.IsCollection
+                ? (IAssociationSpecImmutable) new ActionToCollectionSpecAdapter(actionSpecImmutable)
                 : new ActionToAssociationSpecAdapter(actionSpecImmutable);
 
         public static void ClearCache() {

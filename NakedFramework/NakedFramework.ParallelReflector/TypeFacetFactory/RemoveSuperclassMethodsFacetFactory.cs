@@ -25,8 +25,7 @@ namespace NakedFramework.ParallelReflector.TypeFacetFactory {
     /// <para>
     ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
     /// </para>
-    public sealed class RemoveSuperclassMethodsFacetFactory : SystemTypeFacetFactoryProcessor
-    {
+    public sealed class RemoveSuperclassMethodsFacetFactory : SystemTypeFacetFactoryProcessor {
         public RemoveSuperclassMethodsFacetFactory(IFacetFactoryOrder<RemoveSuperclassMethodsFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Objects) { }
 
@@ -44,7 +43,7 @@ namespace NakedFramework.ParallelReflector.TypeFacetFactory {
             }
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var currentType = type;
             while (currentType is not null) {
                 if (FasterTypeUtils.IsSystem(currentType)) {

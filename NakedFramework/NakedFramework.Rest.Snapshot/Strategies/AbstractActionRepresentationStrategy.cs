@@ -18,9 +18,9 @@ using NakedFramework.Rest.Snapshot.Utility;
 
 namespace NakedFramework.Rest.Snapshot.Strategies {
     public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
+        private readonly UriMtHelper helper;
         private readonly RelType self;
         private IEnumerable<ParameterRepresentation> parameterList;
-        private readonly UriMtHelper helper;
 
         protected AbstractActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
@@ -126,7 +126,8 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
             if (createNewProperties.Any()) {
                 ext ??= new Dictionary<string, object>();
-                ext[JsonPropertyNames.CustomCreateNew] = string.Join(',', createNewProperties); ;
+                ext[JsonPropertyNames.CustomCreateNew] = string.Join(',', createNewProperties);
+                ;
             }
 
             var editProperties = ActionContext.Action.EditProperties;
@@ -144,7 +145,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
             var method = GetRelMethod();
             return LinkRepresentation.Create(OidStrategy, new InvokeRelType(new UriMtHelper(OidStrategy, Req, ActionContext)) {Method = method}, Flags,
-                new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
+                                             new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
         }
 
         protected RelMethod GetRelMethod() {

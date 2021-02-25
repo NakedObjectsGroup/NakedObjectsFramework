@@ -56,7 +56,7 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
 
         protected override string DoEncode(Guid obj) => obj.ToString();
 
-        protected override Guid DoRestore(string data) => new Guid(data);
+        protected override Guid DoRestore(string data) => new(data);
 
         public override string ToString() => "GuidAdapter: ";
     }

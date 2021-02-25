@@ -25,7 +25,6 @@ namespace NakedFramework.Metamodel.Menu {
         public IActionSpecImmutable Action { get; set; }
         public string Grouping => Action.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
 
-
         #endregion
     }
 }

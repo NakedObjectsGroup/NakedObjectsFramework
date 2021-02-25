@@ -16,8 +16,8 @@ namespace NakedFramework.Core.Component {
     public sealed class MessageBroker : IMessageBroker {
         private readonly ILogger<MessageBroker> logger;
 
-        private readonly List<string> messages = new List<string>();
-        private readonly List<string> warnings = new List<string>();
+        private readonly List<string> messages = new();
+        private readonly List<string> warnings = new();
 
         public MessageBroker(ILogger<MessageBroker> logger) => this.logger = logger;
 

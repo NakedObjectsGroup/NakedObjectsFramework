@@ -22,14 +22,14 @@ namespace NakedFramework.Core.Adapter {
         private readonly ILogger<NakedObjectAdapter> logger;
         private ITypeSpec spec;
 
-        public NakedObjectAdapter( object poco,
+        public NakedObjectAdapter(object poco,
                                   IOid oid,
                                   INakedObjectsFramework framework,
                                   ILoggerFactory loggerFactory,
                                   ILogger<NakedObjectAdapter> logger) {
             this.framework = framework;
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
-        
+
             if (poco is INakedObjectAdapter) {
                 throw new AdapterException(logger.LogAndReturn($"Adapter can't be used to adapt an adapter: {poco}"));
             }
@@ -43,6 +43,70 @@ namespace NakedFramework.Core.Adapter {
         private string DefaultTitle { get; set; }
 
         private ITypeOfFacet TypeOfFacet => Spec.GetFacet<ITypeOfFacet>();
+
+        private ITypeSpec SetSpec() {
+            spec = framework.MetamodelManager.GetSpecification(Object.GetType());
+            DefaultTitle = "A" + (" " + spec.SingularName).ToLower();
+            return spec;
+        }
+
+        private string CollectionTitleString(ICollectionFacet facet) {
+            var size = CanCount() ? facet.AsEnumerable(this, framework.NakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
+            var elementSpecification = TypeOfFacet == null ? null : framework.MetamodelManager.GetSpecification(TypeOfFacet.GetValueSpec(this, framework.MetamodelManager.Metamodel));
+            return CollectionUtils.CollectionTitleString(elementSpecification, size);
+        }
+
+        private bool CanCount() => !Spec.ContainsFacet<INotCountedFacet>();
+
+        public override string ToString() {
+            var str = new AsString(this);
+            ToString(str);
+
+            // don't do title of unresolved objects as this may force the resolving of the object.
+            if (ResolveState.IsTransient() || ResolveState.IsResolved() || ResolveState.IsAggregated()) {
+                str.Append("title", TitleString());
+            }
+
+            str.AppendAsHex("poco-hash", Object.GetHashCode());
+            return str.ToString();
+        }
+
+        private bool ShouldSetVersion(IVersion newVersion) => newVersion.IsDifferent(Version);
+
+        private void ToString(AsString str) {
+            str.Append(ResolveState.CurrentState.Code);
+
+            if (Oid != null) {
+                str.Append(":");
+                str.Append(Oid.ToString());
+            }
+            else {
+                str.Append(":-");
+            }
+
+            str.AddComma();
+            if (spec == null) {
+                str.Append("class", Object.GetType().FullName);
+            }
+            else {
+                str.Append("specification", spec.ShortName);
+                str.Append("Type", spec.FullName);
+            }
+
+            if (Object != null && NakedObjects.TypeUtils.IsProxy(Object.GetType())) {
+                str.Append("proxy", Object.GetType().FullName);
+            }
+            else {
+                str.Append("proxy", "None");
+            }
+
+            str.Append("version", Version?.AsSequence());
+        }
+
+        // todo - better to handle null facet or bind in noop facet ? 
+        private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>()?.Invoke(this, framework);
+
+        private object CallCallbackAndReturn<T>() where T : ICallbackFacet => Spec.GetFacet<T>()?.InvokeAndReturn(this, framework);
 
         #region INakedObjectAdapter Members
 
@@ -179,73 +243,6 @@ namespace NakedFramework.Core.Adapter {
         public object UpdatedAndReturn() => CallCallbackAndReturn<IUpdatedCallbackFacet>();
 
         #endregion
-
-        private ITypeSpec SetSpec() {
-            spec = framework.MetamodelManager.GetSpecification(Object.GetType());
-            DefaultTitle = "A" + (" " + spec.SingularName).ToLower();
-            return spec;
-        }
-
-        private string CollectionTitleString(ICollectionFacet facet) {
-            var size = CanCount() ? facet.AsEnumerable(this, framework.NakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
-            var elementSpecification = TypeOfFacet == null ? null : framework.MetamodelManager.GetSpecification(TypeOfFacet.GetValueSpec(this, framework.MetamodelManager.Metamodel));
-            return CollectionUtils.CollectionTitleString(elementSpecification, size);
-        }
-
-        private bool CanCount() => !Spec.ContainsFacet<INotCountedFacet>();
-
-        public override string ToString() {
-            var str = new AsString(this);
-            ToString(str);
-
-            // don't do title of unresolved objects as this may force the resolving of the object.
-            if (ResolveState.IsTransient() || ResolveState.IsResolved() || ResolveState.IsAggregated()) {
-                str.Append("title", TitleString());
-            }
-
-            str.AppendAsHex("poco-hash", Object.GetHashCode());
-            return str.ToString();
-        }
-
-        private bool ShouldSetVersion(IVersion newVersion) => newVersion.IsDifferent(Version);
-
-        private void ToString(AsString str) {
-            str.Append(ResolveState.CurrentState.Code);
-
-            if (Oid != null) {
-                str.Append(":");
-                str.Append(Oid.ToString());
-            }
-            else {
-                str.Append(":-");
-            }
-
-            str.AddComma();
-            if (spec == null) {
-                str.Append("class", Object.GetType().FullName);
-            }
-            else {
-                str.Append("specification", spec.ShortName);
-                str.Append("Type", spec.FullName);
-            }
-
-            if (Object != null && NakedObjects.TypeUtils.IsProxy(Object.GetType())) {
-                str.Append("proxy", Object.GetType().FullName);
-            }
-            else {
-                str.Append("proxy", "None");
-            }
-
-            str.Append("version", Version?.AsSequence());
-        }
-
-        // todo - better to handle null facet or bind in noop facet ? 
-        private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>()?.Invoke(this, framework);
-
-        private object CallCallbackAndReturn<T>() where T : ICallbackFacet
-        {
-            return Spec.GetFacet<T>()?.InvokeAndReturn(this, framework);
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

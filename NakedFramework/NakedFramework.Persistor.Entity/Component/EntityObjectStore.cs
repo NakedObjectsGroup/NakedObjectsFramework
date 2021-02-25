@@ -31,7 +31,6 @@ using NakedFramework.Core.Util;
 using NakedFramework.Persistor.Entity.Configuration;
 using NakedFramework.Persistor.Entity.Util;
 using NakedObjects;
-using ObjectContext = System.Data.Entity.Core.Objects.ObjectContext;
 
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
 
@@ -46,6 +45,10 @@ namespace NakedFramework.Persistor.Entity.Component {
         private IDictionary<CodeFirstEntityContextConfiguration, LocalContext> contexts = new Dictionary<CodeFirstEntityContextConfiguration, LocalContext>();
         internal CreateAdapterDelegate createAdapter;
         internal CreateAggregatedAdapterDelegate createAggregatedAdapter;
+
+        public Func<IDictionary<object, object>, bool> FunctionalPostSave = _ => false;
+
+        private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
         internal Action<INakedObjectAdapter> handleLoaded;
         private IDomainObjectInjector injector;
         private Func<Type, ITypeSpec> loadSpecification;
@@ -268,18 +271,13 @@ namespace NakedFramework.Persistor.Entity.Component {
             contexts.Values.ForEach(c => c.WrappedObjectContext.AcceptAllChanges());
         }
 
-        public Func<IDictionary<object, object>, bool> FunctionalPostSave = _ => false;
-
-        private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
-
         private IList<(object original, object updated)> SetFunctionalProxyMap(IList<(object original, object updated)> updatedTuples) {
             functionalProxyMap = updatedTuples.ToDictionary(t => t.original, t => t.updated);
             return updatedTuples;
         }
 
         private bool PostSave() {
-
-            bool changes = FunctionalPostSave(functionalProxyMap);
+            var changes = FunctionalPostSave(functionalProxyMap);
 
             // two separate loops as PostSave may have side-affects in previously processed contexts
             contexts.Values.ForEach(c => c.PostSave(this));
@@ -351,7 +349,6 @@ namespace NakedFramework.Persistor.Entity.Component {
             var keyValues = eoid.Key;
             return ObjectContextUtils.MemberValueMap(idmembers, keyValues);
         }
-
 
         public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, NakedObjects.TypeUtils.GetType(hint.FullName));
 
@@ -426,7 +423,6 @@ namespace NakedFramework.Persistor.Entity.Component {
             }
         }
 
-     
         private void ValidateIfRequired(INakedObjectAdapter adapter) {
             if (adapter.ResolveState.IsPersistent()) {
                 if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
@@ -439,7 +435,7 @@ namespace NakedFramework.Persistor.Entity.Component {
         }
 
         private void SavingChangesHandler(object sender, EventArgs e) {
-            var changedObjects =  ObjectContextUtils.GetChangedObjectsInContext((ObjectContext) sender);
+            var changedObjects = ObjectContextUtils.GetChangedObjectsInContext((ObjectContext) sender);
             var adaptedObjects = changedObjects.Where(o => NakedObjects.TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => nakedObjectManager.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
@@ -496,7 +492,6 @@ namespace NakedFramework.Persistor.Entity.Component {
             return field.GetNakedObject(nakedObjectAdapter).GetAsEnumerable(manager).Count();
         }
 
-
         #region Delegates
 
         public delegate INakedObjectAdapter CreateAdapterDelegate(IOid oid, object domainObject);
@@ -515,7 +510,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         public void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool parentIsGhost) {
             var proxiedType = adapter.Object.GetEntityProxiedType();
-            
+
             if (contexts.All(c => c.Value.IsAlwaysUnrecognised(proxiedType))) {
                 return;
             }
@@ -735,7 +730,6 @@ namespace NakedFramework.Persistor.Entity.Component {
 
             return toCheck;
         }
-
 
         #endregion
 

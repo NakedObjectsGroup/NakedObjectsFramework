@@ -23,10 +23,44 @@ namespace NakedFramework.Core.Spec {
         private bool? isFindMenuEnabled;
 
         public OneToOneAssociationSpec(IOneToOneAssociationSpecImmutable association, INakedObjectsFramework framework)
-            : base(association, framework) {
-        }
+            : base(association, framework) { }
 
         public override IObjectSpec ElementSpec => null;
+
+        private INakedObjectAdapter GetAssociation(INakedObjectAdapter fromObjectAdapter) {
+            var obj = GetFacet<IPropertyAccessorFacet>().GetProperty(fromObjectAdapter, Framework);
+            if (obj == null) {
+                return null;
+            }
+
+            var spec = (IObjectSpec) Framework.MetamodelManager.GetSpecification(obj.GetType());
+            return spec.ContainsFacet(typeof(IComplexTypeFacet))
+                ? Framework.NakedObjectManager.CreateAggregatedAdapter(fromObjectAdapter, Id, obj)
+                : Framework.NakedObjectManager.CreateAdapter(obj, null, null);
+        }
+
+        private (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultObject(INakedObjectAdapter fromObjectAdapter) {
+            var facet = this.GetOpFacet<IPropertyDefaultFacet>() ?? ReturnSpec.GetOpFacet<IDefaultedFacet>();
+
+            var (domainObject, typeOfDefaultValue) = facet switch {
+                IPropertyDefaultFacet pdf => (pdf.GetDefault(fromObjectAdapter), TypeOfDefaultValue.Explicit),
+                IDefaultedFacet df when !IsNullable => (df.Default, TypeOfDefaultValue.Implicit),
+                _ when fromObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
+                _ when fromObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),
+                _ => (null, TypeOfDefaultValue.Implicit)
+            };
+
+            return (Framework.NakedObjectManager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
+        }
+
+        public override string ToString() {
+            var str = new AsString(this);
+            str.Append(base.ToString());
+            str.AddComma();
+            str.Append("persisted", IsPersisted);
+            str.Append("type", ReturnSpec.ShortName);
+            return str.ToString();
+        }
 
         #region IOneToOneAssociationSpec Members
 
@@ -106,7 +140,7 @@ namespace NakedFramework.Core.Spec {
             }
 
             var buf = new InteractionBuffer();
-            IInteractionContext ic = InteractionContext.ModifyingPropParam(Framework,false, inObjectAdapter, Identifier, reference);
+            IInteractionContext ic = InteractionContext.ModifyingPropParam(Framework, false, inObjectAdapter, Identifier, reference);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
@@ -138,41 +172,6 @@ namespace NakedFramework.Core.Spec {
         }
 
         #endregion
-
-        private INakedObjectAdapter GetAssociation(INakedObjectAdapter fromObjectAdapter) {
-            var obj = GetFacet<IPropertyAccessorFacet>().GetProperty(fromObjectAdapter, Framework);
-            if (obj == null) {
-                return null;
-            }
-
-            var spec = (IObjectSpec)Framework.MetamodelManager.GetSpecification(obj.GetType());
-            return spec.ContainsFacet(typeof(IComplexTypeFacet))
-                ? Framework.NakedObjectManager.CreateAggregatedAdapter(fromObjectAdapter, Id, obj)
-                : Framework.NakedObjectManager.CreateAdapter(obj, null, null);
-        }
-
-        private (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultObject(INakedObjectAdapter fromObjectAdapter) {
-            var facet = this.GetOpFacet<IPropertyDefaultFacet>() ?? ReturnSpec.GetOpFacet<IDefaultedFacet>();
-
-            var (domainObject, typeOfDefaultValue) = facet switch {
-                IPropertyDefaultFacet pdf => (pdf.GetDefault(fromObjectAdapter), TypeOfDefaultValue.Explicit),
-                IDefaultedFacet df when !IsNullable => (df.Default, TypeOfDefaultValue.Implicit),
-                _ when fromObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
-                _ when fromObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),
-                _ => (null, TypeOfDefaultValue.Implicit)
-            };
-
-            return (Framework.NakedObjectManager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
-        }
-
-        public override string ToString() {
-            var str = new AsString(this);
-            str.Append(base.ToString());
-            str.AddComma();
-            str.Append("persisted", IsPersisted);
-            str.Append("type", ReturnSpec.ShortName);
-            return str.ToString();
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

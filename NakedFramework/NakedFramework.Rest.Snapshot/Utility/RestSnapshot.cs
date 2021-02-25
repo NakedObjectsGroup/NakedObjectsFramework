@@ -27,14 +27,12 @@ using EntityTagHeaderValue = Microsoft.Net.Http.Headers.EntityTagHeaderValue;
 namespace NakedFramework.Rest.Snapshot.Utility {
     public class RestSnapshot {
         private readonly IList<string> allowHeaders = new List<string>();
+        private readonly RestControlFlags flags;
         private readonly IOidStrategy oidStrategy;
         private readonly Action<ILogger> populator;
         private readonly HttpRequest requestMessage;
-        private readonly RestControlFlags flags;
         private readonly IList<WarningHeaderValue> warningHeaders = new List<WarningHeaderValue>();
 
-        public static Func<Func<string>, string> DebugFilter { get; set; }
-        
         private RestSnapshot(IOidStrategy oidStrategy, HttpRequest req, bool validateAsJson, RestControlFlags flags) {
             this.oidStrategy = oidStrategy;
             requestMessage = req;
@@ -173,6 +171,8 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                 SetHeaders(logger);
             };
         }
+
+        public static Func<Func<string>, string> DebugFilter { get; set; }
 
         public IRepresentation Representation { get; private set; }
 

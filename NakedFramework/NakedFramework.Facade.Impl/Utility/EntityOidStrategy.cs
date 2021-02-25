@@ -31,102 +31,6 @@ namespace NakedFramework.Facade.Impl.Utility {
             this.logger = logger;
         }
 
-        #region IOidStrategy Members
-
-        public IFrameworkFacade FrameworkFacade { get; set; }
-
-        public IOidTranslator OidTranslator => FrameworkFacade.OidTranslator;
-
-        public object GetDomainObjectByOid(IOidTranslation objectId) {
-            var adapter = GetAdapterByOidTranslation(objectId);
-            return adapter == null ? null : GetAdapterByOidTranslation(objectId).GetDomainObject();
-        }
-
-        public IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId) {
-            var adapter = GetAdapterByOidTranslation(objectId);
-            return adapter == null ? null : ObjectFacade.Wrap(adapter, FrameworkFacade, framework);
-        }
-
-        public object GetServiceByServiceName(IOidTranslation serviceName) {
-            var oid = serviceName.GetSid(this);
-            return GetAdapterByOid(oid?.Value as IOid).GetDomainObject();
-        }
-
-        private ITypeSpec GetServiceTypeSpecByServiceName(IOidTranslation id) {
-            var type = ValidateServiceId(id);
-            ITypeSpec spec;
-
-            try {
-                spec = framework.MetamodelManager.GetSpecification(type);
-            }
-            catch (System.Exception e) {
-                throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
-            }
-
-            if (spec == null) {
-                throw new ServiceResourceNotFoundNOSException(type.ToString());
-            }
-
-            return spec;
-        }
-
-        public ITypeFacade GetServiceTypeByServiceName(IOidTranslation id) => new TypeFacade(GetServiceTypeSpecByServiceName(id), FrameworkFacade, framework);
-
-        public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
-            var type = GetType(linkDomainType);
-            var spec = framework.MetamodelManager.GetSpecification(type);
-            return new TypeFacade(spec, FrameworkFacade, framework);
-        }
-
-        public string GetLinkDomainTypeBySpecification(ITypeFacade spec) => GetCode(spec);
-
-        public IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id) {
-            var oid = framework.LifecycleManager.RestoreOid(id.Tokenize(), framework);
-            return new OidFacade(oid);
-        }
-
-        public IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id) {
-            var oid = framework.LifecycleManager.RestoreOid(id.Tokenize(), framework);
-            return new OidFacade(oid);
-        }
-
-        public IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
-            var type = ValidateObjectId(id);
-            var keys = GetKeys(id.InstanceId, type);
-            var adapter = GetObject(keys, type);
-
-            if (adapter == null) {
-                throw new ObjectResourceNotFoundNOSException($"{id}: null adapter");
-            }
-
-            return new OidFacade(adapter.Oid);
-        }
-
-        public IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
-        
-            ITypeSpec spec = GetServiceTypeSpecByServiceName(id);
-            
-            if (spec is IServiceSpec) {
-
-                var service = framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
-
-                if (service == null) {
-                    throw new ServiceResourceNotFoundNOSException(spec.FullName);
-                }
-
-                return new OidFacade(service.Oid);
-            }
-
-            if (!spec.IsStatic) {
-                // we were looking for a static class masquerading as a service 
-                throw new ServiceResourceNotFoundNOSException(spec.FullName);
-            }
-
-            return null;
-        }
-
-        #endregion
-
         private INakedObjectAdapter GetAdapterByOidTranslation(IOidTranslation objectId) {
             if (objectId == null) {
                 return null;
@@ -239,5 +143,99 @@ namespace NakedFramework.Facade.Impl.Utility {
 
             return type;
         }
+
+        #region IOidStrategy Members
+
+        public IFrameworkFacade FrameworkFacade { get; set; }
+
+        public IOidTranslator OidTranslator => FrameworkFacade.OidTranslator;
+
+        public object GetDomainObjectByOid(IOidTranslation objectId) {
+            var adapter = GetAdapterByOidTranslation(objectId);
+            return adapter == null ? null : GetAdapterByOidTranslation(objectId).GetDomainObject();
+        }
+
+        public IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId) {
+            var adapter = GetAdapterByOidTranslation(objectId);
+            return adapter == null ? null : ObjectFacade.Wrap(adapter, FrameworkFacade, framework);
+        }
+
+        public object GetServiceByServiceName(IOidTranslation serviceName) {
+            var oid = serviceName.GetSid(this);
+            return GetAdapterByOid(oid?.Value as IOid).GetDomainObject();
+        }
+
+        private ITypeSpec GetServiceTypeSpecByServiceName(IOidTranslation id) {
+            var type = ValidateServiceId(id);
+            ITypeSpec spec;
+
+            try {
+                spec = framework.MetamodelManager.GetSpecification(type);
+            }
+            catch (System.Exception e) {
+                throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
+            }
+
+            if (spec == null) {
+                throw new ServiceResourceNotFoundNOSException(type.ToString());
+            }
+
+            return spec;
+        }
+
+        public ITypeFacade GetServiceTypeByServiceName(IOidTranslation id) => new TypeFacade(GetServiceTypeSpecByServiceName(id), FrameworkFacade, framework);
+
+        public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
+            var type = GetType(linkDomainType);
+            var spec = framework.MetamodelManager.GetSpecification(type);
+            return new TypeFacade(spec, FrameworkFacade, framework);
+        }
+
+        public string GetLinkDomainTypeBySpecification(ITypeFacade spec) => GetCode(spec);
+
+        public IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id) {
+            var oid = framework.LifecycleManager.RestoreOid(id.Tokenize(), framework);
+            return new OidFacade(oid);
+        }
+
+        public IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id) {
+            var oid = framework.LifecycleManager.RestoreOid(id.Tokenize(), framework);
+            return new OidFacade(oid);
+        }
+
+        public IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
+            var type = ValidateObjectId(id);
+            var keys = GetKeys(id.InstanceId, type);
+            var adapter = GetObject(keys, type);
+
+            if (adapter == null) {
+                throw new ObjectResourceNotFoundNOSException($"{id}: null adapter");
+            }
+
+            return new OidFacade(adapter.Oid);
+        }
+
+        public IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
+            var spec = GetServiceTypeSpecByServiceName(id);
+
+            if (spec is IServiceSpec) {
+                var service = framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
+
+                if (service == null) {
+                    throw new ServiceResourceNotFoundNOSException(spec.FullName);
+                }
+
+                return new OidFacade(service.Oid);
+            }
+
+            if (!spec.IsStatic) {
+                // we were looking for a static class masquerading as a service 
+                throw new ServiceResourceNotFoundNOSException(spec.FullName);
+            }
+
+            return null;
+        }
+
+        #endregion
     }
 }

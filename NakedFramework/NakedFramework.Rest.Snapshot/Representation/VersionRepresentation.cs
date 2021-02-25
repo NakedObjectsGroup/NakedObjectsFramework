@@ -79,6 +79,6 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetLinks(HomePageRelType homePageRelType) => Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
 
-        public static VersionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IDictionary<string, string> capabilities, RestControlFlags flags) => new VersionRepresentation(oidStrategy, req, capabilities, flags);
+        public static VersionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IDictionary<string, string> capabilities, RestControlFlags flags) => new(oidStrategy, req, capabilities, flags);
     }
 }

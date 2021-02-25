@@ -32,10 +32,12 @@ namespace NakedFramework.Metamodel.Menu {
             }
         }
 
-        public MenuImpl(IMetamodel metamodel, string name, string id = null)
-        {
+        public MenuImpl(IMetamodel metamodel, string name, string id = null) {
             Metamodel = metamodel;
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(id)) throw new System.Exception($"Menu Name and Id must not be null, unless a default type is specified");
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(id)) {
+                throw new System.Exception("Menu Name and Id must not be null, unless a default type is specified");
+            }
+
             Name = name;
             Id = id;
         }
@@ -45,79 +47,6 @@ namespace NakedFramework.Metamodel.Menu {
         private IList<IActionSpecImmutable> ActionsForObject => ObjectSpec.ObjectActions.ToList();
 
         private IList<IActionSpecImmutable> ActionsForType(Type type) => Metamodel.GetSpecification(type).ObjectActions.ToList();
-        #region IMenu Members
-
-        public IMenu WithMenuName(string name) {
-            Name = name;
-            return this;
-        }
-
-        private Type Type { get; set; }
-
-        public IMenu WithId(string id) {
-            Id = id;
-            return this;
-        }
-
-        public IMenu AddAction(string actionName) {
-            if(Type == null)
-            {
-                throw new System.Exception($"No type has been specified for the action: {actionName}");
-            }
-            var actionSpec = ActionsForObject.FirstOrDefault(a => a.Identifier.MemberName == actionName);
-            if (actionSpec == null) {
-                throw new ReflectionException($"No such action: {actionName} on {Type}");
-            }
-
-            AddMenuItem(new MenuAction(actionSpec));
-            return this;
-        }
-
-        public IMenu CreateSubMenu(string subMenuName) => CreateMenuImmutableAsSubMenu(subMenuName);
-
-        public IMenu GetSubMenu(string menuName) {
-            var menu = GetSubMenuIfExists(menuName);
-            if (menu == null) {
-                throw new System.Exception($"No sub-menu named {menuName}");
-            }
-
-            return menu;
-        }
-
-        public IMenu AddRemainingNativeActions() {
-            if (Type == null)
-            {
-                throw new System.Exception($"No default type has been specified (as the source for the remaining native actions)");
-            }
-            AddOrderableElementsToMenu(ActionsForObject, this);
-            return this;
-        }
-
-        public IMenu AddContributedActions() {
-            if (Type == null)
-            {
-                throw new System.Exception($"No default type has been specified (as the source for the contributed actions)");
-            }
-            ObjectSpec?.ContributedActions.ForEach(AddContributed);
-            return this;
-        }
-
-       public IMenu AddAction(Type fromType, string actionName)
-        {
-            var actionSpec = ActionsForType(fromType).FirstOrDefault(a => a.Identifier.MemberName == actionName);
-            if (actionSpec == null)
-            {
-                throw new ReflectionException($"No such action: {actionName} on {fromType}");
-            }
-            AddMenuItem(new MenuAction(actionSpec));
-            return this;
-        }
-        public IMenu AddRemainingActions(Type fromType)
-        {
-            AddOrderableElementsToMenu(ActionsForType(fromType), this);
-            return this;
-        }
-        #endregion
 
         private MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName, string id = null) {
             var subMenu = new MenuImpl(Metamodel, Type, false, subMenuName);
@@ -157,11 +86,9 @@ namespace NakedFramework.Metamodel.Menu {
 
         private void AddMenuItem(IMenuItemImmutable item) => items = items.Add(item); //Only way to add to an immutable collection
 
-
-        private void AddContributed(IActionSpecImmutable ca)
-        {
+        private void AddContributed(IActionSpecImmutable ca) {
             if (ObjectSpec is IObjectSpecImmutable objectSpec) {
-                 AddContributedAction(ca, objectSpec);
+                AddContributedAction(ca, objectSpec);
             }
             else {
                 AddContributedFunction(ca);
@@ -186,6 +113,80 @@ namespace NakedFramework.Metamodel.Menu {
                 AddMenuItem(new MenuAction(ca));
             }
         }
+
+        #region IMenu Members
+
+        public IMenu WithMenuName(string name) {
+            Name = name;
+            return this;
+        }
+
+        private Type Type { get; set; }
+
+        public IMenu WithId(string id) {
+            Id = id;
+            return this;
+        }
+
+        public IMenu AddAction(string actionName) {
+            if (Type == null) {
+                throw new System.Exception($"No type has been specified for the action: {actionName}");
+            }
+
+            var actionSpec = ActionsForObject.FirstOrDefault(a => a.Identifier.MemberName == actionName);
+            if (actionSpec == null) {
+                throw new ReflectionException($"No such action: {actionName} on {Type}");
+            }
+
+            AddMenuItem(new MenuAction(actionSpec));
+            return this;
+        }
+
+        public IMenu CreateSubMenu(string subMenuName) => CreateMenuImmutableAsSubMenu(subMenuName);
+
+        public IMenu GetSubMenu(string menuName) {
+            var menu = GetSubMenuIfExists(menuName);
+            if (menu == null) {
+                throw new System.Exception($"No sub-menu named {menuName}");
+            }
+
+            return menu;
+        }
+
+        public IMenu AddRemainingNativeActions() {
+            if (Type == null) {
+                throw new System.Exception("No default type has been specified (as the source for the remaining native actions)");
+            }
+
+            AddOrderableElementsToMenu(ActionsForObject, this);
+            return this;
+        }
+
+        public IMenu AddContributedActions() {
+            if (Type == null) {
+                throw new System.Exception("No default type has been specified (as the source for the contributed actions)");
+            }
+
+            ObjectSpec?.ContributedActions.ForEach(AddContributed);
+            return this;
+        }
+
+        public IMenu AddAction(Type fromType, string actionName) {
+            var actionSpec = ActionsForType(fromType).FirstOrDefault(a => a.Identifier.MemberName == actionName);
+            if (actionSpec == null) {
+                throw new ReflectionException($"No such action: {actionName} on {fromType}");
+            }
+
+            AddMenuItem(new MenuAction(actionSpec));
+            return this;
+        }
+
+        public IMenu AddRemainingActions(Type fromType) {
+            AddOrderableElementsToMenu(ActionsForType(fromType), this);
+            return this;
+        }
+
+        #endregion
 
         #region other properties
 

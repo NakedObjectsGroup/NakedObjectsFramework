@@ -64,6 +64,6 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             SetEtag(target);
         }
 
-        public static CollectionValueRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) => new CollectionValueRepresentation(oidStrategy, propertyContext, req, flags);
+        public static CollectionValueRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) => new(oidStrategy, propertyContext, req, flags);
     }
 }

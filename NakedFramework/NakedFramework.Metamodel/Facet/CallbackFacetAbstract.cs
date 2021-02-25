@@ -15,7 +15,6 @@ namespace NakedFramework.Metamodel.Facet {
     /// <summary>
     ///     Adapter superclass for <see cref="IFacet" />s for <see cref="ICallbackFacet" />
     /// </summary>
-    /// 
     [Serializable]
     public abstract class CallbackFacetAbstract : FacetAbstract, ICallbackFacet {
         protected CallbackFacetAbstract(Type facetType, ISpecification holder)
@@ -25,9 +24,8 @@ namespace NakedFramework.Metamodel.Facet {
 
         public abstract void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
 
-        public virtual object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework)
-        {
-            Invoke(nakedObjectAdapter,framework);
+        public virtual object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+            Invoke(nakedObjectAdapter, framework);
             return null;
         }
 

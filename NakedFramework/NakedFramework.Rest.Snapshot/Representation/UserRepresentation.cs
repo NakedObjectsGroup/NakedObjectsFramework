@@ -48,6 +48,6 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetExtensions() => Extensions = new MapRepresentation();
 
-        public static UserRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IPrincipal user, RestControlFlags flags) => new UserRepresentation(oidStrategy, req, user, flags);
+        public static UserRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IPrincipal user, RestControlFlags flags) => new(oidStrategy, req, user, flags);
     }
 }

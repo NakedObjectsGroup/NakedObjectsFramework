@@ -19,6 +19,6 @@ namespace NakedFramework.Rest.Snapshot.Representation {
         [DataMember(Name = JsonPropertyNames.Href)]
         public string Href { get; set; }
 
-        public static RefValueRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags) => new RefValueRepresentation(oidStrategy, relType, flags);
+        public static RefValueRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags) => new(oidStrategy, relType, flags);
     }
 }

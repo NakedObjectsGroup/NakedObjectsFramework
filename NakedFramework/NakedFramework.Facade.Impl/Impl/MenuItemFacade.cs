@@ -17,8 +17,6 @@ namespace NakedFramework.Facade.Impl.Impl {
             Grouping = wrapped.Grouping;
         }
 
-        
-
         #region IMenuItemFacade Members
 
         public string Name { get; }

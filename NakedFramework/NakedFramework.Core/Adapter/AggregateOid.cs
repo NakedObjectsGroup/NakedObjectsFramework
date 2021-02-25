@@ -33,6 +33,29 @@ namespace NakedFramework.Core.Adapter {
             }
         }
 
+        public override bool Equals(object obj) {
+            if (obj == this) {
+                return true;
+            }
+
+            var otherOid = obj as AggregateOid;
+            return otherOid != null && Equals(otherOid);
+        }
+
+        private bool Equals(AggregateOid otherOid) =>
+            otherOid.ParentOid.Equals(ParentOid) &&
+            otherOid.FieldName.Equals(FieldName) &&
+            otherOid.typeName.Equals(typeName);
+
+        public override int GetHashCode() {
+            var hashCode = 17;
+            hashCode = 37 * hashCode + ParentOid.GetHashCode();
+            hashCode = 37 * hashCode + FieldName.GetHashCode();
+            return hashCode;
+        }
+
+        public override string ToString() => "AOID[" + ParentOid + "," + FieldName + "]";
+
         #region IAggregateOid Members
 
         public IOid ParentOid { get; }
@@ -67,29 +90,6 @@ namespace NakedFramework.Core.Adapter {
         public string[] ToShortEncodedStrings() => ToEncodedStrings();
 
         #endregion
-
-        public override bool Equals(object obj) {
-            if (obj == this) {
-                return true;
-            }
-
-            var otherOid = obj as AggregateOid;
-            return otherOid != null && Equals(otherOid);
-        }
-
-        private bool Equals(AggregateOid otherOid) =>
-            otherOid.ParentOid.Equals(ParentOid) &&
-            otherOid.FieldName.Equals(FieldName) &&
-            otherOid.typeName.Equals(typeName);
-
-        public override int GetHashCode() {
-            var hashCode = 17;
-            hashCode = 37 * hashCode + ParentOid.GetHashCode();
-            hashCode = 37 * hashCode + FieldName.GetHashCode();
-            return hashCode;
-        }
-
-        public override string ToString() => "AOID[" + ParentOid + "," + FieldName + "]";
     }
 
     // Copyright (c) Naked Objects Group Ltd.

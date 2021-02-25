@@ -54,7 +54,6 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         public bool AcceptHeaderStrict { get; set; }
         public bool DebugWarnings { get; set; }
 
-
         private static bool GetBool(object value) =>
             value switch {
                 null => false,
@@ -105,7 +104,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                                                           bool allowMutatingActionsOnImmutableObjects,
                                                           bool acceptHeaderStrict,
                                                           bool debugWarnings) =>
-            new RestControlFlags {
+            new() {
                 ValidateOnly = validateOnly,
                 FollowLinks = false,
                 SortBy = false,

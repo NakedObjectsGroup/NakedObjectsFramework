@@ -13,10 +13,10 @@ namespace NakedFramework.Metamodel.Facet {
     public sealed class PageSizeFacetDefault : PageSizeFacetAbstract {
         private const int DefaultPageSize = 20;
 
-        public override bool IsNoOp => true;
-
         public PageSizeFacetDefault(ISpecification holder)
             : base(DefaultPageSize, holder) { }
+
+        public override bool IsNoOp => true;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

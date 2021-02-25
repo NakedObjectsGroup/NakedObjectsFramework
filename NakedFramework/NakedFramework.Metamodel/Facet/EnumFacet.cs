@@ -22,16 +22,6 @@ namespace NakedFramework.Metamodel.Facet {
             : base(typeof(IEnumFacet), holder) =>
             this.typeOfEnum = typeOfEnum;
 
-        #region IEnumFacet Members
-
-        public object[] GetChoices(INakedObjectAdapter inObjectAdapter) => Enum.GetNames(typeOfEnum).OrderBy(s => s, new EnumNameComparer(this)).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
-
-        public object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues) => choiceValues.Select(o => Enum.Parse(typeOfEnum, o.ToString())).ToArray();
-
-        public string GetTitle(INakedObjectAdapter inObjectAdapter) => ToDisplayName(inObjectAdapter.Object.ToString());
-
-        #endregion
-
         private string ToDisplayName(string enumName) => NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());
 
         #region Nested type: EnumNameComparer
@@ -47,6 +37,16 @@ namespace NakedFramework.Metamodel.Facet {
 
             #endregion
         }
+
+        #endregion
+
+        #region IEnumFacet Members
+
+        public object[] GetChoices(INakedObjectAdapter inObjectAdapter) => Enum.GetNames(typeOfEnum).OrderBy(s => s, new EnumNameComparer(this)).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
+
+        public object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues) => choiceValues.Select(o => Enum.Parse(typeOfEnum, o.ToString())).ToArray();
+
+        public string GetTitle(INakedObjectAdapter inObjectAdapter) => ToDisplayName(inObjectAdapter.Object.ToString());
 
         #endregion
     }

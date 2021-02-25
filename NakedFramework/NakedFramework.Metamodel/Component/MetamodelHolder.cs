@@ -24,6 +24,12 @@ namespace NakedFramework.Metamodel.Component {
             this.logger = logger;
         }
 
+        private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
+            var key = TypeKeyUtils.GetKeyForType(type);
+            NakedObjects.TypeUtils.GetType(type.FullName); // This should ensure type is cached 
+            return cache.GetSpecification(key);
+        }
+
         #region IMetamodelBuilder Members
 
         public ITypeSpecImmutable[] AllSpecifications => cache.AllSpecifications();
@@ -58,11 +64,5 @@ namespace NakedFramework.Metamodel.Component {
         public IMenuImmutable[] MainMenus => cache.MainMenus();
 
         #endregion
-
-        private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
-            var key = TypeKeyUtils.GetKeyForType(type);
-            NakedObjects.TypeUtils.GetType(type.FullName); // This should ensure type is cached 
-            return cache.GetSpecification(key);
-        }
     }
 }

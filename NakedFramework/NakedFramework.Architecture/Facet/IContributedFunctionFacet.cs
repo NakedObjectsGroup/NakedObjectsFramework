@@ -8,13 +8,10 @@
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Facet {
-
-
     public interface IContributedFunctionFacet : IFacet {
-        bool IsContributedTo(ITypeSpecImmutable spec);
-
         bool IsContributedToObject { get; }
         bool IsContributedToCollection { get; }
+        bool IsContributedTo(ITypeSpecImmutable spec);
         bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
     }
 }

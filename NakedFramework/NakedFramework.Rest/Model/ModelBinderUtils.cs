@@ -206,7 +206,7 @@ namespace NakedFramework.Rest.Model {
         public static PromptArgumentMap CreatePromptArgMap(JObject jObject, bool includeReservedArgs) => InitArgumentMap<PromptArgumentMap>(jObject, PopulatePromptArgumentMap, includeReservedArgs);
 
         public static T CreateMalformedArguments<T>(string msg) where T : Arguments, new() =>
-            new T {IsMalformed = true, MalformedReason = ControllerHelpers.DebugFilter(() => msg)};
+            new() {IsMalformed = true, MalformedReason = ControllerHelpers.DebugFilter(() => msg)};
 
         private static void PopulateSimpleArgumentMap(NameValueCollection collection, ArgumentMap args) => args.Map = collection.AllKeys.Where(k => !IsReservedName(k)).ToDictionary(s => s, s => (IValue) new ScalarValue(collection[s]));
 

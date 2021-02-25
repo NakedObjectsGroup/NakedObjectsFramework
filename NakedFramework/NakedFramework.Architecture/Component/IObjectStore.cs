@@ -91,7 +91,7 @@ namespace NakedFramework.Architecture.Component {
         void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool isGhost);
         IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects);
         bool HasChanges();
-        T ValidateProxy<T>(T toCheck) where  T : class;
+        T ValidateProxy<T>(T toCheck) where T : class;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

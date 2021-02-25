@@ -19,7 +19,7 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
         private const bool EqualByContent = false;
         private const bool Immutable = false;
         private const int TypicalLengthConst = 18;
-        private static readonly DateTime DefaultValueConst = new DateTime();
+        private static readonly DateTime DefaultValueConst = new();
 
         public DateTimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }

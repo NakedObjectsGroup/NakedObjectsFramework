@@ -17,12 +17,30 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Spec {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
-        protected AssociationSpecAbstract(IAssociationSpecImmutable association,  INakedObjectsFramework framework)
-            : base(association.Identifier.MemberName, association, framework) {
+        protected AssociationSpecAbstract(IAssociationSpecImmutable association, INakedObjectsFramework framework)
+            : base(association.Identifier.MemberName, association, framework) =>
             ReturnSpec = framework.MetamodelManager.GetSpecification(association.ReturnSpec);
-        }
 
         public virtual bool IsAutoCompleteEnabled => ContainsFacet(typeof(IAutoCompleteFacet));
+
+        public abstract INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
+
+        private IConsent IsUsableDeclaratively(bool isPersistent) {
+            var facet = GetFacet<IDisabledFacet>();
+            if (facet != null) {
+                var isProtected = facet.Value;
+                switch (isProtected) {
+                    case WhenTo.Always:
+                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditable);
+                    case WhenTo.OncePersisted when isPersistent:
+                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditableNow);
+                    case WhenTo.UntilPersisted when !isPersistent:
+                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditableUntil);
+                }
+            }
+
+            return null;
+        }
 
         #region IAssociationSpec Members
 
@@ -85,32 +103,13 @@ namespace NakedFramework.Core.Spec {
 
             if (reason == null) {
                 var fs = GetFacet<IDisableForSessionFacet>();
-                reason = fs == null ? null : fs.DisabledReason( target, Framework);
+                reason = fs == null ? null : fs.DisabledReason(target, Framework);
             }
 
             return GetConsent(reason);
         }
 
         #endregion
-
-        public abstract INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
-
-        private IConsent IsUsableDeclaratively(bool isPersistent) {
-            var facet = GetFacet<IDisabledFacet>();
-            if (facet != null) {
-                var isProtected = facet.Value;
-                switch (isProtected) {
-                    case WhenTo.Always:
-                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditable);
-                    case WhenTo.OncePersisted when isPersistent:
-                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditableNow);
-                    case WhenTo.UntilPersisted when !isPersistent:
-                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditableUntil);
-                }
-            }
-
-            return null;
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

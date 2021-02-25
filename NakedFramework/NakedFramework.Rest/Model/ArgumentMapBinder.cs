@@ -21,13 +21,13 @@ namespace NakedFramework.Rest.Model {
 
         private static Task BindFromBody(ModelBindingContext bindingContext) =>
             ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                async () => ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
-                ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
+                                                      async () => ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
+                                                      ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
 
         private static Task BindFromQuery(ModelBindingContext bindingContext) =>
             ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                async () => ModelBinderUtils.CreateSimpleArgumentMap(bindingContext.HttpContext.Request.QueryString.ToString()) ??
-                            ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext), true),
-                ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
+                                                      async () => ModelBinderUtils.CreateSimpleArgumentMap(bindingContext.HttpContext.Request.QueryString.ToString()) ??
+                                                                  ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext), true),
+                                                      ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
     }
 }

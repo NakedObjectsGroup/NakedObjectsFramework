@@ -21,14 +21,6 @@ namespace NakedFramework.Metamodel.Facet {
             : base(typeof(IExecutedControlMethodFacet), holder) =>
             methodToWhere[method] = where;
 
-        #region IExecutedControlMethodFacet Members
-
-        public Where ExecutedWhere(MethodInfo method) => methodToWhere.ContainsKey(method) ? methodToWhere[method] : Where.Default;
-
-        public void AddMethodExecutedWhere(MethodInfo method, Where where) => methodToWhere[method] = where;
-
-        #endregion
-
         protected override string ToStringValues() {
             var sb = new StringBuilder();
             foreach (var (key, value) in methodToWhere) {
@@ -37,6 +29,14 @@ namespace NakedFramework.Metamodel.Facet {
 
             return sb.ToString();
         }
+
+        #region IExecutedControlMethodFacet Members
+
+        public Where ExecutedWhere(MethodInfo method) => methodToWhere.ContainsKey(method) ? methodToWhere[method] : Where.Default;
+
+        public void AddMethodExecutedWhere(MethodInfo method, Where where) => methodToWhere[method] = where;
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -35,9 +35,9 @@ namespace NakedFramework.ParallelReflector.TypeFacetFactory {
         public IteratorFilteringFacetFactory(IFacetFactoryOrder<IteratorFilteringFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public  string[] Prefixes => FixedPrefixes;
+        public string[] Prefixes => FixedPrefixes;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (typeof(IEnumerable).IsAssignableFrom(type) && !FasterTypeUtils.IsSystem(type)) {
                 var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes);
                 methodRemover.SafeRemoveMethod(method);

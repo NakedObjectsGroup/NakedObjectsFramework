@@ -20,12 +20,12 @@ using NakedFramework.Facade.Impl.Translators;
 using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
-using NakedFramework.ParallelReflector.Component;
-using NakedFramework.ParallelReflector.FacetFactory;
-using NakedFramework.ParallelReflector.Reflect;
 using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Profile;
+using NakedFramework.ParallelReflector.Component;
+using NakedFramework.ParallelReflector.FacetFactory;
+using NakedFramework.ParallelReflector.Reflect;
 
 namespace NakedFramework.DependencyInjection.Extensions {
     public static class NakedFrameworkExtensions {
@@ -54,12 +54,10 @@ namespace NakedFramework.DependencyInjection.Extensions {
                 services.AddSingleton<IFacetDecorator, AuditManager>();
             }
 
-            if (options.ProfileConfiguration is not null)
-            {
+            if (options.ProfileConfiguration is not null) {
                 services.AddSingleton(options.ProfileConfiguration);
                 services.AddSingleton<IFacetDecorator, ProfileManager>();
             }
-
 
             services.AddSingleton<ICoreConfiguration>(p => CoreConfig(options));
 
@@ -77,7 +75,6 @@ namespace NakedFramework.DependencyInjection.Extensions {
             //Externals
             services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
         }
-
 
         public static void AddNakedFramework(this IServiceCollection services, Action<NakedCoreOptions> setupAction) {
             var options = new NakedCoreOptions(services);

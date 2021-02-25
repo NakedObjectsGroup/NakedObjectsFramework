@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Interactions;
 
 namespace NakedFramework.Core.Interactions {
     public sealed class InteractionBuffer : IInteractionBuffer {
-        private readonly StringBuilder buf = new StringBuilder();
+        private readonly StringBuilder buf = new();
 
         #region IInteractionBuffer Members
 

@@ -26,19 +26,19 @@ namespace NakedFramework.ParallelReflector.Component {
         protected readonly ILoggerFactory LoggerFactory;
 
         protected AbstractParallelReflector(IMetamodelBuilder metamodel,
-                                    IEnumerable<IFacetDecorator> facetDecorators,
-                                    ILoggerFactory loggerFactory,
-                                    ILogger<AbstractParallelReflector> logger) {
+                                            IEnumerable<IFacetDecorator> facetDecorators,
+                                            ILoggerFactory loggerFactory,
+                                            ILogger<AbstractParallelReflector> logger) {
             InitialMetamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             LoggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             Logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             FacetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
         }
 
-        protected abstract IIntrospector GetNewIntrospector();
-
         public IClassStrategy ClassStrategy { get; init; }
         public IFacetFactorySet FacetFactorySet { get; init; }
+
+        protected abstract IIntrospector GetNewIntrospector();
 
         public (ITypeSpecBuilder typeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (actualType == null) {
@@ -52,9 +52,7 @@ namespace NakedFramework.ParallelReflector.Component {
                 : (metamodel[typeKey], metamodel);
         }
 
-
-        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectTypes(Type[] toIntrospect,  IImmutableDictionary<string, ITypeSpecBuilder> specDictionary)
-        {
+        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectTypes(Type[] toIntrospect, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             specDictionary = toIntrospect.Any()
                 ? toIntrospect.AsParallel().SelectMany(type => IntrospectSpecification(type, specDictionary).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary()
                 : specDictionary;
@@ -65,12 +63,10 @@ namespace NakedFramework.ParallelReflector.Component {
                 : specDictionary;
         }
 
-
         protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var ph = specDictionary.Where(i => i.Value.IsPlaceHolder).Select(i => i.Value.Type).ToArray();
             return IntrospectTypes(ph, specDictionary);
         }
-
 
         private ITypeSpecBuilder GetPlaceholder(Type type) {
             var specification = CreateSpecification(type);
@@ -171,13 +167,11 @@ namespace NakedFramework.ParallelReflector.Component {
             return metamodel.ContainsKey(typeKey);
         }
 
-
         public virtual (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable {
             ITypeSpecBuilder spec;
             (spec, metamodel) = LoadSpecification(type, metamodel);
             return (spec as T, metamodel);
         }
-
 
         public abstract IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
 

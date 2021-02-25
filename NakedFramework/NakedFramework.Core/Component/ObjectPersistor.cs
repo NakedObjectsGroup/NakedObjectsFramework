@@ -39,9 +39,23 @@ namespace NakedFramework.Core.Component {
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
+        private IQueryable<T> GetInstances<T>(bool tracked = true) where T : class => objectStore.GetInstances<T>(tracked);
+
+        private IQueryable GetInstances(Type type) => objectStore.GetInstances(type);
+
+        private IQueryable GetInstances(IObjectSpec spec) => objectStore.GetInstances(spec);
+
+        private static IEnumerable<ITypeSpec> GetLeafNodes(ITypeSpec spec) {
+            if (spec.IsInterface || spec.IsAbstract) {
+                return spec.Subclasses.SelectMany(GetLeafNodes);
+            }
+
+            return new[] {spec};
+        }
+
         #region IObjectPersistor Members
 
-        public IQueryable<T> Instances<T>() where T : class => GetInstances<T>(true);
+        public IQueryable<T> Instances<T>() where T : class => GetInstances<T>();
 
         public IQueryable Instances(Type type) => GetInstances(type);
 
@@ -198,19 +212,5 @@ namespace NakedFramework.Core.Component {
         public T ValidateProxy<T>(T toCheck) where T : class => objectStore.ValidateProxy(toCheck);
 
         #endregion
-
-        private IQueryable<T> GetInstances<T>(bool tracked = true) where T : class => objectStore.GetInstances<T>(tracked);
-
-        private IQueryable GetInstances(Type type) => objectStore.GetInstances(type);
-
-        private IQueryable GetInstances(IObjectSpec spec) => objectStore.GetInstances(spec);
-
-        private static IEnumerable<ITypeSpec> GetLeafNodes(ITypeSpec spec) {
-            if (spec.IsInterface || spec.IsAbstract) {
-                return spec.Subclasses.SelectMany(GetLeafNodes);
-            }
-
-            return new[] {spec};
-        }
     }
 }

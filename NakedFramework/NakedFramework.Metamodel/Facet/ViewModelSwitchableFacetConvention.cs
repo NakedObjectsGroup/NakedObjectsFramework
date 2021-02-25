@@ -30,8 +30,8 @@ namespace NakedFramework.Metamodel.Facet {
 
             if (target == null) {
                 throw new NakedObjectSystemException(nakedObjectAdapter.Object == null
-                    ? "Null domain object"
-                    : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}");
+                                                         ? "Null domain object"
+                                                         : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}");
             }
 
             return target.IsEditView();

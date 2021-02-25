@@ -46,14 +46,6 @@ namespace NakedFramework.Metamodel.Facet {
 
         public override bool IsMultiple { get; }
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => choicesMethod;
-
-        public Func<object, object[], object> GetMethodDelegate() => choicesDelegate;
-
-        #endregion
-
         public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) {
             var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
 
@@ -74,6 +66,14 @@ namespace NakedFramework.Metamodel.Facet {
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) => choicesDelegate = LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() => choicesMethod;
+
+        public Func<object, object[], object> GetMethodDelegate() => choicesDelegate;
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

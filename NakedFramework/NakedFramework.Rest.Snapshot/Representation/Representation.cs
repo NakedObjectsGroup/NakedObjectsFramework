@@ -25,7 +25,7 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class Representation : IRepresentation {
-        private static readonly object ModuleBuilderLock = new object();
+        private static readonly object ModuleBuilderLock = new();
         protected CacheType Caching;
         private string etag;
 
@@ -40,32 +40,6 @@ namespace NakedFramework.Rest.Snapshot.Representation {
         private static ModuleBuilder ModuleBuilder { get; set; }
 
         protected RelType SelfRelType { get; set; }
-
-        #region IRepresentation Members
-
-        public virtual MediaTypeHeaderValue GetContentType() => SelfRelType?.GetMediaType(Flags);
-
-        public EntityTagHeaderValue GetEtag() => etag != null ? new EntityTagHeaderValue($"\"{etag}\"") : null;
-
-        public CacheType GetCaching() => Caching;
-
-        public string[] GetWarnings() {
-            var allWarnings = new List<string>();
-
-            var properties = GetType().GetProperties();
-
-            var repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
-            var repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[]) p.GetValue(this, null));
-
-            allWarnings.AddRange(repProperties.Where(p => p != null).SelectMany(p => p.GetWarnings()));
-            allWarnings.AddRange(repProperties1.Where(p => p != null).SelectMany(p => p.GetWarnings()));
-
-            return allWarnings.ToArray();
-        }
-
-        public Uri GetLocation() => SelfRelType?.GetUri();
-
-        #endregion
 
         protected void SetEtag(string digest) {
             if (digest != null) {
@@ -116,9 +90,9 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             var prop = dataMemberAttrType.GetProperty("Name");
 
             var customAttribute = new CustomAttributeBuilder(dataMemberAttrType.GetConstructor(new Type[] { }),
-                new object[] { },
-                new[] {prop},
-                new object[] {name});
+                                                             new object[] { },
+                                                             new[] {prop},
+                                                             new object[] {name});
 
             propertyBuilder.SetCustomAttribute(customAttribute);
         }
@@ -210,7 +184,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
             var title = RestUtils.SafeGetTitle(property, valueNakedObject);
             var helper = new UriMtHelper(oidStrategy, req, property.IsInline ? target : valueNakedObject);
-            var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, title)};
+            var optionals = new List<OptionalProperty> {new(JsonPropertyNames.Title, title)};
 
             if (property.IsEager(target)) {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Value, ObjectRepresentation.Create(oidStrategy, valueNakedObject, req, flags)));
@@ -218,5 +192,31 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
             return LinkRepresentation.Create(oidStrategy, new ValueRelType(property, helper), flags, optionals.ToArray());
         }
+
+        #region IRepresentation Members
+
+        public virtual MediaTypeHeaderValue GetContentType() => SelfRelType?.GetMediaType(Flags);
+
+        public EntityTagHeaderValue GetEtag() => etag != null ? new EntityTagHeaderValue($"\"{etag}\"") : null;
+
+        public CacheType GetCaching() => Caching;
+
+        public string[] GetWarnings() {
+            var allWarnings = new List<string>();
+
+            var properties = GetType().GetProperties();
+
+            var repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
+            var repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[]) p.GetValue(this, null));
+
+            allWarnings.AddRange(repProperties.Where(p => p != null).SelectMany(p => p.GetWarnings()));
+            allWarnings.AddRange(repProperties1.Where(p => p != null).SelectMany(p => p.GetWarnings()));
+
+            return allWarnings.ToArray();
+        }
+
+        public Uri GetLocation() => SelfRelType?.GetUri();
+
+        #endregion
     }
 }

@@ -31,6 +31,17 @@ namespace NakedFramework.Core.Container {
             this.logger = logger;
         }
 
+        private void Validate(INakedObjectAdapter adapter) {
+            if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
+                var state = adapter.ValidToPersist();
+                if (state != null) {
+                    throw new PersistFailedException(logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
+                }
+            }
+        }
+
+        private INakedObjectAdapter AdapterFor(object obj) => framework.NakedObjectManager.CreateAdapter(obj, null, null);
+
         #region IDomainObjectContainer Members
 
         public IQueryable<T> Instances<T>() where T : class => framework.Persistor.Instances<T>();
@@ -125,17 +136,6 @@ namespace NakedFramework.Core.Container {
         public object FindByKeys(Type type, object[] keys) => framework.Persistor.FindByKeys(type, keys).GetDomainObject();
 
         #endregion
-
-        private void Validate(INakedObjectAdapter adapter) {
-            if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
-                var state = adapter.ValidToPersist();
-                if (state != null) {
-                    throw new PersistFailedException(logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
-                }
-            }
-        }
-
-        private INakedObjectAdapter AdapterFor(object obj) => framework.NakedObjectManager.CreateAdapter(obj, null, null);
 
         #region Titles
 

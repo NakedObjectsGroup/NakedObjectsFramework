@@ -32,6 +32,64 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public IActionParameterSpec WrappedSpec { get; }
 
+        private INakedObjectAdapter SafeGetValue(IActionParameterFacade parm, object rawValue) {
+            try {
+                return GetValue(parm, rawValue);
+            }
+            catch (System.Exception) {
+                return null;
+            }
+        }
+
+        private INakedObjectAdapter GetValue(IActionParameterFacade parm, object rawValue) {
+            if (rawValue == null || rawValue is string s && string.IsNullOrEmpty(s)) {
+                return null;
+            }
+
+            if (parm.Specification.IsParseable) {
+                return parm.WrappedSpec().Spec.GetFacet<IParseableFacet>().ParseTextEntry((string) rawValue, framework.NakedObjectManager);
+            }
+
+            var collectionParm = parm.WrappedSpec() as IOneToManyActionParameterSpec;
+
+            if (collectionParm != null && collectionParm.ElementSpec.IsParseable) {
+                var stringArray = rawValue as string[];
+                if (stringArray == null || !stringArray.Any()) {
+                    return null;
+                }
+
+                var eSpec = collectionParm.ElementSpec;
+
+                var objectArray = stringArray.Select(i => i == null ? null : eSpec.GetFacet<IParseableFacet>().ParseTextEntry(i, framework.NakedObjectManager).Object).Where(o => o != null).ToArray();
+
+                if (!objectArray.Any()) {
+                    return null;
+                }
+
+                var typedArray = Array.CreateInstance(objectArray.First().GetType(), objectArray.Length);
+
+                Array.Copy(objectArray, typedArray, typedArray.Length);
+
+                return framework.GetNakedObject(typedArray);
+            }
+
+            return framework.GetNakedObject(rawValue);
+        }
+
+        private (string, ITypeFacade) WrapChoiceParm((string name, IObjectSpec spec) parm) => (parm.name, new TypeFacade(parm.spec, FrameworkFacade, framework));
+
+        public override bool Equals(object obj) => obj is ActionParameterFacade apf && Equals(apf);
+
+        public bool Equals(ActionParameterFacade other) {
+            if (ReferenceEquals(null, other)) {
+                return false;
+            }
+
+            return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
+        }
+
+        public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
+
         #region IActionParameterFacade Members
 
         public string Name => WrappedSpec.Name;
@@ -44,7 +102,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public string Grouping => "";
 
-        public DataType? DataType => 
+        public DataType? DataType =>
             WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType() ?? WrappedSpec.GetFacet<IPasswordFacet>()?.DataType;
 
         public bool IsDateOnly => WrappedSpec.ContainsFacet<IDateOnlyFacet>();
@@ -126,61 +184,5 @@ namespace NakedFramework.Facade.Impl.Impl {
         public int NumberOfLines => WrappedSpec.GetNumberOfLinesWithDefault();
 
         #endregion
-
-        private INakedObjectAdapter SafeGetValue(IActionParameterFacade parm, object rawValue) {
-            try {
-                return GetValue(parm, rawValue);
-            }
-            catch (System.Exception) {
-                return null;
-            }
-        }
-
-        private INakedObjectAdapter GetValue(IActionParameterFacade parm, object rawValue) {
-            if (rawValue == null || rawValue is string s && string.IsNullOrEmpty(s)) {
-                return null;
-            }
-
-            if (parm.Specification.IsParseable) {
-                return parm.WrappedSpec().Spec.GetFacet<IParseableFacet>().ParseTextEntry((string) rawValue, framework.NakedObjectManager);
-            }
-
-            var collectionParm = parm.WrappedSpec() as IOneToManyActionParameterSpec;
-
-            if (collectionParm != null && collectionParm.ElementSpec.IsParseable) {
-                var stringArray = rawValue as string[];
-                if (stringArray == null || !stringArray.Any()) {
-                    return null;
-                }
-
-                var eSpec = collectionParm.ElementSpec;
-
-                var objectArray = stringArray.Select(i => i == null ? null : eSpec.GetFacet<IParseableFacet>().ParseTextEntry(i, framework.NakedObjectManager).Object).Where(o => o != null).ToArray();
-
-                if (!objectArray.Any()) {
-                    return null;
-                }
-
-                var typedArray = Array.CreateInstance(objectArray.First().GetType(), objectArray.Length);
-
-                Array.Copy(objectArray, typedArray, typedArray.Length);
-
-                return framework.GetNakedObject(typedArray);
-            }
-
-            return framework.GetNakedObject(rawValue);
-        }
-
-        private (string, ITypeFacade) WrapChoiceParm((string name, IObjectSpec spec) parm) => (parm.name, new TypeFacade(parm.spec, FrameworkFacade, framework));
-
-        public override bool Equals(object obj) => obj is ActionParameterFacade apf && Equals(apf);
-
-        public bool Equals(ActionParameterFacade other) {
-            if (ReferenceEquals(null, other)) { return false; }
-
-            return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
-        }
-
-        public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
     }
 }

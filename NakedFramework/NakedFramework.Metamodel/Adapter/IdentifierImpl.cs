@@ -43,34 +43,6 @@ namespace NakedFramework.Metamodel.Adapter {
             IsField = isField;
         }
 
-        #region IIdentifier Members
-
-        public virtual string ClassName => className;
-
-        public virtual string MemberName => name;
-
-        public virtual string[] MemberParameterTypeNames => parameterTypes;
-
-        public virtual string[] MemberParameterNames { get; }
-
-        public virtual bool IsField { get; }
-
-        public virtual string ToIdentityString(IdentifierDepth depth) =>
-            depth switch {
-                IdentifierDepth.Class => ToClassIdentityString(),
-                IdentifierDepth.ClassName => ToClassAndNameIdentityString(),
-                IdentifierDepth.ClassNameParams => ToFullIdentityString(),
-                IdentifierDepth.Name => ToNameIdentityString(),
-                IdentifierDepth.Parms => ToParmsIdentityString(),
-                _ => throw new NakedObjectSystemException($"depth out of bounds: {depth}")
-            };
-
-        public virtual string ToIdentityStringWithCheckType(IdentifierDepth depth, CheckType checkType) => $"{ToIdentityString(depth)}:{checkType}";
-
-        public int CompareTo(object o2) => string.CompareOrdinal(ToString(), o2.ToString());
-
-        #endregion
-
         private static string FullName(Type type) {
             if (type.IsGenericType) {
                 if (CollectionUtils.IsGenericEnumerable(type)) {
@@ -168,6 +140,34 @@ namespace NakedFramework.Metamodel.Adapter {
             var parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : new string[] { };
             return new IdentifierImpl(className, name, parms);
         }
+
+        #region IIdentifier Members
+
+        public virtual string ClassName => className;
+
+        public virtual string MemberName => name;
+
+        public virtual string[] MemberParameterTypeNames => parameterTypes;
+
+        public virtual string[] MemberParameterNames { get; }
+
+        public virtual bool IsField { get; }
+
+        public virtual string ToIdentityString(IdentifierDepth depth) =>
+            depth switch {
+                IdentifierDepth.Class => ToClassIdentityString(),
+                IdentifierDepth.ClassName => ToClassAndNameIdentityString(),
+                IdentifierDepth.ClassNameParams => ToFullIdentityString(),
+                IdentifierDepth.Name => ToNameIdentityString(),
+                IdentifierDepth.Parms => ToParmsIdentityString(),
+                _ => throw new NakedObjectSystemException($"depth out of bounds: {depth}")
+            };
+
+        public virtual string ToIdentityStringWithCheckType(IdentifierDepth depth, CheckType checkType) => $"{ToIdentityString(depth)}:{checkType}";
+
+        public int CompareTo(object o2) => string.CompareOrdinal(ToString(), o2.ToString());
+
+        #endregion
 
         #region Object overrides
 

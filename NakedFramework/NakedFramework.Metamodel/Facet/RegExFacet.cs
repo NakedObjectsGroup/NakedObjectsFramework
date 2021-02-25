@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Exception;
 
-[assembly:InternalsVisibleTo("NakedObjects.Reflector.Test")]
+[assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 [assembly: InternalsVisibleTo("NakedFunctions.Reflector.Test")]
 
 namespace NakedFramework.Metamodel.Facet {
@@ -29,8 +29,7 @@ namespace NakedFramework.Metamodel.Facet {
         }
 
         public RegExFacet(string validation, bool caseSensitive, ISpecification holder)
-            : base(typeof(IRegExFacet), holder)
-        {
+            : base(typeof(IRegExFacet), holder) {
             ValidationPattern = validation;
             Pattern = new Regex(validation, PatternFlags);
             IsCaseSensitive = caseSensitive;
@@ -43,6 +42,8 @@ namespace NakedFramework.Metamodel.Facet {
         private string FormatPattern { get; }
 
         internal bool IsCaseSensitive { get; }
+
+        protected override string ToStringValues() => Pattern.ToString();
 
         #region IRegExFacet Members
 
@@ -76,8 +77,6 @@ namespace NakedFramework.Metamodel.Facet {
         public System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
 
         #endregion
-
-        protected override string ToStringValues() => Pattern.ToString();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

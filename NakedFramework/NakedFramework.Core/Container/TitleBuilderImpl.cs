@@ -15,6 +15,19 @@ namespace NakedFramework.Core.Container {
         private StringBuilder Title { get; set; }
         private IDomainObjectContainer Container { get; }
 
+        /// <summary>
+        ///     Determines if the specified object's Title (from its <c>ToString()</c> method) is empty. Will
+        ///     return true if either: the specified reference is null; the object's <c>ToString()</c> method
+        ///     returns null; or if the <c>ToString()</c> returns an empty string
+        /// </summary>
+        public bool IsEmpty(object obj, string format) => obj == null || IsEmpty(Container.TitleOf(obj, format));
+
+        /// <summary>
+        ///     Determines if the specified text is empty. Will return true if either: the specified reference is null;
+        ///     or if the reference is an empty string
+        /// </summary>
+        public static bool IsEmpty(string text) => string.IsNullOrEmpty(text);
+
         #region ITitleBuilder Members
 
         /// <summary>
@@ -242,19 +255,6 @@ namespace NakedFramework.Core.Container {
         }
 
         #endregion
-
-        /// <summary>
-        ///     Determines if the specified object's Title (from its <c>ToString()</c> method) is empty. Will
-        ///     return true if either: the specified reference is null; the object's <c>ToString()</c> method
-        ///     returns null; or if the <c>ToString()</c> returns an empty string
-        /// </summary>
-        public bool IsEmpty(object obj, string format) => obj == null || IsEmpty(Container.TitleOf(obj, format));
-
-        /// <summary>
-        ///     Determines if the specified text is empty. Will return true if either: the specified reference is null;
-        ///     or if the reference is an empty string
-        /// </summary>
-        public static bool IsEmpty(string text) => string.IsNullOrEmpty(text);
 
         #region Constructors
 

@@ -24,7 +24,9 @@ namespace NakedFramework.Facade.Impl.Impl {
         public override bool Equals(object obj) => obj is OidFacade of && Equals(of);
 
         public bool Equals(OidFacade other) {
-            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(null, other)) {
+                return false;
+            }
 
             return ReferenceEquals(this, other) || Equals(other.oid, oid);
         }

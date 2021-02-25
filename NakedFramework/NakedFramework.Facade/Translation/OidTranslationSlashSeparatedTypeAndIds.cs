@@ -29,6 +29,8 @@ namespace NakedFramework.Facade.Translation {
 
         public static string KeySeparator { get; }
 
+        public override string ToString() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "-" + InstanceId);
+
         #region IOidTranslation Members
 
         public string DomainType { get; set; }
@@ -41,7 +43,5 @@ namespace NakedFramework.Facade.Translation {
         public string Encode() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
 
         #endregion
-
-        public override string ToString() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "-" + InstanceId);
     }
 }

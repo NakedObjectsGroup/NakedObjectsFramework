@@ -13,7 +13,7 @@ namespace NakedFramework.Core.Reflect {
         /// <summary>
         ///     An Allow object with no reason
         /// </summary>
-        public static readonly Allow Default = new Allow();
+        public static readonly Allow Default = new();
 
         public Allow() { }
 

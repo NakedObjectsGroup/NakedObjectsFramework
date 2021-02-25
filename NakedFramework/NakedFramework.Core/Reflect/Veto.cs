@@ -10,7 +10,7 @@ namespace NakedFramework.Core.Reflect {
         /// <summary>
         ///     A Veto object with no reason
         /// </summary>
-        public static readonly Veto Default = new Veto();
+        public static readonly Veto Default = new();
 
         public Veto() { }
 

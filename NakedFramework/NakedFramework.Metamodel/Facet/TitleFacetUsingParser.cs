@@ -21,6 +21,8 @@ namespace NakedFramework.Metamodel.Facet {
             : base(typeof(ITitleFacet), holder) =>
             this.parser = parser;
 
+        protected override string ToStringValues() => parser.ToString();
+
         #region ITitleFacet Members
 
         public string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.DisplayTitleOf((T) nakedObjectAdapter.Object);
@@ -28,7 +30,5 @@ namespace NakedFramework.Metamodel.Facet {
         public string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.TitleWithMaskOf(mask, (T) nakedObjectAdapter.Object);
 
         #endregion
-
-        protected override string ToStringValues() => parser.ToString();
     }
 }

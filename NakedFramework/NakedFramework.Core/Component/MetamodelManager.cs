@@ -25,6 +25,18 @@ namespace NakedFramework.Core.Component {
             Metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
         }
 
+        private ITypeSpec NewObjectSpec(ITypeSpecImmutable spec) {
+            if (!localCache.ContainsKey(spec)) {
+                localCache[spec] = specFactory.CreateTypeSpec(spec);
+            }
+
+            return localCache[spec];
+        }
+
+        private ITypeSpecImmutable GetInnerSpec(Type type) => Metamodel.GetSpecification(type);
+
+        private ITypeSpecImmutable GetInnerSpec(string name) => Metamodel.GetSpecification(name);
+
         #region IMetamodelManager Members
 
         public ITypeSpec[] AllSpecs {
@@ -48,17 +60,5 @@ namespace NakedFramework.Core.Component {
         public IActionSpec GetActionSpec(IActionSpecImmutable spec) => specFactory.CreateActionSpec(spec);
 
         #endregion
-
-        private ITypeSpec NewObjectSpec(ITypeSpecImmutable spec) {
-            if (!localCache.ContainsKey(spec)) {
-                localCache[spec] = specFactory.CreateTypeSpec(spec);
-            }
-
-            return localCache[spec];
-        }
-
-        private ITypeSpecImmutable GetInnerSpec(Type type) => Metamodel.GetSpecification(type);
-
-        private ITypeSpecImmutable GetInnerSpec(string name) => Metamodel.GetSpecification(name);
     }
 }

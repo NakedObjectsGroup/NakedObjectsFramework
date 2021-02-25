@@ -30,14 +30,6 @@ namespace NakedFramework.Metamodel.Facet {
             maskDelegate = maskMethod == null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
         }
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => maskMethod;
-
-        public Func<object, object[], object> GetMethodDelegate() => maskDelegate;
-
-        #endregion
-
         public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => nakedObjectAdapter.Object.ToString();
 
         public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
@@ -54,6 +46,14 @@ namespace NakedFramework.Metamodel.Facet {
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) => maskDelegate = maskMethod == null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() => maskMethod;
+
+        public Func<object, object[], object> GetMethodDelegate() => maskDelegate;
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

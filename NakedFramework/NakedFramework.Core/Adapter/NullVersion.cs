@@ -17,6 +17,12 @@ namespace NakedFramework.Core.Adapter {
 
         public NullVersion(ILogger<NullVersion> logger) => this.logger = logger;
 
+        public IVersion Next(string user, DateTime time) => throw new UnexpectedCallException(logger.LogAndReturn("Unexpected call of 'Next'"));
+
+        public override bool Equals(object other) => other is IVersion a && Equals(a);
+
+        public override int GetHashCode() => 0;
+
         #region IEncodedToStrings Members
 
         public string[] ToEncodedStrings() => new string[0];
@@ -42,12 +48,6 @@ namespace NakedFramework.Core.Adapter {
         public bool Equals(IVersion other) => other is NullVersion;
 
         #endregion
-
-        public IVersion Next(string user, DateTime time) => throw new UnexpectedCallException(logger.LogAndReturn("Unexpected call of 'Next'"));
-
-        public override bool Equals(object other) => other is IVersion a && Equals(a);
-
-        public override int GetHashCode() => 0;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

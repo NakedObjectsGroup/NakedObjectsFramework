@@ -47,44 +47,6 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
         /// </para>
         public override bool CanAlwaysReplace => false;
 
-        #region IValueSemanticsProvider<T> Members
-
-        public T DefaultValue { get; }
-
-        public int TypicalLength { get; }
-
-        public bool IsEqualByContent { get; }
-
-        public bool IsImmutable { get; }
-
-        public string ToEncodedString(T obj) => DoEncode(obj);
-
-        public T FromEncodedString(string data) => DoRestore(data);
-
-        public virtual object ParseTextEntry(string entry) {
-            if (entry == null) {
-                throw new ArgumentException();
-            }
-
-            if (entry.Trim().Equals("")) {
-                return null;
-            }
-
-            return DoParse(entry);
-        }
-
-        public object ParseInvariant(string entry) => DoParseInvariant(entry);
-
-        public string InvariantString(T obj) => GetInvariantString(obj);
-
-        public string EditableTitleOf(T existing) => DisplayTitleOf(existing);
-
-        public string DisplayTitleOf(T obj) => TitleString(obj);
-
-        public string TitleWithMaskOf(string mask, T obj) => TitleStringWithMask(mask, obj);
-
-        #endregion
-
         public Type GetAdaptedClass() => adaptedType;
 
         protected abstract T DoParse(string entry);
@@ -127,6 +89,44 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
                 offset += read;
             }
         }
+
+        #region IValueSemanticsProvider<T> Members
+
+        public T DefaultValue { get; }
+
+        public int TypicalLength { get; }
+
+        public bool IsEqualByContent { get; }
+
+        public bool IsImmutable { get; }
+
+        public string ToEncodedString(T obj) => DoEncode(obj);
+
+        public T FromEncodedString(string data) => DoRestore(data);
+
+        public virtual object ParseTextEntry(string entry) {
+            if (entry == null) {
+                throw new ArgumentException();
+            }
+
+            if (entry.Trim().Equals("")) {
+                return null;
+            }
+
+            return DoParse(entry);
+        }
+
+        public object ParseInvariant(string entry) => DoParseInvariant(entry);
+
+        public string InvariantString(T obj) => GetInvariantString(obj);
+
+        public string EditableTitleOf(T existing) => DisplayTitleOf(existing);
+
+        public string DisplayTitleOf(T obj) => TitleString(obj);
+
+        public string TitleWithMaskOf(string mask, T obj) => TitleStringWithMask(mask, obj);
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

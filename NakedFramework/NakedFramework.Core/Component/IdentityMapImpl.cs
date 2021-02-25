@@ -33,6 +33,36 @@ namespace NakedFramework.Core.Component {
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
+        private void ValidateAndAdd(INakedObjectAdapter adapter, IOid oid) {
+            if (nakedObjectAdapterMap.GetObject(adapter.Object) != adapter) {
+                throw new NakedObjectSystemException("Adapter's poco should exist in poco map and return the adapter");
+            }
+
+            if (identityAdapterMap.GetAdapter(oid) != null) {
+                throw new NakedObjectSystemException($"Changed OID should not already map to a known adapter {oid}");
+            }
+
+            identityAdapterMap.Add(oid, adapter);
+        }
+
+        /// <summary>
+        ///     Given a new Oid (not from the adapter, but usually a reference during distribution) this method
+        ///     extracts the original Oid, find the associated adapter and then updates the lookup so that the new Oid
+        ///     now keys the adapter. The adapter's oid is then updated to take on the new Oid's identity.
+        /// </summary>
+        private void ProcessChangedOid(IOid updatedOid) {
+            if (updatedOid.HasPrevious) {
+                var previousOid = updatedOid.Previous;
+                var nakedObjectAdapter = identityAdapterMap.GetAdapter(previousOid);
+                if (nakedObjectAdapter != null) {
+                    identityAdapterMap.Remove(previousOid);
+                    var oidFromObject = nakedObjectAdapter.Oid;
+                    oidFromObject.CopyFrom(updatedOid);
+                    identityAdapterMap.Add(oidFromObject, nakedObjectAdapter);
+                }
+            }
+        }
+
         #region IIdentityMap Members
 
         public IEnumerator<INakedObjectAdapter> GetEnumerator() => nakedObjectAdapterMap.GetEnumerator();
@@ -142,36 +172,6 @@ namespace NakedFramework.Core.Component {
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
-
-        private void ValidateAndAdd(INakedObjectAdapter adapter, IOid oid) {
-            if (nakedObjectAdapterMap.GetObject(adapter.Object) != adapter) {
-                throw new NakedObjectSystemException("Adapter's poco should exist in poco map and return the adapter");
-            }
-
-            if (identityAdapterMap.GetAdapter(oid) != null) {
-                throw new NakedObjectSystemException($"Changed OID should not already map to a known adapter {oid}");
-            }
-
-            identityAdapterMap.Add(oid, adapter);
-        }
-
-        /// <summary>
-        ///     Given a new Oid (not from the adapter, but usually a reference during distribution) this method
-        ///     extracts the original Oid, find the associated adapter and then updates the lookup so that the new Oid
-        ///     now keys the adapter. The adapter's oid is then updated to take on the new Oid's identity.
-        /// </summary>
-        private void ProcessChangedOid(IOid updatedOid) {
-            if (updatedOid.HasPrevious) {
-                var previousOid = updatedOid.Previous;
-                var nakedObjectAdapter = identityAdapterMap.GetAdapter(previousOid);
-                if (nakedObjectAdapter != null) {
-                    identityAdapterMap.Remove(previousOid);
-                    var oidFromObject = nakedObjectAdapter.Oid;
-                    oidFromObject.CopyFrom(updatedOid);
-                    identityAdapterMap.Add(oidFromObject, nakedObjectAdapter);
-                }
-            }
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

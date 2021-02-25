@@ -22,6 +22,8 @@ namespace NakedFramework.Metamodel.Facet {
             : base(typeof(IParseableFacet), holder) =>
             this.parser = parser;
 
+        protected override string ToStringValues() => parser.ToString();
+
         #region IParseableFacet Members
 
         public INakedObjectAdapter ParseTextEntry(string entry, INakedObjectManager manager) {
@@ -49,7 +51,5 @@ namespace NakedFramework.Metamodel.Facet {
         }
 
         #endregion
-
-        protected override string ToStringValues() => parser.ToString();
     }
 }

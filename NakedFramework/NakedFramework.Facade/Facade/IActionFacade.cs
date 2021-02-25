@@ -25,10 +25,10 @@ namespace NakedFramework.Facade.Facade {
         bool RenderEagerly { get; }
         int? NumberOfLines { get; }
         string MemberOrderName { get; }
-        bool IsVisible(IObjectFacade objectFacade);
-        IConsentFacade IsUsable(IObjectFacade objectFacade);
         bool IsStatic { get; }
         bool IsQueryContributedAction { get; }
         string[] EditProperties { get; }
+        bool IsVisible(IObjectFacade objectFacade);
+        IConsentFacade IsUsable(IObjectFacade objectFacade);
     }
 }

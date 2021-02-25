@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 
 namespace NakedFramework.Core.Adapter {
     public sealed class NoIdentityAdapterCache : INoIdentityAdapterCache {
-        private readonly Dictionary<object, INakedObjectAdapter> adapters = new Dictionary<object, INakedObjectAdapter>();
+        private readonly Dictionary<object, INakedObjectAdapter> adapters = new();
 
         #region INoIdentityAdapterCache Members
 

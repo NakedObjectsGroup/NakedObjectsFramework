@@ -13,7 +13,7 @@ namespace NakedFramework.Facade.Facade {
         int Number { get; }
         ITypeFacade ElementType { get; }
         IActionFacade Action { get; }
-        IObjectFacade GetDefault(IObjectFacade objectFacade);
         bool IsInjected { get; }
+        IObjectFacade GetDefault(IObjectFacade objectFacade);
     }
 }

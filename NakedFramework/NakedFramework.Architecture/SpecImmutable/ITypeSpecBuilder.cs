@@ -10,14 +10,16 @@ using System.Collections.Immutable;
 using NakedFramework.Architecture.Reflect;
 
 namespace NakedFramework.Architecture.SpecImmutable {
-
     public enum ReflectionStatus {
         PlaceHolder,
-        PendingIntrospection, 
-        Introspected   
+        PendingIntrospection,
+        Introspected
     }
 
     public interface ITypeSpecBuilder : ITypeSpecImmutable {
+        bool IsPlaceHolder { get; }
+        bool IsPendingIntrospection { get; }
+
         /// <summary>
         ///     Discovers what attributes and behaviour the type specified by this specification. As specification are
         ///     cyclic (specifically a class will reference its subclasses, which in turn reference their superclass)
@@ -25,14 +27,10 @@ namespace NakedFramework.Architecture.SpecImmutable {
         ///     the be accommodated as there should always a specification available even though it might not be
         ///     complete.
         /// </summary>
-        
         IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
         void AddSubclass(ITypeSpecImmutable subclass);
         void AddContributedFunctions(IList<IActionSpecImmutable> result);
         void AddContributedFields(IList<IAssociationSpecImmutable> addedToFields);
-
-        bool IsPlaceHolder { get; }
-        bool IsPendingIntrospection { get; }
     }
 }

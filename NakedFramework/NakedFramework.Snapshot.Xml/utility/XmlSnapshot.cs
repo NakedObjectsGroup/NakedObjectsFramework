@@ -38,10 +38,10 @@ namespace NakedFramework.Snapshot.Xml.Utility {
                            INakedObjectManager nakedObjectManager,
                            IMetamodelManager metamodelManager,
                            ILoggerFactory loggerFactory) : this(obj,
-            new XmlSchema(loggerFactory.CreateLogger<XmlSchema>()),
-            nakedObjectManager,
-            metamodelManager,
-            loggerFactory.CreateLogger<XmlSnapshot>()) { }
+                                                                new XmlSchema(loggerFactory.CreateLogger<XmlSchema>()),
+                                                                nakedObjectManager,
+                                                                metamodelManager,
+                                                                loggerFactory.CreateLogger<XmlSnapshot>()) { }
 
         // Start a snapshot at the root object, using supplied namespace manager.
         public XmlSnapshot(object obj, XmlSchema schema, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, ILogger<XmlSnapshot> logger) {
@@ -78,56 +78,6 @@ namespace NakedFramework.Snapshot.Xml.Utility {
 
         public XElement XsdElement { get; }
         public XmlSchema Schema { get; }
-
-        #region IXmlSnapshot Members
-
-        public string Xml {
-            get {
-                var element = XmlElement;
-                var sb = new StringBuilder();
-                using (var writer = XmlWriter.Create(sb)) {
-                    element.WriteTo(writer);
-                }
-
-                return sb.ToString();
-            }
-        }
-
-        public string Xsd {
-            get {
-                var element = XsdElement;
-                var sb = new StringBuilder();
-                using (var writer = XmlWriter.Create(sb)) {
-                    element.WriteTo(writer);
-                }
-
-                return sb.ToString();
-            }
-        }
-
-        //  The name of the <code>xsi:schemaLocation</code> in the XML document.
-        //  
-        //  Taken from the <code>fullyQualifiedClassName</code> (which also is used
-        //  as the basis for the <code>targetNamespace</code>.
-        //  
-        //  Populated in AppendXml(nakedObjectAdapter).
-        public string SchemaLocationFileName { get; private set; }
-
-        public string TransformedXml(string transform) => TransformXml(transform);
-
-        public string TransformedXsd(string transform) => TransformXsd(transform);
-
-        public void Include(string path) {
-            Include(path, null);
-        }
-
-        public void Include(string path, string annotation) {
-            // tokenize into successive fields
-            var fieldNames = path.Split('/').Select(tok => tok.ToLower()).ToList();
-            IncludeField(rootPlace, fieldNames, annotation);
-        }
-
-        #endregion
 
         // Start a snapshot at the root object, using own namespace manager.
 
@@ -517,5 +467,55 @@ namespace NakedFramework.Snapshot.Xml.Utility {
         public string TransformXml(string transform) => Transform(XmlDocument, transform);
 
         public string TransformXsd(string transform) => Transform(XsdDocument, transform);
+
+        #region IXmlSnapshot Members
+
+        public string Xml {
+            get {
+                var element = XmlElement;
+                var sb = new StringBuilder();
+                using (var writer = XmlWriter.Create(sb)) {
+                    element.WriteTo(writer);
+                }
+
+                return sb.ToString();
+            }
+        }
+
+        public string Xsd {
+            get {
+                var element = XsdElement;
+                var sb = new StringBuilder();
+                using (var writer = XmlWriter.Create(sb)) {
+                    element.WriteTo(writer);
+                }
+
+                return sb.ToString();
+            }
+        }
+
+        //  The name of the <code>xsi:schemaLocation</code> in the XML document.
+        //  
+        //  Taken from the <code>fullyQualifiedClassName</code> (which also is used
+        //  as the basis for the <code>targetNamespace</code>.
+        //  
+        //  Populated in AppendXml(nakedObjectAdapter).
+        public string SchemaLocationFileName { get; private set; }
+
+        public string TransformedXml(string transform) => TransformXml(transform);
+
+        public string TransformedXsd(string transform) => TransformXsd(transform);
+
+        public void Include(string path) {
+            Include(path, null);
+        }
+
+        public void Include(string path, string annotation) {
+            // tokenize into successive fields
+            var fieldNames = path.Split('/').Select(tok => tok.ToLower()).ToList();
+            IncludeField(rootPlace, fieldNames, annotation);
+        }
+
+        #endregion
     }
 }

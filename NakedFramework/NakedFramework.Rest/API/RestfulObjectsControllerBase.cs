@@ -54,8 +54,8 @@ namespace NakedFramework.Rest.API {
         internal void ResetConfig(IRestfulObjectsConfiguration newConfig) {
             config = newConfig;
             RestControlFlags.ConfiguredPageSize = config.DefaultPageSize;
-            RestSnapshot.DebugFilter = config.DebugWarnings 
-                ? (Func<Func<string>, string>) (f => f()) 
+            RestSnapshot.DebugFilter = config.DebugWarnings
+                ? (Func<Func<string>, string>) (f => f())
                 : _ => "Enable DebugWarnings to see message";
         }
 
@@ -182,10 +182,8 @@ namespace NakedFramework.Rest.API {
             return InitAndHandleErrors(PromptSnapshot());
         }
 
-        public virtual ActionResult GetParameterPromptOnMenu(string menuName, string actionName, string parmName, ArgumentMap arguments)
-        {
-            Func<RestSnapshot> PromptSnapshot()
-            {
+        public virtual ActionResult GetParameterPromptOnMenu(string menuName, string actionName, string parmName, ArgumentMap arguments) {
+            Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 ParameterContextFacade ParameterContext() => FrameworkFacade.GetMenuParameterByName(menuName, actionName, parmName, argsContext);
                 return SnapshotFactory.PromptSnaphot(OidStrategy, ParameterContext, Request, flags);
@@ -291,12 +289,9 @@ namespace NakedFramework.Rest.API {
             return InitAndHandleErrors(() => SnapshotOrNoContent(Execute()));
         }
 
-        private ActionResult InvokeOnMenu(string menuName, string actionName, ArgumentMap arguments, bool queryOnly)
-        {
-            (Func<RestSnapshot>, bool) Execute()
-            {
-                if (!queryOnly)
-                {
+        private ActionResult InvokeOnMenu(string menuName, string actionName, ArgumentMap arguments, bool queryOnly) {
+            (Func<RestSnapshot>, bool) Execute() {
+                if (!queryOnly) {
                     RejectRequestIfReadOnly(this);
                 }
 
@@ -310,7 +305,6 @@ namespace NakedFramework.Rest.API {
             return InitAndHandleErrors(() => SnapshotOrNoContent(Execute()));
         }
 
-
         public virtual ActionResult GetInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) => InvokeOnService(serviceName, actionName, arguments, true);
 
         public virtual ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) => InvokeOnService(serviceName, actionName, arguments, false);
@@ -318,9 +312,9 @@ namespace NakedFramework.Rest.API {
         public virtual ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) => InvokeOnService(serviceName, actionName, arguments, true);
 
         public virtual ActionResult GetInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, true);
-        
+
         public virtual ActionResult PutInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, false);
-        
+
         public virtual ActionResult PostInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, false);
 
         public virtual ActionResult GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
@@ -609,6 +603,5 @@ namespace NakedFramework.Rest.API {
         }
 
         #endregion
-
     }
 }

@@ -29,14 +29,6 @@ namespace NakedFramework.Metamodel.Facet {
             methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
-
         public override string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) =>
             proposedValue != null
                 ? (string) methodDelegate(target.GetDomainObject(), new[] {proposedValue.GetDomainObject()})
@@ -46,6 +38,14 @@ namespace NakedFramework.Metamodel.Facet {
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() => method;
+
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

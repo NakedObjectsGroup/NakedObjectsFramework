@@ -27,6 +27,13 @@ namespace NakedFramework.Metamodel.Facet {
             updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
         }
 
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => updatingDelegate(nakedObjectAdapter.GetDomainObject());
+
+        protected override string ToStringValues() => $"method={method}";
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) => updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
+
         #region IImperativeFacet Members
 
         public MethodInfo GetMethod() => method;
@@ -38,13 +45,6 @@ namespace NakedFramework.Metamodel.Facet {
             };
 
         #endregion
-
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => updatingDelegate(nakedObjectAdapter.GetDomainObject());
-
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

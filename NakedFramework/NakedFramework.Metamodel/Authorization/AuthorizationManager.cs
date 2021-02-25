@@ -28,6 +28,19 @@ namespace NakedFramework.Metamodel.Authorization {
         private readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
         private readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
 
+        private object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
+
+        private object GetAuthorizer(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
+            //Look for exact-fit TypeAuthorizer
+            // order here as ImmutableDictionary not ordered
+            var fullyQualifiedOfTarget = target.Spec.FullName;
+            var authorizer = typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
+                             namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
+                             defaultAuthorizer;
+
+            return CreateAuthorizer(authorizer, lifecycleManager);
+        }
+
         #region IAuthorizationManager Members
 
         public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, INakedObjectAdapter target, IIdentifier identifier) {
@@ -56,19 +69,6 @@ namespace NakedFramework.Metamodel.Authorization {
         }
 
         #endregion
-
-        private object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
-
-        private object GetAuthorizer(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
-            //Look for exact-fit TypeAuthorizer
-            // order here as ImmutableDictionary not ordered
-            var fullyQualifiedOfTarget = target.Spec.FullName;
-            var authorizer = typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
-                             namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
-                             defaultAuthorizer;
-
-            return CreateAuthorizer(authorizer, lifecycleManager);
-        }
 
         #region Constructors
 

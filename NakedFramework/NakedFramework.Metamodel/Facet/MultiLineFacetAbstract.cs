@@ -23,6 +23,8 @@ namespace NakedFramework.Metamodel.Facet {
 
         public static Type Type => typeof(IMultiLineFacet);
 
+        protected override string ToStringValues() => $"lines={numberOfLines}, width={width}";
+
         #region IMultiLineFacet Members
 
         public virtual int NumberOfLines => numberOfLines;
@@ -30,7 +32,5 @@ namespace NakedFramework.Metamodel.Facet {
         public virtual int Width => width;
 
         #endregion
-
-        protected override string ToStringValues() => $"lines={numberOfLines}, width={width}";
     }
 }

@@ -32,30 +32,6 @@ namespace NakedFramework.Core.Component {
 
         private List<object> Services => services ?? SetServices();
 
-        #region IDomainObjectInjector Members
-
-        public INakedObjectsFramework Framework { private get; set; }
-
-        public void InjectInto(object obj) {
-            Initialize();
-            if (container == null) { throw new NakedObjectSystemException("no container"); }
-
-            if (Services == null) { throw new NakedObjectSystemException("no services"); }
-
-            Methods.InjectContainer(obj, container);
-            Methods.InjectServices(obj, Services.ToArray());
-            Methods.InjectLogger(obj, loggerFactory);
-        }
-
-        public void InjectIntoInline(object root, object inlineObject) {
-            Initialize();
-            if (root == null) { throw new NakedObjectSystemException("no root object"); }
-
-            Methods.InjectRoot(root, inlineObject);
-        }
-
-        #endregion
-
         private List<object> SetServices() {
             services = serviceTypes.Select(Activator.CreateInstance).ToList();
             services.Add(Framework);
@@ -65,12 +41,44 @@ namespace NakedFramework.Core.Component {
 
         private void Initialize() {
             if (!initialized) {
-                if (Framework == null) { throw new NakedObjectSystemException("no Framework"); }
+                if (Framework == null) {
+                    throw new NakedObjectSystemException("no Framework");
+                }
 
                 container = new DomainObjectContainer(Framework, loggerFactory.CreateLogger<DomainObjectContainer>());
                 initialized = true;
             }
         }
+
+        #region IDomainObjectInjector Members
+
+        public INakedObjectsFramework Framework { private get; set; }
+
+        public void InjectInto(object obj) {
+            Initialize();
+            if (container == null) {
+                throw new NakedObjectSystemException("no container");
+            }
+
+            if (Services == null) {
+                throw new NakedObjectSystemException("no services");
+            }
+
+            Methods.InjectContainer(obj, container);
+            Methods.InjectServices(obj, Services.ToArray());
+            Methods.InjectLogger(obj, loggerFactory);
+        }
+
+        public void InjectIntoInline(object root, object inlineObject) {
+            Initialize();
+            if (root == null) {
+                throw new NakedObjectSystemException("no root object");
+            }
+
+            Methods.InjectRoot(root, inlineObject);
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -32,6 +32,33 @@ namespace NakedFramework.Metamodel.Audit {
             Validate();
         }
 
+        private void ValidateType(Type toValidate) {
+            if (!typeof(IAuditor).IsAssignableFrom(toValidate)) {
+                throw new InitialisationException(logger.LogAndReturn($"{toValidate.FullName} is not an IAuditor"));
+            }
+        }
+
+        private void Validate() {
+            ValidateType(defaultAuditor);
+            if (namespaceAuditors.Any()) {
+                namespaceAuditors.ForEach(kvp => ValidateType(kvp.Value));
+            }
+        }
+
+        private IAuditor GetAuditor(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) => GetNamespaceAuditorFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
+
+        private IAuditor GetNamespaceAuditorFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
+            var fullyQualifiedOfTarget = target.Spec.FullName;
+            // order here as ImmutableDictionary not ordered
+            var auditor = namespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
+
+            return auditor != null ? CreateAuditor(auditor, lifecycleManager) : null;
+        }
+
+        private IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
+
+        private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(defaultAuditor, lifecycleManager);
+
         #region IAuditManager Members
 
         public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedObjectsFramework framework) {
@@ -81,32 +108,5 @@ namespace NakedFramework.Metamodel.Audit {
         public Type[] ForFacetTypes { get; } = {typeof(IActionInvocationFacet), typeof(IUpdatedCallbackFacet), typeof(IPersistedCallbackFacet)};
 
         #endregion
-
-        private void ValidateType(Type toValidate) {
-            if (!typeof(IAuditor).IsAssignableFrom(toValidate)) {
-                throw new InitialisationException(logger.LogAndReturn($"{toValidate.FullName} is not an IAuditor"));
-            }
-        }
-
-        private void Validate() {
-            ValidateType(defaultAuditor);
-            if (namespaceAuditors.Any()) {
-                namespaceAuditors.ForEach(kvp => ValidateType(kvp.Value));
-            }
-        }
-
-        private IAuditor GetAuditor(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) => GetNamespaceAuditorFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
-
-        private IAuditor GetNamespaceAuditorFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
-            var fullyQualifiedOfTarget = target.Spec.FullName;
-            // order here as ImmutableDictionary not ordered
-            var auditor = namespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
-
-            return auditor != null ? CreateAuditor(auditor, lifecycleManager) : null;
-        }
-
-        private IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
-
-        private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(defaultAuditor, lifecycleManager);
     }
 }

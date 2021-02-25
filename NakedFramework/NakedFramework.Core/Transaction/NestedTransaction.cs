@@ -22,6 +22,12 @@ namespace NakedFramework.Core.Transaction {
             this.logger = logger;
         }
 
+        public override string ToString() {
+            var str = new AsString(this);
+            str.Append("complete", complete);
+            return str.ToString();
+        }
+
         #region ITransaction Members
 
         public void Abort() {
@@ -42,12 +48,6 @@ namespace NakedFramework.Core.Transaction {
         }
 
         #endregion
-
-        public override string ToString() {
-            var str = new AsString(this);
-            str.Append("complete", complete);
-            return str.ToString();
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

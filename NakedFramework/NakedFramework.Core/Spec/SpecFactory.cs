@@ -29,7 +29,9 @@ namespace NakedFramework.Core.Spec {
         }
 
         private void CheckInitialised() {
-            if (isInitialised) { return; }
+            if (isInitialised) {
+                return;
+            }
 
             throw new InitialisationException($"{nameof(SpecFactory)} not initialised");
         }
@@ -60,7 +62,7 @@ namespace NakedFramework.Core.Spec {
 
         public IActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
             CheckInitialised();
-            return new ActionSpec( 
+            return new ActionSpec(
                 framework,
                 this,
                 specImmutable,
@@ -82,14 +84,14 @@ namespace NakedFramework.Core.Spec {
 
         private IServiceSpec CreateServiceSpec(IServiceSpecImmutable specImmutable) {
             CheckInitialised();
-            return new ServiceSpec(this,  specImmutable, framework);
+            return new ServiceSpec(this, specImmutable, framework);
         }
 
         private IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
             CheckInitialised();
             return new ObjectSpec(this,
                                   specImmutable,
-                                  framework, 
+                                  framework,
                                   loggerFactory.CreateLogger<ObjectSpec>());
         }
     }

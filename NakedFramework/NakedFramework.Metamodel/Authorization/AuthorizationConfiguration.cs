@@ -19,14 +19,6 @@ namespace NakedFramework.Metamodel.Authorization {
             TypeAuthorizers = new Dictionary<string, Type>();
         }
 
-        #region IAuthorizationConfiguration Members
-
-        public Type DefaultAuthorizer { get; }
-        public IDictionary<string, Type> NamespaceAuthorizers { get; }
-        public IDictionary<string, Type> TypeAuthorizers { get; }
-
-        #endregion
-
         //The specified type authorizer will apply to the whole namespace specified
         public void AddNamespaceAuthorizer<TAuth>(string namespaceCovered)
             where TAuth : INamespaceAuthorizer =>
@@ -39,5 +31,13 @@ namespace NakedFramework.Metamodel.Authorization {
             var fullyQualifiedName = typeof(TDomain).FullName;
             TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
         }
+
+        #region IAuthorizationConfiguration Members
+
+        public Type DefaultAuthorizer { get; }
+        public IDictionary<string, Type> NamespaceAuthorizers { get; }
+        public IDictionary<string, Type> TypeAuthorizers { get; }
+
+        #endregion
     }
 }

@@ -21,12 +21,12 @@ namespace NakedFramework.Rest.Model {
 
         private static Task BindFromBody(ModelBindingContext bindingContext) =>
             ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeContent(bindingContext), true),
-                ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
+                                                      async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeContent(bindingContext), true),
+                                                      ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
 
         private static Task BindFromQuery(ModelBindingContext bindingContext) =>
             ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
-                ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
+                                                      async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
+                                                      ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
     }
 }

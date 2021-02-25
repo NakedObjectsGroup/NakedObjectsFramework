@@ -29,6 +29,18 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public ITypeFacade Specification => new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
 
+        public override bool Equals(object obj) => obj is ActionFacade af && Equals(af);
+
+        public bool Equals(ActionFacade other) {
+            if (ReferenceEquals(null, other)) {
+                return false;
+            }
+
+            return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
+        }
+
+        public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
+
         #region IActionFacade Members
 
         public bool IsContributed => WrappedSpec.IsContributedMethod;
@@ -87,15 +99,5 @@ namespace NakedFramework.Facade.Impl.Impl {
         public int? NumberOfLines => WrappedSpec.GetNumberOfLines();
 
         #endregion
-
-        public override bool Equals(object obj) => obj is ActionFacade af && Equals(af);
-
-        public bool Equals(ActionFacade other) {
-            if (ReferenceEquals(null, other)) { return false; }
-
-            return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
-        }
-
-        public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
     }
 }

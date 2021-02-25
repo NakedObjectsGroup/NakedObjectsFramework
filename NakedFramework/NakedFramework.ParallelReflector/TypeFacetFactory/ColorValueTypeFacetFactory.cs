@@ -18,12 +18,12 @@ namespace NakedFramework.ParallelReflector.TypeFacetFactory {
     public sealed class ColorValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public ColorValueTypeFacetFactory(IFacetFactoryOrder<ColorValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!ColorValueSemanticsProvider.IsAdaptedType(type)) {
                 return metamodel;
             }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(ColorValueSemanticsProvider.AdaptedType,  metamodel);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(ColorValueSemanticsProvider.AdaptedType, metamodel);
             AddValueFacets(new ColorValueSemanticsProvider(oSpec, specification), specification);
             return mm;
         }

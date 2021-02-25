@@ -56,6 +56,5 @@ namespace NakedFramework.ParallelReflector.Component {
         }
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

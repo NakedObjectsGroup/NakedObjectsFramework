@@ -21,27 +21,6 @@ namespace NakedFramework.Facade.Impl.Translators {
 
         public OidTranslatorSlashSeparatedTypeAndIds(INakedObjectsFramework framework) => this.framework = framework;
 
-        #region IOidTranslator Members
-
-        public IOidTranslation GetOidTranslation(params string[] id) =>
-            id.Length switch {
-                2 => new OidTranslationSlashSeparatedTypeAndIds(id.First(), id.Last()),
-                1 => new OidTranslationSlashSeparatedTypeAndIds(id.First()),
-                _ => null
-            };
-
-        public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
-            if (objectFacade.IsViewModel) {
-                var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
-                framework.LifecycleManager.PopulateViewModelKeys(vm, framework);
-            }
-
-            var (code, key) = GetCodeAndKeyAsTuple(objectFacade);
-            return new OidTranslationSlashSeparatedTypeAndIds(code, key);
-        }
-
-        #endregion
-
         private string GetCode(ITypeFacade spec) => GetCode(NakedObjects.TypeUtils.GetType(spec.FullName));
 
         protected (string code, string key) GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
@@ -83,5 +62,26 @@ namespace NakedFramework.Facade.Impl.Translators {
             ?? new DefaultKeyCodeMapper();
 
         private string GetCode(Type type) => GetTypeCodeMapper().CodeFromType(type);
+
+        #region IOidTranslator Members
+
+        public IOidTranslation GetOidTranslation(params string[] id) =>
+            id.Length switch {
+                2 => new OidTranslationSlashSeparatedTypeAndIds(id.First(), id.Last()),
+                1 => new OidTranslationSlashSeparatedTypeAndIds(id.First()),
+                _ => null
+            };
+
+        public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
+            if (objectFacade.IsViewModel) {
+                var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
+                framework.LifecycleManager.PopulateViewModelKeys(vm, framework);
+            }
+
+            var (code, key) = GetCodeAndKeyAsTuple(objectFacade);
+            return new OidTranslationSlashSeparatedTypeAndIds(code, key);
+        }
+
+        #endregion
     }
 }

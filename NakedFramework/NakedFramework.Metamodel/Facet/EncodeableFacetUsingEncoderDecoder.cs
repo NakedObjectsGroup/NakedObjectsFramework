@@ -24,6 +24,8 @@ namespace NakedFramework.Metamodel.Facet {
 
         public static string EncodedNull => "NULL";
 
+        protected override string ToStringValues() => encoderDecoder.ToString();
+
         #region IEncodeableFacet Members
 
         public INakedObjectAdapter FromEncodedString(string encodedData, INakedObjectManager manager) => EncodedNull.Equals(encodedData) ? null : manager.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);
@@ -31,7 +33,5 @@ namespace NakedFramework.Metamodel.Facet {
         public string ToEncodedString(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter == null ? EncodedNull : encoderDecoder.ToEncodedString(nakedObjectAdapter.GetDomainObject<T>());
 
         #endregion
-
-        protected override string ToStringValues() => encoderDecoder.ToString();
     }
 }

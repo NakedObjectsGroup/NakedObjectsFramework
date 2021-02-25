@@ -15,8 +15,7 @@ namespace NakedFramework.Core.Util {
     public static class InvokeUtils {
         public static object InvokeStatic(MethodInfo method, object[] parameters) => Invoke(method, null, parameters);
 
-        public static object InvokeStatic(MethodInfo method, INakedObjectAdapter[] parameters)
-        {
+        public static object InvokeStatic(MethodInfo method, INakedObjectAdapter[] parameters) {
             var parameterPocos = parameters == null ? new object[] { } : Enumerable.ToArray(parameters.Select(p => p?.Object));
             return Invoke(method, null, parameterPocos);
         }

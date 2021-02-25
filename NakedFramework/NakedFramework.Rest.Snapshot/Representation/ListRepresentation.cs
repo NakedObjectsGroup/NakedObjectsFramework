@@ -89,8 +89,8 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, menu.Name));
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequest req, RestControlFlags flags) => new ListRepresentation(oidStrategy, listContext, req, flags);
+        public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequest req, RestControlFlags flags) => new(oidStrategy, listContext, req, flags);
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags) => new ListRepresentation(oidStrategy, menus, req, flags);
+        public static ListRepresentation Create(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags) => new(oidStrategy, menus, req, flags);
     }
 }

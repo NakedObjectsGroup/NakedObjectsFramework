@@ -25,30 +25,6 @@ namespace NakedFramework.Core.Spec {
 
         public override bool IsAutoCompleteEnabled => false;
 
-        #region IOneToManyAssociationSpec Members
-
-        public override INakedObjectAdapter GetNakedObject(INakedObjectAdapter inObjectAdapter) => GetCollection(inObjectAdapter);
-
-        public override IObjectSpec ElementSpec { get; }
-
-        public bool IsASet { get; }
-
-        public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) => Count(inObjectAdapter) == 0;
-
-        public int Count(INakedObjectAdapter inObjectAdapter) => Framework.Persistor.CountField(inObjectAdapter, Id);
-
-        public override bool IsInline => false;
-
-        public override bool IsMandatory => false;
-
-        public override INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) => null;
-
-        public override TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter) => TypeOfDefaultValue.Implicit;
-
-        public override void ToDefault(INakedObjectAdapter target) { }
-
-        #endregion
-
         public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => new INakedObjectAdapter[0];
 
         private INakedObjectAdapter GetCollection(INakedObjectAdapter inObjectAdapter) {
@@ -80,6 +56,30 @@ namespace NakedFramework.Core.Spec {
             str.Append("type", ReturnSpec == null ? "unknown" : ReturnSpec.ShortName);
             return str.ToString();
         }
+
+        #region IOneToManyAssociationSpec Members
+
+        public override INakedObjectAdapter GetNakedObject(INakedObjectAdapter inObjectAdapter) => GetCollection(inObjectAdapter);
+
+        public override IObjectSpec ElementSpec { get; }
+
+        public bool IsASet { get; }
+
+        public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) => Count(inObjectAdapter) == 0;
+
+        public int Count(INakedObjectAdapter inObjectAdapter) => Framework.Persistor.CountField(inObjectAdapter, Id);
+
+        public override bool IsInline => false;
+
+        public override bool IsMandatory => false;
+
+        public override INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) => null;
+
+        public override TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter) => TypeOfDefaultValue.Implicit;
+
+        public override void ToDefault(INakedObjectAdapter target) { }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

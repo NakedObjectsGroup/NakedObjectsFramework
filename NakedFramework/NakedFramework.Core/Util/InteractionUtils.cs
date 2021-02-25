@@ -28,8 +28,8 @@ namespace NakedFramework.Core.Util {
         public static bool IsVisibleWhenPersistent(ISpecification specification, IInteractionContext ic) {
             var buf = new InteractionBuffer();
             var facets = specification.GetFacets()
-                .Where(f => f is IHidingInteractionAdvisor)
-                .Cast<IHidingInteractionAdvisor>();
+                                      .Where(f => f is IHidingInteractionAdvisor)
+                                      .Cast<IHidingInteractionAdvisor>();
             foreach (var advisor in facets) {
                 if (advisor is IHiddenFacet facet) {
                     buf.Append(facet.HidesForState(true));

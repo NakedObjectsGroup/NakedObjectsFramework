@@ -126,14 +126,12 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             action = parameterContext.Action;
             param = parameterContext.Parameter;
 
-            if (parameterContext.Target is null)
-            {
+            if (parameterContext.Target is null) {
                 spec = parameterContext.Action.OnType;
                 cachedId = "";
                 CachedType = parameterContext.MenuId;
             }
             else {
-
                 objectFacade = parameterContext.Target;
                 spec = objectFacade.Specification;
                 if (objectFacade.Specification.IsParseable) {

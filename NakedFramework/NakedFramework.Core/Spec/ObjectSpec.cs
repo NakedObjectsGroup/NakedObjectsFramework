@@ -35,10 +35,16 @@ namespace NakedFramework.Core.Spec {
 
         private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions);
 
+        protected override PersistableType GetPersistable() =>
+            InnerSpec.ContainsFacet<INotPersistedFacet>()
+                ? PersistableType.Transient
+                : InnerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()
+                    ? PersistableType.ProgramPersistable
+                    : PersistableType.UserPersistable;
+
         #region IObjectSpec Members
 
-        private IAssociationSpec[] ObjectFields
-        {
+        private IAssociationSpec[] ObjectFields {
             get { return objectFields ??= InnerSpec.Fields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray(); }
         }
 
@@ -77,13 +83,6 @@ namespace NakedFramework.Core.Spec {
         }
 
         #endregion
-
-        protected override PersistableType GetPersistable() =>
-            InnerSpec.ContainsFacet<INotPersistedFacet>()
-                ? PersistableType.Transient
-                : InnerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()
-                    ? PersistableType.ProgramPersistable
-                    : PersistableType.UserPersistable;
     }
 }
 

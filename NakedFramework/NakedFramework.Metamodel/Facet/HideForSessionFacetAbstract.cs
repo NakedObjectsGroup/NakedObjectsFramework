@@ -30,7 +30,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         #region IHideForSessionFacet Members
 
-        public virtual string Hides(IInteractionContext ic) => HiddenReason( ic.Target, ic.Framework);
+        public virtual string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
 
         public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 

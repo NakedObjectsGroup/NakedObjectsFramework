@@ -30,6 +30,15 @@ namespace NakedFramework.Core.Adapter {
             version = helper.GetNextObject();
         }
 
+        public override bool Equals(object obj) {
+            var entityVersion = obj as ConcurrencyCheckVersion;
+            return Equals(entityVersion);
+        }
+
+        public override int GetHashCode() => version.GetHashCode();
+
+        public override string ToString() => $"Version: {version} (last read at : {Time} by : {User})";
+
         #region IEncodedToStrings Members
 
         public string[] ToEncodedStrings() {
@@ -66,14 +75,5 @@ namespace NakedFramework.Core.Adapter {
         }
 
         #endregion
-
-        public override bool Equals(object obj) {
-            var entityVersion = obj as ConcurrencyCheckVersion;
-            return Equals(entityVersion);
-        }
-
-        public override int GetHashCode() => version.GetHashCode();
-
-        public override string ToString() => $"Version: {version} (last read at : {Time} by : {User})";
     }
 }

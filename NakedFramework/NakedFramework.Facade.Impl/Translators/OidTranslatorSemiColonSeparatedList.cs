@@ -17,9 +17,11 @@ namespace NakedFramework.Facade.Impl.Translators {
     public class OidTranslatorSemiColonSeparatedList : IOidTranslator {
         private readonly INakedObjectsFramework framework;
 
-        public OidTranslatorSemiColonSeparatedList(INakedObjectsFramework framework) {
-            this.framework = framework;
-        }
+        public OidTranslatorSemiColonSeparatedList(INakedObjectsFramework framework) => this.framework = framework;
+
+        private static string Encode(IEncodedToStrings encoder) => encoder.ToShortEncodedStrings().Aggregate((a, b) => $"{a};{b}");
+
+        private static string GetObjectId(IOidFacade oid) => Encode((IEncodedToStrings) oid.Value);
 
         #region IOidTranslator Members
 
@@ -45,9 +47,5 @@ namespace NakedFramework.Facade.Impl.Translators {
         }
 
         #endregion
-
-        private static string Encode(IEncodedToStrings encoder) => encoder.ToShortEncodedStrings().Aggregate((a, b) => $"{a};{b}");
-
-        private static string GetObjectId(IOidFacade oid) => Encode((IEncodedToStrings) oid.Value);
     }
 }

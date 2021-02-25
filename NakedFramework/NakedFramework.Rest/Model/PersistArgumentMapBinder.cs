@@ -14,8 +14,8 @@ namespace NakedFramework.Rest.Model {
 
         public Task BindModelAsync(ModelBindingContext bindingContext) =>
             ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                async () => ModelBinderUtils.CreatePersistArgMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
-                ModelBinderUtils.CreateMalformedArguments<PersistArgumentMap>);
+                                                      async () => ModelBinderUtils.CreatePersistArgMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
+                                                      ModelBinderUtils.CreateMalformedArguments<PersistArgumentMap>);
 
         #endregion
     }

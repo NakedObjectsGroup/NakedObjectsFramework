@@ -13,15 +13,15 @@ using NakedFramework.Core.Exception;
 
 namespace NakedFramework.Core.Component {
     public sealed class NakedObjectFactory {
+        private INakedObjectsFramework framework;
         private bool isInitialized;
         private ILoggerFactory loggerFactory;
-        private INakedObjectsFramework framework;
 
         // ReSharper disable ParameterHidesMember
         public void Initialize(INakedObjectsFramework framework, ILoggerFactory loggerFactory) {
             this.framework = framework;
             // ReSharper restore ParameterHidesMember
-          
+
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             isInitialized = true;
         }

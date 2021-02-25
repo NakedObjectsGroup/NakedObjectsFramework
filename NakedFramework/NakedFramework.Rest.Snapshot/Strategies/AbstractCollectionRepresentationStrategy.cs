@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
@@ -60,7 +61,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
         protected LinkRepresentation CreateValueLink(IObjectFacade no) =>
             LinkRepresentation.Create(OidStrategy, new ValueRelType(PropertyContext.Property, new UriMtHelper(OidStrategy, Req, no)), Flags,
-                new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
+                                      new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
 
         protected LinkRepresentation CreateTableRowValueLink(IObjectFacade no) => RestUtils.CreateTableRowValueLink(no, PropertyContext, OidStrategy, Req, Flags);
 
@@ -91,7 +92,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
         }
 
         private static ActionContextFacade ActionContext(IActionFacade actionFacade, IObjectFacade target) =>
-            new ActionContextFacade {
+            new() {
                 MenuPath = "",
                 Target = target,
                 Action = actionFacade,
@@ -99,9 +100,9 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
             };
 
         public virtual InlineActionRepresentation[] GetActions() {
-            return !PropertyContext.Target.IsTransient 
-                ? OidStrategy.FrameworkFacade.GetLocallyContributedActions(PropertyContext).Select(a => InlineActionRepresentation.Create(OidStrategy, Req, a, Flags)).ToArray() 
-                : System.Array.Empty<InlineActionRepresentation>();
+            return !PropertyContext.Target.IsTransient
+                ? OidStrategy.FrameworkFacade.GetLocallyContributedActions(PropertyContext).Select(a => InlineActionRepresentation.Create(OidStrategy, Req, a, Flags)).ToArray()
+                : Array.Empty<InlineActionRepresentation>();
         }
     }
 }

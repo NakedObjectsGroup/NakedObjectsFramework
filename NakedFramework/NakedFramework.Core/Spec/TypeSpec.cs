@@ -32,9 +32,9 @@ namespace NakedFramework.Core.Spec {
         private bool? isInterface;
         private bool? isParseable;
         private bool? isQueryable;
+        private bool? isStatic;
         private bool? isViewModel;
         private bool? isVoid;
-        private bool? isStatic;
         private IActionSpec[] objectActions;
         private PersistableType? persistable;
         private string pluralName;
@@ -44,7 +44,7 @@ namespace NakedFramework.Core.Spec {
         private ITypeSpec superclass;
         private string untitledName;
 
-        protected TypeSpec(SpecFactory memberFactory,  ITypeSpecImmutable innerSpec, INakedObjectsFramework framework) {
+        protected TypeSpec(SpecFactory memberFactory, ITypeSpecImmutable innerSpec, INakedObjectsFramework framework) {
             MemberFactory = memberFactory ?? throw new InitialisationException($"{nameof(memberFactory)} is null");
             InnerSpec = innerSpec ?? throw new InitialisationException($"{nameof(innerSpec)} is null");
             Framework = framework;
@@ -55,6 +55,41 @@ namespace NakedFramework.Core.Spec {
         protected IActionSpec[] ObjectActions => objectActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ObjectActions);
 
         protected SpecFactory MemberFactory { get; }
+
+        private string DefaultTitle() => InnerSpec is IServiceSpecImmutable ? SingularName : UntitledName;
+
+        protected abstract PersistableType GetPersistable();
+
+        private string TypeNameFor() => IsCollection ? "Collection" : "Object";
+
+        public override string ToString() {
+            var str = new AsString(this);
+            str.Append("class", FullName);
+            str.Append("type", TypeNameFor());
+            str.Append("persistable", Persistable);
+            str.Append("superclass", InnerSpec.Superclass == null ? "object" : InnerSpec.Superclass.FullName);
+            return str.ToString();
+        }
+
+        protected bool Equals(TypeSpec other) => Equals(InnerSpec, other.InnerSpec);
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj)) {
+                return true;
+            }
+
+            if (obj.GetType() != GetType()) {
+                return false;
+            }
+
+            return Equals((TypeSpec) obj);
+        }
+
+        public override int GetHashCode() => InnerSpec != null ? InnerSpec.GetHashCode() : 0;
 
         #region ITypeSpec Members
 
@@ -225,10 +260,8 @@ namespace NakedFramework.Core.Spec {
             }
         }
 
-        public bool IsStatic
-        {
-            get
-            {
+        public bool IsStatic {
+            get {
                 isStatic ??= InnerSpec.GetFacet<ITypeIsStaticFacet>().Flag;
 
                 return isStatic.Value;
@@ -262,41 +295,6 @@ namespace NakedFramework.Core.Spec {
         public string GetIconName(INakedObjectAdapter forObjectAdapter) => InnerSpec.GetIconName(forObjectAdapter, Framework.MetamodelManager.Metamodel);
 
         #endregion
-
-        private string DefaultTitle() => InnerSpec is IServiceSpecImmutable ? SingularName : UntitledName;
-
-        protected abstract PersistableType GetPersistable();
-
-        private string TypeNameFor() => IsCollection ? "Collection" : "Object";
-
-        public override string ToString() {
-            var str = new AsString(this);
-            str.Append("class", FullName);
-            str.Append("type", TypeNameFor());
-            str.Append("persistable", Persistable);
-            str.Append("superclass", InnerSpec.Superclass == null ? "object" : InnerSpec.Superclass.FullName);
-            return str.ToString();
-        }
-
-        protected bool Equals(TypeSpec other) => Equals(InnerSpec, other.InnerSpec);
-
-        public override bool Equals(object obj) {
-            if (ReferenceEquals(null, obj)) {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj)) {
-                return true;
-            }
-
-            if (obj.GetType() != GetType()) {
-                return false;
-            }
-
-            return Equals((TypeSpec) obj);
-        }
-
-        public override int GetHashCode() => InnerSpec != null ? InnerSpec.GetHashCode() : 0;
     }
 }
 

@@ -64,7 +64,6 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             actionContextFacade.Action.IsVisible(actionContextFacade.Target) &&
             actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
 
-
         private void SetMembers(IMenuFacade menu, HttpRequest req) {
             ActionContextFacade SetMenuId(ActionContextFacade action) {
                 action.MenuId = menu.Id;
@@ -88,7 +87,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetExtensions(IMenuFacade menu) => Extensions = MapRepresentation.Create();
 
-        public static MenuRepresentation Create(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, IMenuFacade menu, HttpRequest req, RestControlFlags flags) => new MenuRepresentation(oidStrategy, frameworkFacade, req, menu, flags);
+        public static MenuRepresentation Create(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, IMenuFacade menu, HttpRequest req, RestControlFlags flags) => new(oidStrategy, frameworkFacade, req, menu, flags);
 
         #region Nested type: ActionComparer
 

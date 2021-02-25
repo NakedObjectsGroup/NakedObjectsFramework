@@ -36,27 +36,6 @@ namespace NakedFramework.Metamodel.I18N {
             set => resources = value;
         }
 
-        #region IFacetDecorator Members
-
-        public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
-            var identifier = holder.Identifier;
-            var facetType = facet.FacetType;
-
-            if (facetType == typeof(INamedFacet)) {
-                return GetNamedFacet(holder, facet as INamedFacet, identifier);
-            }
-
-            if (facetType == typeof(IDescribedAsFacet)) {
-                return GetDescriptionFacet(holder, facet as IDescribedAsFacet, identifier);
-            }
-
-            return facet;
-        }
-
-        public virtual Type[] ForFacetTypes => new[] {typeof(INamedFacet), typeof(IDescribedAsFacet)};
-
-        #endregion
-
         private IFacet GetDescriptionFacet(ISpecification holder, IDescribedAsFacet facet, IIdentifier identifier) {
             var i18NDescription = holder is IActionParameterSpec spec ? GetParameterDescription(identifier, spec.Number) : GetDescription(identifier);
             return i18NDescription == null ? null : new DescribedAsFacetI18N(i18NDescription, facet.Specification);
@@ -114,6 +93,27 @@ namespace NakedFramework.Metamodel.I18N {
             var key = $"{identifier.ToIdentityString(IdentifierDepth.ClassNameParams)}{Action}/{Parameter}{index + 1}/{Description}";
             return GetText(key);
         }
+
+        #region IFacetDecorator Members
+
+        public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
+            var identifier = holder.Identifier;
+            var facetType = facet.FacetType;
+
+            if (facetType == typeof(INamedFacet)) {
+                return GetNamedFacet(holder, facet as INamedFacet, identifier);
+            }
+
+            if (facetType == typeof(IDescribedAsFacet)) {
+                return GetDescriptionFacet(holder, facet as IDescribedAsFacet, identifier);
+            }
+
+            return facet;
+        }
+
+        public virtual Type[] ForFacetTypes => new[] {typeof(INamedFacet), typeof(IDescribedAsFacet)};
+
+        #endregion
     }
 }
 

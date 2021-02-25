@@ -40,6 +40,16 @@ namespace NakedFramework.Core.Adapter {
             CacheState();
         }
 
+        private void CacheState() {
+            cachedHashCode = HashCodeUtils.Seed;
+            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
+            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Keys);
+
+            var keys = Keys.Aggregate((s, t) => $"{s}:{t}");
+
+            cachedToString = $"{(IsTransient ? "T" : "")}VMOID#{keys}{(previous == null ? "" : "+")}";
+        }
+
         #region IEncodedToStrings Members
 
         public string[] ToEncodedStrings() {
@@ -80,16 +90,6 @@ namespace NakedFramework.Core.Adapter {
         }
 
         #endregion
-
-        private void CacheState() {
-            cachedHashCode = HashCodeUtils.Seed;
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Keys);
-
-            var keys = Keys.Aggregate((s, t) => $"{s}:{t}");
-
-            cachedToString = $"{(IsTransient ? "T" : "")}VMOID#{keys}{(previous == null ? "" : "+")}";
-        }
 
         #region Object Overrides
 

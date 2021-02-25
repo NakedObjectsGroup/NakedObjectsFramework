@@ -36,6 +36,50 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             ReflectionStatus = isRecognized ? ReflectionStatus.PlaceHolder : ReflectionStatus.PendingIntrospection;
         }
 
+        private ReflectionStatus ReflectionStatus { get; set; }
+
+        public void AddContributedFunctions(IList<IActionSpecImmutable> contributedFunctions) => ContributedActions = ContributedActions.Union(contributedFunctions).ToImmutableList();
+
+        public void AddContributedFields(IList<IAssociationSpecImmutable> addedToFields) => Fields = addedToFields.ToImmutableList();
+
+        public bool IsPlaceHolder => ReflectionStatus == ReflectionStatus.PlaceHolder;
+
+        public bool IsPendingIntrospection => ReflectionStatus == ReflectionStatus.PendingIntrospection;
+
+        private static bool IsAssignableToGenericType(Type givenType, Type genericType) {
+            var interfaceTypes = givenType.GetInterfaces();
+
+            if (interfaceTypes.Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType)) {
+                return true;
+            }
+
+            if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType) {
+                return true;
+            }
+
+            var baseType = givenType.BaseType;
+            return baseType != null && IsAssignableToGenericType(baseType, genericType);
+        }
+
+        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) => ContributedActions = contributedActions.ToImmutableList();
+
+        public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) => CollectionContributedActions = collectionContributedActions.ToImmutableList();
+
+        public void AddFinderActions(IList<IActionSpecImmutable> finderActions) => FinderActions = finderActions.ToImmutableList();
+
+        private void DecorateAllFacets(IFacetDecoratorSet decorator) {
+            decorator.DecorateAllHoldersFacets(this);
+            Fields.ForEach(decorator.DecorateAllHoldersFacets);
+            ObjectActions.Where(s => s != null).ForEach(action => DecorateAction(decorator, action));
+        }
+
+        private static void DecorateAction(IFacetDecoratorSet decorator, IActionSpecImmutable action) {
+            decorator.DecorateAllHoldersFacets(action);
+            action.Parameters.ForEach(decorator.DecorateAllHoldersFacets);
+        }
+
+        public override string ToString() => $"{GetType().Name} for {Type.Name}";
+
         #region ITypeSpecBuilder Members
 
         public IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -151,50 +195,6 @@ namespace NakedFramework.Metamodel.SpecImmutable {
         }
 
         #endregion
-
-        private static bool IsAssignableToGenericType(Type givenType, Type genericType) {
-            var interfaceTypes = givenType.GetInterfaces();
-
-            if (interfaceTypes.Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType)) {
-                return true;
-            }
-
-            if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType) {
-                return true;
-            }
-
-            var baseType = givenType.BaseType;
-            return baseType != null && IsAssignableToGenericType(baseType, genericType);
-        }
-
-        public void AddContributedFunctions(IList<IActionSpecImmutable> contributedFunctions) =>  ContributedActions = ContributedActions.Union(contributedFunctions).ToImmutableList();
-
-        public void AddContributedFields(IList<IAssociationSpecImmutable> addedToFields) => Fields = addedToFields.ToImmutableList();
-
-        public bool IsPlaceHolder => ReflectionStatus == ReflectionStatus.PlaceHolder;
-
-        public bool IsPendingIntrospection => ReflectionStatus == ReflectionStatus.PendingIntrospection;
-
-        private ReflectionStatus ReflectionStatus { get; set; }
-
-        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) => ContributedActions = contributedActions.ToImmutableList();
-
-        public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) => CollectionContributedActions = collectionContributedActions.ToImmutableList();
-
-        public void AddFinderActions(IList<IActionSpecImmutable> finderActions) => FinderActions = finderActions.ToImmutableList();
-
-        private void DecorateAllFacets(IFacetDecoratorSet decorator) {
-            decorator.DecorateAllHoldersFacets(this);
-            Fields.ForEach(decorator.DecorateAllHoldersFacets);
-            ObjectActions.Where(s => s != null).ForEach(action => DecorateAction(decorator, action));
-        }
-
-        private static void DecorateAction(IFacetDecoratorSet decorator, IActionSpecImmutable action) {
-            decorator.DecorateAllHoldersFacets(action);
-            action.Parameters.ForEach(decorator.DecorateAllHoldersFacets);
-        }
-
-        public override string ToString() => $"{GetType().Name} for {Type.Name}";
 
         #region ISerializable
 

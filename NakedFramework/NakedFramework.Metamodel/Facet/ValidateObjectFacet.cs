@@ -32,6 +32,38 @@ namespace NakedFramework.Metamodel.Facet {
 
         private IEnumerable<NakedObjectValidationMethod> ValidateMethods { get; set; }
 
+        private void LogNoMatch(NakedObjectValidationMethod validator, string actual) {
+            var expects = validator.ParameterNames.Aggregate((s, t) => $"{s} {t}");
+            logger.LogWarning($"No Matching parms Validator: {validator.Name} Expects {expects} Actual {actual} ");
+        }
+
+        #region Nested type: NakedObjectValidationMethod
+
+        [Serializable]
+        public class NakedObjectValidationMethod {
+            private readonly ILogger<NakedObjectValidationMethod> logger;
+            private readonly MethodInfo method;
+
+            [field: NonSerialized] private Func<object, object[], object> methodDelegate;
+
+            public NakedObjectValidationMethod(MethodInfo method, ILogger<NakedObjectValidationMethod> logger) {
+                this.method = method;
+                this.logger = logger;
+                methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+            }
+
+            public string Name => method.Name;
+
+            public string[] ParameterNames => method.GetParameters().Select(p => p.Name.ToLower()).ToArray();
+
+            public string Execute(INakedObjectAdapter obj, INakedObjectAdapter[] parameters) => methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
+
+            [OnDeserialized]
+            private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        }
+
+        #endregion
+
         #region IValidateObjectFacet Members
 
         public string Validate(INakedObjectAdapter nakedObjectAdapter) {
@@ -74,38 +106,6 @@ namespace NakedFramework.Metamodel.Facet {
             }
 
             return null;
-        }
-
-        #endregion
-
-        private void LogNoMatch(NakedObjectValidationMethod validator, string actual) {
-            var expects = validator.ParameterNames.Aggregate((s, t) => $"{s} {t}");
-            logger.LogWarning($"No Matching parms Validator: {validator.Name} Expects {expects} Actual {actual} ");
-        }
-
-        #region Nested type: NakedObjectValidationMethod
-
-        [Serializable]
-        public class NakedObjectValidationMethod {
-            private readonly ILogger<NakedObjectValidationMethod> logger;
-            private readonly MethodInfo method;
-
-            [field: NonSerialized] private Func<object, object[], object> methodDelegate;
-
-            public NakedObjectValidationMethod(MethodInfo method, ILogger<NakedObjectValidationMethod> logger) {
-                this.method = method;
-                this.logger = logger;
-                methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-            }
-
-            public string Name => method.Name;
-
-            public string[] ParameterNames => method.GetParameters().Select(p => p.Name.ToLower()).ToArray();
-
-            public string Execute(INakedObjectAdapter obj, INakedObjectAdapter[] parameters) => methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
-
-            [OnDeserialized]
-            private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         #endregion

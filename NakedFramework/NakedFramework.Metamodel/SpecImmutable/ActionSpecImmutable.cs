@@ -24,6 +24,11 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             Parameters = parameters;
         }
 
+        private bool HasReturn() => ReturnSpec != null;
+
+        private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) =>
+            GetFacet<IContributedActionFacet>()?.IsContributedTo(contributeeSpec) == true && contributeeSpec.IsOfType(parmSpec);
+
         #region IActionSpecImmutable Members
 
         public override IObjectSpecImmutable ReturnSpec => GetFacet<IActionInvocationFacet>().ReturnType;
@@ -46,10 +51,10 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public bool IsStaticFunction => ContainsFacet<IStaticFunctionFacet>();
 
-        public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) => 
+        public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) =>
             Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));
 
-        public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) => 
+        public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) =>
             GetFacet<IContributedActionFacet>()?.IsContributedToCollectionOf(objectSpecImmutable) == true;
 
         public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable, string id) {
@@ -61,11 +66,6 @@ namespace NakedFramework.Metamodel.SpecImmutable {
         }
 
         #endregion
-
-        private bool HasReturn() => ReturnSpec != null;
-
-        private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) =>
-            GetFacet<IContributedActionFacet>()?.IsContributedTo(contributeeSpec) == true && contributeeSpec.IsOfType(parmSpec);
 
         #region ISerializable
 

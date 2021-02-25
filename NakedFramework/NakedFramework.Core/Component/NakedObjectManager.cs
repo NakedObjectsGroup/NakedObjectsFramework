@@ -46,109 +46,6 @@ namespace NakedFramework.Core.Component {
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
-        #region INakedObjectManager Members
-
-        public void RemoveAdapter(INakedObjectAdapter objectAdapterToDispose) => identityMap.Unloaded(objectAdapterToDispose);
-
-        public INakedObjectAdapter GetAdapterFor(object obj) {
-            if (obj == null) {
-                throw new AdapterException(logger.LogAndReturn("must have a domain object"));
-            }
-
-            var nakedObjectAdapter = identityMap.GetAdapterFor(obj);
-            if (nakedObjectAdapter != null && nakedObjectAdapter.Object != obj) {
-                throw new AdapterException(logger.LogAndReturn($"Mapped adapter is for different domain object: {obj}; {nakedObjectAdapter}"));
-            }
-
-            return nakedObjectAdapter;
-        }
-
-        public INakedObjectAdapter GetAdapterFor(IOid oid) {
-            if (oid == null) {
-                throw new AdapterException(logger.LogAndReturn("must have an OID"));
-            }
-
-            return identityMap.GetAdapterFor(oid);
-        }
-
-        public INakedObjectAdapter CreateAdapter(object domainObject, IOid oid, IVersion version) {
-            if (domainObject == null) {
-                return null;
-            }
-
-            if (oid == null) {
-                var objectSpec = metamodel.GetSpecification(domainObject.GetType());
-                if (objectSpec.ContainsFacet(typeof(IComplexTypeFacet))) {
-                    return GetAdapterFor(domainObject);
-                }
-
-                if (objectSpec.HasNoIdentity) {
-                    return AdapterForNoIdentityObject(domainObject);
-                }
-
-                return AdapterForExistingObject(domainObject, objectSpec);
-            }
-
-            return AdapterForExistingObject(domainObject, oid);
-        }
-
-        public void ReplacePoco(INakedObjectAdapter nakedObjectAdapter, object newDomainObject) {
-            RemoveAdapter(nakedObjectAdapter);
-            identityMap.Replaced(nakedObjectAdapter.Object);
-            nakedObjectAdapter.ReplacePoco(newDomainObject);
-            identityMap.AddAdapter(nakedObjectAdapter);
-        }
-
-        public void MadePersistent(INakedObjectAdapter nakedObjectAdapter) => identityMap.MadePersistent(nakedObjectAdapter);
-
-        public void UpdateViewModel(INakedObjectAdapter adapter, string[] keys) => identityMap.UpdateViewModel(adapter, keys);
-
-        public INakedObjectAdapter CreateAggregatedAdapter(INakedObjectAdapter parent, string fieldId, object obj) {
-            GetAdapterFor(obj);
-
-            IOid oid = new AggregateOid(metamodel, parent.Oid, fieldId, obj.GetType().FullName);
-            var adapterFor = GetAdapterFor(oid);
-            if (adapterFor == null || adapterFor.Object != obj) {
-                if (adapterFor != null) {
-                    RemoveAdapter(adapterFor);
-                }
-
-                adapterFor = CreateAdapter(obj, oid, null);
-                adapterFor.OptimisticLock = new NullVersion(loggerFactory.CreateLogger<NullVersion>());
-            }
-
-            return adapterFor;
-        }
-
-        public INakedObjectAdapter NewAdapterForKnownObject(object domainObject, IOid transientOid) => nakedObjectFactory.CreateAdapter(domainObject, transientOid);
-
-        public List<INakedObjectAdapter> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) =>
-            (from object domainObject in domainObjects
-                select CreateAdapter(domainObject, null, null)).ToList();
-
-        public INakedObjectAdapter GetServiceAdapter(object service) {
-            var oid = GetOidForService(ServiceUtils.GetId(service), service.GetType().FullName);
-            return AdapterForService(oid, service);
-        }
-
-        public INakedObjectAdapter GetKnownAdapter(IOid oid) => identityMap.IsIdentityKnown(oid) ? GetAdapterFor(oid) : null;
-
-        public INakedObjectAdapter AdapterForExistingObject(object domainObject, IOid oid) => GetAdapterFor(domainObject) ?? NewAdapterBasedOnOid(domainObject, oid);
-
-        public INakedObjectAdapter CreateInstanceAdapter(object obj) {
-            var adapter = CreateAdapterForNewObject(obj);
-            NewTransientsResolvedState(adapter);
-            return adapter;
-        }
-
-        public INakedObjectAdapter CreateViewModelAdapter(IObjectSpec spec, object viewModel) {
-            var adapter = CreateAdapterForViewModel(viewModel, spec);
-            adapter.ResolveState.Handle(Events.InitializePersistentEvent);
-            return adapter;
-        }
-
-        #endregion
-
         private IOid GetOidForService(string name, string typeName) => oidGenerator.CreateOid(typeName, new object[] {0});
 
         private INakedObjectAdapter AdapterForNoIdentityObject(object domainObject) {
@@ -227,5 +124,108 @@ namespace NakedFramework.Core.Component {
 
             return adapter;
         }
+
+        #region INakedObjectManager Members
+
+        public void RemoveAdapter(INakedObjectAdapter objectAdapterToDispose) => identityMap.Unloaded(objectAdapterToDispose);
+
+        public INakedObjectAdapter GetAdapterFor(object obj) {
+            if (obj == null) {
+                throw new AdapterException(logger.LogAndReturn("must have a domain object"));
+            }
+
+            var nakedObjectAdapter = identityMap.GetAdapterFor(obj);
+            if (nakedObjectAdapter != null && nakedObjectAdapter.Object != obj) {
+                throw new AdapterException(logger.LogAndReturn($"Mapped adapter is for different domain object: {obj}; {nakedObjectAdapter}"));
+            }
+
+            return nakedObjectAdapter;
+        }
+
+        public INakedObjectAdapter GetAdapterFor(IOid oid) {
+            if (oid == null) {
+                throw new AdapterException(logger.LogAndReturn("must have an OID"));
+            }
+
+            return identityMap.GetAdapterFor(oid);
+        }
+
+        public INakedObjectAdapter CreateAdapter(object domainObject, IOid oid, IVersion version) {
+            if (domainObject == null) {
+                return null;
+            }
+
+            if (oid == null) {
+                var objectSpec = metamodel.GetSpecification(domainObject.GetType());
+                if (objectSpec.ContainsFacet(typeof(IComplexTypeFacet))) {
+                    return GetAdapterFor(domainObject);
+                }
+
+                if (objectSpec.HasNoIdentity) {
+                    return AdapterForNoIdentityObject(domainObject);
+                }
+
+                return AdapterForExistingObject(domainObject, objectSpec);
+            }
+
+            return AdapterForExistingObject(domainObject, oid);
+        }
+
+        public void ReplacePoco(INakedObjectAdapter nakedObjectAdapter, object newDomainObject) {
+            RemoveAdapter(nakedObjectAdapter);
+            identityMap.Replaced(nakedObjectAdapter.Object);
+            nakedObjectAdapter.ReplacePoco(newDomainObject);
+            identityMap.AddAdapter(nakedObjectAdapter);
+        }
+
+        public void MadePersistent(INakedObjectAdapter nakedObjectAdapter) => identityMap.MadePersistent(nakedObjectAdapter);
+
+        public void UpdateViewModel(INakedObjectAdapter adapter, string[] keys) => identityMap.UpdateViewModel(adapter, keys);
+
+        public INakedObjectAdapter CreateAggregatedAdapter(INakedObjectAdapter parent, string fieldId, object obj) {
+            GetAdapterFor(obj);
+
+            IOid oid = new AggregateOid(metamodel, parent.Oid, fieldId, obj.GetType().FullName);
+            var adapterFor = GetAdapterFor(oid);
+            if (adapterFor == null || adapterFor.Object != obj) {
+                if (adapterFor != null) {
+                    RemoveAdapter(adapterFor);
+                }
+
+                adapterFor = CreateAdapter(obj, oid, null);
+                adapterFor.OptimisticLock = new NullVersion(loggerFactory.CreateLogger<NullVersion>());
+            }
+
+            return adapterFor;
+        }
+
+        public INakedObjectAdapter NewAdapterForKnownObject(object domainObject, IOid transientOid) => nakedObjectFactory.CreateAdapter(domainObject, transientOid);
+
+        public List<INakedObjectAdapter> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) =>
+            (from object domainObject in domainObjects
+             select CreateAdapter(domainObject, null, null)).ToList();
+
+        public INakedObjectAdapter GetServiceAdapter(object service) {
+            var oid = GetOidForService(ServiceUtils.GetId(service), service.GetType().FullName);
+            return AdapterForService(oid, service);
+        }
+
+        public INakedObjectAdapter GetKnownAdapter(IOid oid) => identityMap.IsIdentityKnown(oid) ? GetAdapterFor(oid) : null;
+
+        public INakedObjectAdapter AdapterForExistingObject(object domainObject, IOid oid) => GetAdapterFor(domainObject) ?? NewAdapterBasedOnOid(domainObject, oid);
+
+        public INakedObjectAdapter CreateInstanceAdapter(object obj) {
+            var adapter = CreateAdapterForNewObject(obj);
+            NewTransientsResolvedState(adapter);
+            return adapter;
+        }
+
+        public INakedObjectAdapter CreateViewModelAdapter(IObjectSpec spec, object viewModel) {
+            var adapter = CreateAdapterForViewModel(viewModel, spec);
+            adapter.ResolveState.Handle(Events.InitializePersistentEvent);
+            return adapter;
+        }
+
+        #endregion
     }
 }

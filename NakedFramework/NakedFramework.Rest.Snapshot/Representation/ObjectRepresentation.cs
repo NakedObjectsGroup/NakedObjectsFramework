@@ -41,7 +41,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
         [DataMember(Name = JsonPropertyNames.Members)]
         public MapRepresentation Members { get; set; }
 
-        private static UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext) => new UriMtHelper(oidStrategy, req, objectContext.Target);
+        private static UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext) => new(oidStrategy, req, objectContext.Target);
 
         private static bool IsProtoPersistent(IObjectFacade objectFacade) => objectFacade.IsTransient;
 
@@ -59,11 +59,11 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
             return new[] {
                 LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSubtypeOf), Flags,
-                    new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))))),
+                                          new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
+                                          new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))))),
                 LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSupertypeOf), Flags,
-                    new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)))))))
+                                          new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
+                                          new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)))))))
             };
         }
 
@@ -98,7 +98,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                 var helper = GetHelper(OidStrategy, req, objectContext);
 
                 var modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) {Method = RelMethod.Put}, Flags,
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
+                                                           new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
 
                 tempLinks.Add(modifyLink);
             }
@@ -114,7 +114,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                 var args = new List<OptionalProperty> {argMembers};
 
                 var persistLink = LinkRepresentation.Create(OidStrategy, new ObjectsRelType(RelValues.Persist, new UriMtHelper(OidStrategy, req, objectContext.Target.Specification)) {Method = RelMethod.Post}, Flags,
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray())));
+                                                            new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray())));
 
                 tempLinks.Add(persistLink);
             }

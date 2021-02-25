@@ -13,15 +13,12 @@ using NakedFramework.DependencyInjection.FacetFactory;
 
 namespace NakedFramework.DependencyInjection.Utils {
     public static class ConfigHelpers {
-
         public static void RegisterFacetFactory<T>(this IServiceCollection services, Type factory) where T : IFacetFactory {
             FacetFactoryTypesProvider.AddType(factory);
             services.AddSingleton(typeof(T), factory);
         }
 
-        private static bool SafeMatch(this ServiceDescriptor descriptor, Type toMatch) {
-            return descriptor.ImplementationType == toMatch;
-        }
+        private static bool SafeMatch(this ServiceDescriptor descriptor, Type toMatch) => descriptor.ImplementationType == toMatch;
 
         private static void RemoveFactory<TInterface, TOriginal>(this IServiceCollection services) {
             var serviceDescriptor = services.Where(descriptor => descriptor.ServiceType == typeof(TInterface)).FirstOrDefault(descriptor => descriptor.SafeMatch(typeof(TOriginal)));
@@ -33,20 +30,16 @@ namespace NakedFramework.DependencyInjection.Utils {
         public static void RegisterReplacementFacetFactory<TInterface, TReplacement, TOriginal>(IServiceCollection services)
             where TReplacement : IFacetFactory
             where TOriginal : IFacetFactory {
-
             // remove the original and register replacement.
             services.RemoveFactory<TInterface, TOriginal>();
             services.AddSingleton(typeof(TInterface), typeof(TReplacement));
         }
-
 
         // Helper method to, substitute a new implementation of a specific facet factory, but where the constructor
         // of the new one takes: a numeric order, and the standard NOF implementation of that facet factory. 
         public static void RegisterReplacementFacetFactoryDelegatingToOriginal<TInterface, TReplacement, TOriginal>(IServiceCollection services)
             where TReplacement : IFacetFactory
             where TOriginal : IFacetFactory {
-        
-
             // remove original as an IFacetFactory
             services.RemoveFactory<TInterface, TOriginal>();
 

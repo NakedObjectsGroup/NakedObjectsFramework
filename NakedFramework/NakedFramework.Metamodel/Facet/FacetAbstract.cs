@@ -30,35 +30,6 @@ namespace NakedFramework.Metamodel.Facet {
 
         #endregion
 
-        #region IFacet Members
-
-        public virtual ISpecification Specification {
-            get => holder;
-            set => holder = value;
-        }
-
-        /// <summary>
-        ///     Assume implementation is <i>not</i> a no-op.
-        /// </summary>
-        /// <para>
-        ///     No-op implementations should override and return <c>true</c>.
-        /// </para>
-        public virtual bool IsNoOp => false;
-
-        public Type FacetType { get; }
-
-        /// <summary>
-        ///     Default implementation of this method that returns <c>true</c>, ie
-        ///     should replace non-<see cref="IsNoOp" /> implementations.
-        /// </summary>
-        /// <para>
-        ///     Implementations that don't wish to replace non-<see cref="IsNoOp" /> implementations
-        ///     should override and return <c>false</c>.
-        /// </para>
-        public virtual bool CanAlwaysReplace => true;
-
-        #endregion
-
         //protected static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair) {
         //    var (delFunc, warning) = pair;
         //    if (delFunc == null && !string.IsNullOrWhiteSpace(warning)) {
@@ -115,5 +86,34 @@ namespace NakedFramework.Metamodel.Facet {
         }
 
         protected virtual string ToStringValues() => "";
+
+        #region IFacet Members
+
+        public virtual ISpecification Specification {
+            get => holder;
+            set => holder = value;
+        }
+
+        /// <summary>
+        ///     Assume implementation is <i>not</i> a no-op.
+        /// </summary>
+        /// <para>
+        ///     No-op implementations should override and return <c>true</c>.
+        /// </para>
+        public virtual bool IsNoOp => false;
+
+        public Type FacetType { get; }
+
+        /// <summary>
+        ///     Default implementation of this method that returns <c>true</c>, ie
+        ///     should replace non-<see cref="IsNoOp" /> implementations.
+        /// </summary>
+        /// <para>
+        ///     Implementations that don't wish to replace non-<see cref="IsNoOp" /> implementations
+        ///     should override and return <c>false</c>.
+        /// </para>
+        public virtual bool CanAlwaysReplace => true;
+
+        #endregion
     }
 }

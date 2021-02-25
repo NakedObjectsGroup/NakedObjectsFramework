@@ -22,6 +22,8 @@ namespace NakedFramework.Metamodel.Facet {
 
         public static Type Type => typeof(IMaxLengthFacet);
 
+        protected override string ToStringValues() => Value == 0 ? "unlimited" : Value.ToString(Thread.CurrentThread.CurrentCulture);
+
         #region IMaxLengthFacet Members
 
         /// <summary>
@@ -44,7 +46,5 @@ namespace NakedFramework.Metamodel.Facet {
         public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMaxLengthException(ic, Value, Invalidates(ic));
 
         #endregion
-
-        protected override string ToStringValues() => Value == 0 ? "unlimited" : Value.ToString(Thread.CurrentThread.CurrentCulture);
     }
 }

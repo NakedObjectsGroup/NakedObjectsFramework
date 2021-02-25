@@ -27,6 +27,18 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public ITypeSpec WrappedValue { get; }
 
+        public override bool Equals(object obj) => obj is TypeFacade tf && Equals(tf);
+
+        public bool Equals(TypeFacade other) {
+            if (ReferenceEquals(null, other)) {
+                return false;
+            }
+
+            return ReferenceEquals(this, other) || Equals(other.WrappedValue, WrappedValue);
+        }
+
+        public override int GetHashCode() => WrappedValue != null ? WrappedValue.GetHashCode() : 0;
+
         #region ITypeFacade Members
 
         public bool IsParseable => WrappedValue.IsParseable;
@@ -155,15 +167,5 @@ namespace NakedFramework.Facade.Impl.Impl {
         public bool IsStream => WrappedValue.ContainsFacet<IFromStreamFacet>();
 
         #endregion
-
-        public override bool Equals(object obj) => obj is TypeFacade tf && Equals(tf);
-
-        public bool Equals(TypeFacade other) {
-            if (ReferenceEquals(null, other)) { return false; }
-
-            return ReferenceEquals(this, other) || Equals(other.WrappedValue, WrappedValue);
-        }
-
-        public override int GetHashCode() => WrappedValue != null ? WrappedValue.GetHashCode() : 0;
     }
 }

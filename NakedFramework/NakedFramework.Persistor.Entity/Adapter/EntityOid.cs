@@ -25,6 +25,24 @@ namespace NakedFramework.Persistor.Entity.Adapter {
         private EntityOid previous;
         public EntityKey EntityKey { get; set; }
 
+        private void CacheState() {
+            cachedHashCode = HashCodeUtils.Seed;
+            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
+            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Key);
+
+            var keys = Key.Aggregate((s, t) => $"{s}:{t}");
+
+            cachedToString = $"{(IsTransient ? "T" : "")}EOID#{keys}{(previous == null ? "" : "+")}";
+        }
+
+        private void ThrowErrorIfNotTransient(object[] newKey = null) {
+            if (!IsTransient) {
+                var newKeyString = newKey?.Aggregate("New Key", (s, t) => $"{s} : {t}") ?? "";
+                var error = $"Attempting to make persistent an already persisted object. Type {TypeName}  Existing Key: {cachedToString} {newKeyString}";
+                throw new NotPersistableException(logger.LogAndReturn(error));
+            }
+        }
+
         #region IEncodedToStrings Members
 
         public string[] ToEncodedStrings() {
@@ -93,24 +111,6 @@ namespace NakedFramework.Persistor.Entity.Adapter {
         }
 
         #endregion
-
-        private void CacheState() {
-            cachedHashCode = HashCodeUtils.Seed;
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Key);
-
-            var keys = Key.Aggregate((s, t) => $"{s}:{t}");
-
-            cachedToString = $"{(IsTransient ? "T" : "")}EOID#{keys}{(previous == null ? "" : "+")}";
-        }
-
-        private void ThrowErrorIfNotTransient(object[] newKey = null) {
-            if (!IsTransient) {
-                var newKeyString = newKey?.Aggregate("New Key", (s, t) => $"{s} : {t}") ?? "";
-                var error = $"Attempting to make persistent an already persisted object. Type {TypeName}  Existing Key: {cachedToString} {newKeyString}";
-                throw new NotPersistableException(logger.LogAndReturn(error));
-            }
-        }
 
         #region Constructors
 

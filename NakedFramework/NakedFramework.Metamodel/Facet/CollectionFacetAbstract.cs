@@ -24,6 +24,13 @@ namespace NakedFramework.Metamodel.Facet {
             : this(holder) =>
             IsASet = isASet;
 
+        protected object Call(string name, INakedObjectAdapter collection, params object[] pp) {
+            var m = GetType().GetMethod(name);
+            var t = collection.Object.GetType().GenericTypeArguments.First();
+
+            return m.MakeGenericMethod(t).Invoke(this, pp);
+        }
+
         #region ICollectionFacet Members
 
         public bool IsASet { get; private set; }
@@ -37,13 +44,6 @@ namespace NakedFramework.Metamodel.Facet {
         public abstract void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData);
 
         #endregion
-
-        protected object Call(string name, INakedObjectAdapter collection, params object[] pp) {
-            var m = GetType().GetMethod(name);
-            var t = collection.Object.GetType().GenericTypeArguments.First();
-
-            return m.MakeGenericMethod(t).Invoke(this, pp);
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -13,10 +13,11 @@ using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Core.Spec {
     public sealed class ServiceSpec : TypeSpec, IServiceSpec {
-        public ServiceSpec(SpecFactory memberFactory,  IServiceSpecImmutable innerSpec, INakedObjectsFramework framework) :
+        private IActionSpec[] contributedActions;
+
+        public ServiceSpec(SpecFactory memberFactory, IServiceSpecImmutable innerSpec, INakedObjectsFramework framework) :
             base(memberFactory, innerSpec, framework) { }
 
-        private IActionSpec[] contributedActions;
         private IActionSpec[] ContributedActions => contributedActions ?? (contributedActions = MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions));
 
         #region IServiceSpec Members

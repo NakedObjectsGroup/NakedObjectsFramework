@@ -31,34 +31,6 @@ namespace NakedFramework.Core.Component {
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
-        #region IPersistAlgorithm Members
-
-        public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter.Spec.IsCollection) {
-                nakedObjectAdapter.GetAsEnumerable(manager).ForEach(Persist);
-
-                if (nakedObjectAdapter.ResolveState.IsGhost()) {
-                    nakedObjectAdapter.ResolveState.Handle(Events.StartResolvingEvent);
-                    nakedObjectAdapter.ResolveState.Handle(Events.EndResolvingEvent);
-                }
-            }
-            else {
-                if (nakedObjectAdapter.ResolveState.IsPersistent()) {
-                    throw new NotPersistableException(logger.LogAndReturn($"Can't make object persistent as it is already persistent: {nakedObjectAdapter}"));
-                }
-
-                if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
-                    throw new NotPersistableException(logger.LogAndReturn($"Can't make object persistent as it is not persistable: {nakedObjectAdapter}"));
-                }
-
-                Persist(nakedObjectAdapter);
-            }
-        }
-
-        public string Name => "Simple Bottom Up Persistence Walker";
-
-        #endregion
-
         private void Persist(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.ResolveState.IsAggregated() || nakedObjectAdapter.ResolveState.IsTransient() && nakedObjectAdapter.Spec.Persistable != PersistableType.Transient) {
                 var fields = ((IObjectSpec) nakedObjectAdapter.Spec).Properties;
@@ -97,6 +69,34 @@ namespace NakedFramework.Core.Component {
         }
 
         public override string ToString() => new AsString(this).ToString();
+
+        #region IPersistAlgorithm Members
+
+        public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter.Spec.IsCollection) {
+                nakedObjectAdapter.GetAsEnumerable(manager).ForEach(Persist);
+
+                if (nakedObjectAdapter.ResolveState.IsGhost()) {
+                    nakedObjectAdapter.ResolveState.Handle(Events.StartResolvingEvent);
+                    nakedObjectAdapter.ResolveState.Handle(Events.EndResolvingEvent);
+                }
+            }
+            else {
+                if (nakedObjectAdapter.ResolveState.IsPersistent()) {
+                    throw new NotPersistableException(logger.LogAndReturn($"Can't make object persistent as it is already persistent: {nakedObjectAdapter}"));
+                }
+
+                if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
+                    throw new NotPersistableException(logger.LogAndReturn($"Can't make object persistent as it is not persistable: {nakedObjectAdapter}"));
+                }
+
+                Persist(nakedObjectAdapter);
+            }
+        }
+
+        public string Name => "Simple Bottom Up Persistence Walker";
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

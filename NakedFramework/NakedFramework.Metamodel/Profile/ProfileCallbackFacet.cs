@@ -15,15 +15,15 @@ using NakedObjects.Profile;
 namespace NakedFramework.Metamodel.Profile {
     [Serializable]
     public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
-        ICreatedCallbackFacet,
-        IDeletedCallbackFacet,
-        IDeletingCallbackFacet,
-        ILoadedCallbackFacet,
-        ILoadingCallbackFacet,
-        IPersistedCallbackFacet,
-        IPersistingCallbackFacet,
-        IUpdatedCallbackFacet,
-        IUpdatingCallbackFacet {
+                                               ICreatedCallbackFacet,
+                                               IDeletedCallbackFacet,
+                                               IDeletingCallbackFacet,
+                                               ILoadedCallbackFacet,
+                                               ILoadingCallbackFacet,
+                                               IPersistedCallbackFacet,
+                                               IPersistingCallbackFacet,
+                                               IUpdatedCallbackFacet,
+                                               IUpdatingCallbackFacet {
         private readonly ProfileEvent associatedEvent;
         private readonly IProfileManager profileManager;
         private readonly ICallbackFacet underlyingFacet;

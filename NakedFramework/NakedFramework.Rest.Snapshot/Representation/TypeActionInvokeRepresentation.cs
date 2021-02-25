@@ -51,16 +51,16 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(OidStrategy, SelfRelType,
-                    Flags,
-                    new OptionalProperty(JsonPropertyNames.Arguments,
-                        MapRepresentation.Create(new OptionalProperty(context.ParameterId,
-                            MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href,
-                                uri))))))
+                                          Flags,
+                                          new OptionalProperty(JsonPropertyNames.Arguments,
+                                                               MapRepresentation.Create(new OptionalProperty(context.ParameterId,
+                                                                                                             MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href,
+                                                                                                                                                           uri))))))
             };
 
             Links = tempLinks.ToArray();
         }
 
-        public static TypeActionInvokeRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context, RestControlFlags flags) => new TypeActionInvokeRepresentation(oidStrategy, req, context, flags);
+        public static TypeActionInvokeRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context, RestControlFlags flags) => new(oidStrategy, req, context, flags);
     }
 }

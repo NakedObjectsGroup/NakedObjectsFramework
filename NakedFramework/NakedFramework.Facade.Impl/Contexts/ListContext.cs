@@ -20,7 +20,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
         public bool IsListOfServices { get; set; }
 
         public ListContextFacade ToListContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
-            return new ListContextFacade {
+            return new() {
                 ElementType = new TypeFacade(ElementType, facade, framework),
                 List = List.Select(no => ObjectFacade.Wrap(no, facade, framework)).Cast<IObjectFacade>().ToArray(),
                 IsListOfServices = IsListOfServices

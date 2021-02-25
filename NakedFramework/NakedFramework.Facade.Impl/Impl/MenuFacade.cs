@@ -21,6 +21,13 @@ namespace NakedFramework.Facade.Impl.Impl {
             Grouping = wrapped.Grouping;
         }
 
+        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedObjectsFramework framework) =>
+            menu switch {
+                IMenuActionImmutable immutable => new MenuActionFacade(immutable, facade, framework),
+                IMenuImmutable menuImmutable => new MenuFacade(menuImmutable, facade, framework),
+                _ => new MenuItemFacade(menu)
+            };
+
         #region IMenuFacade Members
 
         public object Wrapped { get; }
@@ -30,12 +37,5 @@ namespace NakedFramework.Facade.Impl.Impl {
         public string Grouping { get; }
 
         #endregion
-
-        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedObjectsFramework framework) =>
-            menu switch {
-                IMenuActionImmutable immutable => new MenuActionFacade(immutable, facade, framework),
-                IMenuImmutable menuImmutable => new MenuFacade(menuImmutable, facade, framework),
-                _ => new MenuItemFacade(menu)
-            };
     }
 }

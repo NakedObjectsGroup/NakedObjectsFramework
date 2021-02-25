@@ -29,6 +29,20 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public IAssociationSpec WrappedSpec { get; }
 
+        private (string, ITypeFacade) WrapChoiceParm((string name, IObjectSpec spec) parm) => (parm.name, new TypeFacade(parm.spec, FrameworkFacade, framework));
+
+        public override bool Equals(object obj) => obj is AssociationFacade af && Equals(af);
+
+        public bool Equals(AssociationFacade other) {
+            if (ReferenceEquals(null, other)) {
+                return false;
+            }
+
+            return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
+        }
+
+        public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
+
         #region IAssociationFacade Members
 
         public string Name => WrappedSpec.Name;
@@ -201,17 +215,5 @@ namespace NakedFramework.Facade.Impl.Impl {
         public string Grouping => WrappedSpec.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
 
         #endregion
-
-        private (string, ITypeFacade) WrapChoiceParm((string name, IObjectSpec spec) parm) => (parm.name, new TypeFacade(parm.spec, FrameworkFacade, framework));
-
-        public override bool Equals(object obj) => obj is AssociationFacade af && Equals(af);
-
-        public bool Equals(AssociationFacade other) {
-            if (ReferenceEquals(null, other)) { return false; }
-
-            return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
-        }
-
-        public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
     }
 }

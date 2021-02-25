@@ -15,6 +15,10 @@ namespace NakedFramework.Facade.Translation {
 
         public OidTranslationSemiColonSeparatedList(string id) => this.id = id;
 
+        public override string ToString() => id;
+
+        public string[] Tokenize() => id.Split(';');
+
         #region IOidTranslation Members
 
         public string DomainType {
@@ -34,9 +38,5 @@ namespace NakedFramework.Facade.Translation {
         public string Encode() => id;
 
         #endregion
-
-        public override string ToString() => id;
-
-        public string[] Tokenize() => id.Split(';');
     }
 }

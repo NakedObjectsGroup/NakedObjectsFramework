@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NakedFramework.DependencyInjection.FacetFactory {
     public class FacetFactoryTypesProvider {
-        private static List<Type> FacetFactoryTypesList { get; } = new List<Type>();
+        private static List<Type> FacetFactoryTypesList { get; } = new();
 
         public Type[] FacetFactoryTypes => FacetFactoryTypesList.ToArray();
 

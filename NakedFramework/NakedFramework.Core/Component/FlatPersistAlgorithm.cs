@@ -27,21 +27,6 @@ namespace NakedFramework.Core.Component {
             this.manager = manager;
         }
 
-        #region IPersistAlgorithm Members
-
-        public string Name => "Entity Framework Persist Algorithm";
-
-        public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter.Spec.IsCollection) {
-                MakeCollectionPersistent(nakedObjectAdapter);
-            }
-            else {
-                MakeObjectPersistent(nakedObjectAdapter);
-            }
-        }
-
-        #endregion
-
         private void MakeObjectPersistent(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.ResolveState.IsAggregated() ||
                 nakedObjectAdapter.ResolveState.IsPersistent() ||
@@ -68,5 +53,20 @@ namespace NakedFramework.Core.Component {
         }
 
         public override string ToString() => Name;
+
+        #region IPersistAlgorithm Members
+
+        public string Name => "Entity Framework Persist Algorithm";
+
+        public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter.Spec.IsCollection) {
+                MakeCollectionPersistent(nakedObjectAdapter);
+            }
+            else {
+                MakeObjectPersistent(nakedObjectAdapter);
+            }
+        }
+
+        #endregion
     }
 }

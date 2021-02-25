@@ -50,13 +50,10 @@ namespace NakedFramework.Metamodel.Utils {
 
         public static bool IsNotANoopFacet(IFacet facet) => facet != null && !facet.IsNoOp;
 
-
         public static bool IsTuple(Type type) => type.GetInterfaces().Any(i => i == typeof(ITuple));
 
-        public static bool IsAction(Type type)
-        {
-            if (type.IsGenericType)
-            {
+        public static bool IsAction(Type type) {
+            if (type.IsGenericType) {
                 var genericTypeDefinition = type.GetGenericTypeDefinition();
 
                 return genericTypeDefinition == typeof(Action<>);
@@ -65,25 +62,25 @@ namespace NakedFramework.Metamodel.Utils {
             return false;
         }
 
-
-
-        public static int ValueTupleSize(Type type)
-        {
-            if (type.IsGenericType)
-            {
+        public static int ValueTupleSize(Type type) {
+            if (type.IsGenericType) {
                 var genericTypeDefinition = type.GetGenericTypeDefinition();
 
-            
-                if (genericTypeDefinition == typeof(ValueTuple<>)) return 1;
-                if (genericTypeDefinition == typeof(ValueTuple<,>)) return 2;
-                if (genericTypeDefinition == typeof(ValueTuple<,,>)) return 3;
-
-                if (genericTypeDefinition == typeof(ValueTuple<,,,>))
-                {
-                    throw new NotImplementedException("only support tuples up to size 3");
+                if (genericTypeDefinition == typeof(ValueTuple<>)) {
+                    return 1;
                 }
 
+                if (genericTypeDefinition == typeof(ValueTuple<,>)) {
+                    return 2;
+                }
 
+                if (genericTypeDefinition == typeof(ValueTuple<,,>)) {
+                    return 3;
+                }
+
+                if (genericTypeDefinition == typeof(ValueTuple<,,,>)) {
+                    throw new NotImplementedException("only support tuples up to size 3");
+                }
             }
 
             return 0;
@@ -103,6 +100,5 @@ namespace NakedFramework.Metamodel.Utils {
         //}
 
         //public static bool IsEitherTuple(Type type) => IsValueTuple(type) || IsTuple(type);
-
     }
 }

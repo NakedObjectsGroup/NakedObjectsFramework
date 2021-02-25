@@ -33,6 +33,44 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public INakedObjectAdapter WrappedNakedObject { get; }
 
+        public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedObjectsFramework framework) => nakedObject == null ? null : new ObjectFacade(nakedObject, facade, framework);
+
+        private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) => objectRepresentingCollection.Oid is ICollectionMemento cm && cm.IsNotQueryable;
+
+        private INakedObjectAdapter Page(INakedObjectAdapter objectRepresentingCollection, int page, int size, bool forceEnumerable) {
+            var toEnumerable = IsNotQueryable(objectRepresentingCollection) || forceEnumerable;
+
+            var newNakedObject = objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.NakedObjectManager, toEnumerable);
+
+            var objects = newNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => no.Object).ToArray();
+
+            var currentMemento = (ICollectionMemento) WrappedNakedObject.Oid;
+            var newMemento = currentMemento.NewSelectionMemento(objects, true);
+            newNakedObject.SetATransientOid(newMemento);
+            return newNakedObject;
+        }
+
+        private INakedObjectAdapter Select(INakedObjectAdapter objectRepresentingCollection, object[] selected, bool forceEnumerable) {
+            var result = CollectionUtils.CloneCollectionAndPopulate(objectRepresentingCollection.Object, selected);
+            var adapter = framework.NakedObjectManager.CreateAdapter(objectRepresentingCollection.Spec.IsQueryable && !forceEnumerable ? (IEnumerable) result.AsQueryable() : result, null, null);
+            var currentMemento = (ICollectionMemento) objectRepresentingCollection.Oid;
+            var newMemento = currentMemento.NewSelectionMemento(selected, false);
+            adapter.SetATransientOid(newMemento);
+            return adapter;
+        }
+
+        public override bool Equals(object obj) => obj is ObjectFacade of && Equals(of);
+
+        public bool Equals(ObjectFacade other) {
+            if (ReferenceEquals(null, other)) {
+                return false;
+            }
+
+            return ReferenceEquals(this, other) || Equals(other.WrappedNakedObject, WrappedNakedObject);
+        }
+
+        public override int GetHashCode() => WrappedNakedObject != null ? WrappedNakedObject.GetHashCode() : 0;
+
         #region IObjectFacade Members
 
         public bool IsTransient => WrappedNakedObject.ResolveState.IsTransient();
@@ -117,41 +155,5 @@ namespace NakedFramework.Facade.Impl.Impl {
         }
 
         #endregion
-
-        public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedObjectsFramework framework) => nakedObject == null ? null : new ObjectFacade(nakedObject, facade, framework);
-
-        private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) => objectRepresentingCollection.Oid is ICollectionMemento cm && cm.IsNotQueryable;
-
-        private INakedObjectAdapter Page(INakedObjectAdapter objectRepresentingCollection, int page, int size, bool forceEnumerable) {
-            var toEnumerable = IsNotQueryable(objectRepresentingCollection) || forceEnumerable;
-
-            var newNakedObject = objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.NakedObjectManager, toEnumerable);
-
-            var objects = newNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => no.Object).ToArray();
-
-            var currentMemento = (ICollectionMemento) WrappedNakedObject.Oid;
-            var newMemento = currentMemento.NewSelectionMemento(objects, true);
-            newNakedObject.SetATransientOid(newMemento);
-            return newNakedObject;
-        }
-
-        private INakedObjectAdapter Select(INakedObjectAdapter objectRepresentingCollection, object[] selected, bool forceEnumerable) {
-            var result = CollectionUtils.CloneCollectionAndPopulate(objectRepresentingCollection.Object, selected);
-            var adapter = framework.NakedObjectManager.CreateAdapter(objectRepresentingCollection.Spec.IsQueryable && !forceEnumerable ? (IEnumerable) result.AsQueryable() : result, null, null);
-            var currentMemento = (ICollectionMemento) objectRepresentingCollection.Oid;
-            var newMemento = currentMemento.NewSelectionMemento(selected, false);
-            adapter.SetATransientOid(newMemento);
-            return adapter;
-        }
-
-        public override bool Equals(object obj) => obj is ObjectFacade of && Equals(of);
-
-        public bool Equals(ObjectFacade other) {
-            if (ReferenceEquals(null, other)) { return false; }
-
-            return ReferenceEquals(this, other) || Equals(other.WrappedNakedObject, WrappedNakedObject);
-        }
-
-        public override int GetHashCode() => WrappedNakedObject != null ? WrappedNakedObject.GetHashCode() : 0;
     }
 }

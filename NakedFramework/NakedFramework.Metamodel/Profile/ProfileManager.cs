@@ -59,6 +59,8 @@ namespace NakedFramework.Metamodel.Profile {
             ForFacetTypes = config.EventsToProfile.Select(e => EventToFacetMap[e]).ToArray();
         }
 
+        private IProfiler GetProfiler(ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(profilerType) as IProfiler;
+
         #region IFacetDecorator Members
 
         public IFacet Decorate(IFacet facet, ISpecification holder) => ForFacetTypes.Contains(facet.FacetType) ? FacetToConstructorMap[facet.FacetType](facet, this) : facet;
@@ -74,7 +76,5 @@ namespace NakedFramework.Metamodel.Profile {
         public void End(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) => GetProfiler(lifecycleManager).End(session.Principal, profileEvent, nakedObjectAdapter.GetDomainObject().GetType(), member);
 
         #endregion
-
-        private IProfiler GetProfiler(ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(profilerType) as IProfiler;
     }
 }

@@ -38,6 +38,49 @@ namespace NakedFramework.Metamodel.Facet {
 
         public static Type Type => typeof(IRangeFacet);
 
+        #region ISerializable Members
+
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue<IConvertible>("Min", Min);
+            info.AddValue<IConvertible>("Max", Max);
+            info.AddValue<bool>("IsDateRange", IsDateRange);
+            info.AddValue<Type>("facetType", FacetType);
+            info.AddValue<ISpecification>("holder", holder);
+        }
+
+        #endregion
+
+        protected int Compare<T>(T val, T min, T max) where T : struct, IComparable =>
+            val.CompareTo(min) < 0
+                ? -1
+                : val.CompareTo(max) > 0
+                    ? 1
+                    : 0;
+
+        protected int DateCompare(DateTime date, double min, double max) {
+            var earliest = DateTime.Today.AddDays(min);
+            var latest = DateTime.Today.AddDays(max);
+            if (date < earliest) {
+                return -1;
+            }
+
+            if (date > latest) {
+                return +1;
+            }
+
+            return 0;
+        }
+
+        private static bool IsSIntegral(object o) => o is sbyte || o is short || o is int || o is long;
+
+        private static bool IsUIntegral(object o) => o is byte || o is ushort || o is uint || o is ulong;
+
+        private static bool IsFloat(object o) => o is float || o is double;
+
+        private static bool IsDecimal(object o) => o is decimal;
+
+        private static bool IsDateTime(object o) => o is DateTime;
+
         #region IRangeFacet Members
 
         public bool IsDateRange { get; set; }
@@ -101,49 +144,6 @@ namespace NakedFramework.Metamodel.Facet {
         public virtual bool CanAlwaysReplace => true;
 
         #endregion
-
-        #region ISerializable Members
-
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue<IConvertible>("Min", Min);
-            info.AddValue<IConvertible>("Max", Max);
-            info.AddValue<bool>("IsDateRange", IsDateRange);
-            info.AddValue<Type>("facetType", FacetType);
-            info.AddValue<ISpecification>("holder", holder);
-        }
-
-        #endregion
-
-        protected int Compare<T>(T val, T min, T max) where T : struct, IComparable =>
-            val.CompareTo(min) < 0
-                ? -1
-                : val.CompareTo(max) > 0
-                    ? 1
-                    : 0;
-
-        protected int DateCompare(DateTime date, double min, double max) {
-            var earliest = DateTime.Today.AddDays(min);
-            var latest = DateTime.Today.AddDays(max);
-            if (date < earliest) {
-                return -1;
-            }
-
-            if (date > latest) {
-                return +1;
-            }
-
-            return 0;
-        }
-
-        private static bool IsSIntegral(object o) => o is sbyte || o is short || o is int || o is long;
-
-        private static bool IsUIntegral(object o) => o is byte || o is ushort || o is uint || o is ulong;
-
-        private static bool IsFloat(object o) => o is float || o is double;
-
-        private static bool IsDecimal(object o) => o is decimal;
-
-        private static bool IsDateTime(object o) => o is DateTime;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

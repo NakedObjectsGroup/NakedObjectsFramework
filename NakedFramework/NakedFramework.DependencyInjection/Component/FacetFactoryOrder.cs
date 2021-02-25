@@ -12,22 +12,20 @@ using NakedFramework.DependencyInjection.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
 namespace NakedFramework.DependencyInjection.Component {
-
-    
     public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {
-        private static string Group(Type type) =>
-            type.FullName?.Contains("FallbackFacetFactory") == true
-                ? "AGroup"
-                : !type.IsAssignableTo(typeof(SystemTypeFacetFactoryProcessor))
-                    ? "BGroup"
-                    : "CGroup";
-
         private readonly Type[] facetFactories;
 
         public FacetFactoryOrder(FacetFactoryTypesProvider facetFactories) =>
             this.facetFactories = facetFactories.FacetFactoryTypes.GroupBy(Group).OrderBy(kvp => kvp.Key).SelectMany(kvp => kvp).ToArray();
 
         public int Order => Array.IndexOf(facetFactories, typeof(T));
+
+        private static string Group(Type type) =>
+            type.FullName?.Contains("FallbackFacetFactory") == true
+                ? "AGroup"
+                : !type.IsAssignableTo(typeof(SystemTypeFacetFactoryProcessor))
+                    ? "BGroup"
+                    : "CGroup";
     }
 
     public class TestFacetFactoryOrder<T> : IFacetFactoryOrder<T> {

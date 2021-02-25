@@ -31,6 +31,42 @@ namespace NakedFramework.Persistor.Entity.Configuration {
 
         public Action<ObjectContext> CustomConfig { get; set; }
 
+        #region Nested type: EntityContextConfigurator
+
+        public class EntityContextConfigurator {
+            private readonly int contextIndex;
+            private readonly EntityObjectStoreConfiguration entityObjectStoreConfiguration;
+
+            private EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration) => this.entityObjectStoreConfiguration = entityObjectStoreConfiguration;
+
+            public EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration, Func<DbContext> f)
+                : this(entityObjectStoreConfiguration) {
+                entityObjectStoreConfiguration.DbContextConstructors.Add((f, () => new Type[] { }));
+                contextIndex = entityObjectStoreConfiguration.DbContextConstructors.Count - 1;
+            }
+
+            /// <summary>
+            ///     Associates each of the array of Types passed-in with the context, and caches this information on the
+            ///     session.  This is to avoid the overhead of the framework polling contexts to see if they known
+            ///     about a given type.
+            /// </summary>
+            /// <param name="types">A lambda or delegate that returns an array of Types</param>
+            /// <returns>The ContextInstaller on which it was called, allowing further configuration.</returns>
+            public EntityContextConfigurator AssociateTypes(Func<Type[]> types) {
+                var (getContexts, _) = entityObjectStoreConfiguration.DbContextConstructors[contextIndex];
+                entityObjectStoreConfiguration.DbContextConstructors[contextIndex] = (getContexts, types);
+
+                return this;
+            }
+
+            public EntityContextConfigurator SetCustomConfiguration(Action<ObjectContext> customConfig) {
+                entityObjectStoreConfiguration.CustomConfig = customConfig;
+                return this;
+            }
+        }
+
+        #endregion
+
         #region IEntityObjectStoreConfiguration Members
 
         public IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration =>
@@ -109,42 +145,6 @@ namespace NakedFramework.Persistor.Entity.Configuration {
         public void Validate() {
             if (!NoValidate && !isContextSet) {
                 throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call ""UsingContext""");
-            }
-        }
-
-        #endregion
-
-        #region Nested type: EntityContextConfigurator
-
-        public class EntityContextConfigurator {
-            private readonly int contextIndex;
-            private readonly EntityObjectStoreConfiguration entityObjectStoreConfiguration;
-
-            private EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration) => this.entityObjectStoreConfiguration = entityObjectStoreConfiguration;
-
-            public EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration, Func<DbContext> f)
-                : this(entityObjectStoreConfiguration) {
-                entityObjectStoreConfiguration.DbContextConstructors.Add((f, () => new Type[] { }));
-                contextIndex = entityObjectStoreConfiguration.DbContextConstructors.Count - 1;
-            }
-
-            /// <summary>
-            ///     Associates each of the array of Types passed-in with the context, and caches this information on the
-            ///     session.  This is to avoid the overhead of the framework polling contexts to see if they known
-            ///     about a given type.
-            /// </summary>
-            /// <param name="types">A lambda or delegate that returns an array of Types</param>
-            /// <returns>The ContextInstaller on which it was called, allowing further configuration.</returns>
-            public EntityContextConfigurator AssociateTypes(Func<Type[]> types) {
-                var (getContexts, _) = entityObjectStoreConfiguration.DbContextConstructors[contextIndex];
-                entityObjectStoreConfiguration.DbContextConstructors[contextIndex] = (getContexts, types);
-
-                return this;
-            }
-
-            public EntityContextConfigurator SetCustomConfiguration(Action<ObjectContext> customConfig) {
-                entityObjectStoreConfiguration.CustomConfig = customConfig;
-                return this;
             }
         }
 

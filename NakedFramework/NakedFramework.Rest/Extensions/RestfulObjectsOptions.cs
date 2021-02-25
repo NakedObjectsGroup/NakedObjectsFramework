@@ -34,7 +34,7 @@ namespace NakedFramework.Rest.Extensions {
 
         // overrides for flags 
         public bool ProtoPersistentObjects { get; set; } = true;
-        public bool DeleteObjects { get; set; }  = false;
+        public bool DeleteObjects { get; set; } = false;
         public bool ValidateOnly { get; set; } = true;
         public string DomainModel { get; set; } = "simple";
         public string BlobsClobs { get; set; } = "attachments";

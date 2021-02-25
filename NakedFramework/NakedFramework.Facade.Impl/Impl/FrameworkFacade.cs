@@ -36,8 +36,8 @@ using NakedFramework.Metamodel.Menu;
 namespace NakedFramework.Facade.Impl.Impl {
     public class FrameworkFacade : IFrameworkFacade {
         private readonly ILogger<FrameworkFacade> logger;
-        private readonly IStringHasher stringHasher;
         private readonly IServiceProvider provider;
+        private readonly IStringHasher stringHasher;
 
         public FrameworkFacade(IOidStrategy oidStrategy,
                                IOidTranslator oidTranslator,
@@ -45,7 +45,6 @@ namespace NakedFramework.Facade.Impl.Impl {
                                IStringHasher stringHasher,
                                IServiceProvider provider,
                                ILogger<FrameworkFacade> logger) {
-            
             this.stringHasher = stringHasher;
             this.provider = provider;
             this.logger = logger;
@@ -184,8 +183,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         #region Helpers
 
-        private IObjectFacade GetTarget(IMenuActionFacade actionFacade)
-        {
+        private IObjectFacade GetTarget(IMenuActionFacade actionFacade) {
             if (actionFacade.Action.IsStatic) {
                 return null;
             }
@@ -193,16 +191,13 @@ namespace NakedFramework.Facade.Impl.Impl {
             return OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType));
         }
 
-        private ActionContextFacade GetActionContext(IMenuActionFacade actionFacade, string menuPath)
-        {
-            return new ActionContextFacade
-            {
+        private ActionContextFacade GetActionContext(IMenuActionFacade actionFacade, string menuPath) =>
+            new() {
                 MenuPath = menuPath,
                 Target = GetTarget(actionFacade),
                 Action = actionFacade.Action,
                 VisibleParameters = FilterMenuParms(actionFacade)
             };
-        }
 
         private static IAssociationSpec GetPropertyInternal(INakedObjectAdapter nakedObject, string propertyName, bool onlyVisible = true) {
             if (string.IsNullOrWhiteSpace(propertyName)) {
@@ -551,15 +546,13 @@ namespace NakedFramework.Facade.Impl.Impl {
             var isValid = true;
             var orderedParms = new Dictionary<string, ParameterContext>();
 
-            if (actionContext.Action.IsStaticFunction)
-            {
+            if (actionContext.Action.IsStaticFunction) {
                 // need to pass in target and injected parms 
 
                 // same as contributed 
                 SetFirstParmFromTarget(actionContext, rawParms);
                 SetInjectedParms(actionContext, rawParms);
             }
-
 
             // handle contributed actions 
 
@@ -699,8 +692,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 }
             }
 
-            if (actionContext.Action.IsStaticFunction)
-            {
+            if (actionContext.Action.IsStaticFunction) {
                 // Filter parameters
                 actionContext.VisibleParameters = actionContext.VisibleParameters.Where(p => !IsTargetParm(actionContext.Action, p.Parameter) && !p.Parameter.IsInjected).ToArray();
             }
@@ -798,27 +790,25 @@ namespace NakedFramework.Facade.Impl.Impl {
         }
 
         private ParameterContext[] FilterParms(IActionSpec action, ITypeSpec targetSpec, string uid) =>
-            action.IsStaticFunction 
-                ? FilterParmsForFunctions(action, uid) 
+            action.IsStaticFunction
+                ? FilterParmsForFunctions(action, uid)
                 : FilterParmsForContributedActions(action, targetSpec, uid);
 
-        private static ParameterContextFacade[] FilterMenuParms(IMenuActionFacade actionFacade)
-        {
+        private static ParameterContextFacade[] FilterMenuParms(IMenuActionFacade actionFacade) {
             var parms = actionFacade.Action.Parameters;
-            if (actionFacade.Action.IsStatic)
-            {
+            if (actionFacade.Action.IsStatic) {
                 // filter parms for functions 
 
                 parms = parms.Where(p => !p.IsInjected).ToArray();
             }
 
-            return parms.Select(p => new ParameterContextFacade { Parameter = p, Action = actionFacade.Action }).ToArray();
+            return parms.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade.Action}).ToArray();
         }
 
         private static bool IsTargetParm(IActionSpec action, IActionParameterSpec parm) =>
             parm.Number == 0 &&
             action.GetFacet<IContributedFunctionFacet>() switch {
-                {IsContributedToObject: true} and { IsContributedToCollection: false } => true,
+                {IsContributedToObject: true} and {IsContributedToCollection: false} => true,
                 _ => false
             };
 
@@ -921,7 +911,6 @@ namespace NakedFramework.Facade.Impl.Impl {
                 _ => Array.Empty<IActionSpecImmutable>()
             };
 
-
         private ActionContext GetActionOnMenu(string menuName, string actionName) {
             var menu = Framework.MetamodelManager.MainMenus().SingleOrDefault(m => m.Id == menuName);
 
@@ -962,12 +951,12 @@ namespace NakedFramework.Facade.Impl.Impl {
             try {
                 var typeSpec = Framework.MetamodelManager.GetSpecification(serviceName.DomainType);
                 var actionSpec = typeSpec?.GetActions().Where(IsContributedToCollection).SingleOrDefault(a => a.Id == actionName);
-                
+
                 if (actionSpec is not null) {
                     var targetKey = actionSpec.Parameters.First().Id;
-                    INakedObjectAdapter target = null; 
+                    INakedObjectAdapter target = null;
                     if (argumentsContextFacade?.Values.ContainsKey(targetKey) == true) {
-                        var rawTarget =  ((IEnumerable)argumentsContextFacade.Values[targetKey]).AsQueryable();
+                        var rawTarget = ((IEnumerable) argumentsContextFacade.Values[targetKey]).AsQueryable();
                         target = Framework.NakedObjectManager.CreateAdapter(rawTarget, null, null);
                     }
 
@@ -1060,7 +1049,6 @@ namespace NakedFramework.Facade.Impl.Impl {
             return GetAction(actionName, nakedObject);
         }
 
-
         private static IActionSpec MatchingActionSpecOnService(IActionSpec actionToMatch) {
             var allServiceActions = actionToMatch.OnSpec.GetActionLeafNodes();
 
@@ -1123,7 +1111,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                     Action = a.action,
                     OverloadedUniqueId = a.uid,
                     Target = Framework.ServicesManager.GetService(a.action.OnSpec as IServiceSpec),
-                    VisibleParameters = FilterCCAParms(a.action, a.uid),
+                    VisibleParameters = FilterCCAParms(a.action, a.uid)
                 }).ToArray();
             }
 

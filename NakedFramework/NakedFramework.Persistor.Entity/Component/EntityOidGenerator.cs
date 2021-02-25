@@ -24,6 +24,8 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         public string Name => "Entity Oids";
 
+        private ILogger<EntityOid> Logger() => loggerFactory.CreateLogger<EntityOid>();
+
         #region IOidGenerator Members
 
         public void ConvertTransientToPersistentOid(IOid oid) => (oid as IEntityOid)?.MakePersistent();
@@ -35,7 +37,5 @@ namespace NakedFramework.Persistor.Entity.Component {
         public IOid CreateOid(string typeName, object[] keys) => new EntityOid(metamodel, typeName, keys, Logger());
 
         #endregion
-
-        private ILogger<EntityOid> Logger() => loggerFactory.CreateLogger<EntityOid>();
     }
 }

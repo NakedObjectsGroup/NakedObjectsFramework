@@ -13,7 +13,7 @@ using NakedFramework.Rest.Snapshot.Utility;
 
 namespace NakedFramework.Rest.Snapshot.RelTypes {
     public abstract class RelType {
-        private static readonly HashSet<string> HasRelParameterSet = new HashSet<string> {
+        private static readonly HashSet<string> HasRelParameterSet = new() {
             RelValues.AddTo, RelValues.Attachment, RelValues.Choice, RelValues.Clear, RelValues.Collection,
             RelValues.Default, RelValues.Details, RelValues.Invoke, RelValues.Modify, RelValues.RemoveFrom,
             RelValues.Service, RelValues.Value, RelValues.Prompt, RelValues.CollectionValue, RelValues.Menu

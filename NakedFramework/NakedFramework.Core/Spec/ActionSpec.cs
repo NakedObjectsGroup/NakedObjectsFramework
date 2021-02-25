@@ -27,7 +27,7 @@ namespace NakedFramework.Core.Spec {
         private readonly IActionSpecImmutable actionSpecImmutable;
         private readonly ILogger<ActionSpec> logger;
         private readonly ILoggerFactory loggerFactory;
-      
+
         private IObjectSpec elementSpec;
         private Where? executedWhere;
         private bool? hasReturn;
@@ -54,6 +54,45 @@ namespace NakedFramework.Core.Spec {
         private IActionInvocationFacet ActionInvocationFacet => actionSpecImmutable.GetFacet<IActionInvocationFacet>();
 
         public IActionSpec[] Actions => new IActionSpec[0];
+
+        private bool FindServiceOnSpecOrSpecSuperclass(ITypeSpec spec) => spec != null && (spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass));
+
+        private INakedObjectAdapter FindService() {
+            foreach (var serviceAdapter in Framework.ServicesManager.GetServices()) {
+                if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Spec)) {
+                    return serviceAdapter;
+                }
+            }
+
+            throw new FindObjectException(logger.LogAndReturn($"failed to find service for action {Name}"));
+        }
+
+        private IActionParameterSpec GetParameter(int position) {
+            if (position >= Parameters.Length) {
+                throw new ArgumentException(logger.LogAndReturn($"GetParameter(int): only {Parameters.Length} parameters, position={position}"));
+            }
+
+            return Parameters[position];
+        }
+
+        public override string ToString() {
+            var sb = new StringBuilder();
+            sb.Append("Action [");
+            sb.Append(base.ToString());
+            sb.Append(",returns=");
+            sb.Append(ReturnSpec);
+            sb.Append(",parameters={");
+            for (var i = 0; i < ParameterCount; i++) {
+                if (i > 0) {
+                    sb.Append(",");
+                }
+
+                sb.Append(Parameters[i].Spec.ShortName);
+            }
+
+            sb.Append("}]");
+            return sb.ToString();
+        }
 
         #region IActionSpec Members
 
@@ -144,13 +183,13 @@ namespace NakedFramework.Core.Spec {
             }
 
             var target = RealTarget(nakedObjectAdapter);
-            ic = InteractionContext.InvokingAction(Framework,false, target, Identifier, parameterSet);
+            ic = InteractionContext.InvokingAction(Framework, false, target, Identifier, parameterSet);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
         public override IConsent IsUsable(INakedObjectAdapter target) {
-            IInteractionContext ic = InteractionContext.InvokingAction(Framework,false, RealTarget(target), Identifier, new[] {target});
+            IInteractionContext ic = InteractionContext.InvokingAction(Framework, false, RealTarget(target), Identifier, new[] {target});
             return InteractionUtils.IsUsable(this, ic);
         }
 
@@ -168,45 +207,6 @@ namespace NakedFramework.Core.Spec {
         }
 
         #endregion
-
-        private bool FindServiceOnSpecOrSpecSuperclass(ITypeSpec spec) => spec != null && (spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass));
-
-        private INakedObjectAdapter FindService() {
-            foreach (var serviceAdapter in Framework.ServicesManager.GetServices()) {
-                if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Spec)) {
-                    return serviceAdapter;
-                }
-            }
-
-            throw new FindObjectException(logger.LogAndReturn($"failed to find service for action {Name}"));
-        }
-
-        private IActionParameterSpec GetParameter(int position) {
-            if (position >= Parameters.Length) {
-                throw new ArgumentException(logger.LogAndReturn($"GetParameter(int): only {Parameters.Length} parameters, position={position}"));
-            }
-
-            return Parameters[position];
-        }
-
-        public override string ToString() {
-            var sb = new StringBuilder();
-            sb.Append("Action [");
-            sb.Append(base.ToString());
-            sb.Append(",returns=");
-            sb.Append(ReturnSpec);
-            sb.Append(",parameters={");
-            for (var i = 0; i < ParameterCount; i++) {
-                if (i > 0) {
-                    sb.Append(",");
-                }
-
-                sb.Append(Parameters[i].Spec.ShortName);
-            }
-
-            sb.Append("}]");
-            return sb.ToString();
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

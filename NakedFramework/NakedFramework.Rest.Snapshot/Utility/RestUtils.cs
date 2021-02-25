@@ -24,7 +24,7 @@ using NakedFramework.Rest.Snapshot.Representation;
 
 namespace NakedFramework.Rest.Snapshot.Utility {
     public static class RestUtils {
-        private static readonly Dictionary<Type, PredefinedJsonType> SimpleTypeMap = new Dictionary<Type, PredefinedJsonType> {
+        private static readonly Dictionary<Type, PredefinedJsonType> SimpleTypeMap = new() {
             {typeof(sbyte), PredefinedJsonType.Number},
             {typeof(byte), PredefinedJsonType.Number},
             {typeof(short), PredefinedJsonType.Number},
@@ -42,7 +42,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             {typeof(void), PredefinedJsonType.Void}
         };
 
-        private static readonly Dictionary<Type, PredefinedFormatType?> SimpleFormatMap = new Dictionary<Type, PredefinedFormatType?> {
+        private static readonly Dictionary<Type, PredefinedFormatType?> SimpleFormatMap = new() {
             {typeof(sbyte), PredefinedFormatType.Int},
             {typeof(byte), PredefinedFormatType.Int},
             {typeof(short), PredefinedFormatType.Int},
@@ -268,7 +268,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                 ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
                 : dt.ToUniversalTime();
 
-            var predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(),false, useDateOverDateTime);
+            var predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(), false, useDateOverDateTime);
             return predefinedFormatType switch {
                 PredefinedFormatType.Date_time => ToUniversalTime((DateTime) toMap),
                 PredefinedFormatType.Date => ToDateFormatString((DateTime) toMap),
@@ -333,8 +333,8 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             mediaType == "application/json";
 
         public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequest req, (string name, ITypeFacade type) pnt, RestControlFlags flags) {
-            return new OptionalProperty(pnt.name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)),
-                new OptionalProperty(JsonPropertyNames.Links, new LinkRepresentation[] { })));
+            return new(pnt.name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)),
+                                                          new OptionalProperty(JsonPropertyNames.Links, new LinkRepresentation[] { })));
         }
 
         public static string DefaultMimeType(this AttachmentContextFacade attachment) {
@@ -377,7 +377,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                     max = maxRange.ToType(propertyType, null);
                 }
 
-                OptionalProperty[] op = {new OptionalProperty("min", min), new OptionalProperty("max", max)};
+                OptionalProperty[] op = {new("min", min), new("max", max)};
                 var map = MapRepresentation.Create(op);
                 customExtensions[JsonPropertyNames.CustomRange] = map;
             }
@@ -391,7 +391,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                                                                   IOidStrategy oidStrategy,
                                                                   HttpRequest req,
                                                                   RestControlFlags flags) {
-            var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, SafeGetTitle(no))};
+            var optionals = new List<OptionalProperty> {new(JsonPropertyNames.Title, SafeGetTitle(no))};
 
             columns ??= no.Specification.Properties.Select(p => p.Id).ToArray();
 
@@ -403,9 +403,9 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
 
             return LinkRepresentation.Create(oidStrategy,
-                rt,
-                flags,
-                optionals.ToArray());
+                                             rt,
+                                             flags,
+                                             optionals.ToArray());
         }
 
         public static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,

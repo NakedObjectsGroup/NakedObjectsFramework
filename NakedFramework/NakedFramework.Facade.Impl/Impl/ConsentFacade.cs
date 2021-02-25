@@ -15,6 +15,18 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public ConsentFacade(IConsent consent) => this.consent = consent ?? throw new NullReferenceException($"{nameof(consent)} is null");
 
+        public override bool Equals(object obj) => obj is ConsentFacade cf && Equals(cf);
+
+        public bool Equals(ConsentFacade other) {
+            if (ReferenceEquals(null, other)) {
+                return false;
+            }
+
+            return ReferenceEquals(this, other) || Equals(other.consent, consent);
+        }
+
+        public override int GetHashCode() => consent != null ? consent.GetHashCode() : 0;
+
         #region IConsentFacade Members
 
         public bool IsAllowed => consent.IsAllowed;
@@ -26,15 +38,5 @@ namespace NakedFramework.Facade.Impl.Impl {
         public System.Exception Exception => consent.Exception;
 
         #endregion
-
-        public override bool Equals(object obj) => obj is ConsentFacade cf && Equals(cf);
-
-        public bool Equals(ConsentFacade other) {
-            if (ReferenceEquals(null, other)) { return false; }
-
-            return ReferenceEquals(this, other) || Equals(other.consent, consent);
-        }
-
-        public override int GetHashCode() => consent != null ? consent.GetHashCode() : 0;
     }
 }

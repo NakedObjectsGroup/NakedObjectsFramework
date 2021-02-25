@@ -12,7 +12,7 @@ using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Profile;
 
-[assembly:InternalsVisibleTo("NakedFunctions.Reflector")]
+[assembly: InternalsVisibleTo("NakedFunctions.Reflector")]
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity")]
 
 namespace NakedFramework.DependencyInjection.Extensions {
@@ -27,6 +27,5 @@ namespace NakedFramework.DependencyInjection.Extensions {
         public int HashMapCapacity { get; set; } = 10;
         internal Type[] AdditionalSystemTypes { get; set; } = Array.Empty<Type>();
         internal Type[] AdditionalUnpersistedTypes { get; set; } = Array.Empty<Type>();
-
     }
 }

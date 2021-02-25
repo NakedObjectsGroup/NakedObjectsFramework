@@ -95,7 +95,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
         private LinkRepresentation CreateModifyLink() =>
             LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Modify, GetHelper()) {Method = RelMethod.Put}, Flags,
-                new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)))));
+                                      new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)))));
 
         private void AddCustomExtension(string name, object value) {
             CustomExtensions ??= new Dictionary<string, object>();

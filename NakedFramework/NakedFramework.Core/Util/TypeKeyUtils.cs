@@ -15,7 +15,6 @@ namespace NakedFramework.Core.Util {
             CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
             CollectionUtils.IsGenericType(type, typeof(ISet<>));
 
-
         public static Type FilterNullableAndProxies(Type type) {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
                 // use type inside nullable wrapper

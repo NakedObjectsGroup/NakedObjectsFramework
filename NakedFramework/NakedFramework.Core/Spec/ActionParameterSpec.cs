@@ -24,9 +24,8 @@ using NakedFramework.Core.Util;
 namespace NakedFramework.Core.Spec {
     public abstract class ActionParameterSpec : IActionParameterSpec {
         private readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
-     
+
         private readonly IActionSpec parentAction;
-     
 
         // cache 
         private bool checkedForElementSpec;
@@ -35,8 +34,8 @@ namespace NakedFramework.Core.Spec {
         private IObjectSpec elementSpec;
         private bool? isAutoCompleteEnabled;
         private bool? isChoicesEnabled;
-        private bool? isMandatory;
         private bool? isInjected;
+        private bool? isMandatory;
         private bool? isMultipleChoicesEnabled;
         private bool? isNullable;
         private string name;
@@ -61,6 +60,30 @@ namespace NakedFramework.Core.Spec {
                 return elementSpec;
             }
         }
+
+        private (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
+            if (parentAction.IsContributedMethod && nakedObjectAdapter != null) {
+                var matchingParms = parentAction.Parameters.Where(p => nakedObjectAdapter.Spec.IsOfType(p.Spec)).ToArray();
+
+                if (matchingParms.Any() && matchingParms.First() == this) {
+                    return (nakedObjectAdapter, TypeOfDefaultValue.Explicit);
+                }
+            }
+
+            var facet = this.GetOpFacet<IActionDefaultsFacet>() ?? Spec.GetOpFacet<IDefaultedFacet>();
+
+            var (domainObject, typeOfDefaultValue) = facet switch {
+                IActionDefaultsFacet adf => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter), Framework),
+                IDefaultedFacet df => (df.Default, TypeOfDefaultValue.Implicit),
+                _ when nakedObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
+                _ when nakedObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),
+                _ => (null, TypeOfDefaultValue.Implicit)
+            };
+
+            return (Framework.NakedObjectManager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
+        }
+
+        private static IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
 
         #region IActionParameterSpec Members
 
@@ -95,7 +118,7 @@ namespace NakedFramework.Core.Spec {
 
         public virtual IActionSpec Action => parentAction;
 
-        public virtual IObjectSpec Spec => spec ??=  Framework.MetamodelManager.GetSpecification(actionParameterSpecImmutable.Specification);
+        public virtual IObjectSpec Spec => spec ??= Framework.MetamodelManager.GetSpecification(actionParameterSpecImmutable.Specification);
 
         public string Name => name ??= GetFacet<INamedFacet>().NaturalName;
 
@@ -108,8 +131,7 @@ namespace NakedFramework.Core.Spec {
             }
         }
 
-        public virtual bool IsInjected
-        {
+        public virtual bool IsInjected {
             get {
                 isInjected ??= GetFacet<IInjectedFacet>() != null;
                 return isInjected.Value;
@@ -209,29 +231,5 @@ namespace NakedFramework.Core.Spec {
         public string Id => Identifier.MemberParameterNames[Number];
 
         #endregion
-
-        private (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
-            if (parentAction.IsContributedMethod && nakedObjectAdapter != null) {
-                var matchingParms = parentAction.Parameters.Where(p => nakedObjectAdapter.Spec.IsOfType(p.Spec)).ToArray();
-
-                if (matchingParms.Any() && matchingParms.First() == this) {
-                    return (nakedObjectAdapter, TypeOfDefaultValue.Explicit);
-                }
-            }
-
-            var facet = this.GetOpFacet<IActionDefaultsFacet>() ?? Spec.GetOpFacet<IDefaultedFacet>();
-
-            var (domainObject, typeOfDefaultValue) = facet switch {
-                IActionDefaultsFacet adf => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter), Framework),
-                IDefaultedFacet df => (df.Default, TypeOfDefaultValue.Implicit),
-                _ when nakedObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
-                _ when nakedObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),
-                _ => (null, TypeOfDefaultValue.Implicit)
-            };
-
-            return (Framework.NakedObjectManager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
-        }
-
-        private static IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
     }
 }

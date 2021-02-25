@@ -60,8 +60,8 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
         protected override T[] DoParse(string entry) {
             try {
                 return (from s in entry.Split(' ')
-                    where s.Trim().Length > 0
-                    select (T) Convert.ChangeType(s, typeof(T))).ToArray();
+                        where s.Trim().Length > 0
+                        select (T) Convert.ChangeType(s, typeof(T))).ToArray();
             }
             catch (FormatException) {
                 throw new InvalidEntryException(FormatMessage(entry));

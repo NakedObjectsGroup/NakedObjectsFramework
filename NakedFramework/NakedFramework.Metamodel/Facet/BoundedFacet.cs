@@ -18,6 +18,8 @@ namespace NakedFramework.Metamodel.Facet {
         public BoundedFacet(ISpecification holder)
             : base(typeof(IBoundedFacet), holder) { }
 
+        public string DisabledReason(INakedObjectAdapter inObjectAdapter) => NakedObjects.Resources.NakedObjects.Bounded;
+
         #region IBoundedFacet Members
 
         public string Disables(IInteractionContext ic) =>
@@ -28,8 +30,6 @@ namespace NakedFramework.Metamodel.Facet {
         public System.Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
         #endregion
-
-        public string DisabledReason(INakedObjectAdapter inObjectAdapter) => NakedObjects.Resources.NakedObjects.Bounded;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

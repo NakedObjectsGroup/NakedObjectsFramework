@@ -16,10 +16,7 @@ namespace NakedFramework.Architecture.Facet {
         void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
 
         object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
-
     }
-
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

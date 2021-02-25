@@ -18,12 +18,12 @@ namespace NakedFramework.ParallelReflector.TypeFacetFactory {
     public sealed class StringValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public StringValueTypeFacetFactory(IFacetFactoryOrder<StringValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!StringValueSemanticsProvider.IsAdaptedType(type)) {
                 return metamodel;
             }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(StringValueSemanticsProvider.AdaptedType,  metamodel);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(StringValueSemanticsProvider.AdaptedType, metamodel);
             AddValueFacets(new StringValueSemanticsProvider(oSpec, specification), specification);
             return mm;
         }

@@ -19,12 +19,11 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    public sealed class TypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor
-    {
+    public sealed class TypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor {
         public TypeMarkerFacetFactory(IFacetFactoryOrder<TypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var facets = new List<IFacet> {
                 new TypeIsAbstractFacet(specification, IsAbstract(type)),
                 new TypeIsInterfaceFacet(specification, IsInterface(type)),

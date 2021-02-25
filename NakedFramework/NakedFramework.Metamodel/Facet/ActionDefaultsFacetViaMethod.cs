@@ -36,14 +36,6 @@ namespace NakedFramework.Metamodel.Facet {
         [field: NonSerialized]
         internal Func<object, object[], object> MethodDelegate { get; private set; }
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
-
-        #endregion
-
         public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
@@ -55,6 +47,14 @@ namespace NakedFramework.Metamodel.Facet {
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) => MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() => method;
+
+        public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

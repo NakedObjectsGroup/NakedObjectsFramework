@@ -84,7 +84,6 @@ namespace NakedFramework.Persistor.Entity.Component {
                     DeleteObject(toDelete);
                 }
 
-
                 return detachedObjects.SavedAndUpdated;
             }
             catch (Exception e) {
@@ -98,7 +97,6 @@ namespace NakedFramework.Persistor.Entity.Component {
             context = parent.GetContext(toDelete);
             context.WrappedObjectContext.DeleteObject(toDelete);
             adapter.ResolveState.Handle(Events.DestroyEvent);
-
         }
 
         private void SetKeyAsNecessary(object objectToProxy, object proxy) {

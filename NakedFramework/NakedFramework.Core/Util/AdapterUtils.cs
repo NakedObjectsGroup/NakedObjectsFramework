@@ -74,7 +74,7 @@ namespace NakedFramework.Core.Util {
         }
 
         private static DateTime StripMillis(this DateTime fullDateTime) =>
-            new DateTime(fullDateTime.Year,
+            new(fullDateTime.Year,
                 fullDateTime.Month,
                 fullDateTime.Day,
                 fullDateTime.Hour,

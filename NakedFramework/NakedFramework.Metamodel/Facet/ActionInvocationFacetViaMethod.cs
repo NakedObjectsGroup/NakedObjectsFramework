@@ -52,17 +52,6 @@ namespace NakedFramework.Metamodel.Facet {
 
         public override bool IsQueryOnly { get; }
 
-        #region IImperativeFacet Members
-
-        /// <summary>
-        ///     See <see cref="IImperativeFacet" />
-        /// </summary>
-        public MethodInfo GetMethod() => ActionMethod;
-
-        public Func<object, object[], object> GetMethodDelegate() => ActionDelegate;
-
-        #endregion
-
         public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, INakedObjectsFramework framework) {
             if (parameters.Length != paramCount) {
                 logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
@@ -86,6 +75,17 @@ namespace NakedFramework.Metamodel.Facet {
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) => ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
+
+        #region IImperativeFacet Members
+
+        /// <summary>
+        ///     See <see cref="IImperativeFacet" />
+        /// </summary>
+        public MethodInfo GetMethod() => ActionMethod;
+
+        public Func<object, object[], object> GetMethodDelegate() => ActionDelegate;
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -31,17 +31,18 @@ namespace NakedFramework.Core.Adapter {
 
         #endregion
 
-        private readonly ILifecycleManager lifecycleManager;
         private readonly INakedObjectsFramework framework;
+
+        private readonly ILifecycleManager lifecycleManager;
         private readonly ILogger<CollectionMemento> logger;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
         private object[] selectedObjects;
 
         private CollectionMemento(INakedObjectsFramework framework, ILogger<CollectionMemento> logger) {
-            this.lifecycleManager = framework.LifecycleManager ?? throw new InitialisationException($"{nameof(framework.LifecycleManager)} is null");
-            this.nakedObjectManager = framework.NakedObjectManager ?? throw new InitialisationException($"{nameof(framework.NakedObjectManager)} is null");
-            this.metamodel = framework.MetamodelManager ?? throw new InitialisationException($"{nameof(framework.MetamodelManager)} is null");
+            lifecycleManager = framework.LifecycleManager ?? throw new InitialisationException($"{nameof(framework.LifecycleManager)} is null");
+            nakedObjectManager = framework.NakedObjectManager ?? throw new InitialisationException($"{nameof(framework.NakedObjectManager)} is null");
+            metamodel = framework.MetamodelManager ?? throw new InitialisationException($"{nameof(framework.MetamodelManager)} is null");
             this.framework = framework;
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
@@ -110,6 +111,13 @@ namespace NakedFramework.Core.Adapter {
 
             Parameters = parameters.ToArray();
         }
+
+        private INakedObjectAdapter RestoreObject(IOid oid) =>
+            oid switch {
+                _ when oid.IsTransient => lifecycleManager.RecreateInstance(oid, oid.Spec),
+                IViewModelOid _ => lifecycleManager.GetViewModel(oid, framework),
+                _ => lifecycleManager.LoadObject(oid, oid.Spec)
+            };
 
         #region ICollectionMemento Members
 
@@ -196,12 +204,5 @@ namespace NakedFramework.Core.Adapter {
         public string[] ToShortEncodedStrings() => ToEncodedStrings();
 
         #endregion
-
-        private INakedObjectAdapter RestoreObject(IOid oid) =>
-            oid switch {
-                _ when oid.IsTransient => lifecycleManager.RecreateInstance(oid, oid.Spec),
-                IViewModelOid _ => lifecycleManager.GetViewModel(oid, framework),
-                _ => lifecycleManager.LoadObject(oid, oid.Spec)
-            };
     }
 }

@@ -21,7 +21,7 @@ namespace NakedFramework.Core.Adapter {
     /// </summary>
     /// <seealso cref="StringDecoderHelper" />
     public class StringEncoderHelper {
-        private readonly List<string> strings = new List<string>();
+        private readonly List<string> strings = new();
         public bool Encode { get; set; }
 
         /// <summary>

@@ -105,7 +105,6 @@ namespace NakedFramework.Architecture.Adapter {
         void Updating();
         void Updated();
 
-
         object PersistingAndReturn();
         object PersistedAndReturn();
         object UpdatingAndReturn();

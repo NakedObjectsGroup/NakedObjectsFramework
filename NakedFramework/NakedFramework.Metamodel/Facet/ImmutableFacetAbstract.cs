@@ -20,6 +20,11 @@ namespace NakedFramework.Metamodel.Facet {
 
         public static Type Type => typeof(IImmutableFacet);
 
+        /// <summary>
+        ///     Hook method for subclasses to override
+        /// </summary>
+        public abstract string DisabledReason(INakedObjectAdapter no);
+
         #region IImmutableFacet Members
 
         public virtual string Disables(IInteractionContext ic) => DisabledReason(ic.Target);
@@ -27,10 +32,5 @@ namespace NakedFramework.Metamodel.Facet {
         public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
         #endregion
-
-        /// <summary>
-        ///     Hook method for subclasses to override
-        /// </summary>
-        public abstract string DisabledReason(INakedObjectAdapter no);
     }
 }

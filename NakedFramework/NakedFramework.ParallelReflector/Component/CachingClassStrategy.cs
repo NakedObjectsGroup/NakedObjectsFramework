@@ -26,18 +26,6 @@ namespace NakedFramework.ParallelReflector.Component {
             }
         }
 
-        #region IClassStrategy Members
-
-        public bool IsIgnored(Type type) => classStrategy.IsIgnored(type);
-
-        public bool IsTypeRecognized(Type type) => classStrategy.IsTypeRecognized(type);
-
-        public bool IsIgnored(MemberInfo member) => classStrategy.IsIgnored(member);
-        public bool IsService(Type type) => classStrategy.IsService(type);
-        public bool LoadReturnType(MethodInfo method) => classStrategy.LoadReturnType(method);
-
-        #endregion
-
         private static Flags Setup(Type type) {
             if (!Cache.ContainsKey(type)) {
                 Cache[type] = new Flags();
@@ -52,6 +40,18 @@ namespace NakedFramework.ParallelReflector.Component {
             public bool? IsTypeToBeIntrospected { get; set; }
             public Type Type { get; set; }
         }
+
+        #endregion
+
+        #region IClassStrategy Members
+
+        public bool IsIgnored(Type type) => classStrategy.IsIgnored(type);
+
+        public bool IsTypeRecognized(Type type) => classStrategy.IsTypeRecognized(type);
+
+        public bool IsIgnored(MemberInfo member) => classStrategy.IsIgnored(member);
+        public bool IsService(Type type) => classStrategy.IsService(type);
+        public bool LoadReturnType(MethodInfo method) => classStrategy.LoadReturnType(method);
 
         #endregion
     }

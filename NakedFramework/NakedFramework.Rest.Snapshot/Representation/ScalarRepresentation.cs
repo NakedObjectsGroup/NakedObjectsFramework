@@ -37,6 +37,6 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetExtensions() => Extensions = MapRepresentation.Create();
 
-        public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) => new ScalarRepresentation(oidStrategy, req, objectContext, flags);
+        public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) => new(oidStrategy, req, objectContext, flags);
     }
 }

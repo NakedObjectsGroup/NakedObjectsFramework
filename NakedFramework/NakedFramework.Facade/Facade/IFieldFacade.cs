@@ -32,7 +32,7 @@ namespace NakedFramework.Facade.Facade {
         bool IsNullable { get; }
         bool IsPassword { get; }
         bool IsDateOnly { get; }
-        string Grouping { get; } 
+        string Grouping { get; }
 
         DataType? DataType { get; }
         int AutoCompleteMinLength { get; }

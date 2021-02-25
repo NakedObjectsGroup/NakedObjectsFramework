@@ -24,7 +24,6 @@ using NakedFramework.Rest.Snapshot.Utility;
 
 namespace NakedFramework.Rest.API {
     public static class ControllerHelpers {
-
         public static string DebugFilter(Func<string> msgFunc) => RestSnapshot.DebugFilter(msgFunc);
 
         public static ObjectContextFacade GetServiceByName(this IFrameworkFacade frameworkFacade, string serviceName) {
@@ -46,9 +45,7 @@ namespace NakedFramework.Rest.API {
             return frameworkFacade.GetServiceAction(oid, actionName);
         }
 
-        public static ActionContextFacade GetMenuActionByName(this IFrameworkFacade frameworkFacade, string menuName, string actionName) {
-            return frameworkFacade.GetMenuAction(menuName, actionName);
-        }
+        public static ActionContextFacade GetMenuActionByName(this IFrameworkFacade frameworkFacade, string menuName, string actionName) => frameworkFacade.GetMenuAction(menuName, actionName);
 
         public static ObjectContextFacade GetObjectByName(this IFrameworkFacade frameworkFacade, string domainType, string instanceId) {
             var oidTranslation = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
@@ -89,8 +86,7 @@ namespace NakedFramework.Rest.API {
             return frameworkFacade.GetParameterByName(action, parmName);
         }
 
-        public static ParameterContextFacade GetMenuParameterByName(this IFrameworkFacade frameworkFacade, string menuName, string actionName, string parmName, ArgumentsContextFacade argsContext)
-        {
+        public static ParameterContextFacade GetMenuParameterByName(this IFrameworkFacade frameworkFacade, string menuName, string actionName, string parmName, ArgumentsContextFacade argsContext) {
             var action = frameworkFacade.GetMenuActionWithCompletions(menuName, actionName, parmName, argsContext);
             return frameworkFacade.GetParameterByName(action, parmName);
         }
@@ -335,16 +331,16 @@ namespace NakedFramework.Rest.API {
 
         public static RestControlFlags GetFlags(RestfulObjectsControllerBase controller) =>
             RestControlFlags.FlagsFromArguments(controller.ValidateOnly,
-                controller.Page,
-                controller.PageSize,
-                controller.DomainModel,
-                controller.InlineDetailsInActionMemberRepresentations,
-                controller.InlineDetailsInCollectionMemberRepresentations,
-                controller.InlinePropertyDetails ?? controller.InlineDetailsInPropertyMemberRepresentations,
-                controller.InlineCollectionItems.HasValue && controller.InlineCollectionItems.Value,
-                controller.AllowMutatingActionOnImmutableObject,
-                controller.AcceptHeaderStrict, 
-                controller.DebugWarnings);
+                                                controller.Page,
+                                                controller.PageSize,
+                                                controller.DomainModel,
+                                                controller.InlineDetailsInActionMemberRepresentations,
+                                                controller.InlineDetailsInCollectionMemberRepresentations,
+                                                controller.InlinePropertyDetails ?? controller.InlineDetailsInPropertyMemberRepresentations,
+                                                controller.InlineCollectionItems.HasValue && controller.InlineCollectionItems.Value,
+                                                controller.AllowMutatingActionOnImmutableObject,
+                                                controller.AcceptHeaderStrict,
+                                                controller.DebugWarnings);
 
         public static RestControlFlags GetFlags(Arguments arguments, RestfulObjectsControllerBase controller) {
             if (arguments.IsMalformed || arguments.ReservedArguments == null) {
@@ -357,15 +353,15 @@ namespace NakedFramework.Rest.API {
 
         public static RestControlFlags GetFlagsFromArguments(ReservedArguments reservedArguments, RestfulObjectsControllerBase controller) =>
             RestControlFlags.FlagsFromArguments(reservedArguments.ValidateOnly,
-                reservedArguments.Page,
-                reservedArguments.PageSize,
-                reservedArguments.DomainModel,
-                controller.InlineDetailsInActionMemberRepresentations,
-                controller.InlineDetailsInCollectionMemberRepresentations,
-                reservedArguments.InlinePropertyDetails ?? controller.InlineDetailsInPropertyMemberRepresentations,
-                reservedArguments.InlineCollectionItems.HasValue && reservedArguments.InlineCollectionItems.Value,
-                controller.AllowMutatingActionOnImmutableObject, 
-                controller.AcceptHeaderStrict,
-                controller.DebugWarnings);
+                                                reservedArguments.Page,
+                                                reservedArguments.PageSize,
+                                                reservedArguments.DomainModel,
+                                                controller.InlineDetailsInActionMemberRepresentations,
+                                                controller.InlineDetailsInCollectionMemberRepresentations,
+                                                reservedArguments.InlinePropertyDetails ?? controller.InlineDetailsInPropertyMemberRepresentations,
+                                                reservedArguments.InlineCollectionItems.HasValue && reservedArguments.InlineCollectionItems.Value,
+                                                controller.AllowMutatingActionOnImmutableObject,
+                                                controller.AcceptHeaderStrict,
+                                                controller.DebugWarnings);
     }
 }

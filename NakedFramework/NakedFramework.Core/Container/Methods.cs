@@ -27,7 +27,7 @@ namespace NakedFramework.Core.Container {
 
         public static void InjectServices(object target, object[] services) {
             var properties = target.GetType().GetProperties()
-                .Where(p => p.CanWrite && p.PropertyType != typeof(object) && p.PropertyType != typeof(object[]));
+                                   .Where(p => p.CanWrite && p.PropertyType != typeof(object) && p.PropertyType != typeof(object[]));
             foreach (var prop in properties) {
                 if (prop.PropertyType.IsArray) {
                     var elementType = prop.PropertyType.GetElementType();

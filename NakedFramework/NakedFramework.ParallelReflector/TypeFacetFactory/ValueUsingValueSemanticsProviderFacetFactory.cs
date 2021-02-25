@@ -14,8 +14,7 @@ using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeFacetFactoryProcessor
-    {
+    public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeFacetFactoryProcessor {
         protected ValueUsingValueSemanticsProviderFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
             : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 

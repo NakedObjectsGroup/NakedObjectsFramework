@@ -19,7 +19,7 @@ namespace NakedFramework.Core.Util {
     ///     If there is no attribute on either member, then will compare the members by name instead.
     /// </para>
     public class MemberOrderComparator<T> : IComparer<T> where T : ISpecification {
-        private readonly MemberIdentifierComparator<T> fallbackComparator = new MemberIdentifierComparator<T>();
+        private readonly MemberIdentifierComparator<T> fallbackComparator = new();
 
         #region IComparer<T> Members
 

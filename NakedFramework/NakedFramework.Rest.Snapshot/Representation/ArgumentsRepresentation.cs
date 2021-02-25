@@ -57,7 +57,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
         }
 
         private static MapRepresentation CreateMap(ContextFacade context, object obj) {
-            var opts = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Value, obj)};
+            var opts = new List<OptionalProperty> {new(JsonPropertyNames.Value, obj)};
             if (!string.IsNullOrEmpty(context.Reason)) {
                 opts.Add(new OptionalProperty(JsonPropertyNames.InvalidReason, context.Reason));
             }
