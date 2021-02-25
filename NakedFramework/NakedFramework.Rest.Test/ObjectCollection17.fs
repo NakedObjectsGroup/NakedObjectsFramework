@@ -543,7 +543,7 @@ let GetInvalidCollection(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext    
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedFramework.Facade.Exception.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
 let GetNotFoundCollection(api : RestfulObjectsControllerBase) = 
