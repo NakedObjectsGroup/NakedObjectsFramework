@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Rest.Extensions;
