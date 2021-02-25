@@ -11,14 +11,14 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Reflect;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Interactions;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Spec {
+namespace NakedFramework.Core.Spec {
     public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
         private bool? isFindMenuEnabled;
 
@@ -96,12 +96,12 @@ namespace NakedObjects.Core.Spec {
 
         public IConsent IsAssociationValid(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter reference) {
             if (reference != null && !reference.Spec.IsOfType(ReturnSpec)) {
-                return GetConsent(string.Format(Resources.NakedObjects.TypeMismatchError, ReturnSpec.SingularName));
+                return GetConsent(string.Format(NakedObjects.Resources.NakedObjects.TypeMismatchError, ReturnSpec.SingularName));
             }
 
             if (!inObjectAdapter.ResolveState.IsNotPersistent()) {
                 if (reference != null && !reference.Spec.IsParseable && reference.ResolveState.IsNotPersistent()) {
-                    return GetConsent(Resources.NakedObjects.TransientFieldMessage);
+                    return GetConsent(NakedObjects.Resources.NakedObjects.TransientFieldMessage);
                 }
             }
 

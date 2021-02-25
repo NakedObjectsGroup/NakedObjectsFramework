@@ -12,8 +12,8 @@ using System.Threading;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Resources;
 
 namespace NakedObjects.Meta.I18N {

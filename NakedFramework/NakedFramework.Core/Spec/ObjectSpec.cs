@@ -11,13 +11,13 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Util;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Spec {
+namespace NakedFramework.Core.Spec {
     public sealed class ObjectSpec : TypeSpec, IObjectSpec {
         private readonly IDictionary<string, IActionSpec[]> locallyContributedActions = new Dictionary<string, IActionSpec[]>();
         private readonly ILogger<ObjectSpec> logger;

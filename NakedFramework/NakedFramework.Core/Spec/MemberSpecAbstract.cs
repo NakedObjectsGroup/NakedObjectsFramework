@@ -11,13 +11,15 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Reflect;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Interactions;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Reflect {
+namespace NakedFramework.Core.Spec {
     public abstract class MemberSpecAbstract : IMemberSpec {
         private readonly IMemberSpecImmutable memberSpecImmutable;
 

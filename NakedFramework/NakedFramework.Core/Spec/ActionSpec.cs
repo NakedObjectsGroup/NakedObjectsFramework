@@ -10,20 +10,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Reflect;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Interactions;
-using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Spec {
+namespace NakedFramework.Core.Spec {
     public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
         private readonly IActionSpecImmutable actionSpecImmutable;
         private readonly ILogger<ActionSpec> logger;

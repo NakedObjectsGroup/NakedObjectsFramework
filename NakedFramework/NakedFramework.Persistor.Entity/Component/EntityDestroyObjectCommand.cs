@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
+using NakedFramework.Architecture.Persist;
 
 namespace NakedObjects.Persistor.Entity.Component {
     public class EntityDestroyObjectCommand : IDestroyObjectCommand {

@@ -5,11 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedObjects.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec {
     /// <summary>
     ///     The specification for an action method on a domain object (or service).
     /// </summary>

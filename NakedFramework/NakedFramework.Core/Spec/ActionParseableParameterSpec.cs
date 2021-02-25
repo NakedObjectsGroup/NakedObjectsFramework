@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Core.Spec {
+namespace NakedFramework.Core.Spec {
     public sealed class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {
         // cached values 
         private int? maximumLength;

@@ -8,9 +8,9 @@
 using System;
 using Moq;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Resolve;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NUnit.Framework;
 

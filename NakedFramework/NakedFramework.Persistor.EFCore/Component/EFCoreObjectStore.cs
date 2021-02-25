@@ -8,9 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Persist;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Persistor.EFCore.Configuration;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 
 namespace NakedFramework.Persistor.EFCore.Component {

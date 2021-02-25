@@ -9,11 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Spec {
+namespace NakedFramework.Core.Spec {
     public class SpecFactory {
         private INakedObjectsFramework framework;
         private bool isInitialised;

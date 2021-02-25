@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec {
     /// <summary>
     ///     See <see cref="IOneToOneAssociationSpec" />/>
     /// </summary>

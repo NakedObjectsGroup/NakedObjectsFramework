@@ -5,18 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Reflect;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Spec {
+namespace NakedFramework.Core.Spec {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
         protected AssociationSpecAbstract(IAssociationSpecImmutable association,  INakedObjectsFramework framework)
             : base(association.Identifier.MemberName, association, framework) {
@@ -61,7 +60,7 @@ namespace NakedObjects.Core.Spec {
             if (viewModelFacet != null) {
                 // all fields on a non-editable view model are disabled
                 if (!viewModelFacet.IsEditView(target, Framework)) {
-                    return new Veto(Resources.NakedObjects.FieldDisabled);
+                    return new Veto(NakedObjects.Resources.NakedObjects.FieldDisabled);
                 }
             }
 
@@ -70,14 +69,14 @@ namespace NakedObjects.Core.Spec {
                 var when = immutableFacet.Value;
                 switch (when) {
                     case WhenTo.UntilPersisted when !isPersistent:
-                        return new Veto(Resources.NakedObjects.FieldDisabledUntil);
+                        return new Veto(NakedObjects.Resources.NakedObjects.FieldDisabledUntil);
                     case WhenTo.OncePersisted when isPersistent:
-                        return new Veto(Resources.NakedObjects.FieldDisabledOnce);
+                        return new Veto(NakedObjects.Resources.NakedObjects.FieldDisabledOnce);
                 }
 
                 var tgtSpec = target.Spec;
                 if (tgtSpec.IsAlwaysImmutable() || tgtSpec.IsImmutableOncePersisted() && isPersistent) {
-                    return new Veto(Resources.NakedObjects.FieldDisabled);
+                    return new Veto(NakedObjects.Resources.NakedObjects.FieldDisabled);
                 }
             }
 
@@ -102,11 +101,11 @@ namespace NakedObjects.Core.Spec {
                 var isProtected = facet.Value;
                 switch (isProtected) {
                     case WhenTo.Always:
-                        return new Veto(Resources.NakedObjects.FieldNotEditable);
+                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditable);
                     case WhenTo.OncePersisted when isPersistent:
-                        return new Veto(Resources.NakedObjects.FieldNotEditableNow);
+                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditableNow);
                     case WhenTo.UntilPersisted when !isPersistent:
-                        return new Veto(Resources.NakedObjects.FieldNotEditableUntil);
+                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditableUntil);
                 }
             }
 

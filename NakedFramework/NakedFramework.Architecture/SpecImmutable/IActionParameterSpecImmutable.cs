@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Runtime.Serialization;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedObjects.Architecture.SpecImmutable {
     public interface IActionParameterSpecImmutable : ISpecificationBuilder, ISerializable {

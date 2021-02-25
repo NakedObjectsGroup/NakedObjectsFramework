@@ -7,7 +7,7 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedObjects.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec {
     /// <summary>
     ///     Provides reflective access to a field on a domain object that is used to reference another domain object
     /// </summary>

@@ -9,8 +9,8 @@ using System;
 using System.Text.RegularExpressions;
 using NakedFramework;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public static class FacetUtils {

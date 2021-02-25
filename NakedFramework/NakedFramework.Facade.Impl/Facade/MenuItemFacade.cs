@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Threading.Tasks.Dataflow;
-using NakedObjects.Architecture.Menu;
+using NakedFramework.Architecture.Menu;
 
 namespace NakedObjects.Facade.Impl {
     public class MenuItemFacade : IMenuItemFacade {

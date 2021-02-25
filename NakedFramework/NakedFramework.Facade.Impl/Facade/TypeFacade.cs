@@ -9,9 +9,9 @@ using System;
 using System.Linq;
 using NakedFramework;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Value;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade.Impl.Utility;
 

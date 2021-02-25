@@ -12,7 +12,7 @@ using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Component {
     /// <summary>

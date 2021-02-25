@@ -6,10 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Core.Spec {
+namespace NakedFramework.Core.Spec {
     public sealed class OneToManyActionParameter : ActionParameterSpec, IOneToManyActionParameterSpec {
         public OneToManyActionParameter(int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectsFramework framework)
             : base(index, actionImpl, actionParameterSpecImmutable,framework) { }

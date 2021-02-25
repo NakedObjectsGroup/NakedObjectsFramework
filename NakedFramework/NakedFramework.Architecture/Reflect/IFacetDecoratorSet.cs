@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Reflect {
     public interface IFacetDecoratorSet {

@@ -8,10 +8,10 @@
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Core.Spec {
+namespace NakedFramework.Core.Spec {
     public sealed class ServiceSpec : TypeSpec, IServiceSpec {
         public ServiceSpec(SpecFactory memberFactory,  IServiceSpecImmutable innerSpec, INakedObjectsFramework framework) :
             base(memberFactory, innerSpec, framework) { }

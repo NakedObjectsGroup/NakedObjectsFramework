@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 
-namespace NakedObjects.Architecture.Resolve {
+namespace NakedFramework.Architecture.Resolve {
     public interface IResolveState {
         string Name { get; }
         string Code { get; }

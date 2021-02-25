@@ -7,7 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

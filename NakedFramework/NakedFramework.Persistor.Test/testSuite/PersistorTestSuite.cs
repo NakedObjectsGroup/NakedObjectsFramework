@@ -10,7 +10,7 @@ using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;

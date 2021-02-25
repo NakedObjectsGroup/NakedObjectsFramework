@@ -9,7 +9,7 @@ module NakedObjects.TestTypes
 open Moq
 open NakedFramework.Architecture.Adapter
 open NakedFramework.Architecture.Component
-open NakedObjects.Architecture.Spec
+open NakedFramework.Architecture.Spec
 open NakedObjects.Core.Resolve
 open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component
@@ -18,6 +18,7 @@ open System.Collections.Generic
 open System.Reflection
 open Microsoft.Extensions.Logging
 open NakedFramework.Architecture.Component
+open NakedFramework.Architecture.Spec
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"

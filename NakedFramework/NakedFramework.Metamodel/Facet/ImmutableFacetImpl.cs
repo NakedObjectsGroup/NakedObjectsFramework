@@ -8,7 +8,7 @@
 using System;
 using NakedFramework;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Meta.Facet {

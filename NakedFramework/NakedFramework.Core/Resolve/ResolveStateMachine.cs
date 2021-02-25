@@ -12,7 +12,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Resolve;
+using NakedFramework.Architecture.Resolve;
 
 [assembly: InternalsVisibleTo("NakedFramework.Core.Test")]
 

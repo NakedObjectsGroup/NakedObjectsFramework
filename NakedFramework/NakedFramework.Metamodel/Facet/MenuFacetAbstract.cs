@@ -7,9 +7,9 @@
 
 using System;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Menu;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Resources;

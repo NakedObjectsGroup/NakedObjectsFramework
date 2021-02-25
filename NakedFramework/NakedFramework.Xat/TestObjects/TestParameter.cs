@@ -9,8 +9,8 @@ using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Architecture.Spec;
 
 namespace NakedFramework.Xat.TestObjects {
     internal class TestParameter : ITestParameter {

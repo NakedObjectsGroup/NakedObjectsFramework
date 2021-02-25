@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Menu;
+using NakedFramework.Architecture.Menu;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>

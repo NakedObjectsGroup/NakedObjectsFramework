@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Reflector.Component;

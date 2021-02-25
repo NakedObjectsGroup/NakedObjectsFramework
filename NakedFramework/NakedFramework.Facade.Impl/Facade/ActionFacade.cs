@@ -8,8 +8,8 @@
 using System;
 using System.Linq;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade.Impl.Utility;
 
 namespace NakedObjects.Facade.Impl {

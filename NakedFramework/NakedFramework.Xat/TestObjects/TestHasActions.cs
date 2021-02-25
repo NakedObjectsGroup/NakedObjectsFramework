@@ -10,9 +10,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Xat.Interface;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 
 namespace NakedFramework.Xat.TestObjects {

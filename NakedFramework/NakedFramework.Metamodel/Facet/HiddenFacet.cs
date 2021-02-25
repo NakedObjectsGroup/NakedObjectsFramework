@@ -9,8 +9,8 @@ using System;
 using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.interactions;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 

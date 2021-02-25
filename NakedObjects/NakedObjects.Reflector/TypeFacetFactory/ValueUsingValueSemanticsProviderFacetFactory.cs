@@ -7,8 +7,8 @@
 
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Reflect;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 using NakedObjects.Meta.Utils;

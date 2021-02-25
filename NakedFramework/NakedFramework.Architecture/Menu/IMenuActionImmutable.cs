@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Menu {
+namespace NakedFramework.Architecture.Menu {
     /// <summary>
     ///     Run-time metamodel of a menu action, which provides access to the
     ///     action spec.

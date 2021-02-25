@@ -8,8 +8,8 @@
 using System.Linq;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Reflect;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Interactions;
 using NakedObjects.Core.Reflect;
 

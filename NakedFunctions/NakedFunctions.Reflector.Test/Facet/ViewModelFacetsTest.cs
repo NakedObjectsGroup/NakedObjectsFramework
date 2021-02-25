@@ -8,9 +8,9 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Resolve;
+using NakedFramework.Architecture.Spec;
 using NakedFunctions.Reflector.Facet;
-using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Spec;
 
 namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]

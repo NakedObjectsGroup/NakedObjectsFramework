@@ -7,7 +7,7 @@
 
 using System.Linq;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Facade.Impl.Contexts {

@@ -9,8 +9,8 @@ using System;
 using System.Threading;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.interactions;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {

@@ -10,10 +10,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Menu;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Xat.Interface;
 using NakedObjects;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedFramework.Xat.TestObjects {

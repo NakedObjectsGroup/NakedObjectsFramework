@@ -13,14 +13,15 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Reflect;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Interactions;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Spec {
+namespace NakedFramework.Core.Spec {
     public abstract class ActionParameterSpec : IActionParameterSpec {
         private readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
      
@@ -131,7 +132,7 @@ namespace NakedObjects.Core.Spec {
 
         public IConsent IsValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue) {
             if (proposedValue != null && !proposedValue.Spec.IsOfType(Spec)) {
-                var msg = string.Format(Resources.NakedObjects.TypeMismatchError, Spec.SingularName);
+                var msg = string.Format(NakedObjects.Resources.NakedObjects.TypeMismatchError, Spec.SingularName);
                 return GetConsent(msg);
             }
 

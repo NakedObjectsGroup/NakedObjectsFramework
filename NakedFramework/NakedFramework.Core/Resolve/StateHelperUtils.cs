@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Resolve;
+using NakedFramework.Architecture.Resolve;
 
 namespace NakedObjects.Core.Resolve {
     public static class StateHelperUtils {

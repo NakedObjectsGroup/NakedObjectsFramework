@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Menu;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec {
     /// <summary>
     ///     Gives access to the full specification (metadata) for a specific domain object type
     ///     (defined by the FullName property). This is the 'runtime specification', which can provide

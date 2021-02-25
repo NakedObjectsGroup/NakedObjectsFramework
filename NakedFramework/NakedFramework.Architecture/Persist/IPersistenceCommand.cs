@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Persist {
+namespace NakedFramework.Architecture.Persist {
     public interface IPersistenceCommand {
         void Execute();
         INakedObjectAdapter OnObject();

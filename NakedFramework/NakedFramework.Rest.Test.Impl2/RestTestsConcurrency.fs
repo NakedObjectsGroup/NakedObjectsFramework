@@ -20,7 +20,6 @@ open NakedObjects.Facade
 open NakedObjects.Facade.Translation
 open NakedObjects.Facade.Impl
 open NakedObjects.Facade.Interface
-open NakedObjects.Architecture.Menu
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json
 open NakedObjects.Rest.Snapshot.Utility

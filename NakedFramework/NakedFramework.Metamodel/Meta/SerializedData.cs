@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Architecture.Menu;
+using NakedFramework.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta {

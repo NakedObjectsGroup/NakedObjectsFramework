@@ -7,9 +7,9 @@
 
 using System;
 using System.IO;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Value;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 

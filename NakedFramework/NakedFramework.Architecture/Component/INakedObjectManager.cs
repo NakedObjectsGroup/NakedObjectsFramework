@@ -8,7 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Component {
     /// <summary>

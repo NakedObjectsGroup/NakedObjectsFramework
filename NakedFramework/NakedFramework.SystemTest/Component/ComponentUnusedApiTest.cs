@@ -10,8 +10,8 @@ using System.Data.Entity;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Services;
 using NUnit.Framework;
 

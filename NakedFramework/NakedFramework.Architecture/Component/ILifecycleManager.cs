@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Persist;
+using NakedFramework.Architecture.Spec;
 using NakedObjects;
-using NakedObjects.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Component {
     /// <summary>

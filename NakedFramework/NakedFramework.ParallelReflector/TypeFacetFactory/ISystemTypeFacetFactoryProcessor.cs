@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory {

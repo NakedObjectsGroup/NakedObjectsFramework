@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec {
     public interface IOneToManyAssociationSpec : IAssociationSpec, IOneToManyFeatureSpec {
         /// <summary>
         ///     The collection has set semantics

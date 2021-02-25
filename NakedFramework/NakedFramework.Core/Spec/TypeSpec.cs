@@ -10,13 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Menu;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Spec {
+namespace NakedFramework.Core.Spec {
     public abstract class TypeSpec : ITypeSpec {
         // cached values 
         private string description;
@@ -194,7 +195,7 @@ namespace NakedObjects.Core.Spec {
 
         public string SingularName => singularName ??= InnerSpec.GetFacet<INamedFacet>().NaturalName;
 
-        public string UntitledName => untitledName ??= Resources.NakedObjects.Untitled + SingularName;
+        public string UntitledName => untitledName ??= NakedObjects.Resources.NakedObjects.Untitled + SingularName;
 
         public string PluralName => pluralName ??= InnerSpec.GetFacet<IPluralFacet>().Value;
 

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 

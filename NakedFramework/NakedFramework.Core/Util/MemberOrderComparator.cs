@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedFramework.Core.Util {

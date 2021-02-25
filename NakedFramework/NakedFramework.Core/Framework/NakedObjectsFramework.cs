@@ -11,8 +11,8 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Spec;
 using NakedObjects.Core.Component;
-using NakedObjects.Core.Spec;
 
 namespace NakedObjects.Service {
     public sealed class NakedObjectsFramework : INakedObjectsFramework {

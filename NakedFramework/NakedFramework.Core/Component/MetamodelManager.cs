@@ -9,10 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Menu;
+using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Spec;
 
 namespace NakedObjects.Core.Component {
     public sealed class MetamodelManager : IMetamodelManager {

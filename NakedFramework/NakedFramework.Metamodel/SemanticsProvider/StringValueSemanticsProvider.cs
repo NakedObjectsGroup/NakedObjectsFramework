@@ -8,8 +8,8 @@
 using System;
 using System.Globalization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 

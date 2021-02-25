@@ -12,6 +12,7 @@ open NakedObjects.Core.Resolve
 open NakedObjects.Persistor.Entity.Adapter
 open NUnit.Framework
 open NakedFramework.Architecture.Framework
+open NakedFramework.Architecture.Spec
 
 let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
     match obj with
@@ -73,7 +74,7 @@ let IsNotNullAndTransientAggregate obj ctx =
     IsTransientAggregateOid obj ctx
 
 let Create<'t when 't : not struct>(ctx : INakedObjectsFramework) = 
-    let spec = ctx.MetamodelManager.GetSpecification(typeof<'t>) :?> NakedObjects.Architecture.Spec.IObjectSpec
+    let spec = ctx.MetamodelManager.GetSpecification(typeof<'t>) :?> IObjectSpec
     ctx.LifecycleManager.CreateInstance(spec)
 
 let CreateAndSetup<'t when 't : not struct> setter ctx = 

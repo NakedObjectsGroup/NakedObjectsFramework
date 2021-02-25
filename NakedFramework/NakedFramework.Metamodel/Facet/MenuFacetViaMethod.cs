@@ -8,7 +8,7 @@
 using System;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Menu;
 

@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Facet;
 
-namespace NakedObjects.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec {
     public interface ISpecificationBuilder : ISpecification {
         /// <summary>
         ///     Adds the facet, extracting its <see cref="IFacet.FacetType" /> as the key.

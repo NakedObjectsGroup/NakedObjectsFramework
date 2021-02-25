@@ -7,7 +7,7 @@
 
 using System;
 using System.Reflection;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>

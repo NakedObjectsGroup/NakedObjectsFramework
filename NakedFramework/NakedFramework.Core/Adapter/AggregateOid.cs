@@ -8,7 +8,7 @@
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {

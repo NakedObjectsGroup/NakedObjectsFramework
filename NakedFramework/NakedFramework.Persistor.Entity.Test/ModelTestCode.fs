@@ -23,6 +23,7 @@ open Microsoft.Extensions.Logging
 open NakedObjects.Reflector.Configuration
 open NakedFramework.Core.Component
 open NakedFramework.Architecture.Framework
+open NakedFramework.Architecture.Spec
 
 let ModelConfig = 
     let pc = new CodeFirstEntityContextConfiguration()
@@ -46,7 +47,7 @@ let setupPersistorForInjectorTesting (p : EntityObjectStore) =
         (injector, EntityObjectStore.CreateAdapterDelegate(AdapterForTest), EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
          EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
          Action<INakedObjectAdapter>(handleLoadingTest), EventHandler(savingChangesHandler), 
-         Func<Type, NakedObjects.Architecture.Spec.IObjectSpec>(loadSpecificationHandler))
+         Func<Type, IObjectSpec>(loadSpecificationHandler))
     p.SetupContexts()
     p
 

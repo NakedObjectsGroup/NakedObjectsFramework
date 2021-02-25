@@ -9,8 +9,8 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Spec;
+using NakedFramework.Architecture.Menu;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>

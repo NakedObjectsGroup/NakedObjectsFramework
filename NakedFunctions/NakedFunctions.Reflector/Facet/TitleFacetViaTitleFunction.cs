@@ -9,10 +9,10 @@ using System;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Reflector.Facet {
