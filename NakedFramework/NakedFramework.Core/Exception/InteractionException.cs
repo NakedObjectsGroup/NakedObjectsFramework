@@ -7,7 +7,7 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Interactions;
+using NakedFramework.Architecture.interactions;
 
 namespace NakedObjects.Core {
     public abstract class InteractionException : Exception {

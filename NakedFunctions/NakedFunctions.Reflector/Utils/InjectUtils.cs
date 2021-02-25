@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedFunctions.Reflector.Component;
 using NakedObjects;
 using NakedObjects.Core.Util;

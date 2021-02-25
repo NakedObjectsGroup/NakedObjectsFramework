@@ -8,8 +8,8 @@
 using System;
 using NakedFramework;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.interactions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Resolve;

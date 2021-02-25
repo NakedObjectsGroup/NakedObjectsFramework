@@ -9,13 +9,13 @@ using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Configuration;
 using NakedFramework.Core.Component;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Reflector.FacetFactory;
 using NakedFunctions.Reflector.Reflect;
 using NakedFunctions.Services;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.Extensions;
 

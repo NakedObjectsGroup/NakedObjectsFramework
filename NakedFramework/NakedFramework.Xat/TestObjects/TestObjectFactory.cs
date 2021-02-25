@@ -9,6 +9,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Xat.Interface;
 using NakedObjects;
 using NakedObjects.Architecture.Menu;

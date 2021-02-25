@@ -12,6 +12,7 @@ using System.Web;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Persist;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;

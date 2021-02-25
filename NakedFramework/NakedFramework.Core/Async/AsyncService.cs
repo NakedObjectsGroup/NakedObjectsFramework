@@ -8,6 +8,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Framework;
 using NakedObjects.Async;
 using NakedObjects.Core.Container;
 

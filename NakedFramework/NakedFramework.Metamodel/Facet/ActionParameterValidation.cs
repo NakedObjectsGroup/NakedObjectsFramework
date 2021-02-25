@@ -10,8 +10,9 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.interactions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 

@@ -9,8 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.interactions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Core;
 using NakedObjects.Meta.Facet;
 

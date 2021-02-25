@@ -9,6 +9,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Facet;
 using NakedObjects;

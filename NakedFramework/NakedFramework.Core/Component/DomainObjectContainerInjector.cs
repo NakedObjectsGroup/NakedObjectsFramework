@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedObjects.Core.Container;
 
 namespace NakedObjects.Core.Component {

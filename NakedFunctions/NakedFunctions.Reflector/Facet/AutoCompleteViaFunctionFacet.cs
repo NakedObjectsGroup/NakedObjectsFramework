@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
 using NakedObjects.Architecture.Facet;

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;

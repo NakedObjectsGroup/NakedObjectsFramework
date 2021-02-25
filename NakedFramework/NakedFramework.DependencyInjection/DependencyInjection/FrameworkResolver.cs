@@ -8,6 +8,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 
 namespace NakedObjects.DependencyInjection.DependencyInjection {
     public class FrameworkResolver : IFrameworkResolver {

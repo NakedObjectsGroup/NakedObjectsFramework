@@ -8,6 +8,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Xat.Interface;
 using NakedObjects;
 using NakedObjects.Architecture.Facet;

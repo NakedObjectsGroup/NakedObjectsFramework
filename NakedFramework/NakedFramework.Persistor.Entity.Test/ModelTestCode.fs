@@ -22,6 +22,7 @@ open TestTypes
 open Microsoft.Extensions.Logging
 open NakedObjects.Reflector.Configuration
 open NakedFramework.Core.Component
+open NakedFramework.Architecture.Framework
 
 let ModelConfig = 
     let pc = new CodeFirstEntityContextConfiguration()

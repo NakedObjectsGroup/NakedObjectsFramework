@@ -7,7 +7,7 @@
 
 using System;
 using System.Linq;
-using NakedObjects.Architecture.Configuration;
+using NakedFramework.Architecture.Configuration;
 
 namespace NakedFunctions.Reflector.Configuration {
     public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguration {

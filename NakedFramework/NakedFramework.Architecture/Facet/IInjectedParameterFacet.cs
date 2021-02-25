@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Framework;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IInjectedParameterFacet : IFacet{

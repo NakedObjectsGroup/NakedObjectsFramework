@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 
 namespace NakedObjects.Core.Component {
     public sealed class BatchRunner : IBatchRunner {

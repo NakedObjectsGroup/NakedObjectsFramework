@@ -7,7 +7,7 @@
 
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Transaction;
+using NakedFramework.Architecture.transaction;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Transaction {

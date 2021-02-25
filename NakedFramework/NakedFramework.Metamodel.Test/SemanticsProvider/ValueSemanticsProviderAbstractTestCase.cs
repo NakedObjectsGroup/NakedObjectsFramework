@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;

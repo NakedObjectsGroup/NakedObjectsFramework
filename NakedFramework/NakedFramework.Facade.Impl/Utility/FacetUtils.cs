@@ -8,6 +8,7 @@
 using System;
 using System.Text.RegularExpressions;
 using NakedFramework;
+using NakedFramework.Architecture.Framework;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 

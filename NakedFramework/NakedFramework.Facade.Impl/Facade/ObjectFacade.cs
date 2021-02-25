@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Value;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;

@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
+using NakedFramework.Architecture.interactions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Interactions;

@@ -7,9 +7,10 @@
 
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedObjects.Architecture.Facet;
 
-namespace NakedObjects.Architecture.Interactions {
+namespace NakedFramework.Architecture.interactions {
     public interface IInteractionContext {
         /// <summary>
         ///     The type of interaction
@@ -50,7 +51,7 @@ namespace NakedObjects.Architecture.Interactions {
         ///     The identifier of the object or member that is being identified with.
         /// </summary>
         /// <para>
-        ///     If the <see cref="InteractionType" /> type is <see cref="Interactions.InteractionType.ObjectPersist" />,
+        ///     If the <see cref="InteractionType" /> type is <see cref="interactions.InteractionType.ObjectPersist" />,
         ///     will be the identifier of the <see cref="Target" /> object's specification.
         ///     Otherwise will be the identifier of the member.
         /// </para>
@@ -65,11 +66,11 @@ namespace NakedObjects.Architecture.Interactions {
         /// <para>
         ///     Will be set if the <see cref="InteractionType" /> type is
         ///     <see
-        ///         cref="Interactions.InteractionType.PropertyParamModify" />
+        ///         cref="interactions.InteractionType.PropertyParamModify" />
         ///     ,
-        ///     <see cref="Interactions.InteractionType.CollectionAddTo" /> or
+        ///     <see cref="interactions.InteractionType.CollectionAddTo" /> or
         ///     <see
-        ///         cref="Interactions.InteractionType.CollectionRemoveFrom" />
+        ///         cref="interactions.InteractionType.CollectionRemoveFrom" />
         ///     ;
         ///     <c>null</c> otherwise.  In the case of the collection interactions, may be safely downcast
         ///     to <see cref="INakedObjectAdapter" />
@@ -80,7 +81,7 @@ namespace NakedObjects.Architecture.Interactions {
         ///     The arguments for a proposed action invocation.
         /// </summary>
         /// <para>
-        ///     Will be set if the <see cref="InteractionType" /> type is <see cref="Interactions.InteractionType.ActionInvoke" />;
+        ///     Will be set if the <see cref="InteractionType" /> type is <see cref="interactions.InteractionType.ActionInvoke" />;
         ///     <c>null</c> otherwise.
         /// </para>
         INakedObjectAdapter[] ProposedArguments { get; }

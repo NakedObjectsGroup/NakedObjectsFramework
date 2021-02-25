@@ -11,7 +11,7 @@ open NakedFramework.Architecture.Adapter
 open NakedObjects.Core.Resolve
 open NakedObjects.Persistor.Entity.Adapter
 open NUnit.Framework
-open NakedFramework.Architecture.Adapter
+open NakedFramework.Architecture.Framework
 
 let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
     match obj with

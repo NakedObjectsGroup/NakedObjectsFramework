@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Interactions;
+using NakedFramework.Architecture.interactions;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {

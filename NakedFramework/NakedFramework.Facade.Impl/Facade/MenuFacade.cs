@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using NakedFramework.Architecture.Framework;
 using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Facade.Impl {

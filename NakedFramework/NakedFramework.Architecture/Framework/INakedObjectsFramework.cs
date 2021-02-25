@@ -6,11 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Component;
 
-namespace NakedObjects {
+namespace NakedFramework.Architecture.Framework {
     /// <summary>
     ///     Defines a service that provides easy access to the principal components of the framework.
     ///     An implementation of this service interface will be injected into any domain

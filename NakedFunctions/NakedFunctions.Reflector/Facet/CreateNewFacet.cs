@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using NakedFramework.Architecture.Framework;
 using NakedObjects;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;

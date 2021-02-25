@@ -8,8 +8,8 @@
 using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.interactions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Utils;
 

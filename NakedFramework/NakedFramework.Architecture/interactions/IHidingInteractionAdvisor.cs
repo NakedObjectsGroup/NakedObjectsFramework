@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture.Interactions {
+namespace NakedFramework.Architecture.interactions {
     /// <summary>
     ///     Mix-in interface for facets that can advise as to whether a member
     ///     should be hidden.

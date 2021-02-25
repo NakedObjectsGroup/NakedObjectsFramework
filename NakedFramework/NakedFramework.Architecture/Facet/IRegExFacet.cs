@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Text.RegularExpressions;
-using NakedObjects.Architecture.Interactions;
+using NakedFramework.Architecture.interactions;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>

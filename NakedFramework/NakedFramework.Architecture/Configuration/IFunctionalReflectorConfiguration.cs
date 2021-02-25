@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture.Configuration {
+namespace NakedFramework.Architecture.Configuration {
     public interface IFunctionalReflectorConfiguration {
         Type[] Types { get; }
         Type[] Functions { get; }

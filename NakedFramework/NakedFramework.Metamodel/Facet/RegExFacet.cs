@@ -8,8 +8,8 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using NakedFramework.Architecture.interactions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
 [assembly:InternalsVisibleTo("NakedObjects.Reflector.Test")]

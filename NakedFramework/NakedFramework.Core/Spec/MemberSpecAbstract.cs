@@ -8,8 +8,9 @@
 using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.interactions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;

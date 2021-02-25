@@ -9,6 +9,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Component;
 using NakedFramework.ModelBuilding.Component;
 using NakedObjects.Core.Authentication;

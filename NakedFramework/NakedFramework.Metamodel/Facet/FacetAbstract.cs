@@ -8,8 +8,8 @@
 using System;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.interactions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {

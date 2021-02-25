@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Persist;
 using NakedFunctions.Reflector.Component;
 using NakedObjects;

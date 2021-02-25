@@ -7,9 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-using NakedFramework;
 
-namespace NakedObjects.Architecture.Configuration {
+namespace NakedFramework.Architecture.Configuration {
     public interface ICoreConfiguration {
         /// <summary>
         ///     Specify a function that can create the array of main menus, having been passed-in an

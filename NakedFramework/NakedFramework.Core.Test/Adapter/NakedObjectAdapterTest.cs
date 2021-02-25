@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedObjects.Core.Adapter;
 using NUnit.Framework;
 

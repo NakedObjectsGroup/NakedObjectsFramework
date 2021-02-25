@@ -7,8 +7,9 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.interactions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 

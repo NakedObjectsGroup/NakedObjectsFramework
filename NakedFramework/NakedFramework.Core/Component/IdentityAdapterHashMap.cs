@@ -9,7 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Configuration;
+using NakedFramework.Architecture.Configuration;
 
 namespace NakedObjects.Core.Component {
     public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {

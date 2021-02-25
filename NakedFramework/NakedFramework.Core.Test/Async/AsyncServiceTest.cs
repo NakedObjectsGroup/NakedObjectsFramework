@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NUnit.Framework;
 
 namespace NakedObjects.Core.Async {
