@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
+using NakedFramework.Architecture.Reflect;
 using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global

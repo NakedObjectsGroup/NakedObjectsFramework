@@ -9,7 +9,7 @@ using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
+using NakedFramework.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflector.Reflect;
 

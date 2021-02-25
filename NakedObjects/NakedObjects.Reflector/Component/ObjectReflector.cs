@@ -11,7 +11,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
+using NakedFramework.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Configuration;

@@ -12,7 +12,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedFramework.Architecture.Reflect {
     public interface IIntrospector {
         Type IntrospectedType { get; }
 

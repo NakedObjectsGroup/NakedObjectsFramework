@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using NakedObjects.Architecture.Reflect;
+using NakedFramework.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.SpecImmutable {
 

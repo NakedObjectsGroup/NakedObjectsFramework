@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
+using NakedFramework.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Meta.Adapter;

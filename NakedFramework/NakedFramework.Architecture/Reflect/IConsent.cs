@@ -8,7 +8,7 @@
 using System;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedFramework.Architecture.Reflect {
     public interface IConsent {
         /// <summary>
         ///     Returns the permission's reason, detailing why, or why not, permission is being given, or denied

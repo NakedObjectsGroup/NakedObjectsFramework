@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
+using NakedFramework.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
     public interface IActionParameterSpec : IFeatureSpec {

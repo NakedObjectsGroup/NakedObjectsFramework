@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Reflect;
+using NakedFramework.Architecture.Reflect;
 
 namespace NakedObjects.Core.Reflect {
     public abstract class ConsentAbstract : IConsent {

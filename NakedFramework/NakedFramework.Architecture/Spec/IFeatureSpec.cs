@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
+using NakedFramework.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
     /// <summary>

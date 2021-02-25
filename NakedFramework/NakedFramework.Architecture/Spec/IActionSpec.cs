@@ -7,7 +7,7 @@
 
 using NakedFramework;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
+using NakedFramework.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
     /// <summary>
