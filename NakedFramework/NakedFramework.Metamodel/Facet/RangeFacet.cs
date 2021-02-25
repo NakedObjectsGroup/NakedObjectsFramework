@@ -9,7 +9,7 @@ using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.interactions;
+using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Exception;
 using NakedFramework.Metamodel.Utils;

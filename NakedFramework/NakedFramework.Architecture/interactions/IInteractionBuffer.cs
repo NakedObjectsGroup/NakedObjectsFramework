@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.interactions {
+namespace NakedFramework.Architecture.Interactions {
     public interface IInteractionBuffer {
         bool IsNotEmpty { get; }
         bool IsEmpty { get; }

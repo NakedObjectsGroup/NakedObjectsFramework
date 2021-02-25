@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Text;
-using NakedFramework.Architecture.interactions;
+using NakedFramework.Architecture.Interactions;
 
 namespace NakedFramework.Core.Interactions {
     public sealed class InteractionBuffer : IInteractionBuffer {

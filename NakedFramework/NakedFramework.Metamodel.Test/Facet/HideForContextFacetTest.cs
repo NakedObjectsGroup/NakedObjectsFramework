@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.interactions;
+using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Exception;
 using NakedFramework.Metamodel.Facet;
 

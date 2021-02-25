@@ -9,7 +9,7 @@ using System;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.interactions;
+using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet {

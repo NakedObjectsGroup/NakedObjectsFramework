@@ -7,9 +7,11 @@
 
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Snapshot.Xml.Utility;
+using NakedFramework.Snapshot.Xml.Utility;
+using NakedObjects;
+using NakedObjects.Snapshot;
 
-namespace NakedObjects.Snapshot.Xml.Service {
+namespace NakedFramework.Snapshot.Xml.Service {
     [Named("XML Snapshot")]
     public class XmlSnapshotService : IXmlSnapshotService {
         public INakedObjectsFramework Framework { set; protected get; }

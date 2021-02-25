@@ -9,7 +9,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.interactions;
+using NakedFramework.Architecture.Interactions;
 
 namespace NakedFramework.Core.Interactions {
     /// <summary>
@@ -78,7 +78,7 @@ namespace NakedFramework.Core.Interactions {
         /// </summary>
         /// <para>
         ///     If the <see cref="InteractionType" /> type is
-        ///     <see cref="NakedFramework.Architecture.interactions.InteractionType.ObjectPersist" />,
+        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ObjectPersist" />,
         ///     will be the identifier of the <see cref="Target" /> object's specification.
         ///     Otherwise will be the identifier of the member.
         /// </para>
@@ -93,11 +93,11 @@ namespace NakedFramework.Core.Interactions {
         /// <para>
         ///     Will be set if the <see cref="InteractionType" /> type is
         ///     <see
-        ///         cref="NakedFramework.Architecture.interactions.InteractionType.PropertyParamModify" />
+        ///         cref="NakedFramework.Architecture.Interactions.InteractionType.PropertyParamModify" />
         ///     ,
-        ///     <see cref="NakedFramework.Architecture.interactions.InteractionType.CollectionAddTo" /> or
+        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.CollectionAddTo" /> or
         ///     <see
-        ///         cref="NakedFramework.Architecture.interactions.InteractionType.CollectionRemoveFrom" />
+        ///         cref="NakedFramework.Architecture.Interactions.InteractionType.CollectionRemoveFrom" />
         ///     ;
         ///     <c>null</c> otherwise.  In the case of the collection interactions, may be safely downcast
         ///     to <see cref="INakedObjectAdapter" />
@@ -109,7 +109,7 @@ namespace NakedFramework.Core.Interactions {
         /// </summary>
         /// <para>
         ///     Will be set if the <see cref="InteractionType" /> type is
-        ///     <see cref="NakedFramework.Architecture.interactions.InteractionType.ActionInvoke" />;
+        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ActionInvoke" />;
         ///     <c>null</c> otherwise.
         /// </para>
         public INakedObjectAdapter[] ProposedArguments { get; }
@@ -124,7 +124,7 @@ namespace NakedFramework.Core.Interactions {
 
         /// <summary>
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="NakedFramework.Architecture.interactions.InteractionType.MemberAccess" />  reading a property.
+        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.MemberAccess" />  reading a property.
         /// </summary>
         public static InteractionContext AccessMember(INakedObjectsFramework framework,
                                                       bool programmatic,
@@ -140,7 +140,7 @@ namespace NakedFramework.Core.Interactions {
 
         /// <summary>
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="NakedFramework.Architecture.interactions.InteractionType.PropertyParamModify" />  modifying a property or parameter.
+        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.PropertyParamModify" />  modifying a property or parameter.
         /// </summary>
         public static InteractionContext ModifyingPropParam(INakedObjectsFramework framework,
                                                             bool programmatic,
@@ -157,7 +157,7 @@ namespace NakedFramework.Core.Interactions {
 
         /// <summary>
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="NakedFramework.Architecture.interactions.InteractionType.ActionInvoke" />  invoking an action.
+        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ActionInvoke" />  invoking an action.
         /// </summary>
         public static InteractionContext InvokingAction(INakedObjectsFramework framework,
                                                         bool programmatic,

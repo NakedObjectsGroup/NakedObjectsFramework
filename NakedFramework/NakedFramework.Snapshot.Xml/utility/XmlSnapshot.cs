@@ -20,8 +20,10 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
+using NakedObjects;
+using NakedObjects.Snapshot;
 
-namespace NakedObjects.Snapshot.Xml.Utility {
+namespace NakedFramework.Snapshot.Xml.Utility {
     [NotMapped]
     public class XmlSnapshot : IXmlSnapshot {
         private readonly ILogger<XmlSnapshot> logger;

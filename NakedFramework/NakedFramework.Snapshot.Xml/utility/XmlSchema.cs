@@ -10,7 +10,7 @@ using System.Xml.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Snapshot.Xml.Utility {
+namespace NakedFramework.Snapshot.Xml.Utility {
     public class XmlSchema {
         public const string DefaultPrefix = "app";
         private readonly ILogger<XmlSchema> logger;

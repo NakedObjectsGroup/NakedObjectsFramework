@@ -7,7 +7,7 @@
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedFramework.Architecture.interactions {
+namespace NakedFramework.Architecture.Interactions {
     public enum InteractionType {
         ActionInvoke,
         CandidateArgument,

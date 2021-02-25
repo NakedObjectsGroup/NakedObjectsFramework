@@ -7,7 +7,7 @@
 
 using System.Linq;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.interactions;
+using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Interactions;
