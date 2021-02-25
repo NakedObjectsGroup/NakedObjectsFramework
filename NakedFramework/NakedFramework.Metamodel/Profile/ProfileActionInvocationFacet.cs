@@ -7,7 +7,7 @@
 
 using System;
 using System.Reflection;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;

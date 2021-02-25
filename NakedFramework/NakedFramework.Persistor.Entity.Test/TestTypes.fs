@@ -7,7 +7,7 @@
 module NakedObjects.TestTypes
 
 open Moq
-open NakedObjects.Architecture.Adapter
+open NakedFramework.Architecture.Adapter
 open NakedObjects.Architecture.Component
 open NakedObjects.Architecture.Spec
 open NakedObjects.Core.Resolve

@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Architecture.Facet {

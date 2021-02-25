@@ -7,8 +7,8 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Architecture.Adapter;
 using NakedFunctions.Reflector.Facet;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 

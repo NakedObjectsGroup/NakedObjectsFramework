@@ -7,7 +7,7 @@
 
 using System.Linq;
 using System.Xml.Linq;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 

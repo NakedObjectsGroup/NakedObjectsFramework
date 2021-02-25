@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;

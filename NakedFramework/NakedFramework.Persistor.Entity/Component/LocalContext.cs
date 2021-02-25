@@ -13,7 +13,7 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;

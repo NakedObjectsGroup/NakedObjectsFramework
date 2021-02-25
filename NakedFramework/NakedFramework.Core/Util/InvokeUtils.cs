@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 
 namespace NakedObjects.Core.Util {
     public static class InvokeUtils {

@@ -9,7 +9,7 @@ using System;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;

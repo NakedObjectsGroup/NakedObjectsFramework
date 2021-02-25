@@ -9,8 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Spec;
 

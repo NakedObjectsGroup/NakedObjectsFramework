@@ -7,7 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facet {

@@ -7,7 +7,7 @@
 
 using System;
 using Moq;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;

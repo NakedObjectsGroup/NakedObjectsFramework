@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Metamodel.SpecImmutable;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {

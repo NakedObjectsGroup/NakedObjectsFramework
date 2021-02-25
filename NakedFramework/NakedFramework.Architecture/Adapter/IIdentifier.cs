@@ -6,9 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Adapter {
+namespace NakedFramework.Architecture.Adapter {
     public interface IIdentifier : IComparable {
         string ClassName { get; }
         string MemberName { get; }

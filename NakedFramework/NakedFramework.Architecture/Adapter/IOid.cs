@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Adapter {
+namespace NakedFramework.Architecture.Adapter {
     /// <summary>
     ///     A unique Object Identifier associated with an INakedObjectAdapter (adapter), and hence, effectively
     ///     with a domain object instance.

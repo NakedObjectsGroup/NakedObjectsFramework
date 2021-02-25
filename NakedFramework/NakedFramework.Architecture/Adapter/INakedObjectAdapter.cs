@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Adapter {
+namespace NakedFramework.Architecture.Adapter {
     /// <summary>
     ///     An INakedObjectAdapter is an adapter to domain objects. The NOF always deals with domain objects via these
     ///     adapters. The adapter gives access to the <see cref="NakedObjects.Architecture.Component.IMetamodelManager" />

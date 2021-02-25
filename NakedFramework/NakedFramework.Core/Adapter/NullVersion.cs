@@ -8,7 +8,6 @@
 using System;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {

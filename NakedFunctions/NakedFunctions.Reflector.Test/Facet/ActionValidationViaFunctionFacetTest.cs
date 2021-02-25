@@ -7,8 +7,8 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Architecture.Adapter;
 using NakedFunctions.Reflector.Facet;
-using NakedObjects.Architecture.Adapter;
 
 namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]

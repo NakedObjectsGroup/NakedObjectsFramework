@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture.Adapter {
+namespace NakedFramework.Architecture.Adapter {
     /// <summary>
     ///     Version marks an INakedObjectAdapter as being a particular version of that object.
     ///     This is used in concurrency checking.

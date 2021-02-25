@@ -7,8 +7,8 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Architecture.Adapter;
 
 namespace NakedFramework.Xat.Decorators {
     public class TestServiceDecorator : ITestService {

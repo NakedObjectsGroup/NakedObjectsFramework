@@ -8,8 +8,8 @@
 using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedFramework.Xat.TestObjects {

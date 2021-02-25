@@ -12,7 +12,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;

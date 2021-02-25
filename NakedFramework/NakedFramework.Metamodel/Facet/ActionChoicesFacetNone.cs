@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Architecture.Adapter;
+using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
