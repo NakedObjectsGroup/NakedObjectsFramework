@@ -9,7 +9,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedObjects.Architecture.FacetFactory {
+namespace NakedFramework.Architecture.FacetFactory {
     /// <summary>
     ///     A <see cref="IFacetFactory" /> which filters out arbitrary <see cref="PropertyInfo" /> properties.
     /// </summary>

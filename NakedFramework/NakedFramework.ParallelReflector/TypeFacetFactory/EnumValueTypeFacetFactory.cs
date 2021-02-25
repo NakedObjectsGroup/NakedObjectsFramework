@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.FacetFactory;
+using NakedFramework.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
