@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.ParallelReflector.Reflect;
 
 namespace NakedFramework.ParallelReflector.Reflect {
     public class SystemTypeIntrospector : Introspector {

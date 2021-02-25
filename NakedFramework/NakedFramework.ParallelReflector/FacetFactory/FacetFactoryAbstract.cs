@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedObjects.ParallelReflector.FacetFactory {
+namespace NakedFramework.ParallelReflector.FacetFactory {
     public abstract class FacetFactoryAbstract  {
         protected FacetFactoryAbstract(int numericOrder,
                                        ILoggerFactory loggerFactory,

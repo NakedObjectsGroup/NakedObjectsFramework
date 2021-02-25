@@ -18,11 +18,11 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Utils;
+using NakedFramework.ParallelReflector.FacetFactory;
+using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
-using NakedObjects.ParallelReflector.FacetFactory;
-using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class ActionChoicesViaFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {

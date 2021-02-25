@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
-using NakedObjects.ParallelReflector.Utils;
+using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>

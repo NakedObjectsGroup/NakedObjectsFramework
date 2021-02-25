@@ -21,10 +21,10 @@ using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
+using NakedFramework.ParallelReflector.FacetFactory;
+using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Facet;
 using NakedObjects;
-using NakedObjects.ParallelReflector.FacetFactory;
-using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>

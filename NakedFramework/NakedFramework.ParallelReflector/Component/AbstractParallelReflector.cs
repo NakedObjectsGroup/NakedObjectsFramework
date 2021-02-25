@@ -16,9 +16,9 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SpecImmutable;
-using NakedObjects.ParallelReflector.Reflect;
+using NakedFramework.ParallelReflector.Reflect;
 
-namespace NakedObjects.ParallelReflector.Component {
+namespace NakedFramework.ParallelReflector.Component {
     public abstract class AbstractParallelReflector : IReflector {
         protected readonly FacetDecoratorSet FacetDecoratorSet;
         protected readonly IMetamodelBuilder InitialMetamodel;
@@ -112,7 +112,7 @@ namespace NakedObjects.ParallelReflector.Component {
         }
 
         private ITypeSpecBuilder CreateSpecification(Type type) {
-            TypeUtils.GetType(type.FullName); // This should ensure type is cached
+            NakedObjects.TypeUtils.GetType(type.FullName); // This should ensure type is cached
             return ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type), ClassStrategy.IsTypeRecognized(type));
         }
 

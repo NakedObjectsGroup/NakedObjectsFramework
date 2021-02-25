@@ -18,8 +18,8 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedObjects.ParallelReflector.FacetFactory;
-using NakedObjects.ParallelReflector.Utils;
+using NakedFramework.ParallelReflector.FacetFactory;
+using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class CallbackMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {

@@ -5,13 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
@@ -19,10 +17,11 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
+using NakedObjects;
 
 #pragma warning disable 612
 
-namespace NakedObjects.ParallelReflector.Utils {
+namespace NakedFramework.ParallelReflector.Utils {
     public static class MethodHelpers {
         public static MethodInfo FindMethodWithOrWithoutParameters(IReflector reflector, Type type, MethodType methodType, string name, Type returnType, Type[] parms) =>
             FindMethod(reflector, type, methodType, name, returnType, parms) ??
@@ -102,7 +101,7 @@ namespace NakedObjects.ParallelReflector.Utils {
                 return method;
             }
             catch (AmbiguousMatchException e) {
-                throw new ModelException(string.Format(Resources.NakedObjects.AmbiguousMethodError, name, type.FullName), e);
+                throw new ModelException(string.Format(NakedObjects.Resources.NakedObjects.AmbiguousMethodError, name, type.FullName), e);
             }
         }
 

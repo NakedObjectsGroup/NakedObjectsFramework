@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.ParallelReflector.FacetFactory;
+using NakedFramework.ParallelReflector.FacetFactory;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public abstract class FunctionalFacetFactoryProcessor : FacetFactoryAbstract, IFunctionalFacetFactoryProcessor {

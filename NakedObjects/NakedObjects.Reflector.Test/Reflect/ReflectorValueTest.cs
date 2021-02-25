@@ -19,7 +19,6 @@ using NakedFramework.Metamodel.Component;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
-using NakedObjects.ParallelReflector.Component;
 
 namespace NakedObjects.Reflector.Test.Reflect {
     [TestClass]

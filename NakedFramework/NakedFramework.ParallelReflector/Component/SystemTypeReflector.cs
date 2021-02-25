@@ -15,7 +15,6 @@ using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Reflect;
-using NakedObjects.ParallelReflector.Component;
 
 namespace NakedFramework.ParallelReflector.Component {
     public sealed class SystemTypeReflector : AbstractParallelReflector {

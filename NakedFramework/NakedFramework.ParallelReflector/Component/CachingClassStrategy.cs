@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
 
-namespace NakedObjects.ParallelReflector.Component {
+namespace NakedFramework.ParallelReflector.Component {
     /// <summary>
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>

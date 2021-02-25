@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
-using NakedObjects.ParallelReflector.Component;
+using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 
 namespace NakedObjects.Reflector.Test.Reflect {

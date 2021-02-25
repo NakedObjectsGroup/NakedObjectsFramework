@@ -18,10 +18,10 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Utils;
+using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
-using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class HideFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {

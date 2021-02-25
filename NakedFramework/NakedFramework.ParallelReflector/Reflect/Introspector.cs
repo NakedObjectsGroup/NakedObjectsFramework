@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -22,7 +21,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.SpecImmutable;
 
-namespace NakedObjects.ParallelReflector.Reflect {
+namespace NakedFramework.ParallelReflector.Reflect {
     public abstract class Introspector : IIntrospector {
         private readonly ILogger logger;
 
@@ -58,7 +57,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
         /// </summary>
         public string ClassName => IntrospectedType.Name;
 
-        public string FullName => SpecificationType.GetProxiedTypeFullName();
+        public string FullName => NakedObjects.TypeUtils.GetProxiedTypeFullName(SpecificationType);
 
         public string ShortName => TypeNameUtils.GetShortName(SpecificationType.Name);
 
@@ -84,8 +83,8 @@ namespace NakedObjects.ParallelReflector.Reflect {
 
 
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!TypeUtils.IsPublic(typeToIntrospect)) {
-                throw new ReflectionException(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect));
+            if (!NakedObjects.TypeUtils.IsPublic(typeToIntrospect)) {
+                throw new ReflectionException(string.Format(NakedObjects.Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect));
             }
 
             IntrospectedType = typeToIntrospect;
@@ -326,7 +325,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
             public void RemoveMethod(MethodInfo methodToRemove) {
                 for (var i = 0; i < methods.Length; i++) {
                     if (methods[i] != null) {
-                        if (methods[i].MemberInfoEquals(methodToRemove)) {
+                        if (NakedObjects.TypeUtils.MemberInfoEquals(methods[i], methodToRemove)) {
                             methods[i] = null;
                         }
                     }
@@ -336,7 +335,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
             public void RemoveMethods(IList<MethodInfo> methodList) {
                 for (var i = 0; i < methods.Length; i++) {
                     if (methods[i] != null) {
-                        if (methodList.Any(methodToRemove => methods[i].MemberInfoEquals(methodToRemove))) {
+                        if (methodList.Any(methodToRemove => NakedObjects.TypeUtils.MemberInfoEquals(methods[i], methodToRemove))) {
                             methods[i] = null;
                         }
                     }

@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.ParallelReflector.Component;
+using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Configuration;
 
 namespace NakedObjects.Reflector.Component {

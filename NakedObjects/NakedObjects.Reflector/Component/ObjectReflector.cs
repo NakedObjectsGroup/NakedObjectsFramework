@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.ParallelReflector.Component;
+using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.Reflect;
 

@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.ParallelReflector.Reflect;
+using NakedFramework.ParallelReflector.Reflect;
 
 namespace NakedFunctions.Reflector.Reflect {
     public sealed class FunctionalIntrospector : Introspector, IIntrospector {

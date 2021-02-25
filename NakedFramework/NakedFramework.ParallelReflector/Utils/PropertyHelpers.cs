@@ -7,7 +7,7 @@
 
 using System.Reflection;
 
-namespace NakedObjects.ParallelReflector.Utils {
+namespace NakedFramework.ParallelReflector.Utils {
     public static class PropertyHelpers {
         public static bool HasPublicGetter(this PropertyInfo property) => property.GetGetMethod() is not null;
     }

@@ -15,8 +15,8 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFunctions.Reflector.FacetFactory;
-using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedFunctions.Reflector.Reflect {
     public sealed class FunctionalFacetFactorySet : IFacetFactorySet {

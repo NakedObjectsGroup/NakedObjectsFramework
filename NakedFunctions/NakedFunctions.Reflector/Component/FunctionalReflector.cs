@@ -14,8 +14,8 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.ParallelReflector.Component;
 using NakedFunctions.Reflector.Reflect;
-using NakedObjects.ParallelReflector.Component;
 
 namespace NakedFunctions.Reflector.Component {
     public sealed class FunctionalReflector : AbstractParallelReflector {

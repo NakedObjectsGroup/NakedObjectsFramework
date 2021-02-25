@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.ParallelReflector.Component;
+using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 
 namespace NakedObjects.Reflector.Test.Reflect {
