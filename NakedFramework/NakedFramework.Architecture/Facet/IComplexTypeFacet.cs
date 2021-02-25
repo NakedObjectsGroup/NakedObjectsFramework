@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Indicates that the instances of this class are stored with the data from their parent rather than separately.
     /// </summary>

@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface ITimeValueFacet {
         TimeSpan TimeValue(INakedObjectAdapter nakedObjectAdapter);
     }

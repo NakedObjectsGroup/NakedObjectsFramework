@@ -13,7 +13,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
 #pragma warning disable 618
 #pragma warning disable SYSLIB0011

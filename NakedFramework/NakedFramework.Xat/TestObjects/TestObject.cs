@@ -11,9 +11,9 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 

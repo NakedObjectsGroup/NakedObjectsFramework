@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface IBooleanValueFacet : IFacet {
         bool IsSet(INakedObjectAdapter nakedObjectAdapter);
         void Set(INakedObjectAdapter nakedObjectAdapter);

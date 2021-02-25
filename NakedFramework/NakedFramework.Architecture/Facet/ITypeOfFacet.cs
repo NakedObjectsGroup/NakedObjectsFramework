@@ -9,9 +9,9 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface ITypeOfFacet : IFacet {
         Type GetValue(INakedObjectAdapter collection);
 

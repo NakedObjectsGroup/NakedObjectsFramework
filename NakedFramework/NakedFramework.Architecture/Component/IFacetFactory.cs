@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
-using NakedObjects.Architecture.Facet;
 
 namespace NakedFramework.Architecture.Component {
     public interface IFacetFactory : IComparable<IFacetFactory> {

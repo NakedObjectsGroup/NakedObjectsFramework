@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.interactions;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     The mechanism by which the proposed value of a property can be validated,
     ///     called immediately before <see cref="IPropertySetterFacet" /> setting the value.

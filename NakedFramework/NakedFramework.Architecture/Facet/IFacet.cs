@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface IFacet {
         /// <summary>
         ///     The <see cref="ISpecification" /> of this facet. Set allows re-parenting of Facet.

@@ -11,10 +11,10 @@ using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 

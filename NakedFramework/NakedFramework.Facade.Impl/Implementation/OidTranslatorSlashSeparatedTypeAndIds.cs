@@ -7,8 +7,8 @@
 
 using System;
 using System.Linq;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Services;

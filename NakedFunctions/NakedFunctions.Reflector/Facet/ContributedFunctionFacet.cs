@@ -8,9 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Reflector.Facet {

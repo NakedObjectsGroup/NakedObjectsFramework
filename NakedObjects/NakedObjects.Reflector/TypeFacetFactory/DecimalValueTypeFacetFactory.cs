@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflector.TypeFacetFactory {

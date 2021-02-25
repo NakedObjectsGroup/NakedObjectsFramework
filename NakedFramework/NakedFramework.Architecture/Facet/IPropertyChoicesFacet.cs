@@ -7,9 +7,9 @@
 
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Provides a set of choices for a property.
     /// </summary>

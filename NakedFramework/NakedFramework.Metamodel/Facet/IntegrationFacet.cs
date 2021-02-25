@@ -8,8 +8,8 @@
 
 using System;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Meta.Facet {
     public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {

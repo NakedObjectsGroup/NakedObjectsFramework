@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Clear all objects from a collection
     /// </summary>

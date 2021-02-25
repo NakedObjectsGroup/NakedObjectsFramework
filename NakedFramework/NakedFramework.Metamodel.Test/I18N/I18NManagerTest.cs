@@ -11,8 +11,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.I18N;
 
 namespace NakedObjects.Meta.Test.I18N {

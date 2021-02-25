@@ -9,7 +9,7 @@ using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Core.Spec {
     public sealed class ServiceSpec : TypeSpec, IServiceSpec {

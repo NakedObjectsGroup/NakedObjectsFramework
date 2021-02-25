@@ -8,12 +8,12 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Xat.Interface;
 using NakedObjects;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;

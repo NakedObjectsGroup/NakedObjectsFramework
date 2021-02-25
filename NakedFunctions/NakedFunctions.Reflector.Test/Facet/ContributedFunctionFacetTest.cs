@@ -7,8 +7,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFunctions.Reflector.Facet;
-using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]

@@ -11,7 +11,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
-using NakedObjects;
 
 namespace NakedFramework.Architecture.Component {
     /// <summary>

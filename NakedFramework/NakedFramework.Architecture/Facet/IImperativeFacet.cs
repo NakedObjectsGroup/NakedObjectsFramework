@@ -9,7 +9,7 @@ using System;
 using System.Reflection;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     A <see cref="IFacet" /> implementation that ultimately wraps a
     ///     <see cref="MethodInfo" />, for a implementation of a <see cref="IMemberSpec" />

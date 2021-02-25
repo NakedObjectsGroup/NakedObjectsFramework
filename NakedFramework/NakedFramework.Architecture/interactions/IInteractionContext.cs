@@ -7,8 +7,8 @@
 
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Architecture.Facet;
 
 namespace NakedFramework.Architecture.interactions {
     public interface IInteractionContext {

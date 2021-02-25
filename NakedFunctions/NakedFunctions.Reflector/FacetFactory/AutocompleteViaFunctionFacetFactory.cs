@@ -15,10 +15,10 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 

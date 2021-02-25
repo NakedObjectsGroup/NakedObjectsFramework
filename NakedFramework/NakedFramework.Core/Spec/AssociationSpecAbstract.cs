@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;

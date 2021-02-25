@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Architecture.Facet;
+using NakedFramework.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Metamodel.Test.Facet {

@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Mechanism for obtaining the name of the icon.
     /// </summary>

@@ -12,10 +12,10 @@ using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Reflect;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Security;
 

@@ -8,8 +8,8 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.Reflector.Test.FacetFactory {

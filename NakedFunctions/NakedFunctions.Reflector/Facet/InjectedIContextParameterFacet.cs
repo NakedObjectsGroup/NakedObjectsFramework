@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFunctions.Reflector.Component;
 using NakedObjects;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Reflector.Facet {

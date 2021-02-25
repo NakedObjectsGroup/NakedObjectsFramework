@@ -10,7 +10,7 @@ using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface ICollectionFacet : IFacet {
         bool IsASet { get; }
         bool IsQueryable { get; }

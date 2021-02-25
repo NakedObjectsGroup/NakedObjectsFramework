@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface ISbyteValueFacet : IFacet {
         sbyte SByteValue(INakedObjectAdapter nakedObjectAdapter);
     }

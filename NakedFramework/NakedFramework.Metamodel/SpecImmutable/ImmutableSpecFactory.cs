@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SpecImmutable;
-using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     public static class ImmutableSpecFactory {

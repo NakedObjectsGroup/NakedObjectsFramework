@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 using NakedObjects.Meta.Utils;

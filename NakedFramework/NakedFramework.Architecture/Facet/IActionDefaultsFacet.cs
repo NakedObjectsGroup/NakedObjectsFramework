@@ -9,7 +9,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Obtain defaults for each of the parameters of the action
     /// </summary>

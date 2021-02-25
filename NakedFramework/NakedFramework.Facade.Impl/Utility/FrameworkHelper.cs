@@ -6,10 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Value;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Facade.Impl.Utility {

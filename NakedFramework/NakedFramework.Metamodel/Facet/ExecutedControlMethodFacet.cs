@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using NakedFramework;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

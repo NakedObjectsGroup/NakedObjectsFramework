@@ -12,12 +12,12 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFunctions.Reflector.Facet;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 

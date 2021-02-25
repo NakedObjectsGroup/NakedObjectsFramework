@@ -7,7 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework;
-using NakedObjects.Architecture.Facet;
+using NakedFramework.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Metamodel.Test.Facet {

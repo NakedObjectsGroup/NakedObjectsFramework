@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 

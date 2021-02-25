@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.interactions;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Whether a property or a parameter is mandatory or optional.
     /// </summary>

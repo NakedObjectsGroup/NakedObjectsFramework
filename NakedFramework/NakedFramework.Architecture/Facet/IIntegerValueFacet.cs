@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface IIntegerValueFacet : IFacet {
         int IntegerValue(INakedObjectAdapter nakedObjectAdapter);
     }

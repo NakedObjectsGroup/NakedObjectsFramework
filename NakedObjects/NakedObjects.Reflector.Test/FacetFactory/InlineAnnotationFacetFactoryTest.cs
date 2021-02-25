@@ -11,9 +11,9 @@ using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
 

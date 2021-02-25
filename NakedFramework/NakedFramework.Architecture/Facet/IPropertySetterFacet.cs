@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     The mechanism by which the value of the property can be set
     /// </summary>

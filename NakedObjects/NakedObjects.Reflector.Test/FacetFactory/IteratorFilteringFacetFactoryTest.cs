@@ -12,8 +12,8 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
-using NakedObjects.Architecture.SpecImmutable;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

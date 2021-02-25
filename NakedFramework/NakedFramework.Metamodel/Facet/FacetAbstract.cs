@@ -8,9 +8,9 @@
 using System;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

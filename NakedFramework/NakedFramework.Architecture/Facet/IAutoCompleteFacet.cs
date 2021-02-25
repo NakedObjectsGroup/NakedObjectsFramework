@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Provides a set of autocompletions for a property or parameter
     /// </summary>

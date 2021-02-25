@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Facet;
+using NakedFramework.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Metamodel.Test.Facet {

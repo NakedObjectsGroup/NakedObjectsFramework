@@ -9,8 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

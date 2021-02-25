@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Menu;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta {
     [Serializable]

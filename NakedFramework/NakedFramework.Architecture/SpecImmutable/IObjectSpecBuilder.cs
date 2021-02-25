@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedObjects.Architecture.SpecImmutable {
+namespace NakedFramework.Architecture.SpecImmutable {
     public interface IObjectSpecBuilder : IObjectSpecImmutable, ITypeSpecBuilder {
         void AddContributedActions(IList<IActionSpecImmutable> contributedActions);
         void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionCntributedActions);

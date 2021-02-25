@@ -10,7 +10,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 

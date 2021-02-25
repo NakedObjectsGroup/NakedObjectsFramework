@@ -9,9 +9,9 @@ using System;
 using System.Globalization;
 using System.Threading;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 

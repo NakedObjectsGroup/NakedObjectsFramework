@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.interactions;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Indicates that the instances of this class are immutable and so may not be modified
     ///     either through the viewer or indeed programmatically

@@ -7,10 +7,10 @@
 
 using System;
 using System.Linq;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedObjects;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Reflector.Facet {

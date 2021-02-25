@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Framework;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface ICreateNewFacet : IFacet {
         public string[] OrderedProperties(INakedObjectsFramework framework);
     }

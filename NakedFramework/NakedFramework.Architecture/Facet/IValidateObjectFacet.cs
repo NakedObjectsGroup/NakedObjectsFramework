@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface IValidateObjectFacet : IFacet {
         string Validate(INakedObjectAdapter nakedObjectAdapter);
         string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string name, INakedObjectAdapter value)[] parms);

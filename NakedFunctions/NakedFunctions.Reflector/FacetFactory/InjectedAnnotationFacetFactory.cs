@@ -12,8 +12,8 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFunctions.Reflector.Facet;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {

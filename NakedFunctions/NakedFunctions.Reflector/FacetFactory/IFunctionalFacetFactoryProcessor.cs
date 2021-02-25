@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public interface IFunctionalFacetFactoryProcessor : IFacetFactory {

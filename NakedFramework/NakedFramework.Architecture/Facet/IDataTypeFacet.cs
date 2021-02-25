@@ -7,7 +7,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Expose any DataType annotation
     /// </summary>

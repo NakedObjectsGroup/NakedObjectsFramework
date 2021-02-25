@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects {
+namespace NakedFramework.Architecture.Attributes {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
     public class NotNavigableAttribute : Attribute { }
 }

@@ -9,7 +9,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.interactions;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     The mechanism by which a single parameter of an action can be validated
     ///     before the action itself is invoked.

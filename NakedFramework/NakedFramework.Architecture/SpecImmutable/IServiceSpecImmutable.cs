@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Architecture.SpecImmutable {
+namespace NakedFramework.Architecture.SpecImmutable {
     /// <summary>
     ///     This is the immutable or 'static' core of the IObjectSpec.  It is created by the reflector during start-up, but can
     ///     also be

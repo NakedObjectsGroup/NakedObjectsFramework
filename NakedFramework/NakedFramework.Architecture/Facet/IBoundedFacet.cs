@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.interactions;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Whether the number of instances of this class is bounded.
     /// </summary>

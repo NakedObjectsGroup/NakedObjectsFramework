@@ -11,8 +11,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Utils {

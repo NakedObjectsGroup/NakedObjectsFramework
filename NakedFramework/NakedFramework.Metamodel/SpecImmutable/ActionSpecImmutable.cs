@@ -9,9 +9,9 @@ using System;
 using System.Linq;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {

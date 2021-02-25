@@ -8,7 +8,7 @@
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Architecture.SpecImmutable {
+namespace NakedFramework.Architecture.SpecImmutable {
     public interface IActionParameterSpecImmutable : ISpecificationBuilder, ISerializable {
         IObjectSpecImmutable Specification { get; }
         bool IsChoicesEnabled { get; }

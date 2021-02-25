@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     /// <summary>
     ///     Mechanism for obtaining the title of an instance of a class, used to label the instance in the viewer
     ///     (usually alongside an icon representation)

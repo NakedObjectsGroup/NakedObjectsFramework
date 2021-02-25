@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface IInjectedParameterFacet : IFacet{
 
         object GetInjectedValue(INakedObjectsFramework framework, IServiceProvider provider);

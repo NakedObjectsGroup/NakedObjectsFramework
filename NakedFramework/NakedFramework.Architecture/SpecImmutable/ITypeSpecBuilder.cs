@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedObjects.Architecture.SpecImmutable {
+namespace NakedFramework.Architecture.SpecImmutable {
 
     public enum ReflectionStatus {
         PlaceHolder,

@@ -8,9 +8,9 @@
 using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {

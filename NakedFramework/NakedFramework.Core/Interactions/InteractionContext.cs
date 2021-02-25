@@ -7,9 +7,9 @@
 
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.interactions;
-using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Core.Interactions {
     /// <summary>

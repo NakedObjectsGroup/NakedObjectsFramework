@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Framework;
-using NakedObjects;
 
 namespace NakedFramework.Architecture.Component {
     public interface IFrameworkResolver : IDisposable {

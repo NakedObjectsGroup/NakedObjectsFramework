@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Meta.Menu;
 
 namespace NakedObjects.Meta.Facet {

@@ -10,10 +10,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Architecture.Attributes;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
 

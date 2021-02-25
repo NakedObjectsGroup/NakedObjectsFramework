@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Architecture.SpecImmutable {
+namespace NakedFramework.Architecture.SpecImmutable {
     /// <summary>
     ///     Details about action and field members gained via reflection.
     /// </summary>

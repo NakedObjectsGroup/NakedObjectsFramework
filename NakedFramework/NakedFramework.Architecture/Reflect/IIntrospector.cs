@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Reflect {
     public interface IIntrospector {

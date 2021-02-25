@@ -9,7 +9,7 @@ using System.IO;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface IFromStreamFacet : IFacet {
         INakedObjectAdapter ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager);
     }

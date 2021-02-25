@@ -7,7 +7,7 @@
 
 using System;
 using System.Runtime.Serialization;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]

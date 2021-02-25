@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Component {
     /// <summary>

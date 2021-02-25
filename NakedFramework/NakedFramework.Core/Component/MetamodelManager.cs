@@ -11,8 +11,8 @@ using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Component {
     public sealed class MetamodelManager : IMetamodelManager {

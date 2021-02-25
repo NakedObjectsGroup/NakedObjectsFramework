@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Core.Spec {
     public sealed class OneToManyActionParameter : ActionParameterSpec, IOneToManyActionParameterSpec {

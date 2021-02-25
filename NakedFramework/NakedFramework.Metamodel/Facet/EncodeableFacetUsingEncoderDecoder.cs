@@ -8,8 +8,8 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.SemanticsProvider;
 

@@ -5,11 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using System;
 using NakedFramework.Architecture.Component;
 
-namespace NakedObjects.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet {
     public interface IIntegrationFacet : IFacet {
         public void Execute(IMetamodelBuilder metamodelBuilder);
         public void AddAction(Action<IMetamodelBuilder> action);

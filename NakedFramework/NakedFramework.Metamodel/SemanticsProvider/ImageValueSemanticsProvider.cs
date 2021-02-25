@@ -7,10 +7,10 @@
 
 using System;
 using System.IO;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Value;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 
 namespace NakedObjects.Meta.SemanticsProvider {

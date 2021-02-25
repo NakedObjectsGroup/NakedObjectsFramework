@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflector.Reflect;
 
 namespace NakedFunctions.Reflector.Reflect {
