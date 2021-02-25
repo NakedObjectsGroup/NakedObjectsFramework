@@ -20,6 +20,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Transactions;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;

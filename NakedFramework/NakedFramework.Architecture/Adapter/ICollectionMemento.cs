@@ -5,9 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Adapter {
+namespace NakedFramework.Architecture.Adapter {
     public interface ICollectionMemento : IOid {
         INakedObjectAdapter Target { get; }
         IActionSpec Action { get; }
