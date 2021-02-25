@@ -5,10 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Rest.Snapshot.Utility {
-    public class ValidationException : Exception {
+namespace NakedFramework.Rest.Snapshot.Exception {
+    public class ValidationException : System.Exception {
         public ValidationException(int statusCode, string message) : base(message) => StatusCode = statusCode;
         public int StatusCode { get; }
     }

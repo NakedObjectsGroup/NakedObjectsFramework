@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.DomainSystemTest
 
-open NakedObjects.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Configuration
 open NakedObjects.TestTypes
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedObjects.Services

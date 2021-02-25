@@ -11,10 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Facade;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Model {
+namespace NakedFramework.Rest.Model {
     public class ListValue : IValue {
         // this is cloned from TypeUtils 
         private const string NakedObjectsProxyPrefix = "NakedObjects.Proxy.";

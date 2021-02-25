@@ -12,7 +12,7 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.Utility {
     public class FieldFacadeAdapter {
         private readonly IAssociationFacade association;
         private readonly IActionParameterFacade parameter;

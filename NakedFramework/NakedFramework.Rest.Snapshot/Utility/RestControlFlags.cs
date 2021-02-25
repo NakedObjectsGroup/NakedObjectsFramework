@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Constants;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.Utility {
     public class RestControlFlags {
         #region DomainModelType enum
 

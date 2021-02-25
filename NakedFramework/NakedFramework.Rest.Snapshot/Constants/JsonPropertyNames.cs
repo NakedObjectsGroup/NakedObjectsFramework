@@ -5,9 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Constants {
+namespace NakedFramework.Rest.Snapshot.Constants {
     public class JsonPropertyNames {
         public const string Arguments = "arguments";
         public const string Choices = "choices";

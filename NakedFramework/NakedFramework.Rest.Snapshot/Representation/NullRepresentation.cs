@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Runtime.Serialization;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Representations {
+namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class NullRepresentation : Representation {
         public NullRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }

@@ -8,7 +8,7 @@
 module NakedObjects.XmlSnapshotService
 
 open NakedFramework.Core.Util
-open NakedObjects.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Configuration
 open NakedObjects.Services
 open NakedObjects.Snapshot
 open NakedObjects.Snapshot.Xml.Service

@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Representations;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Representation;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Strategies {
+namespace NakedFramework.Rest.Snapshot.Strategies {
     public class ActionRepresentationStrategy : AbstractActionRepresentationStrategy {
         public ActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) { }

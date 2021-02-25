@@ -9,7 +9,7 @@ module NakedObjects.AMultiDatabaseTest
 open CodeOnlyTestCode
 open DomainTestCode
 open MultiDatabaseTestCode
-open NakedObjects.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NUnit.Framework
 open TestCode

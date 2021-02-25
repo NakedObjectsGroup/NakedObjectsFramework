@@ -7,10 +7,10 @@
 module NakedObjects.CodeOnlyTestCode
 
 
-open NakedObjects.Persistor.Entity.Configuration
-open NakedObjects.Persistor.Entity.Util
+open NakedFramework.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Util
 open NakedFramework.Core
-open NakedObjects.Persistor.Entity.Component
+open NakedFramework.Persistor.Entity.Component
 open NUnit.Framework
 open System
 open System.Data.Entity.ModelConfiguration

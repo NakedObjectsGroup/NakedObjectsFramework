@@ -18,10 +18,11 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Constants;
-using NakedObjects.Rest.Snapshot.Representations;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.RelTypes;
+using NakedFramework.Rest.Snapshot.Representation;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.Utility {
     public static class RestUtils {
         private static readonly Dictionary<Type, PredefinedJsonType> SimpleTypeMap = new Dictionary<Type, PredefinedJsonType> {
             {typeof(sbyte), PredefinedJsonType.Number},
@@ -436,7 +437,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 // remove all \" within warning message as they cause format exception 
                 return new WarningHeaderValue(code, agent, $"\"{CleanWarning(warning)}\"");
             }
-            catch (Exception e) {
+            catch (System.Exception e) {
                 logger.LogWarning(e, $"Failed to parse warning message: {warning}");
                 return new WarningHeaderValue(code, agent, "\"Failed to parse warning message\"");
             }

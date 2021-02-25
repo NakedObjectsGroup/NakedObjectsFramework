@@ -13,10 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedObjects.Persistor.Entity.Component;
-using NakedObjects.Persistor.Entity.Configuration;
+using NakedFramework.Persistor.Entity.Component;
+using NakedFramework.Persistor.Entity.Configuration;
 
-namespace NakedObjects.DependencyInjection.Extensions {
+namespace NakedFramework.Persistor.Entity.Extensions {
     public static class NakedEntityPersistorExtensions {
         private static EntityObjectStoreConfiguration EntityObjectStoreConfiguration(IConfiguration configuration, EntityPersistorOptions options) {
             var config = new EntityObjectStoreConfiguration {

@@ -7,14 +7,16 @@
 module NakedObjects.Rest.Test.Objects9
 
 open NakedObjects.Rest
-open NakedObjects.Rest.Snapshot.Utility
-open NakedObjects.Rest.Snapshot.Constants
+open NakedFramework.Rest.Snapshot.Utility
+open NakedFramework.Rest.Snapshot.Constants
+open NakedFramework.Rest.API
 open Newtonsoft.Json.Linq
 open NUnit.Framework
 open NakedObjects.Rest.Test.Functions
 open System
 open System.Linq
 open System.Net
+
 
 let GetMostSimpleTransientObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"

@@ -9,9 +9,10 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 
-namespace NakedObjects.Rest.Extensions {
+namespace NakedFramework.Rest.Extensions {
     public static class RestfulObjectsExtensions {
         public static void AddRestfulObjects(this NakedCoreOptions coreOptions, Action<RestfulObjectsOptions> setupAction = null) {
             var options = new RestfulObjectsOptions();

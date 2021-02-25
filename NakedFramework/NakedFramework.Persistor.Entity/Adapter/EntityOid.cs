@@ -16,7 +16,7 @@ using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Persistor.Entity.Adapter {
+namespace NakedFramework.Persistor.Entity.Adapter {
     public sealed class EntityOid : IEncodedToStrings, IEntityOid {
         private readonly ILogger<EntityOid> logger;
         private readonly IMetamodelManager metamodel;

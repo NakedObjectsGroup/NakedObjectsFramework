@@ -9,9 +9,9 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Reflector.Extensions;
-using NakedObjects.Rest.Extensions;
 
 namespace NakedObjects.DependencyInjection.Test.Extensions {
     [TestClass]

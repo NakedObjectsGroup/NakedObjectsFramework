@@ -7,10 +7,9 @@
 
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Facade;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Model {
+namespace NakedFramework.Rest.Model {
     public class FileValue : IValue {
         private readonly IAttachmentFacade value;
 

@@ -7,7 +7,7 @@
 module NakedObjects.CodeOnlyTest
 
 open CodeOnlyTestCode
-open NakedObjects.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Configuration
 open NUnit.Framework
 open TestCode
 open TestTypes

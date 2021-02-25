@@ -13,11 +13,12 @@ using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Constants;
-using NakedObjects.Rest.Snapshot.Representations;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.RelTypes;
+using NakedFramework.Rest.Snapshot.Representation;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Strategies {
+namespace NakedFramework.Rest.Snapshot.Strategies {
     [DataContract]
     public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentationStrategy {
         protected AbstractPropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
@@ -198,6 +199,6 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             }
         }
 
-        public virtual object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) => Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
+        public virtual object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) => Representation.Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
     }
 }

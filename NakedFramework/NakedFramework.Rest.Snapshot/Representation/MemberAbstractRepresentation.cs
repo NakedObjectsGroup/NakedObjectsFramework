@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Constants;
-using NakedObjects.Rest.Snapshot.Strategies;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Strategies;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Representations {
+namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public abstract class MemberAbstractRepresentation : Representation {
         protected MemberAbstractRepresentation(IOidStrategy oidStrategy, MemberRepresentationStrategy strategy)

@@ -7,7 +7,7 @@
 module NakedObjects.ModelSystemTest
 
 open NakedObjects
-open NakedObjects.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Configuration
 open NakedObjects.Services
 open NakedObjects.TestTypes
 open NUnit.Framework

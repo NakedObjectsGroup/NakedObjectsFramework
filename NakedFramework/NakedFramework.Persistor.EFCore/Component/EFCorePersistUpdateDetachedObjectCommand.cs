@@ -18,8 +18,6 @@ using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
 using NakedObjects;
-using NakedObjects.Persistor.Entity.Component;
-using NakedObjects.Persistor.Entity.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCorePersistUpdateDetachedObjectCommand {

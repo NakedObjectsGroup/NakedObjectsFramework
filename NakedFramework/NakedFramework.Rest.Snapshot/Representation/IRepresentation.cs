@@ -8,7 +8,7 @@
 using System;
 using Microsoft.Net.Http.Headers;
 
-namespace NakedObjects.Rest.Snapshot.Representations {
+namespace NakedFramework.Rest.Snapshot.Representation {
     public enum CacheType {
         Transactional,
         UserInfo,

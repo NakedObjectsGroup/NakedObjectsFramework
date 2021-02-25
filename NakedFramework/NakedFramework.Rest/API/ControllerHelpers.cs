@@ -17,12 +17,12 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Exception;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Rest.Configuration;
-using NakedFramework.Facade;
-using NakedObjects.Rest.Model;
-using NakedObjects.Rest.Snapshot.Representations;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Model;
+using NakedFramework.Rest.Snapshot.Exception;
+using NakedFramework.Rest.Snapshot.Representation;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.API {
+namespace NakedFramework.Rest.API {
     public static class ControllerHelpers {
 
         public static string DebugFilter(Func<string> msgFunc) => RestSnapshot.DebugFilter(msgFunc);

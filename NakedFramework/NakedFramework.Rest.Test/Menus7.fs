@@ -7,12 +7,13 @@
 module NakedObjects.Rest.Test.Menus7
 
 open NakedObjects.Rest
-open NakedObjects.Rest.Snapshot.Constants
-open NakedObjects.Rest.Snapshot.Utility
+open NakedFramework.Rest.Snapshot.Constants
+open NakedFramework.Rest.Snapshot.Utility
 open Newtonsoft.Json.Linq
 open NUnit.Framework
 open NakedObjects.Rest.Test.Functions
 open System.Net
+open NakedFramework.Rest.API
 
 let internal getExpected() = 
     let sName1 = "RestDataRepository"

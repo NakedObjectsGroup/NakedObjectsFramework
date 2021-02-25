@@ -5,9 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.RelTypes {
     public class DefaultRelType : ObjectRelType {
         private readonly string actionId;
         private readonly string paramId;

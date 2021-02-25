@@ -11,16 +11,16 @@ open System.Net
 open System.Net.Http
 open System.IO
 open Newtonsoft.Json.Linq
-open NakedObjects.Rest.Snapshot.Constants
+open NakedFramework.Rest.Snapshot.Constants
 open NUnit.Framework
 open System.Linq
-open NakedObjects.Rest.Model
+open NakedFramework.Rest.Model
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Primitives
-open NakedObjects.Rest
 open Microsoft.AspNetCore.Mvc
 open Microsoft.Net.Http.Headers
 open System.Collections.Generic
+open NakedFramework.Rest.API
 
 let internal mapCodeToType (code : string) : string = code
 let internal mapTypeToCode (typ : string) : string = typ

@@ -12,9 +12,9 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Constants;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.Utility {
     public class UriMtHelper {
         public static Func<HttpRequest, string> GetAuthority;
         public static Func<HttpRequest, string> GetApplicationPath;

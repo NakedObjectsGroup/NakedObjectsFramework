@@ -6,9 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Facade.Facade;
-using NakedObjects.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Exception;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.Utility {
     public class TypeActionInvokeContext {
         #region ActionType enum
 

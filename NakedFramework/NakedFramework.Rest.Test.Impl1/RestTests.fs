@@ -15,14 +15,14 @@ open NakedFramework.Facade.Impl
 open NakedFramework.Facade.Impl.Utility
 open NakedObjects.Rest.Test.Helpers
 open NakedObjects.Rest.Test.Functions
-open NakedObjects.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Configuration
 open NakedFramework.Facade
 open NakedFramework.Facade.Translation
 open NakedFramework.Facade.Impl
 open NakedFramework.Facade.Interface
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json
-open NakedObjects.Rest.Snapshot.Utility
+open NakedFramework.Rest.Snapshot.Utility
 open Microsoft.Extensions.Configuration
 open NakedFramework
 open NakedFramework.Rest.Configuration

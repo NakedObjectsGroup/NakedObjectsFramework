@@ -14,7 +14,7 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.Utility {
     public static class SnapshotFactory {
         public static Func<RestSnapshot> ServicesSnapshot(IOidStrategy oidStrategy, Func<ListContextFacade> listContext, HttpRequest req, RestControlFlags flags)
             => () => new RestSnapshot(oidStrategy, listContext(), req, flags);
@@ -58,7 +58,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public static Func<RestSnapshot> TypeActionSnapshot(IOidStrategy oidStrategy, Func<TypeActionInvokeContext> typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
             => () => new RestSnapshot(oidStrategy, typeActionInvokeContext(), req, flags);
 
-        public static Func<RestSnapshot> ErrorSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, Exception ex, HttpRequest req, RestControlFlags flags)
+        public static Func<RestSnapshot> ErrorSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, System.Exception ex, HttpRequest req, RestControlFlags flags)
             => () => new RestSnapshot(oidStrategy, frameworkFacade, ex, req, flags);
     }
 }

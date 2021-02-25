@@ -7,9 +7,10 @@
 
 using System;
 using Microsoft.Net.Http.Headers;
-using NakedObjects.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.RelTypes {
     public class UserRelType : RelType {
         public UserRelType(UriMtHelper helper) : base(RelValues.User, helper) { }
         public UserRelType(string name, UriMtHelper helper) : base(name, helper) { }

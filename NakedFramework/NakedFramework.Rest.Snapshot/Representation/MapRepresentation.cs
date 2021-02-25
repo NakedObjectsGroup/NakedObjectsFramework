@@ -7,9 +7,9 @@
 
 using System.Linq;
 using Microsoft.Net.Http.Headers;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Representations {
+namespace NakedFramework.Rest.Snapshot.Representation {
     public class MapRepresentation : Representation {
         private MediaTypeHeaderValue mediaType;
         public MapRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }

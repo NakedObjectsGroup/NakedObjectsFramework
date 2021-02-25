@@ -14,7 +14,8 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Rest.Configuration;
 using NakedFramework.Facade;
-using NakedObjects.Rest;
+using NakedFramework.Rest.API;
+
 
 namespace NakedFunctions.Rest.Test {
     public class RestfulObjectsController : RestfulObjectsControllerBase {

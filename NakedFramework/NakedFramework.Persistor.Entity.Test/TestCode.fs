@@ -13,9 +13,9 @@ open NakedFramework.Architecture.Component
 open NakedFramework.Core.Component
 open NakedFramework.Core.Configuration
 open NakedFramework.Core.Authentication
-open NakedObjects.Persistor.Entity.Util
-open NakedObjects.Persistor.Entity.Adapter
-open NakedObjects.Persistor.Entity.Component
+open NakedFramework.Persistor.Entity.Util
+open NakedFramework.Persistor.Entity.Adapter
+open NakedFramework.Persistor.Entity.Component
 open System
 open System.Collections.Generic
 open System.Collections

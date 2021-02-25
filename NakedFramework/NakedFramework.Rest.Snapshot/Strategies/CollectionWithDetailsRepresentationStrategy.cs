@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Representations;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Representation;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Strategies {
+namespace NakedFramework.Rest.Snapshot.Strategies {
     public class CollectionWithDetailsRepresentationStrategy : AbstractCollectionRepresentationStrategy {
         public CollectionWithDetailsRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, req, propertyContext, flags) { }

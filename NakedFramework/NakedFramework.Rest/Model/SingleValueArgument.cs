@@ -7,7 +7,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace NakedObjects.Rest.Model {
+namespace NakedFramework.Rest.Model {
     [ModelBinder(BinderType = typeof(SingleValueArgumentBinder))]
     public class SingleValueArgument : Arguments {
         public IValue Value { get; set; }

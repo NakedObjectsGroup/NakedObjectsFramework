@@ -7,9 +7,10 @@
 
 using System;
 using Microsoft.Net.Http.Headers;
-using NakedObjects.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.RelTypes {
     public class MenuRelType : RelType {
         public MenuRelType(UriMtHelper helper) : base(RelValues.Menu, helper) { }
         public MenuRelType(string name, UriMtHelper helper) : base(name, helper) { }

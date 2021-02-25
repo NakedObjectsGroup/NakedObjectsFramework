@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,10 +12,11 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Constants;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.RelTypes;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Representations {
+namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class VersionRepresentation : Representation {
         private VersionRepresentation(IOidStrategy oidStrategy, HttpRequest req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)

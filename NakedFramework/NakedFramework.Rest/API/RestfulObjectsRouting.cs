@@ -8,10 +8,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
-using NakedObjects.Rest.Snapshot.Constants;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest {
+namespace NakedFramework.Rest.API {
     public static class RestfulObjectsRouting {
         private static string PrefixRoute(string segment, string prefix) => string.IsNullOrWhiteSpace(prefix) ? segment : EnsureTrailingSlash(prefix) + segment;
         private static string EnsureTrailingSlash(string path) => path.EndsWith("/") ? path : path + "/";

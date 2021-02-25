@@ -10,7 +10,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using Microsoft.Extensions.Configuration;
 
-namespace NakedObjects.DependencyInjection.Extensions {
+namespace NakedFramework.Persistor.Entity.Extensions {
     public class EntityPersistorOptions {
         public MergeOption DefaultMergeOption { get; set; } = MergeOption.AppendOnly;
         public bool EnforceProxies { get; set; }  = true;

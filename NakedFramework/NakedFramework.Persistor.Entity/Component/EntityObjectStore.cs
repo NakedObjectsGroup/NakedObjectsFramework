@@ -28,13 +28,14 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
-using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Persistor.Entity.Util;
+using NakedFramework.Persistor.Entity.Configuration;
+using NakedFramework.Persistor.Entity.Util;
+using NakedObjects;
 using ObjectContext = System.Data.Entity.Core.Objects.ObjectContext;
 
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
 
-namespace NakedObjects.Persistor.Entity.Component {
+namespace NakedFramework.Persistor.Entity.Component {
     public sealed class EntityObjectStore : IObjectStore, IDisposable {
         private readonly GetAdapterForDelegate getAdapterFor;
         internal readonly ILogger<EntityObjectStore> logger;
@@ -135,7 +136,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return contexts.Count == 1 ? contexts.Values.Single() : FindContext(type);
             }
             catch (Exception e) {
-                throw new NakedObjectDomainException(logger.LogAndReturn(string.Format(Resources.NakedObjects.EntityContextError, type.FullName)), e);
+                throw new NakedObjectDomainException(logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.EntityContextError, type.FullName)), e);
             }
         }
 
@@ -300,7 +301,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
             catch (Exception e) {
                 var originalMsg = e.Message;
-                throw new InitialisationException(logger.LogAndReturn($"{Resources.NakedObjects.StartPersistorErrorCodeFirst}: {originalMsg}"), e);
+                throw new InitialisationException(logger.LogAndReturn($"{NakedObjects.Resources.NakedObjects.StartPersistorErrorCodeFirst}: {originalMsg}"), e);
             }
         }
 
@@ -352,7 +353,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
 
-        public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
+        public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, NakedObjects.TypeUtils.GetType(hint.FullName));
 
         public bool EntityFrameworkKnowsType(Type type) {
             try {
@@ -371,9 +372,9 @@ namespace NakedObjects.Persistor.Entity.Component {
         private static string ConcatenateMessages(Exception e) {
             var isConcurrency = e is OptimisticConcurrencyException;
             var nestLimit = 3;
-            var msg = new StringBuilder(string.Format(isConcurrency ? Resources.NakedObjects.ConcurrencyErrorMessage : Resources.NakedObjects.UpdateErrorMessage, e.Message));
+            var msg = new StringBuilder(string.Format(isConcurrency ? NakedObjects.Resources.NakedObjects.ConcurrencyErrorMessage : NakedObjects.Resources.NakedObjects.UpdateErrorMessage, e.Message));
             while (e.InnerException != null && nestLimit-- > 0) {
-                msg.AppendLine().AppendLine(isConcurrency ? Resources.NakedObjects.ConcurrencyException : Resources.NakedObjects.DataUpdateException).Append(e.InnerException.Message);
+                msg.AppendLine().AppendLine(isConcurrency ? NakedObjects.Resources.NakedObjects.ConcurrencyException : NakedObjects.Resources.NakedObjects.DataUpdateException).Append(e.InnerException.Message);
                 e = e.InnerException;
             }
 
@@ -387,7 +388,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         internal void CheckProxies(object objectToCheck) {
             var objectType = objectToCheck.GetType();
-            if (!EnforceProxies || TypeUtils.IsSystem(objectType) || TypeUtils.IsMicrosoft(objectType)) {
+            if (!EnforceProxies || NakedObjects.TypeUtils.IsSystem(objectType) || NakedObjects.TypeUtils.IsMicrosoft(objectType)) {
                 // may be using types provided by System or Microsoft (eg Authentication User). 
                 // No point enforcing proxying on them. 
                 return;
@@ -395,15 +396,15 @@ namespace NakedObjects.Persistor.Entity.Component {
 
             var adapter = getAdapterFor(objectToCheck);
             var isTransientObject = adapter?.Oid != null && adapter.Oid.IsTransient;
-            var explanation = isTransientObject ? Resources.NakedObjects.ProxyExplanationTransient : Resources.NakedObjects.ProxyExplanation;
+            var explanation = isTransientObject ? NakedObjects.Resources.NakedObjects.ProxyExplanationTransient : NakedObjects.Resources.NakedObjects.ProxyExplanation;
             var msg = "";
 
-            if (!TypeUtils.IsEntityProxy(objectToCheck.GetType())) {
-                msg = string.Format(Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), explanation);
+            if (!NakedObjects.TypeUtils.IsEntityProxy(objectToCheck.GetType())) {
+                msg = string.Format(NakedObjects.Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), explanation);
             }
 
             if (!(objectToCheck is IEntityWithChangeTracker)) {
-                msg = string.Format(Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), explanation);
+                msg = string.Format(NakedObjects.Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), explanation);
             }
 
             if (!string.IsNullOrEmpty(msg)) {
@@ -431,7 +432,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
                     var state = adapter.ValidToPersist();
                     if (state != null) {
-                        throw new PersistFailedException(logger.LogAndReturn(string.Format(Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
+                        throw new PersistFailedException(logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
                     }
                 }
             }
@@ -439,7 +440,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         private void SavingChangesHandler(object sender, EventArgs e) {
             var changedObjects =  ObjectContextUtils.GetChangedObjectsInContext((ObjectContext) sender);
-            var adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => nakedObjectManager.CreateAdapter(domainObject, null, null)).ToArray();
+            var adaptedObjects = changedObjects.Where(o => NakedObjects.TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => nakedObjectManager.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
         }
@@ -462,7 +463,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             if (depth > MaximumCommitCycles) {
                 var typeNames = contexts.Values.SelectMany(c => c.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Modified).Where(o => o.Entity != null).Select(o => o.Entity.GetEntityProxiedType().FullName)).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ", ") + t);
 
-                throw new NakedObjectDomainException(logger.LogAndReturn(string.Format(Resources.NakedObjects.EntityCommitError, typeNames)));
+                throw new NakedObjectDomainException(logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.EntityCommitError, typeNames)));
             }
 
             PreSave();
@@ -575,7 +576,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void Execute(IPersistenceCommand[] commands) => ExecuteCommands(commands);
 
         public IQueryable GetInstances(IObjectSpec spec) {
-            var type = TypeUtils.GetType(spec.FullName);
+            var type = NakedObjects.TypeUtils.GetType(spec.FullName);
             return GetContext(type).GetObjectSet(type);
         }
 
@@ -606,7 +607,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field) => field.GetNakedObject(nakedObjectAdapter);
 
         public int CountField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec associationSpec) {
-            var type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
+            var type = NakedObjects.TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
             var countMethod = GetType().GetMethod("Count")?.GetGenericMethodDefinition().MakeGenericMethod(type);
             return (int) (countMethod?.Invoke(this, new object[] {nakedObjectAdapter, associationSpec, nakedObjectManager}) ?? 0);
         }
@@ -623,7 +624,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             // only if not proxied
             var entityType = nakedObjectAdapter.Object.GetType();
 
-            if (!TypeUtils.IsEntityProxy(entityType)) {
+            if (!NakedObjects.TypeUtils.IsEntityProxy(entityType)) {
                 var currentContext = GetContext(entityType);
 
                 var propertynames = currentContext.GetNavigationMembers(entityType).Select(x => x.Name);
@@ -673,7 +674,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             if (type.IsAbstract) {
-                throw new ModelException(logger.LogAndReturn(string.Format(Resources.NakedObjects.CannotCreateAbstract, type)));
+                throw new ModelException(logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.CannotCreateAbstract, type)));
             }
 
             var domainObject = Activator.CreateInstance(type);
@@ -697,7 +698,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class => (T) CreateInstance(typeof(T));
 
-        public PropertyInfo[] GetKeys(Type type) => GetContext(type.GetProxiedType()).GetIdMembers(type.GetProxiedType());
+        public PropertyInfo[] GetKeys(Type type) => GetContext(NakedObjects.TypeUtils.GetProxiedType(type)).GetIdMembers(NakedObjects.TypeUtils.GetProxiedType(type));
 
         public void Refresh(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.Spec.GetFacet<IComplexTypeFacet>() == null) {
@@ -725,7 +726,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public T ValidateProxy<T>(T toCheck) where T : class {
             var toCheckType = toCheck.GetType();
-            if (!TypeUtils.IsEntityProxy(toCheckType)) {
+            if (!NakedObjects.TypeUtils.IsEntityProxy(toCheckType)) {
                 var context = GetContext(toCheck);
                 if (context is null || context.GetReferenceMembers(toCheckType).Any() || context.GetCollectionMembers(toCheckType).Any()) {
                     throw new PersistFailedException($"{toCheck}  type {toCheckType} is not proxy but has reference members or is unknown to EF");

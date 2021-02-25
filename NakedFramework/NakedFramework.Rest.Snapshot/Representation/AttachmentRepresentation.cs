@@ -11,9 +11,9 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Representations {
+namespace NakedFramework.Rest.Snapshot.Representation {
     public class AttachmentRepresentation : Representation {
         private MediaTypeHeaderValue contentType;
 

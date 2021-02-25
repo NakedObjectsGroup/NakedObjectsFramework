@@ -7,7 +7,7 @@
 module NakedObjects.MultiDatabaseTestCode
 
 open NakedFramework.Core
-open NakedObjects.Persistor.Entity.Component
+open NakedFramework.Persistor.Entity.Component
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NUnit.Framework
 open System

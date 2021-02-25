@@ -8,7 +8,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace NakedObjects.Rest.Model {
+namespace NakedFramework.Rest.Model {
     public class PersistArgumentMapBinder : IModelBinder {
         #region IModelBinder Members
 

@@ -8,7 +8,7 @@ module NakedObjects.DomainTest
 
 open DomainTestCode
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
-open NakedObjects.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Configuration
 open NUnit.Framework
 open System
 open System.Data.Entity.Core.Objects

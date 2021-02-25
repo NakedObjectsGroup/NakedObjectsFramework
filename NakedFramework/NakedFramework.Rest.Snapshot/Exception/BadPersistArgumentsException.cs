@@ -8,8 +8,9 @@
 using System.Collections.Generic;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Exception;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.Exception {
     public class BadPersistArgumentsException : BadArgumentsNOSException {
         public BadPersistArgumentsException(string message, ObjectContextFacade context, IList<ContextFacade> contexts, RestControlFlags flags) : base(message, context, contexts) => Flags = flags;
         public RestControlFlags Flags { get; }

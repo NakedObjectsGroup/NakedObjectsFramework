@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Exception;
-using NakedObjects.Persistor.Entity.Adapter;
+using NakedFramework.Persistor.Entity.Adapter;
 
-namespace NakedObjects.Persistor.Entity.Component {
+namespace NakedFramework.Persistor.Entity.Component {
     public sealed class EntityOidGenerator : IOidGenerator {
         private static long transientId;
         private readonly ILoggerFactory loggerFactory;

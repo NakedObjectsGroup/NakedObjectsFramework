@@ -6,9 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Facade.Facade;
-using NakedObjects.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.RelTypes {
     public class ValueRelType : ObjectRelType {
         private readonly IMemberFacade member;
         public ValueRelType(UriMtHelper helper) : base(RelValues.Value, helper) { }

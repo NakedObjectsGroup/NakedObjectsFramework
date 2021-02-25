@@ -7,8 +7,9 @@
 
 using System;
 using Microsoft.Net.Http.Headers;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.RelTypes {
     public class ActionResultRelType : RelType {
         public ActionResultRelType(string name, UriMtHelper helper) : base(name, helper) { }
 

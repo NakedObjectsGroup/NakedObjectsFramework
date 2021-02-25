@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Rest.Model {
+namespace NakedFramework.Rest.Model {
     public class ReservedArguments {
         public virtual bool? InlinePropertyDetails { get; set; }
         public virtual bool ValidateOnly { get; set; }

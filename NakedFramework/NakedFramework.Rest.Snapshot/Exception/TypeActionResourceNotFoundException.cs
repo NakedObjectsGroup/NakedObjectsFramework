@@ -7,7 +7,7 @@
 
 using NakedFramework.Facade.Exception;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.Exception {
     public class TypeActionResourceNotFoundException : ResourceNotFoundNOSException {
         public TypeActionResourceNotFoundException(string resourceId, string domainId) : base(resourceId) => DomainId = domainId;
         public string DomainId { get; }

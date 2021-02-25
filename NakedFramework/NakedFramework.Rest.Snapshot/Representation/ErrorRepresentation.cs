@@ -5,17 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.Net.Http.Headers;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Constants;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Representations {
+namespace NakedFramework.Rest.Snapshot.Representation {
     public class ErrorRepresentation : Representation {
-        public ErrorRepresentation(IOidStrategy oidStrategy, Exception e)
+        public ErrorRepresentation(IOidStrategy oidStrategy, System.Exception e)
             : base(oidStrategy, RestControlFlags.DefaultFlags()) {
             var exception = GetInnermostException(e);
             Message = exception.Message;
@@ -39,8 +38,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         public override MediaTypeHeaderValue GetContentType() => UriMtHelper.GetJsonMediaType(RepresentationTypes.Error);
 
-        private static Exception GetInnermostException(Exception e) => e.InnerException == null ? e : GetInnermostException(e.InnerException);
+        private static System.Exception GetInnermostException(System.Exception e) => e.InnerException == null ? e : GetInnermostException(e.InnerException);
 
-        public static Representation Create(IOidStrategy oidStrategy, Exception exception) => new ErrorRepresentation(oidStrategy, exception);
+        public static Representation Create(IOidStrategy oidStrategy, System.Exception exception) => new ErrorRepresentation(oidStrategy, exception);
     }
 }

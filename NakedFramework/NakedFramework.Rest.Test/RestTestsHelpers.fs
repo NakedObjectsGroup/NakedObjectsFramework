@@ -7,12 +7,13 @@
 module NakedObjects.Rest.Test.Helpers
 
 open NakedFramework.Facade
-open NakedObjects.Rest
+open NakedFramework.Rest
 open RestfulObjects.Test.Data
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.Configuration
 open NakedFramework.Rest.Configuration
 open NakedFramework.Facade.Facade
+open NakedFramework.Rest.API
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer = @"Data Source=(localdb)\MSSQLLocalDB;"

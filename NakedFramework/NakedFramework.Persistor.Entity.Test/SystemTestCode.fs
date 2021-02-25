@@ -9,7 +9,7 @@ module NakedObjects.SystemTestCode
 
 open NakedFramework.Architecture.Adapter
 open NakedFramework.Core.Resolve
-open NakedObjects.Persistor.Entity.Adapter
+open NakedFramework.Persistor.Entity.Adapter
 open NUnit.Framework
 open NakedFramework.Architecture.Framework
 open NakedFramework.Architecture.Spec

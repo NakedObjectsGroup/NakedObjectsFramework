@@ -12,10 +12,10 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Representations;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Representation;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Strategies {
+namespace NakedFramework.Rest.Snapshot.Strategies {
     [DataContract]
     public class PropertyWithDetailsRepresentationStrategy : AbstractPropertyRepresentationStrategy {
         private readonly bool inline;

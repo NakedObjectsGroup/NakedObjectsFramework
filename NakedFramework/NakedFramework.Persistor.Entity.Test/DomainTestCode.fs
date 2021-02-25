@@ -7,10 +7,10 @@
 module NakedObjects.DomainTestCode
 
 open NakedFramework.Core
-open NakedObjects.Persistor.Entity.Configuration
-open NakedObjects.Persistor.Entity.Util
-open NakedObjects.Persistor.Entity.Adapter
-open NakedObjects.Persistor.Entity.Component
+open NakedFramework.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Util
+open NakedFramework.Persistor.Entity.Adapter
+open NakedFramework.Persistor.Entity.Component
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedFramework.Core.Resolve
 open NUnit.Framework

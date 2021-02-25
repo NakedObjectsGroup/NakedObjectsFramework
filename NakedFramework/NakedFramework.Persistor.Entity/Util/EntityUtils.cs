@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Persistor.Entity.Util {
+namespace NakedFramework.Persistor.Entity.Util {
     public static class EntityUtils {
         public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager) {
             var versionObject = nakedObjectAdapter?.GetVersion(manager);

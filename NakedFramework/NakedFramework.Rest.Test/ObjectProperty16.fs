@@ -7,12 +7,14 @@
 module NakedObjects.Rest.Test.ObjectProperty16
 
 open NUnit.Framework
-open NakedObjects.Rest
+open NakedFramework.Rest.Snapshot.Utility
+open NakedFramework.Rest.Snapshot.Constants
+open NakedFramework.Rest.API
 open System.Net
 open Newtonsoft.Json.Linq
 open System.Web
 open System
-open NakedObjects.Rest.Snapshot.Constants
+
 open System.Linq
 open NakedObjects.Rest.Test.Functions
 open System.Security.Principal

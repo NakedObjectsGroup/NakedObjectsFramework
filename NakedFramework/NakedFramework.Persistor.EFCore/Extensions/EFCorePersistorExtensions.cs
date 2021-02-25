@@ -14,8 +14,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Component;
 using NakedFramework.Persistor.EFCore.Configuration;
-using NakedObjects.DependencyInjection.Extensions;
-using NakedObjects.Persistor.Entity.Component;
+using NakedFramework.Persistor.Entity.Component;
 
 namespace NakedFramework.Persistor.EFCore.Extensions {
     public static class EFCorePersistorExtensions {

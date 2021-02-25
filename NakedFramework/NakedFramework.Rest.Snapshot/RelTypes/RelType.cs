@@ -8,9 +8,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Net.Http.Headers;
-using NakedObjects.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.RelTypes {
     public abstract class RelType {
         private static readonly HashSet<string> HasRelParameterSet = new HashSet<string> {
             RelValues.AddTo, RelValues.Attachment, RelValues.Choice, RelValues.Clear, RelValues.Collection,

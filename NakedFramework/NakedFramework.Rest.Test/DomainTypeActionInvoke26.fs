@@ -12,7 +12,9 @@ open System.Net
 open System.Net.Http.Headers
 open Newtonsoft.Json.Linq
 open System.Web
-open NakedObjects.Rest.Snapshot.Constants
+open NakedFramework.Rest.Snapshot.Utility
+open NakedFramework.Rest.Snapshot.Constants
+open NakedFramework.Rest.API
 open System.Web.Http
 open System.Linq
 open NakedObjects.Rest.Test.Functions

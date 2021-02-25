@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace NakedObjects.Rest.Model {
+namespace NakedFramework.Rest.Model {
     [ModelBinder(BinderType = typeof(PromptArgumentMapBinder))]
     public class PromptArgumentMap : ArgumentMap {
         public IDictionary<string, IValue> MemberMap { get; set; } = new Dictionary<string, IValue>();

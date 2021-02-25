@@ -31,13 +31,13 @@ using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Profile;
 using NakedFramework.Metamodel.SpecImmutable;
+using NakedFramework.Persistor.Entity.Extensions;
+using NakedFramework.Rest.Extensions;
 using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestObjects;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects;
-using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Reflector.Extensions;
-using NakedObjects.Rest.Extensions;
 
 namespace NakedFramework.Xat.TestCase {
     public abstract class AcceptanceTestCase {

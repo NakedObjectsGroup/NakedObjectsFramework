@@ -7,12 +7,13 @@
 module NakedObjects.Rest.Test.Version8
 
 open NakedObjects.Rest
-open NakedObjects.Rest.Snapshot.Constants
-open NakedObjects.Rest.Snapshot.Utility
+open NakedFramework.Rest.Snapshot.Constants
+open NakedFramework.Rest.Snapshot.Utility
 open Newtonsoft.Json.Linq
 open NUnit.Framework
 open NakedObjects.Rest.Test.Functions
 open System.Net
+open NakedFramework.Rest.API
 
 let internal capabilities = 
     TObjectJson([ TProperty("protoPersistentObjects", TObjectVal("yes"))

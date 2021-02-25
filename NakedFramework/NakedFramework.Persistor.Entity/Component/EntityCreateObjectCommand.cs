@@ -16,9 +16,10 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
-using NakedObjects.Persistor.Entity.Util;
+using NakedFramework.Persistor.Entity.Util;
+using NakedObjects;
 
-namespace NakedObjects.Persistor.Entity.Component {
+namespace NakedFramework.Persistor.Entity.Component {
     public class EntityCreateObjectCommand : ICreateObjectCommand {
         private readonly LocalContext context;
         private readonly INakedObjectAdapter nakedObjectAdapter;
@@ -43,7 +44,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return null;
             }
 
-            if (TypeUtils.IsEntityProxy(originalObject.GetType())) {
+            if (NakedObjects.TypeUtils.IsEntityProxy(originalObject.GetType())) {
                 // object already proxied assume previous save failed - add object to context again 
 
                 var add = true;

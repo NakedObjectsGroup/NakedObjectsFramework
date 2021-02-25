@@ -7,9 +7,10 @@
 
 using System;
 using Microsoft.Net.Http.Headers;
-using NakedObjects.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
+namespace NakedFramework.Rest.Snapshot.RelTypes {
     public class DomainTypeRelType : RelType {
         public DomainTypeRelType(UriMtHelper helper) : base(RelValues.DomainType, helper) { }
 

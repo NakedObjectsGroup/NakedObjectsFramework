@@ -12,10 +12,11 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Rest.Snapshot.Constants;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.RelTypes;
+using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedObjects.Rest.Snapshot.Representations {
+namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class ActionResultRepresentation : Representation {
         protected ActionResultRepresentation(IOidStrategy oidStrategy, HttpRequest req, ActionResultContextFacade actionResult, RestControlFlags flags)

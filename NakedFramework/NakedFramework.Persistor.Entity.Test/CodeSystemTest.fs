@@ -10,7 +10,7 @@ open CodeOnlyTestCode
 open NakedObjects
 open NakedFramework.Core
 open NakedFramework.Core.Util
-open NakedObjects.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Configuration
 open NakedObjects.Services
 open NakedObjects.TestTypes
 open NUnit.Framework

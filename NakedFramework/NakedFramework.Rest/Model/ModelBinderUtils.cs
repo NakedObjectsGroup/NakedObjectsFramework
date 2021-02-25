@@ -16,13 +16,13 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using NakedObjects.Rest.API;
-using NakedObjects.Rest.Snapshot.Constants;
-using NakedObjects.Rest.Snapshot.Utility;
+using NakedFramework.Rest.API;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Utility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace NakedObjects.Rest.Model {
+namespace NakedFramework.Rest.Model {
     public static class ModelBinderUtils {
         private static string ExceptionWarning(Exception e) => ControllerHelpers.DebugFilter(() => $"{e.Message} {e.StackTrace?.Replace("\r", " ").Replace("\n", " ")}");
 

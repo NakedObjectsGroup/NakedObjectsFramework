@@ -21,13 +21,12 @@ using NakedFramework.Facade.Exception;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Configuration;
-using NakedFramework.Facade;
-using NakedObjects.Rest.API;
-using NakedObjects.Rest.Model;
-using NakedObjects.Rest.Snapshot.Constants;
-using NakedObjects.Rest.Snapshot.Representations;
-using NakedObjects.Rest.Snapshot.Utility;
-using static NakedObjects.Rest.API.ControllerHelpers;
+using NakedFramework.Rest.Model;
+using NakedFramework.Rest.Snapshot.Constants;
+using NakedFramework.Rest.Snapshot.Exception;
+using NakedFramework.Rest.Snapshot.Representation;
+using NakedFramework.Rest.Snapshot.Utility;
+using static NakedFramework.Rest.API.ControllerHelpers;
 
 [assembly: InternalsVisibleTo("NakedFramework.Rest.Test")]
 [assembly: InternalsVisibleTo("NakedFramework.Rest.Test.Impl1")]
@@ -35,7 +34,7 @@ using static NakedObjects.Rest.API.ControllerHelpers;
 [assembly: InternalsVisibleTo("NakedFramework.Rest.Test.Impl3")]
 [assembly: InternalsVisibleTo("NakedFramework.Rest.Test.Impl4")]
 
-namespace NakedObjects.Rest {
+namespace NakedFramework.Rest.API {
     public class RestfulObjectsControllerBase : ControllerBase {
         private readonly ILogger logger;
         private readonly ILoggerFactory loggerFactory;

@@ -7,7 +7,9 @@
 module NakedObjects.Rest.Test.Error10
 
 open NakedObjects.Rest
-open NakedObjects.Rest.Snapshot.Constants
+open NakedFramework.Rest.Snapshot.Utility
+open NakedFramework.Rest.Snapshot.Constants
+open NakedFramework.Rest.API
 open Newtonsoft.Json.Linq
 open NUnit.Framework
 open NakedObjects.Rest.Test.Functions

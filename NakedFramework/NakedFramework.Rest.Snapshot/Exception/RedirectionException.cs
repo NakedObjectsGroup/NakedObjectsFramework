@@ -8,8 +8,8 @@
 using System;
 using System.Net;
 
-namespace NakedObjects.Rest.Snapshot.Utility {
-    public class RedirectionException : Exception {
+namespace NakedFramework.Rest.Snapshot.Exception {
+    public class RedirectionException : System.Exception {
         public RedirectionException(Uri redirectAddress) => RedirectAddress = redirectAddress;
         public int StatusCode => (int) HttpStatusCode.MovedPermanently;
         public Uri RedirectAddress { get; }

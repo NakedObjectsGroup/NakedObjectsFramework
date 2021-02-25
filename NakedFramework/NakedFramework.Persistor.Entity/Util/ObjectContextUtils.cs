@@ -18,9 +18,9 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
-using NakedObjects.Persistor.Entity.Component;
+using NakedFramework.Persistor.Entity.Component;
 
-namespace NakedObjects.Persistor.Entity.Util {
+namespace NakedFramework.Persistor.Entity.Util {
     public static class ObjectContextUtils {
         internal static T Invoke<T>(this object onObject, string name, params object[] parms) => (T) onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
 

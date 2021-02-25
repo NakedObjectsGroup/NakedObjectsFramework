@@ -11,8 +11,8 @@ open NakedObjects
 open NakedFramework.Architecture.Adapter
 open NakedFramework.Core.Component
 open NakedFramework.Core.Configuration
-open NakedObjects.Persistor.Entity.Configuration
-open NakedObjects.Persistor.Entity.Component
+open NakedFramework.Persistor.Entity.Configuration
+open NakedFramework.Persistor.Entity.Component
 open NUnit.Framework
 open SimpleDatabase
 open System
