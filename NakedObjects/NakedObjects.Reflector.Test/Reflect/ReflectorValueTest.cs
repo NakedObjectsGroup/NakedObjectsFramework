@@ -24,7 +24,7 @@ using NakedObjects.ParallelReflector.Component;
 namespace NakedObjects.Reflector.Test.Reflect {
     [TestClass]
     public class ReflectorValueTest : AbstractReflectorTest {
-        protected override IReflector Reflector(Metamodel metamodel, ILoggerFactory lf) {
+        protected override IReflector Reflector(MetamodelHolder metamodel, ILoggerFactory lf) {
             var config = new CoreConfiguration();
             ClassStrategy = new SystemTypeClassStrategy(config);
             var systemTypeFacetFactorySet = new SystemTypeFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>());

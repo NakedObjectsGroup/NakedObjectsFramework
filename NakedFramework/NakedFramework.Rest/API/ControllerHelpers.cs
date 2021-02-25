@@ -17,7 +17,7 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Exception;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Rest.Configuration;
-using NakedObjects.Facade;
+using NakedFramework.Facade;
 using NakedObjects.Rest.Model;
 using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;

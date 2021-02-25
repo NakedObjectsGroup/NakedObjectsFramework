@@ -18,7 +18,7 @@ open NakedObjects.Rest.Test.Functions
 open NakedObjects.Persistor.Entity.Configuration
 open NakedFramework.Facade
 open NakedFramework.Facade.Translation
-open NakedObjects.Facade.Impl
+open NakedFramework.Facade.Impl
 open NakedFramework.Facade.Interface
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json

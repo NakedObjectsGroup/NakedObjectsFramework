@@ -15,11 +15,11 @@ using NakedFramework.Core.Util;
 
 namespace NakedObjects.Meta.Component {
     [Serializable]
-    public sealed class Metamodel : IMetamodelBuilder {
+    public sealed class MetamodelHolder : IMetamodelBuilder {
         private readonly ISpecificationCache cache;
-        private readonly ILogger<Metamodel> logger;
+        private readonly ILogger<MetamodelHolder> logger;
 
-        public Metamodel(ISpecificationCache cache, ILogger<Metamodel> logger) {
+        public MetamodelHolder(ISpecificationCache cache, ILogger<MetamodelHolder> logger) {
             this.cache = cache;
             this.logger = logger;
         }

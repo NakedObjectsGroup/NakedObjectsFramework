@@ -11,14 +11,14 @@ open NakedObjects.Rest
 open NakedObjects.Rest.Test
 open System
 open RestfulObjects.Test.Data
-open NakedFramework.Facade.Impl.Implementation
+open NakedFramework.Facade.Impl
 open NakedFramework.Facade.Impl.Utility
 open NakedObjects.Rest.Test.Helpers
 open NakedObjects.Rest.Test.Functions
 open NakedObjects.Persistor.Entity.Configuration
 open NakedFramework.Facade
 open NakedFramework.Facade.Translation
-open NakedObjects.Facade.Impl
+open NakedFramework.Facade.Impl
 open NakedFramework.Facade.Interface
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json

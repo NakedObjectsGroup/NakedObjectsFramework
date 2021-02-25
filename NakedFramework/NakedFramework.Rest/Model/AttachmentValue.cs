@@ -7,7 +7,7 @@
 
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Facade;
+using NakedFramework.Facade;
 using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Model {

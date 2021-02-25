@@ -146,7 +146,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             Assert.IsInstanceOfType(o, typeof(T));
         }
 
-        protected virtual IReflector Reflector(Metamodel metamodel, ILoggerFactory lf) {
+        protected virtual IReflector Reflector(MetamodelHolder metamodel, ILoggerFactory lf) {
             var config = new ObjectReflectorConfiguration(new[] {typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList)}, Array.Empty<Type>());
             var objectFactFactorySet = new ObjectFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
 
@@ -160,9 +160,9 @@ namespace NakedObjects.Reflector.Test.Reflect {
             var cache = new ImmutableInMemorySpecCache();
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var mockLogger = new Mock<ILogger<Metamodel>>().Object;
+            var mockLogger = new Mock<ILogger<MetamodelHolder>>().Object;
 
-            var metamodel = new Metamodel(cache, mockLogger);
+            var metamodel = new MetamodelHolder(cache, mockLogger);
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
             var reflector = Reflector(metamodel, mockLoggerFactory);

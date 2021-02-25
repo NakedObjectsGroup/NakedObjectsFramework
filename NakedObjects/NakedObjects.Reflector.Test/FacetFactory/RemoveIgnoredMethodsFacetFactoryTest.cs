@@ -94,7 +94,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             facetFactory = new RemoveIgnoredMethodsFacetFactory(GetOrder<RemoveIgnoredMethodsFacetFactory>(), LoggerFactory);
             var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] {facetFactory});
             var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
-            var metamodel = new Metamodel(cache, null);
+            var metamodel = new MetamodelHolder(cache, null);
             var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 

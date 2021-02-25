@@ -23,7 +23,7 @@ using NakedFramework.Facade.Translation;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
-using NakedObjects.Facade;
+using NakedFramework.Facade;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.Profile;
