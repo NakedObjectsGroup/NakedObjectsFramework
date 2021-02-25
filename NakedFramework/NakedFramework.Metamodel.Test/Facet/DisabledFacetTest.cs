@@ -51,7 +51,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
             var e = facet.CreateExceptionFor(mockIc.Object);
 
             Assert.IsInstanceOfType(e, typeof(DisabledException));
-            Assert.AreEqual("Exception of type 'NakedObjects.Core.DisabledException' was thrown.", e.Message);
+            Assert.AreEqual("Exception of type 'NakedFramework.Core.DisabledException' was thrown.", e.Message);
         }
     }
 }
