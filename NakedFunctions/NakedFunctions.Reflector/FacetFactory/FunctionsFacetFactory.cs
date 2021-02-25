@@ -11,6 +11,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Component;
 using NakedFunctions.Reflector.Facet;
 using NakedObjects;
 using NakedObjects.Architecture.Component;

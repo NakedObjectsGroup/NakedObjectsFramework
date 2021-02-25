@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 

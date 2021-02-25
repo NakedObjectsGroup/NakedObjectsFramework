@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 

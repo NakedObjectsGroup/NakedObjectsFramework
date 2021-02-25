@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Immutable;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 

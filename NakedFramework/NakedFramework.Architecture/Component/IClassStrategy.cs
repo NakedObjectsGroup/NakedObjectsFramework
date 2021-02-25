@@ -8,7 +8,7 @@
 using System;
 using System.Reflection;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     /// <summary>
     ///     Strategy used to determine facts about classes, such as whether an an obj of a particular class can be
     ///     used as a field. Alternative implementations could, for example, exclude types in a specific namespace.

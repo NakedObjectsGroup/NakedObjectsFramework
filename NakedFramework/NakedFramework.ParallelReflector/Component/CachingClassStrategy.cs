@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.ParallelReflector.Component {

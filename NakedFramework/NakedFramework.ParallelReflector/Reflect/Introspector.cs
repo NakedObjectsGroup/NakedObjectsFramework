@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;

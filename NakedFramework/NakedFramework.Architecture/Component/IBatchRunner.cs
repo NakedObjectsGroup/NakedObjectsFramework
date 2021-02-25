@@ -5,7 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Architecture.Component {
+using NakedObjects.Architecture.Component;
+
+namespace NakedFramework.Architecture.Component {
     public interface IBatchRunner {
         void Run(IBatchStartPoint batchStartPoint);
     }
