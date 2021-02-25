@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Component;
 using NakedFramework.Persistor.EFCore.Configuration;
 using NakedObjects.DependencyInjection.Extensions;

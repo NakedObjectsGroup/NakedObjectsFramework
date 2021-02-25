@@ -13,7 +13,8 @@ using System.Text.RegularExpressions;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Facade;
 using NakedObjects.Facade.Impl.Utility;
 
 namespace NakedObjects.Facade.Impl {

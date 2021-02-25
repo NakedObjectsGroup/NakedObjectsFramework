@@ -6,12 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.Rest.Test.Helpers
 
-open NakedObjects.Facade
+open NakedFramework.Facade
 open NakedObjects.Rest
 open RestfulObjects.Test.Data
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.Configuration
 open NakedFramework.Rest.Configuration
+open NakedFramework.Facade.Facade
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer = @"Data Source=(localdb)\MSSQLLocalDB;"

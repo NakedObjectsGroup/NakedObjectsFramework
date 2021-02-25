@@ -9,6 +9,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Utility;
 

@@ -5,11 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Facade {
+namespace NakedFramework.Facade.Exception {
     public abstract class ResourceNotFoundNOSException : NakedObjectsFacadeException {
-        protected ResourceNotFoundNOSException(string resourceId, Exception e) : base(e) => ResourceId = resourceId;
+        protected ResourceNotFoundNOSException(string resourceId, System.Exception e) : base(e) => ResourceId = resourceId;
 
         protected ResourceNotFoundNOSException(string resourceId) => ResourceId = resourceId;
 

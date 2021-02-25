@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedObjects.Facade {
+namespace NakedFramework.Facade.Facade {
     public interface IMenuFacade : IMenuItemFacade {
         IList<IMenuItemFacade> MenuItems { get; }
     }

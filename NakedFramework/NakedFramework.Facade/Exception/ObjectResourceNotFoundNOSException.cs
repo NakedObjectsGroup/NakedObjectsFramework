@@ -5,11 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Facade {
+namespace NakedFramework.Facade.Exception {
     public class ObjectResourceNotFoundNOSException : ResourceNotFoundNOSException {
-        public ObjectResourceNotFoundNOSException(string resourceId, Exception e) : base(resourceId, e) { }
+        public ObjectResourceNotFoundNOSException(string resourceId, System.Exception e) : base(resourceId, e) { }
         public ObjectResourceNotFoundNOSException(string resourceId) : base(resourceId) { }
 
         public override string Message => $"No such domain object {ResourceId}";

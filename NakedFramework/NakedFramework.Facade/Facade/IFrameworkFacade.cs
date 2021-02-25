@@ -6,10 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Security.Principal;
-using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Translation;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Translation;
 
-namespace NakedObjects.Facade {
+namespace NakedFramework.Facade.Facade {
     public interface IFrameworkFacade {
         IOidTranslator OidTranslator { get; }
         IOidStrategy OidStrategy { get; }

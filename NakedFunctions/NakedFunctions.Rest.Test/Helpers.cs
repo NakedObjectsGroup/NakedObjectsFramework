@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Facade.Facade;
 using NakedFramework.Rest.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Rest;

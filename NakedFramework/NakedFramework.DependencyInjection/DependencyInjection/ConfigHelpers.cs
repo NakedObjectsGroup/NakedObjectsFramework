@@ -9,9 +9,9 @@ using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
-using NakedObjects.DependencyInjection.FacetFactory;
+using NakedFramework.DependencyInjection.FacetFactory;
 
-namespace NakedObjects.DependencyInjection.DependencyInjection {
+namespace NakedFramework.DependencyInjection.DependencyInjection {
     public static class ConfigHelpers {
 
         public static void RegisterFacetFactory<T>(this IServiceCollection services, Type factory) where T : IFacetFactory {

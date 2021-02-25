@@ -8,8 +8,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
 using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;
 

@@ -9,9 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
 
-namespace NakedObjects.Facade {
+namespace NakedFramework.Facade.Facade {
     public interface IFieldFacade {
         ITypeFacade Specification { get; }
         Choices IsChoicesEnabled { get; }

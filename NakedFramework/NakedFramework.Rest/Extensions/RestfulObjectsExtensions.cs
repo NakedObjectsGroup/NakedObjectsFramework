@@ -8,8 +8,8 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Rest.Configuration;
-using NakedObjects.DependencyInjection.Extensions;
 
 namespace NakedObjects.Rest.Extensions {
     public static class RestfulObjectsExtensions {

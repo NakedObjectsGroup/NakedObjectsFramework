@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.AspNetCore.Http;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Interface;
 using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;
 

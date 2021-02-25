@@ -7,6 +7,7 @@
 
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Menu;
+using NakedFramework.Facade.Facade;
 
 namespace NakedObjects.Facade.Impl {
     public class MenuActionFacade : IMenuActionFacade, IMenuItemFacade {

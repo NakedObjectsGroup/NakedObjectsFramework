@@ -8,7 +8,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
-using NakedFramework;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.Profile;
@@ -16,7 +15,7 @@ using NakedObjects.Meta.Profile;
 [assembly:InternalsVisibleTo("NakedFunctions.Reflector")]
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity")]
 
-namespace NakedObjects.DependencyInjection.Extensions {
+namespace NakedFramework.DependencyInjection.Extensions {
     public class NakedCoreOptions {
         public NakedCoreOptions(IServiceCollection services) => Services = services;
         public IAuthorizationConfiguration AuthorizationConfiguration { get; set; }

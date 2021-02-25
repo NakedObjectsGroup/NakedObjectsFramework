@@ -5,14 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Facade {
+namespace NakedFramework.Facade.Exception {
     public class GeneralErrorNOSException : NakedObjectsFacadeException {
-        public GeneralErrorNOSException(Exception e) : base(e.Message, e) { }
+        public GeneralErrorNOSException(System.Exception e) : base(e.Message, e) { }
 
         public override string Message => GetInnermostException(this).Message;
 
-        private static Exception GetInnermostException(Exception e) => e.InnerException == null ? e : GetInnermostException(e.InnerException);
+        private static System.Exception GetInnermostException(System.Exception e) => e.InnerException == null ? e : GetInnermostException(e.InnerException);
     }
 }

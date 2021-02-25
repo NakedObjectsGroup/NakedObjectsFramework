@@ -9,8 +9,9 @@ using System;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
 using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {

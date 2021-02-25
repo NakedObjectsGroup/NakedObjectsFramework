@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedObjects.Facade.Contexts {
+namespace NakedFramework.Facade.Contexts {
     public class ArgumentsContextFacade {
         public IDictionary<string, object> Values { get; set; }
         public bool ValidateOnly { get; set; }

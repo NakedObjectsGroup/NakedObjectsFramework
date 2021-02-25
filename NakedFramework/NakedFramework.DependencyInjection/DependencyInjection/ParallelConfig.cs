@@ -7,24 +7,23 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Authentication;
 using NakedFramework.Core.Component;
 using NakedFramework.Core.Framework;
 using NakedFramework.Core.Spec;
+using NakedFramework.DependencyInjection.FacetFactory;
 using NakedFramework.ModelBuilding.Component;
-using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.Menu;
 
-namespace NakedObjects.DependencyInjection.DependencyInjection {
+namespace NakedFramework.DependencyInjection.DependencyInjection {
     public static class ParallelConfig {
         public static void RegisterCoreSingletonTypes(IServiceCollection services) {
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
-            services.AddSingleton<IMetamodel, Metamodel>();
-            services.AddSingleton<IMetamodelBuilder, Metamodel>();
+            services.AddSingleton<IMetamodel, NakedObjects.Meta.Component.Metamodel>();
+            services.AddSingleton<IMetamodelBuilder, NakedObjects.Meta.Component.Metamodel>();
             services.AddSingleton<IMenuFactory, MenuFactory>();
             services.AddSingleton<IModelIntegrator, ModelIntegrator>();
             services.AddSingleton<IModelBuilder, ModelBuilder>();

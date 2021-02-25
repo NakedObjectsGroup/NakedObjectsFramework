@@ -5,7 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Facade {
+using NakedFramework.Facade.Interface;
+
+namespace NakedFramework.Facade.Facade {
     public interface IActionParameterFacade : IFieldFacade, IFacadeHolder {
         string Id { get; }
         int Number { get; }

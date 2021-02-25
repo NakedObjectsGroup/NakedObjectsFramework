@@ -11,13 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Core.Component;
+using NakedFramework.DependencyInjection.DependencyInjection;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Reflector.FacetFactory;
 using NakedFunctions.Reflector.Reflect;
 using NakedFunctions.Services;
-using NakedObjects.DependencyInjection.DependencyInjection;
-using NakedObjects.DependencyInjection.Extensions;
 
 namespace NakedFunctions.Reflector.Extensions {
     public static class NakedFunctionsExtensions {

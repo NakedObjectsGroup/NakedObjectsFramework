@@ -7,6 +7,7 @@
 
 using System;
 using NakedFramework.Architecture.Reflect;
+using NakedFramework.Facade.Facade;
 
 namespace NakedObjects.Facade.Impl {
     public class ConsentFacade : IConsentFacade {

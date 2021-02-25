@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.Net.Http.Headers;
-using NakedObjects.Facade;
+using NakedFramework.Facade.Interface;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 

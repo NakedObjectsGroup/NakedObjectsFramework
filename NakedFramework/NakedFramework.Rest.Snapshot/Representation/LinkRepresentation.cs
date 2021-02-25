@@ -7,7 +7,7 @@
 
 using System.Linq;
 using System.Runtime.Serialization;
-using NakedObjects.Facade;
+using NakedFramework.Facade.Interface;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 

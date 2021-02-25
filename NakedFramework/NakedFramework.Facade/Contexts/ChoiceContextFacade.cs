@@ -5,7 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Facade.Contexts {
+using NakedFramework.Facade.Facade;
+
+namespace NakedFramework.Facade.Contexts {
     public class ChoiceContextFacade : ContextFacade {
         public ChoiceContextFacade(string id, ITypeFacade spec) {
             Id = id;

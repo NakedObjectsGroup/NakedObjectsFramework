@@ -5,9 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Globalization;
+using NakedFramework.Facade.Facade;
 
-namespace NakedObjects.Facade.Contexts {
+namespace NakedFramework.Facade.Contexts {
     public class ParameterContextFacade : ContextFacade {
         public IActionParameterFacade Parameter { get; set; }
         public ListContextFacade Completions { get; set; }

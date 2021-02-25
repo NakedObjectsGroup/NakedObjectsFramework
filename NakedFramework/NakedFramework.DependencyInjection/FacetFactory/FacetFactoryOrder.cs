@@ -8,10 +8,9 @@
 using System;
 using System.Linq;
 using NakedFramework.Architecture.Component;
-using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
-namespace NakedObjects.DependencyInjection.FacetFactory {
+namespace NakedFramework.DependencyInjection.FacetFactory {
 
     
     public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {

@@ -5,12 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Facade {
-    public class NakedObjectsFacadeException : Exception {
-        public NakedObjectsFacadeException(string message, Exception e) : base(message, e) { }
-        public NakedObjectsFacadeException(Exception e) : base("", e) { }
+namespace NakedFramework.Facade.Exception {
+    public class NakedObjectsFacadeException : System.Exception {
+        public NakedObjectsFacadeException(string message, System.Exception e) : base(message, e) { }
+        public NakedObjectsFacadeException(System.Exception e) : base("", e) { }
         public NakedObjectsFacadeException() { }
         public NakedObjectsFacadeException(string message) : base(message) { }
     }

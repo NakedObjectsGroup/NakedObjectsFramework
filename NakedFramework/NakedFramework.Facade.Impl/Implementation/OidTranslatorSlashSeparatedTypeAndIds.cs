@@ -9,8 +9,9 @@ using System;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Translation;
 using NakedObjects.Facade.Impl.Utility;
-using NakedObjects.Facade.Translation;
 using NakedObjects.Services;
 
 namespace NakedObjects.Facade.Impl.Implementation {

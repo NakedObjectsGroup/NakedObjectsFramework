@@ -8,8 +8,8 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFunctions.Reflector.Extensions;
-using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Rest.Extensions;
 

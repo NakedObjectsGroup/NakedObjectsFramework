@@ -16,8 +16,9 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Facade;
 using NakedFramework.Value;
-using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Impl.Utility;
 
 

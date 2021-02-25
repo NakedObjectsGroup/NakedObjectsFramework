@@ -7,7 +7,8 @@
 
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Facade;
 
 namespace NakedObjects.Facade.Impl.Contexts {
     public class ParameterContext : Context {

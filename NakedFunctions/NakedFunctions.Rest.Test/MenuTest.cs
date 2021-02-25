@@ -14,6 +14,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Xat.TestCase;
 using NakedFunctions.Rest.Test.Data;
 using NakedObjects.DependencyInjection.Extensions;

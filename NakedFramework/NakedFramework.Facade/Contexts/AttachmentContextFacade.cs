@@ -7,7 +7,7 @@
 
 using System.IO;
 
-namespace NakedObjects.Facade.Contexts {
+namespace NakedFramework.Facade.Contexts {
     public class AttachmentContextFacade {
         public const string DefaultMimeType = "application/octet-stream";
         public const string DefaultContentDisposition = "attachment";

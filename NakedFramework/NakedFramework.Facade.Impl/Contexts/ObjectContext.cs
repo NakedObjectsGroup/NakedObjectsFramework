@@ -9,7 +9,8 @@ using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Facade;
 using NakedObjects.Redirect;
 
 namespace NakedObjects.Facade.Impl.Contexts {

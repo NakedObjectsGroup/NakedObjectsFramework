@@ -7,7 +7,7 @@
 
 using System;
 using System.Linq;
-using NakedObjects.Facade.Translation;
+using NakedFramework.Facade.Translation;
 using NakedObjects.Services;
 
 namespace NakedObjects.Facade.Impl.Utility {

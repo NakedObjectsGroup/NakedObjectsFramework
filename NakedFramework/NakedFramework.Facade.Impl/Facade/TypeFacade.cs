@@ -12,6 +12,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Facade.Facade;
 using NakedFramework.Value;
 using NakedObjects.Facade.Impl.Utility;
 

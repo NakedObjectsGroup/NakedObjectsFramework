@@ -5,16 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
 
-namespace NakedObjects.Facade {
+namespace NakedFramework.Facade.Exception {
     public abstract class WithContextNOSException : NakedObjectsFacadeException {
         private IList<ContextFacade> contexts;
         protected WithContextNOSException() { }
         protected WithContextNOSException(string message) : base(message) { }
-        protected WithContextNOSException(string message, Exception e) : base(message, e) { }
+        protected WithContextNOSException(string message, System.Exception e) : base(message, e) { }
 
         protected WithContextNOSException(string message, IList<ContextFacade> contexts) : this(message, null, contexts) { }
 

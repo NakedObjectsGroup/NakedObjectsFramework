@@ -15,8 +15,9 @@ using System.Net.Http.Headers;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Representations;
 

@@ -6,8 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
 
-namespace NakedObjects.Facade.Translation {
+namespace NakedFramework.Facade.Translation {
     public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {
         static OidTranslationSlashSeparatedTypeAndIds() =>
             // default 

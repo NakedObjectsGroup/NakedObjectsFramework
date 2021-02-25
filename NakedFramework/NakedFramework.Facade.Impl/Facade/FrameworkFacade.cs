@@ -24,13 +24,14 @@ using NakedFramework.Core.Exception;
 using NakedFramework.Core.Reflect;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
-using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Facade;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Exception;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Translation;
+using NakedFramework.Facade.Utility;
 using NakedObjects.Facade.Impl.Contexts;
 using NakedObjects.Facade.Impl.Utility;
-using NakedObjects.Facade.Interface;
-using NakedObjects.Facade.Translation;
-using NakedObjects.Facade.Utility;
 using NakedObjects.Meta.Menu;
 
 namespace NakedObjects.Facade.Impl {

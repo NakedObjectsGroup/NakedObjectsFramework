@@ -9,7 +9,7 @@ using System;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
-using NakedObjects.Facade.Interface;
+using NakedFramework.Facade.Interface;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public class SimpleStringHasher : IStringHasher {

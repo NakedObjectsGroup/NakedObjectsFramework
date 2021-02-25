@@ -13,6 +13,8 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
+using NakedFramework.Facade.Exception;
+using NakedFramework.Facade.Facade;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public static class FacadeUtils {

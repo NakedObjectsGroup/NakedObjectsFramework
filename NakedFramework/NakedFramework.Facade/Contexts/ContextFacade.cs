@@ -6,8 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Facade.Facade;
 
-namespace NakedObjects.Facade.Contexts {
+namespace NakedFramework.Facade.Contexts {
     public abstract class ContextFacade {
         public abstract string Id { get; }
         public virtual IObjectFacade Target { get; set; }

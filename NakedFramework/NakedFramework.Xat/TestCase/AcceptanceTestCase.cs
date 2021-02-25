@@ -26,6 +26,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestObjects;
 using NakedFunctions.Reflector.Extensions;

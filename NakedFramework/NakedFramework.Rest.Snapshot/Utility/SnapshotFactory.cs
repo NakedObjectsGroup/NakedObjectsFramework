@@ -10,8 +10,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public static class SnapshotFactory {

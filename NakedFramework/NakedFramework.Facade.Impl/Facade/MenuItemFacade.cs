@@ -7,6 +7,7 @@
 
 using System.Threading.Tasks.Dataflow;
 using NakedFramework.Architecture.Menu;
+using NakedFramework.Facade.Facade;
 
 namespace NakedObjects.Facade.Impl {
     public class MenuItemFacade : IMenuItemFacade {

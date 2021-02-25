@@ -14,7 +14,10 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedObjects.Facade.Translation;
+using NakedFramework.Facade.Exception;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Translation;
 using NakedObjects.Services;
 
 namespace NakedObjects.Facade.Impl.Utility {

@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
 
-namespace NakedObjects.Facade {
+namespace NakedFramework.Facade.Exception {
     public class BadArgumentsNOSException : WithContextNOSException {
         public BadArgumentsNOSException(string message, IList<ContextFacade> contexts) : base(message, contexts) { }
 

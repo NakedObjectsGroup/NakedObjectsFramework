@@ -8,7 +8,7 @@
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
-using NakedObjects.Facade;
+using NakedFramework.Facade.Interface;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 

@@ -11,6 +11,7 @@ using NakedFramework;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Facade.Facade;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public static class FacetUtils {

@@ -13,21 +13,22 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Core.Configuration;
+using NakedFramework.DependencyInjection.DependencyInjection;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Translation;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
-using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Facade.Impl.Utility;
-using NakedObjects.Facade.Interface;
-using NakedObjects.Facade.Translation;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.Profile;
 
-namespace NakedObjects.DependencyInjection.Extensions {
+namespace NakedFramework.DependencyInjection.Extensions {
     public static class NakedFrameworkExtensions {
         public static CoreConfiguration CoreConfig(NakedCoreOptions options) {
             var config = new CoreConfiguration(options.MainMenus);

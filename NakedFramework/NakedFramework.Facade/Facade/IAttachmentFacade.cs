@@ -7,7 +7,7 @@
 
 using System.IO;
 
-namespace NakedObjects.Facade.Facade {
+namespace NakedFramework.Facade.Facade {
     public interface IAttachmentFacade {
         Stream InputStream { get; }
         string ContentType { get; }

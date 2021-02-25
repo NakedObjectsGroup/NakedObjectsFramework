@@ -7,9 +7,10 @@
 
 using System.Collections.Generic;
 using System.Reflection;
-using NakedObjects.Facade.Contexts;
+using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Interface;
 
-namespace NakedObjects.Facade {
+namespace NakedFramework.Facade.Facade {
     public interface IObjectFacade : IFacadeHolder {
         ITypeFacade Specification { get; }
         ITypeFacade ElementSpecification { get; }

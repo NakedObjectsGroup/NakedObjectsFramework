@@ -7,6 +7,7 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Facade.Facade;
 
 namespace NakedObjects.Facade.Impl {
     public class OidFacade : IOidFacade {
