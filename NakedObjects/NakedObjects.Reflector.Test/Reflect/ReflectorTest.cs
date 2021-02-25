@@ -23,10 +23,10 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.DependencyInjection.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.DependencyInjection.Utils;
+using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
-using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.FacetFactory;
 

@@ -14,7 +14,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.SemanticsProvider {
+namespace NakedFramework.Metamodel.SemanticsProvider {
     [Serializable]
     public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract<sbyte>, ISbyteValueFacet {
         private const sbyte DefaultValueConst = 0;

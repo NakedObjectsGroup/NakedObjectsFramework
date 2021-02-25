@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class IconFacetViaMethod : IconFacetAbstract {
         private readonly string iconName; // iconName from attribute

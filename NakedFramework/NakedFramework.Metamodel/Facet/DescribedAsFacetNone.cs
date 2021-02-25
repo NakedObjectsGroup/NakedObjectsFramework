@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     /// <summary>
     ///     Has a description of the empty string
     /// </summary>

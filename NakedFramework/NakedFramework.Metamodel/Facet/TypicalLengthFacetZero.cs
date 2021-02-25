@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class TypicalLengthFacetZero : TypicalLengthFacetAbstract {
         public TypicalLengthFacetZero(ISpecification holder)

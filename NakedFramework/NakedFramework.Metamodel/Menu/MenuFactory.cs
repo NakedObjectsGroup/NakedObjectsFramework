@@ -6,10 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 using NakedFramework.Architecture.Component;
 
-namespace NakedObjects.Meta.Menu {
+namespace NakedFramework.Metamodel.Menu {
     [Serializable]
     public class MenuFactory : IMenuFactory {
         #region Injected ServicesManager

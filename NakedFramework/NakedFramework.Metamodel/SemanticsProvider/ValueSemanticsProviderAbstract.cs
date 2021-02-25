@@ -10,9 +10,9 @@ using System.IO;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Meta.SemanticsProvider {
+namespace NakedFramework.Metamodel.SemanticsProvider {
     [Serializable]
     public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T> {
         private readonly Type adaptedType;
@@ -98,9 +98,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected abstract string DoEncode(T obj);
         protected abstract T DoRestore(string data);
 
-        protected string OutOfRangeMessage(string entry, T minValue, T maxValue) => string.Format(Resources.NakedObjects.OutOfRange, entry, minValue, maxValue);
+        protected string OutOfRangeMessage(string entry, T minValue, T maxValue) => string.Format(NakedObjects.Resources.NakedObjects.OutOfRange, entry, minValue, maxValue);
 
-        protected static string FormatMessage(string entry) => string.Format(Resources.NakedObjects.CannotFormat, entry, typeof(T).Name);
+        protected static string FormatMessage(string entry) => string.Format(NakedObjects.Resources.NakedObjects.CannotFormat, entry, typeof(T).Name);
 
         /// <summary>
         ///     http://jonskeet.uk/csharp/readbinary.html

@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ActionDefaultsFacetAnnotation : ActionDefaultsFacetAbstract {
         private readonly bool isDateTime;

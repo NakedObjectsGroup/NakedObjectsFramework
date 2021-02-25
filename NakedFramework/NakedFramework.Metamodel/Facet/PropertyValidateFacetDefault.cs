@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
         public PropertyValidateFacetDefault(ISpecification holder)
@@ -19,7 +19,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertyValidateFacet Members
 
-        public Exception CreateExceptionFor(IInteractionContext ic) => null;
+        public System.Exception CreateExceptionFor(IInteractionContext ic) => null;
 
         public string Invalidates(IInteractionContext ic) => null;
 

@@ -12,7 +12,7 @@ using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
         public BoundedFacet(ISpecification holder)
@@ -25,11 +25,11 @@ namespace NakedObjects.Meta.Facet {
                 ? DisabledReason(ic.Target)
                 : null;
 
-        public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
+        public System.Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
         #endregion
 
-        public string DisabledReason(INakedObjectAdapter inObjectAdapter) => Resources.NakedObjects.Bounded;
+        public string DisabledReason(INakedObjectAdapter inObjectAdapter) => NakedObjects.Resources.NakedObjects.Bounded;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

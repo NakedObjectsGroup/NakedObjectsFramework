@@ -8,9 +8,9 @@
 using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.SemanticsProvider;
+using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
         private readonly IValueSemanticsProvider<T> defaultsProvider;

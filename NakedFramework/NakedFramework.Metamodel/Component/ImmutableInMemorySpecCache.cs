@@ -14,11 +14,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Meta;
+using NakedFramework.Metamodel.Utils;
+
 #pragma warning disable 618
 #pragma warning disable SYSLIB0011
 
-namespace NakedObjects.Meta.Component {
+namespace NakedFramework.Metamodel.Component {
     [Serializable]
     public sealed class ImmutableInMemorySpecCache : ISpecificationCache, ISerializable, IDeserializationCallback {
         private readonly SerializedData tempData;

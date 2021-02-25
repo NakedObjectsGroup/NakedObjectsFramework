@@ -18,9 +18,9 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
+using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
-using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class ViewModelAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory {

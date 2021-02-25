@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class DateOnlyFacet : MarkerFacetAbstract, IDateOnlyFacet {
         public DateOnlyFacet(ISpecification holder) : base(Type, holder) { }

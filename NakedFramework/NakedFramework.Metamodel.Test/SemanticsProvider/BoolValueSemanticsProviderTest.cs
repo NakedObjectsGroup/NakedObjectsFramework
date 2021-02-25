@@ -15,8 +15,8 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.SemanticsProvider;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]

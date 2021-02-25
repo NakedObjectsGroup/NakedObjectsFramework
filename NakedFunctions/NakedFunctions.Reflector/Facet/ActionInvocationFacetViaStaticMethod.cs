@@ -21,9 +21,9 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Persist;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Component;
 using NakedObjects;
-using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]

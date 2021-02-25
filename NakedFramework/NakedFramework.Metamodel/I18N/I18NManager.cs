@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedObjects.Resources;
 
-namespace NakedObjects.Meta.I18N {
+namespace NakedFramework.Metamodel.I18N {
     public class I18NManager : II18NManager, IFacetDecorator {
         private const string Action = "action";
         private const string Description = "description";

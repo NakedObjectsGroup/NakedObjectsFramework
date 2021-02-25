@@ -5,13 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
         protected AbstractIntegrationFacet(ISpecification holder) : base(Type, holder) { }
 

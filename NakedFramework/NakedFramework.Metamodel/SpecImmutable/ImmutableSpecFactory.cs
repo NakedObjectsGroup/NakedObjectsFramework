@@ -9,9 +9,8 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.SpecImmutable;
 
-namespace NakedObjects.Meta.SpecImmutable {
+namespace NakedFramework.Metamodel.SpecImmutable {
     public static class ImmutableSpecFactory {
         private static readonly Dictionary<Type, ITypeSpecBuilder> SpecCache = new Dictionary<Type, ITypeSpecBuilder>();
 

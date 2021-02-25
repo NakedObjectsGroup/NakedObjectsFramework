@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public class CollectionFacet : CollectionFacetAbstract {
         public CollectionFacet(ISpecification holder)

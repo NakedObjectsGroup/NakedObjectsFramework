@@ -10,10 +10,10 @@ using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.Spec;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Spec;
+using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Meta.SpecImmutable {
+namespace NakedFramework.Metamodel.SpecImmutable {
     [Serializable]
     public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
         private readonly IIdentifier identifier;

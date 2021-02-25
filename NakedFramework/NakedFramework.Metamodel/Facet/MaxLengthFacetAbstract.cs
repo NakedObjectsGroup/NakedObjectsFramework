@@ -12,8 +12,9 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Exception;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMaxLengthFacet {
         protected MaxLengthFacetAbstract(int intValue, ISpecification holder)
@@ -37,10 +38,10 @@ namespace NakedObjects.Meta.Facet {
 
         public virtual string Invalidates(IInteractionContext ic) {
             var proposedArgument = ic.ProposedArgument;
-            return !Exceeds(proposedArgument) ? null : string.Format(Resources.NakedObjects.MaximumLengthMismatch, Value);
+            return !Exceeds(proposedArgument) ? null : string.Format(NakedObjects.Resources.NakedObjects.MaximumLengthMismatch, Value);
         }
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMaxLengthException(ic, Value, Invalidates(ic));
+        public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMaxLengthException(ic, Value, Invalidates(ic));
 
         #endregion
 

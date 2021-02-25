@@ -18,7 +18,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]

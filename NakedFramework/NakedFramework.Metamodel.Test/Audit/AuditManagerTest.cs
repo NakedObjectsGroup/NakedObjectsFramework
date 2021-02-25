@@ -13,8 +13,8 @@ using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Metamodel.Audit;
 using NakedObjects.Audit;
-using NakedObjects.Meta.Audit;
 
 namespace NakedObjects.Meta.Test.Audit {
     [TestClass]

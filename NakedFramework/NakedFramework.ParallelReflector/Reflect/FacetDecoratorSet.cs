@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.ParallelReflector.Reflect {
     public sealed class FacetDecoratorSet : IFacetDecoratorSet {

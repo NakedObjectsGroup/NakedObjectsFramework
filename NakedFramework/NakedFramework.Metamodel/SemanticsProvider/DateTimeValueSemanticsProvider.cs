@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Meta.SemanticsProvider {
+namespace NakedFramework.Metamodel.SemanticsProvider {
     [Serializable]
     public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstract<DateTime>, IDateValueFacet {
         private const bool EqualByContent = false;

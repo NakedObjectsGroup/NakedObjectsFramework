@@ -19,7 +19,7 @@ using NakedFramework.Core.Util;
 [assembly: InternalsVisibleTo("NakedFramework.ParallelReflector.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly ILogger<ActionDefaultsFacetViaMethod> logger;

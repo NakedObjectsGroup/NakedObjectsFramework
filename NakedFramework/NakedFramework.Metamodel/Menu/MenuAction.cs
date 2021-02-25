@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta.Menu {
+namespace NakedFramework.Metamodel.Menu {
     [Serializable]
     public sealed class MenuAction : IMenuActionImmutable {
         public MenuAction(IActionSpecImmutable actionSpec, string renamedTo = null) {

@@ -11,10 +11,10 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 using NakedObjects.Profile;
 
-namespace NakedObjects.Meta.Profile {
+namespace NakedFramework.Metamodel.Profile {
     [Serializable]
     public class ProfileActionInvocationFacet : ActionInvocationFacetAbstract {
         private readonly IIdentifier identifier;

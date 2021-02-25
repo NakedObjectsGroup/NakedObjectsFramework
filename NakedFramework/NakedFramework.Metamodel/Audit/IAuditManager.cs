@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedObjects.Meta.Audit {
+namespace NakedFramework.Metamodel.Audit {
     public interface IAuditManager {
         void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedObjectsFramework framework);
         void Updated(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);

@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 
 namespace NakedFunctions.Reflector.Facet {
     public class IntegrationFacet : AbstractIntegrationFacet {

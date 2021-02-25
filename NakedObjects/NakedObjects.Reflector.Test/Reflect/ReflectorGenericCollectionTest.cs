@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 

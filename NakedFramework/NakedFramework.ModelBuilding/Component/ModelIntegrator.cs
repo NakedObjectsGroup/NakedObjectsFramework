@@ -16,8 +16,7 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.SpecImmutable;
-
+using NakedFramework.Metamodel.SpecImmutable;
 
 namespace NakedFramework.ModelBuilding.Component {
     public class ModelIntegrator : IModelIntegrator {

@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
         public ActionChoicesFacetNone(ISpecification holder)

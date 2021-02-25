@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract, IImperativeFacet {
         private readonly ILogger<PropertyDefaultFacetViaMethod> logger;

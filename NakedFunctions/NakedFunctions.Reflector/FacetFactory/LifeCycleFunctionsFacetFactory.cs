@@ -18,10 +18,10 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
-using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedFunctions.Reflector.FacetFactory {

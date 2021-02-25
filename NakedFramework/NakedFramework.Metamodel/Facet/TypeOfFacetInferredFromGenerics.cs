@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFacet {
         public TypeOfFacetInferredFromGenerics(ISpecification holder)

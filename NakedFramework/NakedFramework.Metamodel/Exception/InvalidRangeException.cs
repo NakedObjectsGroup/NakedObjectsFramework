@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Meta {
+namespace NakedFramework.Metamodel.Exception {
     /// <summary>
     ///     The interaction is invalid because the input value is outside the specified range.
     /// </summary>

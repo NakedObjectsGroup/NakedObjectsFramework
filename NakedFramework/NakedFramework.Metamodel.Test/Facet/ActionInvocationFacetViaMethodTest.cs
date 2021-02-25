@@ -8,7 +8,7 @@
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 
 namespace NakedObjects.Meta.Test.Facet {
     [TestClass]

@@ -11,9 +11,9 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.SemanticsProvider;
+using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
         private readonly IValueSemanticsProvider<T> parser;
@@ -26,7 +26,7 @@ namespace NakedObjects.Meta.Facet {
 
         public INakedObjectAdapter ParseTextEntry(string entry, INakedObjectManager manager) {
             if (entry == null) {
-                throw new ArgumentException(Resources.NakedObjects.MissingEntryError);
+                throw new ArgumentException(NakedObjects.Resources.NakedObjects.MissingEntryError);
             }
 
             var parsed = parser.ParseTextEntry(entry);

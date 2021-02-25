@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public abstract class CallbackWithExceptionFacetAbstract : FacetAbstract, ICallbackWithExceptionFacet {
         protected CallbackWithExceptionFacetAbstract(Type facetType, ISpecification holder)
@@ -18,7 +18,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region ICallbackWithExceptionFacet Members
 
-        public abstract string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception);
+        public abstract string Invoke(INakedObjectAdapter nakedObjectAdapter, System.Exception exception);
 
         #endregion
     }

@@ -17,10 +17,10 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.Spec;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Spec;
+using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Meta.SpecImmutable {
+namespace NakedFramework.Metamodel.SpecImmutable {
     [Serializable]
     public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         private IIdentifier identifier;

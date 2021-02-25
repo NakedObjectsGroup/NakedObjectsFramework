@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta {
+namespace NakedFramework.Metamodel.Meta {
     [Serializable]
     public sealed class SerializedData {
         public IList<string> SpecKeys { get; set; }

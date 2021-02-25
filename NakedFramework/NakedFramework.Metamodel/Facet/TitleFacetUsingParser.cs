@@ -10,9 +10,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.SemanticsProvider;
+using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
         private readonly IValueSemanticsProvider<T> parser;

@@ -6,12 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public abstract class ImmutableFacetImpl : ImmutableFacetAbstract {
         protected ImmutableFacetImpl(WhenTo when, ISpecification holder)
@@ -19,10 +18,10 @@ namespace NakedObjects.Meta.Facet {
 
         public override string DisabledReason(INakedObjectAdapter target) =>
             Value switch {
-                WhenTo.Always => string.Format(Resources.NakedObjects.ImmutableMessage, target.Spec.SingularName),
+                WhenTo.Always => string.Format(NakedObjects.Resources.NakedObjects.ImmutableMessage, target.Spec.SingularName),
                 WhenTo.Never => null,
-                WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => string.Format(Resources.NakedObjects.ImmutableUntilPersistedMessage, target.Spec.SingularName),
-                WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => string.Format(Resources.NakedObjects.ImmutableOncePersistedMessage, target.Spec.SingularName),
+                WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => string.Format(NakedObjects.Resources.NakedObjects.ImmutableUntilPersistedMessage, target.Spec.SingularName),
+                WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => string.Format(NakedObjects.Resources.NakedObjects.ImmutableOncePersistedMessage, target.Spec.SingularName),
                 _ => null
             };
     }

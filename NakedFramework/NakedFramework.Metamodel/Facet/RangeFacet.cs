@@ -11,9 +11,10 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Exception;
+using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public class RangeFacet : IRangeFacet, ISerializable {
         // not using FacetAbstract because of implementing ISerializable
@@ -63,13 +64,13 @@ namespace NakedObjects.Meta.Facet {
             if (IsDateTime(proposedArgument.Object)) {
                 var minDate = DateTime.Today.AddDays(Min.ToDouble(null)).ToShortDateString();
                 var maxDate = DateTime.Today.AddDays(Max.ToDouble(null)).ToShortDateString();
-                return string.Format(Resources.NakedObjects.RangeMismatch, minDate, maxDate);
+                return string.Format(NakedObjects.Resources.NakedObjects.RangeMismatch, minDate, maxDate);
             }
 
-            return string.Format(Resources.NakedObjects.RangeMismatch, Min, Max);
+            return string.Format(NakedObjects.Resources.NakedObjects.RangeMismatch, Min, Max);
         }
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRangeException(ic, Min, Max, Invalidates(ic));
+        public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRangeException(ic, Min, Max, Invalidates(ic));
 
         public IConvertible Min { get; private set; }
         public IConvertible Max { get; private set; }

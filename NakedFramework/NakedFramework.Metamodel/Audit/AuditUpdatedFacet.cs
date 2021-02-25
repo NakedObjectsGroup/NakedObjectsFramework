@@ -9,9 +9,9 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Meta.Audit {
+namespace NakedFramework.Metamodel.Audit {
     [Serializable]
     public sealed class AuditUpdatedFacet : UpdatedCallbackFacetAbstract {
         private readonly IAuditManager manager;

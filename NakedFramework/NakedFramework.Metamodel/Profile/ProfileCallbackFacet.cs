@@ -9,10 +9,10 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 using NakedObjects.Profile;
 
-namespace NakedObjects.Meta.Profile {
+namespace NakedFramework.Metamodel.Profile {
     [Serializable]
     public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
         ICreatedCallbackFacet,

@@ -14,7 +14,7 @@ using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Authorization;
+using NakedFramework.Metamodel.Authorization;
 using NakedObjects.Security;
 
 namespace NakedObjects.Meta.Test.Authorization {

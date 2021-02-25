@@ -14,7 +14,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.SemanticsProvider {
+namespace NakedFramework.Metamodel.SemanticsProvider {
     [Serializable]
     public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstract<double>, IDoubleFloatingPointValueFacet {
         private const double DefaultValueConst = 0;
@@ -42,7 +42,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
                 return double.Parse(entry);
             }
             catch (FormatException) {
-                throw new InvalidEntryException(Resources.NakedObjects.NotANumber);
+                throw new InvalidEntryException(NakedObjects.Resources.NakedObjects.NotANumber);
             }
             catch (OverflowException) {
                 throw new InvalidEntryException(OutOfRangeMessage(entry, double.MinValue, double.MaxValue));

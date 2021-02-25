@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
@@ -14,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Resolve;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
         public HiddenFacet(WhenTo when, ISpecification holder)
@@ -24,20 +23,20 @@ namespace NakedObjects.Meta.Facet {
 
         public string HiddenReason(INakedObjectAdapter target) =>
             Value switch {
-                WhenTo.Always => Resources.NakedObjects.AlwaysHidden,
+                WhenTo.Always => NakedObjects.Resources.NakedObjects.AlwaysHidden,
                 WhenTo.Never => null,
-                WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => Resources.NakedObjects.HiddenUntilPersisted,
-                WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => Resources.NakedObjects.HiddenOncePersisted,
+                WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => NakedObjects.Resources.NakedObjects.HiddenUntilPersisted,
+                WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => NakedObjects.Resources.NakedObjects.HiddenOncePersisted,
                 _ => null
             };
 
         private string HiddenReason(bool persisted) =>
             Value switch
             {
-                WhenTo.Always => Resources.NakedObjects.AlwaysHidden,
+                WhenTo.Always => NakedObjects.Resources.NakedObjects.AlwaysHidden,
                 WhenTo.Never => null,
-                WhenTo.UntilPersisted when !persisted => Resources.NakedObjects.HiddenUntilPersisted,
-                WhenTo.OncePersisted when persisted => Resources.NakedObjects.HiddenOncePersisted,
+                WhenTo.UntilPersisted when !persisted => NakedObjects.Resources.NakedObjects.HiddenUntilPersisted,
+                WhenTo.OncePersisted when persisted => NakedObjects.Resources.NakedObjects.HiddenOncePersisted,
                 _ => null
             };
 
@@ -46,7 +45,7 @@ namespace NakedObjects.Meta.Facet {
         
         public string HidesForState(bool persisted) => HiddenReason(persisted);
 
-        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
+        public System.Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
         #endregion
     }

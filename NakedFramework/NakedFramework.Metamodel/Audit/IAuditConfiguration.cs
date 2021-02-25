@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Audit;
 
-namespace NakedObjects.Meta.Audit {
+namespace NakedFramework.Metamodel.Audit {
     public interface IAuditConfiguration {
         Type DefaultAuditor { get; }
         Dictionary<string, Type> NamespaceAuditors { get; }

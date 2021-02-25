@@ -17,7 +17,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class HideForContextFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
         private readonly ILogger<HideForContextFacet> logger;
@@ -36,7 +36,7 @@ namespace NakedObjects.Meta.Facet {
 
         public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
 
-        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
+        public System.Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
         public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             if (nakedObjectAdapter == null) {
@@ -44,7 +44,7 @@ namespace NakedObjects.Meta.Facet {
             }
 
             var isHidden = (bool) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
-            return isHidden ? Resources.NakedObjects.Hidden : null;
+            return isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
         }
 
         #endregion

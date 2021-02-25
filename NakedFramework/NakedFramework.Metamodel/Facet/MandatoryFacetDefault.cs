@@ -7,8 +7,9 @@
 
 using System;
 using NakedFramework.Architecture.Spec;
+using NakedObjects;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     /// <summary>
     ///     Whether a property or a parameter is mandatory (not optional).
     /// </summary>

@@ -12,7 +12,7 @@ using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public abstract class PropertyValidateFacetAbstract : FacetAbstract, IPropertyValidateFacet {
         protected PropertyValidateFacetAbstract(ISpecification holder)
@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Facet {
 
         public virtual string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArgument);
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
+        public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
 
         public abstract string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedParm);
 

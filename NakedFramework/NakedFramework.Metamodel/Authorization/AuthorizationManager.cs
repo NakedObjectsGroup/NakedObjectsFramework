@@ -19,7 +19,7 @@ using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 using NakedObjects.Security;
 
-namespace NakedObjects.Meta.Authorization {
+namespace NakedFramework.Metamodel.Authorization {
     [Serializable]
     public sealed class AuthorizationManager : IAuthorizationManager, IFacetDecorator {
         private readonly Type defaultAuthorizer;

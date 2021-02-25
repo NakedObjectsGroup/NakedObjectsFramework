@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public abstract class FacetAbstract : IFacet, IDeserializationCallback {
         private ISpecification holder;

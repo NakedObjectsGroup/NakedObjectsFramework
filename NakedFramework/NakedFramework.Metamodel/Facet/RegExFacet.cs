@@ -11,11 +11,12 @@ using System.Text.RegularExpressions;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Metamodel.Exception;
 
 [assembly:InternalsVisibleTo("NakedObjects.Reflector.Test")]
 [assembly: InternalsVisibleTo("NakedFunctions.Reflector.Test")]
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class RegExFacet : FacetAbstract, IRegExFacet {
         public RegExFacet(string validation, string format, bool caseSensitive, string message, ISpecification holder)
@@ -49,7 +50,7 @@ namespace NakedObjects.Meta.Facet {
 
         public string Format(string text) =>
             text == null
-                ? Resources.NakedObjects.EmptyString
+                ? NakedObjects.Resources.NakedObjects.EmptyString
                 : string.IsNullOrEmpty(FormatPattern)
                     ? text
                     : Pattern.Replace(text, FormatPattern);
@@ -69,10 +70,10 @@ namespace NakedObjects.Meta.Facet {
                 return null;
             }
 
-            return FailureMessage ?? Resources.NakedObjects.InvalidEntry;
+            return FailureMessage ?? NakedObjects.Resources.NakedObjects.InvalidEntry;
         }
 
-        public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
+        public System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
 
         #endregion
 

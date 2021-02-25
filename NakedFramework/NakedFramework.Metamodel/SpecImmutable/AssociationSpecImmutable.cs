@@ -9,9 +9,9 @@ using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Meta.SpecImmutable {
+namespace NakedFramework.Metamodel.SpecImmutable {
     [Serializable]
     public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
         private readonly IObjectSpecImmutable returnSpec;

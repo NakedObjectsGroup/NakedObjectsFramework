@@ -11,8 +11,9 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedObjects;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ViewModelEditFacetConvention : ViewModelFacetAbstract {
         public ViewModelEditFacetConvention(ISpecification holder) : base(Type, holder) { }

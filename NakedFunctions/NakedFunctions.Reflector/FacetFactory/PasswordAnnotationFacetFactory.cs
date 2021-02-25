@@ -14,8 +14,8 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class PasswordAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {

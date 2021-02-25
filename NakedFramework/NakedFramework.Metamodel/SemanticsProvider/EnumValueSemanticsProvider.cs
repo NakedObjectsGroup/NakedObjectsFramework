@@ -11,8 +11,9 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
+using NakedObjects;
 
-namespace NakedObjects.Meta.SemanticsProvider {
+namespace NakedFramework.Metamodel.SemanticsProvider {
     [Serializable]
     public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T>, IEnumValueFacet {
         private const bool EqualBycontent = true;
@@ -29,7 +30,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         #region IEnumValueFacet Members
 
         public string IntegralValue(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter.Object is T || TypeUtils.IsIntegralValueForEnum(nakedObjectAdapter.Object)) {
+            if (nakedObjectAdapter.Object is T || NakedObjects.TypeUtils.IsIntegralValueForEnum(nakedObjectAdapter.Object)) {
                 return Convert.ChangeType(nakedObjectAdapter.Object, Enum.GetUnderlyingType(typeof(T)))?.ToString();
             }
 
@@ -38,7 +39,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #endregion
 
-        private static bool IsEnumSubtype() => TypeUtils.IsEnum(AdaptedType) && !(AdaptedType == typeof(Enum));
+        private static bool IsEnumSubtype() => NakedObjects.TypeUtils.IsEnum(AdaptedType) && !(AdaptedType == typeof(Enum));
 
         private static T GetDefault() {
             // default(T) for an enum just returns 0 - but that's 
@@ -81,7 +82,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override T DoRestore(string data) {
             var typeAndValue = data.Split(':');
-            return (T) Enum.Parse(TypeUtils.GetType(typeAndValue[0]), typeAndValue[1]);
+            return (T) Enum.Parse(NakedObjects.TypeUtils.GetType(typeAndValue[0]), typeAndValue[1]);
         }
 
         public override string ToString() => "EnumAdapter: ";

@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Meta {
+namespace NakedFramework.Metamodel.Exception {
     /// <summary>
     ///     The interaction is invalid because the input value does not match the specified RegEx.
     /// </summary>

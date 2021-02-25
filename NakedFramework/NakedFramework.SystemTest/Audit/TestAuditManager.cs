@@ -10,8 +10,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Audit;
 using NakedObjects.Audit;
-using NakedObjects.Meta.Audit;
 using NakedObjects.Services;
 using NUnit.Framework;
 

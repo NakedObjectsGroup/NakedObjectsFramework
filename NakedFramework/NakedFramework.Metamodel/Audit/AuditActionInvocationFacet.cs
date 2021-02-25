@@ -11,9 +11,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Meta.Audit {
+namespace NakedFramework.Metamodel.Audit {
     [Serializable]
     public sealed class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
         private readonly IAuditManager auditManager;

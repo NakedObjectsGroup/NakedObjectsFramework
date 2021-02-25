@@ -8,9 +8,9 @@
 using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.SemanticsProvider;
+using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class TypicalLengthFacetUsingParser<T> : FacetAbstract, ITypicalLengthFacet {
         private readonly IValueSemanticsProvider<T> parser;

@@ -6,11 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ImmutableFacetNever : ImmutableFacetAbstract {
         public ImmutableFacetNever(ISpecification holder)

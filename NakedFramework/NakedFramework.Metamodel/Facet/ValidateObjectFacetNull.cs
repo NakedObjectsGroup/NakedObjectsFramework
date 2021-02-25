@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFacet {
         public ValidateObjectFacetNull(ISpecification holder)

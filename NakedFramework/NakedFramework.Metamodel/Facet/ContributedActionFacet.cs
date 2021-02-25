@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
         private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> collectionContributees = new();
@@ -29,7 +29,7 @@ namespace NakedObjects.Meta.Facet {
         private (IObjectSpecImmutable spec, string subMenu, string id) FindContributee(IObjectSpecImmutable objectSpec) =>
             IsContributedTo(objectSpec)
                 ? objectContributees.First(t => objectSpec.IsOfType(t.spec))
-                : throw new Exception($"Action is not contributed to {objectSpec.Type}");
+                : throw new System.Exception($"Action is not contributed to {objectSpec.Type}");
 
         #region IContributedActionFacet Members
 

@@ -17,8 +17,9 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
+
 #pragma warning disable 612
 
 namespace NakedObjects.ParallelReflector.Utils {

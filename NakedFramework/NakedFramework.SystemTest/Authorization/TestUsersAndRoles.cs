@@ -8,7 +8,7 @@
 using System;
 using System.Data.Entity;
 using System.Security.Principal;
-using NakedObjects.Meta.Authorization;
+using NakedFramework.Metamodel.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;

@@ -17,7 +17,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.SemanticsProvider {
+namespace NakedFramework.Metamodel.SemanticsProvider {
     [Serializable]
     public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T[]>, IArrayValueFacet<T>, IFromStream {
         private const T[] DefaultValueConst = null;
@@ -67,7 +67,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
                 throw new InvalidEntryException(FormatMessage(entry));
             }
             catch (InvalidCastException) {
-                throw new InvalidEntryException(string.Format(Resources.NakedObjects.ArrayConvertError, entry, typeof(T)));
+                throw new InvalidEntryException(string.Format(NakedObjects.Resources.NakedObjects.ArrayConvertError, entry, typeof(T)));
             }
             catch (ArgumentNullException) {
                 throw new InvalidEntryException(FormatMessage(entry));

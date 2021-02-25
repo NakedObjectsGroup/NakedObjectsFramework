@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta.SpecImmutable {
+namespace NakedFramework.Metamodel.SpecImmutable {
     [Serializable]
     public sealed class OneToOneAssociationSpecImmutable : AssociationSpecImmutable, IOneToOneAssociationSpecImmutable {
         public OneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec)

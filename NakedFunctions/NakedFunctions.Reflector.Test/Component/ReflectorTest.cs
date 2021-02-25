@@ -18,8 +18,8 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Metamodel.SpecImmutable;
 using NakedFunctions.Reflector.Extensions;
-using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.Test.Reflect;
 

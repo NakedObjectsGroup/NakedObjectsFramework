@@ -13,7 +13,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.Component {
+namespace NakedFramework.Metamodel.Component {
     [Serializable]
     public sealed class MetamodelHolder : IMetamodelBuilder {
         private readonly ISpecificationCache cache;
@@ -41,13 +41,13 @@ namespace NakedObjects.Meta.Component {
                 logger.LogError($"Failed to Load Specification for: {(type == null ? "null" : type.FullName)} error: {e}");
                 throw;
             }
-            catch (Exception e) {
+            catch (System.Exception e) {
                 throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: {e}"));
             }
         }
 
         public ITypeSpecImmutable GetSpecification(string name) {
-            var type = TypeUtils.GetType(name);
+            var type = NakedObjects.TypeUtils.GetType(name);
             return GetSpecification(type);
         }
 
@@ -61,7 +61,7 @@ namespace NakedObjects.Meta.Component {
 
         private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
             var key = TypeKeyUtils.GetKeyForType(type);
-            TypeUtils.GetType(type.FullName); // This should ensure type is cached 
+            NakedObjects.TypeUtils.GetType(type.FullName); // This should ensure type is cached 
             return cache.GetSpecification(key);
         }
     }

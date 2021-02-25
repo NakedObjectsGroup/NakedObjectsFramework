@@ -11,7 +11,7 @@ using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 
 // ReSharper disable UnusedMember.Global
 

@@ -7,8 +7,9 @@
 
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Core.Exception;
+using NakedObjects;
 
-namespace NakedObjects.Meta {
+namespace NakedFramework.Metamodel.Exception {
     /// <summary>
     ///     The interaction is invalid because the property or action parameter is mandatory
     ///     (eg not annotated with <see cref="OptionallyAttribute" />).

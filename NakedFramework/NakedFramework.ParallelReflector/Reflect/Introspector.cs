@@ -19,9 +19,8 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.Adapter;
-using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Adapter;
+using NakedFramework.Metamodel.SpecImmutable;
 
 namespace NakedObjects.ParallelReflector.Reflect {
     public abstract class Introspector : IIntrospector {

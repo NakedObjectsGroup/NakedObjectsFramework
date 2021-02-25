@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.FacetFactory;
 
-namespace NakedFramework.DependencyInjection.DependencyInjection {
+namespace NakedFramework.DependencyInjection.Utils {
     public static class ConfigHelpers {
 
         public static void RegisterFacetFactory<T>(this IServiceCollection services, Type factory) where T : IFacetFactory {

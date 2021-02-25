@@ -9,9 +9,9 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacetAbstract {
         private readonly string[] roles;

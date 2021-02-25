@@ -10,8 +10,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.Meta.Test.Facet {
     [TestClass]

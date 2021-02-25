@@ -8,9 +8,9 @@
 using System;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
-using NakedObjects.Meta.Audit;
-using NakedObjects.Meta.Authorization;
-using NakedObjects.Meta.Profile;
+using NakedFramework.Metamodel.Audit;
+using NakedFramework.Metamodel.Authorization;
+using NakedFramework.Metamodel.Profile;
 
 [assembly:InternalsVisibleTo("NakedFunctions.Reflector")]
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity")]

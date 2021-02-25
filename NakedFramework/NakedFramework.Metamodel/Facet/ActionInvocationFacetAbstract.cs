@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvocationFacet {
         protected ActionInvocationFacetAbstract(ISpecification holder)

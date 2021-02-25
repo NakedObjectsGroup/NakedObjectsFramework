@@ -12,8 +12,9 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
+using NakedObjects;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ViewModelSwitchableFacetConvention : ViewModelFacetAbstract {
         public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type, holder) { }

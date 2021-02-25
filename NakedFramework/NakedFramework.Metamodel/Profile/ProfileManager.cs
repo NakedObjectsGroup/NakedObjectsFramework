@@ -16,7 +16,7 @@ using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 using NakedObjects.Profile;
 
-namespace NakedObjects.Meta.Profile {
+namespace NakedFramework.Metamodel.Profile {
     [Serializable]
     public sealed class ProfileManager : IFacetDecorator, IProfileManager {
         private static readonly IDictionary<ProfileEvent, Type> EventToFacetMap = new Dictionary<ProfileEvent, Type> {

@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace NakedObjects.Meta.Utils {
+namespace NakedFramework.Metamodel.Utils {
     public static class SerializationUtils {
         public static void AddValue<T>(this SerializationInfo info, string id, T value) {
             info.AddValue(id, value, typeof(T));

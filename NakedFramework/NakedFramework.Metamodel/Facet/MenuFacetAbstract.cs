@@ -11,10 +11,10 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.Menu;
+using NakedFramework.Metamodel.Menu;
 using NakedObjects.Resources;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
         protected MenuFacetAbstract(ISpecification holder)

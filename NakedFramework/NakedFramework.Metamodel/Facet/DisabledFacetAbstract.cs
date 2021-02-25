@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDisabledFacet {
         protected DisabledFacetAbstract(WhenTo when, ISpecification holder)
@@ -25,7 +24,7 @@ namespace NakedObjects.Meta.Facet {
 
         public virtual string Disables(IInteractionContext ic) => DisabledReason(ic.Target);
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
+        public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
         public abstract string DisabledReason(INakedObjectAdapter nakedObjectAdapter);
 

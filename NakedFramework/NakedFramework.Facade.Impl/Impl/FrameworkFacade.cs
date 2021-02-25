@@ -31,7 +31,7 @@ using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Facade.Utility;
-using NakedObjects.Meta.Menu;
+using NakedFramework.Metamodel.Menu;
 
 namespace NakedFramework.Facade.Impl.Impl {
     public class FrameworkFacade : IFrameworkFacade {

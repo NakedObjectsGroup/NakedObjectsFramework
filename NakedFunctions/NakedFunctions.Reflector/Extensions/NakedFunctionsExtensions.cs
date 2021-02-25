@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Core.Component;
-using NakedFramework.DependencyInjection.DependencyInjection;
+using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;

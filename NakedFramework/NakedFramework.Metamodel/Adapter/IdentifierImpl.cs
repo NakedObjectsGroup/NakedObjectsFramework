@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.Adapter {
+namespace NakedFramework.Metamodel.Adapter {
     [Serializable]
     public class IdentifierImpl : IIdentifier {
         private readonly string className;

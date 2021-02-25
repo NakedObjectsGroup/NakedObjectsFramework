@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet {
         private readonly PropertyInfo property;
@@ -33,7 +33,7 @@ namespace NakedObjects.Meta.Facet {
                 collection.Clear();
                 property.SetValue(inObjectAdapter.GetDomainObject(), collection, null);
             }
-            catch (Exception e) {
+            catch (System.Exception e) {
                 throw new ReflectionException($"Failed to get/set property {property.Name} in {inObjectAdapter.Spec.FullName}", e);
             }
         }

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.SpecImmutable;
 
 namespace NakedFramework.Metamodel.SpecImmutable {
     public abstract class AbstractAdapter : MemberSpecImmutable {

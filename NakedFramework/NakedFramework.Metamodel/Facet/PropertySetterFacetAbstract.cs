@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySetterFacet {
         protected PropertySetterFacetAbstract(ISpecification holder)

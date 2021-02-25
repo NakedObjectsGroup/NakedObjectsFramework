@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class DataTypeFacetAnnotation : DataTypeFacetAbstract {
         public DataTypeFacetAnnotation(DataType dataType, ISpecification holder)

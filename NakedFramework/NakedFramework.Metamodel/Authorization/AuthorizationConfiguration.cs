@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Security;
 
-namespace NakedObjects.Meta.Authorization {
+namespace NakedFramework.Metamodel.Authorization {
     public class AuthorizationConfiguration<TDefault>
         : IAuthorizationConfiguration
         where TDefault : ITypeAuthorizer<object> {

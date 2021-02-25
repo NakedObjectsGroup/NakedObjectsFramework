@@ -13,9 +13,9 @@ using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Meta.Spec {
+namespace NakedFramework.Metamodel.Spec {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>

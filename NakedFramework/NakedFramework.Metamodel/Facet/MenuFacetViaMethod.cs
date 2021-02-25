@@ -10,9 +10,9 @@ using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.Menu;
+using NakedFramework.Metamodel.Menu;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class MenuFacetViaMethod : MenuFacetAbstract {
         private readonly MethodInfo method;

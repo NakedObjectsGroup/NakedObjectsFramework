@@ -8,9 +8,10 @@
 using System;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
+using NakedObjects;
 
-namespace NakedObjects.Meta.I18N {
+namespace NakedFramework.Metamodel.I18N {
     [Serializable]
     public sealed class NamedFacetI18N : NamedFacetAbstract {
         public NamedFacetI18N(string valueString, ISpecification holder)

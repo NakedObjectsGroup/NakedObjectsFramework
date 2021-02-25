@@ -6,11 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class DisabledFacetAlways : DisabledFacetAbstract {
         public DisabledFacetAlways(ISpecification holder)
@@ -19,7 +18,7 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     Always returns <i>Always disabled</i>
         /// </summary>
-        public override string DisabledReason(INakedObjectAdapter target) => Resources.NakedObjects.AlwaysDisabled;
+        public override string DisabledReason(INakedObjectAdapter target) => NakedObjects.Resources.NakedObjects.AlwaysDisabled;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -9,7 +9,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Component;
-using NakedFramework.DependencyInjection.DependencyInjection;
+using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedObjects.Reflector.Component;

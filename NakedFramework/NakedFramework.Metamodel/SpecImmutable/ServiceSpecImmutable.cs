@@ -9,7 +9,7 @@ using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta.SpecImmutable {
+namespace NakedFramework.Metamodel.SpecImmutable {
     [Serializable]
     public sealed class ServiceSpecImmutable : TypeSpecImmutable, IServiceSpecBuilder {
         public ServiceSpecImmutable(Type type, bool isRecognized) : base(type, isRecognized) { }

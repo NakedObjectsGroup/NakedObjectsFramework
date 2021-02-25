@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Meta.SemanticsProvider {
+namespace NakedFramework.Metamodel.SemanticsProvider {
     [Serializable]
     public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IColorValueFacet {
         private const bool EqualByContent = true;
@@ -59,7 +59,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
                 throw new InvalidEntryException(FormatMessage(entry));
             }
             catch (OverflowException) {
-                throw new InvalidEntryException(string.Format(Resources.NakedObjects.OutOfRange, entry, int.MinValue, int.MaxValue));
+                throw new InvalidEntryException(string.Format(NakedObjects.Resources.NakedObjects.OutOfRange, entry, int.MinValue, int.MaxValue));
             }
         }
 

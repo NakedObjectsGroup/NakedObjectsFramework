@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]

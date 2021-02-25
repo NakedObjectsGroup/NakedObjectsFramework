@@ -14,7 +14,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.SemanticsProvider {
+namespace NakedFramework.Metamodel.SemanticsProvider {
     [Serializable]
     public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstract<decimal>, IDecimalValueFacet {
         private const decimal DefaultValueConst = 0;

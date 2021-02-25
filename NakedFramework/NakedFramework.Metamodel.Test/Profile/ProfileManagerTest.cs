@@ -12,7 +12,7 @@ using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Profile;
+using NakedFramework.Metamodel.Profile;
 using NakedObjects.Profile;
 
 namespace NakedObjects.Meta.Test.Profile {

@@ -10,9 +10,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Facet;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Meta.Authorization {
+namespace NakedFramework.Metamodel.Authorization {
     [Serializable]
     public sealed class AuthorizationHideForSessionFacet : HideForSessionFacetAbstract {
         private readonly IAuthorizationManager authorizationManager;

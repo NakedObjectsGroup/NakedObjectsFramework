@@ -8,8 +8,9 @@
 using System;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedObjects;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class NamedFacetInferred : NamedFacetAbstract {
         public NamedFacetInferred(string value, ISpecification holder)

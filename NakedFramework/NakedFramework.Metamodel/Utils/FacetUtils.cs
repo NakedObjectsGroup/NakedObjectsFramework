@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.Utils {
+namespace NakedFramework.Metamodel.Utils {
     public static class FacetUtils {
         public static string[] SplitOnComma(string toSplit) {
             if (string.IsNullOrEmpty(toSplit)) {

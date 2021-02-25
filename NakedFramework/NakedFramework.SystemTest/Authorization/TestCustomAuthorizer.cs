@@ -9,7 +9,7 @@ using System;
 using System.Data.Entity;
 using System.Security.Principal;
 using NakedFramework.Core.Exception;
-using NakedObjects.Meta.Authorization;
+using NakedFramework.Metamodel.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
 using NUnit.Framework;

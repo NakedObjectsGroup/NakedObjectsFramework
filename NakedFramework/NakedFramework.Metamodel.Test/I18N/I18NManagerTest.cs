@@ -13,7 +13,7 @@ using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.I18N;
+using NakedFramework.Metamodel.I18N;
 
 namespace NakedObjects.Meta.Test.I18N {
     [TestClass]

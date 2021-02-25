@@ -18,7 +18,7 @@ using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 using NakedObjects.Audit;
 
-namespace NakedObjects.Meta.Audit {
+namespace NakedFramework.Metamodel.Audit {
     [Serializable]
     public sealed class AuditManager : IFacetDecorator, IAuditManager {
         private readonly Type defaultAuditor;

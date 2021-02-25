@@ -14,8 +14,8 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Adapter;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.SemanticsProvider;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     public abstract class ValueSemanticsProviderAbstractTestCase<T> {

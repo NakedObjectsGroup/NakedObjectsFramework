@@ -14,10 +14,10 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Exception;
+using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
-using NakedObjects.Meta;
-using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]

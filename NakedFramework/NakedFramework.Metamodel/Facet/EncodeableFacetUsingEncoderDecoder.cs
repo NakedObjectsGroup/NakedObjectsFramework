@@ -11,9 +11,9 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.SemanticsProvider;
+using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
         private readonly IValueSemanticsProvider<T> encoderDecoder;

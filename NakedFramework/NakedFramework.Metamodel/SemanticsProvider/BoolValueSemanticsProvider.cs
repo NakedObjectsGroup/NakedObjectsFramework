@@ -14,7 +14,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Meta.SemanticsProvider {
+namespace NakedFramework.Metamodel.SemanticsProvider {
     [Serializable]
     public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstract<bool>, IBooleanValueFacet {
         private const bool DefaultValueConst = false;
@@ -55,7 +55,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
                 return false;
             }
 
-            throw new InvalidEntryException(string.Format(Resources.NakedObjects.NotALogical, entry));
+            throw new InvalidEntryException(string.Format(NakedObjects.Resources.NakedObjects.NotALogical, entry));
         }
 
         protected override bool DoParseInvariant(string entry) => bool.Parse(entry);
@@ -66,13 +66,13 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override bool DoRestore(string data) {
             if (data.Length != 1) {
-                throw new InvalidDataException(string.Format(Resources.NakedObjects.InvalidLogicalLength, data.Length));
+                throw new InvalidDataException(string.Format(NakedObjects.Resources.NakedObjects.InvalidLogicalLength, data.Length));
             }
 
             return data[0] switch {
                 'T' => true,
                 'F' => false,
-                _ => throw new InvalidDataException(string.Format(Resources.NakedObjects.InvalidLogicalType, data[0]))
+                _ => throw new InvalidDataException(string.Format(NakedObjects.Resources.NakedObjects.InvalidLogicalType, data[0]))
             };
         }
     }

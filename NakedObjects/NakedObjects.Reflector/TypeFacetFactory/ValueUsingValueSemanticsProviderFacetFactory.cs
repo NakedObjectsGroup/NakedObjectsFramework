@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.SemanticsProvider;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.SemanticsProvider;
+using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.TypeFacetFactory {
     public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeFacetFactoryProcessor {

@@ -11,9 +11,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Meta.SemanticsProvider;
+using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamFacet {
         private readonly IFromStream fromStream;

@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Audit;
 
-namespace NakedObjects.Meta.Audit {
+namespace NakedFramework.Metamodel.Audit {
     //Add namespace auditors individually via AddNamespaceAuditor, or create the whole dictionary
     //and set the NamespaceAuditors property.
     public class AuditConfiguration<TDefault> : IAuditConfiguration where TDefault : IAuditor {

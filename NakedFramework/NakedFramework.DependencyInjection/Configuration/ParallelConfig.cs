@@ -13,17 +13,19 @@ using NakedFramework.Core.Authentication;
 using NakedFramework.Core.Component;
 using NakedFramework.Core.Framework;
 using NakedFramework.Core.Spec;
+using NakedFramework.DependencyInjection.Component;
 using NakedFramework.DependencyInjection.FacetFactory;
+using NakedFramework.DependencyInjection.Utils;
+using NakedFramework.Metamodel.Component;
+using NakedFramework.Metamodel.Menu;
 using NakedFramework.ModelBuilding.Component;
-using NakedObjects.Meta.Component;
-using NakedObjects.Meta.Menu;
 
-namespace NakedFramework.DependencyInjection.DependencyInjection {
+namespace NakedFramework.DependencyInjection.Configuration {
     public static class ParallelConfig {
         public static void RegisterCoreSingletonTypes(IServiceCollection services) {
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
-            services.AddSingleton<IMetamodel, NakedObjects.Meta.Component.MetamodelHolder>();
-            services.AddSingleton<IMetamodelBuilder, NakedObjects.Meta.Component.MetamodelHolder>();
+            services.AddSingleton<IMetamodel, MetamodelHolder>();
+            services.AddSingleton<IMetamodelBuilder, MetamodelHolder>();
             services.AddSingleton<IMenuFactory, MenuFactory>();
             services.AddSingleton<IModelIntegrator, ModelIntegrator>();
             services.AddSingleton<IModelBuilder, ModelBuilder>();

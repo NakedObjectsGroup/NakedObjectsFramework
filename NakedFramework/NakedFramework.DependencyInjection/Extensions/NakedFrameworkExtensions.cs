@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Core.Configuration;
-using NakedFramework.DependencyInjection.DependencyInjection;
+using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Impl.Translators;
@@ -24,9 +24,9 @@ using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
 using NakedFramework.Facade;
-using NakedObjects.Meta.Audit;
-using NakedObjects.Meta.Authorization;
-using NakedObjects.Meta.Profile;
+using NakedFramework.Metamodel.Audit;
+using NakedFramework.Metamodel.Authorization;
+using NakedFramework.Metamodel.Profile;
 
 namespace NakedFramework.DependencyInjection.Extensions {
     public static class NakedFrameworkExtensions {

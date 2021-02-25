@@ -10,8 +10,8 @@ using System.Linq;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Metamodel.Facet;
 using NakedObjects;
-using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]

@@ -20,7 +20,7 @@ using NakedFramework.Core.Util;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
         private readonly ILogger<ActionInvocationFacetViaMethod> logger;

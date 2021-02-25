@@ -10,16 +10,15 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
-using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Meta.Menu {
+namespace NakedFramework.Metamodel.Menu {
     [Serializable]
     public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCallback {
         public MenuImpl(IMetamodel metamodel, Type defaultType, bool addAllActions, string name, string id = null) {
@@ -36,7 +35,7 @@ namespace NakedObjects.Meta.Menu {
         public MenuImpl(IMetamodel metamodel, string name, string id = null)
         {
             Metamodel = metamodel;
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(id)) throw new Exception($"Menu Name and Id must not be null, unless a default type is specified");
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(id)) throw new System.Exception($"Menu Name and Id must not be null, unless a default type is specified");
             Name = name;
             Id = id;
         }
@@ -63,7 +62,7 @@ namespace NakedObjects.Meta.Menu {
         public IMenu AddAction(string actionName) {
             if(Type == null)
             {
-                throw new Exception($"No type has been specified for the action: {actionName}");
+                throw new System.Exception($"No type has been specified for the action: {actionName}");
             }
             var actionSpec = ActionsForObject.FirstOrDefault(a => a.Identifier.MemberName == actionName);
             if (actionSpec == null) {
@@ -79,7 +78,7 @@ namespace NakedObjects.Meta.Menu {
         public IMenu GetSubMenu(string menuName) {
             var menu = GetSubMenuIfExists(menuName);
             if (menu == null) {
-                throw new Exception($"No sub-menu named {menuName}");
+                throw new System.Exception($"No sub-menu named {menuName}");
             }
 
             return menu;
@@ -88,7 +87,7 @@ namespace NakedObjects.Meta.Menu {
         public IMenu AddRemainingNativeActions() {
             if (Type == null)
             {
-                throw new Exception($"No default type has been specified (as the source for the remaining native actions)");
+                throw new System.Exception($"No default type has been specified (as the source for the remaining native actions)");
             }
             AddOrderableElementsToMenu(ActionsForObject, this);
             return this;
@@ -97,7 +96,7 @@ namespace NakedObjects.Meta.Menu {
         public IMenu AddContributedActions() {
             if (Type == null)
             {
-                throw new Exception($"No default type has been specified (as the source for the contributed actions)");
+                throw new System.Exception($"No default type has been specified (as the source for the contributed actions)");
             }
             ObjectSpec?.ContributedActions.ForEach(AddContributed);
             return this;

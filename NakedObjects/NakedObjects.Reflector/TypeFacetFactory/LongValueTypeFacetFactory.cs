@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Meta.SemanticsProvider;
+using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedObjects.Reflector.TypeFacetFactory {
     public sealed class LongValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {

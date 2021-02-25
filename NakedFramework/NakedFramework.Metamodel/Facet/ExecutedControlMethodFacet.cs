@@ -9,11 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using NakedFramework;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class ExecutedControlMethodFacet : FacetAbstract, IExecutedControlMethodFacet {
         private readonly IDictionary<MethodInfo, Where> methodToWhere = new Dictionary<MethodInfo, Where>();

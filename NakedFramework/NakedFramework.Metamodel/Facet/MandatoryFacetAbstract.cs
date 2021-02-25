@@ -10,8 +10,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Metamodel.Exception;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
         protected MandatoryFacetAbstract(ISpecification holder)
@@ -21,9 +22,9 @@ namespace NakedObjects.Meta.Facet {
 
         #region IMandatoryFacet Members
 
-        public virtual string Invalidates(IInteractionContext ic) => IsRequiredButNull(ic.ProposedArgument) ? Resources.NakedObjects.Mandatory : null;
+        public virtual string Invalidates(IInteractionContext ic) => IsRequiredButNull(ic.ProposedArgument) ? NakedObjects.Resources.NakedObjects.Mandatory : null;
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMandatoryException(ic, Invalidates(ic));
+        public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMandatoryException(ic, Invalidates(ic));
 
         public virtual bool IsOptional => !IsMandatory;
 
