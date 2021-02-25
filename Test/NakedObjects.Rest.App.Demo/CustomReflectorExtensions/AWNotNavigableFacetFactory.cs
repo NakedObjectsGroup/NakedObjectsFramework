@@ -12,11 +12,11 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.DependencyInjection.FacetFactory;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
+using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.DependencyInjection.Component;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.Rest.App.Demo.AWCustom {

@@ -11,9 +11,6 @@ using System.Linq;
 using NakedFunctions;
 using AW.Types;
 using static AW.Helpers;
-using NakedFramework;
-
-using System.Collections.Generic;
 
 namespace AW.Functions {
     [Named("Sales")]

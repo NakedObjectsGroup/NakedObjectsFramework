@@ -7,11 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
 using AW.Functions;
 using NakedFunctions;
-using static AW.Utilities;
 
 namespace AW.Types
 {

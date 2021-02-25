@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using AW.Functions;
 using NakedFunctions;
-using static AW.Utilities;
 
 namespace AW.Types
 {

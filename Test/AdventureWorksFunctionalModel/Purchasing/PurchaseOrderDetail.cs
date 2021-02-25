@@ -7,7 +7,6 @@
 
 using System;
 using NakedFunctions;
-using static AW.Utilities;
 
 namespace AW.Types {
         public record PurchaseOrderDetail {

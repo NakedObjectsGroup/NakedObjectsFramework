@@ -7,7 +7,6 @@
 
 using System;
 using NakedFunctions;
-using static AW.Utilities;
 using System.Collections.Generic;
 
 namespace AW.Types {

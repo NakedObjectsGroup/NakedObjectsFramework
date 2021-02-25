@@ -7,9 +7,10 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Facade.Facade;
+using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
-using NakedObjects.Facade;
-using NakedObjects.Rest.Model;
+using NakedFramework.Rest.Model;
 
 namespace NakedObjects.Rest.App.Demo {
     //[Authorize]

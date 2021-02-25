@@ -11,9 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NakedFramework.Architecture.Component;
-using NakedObjects.DependencyInjection.Extensions;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.Entity.Extensions;
+using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
-using NakedObjects.Rest.Extensions;
 using Newtonsoft.Json;
 
 namespace NakedObjects.Rest.Test.App {

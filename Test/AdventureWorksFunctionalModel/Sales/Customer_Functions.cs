@@ -7,7 +7,6 @@
 
 using System;
 using AW.Types;
-using NakedFunctions;
 
 namespace AW.Functions {
        

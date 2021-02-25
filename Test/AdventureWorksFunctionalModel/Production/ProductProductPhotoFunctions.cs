@@ -1,7 +1,4 @@
-﻿using NakedFunctions;
-using AW.Types;
-
-namespace AW.Functions
+﻿namespace AW.Functions
 {
     public static class ProductProductPhotoFunctions
     {

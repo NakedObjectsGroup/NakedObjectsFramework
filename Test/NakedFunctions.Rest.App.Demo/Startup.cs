@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
 using AW;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,9 +14,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.Entity.Extensions;
+using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
-using NakedObjects.DependencyInjection.Extensions;
-using NakedObjects.Rest.Extensions;
 using Newtonsoft.Json;
 
 namespace NakedFunctions.Rest.App.Demo {

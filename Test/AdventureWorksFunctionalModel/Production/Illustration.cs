@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using NakedFunctions;
-using static AW.Utilities;
 
 namespace AW.Types {
     public record Illustration  {

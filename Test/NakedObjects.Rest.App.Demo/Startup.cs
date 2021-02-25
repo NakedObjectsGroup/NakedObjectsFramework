@@ -12,12 +12,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.DependencyInjection.Component;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.ParallelReflector.FacetFactory;
-using NakedObjects.DependencyInjection.Extensions;
-using NakedObjects.DependencyInjection.FacetFactory;
+using NakedFramework.Persistor.Entity.Extensions;
+using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Rest.App.Demo.AWCustom;
-using NakedObjects.Rest.Extensions;
 using Newtonsoft.Json;
 
 namespace NakedObjects.Rest.App.Demo {

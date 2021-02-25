@@ -9,8 +9,6 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Value;
 using NakedFunctions;
-using static AW.Utilities;
-
 
 namespace AW.Types {
     public record ProductPhoto  {
