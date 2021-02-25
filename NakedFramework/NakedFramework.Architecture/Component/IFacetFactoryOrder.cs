@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     public interface IFacetFactoryOrder<T> {
         int Order { get; }
     }

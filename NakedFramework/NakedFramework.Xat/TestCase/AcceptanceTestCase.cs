@@ -20,6 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestObjects;
 using NakedFunctions.Reflector.Extensions;

@@ -5,7 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Architecture.Component {
+using NakedObjects;
+
+namespace NakedFramework.Architecture.Component {
     /// <summary>
     ///     Service that will inject an implementation of IDomainObjectContainer and/or INakedObjectsFramework into
     ///     domain objects and services when they are instantiated.

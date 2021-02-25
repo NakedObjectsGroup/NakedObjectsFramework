@@ -17,6 +17,7 @@ open System
 open System.Collections.Generic
 open System.Reflection
 open Microsoft.Extensions.Logging
+open NakedFramework.Architecture.Component
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"

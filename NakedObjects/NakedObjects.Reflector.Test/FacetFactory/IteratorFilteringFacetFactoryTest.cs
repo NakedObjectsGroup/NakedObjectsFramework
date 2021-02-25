@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Architecture.Component;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;

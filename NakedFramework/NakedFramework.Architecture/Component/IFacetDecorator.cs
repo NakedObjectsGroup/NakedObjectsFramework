@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     public interface IFacetDecorator {
         /// <summary>
         ///     Return a list of facet types that this decorator will decorate

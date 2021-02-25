@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects {

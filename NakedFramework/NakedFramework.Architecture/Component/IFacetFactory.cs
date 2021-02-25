@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     public interface IFacetFactory : IComparable<IFacetFactory> {
         /// <summary>
         ///     To order the factory
