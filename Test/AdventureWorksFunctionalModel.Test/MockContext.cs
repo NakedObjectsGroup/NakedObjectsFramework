@@ -8,30 +8,17 @@ namespace AdventureWorksFunctionalModel.Test
 {
     public record MockContext : IContext
     {
-        #region constructors
-        public MockContext(object[] instances, IAlert a, IClock c, IRandomSeedGenerator r, IGuidGenerator g, IPrincipalProvider p)
-        {
-            AllInstances = instances.ToImmutableArray();
-            Services = new Dictionary<object, object> {
-                { typeof(IAlert), a },
-                { typeof(IClock), c},
-                { typeof(IRandomSeedGenerator),r },
-                { typeof(IGuidGenerator), g},
-                { typeof(IPrincipalProvider),p }
-            }.ToImmutableDictionary();
-        }
-
-        public MockContext(object[] instances) :
-            this(instances, new MockAlert(), new MockClock(), new MockRandomSeedGenerator(), new MockGuidGenerator(), new MockPrincipalProvider())
-        { }
-        #endregion
-
         #region Additional public methods
-        public ImmutableArray<object> AllInstances { get; init; }
+        public MockContext WithInstances(params object[] instances) =>
+            this with { AllInstances = AllInstances.AddRange(instances) };
 
-        public ImmutableDictionary<object, object> Services { get; init; }
+        public ImmutableArray<object> AllInstances { get; init; } = new object[] { }.ToImmutableArray();
 
-        public ImmutableDictionary<object, object> UpdatedInstances { get; init; }
+        public ImmutableDictionary<object, object> Services { get; init; } 
+            = new Dictionary<object, object>().ToImmutableDictionary();
+
+        public ImmutableDictionary<object, object> UpdatedInstances { get; init; } 
+            = new Dictionary<object, object>().ToImmutableDictionary();
 
         public MockContext WithService<T>(T service) where T : class =>
             this with { Services = Services.Add(typeof(T), service) };
@@ -42,11 +29,10 @@ namespace AdventureWorksFunctionalModel.Test
         public Func<IContext, IContext> Deferred { get; init; }
 
         public MockContext ExecuteDeferred() => (MockContext)Deferred?.Invoke(this);
-
         #endregion
 
         #region Implementation of IContext
-        public T GetService<T>() => Services.OfType<T>().FirstOrDefault();
+        public T GetService<T>() => (T) Services[typeof(T)];
 
         public IQueryable<T> Instances<T>() where T : class => AllInstances.OfType<T>().AsQueryable();
 

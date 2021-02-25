@@ -5,9 +5,13 @@ namespace AdventureWorksFunctionalModel.Test
 {
     public class MockClock : IClock
     {
-        public DateTime Now() => throw new NotImplementedException();
-        
-        public DateTime Today() => throw new NotImplementedException();
+        public DateTime Time { get; set; }
+
+        #region Implementation of IClock
+        public DateTime Now() => Time;
+
+        public DateTime Today() => Time.Date;
+        #endregion
 
     }
 }

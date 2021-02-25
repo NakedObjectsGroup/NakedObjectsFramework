@@ -4,14 +4,12 @@ namespace AdventureWorksFunctionalModel.Test
 {
     public class MockAlert : IAlert
     {
-        public void InformUser(string message)
-        {
-            throw new System.NotImplementedException();
-        }
+        public string Message_Inform;
 
-        public void WarnUser(string message)
-        {
-            throw new System.NotImplementedException();
-        }
+        public string Message_Warn;
+
+        public void InformUser(string message) => Message_Inform += message;
+
+        public void WarnUser(string message) => Message_Warn += message;
     }
 }
