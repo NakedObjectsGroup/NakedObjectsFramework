@@ -14,11 +14,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
 using NakedObjects;
-using NakedObjects.Core;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Component;
 using NakedObjects.Persistor.Entity.Util;
 

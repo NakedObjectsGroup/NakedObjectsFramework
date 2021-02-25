@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

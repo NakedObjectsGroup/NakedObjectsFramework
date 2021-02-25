@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core;
+using NakedFramework.Core.Exception;
 
 namespace NakedObjects.Meta.Facet {
     /// <summary>

@@ -17,8 +17,8 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Core;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {

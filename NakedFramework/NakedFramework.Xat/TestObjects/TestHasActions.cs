@@ -12,8 +12,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Resolve;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Core.Resolve;
 
 namespace NakedFramework.Xat.TestObjects {
     internal abstract class TestHasActions : ITestHasActions {

@@ -8,7 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Core.Util.Enumer;
+using NakedFramework.Core.Util;
 using NUnit.Framework;
 
 namespace NakedObjects.Core.Test.Util {

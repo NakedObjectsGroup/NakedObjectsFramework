@@ -11,7 +11,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 using NakedObjects.Persistor.Entity.Component;
 using NakedObjects.Persistor.Entity.Configuration;
 

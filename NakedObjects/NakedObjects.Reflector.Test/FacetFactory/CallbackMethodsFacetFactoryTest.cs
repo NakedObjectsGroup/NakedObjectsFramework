@@ -17,7 +17,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Core.Adapter;
+using NakedFramework.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
 

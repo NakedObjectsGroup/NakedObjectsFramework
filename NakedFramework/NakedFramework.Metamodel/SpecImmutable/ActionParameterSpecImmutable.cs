@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
 

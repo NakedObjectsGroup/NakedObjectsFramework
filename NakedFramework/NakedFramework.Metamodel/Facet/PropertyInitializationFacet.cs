@@ -10,7 +10,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

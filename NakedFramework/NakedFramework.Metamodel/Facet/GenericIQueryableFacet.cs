@@ -11,8 +11,7 @@ using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Util;
-using NakedObjects.Core.Util.Query;
+using NakedFramework.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

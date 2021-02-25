@@ -14,9 +14,9 @@ using System.Runtime.CompilerServices;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Util;
 using NakedFunctions.Reflector.Component;
 using NakedObjects;
-using NakedObjects.Core.Util;
 
 namespace NakedFunctions.Reflector.Utils {
     public static class InjectUtils {

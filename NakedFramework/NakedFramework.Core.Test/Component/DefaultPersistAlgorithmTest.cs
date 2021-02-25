@@ -12,8 +12,9 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Resolve;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Component;
-using NakedObjects.Core.Resolve;
+using NakedFramework.Core.Component;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Resolve;
 using NUnit.Framework;
 
 namespace NakedObjects.Core.Test.Component {

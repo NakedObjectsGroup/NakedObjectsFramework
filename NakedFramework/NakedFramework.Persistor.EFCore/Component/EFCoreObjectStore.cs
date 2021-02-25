@@ -10,7 +10,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Persistor.EFCore.Configuration;
-using NakedObjects.Core;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreObjectStore : IObjectStore, IDisposable {

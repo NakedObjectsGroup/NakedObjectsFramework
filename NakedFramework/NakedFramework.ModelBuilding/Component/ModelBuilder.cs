@@ -10,8 +10,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Core;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 
 namespace NakedFramework.ModelBuilding.Component {
     public class ModelBuilder : IModelBuilder {

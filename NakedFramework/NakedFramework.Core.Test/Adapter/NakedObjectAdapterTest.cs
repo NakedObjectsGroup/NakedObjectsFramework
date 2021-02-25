@@ -11,7 +11,8 @@ using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Core.Adapter;
+using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Exception;
 using NUnit.Framework;
 
 namespace NakedObjects.Core.Test.Adapter {

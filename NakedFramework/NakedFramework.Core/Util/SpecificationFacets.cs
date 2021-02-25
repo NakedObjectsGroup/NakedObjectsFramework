@@ -5,12 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class SpecificationFacets {
         public static bool IsNeverPersisted(this ITypeSpec spec) => spec.IsViewModel;
 

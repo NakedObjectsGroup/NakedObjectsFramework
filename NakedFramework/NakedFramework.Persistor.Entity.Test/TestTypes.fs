@@ -10,7 +10,7 @@ open Moq
 open NakedFramework.Architecture.Adapter
 open NakedFramework.Architecture.Component
 open NakedFramework.Architecture.Spec
-open NakedObjects.Core.Resolve
+open NakedFramework.Core.Resolve
 open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component
 open System

@@ -7,7 +7,7 @@
 
 using System;
 using System.Linq;
-using NakedObjects.Core;
+using NakedFramework.Core.Exception;
 
 namespace NakedObjects.Reflector.Configuration {
     [Serializable]

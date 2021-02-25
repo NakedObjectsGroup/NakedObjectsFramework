@@ -12,12 +12,12 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Reflect;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 using NakedFramework.Xat.Interface;
 using NakedObjects;
-using NakedObjects.Core;
-using NakedObjects.Core.Reflect;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
 
 namespace NakedFramework.Xat.TestObjects {
     public class TestProperty : ITestProperty {

@@ -10,14 +10,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using NakedFramework.Core.Exception;
+using NakedObjects;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class DelegateUtils {
         // This is all based on http://codeblog.jonskeet.uk/2008/08/09/making-reflection-fly-and-exploring-delegates/comment-page-1/
 
         private static string CreationFailed(string reason, MethodInfo method) =>
             // don't log system or NOF types
-            TypeUtils.IsSystem(method.DeclaringType) || TypeUtils.IsNakedObjects(method.DeclaringType)
+            NakedObjects.TypeUtils.IsSystem(method.DeclaringType) || NakedObjects.TypeUtils.IsNakedObjects(method.DeclaringType)
                 ? ""
                 : $"Not creating delegate for {reason} method {method.DeclaringType}.{method}";
 
@@ -51,7 +53,7 @@ namespace NakedObjects.Core.Util {
 
                 return (ret, "");
             }
-            catch (Exception e) {
+            catch (System.Exception e) {
                 return (null, e.Message);
             }
         }
@@ -84,7 +86,7 @@ namespace NakedObjects.Core.Util {
             var genericHelper = typeof(DelegateUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
 
             // Now supply the type arguments
-            var typeArgs = new List<Type> {method.DeclaringType, GetTypeAuthorizerType(method.DeclaringType).GenericTypeArguments.First()};
+            var typeArgs = new List<Type> {method.DeclaringType, Enumerable.First(GetTypeAuthorizerType(method.DeclaringType).GenericTypeArguments)};
             var delegateHelper = genericHelper.MakeGenericMethod(typeArgs.ToArray());
 
             // Now call it. The null argument is because it’s a static method.

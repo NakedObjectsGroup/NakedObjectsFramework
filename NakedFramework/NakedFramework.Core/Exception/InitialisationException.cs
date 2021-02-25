@@ -5,9 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     /// <summary>
     ///     Indicates a problem initializing the naked objects system
     /// </summary>
@@ -15,7 +13,7 @@ namespace NakedObjects.Core {
         public InitialisationException(string s)
             : base(s) { }
 
-        public InitialisationException(string msg, Exception cause)
+        public InitialisationException(string msg, System.Exception cause)
             : base(msg, cause) { }
     }
 

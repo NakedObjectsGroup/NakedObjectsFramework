@@ -18,11 +18,11 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Exception;
 using NakedFramework.Core.Persist;
+using NakedFramework.Core.Util;
 using NakedFunctions.Reflector.Component;
 using NakedObjects;
-using NakedObjects.Core;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Reflector.Facet {

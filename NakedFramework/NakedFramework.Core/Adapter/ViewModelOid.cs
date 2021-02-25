@@ -11,9 +11,10 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Adapter {
+namespace NakedFramework.Core.Adapter {
     public sealed class ViewModelOid : IEncodedToStrings, IViewModelOid {
         private readonly IMetamodelManager metamodel;
         private int cachedHashCode;

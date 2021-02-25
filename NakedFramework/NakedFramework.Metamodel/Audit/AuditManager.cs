@@ -14,9 +14,9 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 using NakedObjects.Audit;
-using NakedObjects.Core;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Audit {
     [Serializable]

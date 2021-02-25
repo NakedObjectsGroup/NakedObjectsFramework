@@ -16,11 +16,12 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Component {
+namespace NakedFramework.Core.Component {
     public sealed class LifeCycleManager : ILifecycleManager {
         private readonly IDomainObjectInjector injector;
         private readonly ILogger<LifeCycleManager> logger;
@@ -76,7 +77,7 @@ namespace NakedObjects.Core.Component {
         /// </summary>
         public INakedObjectAdapter CreateInstance(IObjectSpec spec) {
             if (spec.ContainsFacet(typeof(IComplexTypeFacet))) {
-                throw new TransientReferenceException(logger.LogAndReturn(Resources.NakedObjects.NoTransientInline));
+                throw new TransientReferenceException(logger.LogAndReturn(NakedObjects.Resources.NakedObjects.NoTransientInline));
             }
 
             var obj = CreateObject(spec);
@@ -155,7 +156,7 @@ namespace NakedObjects.Core.Component {
         #endregion
 
         private object CreateObject(ITypeSpec spec) {
-            var type = TypeUtils.GetType(spec.FullName);
+            var type = NakedObjects.TypeUtils.GetType(spec.FullName);
             return spec.IsViewModel || spec is IServiceSpec || spec.ContainsFacet<INotPersistedFacet>() ? CreateNotPersistedObject(type, spec is IServiceSpec) : objectPersistor.CreateObject(spec);
         }
 

@@ -15,8 +15,8 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Core;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Menu {

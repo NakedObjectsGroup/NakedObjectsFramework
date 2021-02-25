@@ -16,11 +16,12 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Component {
+namespace NakedFramework.Core.Component {
     /// <summary>
     ///     This is generic portion of persistence logic, implemented as a composite wrapping the ObjectStore which is
     ///     the store specific portion of the logic.
@@ -162,7 +163,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public object CreateObject(ITypeSpec spec) {
-            var type = TypeUtils.GetType(spec.FullName);
+            var type = NakedObjects.TypeUtils.GetType(spec.FullName);
             return objectStore.CreateInstance(type);
         }
 

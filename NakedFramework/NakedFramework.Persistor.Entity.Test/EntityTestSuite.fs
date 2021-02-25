@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.EntityTestSuite
 
-open NakedObjects.Core.Authentication
+open NakedFramework.Core.Authentication
 open NakedObjects.Persistor.TestData
 open NakedObjects.Persistor.TestSuite
 open NakedObjects.Persistor.Entity.Configuration

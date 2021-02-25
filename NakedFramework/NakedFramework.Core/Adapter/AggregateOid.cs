@@ -9,8 +9,9 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Core.Adapter {
+namespace NakedFramework.Core.Adapter {
     public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {
         private readonly IMetamodelManager metamodel;
         private readonly string typeName;

@@ -14,9 +14,10 @@ using System.Web;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Adapter {
+namespace NakedFramework.Core.Adapter {
     /// <summary>
     ///     Provide consistent string decoding strategy for <see cref="IEncodedToStrings" />
     /// </summary>
@@ -82,7 +83,7 @@ namespace NakedObjects.Core.Adapter {
             var list = new List<object>();
             var count = GetNextInt();
             var type = GetNextString();
-            instanceType = TypeUtils.GetType(type);
+            instanceType = NakedObjects.TypeUtils.GetType(type);
 
             for (var i = 0; i < count; i++) {
                 list.Add(GetNextObject());
@@ -95,7 +96,7 @@ namespace NakedObjects.Core.Adapter {
             var list = new List<IEncodedToStrings>();
             var count = GetNextInt();
             var type = GetNextString();
-            instanceType = TypeUtils.GetType(type);
+            instanceType = NakedObjects.TypeUtils.GetType(type);
 
             for (var i = 0; i < count; i++) {
                 list.Add(GetNextEncodedToStrings());
@@ -113,9 +114,9 @@ namespace NakedObjects.Core.Adapter {
                 return null;
             }
 
-            var objectType = TypeUtils.GetType(type);
+            var objectType = NakedObjects.TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
+                throw new System.Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
 
             if (objectType == typeof(string)) {
@@ -128,12 +129,12 @@ namespace NakedObjects.Core.Adapter {
 
             var parseMethod = objectType.GetMethod("Parse", new[] {typeof(string)});
             if (parseMethod == null) {
-                throw new Exception(logger.LogAndReturn($"Cannot find Parse method on type: {objectType}"));
+                throw new System.Exception(logger.LogAndReturn($"Cannot find Parse method on type: {objectType}"));
             }
 
             var result = parseMethod.Invoke(null, new object[] {value});
             if (result == null) {
-                throw new Exception(logger.LogAndReturn($"Failed to Parse value: {value} on type: {objectType}"));
+                throw new System.Exception(logger.LogAndReturn($"Failed to Parse value: {value} on type: {objectType}"));
             }
 
             return result;
@@ -158,9 +159,9 @@ namespace NakedObjects.Core.Adapter {
                 return null;
             }
 
-            var objectType = TypeUtils.GetType(type);
+            var objectType = NakedObjects.TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
+                throw new System.Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
 
             var stream = new MemoryStream();
@@ -181,13 +182,13 @@ namespace NakedObjects.Core.Adapter {
                 return null;
             }
 
-            var objectType = TypeUtils.GetType(type);
+            var objectType = NakedObjects.TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
+                throw new System.Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
 
             if (!typeof(IEncodedToStrings).IsAssignableFrom(objectType)) {
-                throw new Exception(logger.LogAndReturn($"Type: {objectType} needs to be: {typeof(IEncodedToStrings)}"));
+                throw new System.Exception(logger.LogAndReturn($"Type: {objectType} needs to be: {typeof(IEncodedToStrings)}"));
             }
 
             return (IEncodedToStrings) Activator.CreateInstance(objectType, metamodel, loggerFactory, encodedData);

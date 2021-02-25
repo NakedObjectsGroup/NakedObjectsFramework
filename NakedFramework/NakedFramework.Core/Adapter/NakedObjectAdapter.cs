@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
@@ -13,10 +12,11 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Resolve;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Adapter {
+namespace NakedFramework.Core.Adapter {
     public sealed class NakedObjectAdapter : INakedObjectAdapter {
         private readonly INakedObjectsFramework framework;
         private readonly ILogger<NakedObjectAdapter> logger;
@@ -81,7 +81,7 @@ namespace NakedObjects.Core.Adapter {
 
                 return Spec.GetTitle(this) ?? DefaultTitle;
             }
-            catch (Exception e) {
+            catch (System.Exception e) {
                 throw new TitleException(logger.LogAndReturn("Exception on ToString POCO: " + (Object == null ? "unknown" : Object.GetType().FullName)), e);
             }
         }
@@ -102,13 +102,13 @@ namespace NakedObjects.Core.Adapter {
                 var referencedObjectAdapter = property.GetNakedObject(this);
                 if (property.IsUsable(this).IsAllowed && property.IsVisible(this)) {
                     if (property.IsMandatory && property.IsEmpty(this)) {
-                        return string.Format(Resources.NakedObjects.PropertyMandatory, objectSpec.ShortName, property.Name);
+                        return string.Format(NakedObjects.Resources.NakedObjects.PropertyMandatory, objectSpec.ShortName, property.Name);
                     }
 
                     if (property is IOneToOneAssociationSpec associationSpec) {
                         var valid = associationSpec.IsAssociationValid(this, referencedObjectAdapter);
                         if (valid.IsVetoed) {
-                            return string.Format(Resources.NakedObjects.PropertyInvalid, objectSpec.ShortName, associationSpec.Name, valid.Reason);
+                            return string.Format(NakedObjects.Resources.NakedObjects.PropertyInvalid, objectSpec.ShortName, associationSpec.Name, valid.Reason);
                         }
                     }
                 }
@@ -229,7 +229,7 @@ namespace NakedObjects.Core.Adapter {
                 str.Append("Type", spec.FullName);
             }
 
-            if (Object != null && TypeUtils.IsProxy(Object.GetType())) {
+            if (Object != null && NakedObjects.TypeUtils.IsProxy(Object.GetType())) {
                 str.Append("proxy", Object.GetType().FullName);
             }
             else {

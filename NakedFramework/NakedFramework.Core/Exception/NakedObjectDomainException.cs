@@ -5,9 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     /// <summary>
     ///     Indicates an error raised by the application code
     /// </summary>
@@ -15,7 +13,7 @@ namespace NakedObjects.Core {
         public NakedObjectDomainException(string msg)
             : base(msg) { }
 
-        public NakedObjectDomainException(string msg, Exception cause)
+        public NakedObjectDomainException(string msg, System.Exception cause)
             : base(msg, cause) { }
     }
 

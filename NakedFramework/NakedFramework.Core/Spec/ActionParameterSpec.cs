@@ -16,10 +16,10 @@ using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Core;
-using NakedObjects.Core.Interactions;
-using NakedObjects.Core.Reflect;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Interactions;
+using NakedFramework.Core.Reflect;
+using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Spec {
     public abstract class ActionParameterSpec : IActionParameterSpec {

@@ -11,7 +11,7 @@ using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflector.Reflect {

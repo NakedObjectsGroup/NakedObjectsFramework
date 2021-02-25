@@ -5,12 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.interactions;
 
-namespace NakedObjects.Core {
-    public abstract class InteractionException : Exception {
+namespace NakedFramework.Core.Exception {
+    public abstract class InteractionException : System.Exception {
         protected InteractionException(IInteractionContext ic, string message)
             : base(message) {
             InteractionType = ic.InteractionType;

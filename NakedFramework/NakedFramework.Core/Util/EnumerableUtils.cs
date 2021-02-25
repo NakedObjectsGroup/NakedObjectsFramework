@@ -8,8 +8,9 @@
 using System;
 using System.Collections;
 using System.Linq;
+using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Core.Util.Enumer {
+namespace NakedFramework.Core.Util {
     public static class EnumerableUtils {
         private static Type ElementType(this IEnumerable e) {
             var t = e.GetType();

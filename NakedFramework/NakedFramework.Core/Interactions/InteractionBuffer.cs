@@ -8,7 +8,7 @@
 using System.Text;
 using NakedFramework.Architecture.interactions;
 
-namespace NakedObjects.Core.Interactions {
+namespace NakedFramework.Core.Interactions {
     public sealed class InteractionBuffer : IInteractionBuffer {
         private readonly StringBuilder buf = new StringBuilder();
 

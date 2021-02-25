@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Security.Principal;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Authentication {
+namespace NakedFramework.Core.Authentication {
     public sealed class SimpleSession : WindowsSession {
         public SimpleSession(IPrincipal principal, string code) : base(principal) => ValidationCode = code;
 

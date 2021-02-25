@@ -8,7 +8,7 @@
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Core;
+using NakedFramework.Core.Exception;
 using NakedObjects.Persistor.Entity.Adapter;
 
 namespace NakedObjects.Persistor.Entity.Component {

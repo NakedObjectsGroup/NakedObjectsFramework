@@ -5,14 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     /// <summary>
     ///     A NakedObjectSystemException represents an exception that has occurred within the framework code.
     /// </summary>
     public class NakedObjectSystemException : NakedObjectException {
         public NakedObjectSystemException(string messsage) : base(messsage) { }
-        public NakedObjectSystemException(string messsage, Exception cause) : base(messsage, cause) { }
+        public NakedObjectSystemException(string messsage, System.Exception cause) : base(messsage, cause) { }
     }
 }

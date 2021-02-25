@@ -10,10 +10,10 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Interactions;
-using NakedObjects.Core.Reflect;
+using NakedFramework.Core.Interactions;
+using NakedFramework.Core.Reflect;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class InteractionUtils {
         public static bool IsVisible(ISpecification specification, IInteractionContext ic) {
             var buf = new InteractionBuffer();

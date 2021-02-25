@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class AdapterUtils {
         /// <summary>
         ///     Safe (returns null if INakedObjectAdapter is null) getter
@@ -61,7 +61,7 @@ namespace NakedObjects.Core.Util {
 
         public static IActionSpec[] GetActionLeafNodes(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Spec.GetActionLeafNodes();
 
-        public static IActionSpec[] GetActionLeafNodes(this ITypeSpec spec) => spec.GetActions().SelectMany(GetActionLeafNodes).ToArray();
+        public static IActionSpec[] GetActionLeafNodes(this ITypeSpec spec) => Enumerable.ToArray(spec.GetActions().SelectMany(GetActionLeafNodes));
 
         public static IActionSpec GetActionLeafNode(this INakedObjectAdapter nakedObjectAdapter, string actionName) {
             return nakedObjectAdapter.GetActionLeafNodes().Single(x => x.Id == actionName);

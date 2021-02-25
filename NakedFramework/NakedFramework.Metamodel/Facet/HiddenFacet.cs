@@ -11,8 +11,8 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core;
-using NakedObjects.Core.Resolve;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Resolve;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

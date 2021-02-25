@@ -14,11 +14,12 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Component {
+namespace NakedFramework.Core.Component {
     public sealed class NakedObjectManager : INakedObjectManager {
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;

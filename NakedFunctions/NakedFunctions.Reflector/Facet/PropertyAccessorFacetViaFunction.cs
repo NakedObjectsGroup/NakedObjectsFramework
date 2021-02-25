@@ -11,9 +11,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Reflector.Facet {

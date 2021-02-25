@@ -8,7 +8,7 @@
 using System;
 using System.Data.Entity;
 using System.Security.Principal;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;

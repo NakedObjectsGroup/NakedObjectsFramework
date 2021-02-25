@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.interactions;
 
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     /// <summary>
     ///     Superclass of exceptions which indicate an attempt to interact with an object or member in a way that is invalid.
     /// </summary>

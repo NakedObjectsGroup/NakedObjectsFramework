@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class IdentifierUtils {
         public static string ComputeMD5HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeMD5HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
 

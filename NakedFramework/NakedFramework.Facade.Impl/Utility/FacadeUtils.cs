@@ -11,8 +11,8 @@ using System.Reflection;
 using System.Threading;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public static class FacadeUtils {

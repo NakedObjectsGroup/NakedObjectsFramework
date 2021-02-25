@@ -9,10 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NakedFramework.Core.Exception;
 
 // ReSharper disable UnusedType.Global
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     // used by reflection 
     public static class CopyUtils {
         // used by reflection 

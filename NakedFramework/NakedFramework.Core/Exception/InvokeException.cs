@@ -5,11 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     public class InvokeException : NakedObjectApplicationException {
-        public InvokeException(string message, Exception exception) : base(message, exception) { }
+        public InvokeException(string message, System.Exception exception) : base(message, exception) { }
         public InvokeException(string message) : base(message) { }
     }
 }

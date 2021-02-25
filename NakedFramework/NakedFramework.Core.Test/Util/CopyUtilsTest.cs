@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using NakedFramework.Core.Util;
 using NakedObjects.Core.Util;
 using NUnit.Framework;
 

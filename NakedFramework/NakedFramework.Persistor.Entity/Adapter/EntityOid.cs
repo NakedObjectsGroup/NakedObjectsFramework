@@ -12,9 +12,9 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core;
-using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 
 namespace NakedObjects.Persistor.Entity.Adapter {
     public sealed class EntityOid : IEncodedToStrings, IEntityOid {

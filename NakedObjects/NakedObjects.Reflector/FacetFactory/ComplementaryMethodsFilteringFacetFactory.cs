@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
-using NakedObjects.Core;
+using NakedFramework.Core.Exception;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>

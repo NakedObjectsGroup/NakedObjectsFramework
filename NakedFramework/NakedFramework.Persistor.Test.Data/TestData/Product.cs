@@ -7,8 +7,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using NakedFramework.Core.Exception;
 using NakedObjects;
-using NakedObjects.Core;
 
 namespace TestData {
     public class Product : TestHelper {

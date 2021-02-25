@@ -8,7 +8,7 @@
 using System;
 using System.Xml.Linq;
 using Microsoft.Extensions.Logging;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSchema {

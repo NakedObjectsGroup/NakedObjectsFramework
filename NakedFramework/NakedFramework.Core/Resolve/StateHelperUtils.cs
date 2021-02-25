@@ -7,8 +7,9 @@
 
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Resolve;
+using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Core.Resolve {
+namespace NakedFramework.Core.Resolve {
     public static class StateHelperUtils {
         public static bool IsGhost(this IResolveStateMachine stateMachine) => stateMachine.CurrentState is ResolveStateMachine.GhostState;
 
@@ -51,7 +52,7 @@ namespace NakedObjects.Core.Resolve {
 
         public static void CheckCanAssociate(this IResolveStateMachine stateMachine, INakedObjectAdapter associate) {
             if (stateMachine.IsPersistent() && associate != null && associate.ResolveState.IsTransient()) {
-                throw new TransientReferenceException(string.Format(Resources.NakedObjects.TransientErrorMessage, associate.TitleString()));
+                throw new TransientReferenceException(string.Format(NakedObjects.Resources.NakedObjects.TransientErrorMessage, associate.TitleString()));
             }
         }
     }

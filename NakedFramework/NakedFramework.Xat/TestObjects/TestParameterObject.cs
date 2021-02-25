@@ -7,8 +7,8 @@
 
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Core.Exception;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Core;
 
 namespace NakedFramework.Xat.TestObjects {
     internal class TestParameterObject : ITestValue {

@@ -14,8 +14,8 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 using NakedObjects.Persistor.Entity.Util;
 
 namespace NakedObjects.Persistor.Entity.Component {

@@ -7,18 +7,18 @@
 
 using System;
 
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     /// <summary>
     ///     Indicates that the persistence of an object failed.
     /// </summary>
     [Serializable]
-    public class DisposeFailedException : Exception {
+    public class DisposeFailedException : System.Exception {
         public DisposeFailedException() { }
 
         public DisposeFailedException(string msg)
             : base(msg) { }
 
-        public DisposeFailedException(string msg, Exception cause)
+        public DisposeFailedException(string msg, System.Exception cause)
             : base(msg, cause) { }
     }
 

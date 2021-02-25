@@ -14,9 +14,9 @@ using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Core.Interactions;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Interactions;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Spec {
     public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {

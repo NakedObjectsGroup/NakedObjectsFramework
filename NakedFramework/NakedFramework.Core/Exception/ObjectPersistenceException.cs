@@ -5,14 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     public abstract class ObjectPersistenceException : NakedObjectApplicationException {
         protected ObjectPersistenceException(string message)
             : base(message) { }
 
-        protected ObjectPersistenceException(string message, Exception cause)
+        protected ObjectPersistenceException(string message, System.Exception cause)
             : base(message, cause) { }
     }
 

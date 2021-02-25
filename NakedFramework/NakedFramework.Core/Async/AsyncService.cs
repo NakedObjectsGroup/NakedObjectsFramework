@@ -9,10 +9,11 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Container;
+using NakedObjects;
 using NakedObjects.Async;
-using NakedObjects.Core.Container;
 
-namespace NakedObjects.Core.Async {
+namespace NakedFramework.Core.Async {
     /// <summary>
     ///     A service to be injected into domain code that allows multiple actions to be initiated
     ///     asynchronously -  each running within its own separate NakedObjects context.
@@ -45,7 +46,7 @@ namespace NakedObjects.Core.Async {
                     action(new DomainObjectContainer(fw, LoggerFactory.CreateLogger<DomainObjectContainer>()));
                     fw.TransactionManager.EndTransaction();
                 }
-                catch (Exception e) {
+                catch (System.Exception e) {
                     Logger.LogError($"Action threw exception {e.Message}");
                     fw.TransactionManager.AbortTransaction();
                     throw;

@@ -13,9 +13,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Adapter {
+namespace NakedFramework.Core.Adapter {
     /// <summary>
     ///     Provide consistent string encoding strategy for <see cref="IEncodedToStrings" />
     /// </summary>

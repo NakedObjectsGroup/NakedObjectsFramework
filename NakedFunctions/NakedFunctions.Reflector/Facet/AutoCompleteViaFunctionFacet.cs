@@ -14,11 +14,10 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
-using NakedObjects.Core;
-using NakedObjects.Core.Util;
-using NakedObjects.Core.Util.Query;
 using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Reflector.Facet {

@@ -9,9 +9,9 @@ using System;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Adapter {
+namespace NakedFramework.Core.Adapter {
     public sealed class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
         private const string Wildcard = "*";
         private readonly DateTime time;

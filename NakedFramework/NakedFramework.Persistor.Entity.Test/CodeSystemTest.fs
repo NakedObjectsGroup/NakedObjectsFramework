@@ -8,8 +8,8 @@ module NakedObjects.CodeSystemTest
 
 open CodeOnlyTestCode
 open NakedObjects
-open NakedObjects.Core
-open NakedObjects.Core.Util
+open NakedFramework.Core
+open NakedFramework.Core.Util
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Services
 open NakedObjects.TestTypes
@@ -21,6 +21,7 @@ open TestCode
 open TestCodeOnly
 open Microsoft.Extensions.Configuration
 open NakedFramework.Xat.TestCase
+open NakedFramework.Core.Exception
 
 [<TestFixture>]
 type CodeSystemTests() = 

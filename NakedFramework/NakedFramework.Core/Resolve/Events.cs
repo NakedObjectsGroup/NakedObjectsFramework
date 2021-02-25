@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Resolve;
 
-namespace NakedObjects.Core.Resolve {
+namespace NakedFramework.Core.Resolve {
     public static class Events {
         public static IResolveEvent DestroyEvent;
         public static IResolveEvent EndPartResolvingEvent;

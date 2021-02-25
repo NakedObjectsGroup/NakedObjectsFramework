@@ -5,19 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Core {
-    public abstract class NakedObjectException : Exception {
+namespace NakedFramework.Core.Exception {
+    public abstract class NakedObjectException : System.Exception {
         protected NakedObjectException() { }
 
         protected NakedObjectException(string messsage)
             : base(messsage) { }
 
-        protected NakedObjectException(string messsage, Exception cause)
+        protected NakedObjectException(string messsage, System.Exception cause)
             : base(messsage, cause) { }
 
-        protected NakedObjectException(Exception cause)
+        protected NakedObjectException(System.Exception cause)
             : base(cause == null ? null : cause.ToString(), cause) { }
     }
 }

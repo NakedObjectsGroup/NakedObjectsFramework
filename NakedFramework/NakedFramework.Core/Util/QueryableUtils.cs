@@ -9,7 +9,7 @@ using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace NakedObjects.Core.Util.Query {
+namespace NakedFramework.Core.Util {
     public static class QueryableUtils {
         public static int Count(this IQueryable q) {
             var countMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Count" && m.GetParameters().Length == 1);

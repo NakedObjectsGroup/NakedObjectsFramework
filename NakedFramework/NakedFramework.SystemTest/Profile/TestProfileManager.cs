@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 using NakedObjects.Meta.Profile;
 using NakedObjects.Profile;
 using NakedObjects.Services;

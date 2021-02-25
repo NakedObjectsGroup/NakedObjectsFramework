@@ -8,9 +8,10 @@
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedObjects.Core.Adapter;
+using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Exception;
 
-namespace NakedObjects.Core.Component {
+namespace NakedFramework.Core.Component {
     public sealed class NakedObjectFactory {
         private bool isInitialized;
         private ILoggerFactory loggerFactory;

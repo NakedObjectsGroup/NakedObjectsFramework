@@ -10,7 +10,7 @@ using System.Security.Principal;
 
 [assembly: InternalsVisibleTo("NakedFunctions.Services.Test")]
 
-namespace NakedObjects.Core.Authentication {
+namespace NakedFramework.Core.Authentication {
     internal class EmptyPrincipal : IPrincipal {
         public EmptyPrincipal() => Identity = new EmptyIdentity();
 

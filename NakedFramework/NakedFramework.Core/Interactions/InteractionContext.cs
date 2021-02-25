@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.interactions;
 
-namespace NakedObjects.Core.Interactions {
+namespace NakedFramework.Core.Interactions {
     /// <summary>
     ///     Represents an interaction between the framework and (a <see cref="IFacet" /> of) the domain object.
     /// </summary>

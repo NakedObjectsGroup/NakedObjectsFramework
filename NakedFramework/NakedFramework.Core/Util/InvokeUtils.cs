@@ -5,23 +5,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Core.Exception;
+using NakedObjects;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class InvokeUtils {
         public static object InvokeStatic(MethodInfo method, object[] parameters) => Invoke(method, null, parameters);
 
         public static object InvokeStatic(MethodInfo method, INakedObjectAdapter[] parameters)
         {
-            var parameterPocos = parameters == null ? new object[] { } : parameters.Select(p => p?.Object).ToArray();
+            var parameterPocos = parameters == null ? new object[] { } : Enumerable.ToArray(parameters.Select(p => p?.Object));
             return Invoke(method, null, parameterPocos);
         }
 
         public static object Invoke(MethodInfo method, INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters) {
-            var parameterPocos = parameters == null ? new object[] { } : parameters.Select(p => p?.Object).ToArray();
+            var parameterPocos = parameters == null ? new object[] { } : Enumerable.ToArray(parameters.Select(p => p?.Object));
             return Invoke(method, nakedObjectAdapter.Object, parameterPocos);
         }
 
@@ -35,7 +36,7 @@ namespace NakedObjects.Core.Util {
             }
         }
 
-        public static void InvocationException(string error, Exception e) {
+        public static void InvocationException(string error, System.Exception e) {
             var innerException = e.InnerException;
             if (innerException is DomainException) {
                 // a domain  exception from the domain code is re-thrown as an NO exception with same semantics

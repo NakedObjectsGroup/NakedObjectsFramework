@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
+using NakedFramework.Core.Util;
 using NUnit.Framework;
 using NAssert = NUnit.Framework.Assert;
 
@@ -33,8 +34,8 @@ namespace NakedObjects.Core.Util.Query {
             var list = Enumerable.Range(0, 100);
             var queryable = (IQueryable) list.AsQueryable();
 
-            NAssert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(queryable.Take(9).Cast<object>().ToArray()));
-            NAssert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(queryable.Take(9).Cast<object>().ToList().Cast<object>()));
+            NAssert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(QueryableUtils.ToArray(queryable.Take(9).Cast<object>())));
+            NAssert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(QueryableUtils.ToList(queryable.Take(9).Cast<object>()).Cast<object>()));
         }
 
         [Test]

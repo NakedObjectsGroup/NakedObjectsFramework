@@ -5,11 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     public class DataUpdateException : ObjectPersistenceException {
-        public DataUpdateException(string message, Exception cause)
+        public DataUpdateException(string message, System.Exception cause)
             : base(message, cause) { }
     }
 

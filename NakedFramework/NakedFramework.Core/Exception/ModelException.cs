@@ -5,14 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     /// <summary>
     ///     ModelException represents a problem with the definition of the domain model.
     /// </summary>
     public class ModelException : NakedObjectApplicationException {
         public ModelException(string messsage) : base(messsage) { }
-        public ModelException(string messsage, Exception cause) : base(messsage, cause) { }
+        public ModelException(string messsage, System.Exception cause) : base(messsage, cause) { }
     }
 }

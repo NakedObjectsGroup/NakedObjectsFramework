@@ -15,9 +15,10 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Adapter {
+namespace NakedFramework.Core.Adapter {
     public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {
         #region ParameterType enum
 
@@ -172,7 +173,7 @@ namespace NakedObjects.Core.Adapter {
                 }
                 else if (parameter.Spec.IsCollection) {
                     var instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter, metamodel.Metamodel);
-                    var instanceType = TypeUtils.GetType(instanceSpec.FullName);
+                    var instanceType = NakedObjects.TypeUtils.GetType(instanceSpec.FullName);
 
                     if (instanceSpec.IsParseable) {
                         helper.Add(ParameterType.ValueCollection);

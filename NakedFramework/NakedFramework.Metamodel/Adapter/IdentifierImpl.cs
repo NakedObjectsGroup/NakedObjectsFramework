@@ -11,8 +11,8 @@ using System.Reflection;
 using System.Text;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Core;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 
 namespace NakedObjects.Meta.Adapter {
     [Serializable]

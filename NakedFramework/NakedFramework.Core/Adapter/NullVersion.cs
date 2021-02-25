@@ -8,9 +8,10 @@
 using System;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Adapter {
+namespace NakedFramework.Core.Adapter {
     public sealed class NullVersion : IVersion, IEncodedToStrings {
         private readonly ILogger<NullVersion> logger;
 

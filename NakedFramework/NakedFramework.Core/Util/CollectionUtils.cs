@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class CollectionUtils {
         #region public
 
@@ -114,19 +114,19 @@ namespace NakedObjects.Core.Util {
 
         private static string CollectionTitleStringKnownType(IObjectSpec elementSpec, int size) {
             return size switch {
-                IncompleteCollection => string.Format(Resources.NakedObjects.CollectionTitleUnloaded, elementSpec.PluralName),
-                0 => string.Format(Resources.NakedObjects.CollectionTitleEmpty, elementSpec.PluralName),
-                1 => string.Format(Resources.NakedObjects.CollectionTitleOne, elementSpec.SingularName),
-                _ => string.Format(Resources.NakedObjects.CollectionTitleMany, size, elementSpec.PluralName)
+                IncompleteCollection => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleUnloaded, elementSpec.PluralName),
+                0 => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleEmpty, elementSpec.PluralName),
+                1 => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleOne, elementSpec.SingularName),
+                _ => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleMany, size, elementSpec.PluralName)
             };
         }
 
         private static string CollectionTitleStringUnknownType(int size) {
             return size switch {
-                IncompleteCollection => string.Format(Resources.NakedObjects.CollectionTitleUnloaded, ""),
-                0 => string.Format(Resources.NakedObjects.CollectionTitleEmpty, Resources.NakedObjects.Objects),
-                1 => string.Format(Resources.NakedObjects.CollectionTitleOne, Resources.NakedObjects.Object),
-                _ => string.Format(Resources.NakedObjects.CollectionTitleMany, size, Resources.NakedObjects.Objects)
+                IncompleteCollection => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleUnloaded, ""),
+                0 => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleEmpty, NakedObjects.Resources.NakedObjects.Objects),
+                1 => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleOne, NakedObjects.Resources.NakedObjects.Object),
+                _ => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleMany, size, NakedObjects.Resources.NakedObjects.Objects)
             };
         }
 

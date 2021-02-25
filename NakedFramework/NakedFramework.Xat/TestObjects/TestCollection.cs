@@ -11,9 +11,9 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
 
 namespace NakedFramework.Xat.TestObjects {
     internal class TestCollection : ITestCollection {

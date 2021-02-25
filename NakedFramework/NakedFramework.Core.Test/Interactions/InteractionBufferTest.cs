@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.interactions;
-using NakedObjects.Core.Interactions;
+using NakedFramework.Core.Interactions;
 using NUnit.Framework;
 
 namespace NakedObjects.Core.Test.Interactions {

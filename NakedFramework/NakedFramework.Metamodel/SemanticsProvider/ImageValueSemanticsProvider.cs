@@ -10,8 +10,8 @@ using System.IO;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Exception;
 using NakedFramework.Value;
-using NakedObjects.Core;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]

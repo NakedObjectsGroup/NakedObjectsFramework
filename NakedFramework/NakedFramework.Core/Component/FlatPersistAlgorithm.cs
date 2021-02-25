@@ -8,10 +8,10 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Component {
+namespace NakedFramework.Core.Component {
     /// <summary>
     ///     Algorithm to use when the object store will automatically persist all associated objects. Simply adds the single
     ///     object or each

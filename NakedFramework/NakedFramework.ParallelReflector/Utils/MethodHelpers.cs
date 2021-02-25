@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core;
+using NakedFramework.Core.Exception;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 #pragma warning disable 612

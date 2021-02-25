@@ -5,10 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedObjects.Core.Reflect {
+namespace NakedFramework.Core.Reflect {
     public abstract class ConsentAbstract : IConsent {
         private readonly string reason;
 
@@ -22,7 +21,7 @@ namespace NakedObjects.Core.Reflect {
             this.reason = reason;
         }
 
-        protected internal ConsentAbstract(Exception exception) {
+        protected internal ConsentAbstract(System.Exception exception) {
             Exception = exception;
             reason = exception != null ? exception.Message : null;
         }
@@ -34,7 +33,7 @@ namespace NakedObjects.Core.Reflect {
         /// </summary>
         public virtual string Reason => reason ?? "";
 
-        public virtual Exception Exception { get; }
+        public virtual System.Exception Exception { get; }
 
         /// <summary>
         ///     Returns true if this object is giving permission

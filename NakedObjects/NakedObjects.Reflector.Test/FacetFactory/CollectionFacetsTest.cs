@@ -16,8 +16,8 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Util;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflector.Test.FacetFactory {

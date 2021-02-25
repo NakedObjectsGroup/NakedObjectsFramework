@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Core.Reflect;
+using NakedFramework.Core.Reflect;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Spec;
 

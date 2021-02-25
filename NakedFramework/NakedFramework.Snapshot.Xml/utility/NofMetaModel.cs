@@ -9,7 +9,7 @@ using System.Linq;
 using System.Xml.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public static class NofMetaModel {

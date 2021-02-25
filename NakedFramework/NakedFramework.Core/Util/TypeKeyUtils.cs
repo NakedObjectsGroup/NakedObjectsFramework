@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class TypeKeyUtils {
         // because Sets don't implement IEnumerable<>
         private static bool IsGenericCollection(Type type) =>
@@ -22,7 +22,7 @@ namespace NakedObjects.Core.Util {
                 return type.GetGenericArguments()[0];
             }
 
-            return TypeUtils.IsProxy(type) ? type.BaseType : type;
+            return NakedObjects.TypeUtils.IsProxy(type) ? type.BaseType : type;
         }
 
         public static bool IsSystemClass(Type introspectedType) => introspectedType.FullName?.StartsWith("System.", StringComparison.Ordinal) == true;
@@ -32,6 +32,6 @@ namespace NakedObjects.Core.Util {
                 ? $"{type.Namespace}.{type.Name}"
                 : FasterTypeUtils.IsObjectArray(type)
                     ? "System.Array"
-                    : type.GetProxiedTypeFullName();
+                    : NakedObjects.TypeUtils.GetProxiedTypeFullName(type);
     }
 }

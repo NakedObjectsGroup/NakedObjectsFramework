@@ -5,15 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     /// <summary>
     ///     A NakedObjectApplicationException represents exception that has occurred within the domain code, or as a result
     ///     of the domain code.  These indicate that the application developer need to fix their code.
     /// </summary>
     public abstract class NakedObjectApplicationException : NakedObjectException {
         protected NakedObjectApplicationException(string messsage) : base(messsage) { }
-        protected NakedObjectApplicationException(string messsage, Exception cause) : base(messsage, cause) { }
+        protected NakedObjectApplicationException(string messsage, System.Exception cause) : base(messsage, cause) { }
     }
 }

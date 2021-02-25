@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 

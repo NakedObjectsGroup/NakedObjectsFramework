@@ -5,20 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Core {
+namespace NakedFramework.Core.Exception {
     public class ConcurrencyException : ObjectPersistenceException {
         public ConcurrencyException(INakedObjectAdapter nakedObjectAdapter)
-            : this(Resources.NakedObjects.ConcurrencyMessage, nakedObjectAdapter.Oid) =>
+            : this(NakedObjects.Resources.NakedObjects.ConcurrencyMessage, nakedObjectAdapter.Oid) =>
             SourceNakedObjectAdapter = nakedObjectAdapter;
 
         public ConcurrencyException(string message, IOid source)
             : base(message) =>
             SourceOid = source;
 
-        public ConcurrencyException(string message, Exception cause)
+        public ConcurrencyException(string message, System.Exception cause)
             : base(message, cause) { }
 
         public IOid SourceOid { get; }

@@ -9,7 +9,7 @@ using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Adapter;
+using NakedFramework.Core.Adapter;
 using NUnit.Framework;
 
 namespace NakedObjects.Core.Test.Adapter {

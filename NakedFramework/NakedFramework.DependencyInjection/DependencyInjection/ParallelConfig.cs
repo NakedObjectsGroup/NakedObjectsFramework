@@ -10,15 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Authentication;
 using NakedFramework.Core.Component;
+using NakedFramework.Core.Framework;
 using NakedFramework.Core.Spec;
 using NakedFramework.ModelBuilding.Component;
-using NakedObjects.Core.Authentication;
-using NakedObjects.Core.Component;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.Menu;
-using NakedObjects.Service;
 
 namespace NakedObjects.DependencyInjection.DependencyInjection {
     public static class ParallelConfig {

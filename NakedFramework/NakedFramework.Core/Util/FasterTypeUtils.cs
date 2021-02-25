@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class FasterTypeUtils {
         private const string SystemTypePrefix = "System.";
         private const string NakedObjectsTypePrefix = "NakedObjects.";

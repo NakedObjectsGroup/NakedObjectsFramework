@@ -8,10 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedFramework;
 using NakedFramework.Architecture.Configuration;
 
-namespace NakedObjects.Core.Configuration {
+namespace NakedFramework.Core.Configuration {
     public class CoreConfiguration : ICoreConfiguration {
         public CoreConfiguration(Func<IMenuFactory, IMenu[]> mainMenus = null) => MainMenus = mainMenus;
 

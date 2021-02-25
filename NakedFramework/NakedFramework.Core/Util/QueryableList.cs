@@ -10,9 +10,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using NakedFramework;
+using NakedObjects;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public class QueryableList<T> : IList, IList<T>, IQueryable<T> {
         private readonly IList<T> wrappedList;
         private readonly IQueryable<T> wrappedListAsQueryable;

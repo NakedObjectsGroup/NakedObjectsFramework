@@ -9,7 +9,7 @@ using System;
 using System.Text;
 using System.Threading;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public sealed class AsString {
         private readonly StringBuilder buffer;
         private bool addComma;

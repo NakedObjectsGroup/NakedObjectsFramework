@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     /// <summary>
     ///     Collected methods which allow easy implementation of <see cref="object.GetHashCode" />,
     ///     based on Josh Bloch's Effective Java ported to C#.

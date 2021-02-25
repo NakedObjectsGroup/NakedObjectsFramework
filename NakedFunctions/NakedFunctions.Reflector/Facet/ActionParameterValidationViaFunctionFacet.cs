@@ -12,9 +12,9 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 using NakedFunctions.Reflector.Utils;
 using NakedObjects;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta;
 using NakedObjects.Meta.Facet;
 

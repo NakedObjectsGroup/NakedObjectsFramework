@@ -11,10 +11,10 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Component;
 using NakedFramework.Core.Spec;
-using NakedObjects.Core.Component;
 
-namespace NakedObjects.Service {
+namespace NakedFramework.Core.Framework {
     public sealed class NakedObjectsFramework : INakedObjectsFramework {
         public NakedObjectsFramework(IMessageBroker messageBroker,
                                      ISession session,

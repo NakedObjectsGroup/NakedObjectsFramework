@@ -7,7 +7,7 @@
 
 using System.Linq;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class ServiceUtils {
         public static string GetId(object obj) {
             var type = obj.GetType();

@@ -9,15 +9,15 @@ using System;
 using System.Linq;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class TypeNameUtils {
         public static string DecodeTypeName(string typeName, string separator = "-") {
             if (typeName.Contains("-")) {
                 var rootType = typeName.Substring(0, typeName.IndexOf('`') + 2);
                 var args = typeName.Substring(typeName.IndexOf('`') + 3).Split('-');
 
-                var genericType = TypeUtils.GetType(rootType);
-                var argTypes = args.Select(TypeUtils.GetType).ToArray();
+                var genericType = NakedObjects.TypeUtils.GetType(rootType);
+                var argTypes = Enumerable.ToArray(args.Select(NakedObjects.TypeUtils.GetType));
 
                 var newType = genericType.MakeGenericType(argTypes);
 
@@ -30,7 +30,7 @@ namespace NakedObjects.Core.Util {
         public static string EncodeTypeName(this IObjectSpec spec, params IObjectSpec[] elements) => EncodeTypeName(spec.FullName, "-", elements);
 
         public static string EncodeTypeName(string typeName, string separator = "-", params IObjectSpec[] elements) {
-            var type = TypeUtils.GetType(typeName);
+            var type = NakedObjects.TypeUtils.GetType(typeName);
 
             return type.IsGenericType ? EncodeGenericTypeName(type, separator, elements) : type.FullName;
         }
@@ -38,9 +38,9 @@ namespace NakedObjects.Core.Util {
         public static string EncodeGenericTypeName(Type type, string separator = "-", params IObjectSpec[] elements) {
             var rootType = type.GetGenericTypeDefinition().FullName;
 
-            var args = type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName).ToArray();
+            var args = Enumerable.ToArray(type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName));
 
-            args = args.Any() ? args : elements.Select(e => e.FullName).ToArray();
+            args = args.Any() ? args : Enumerable.ToArray(elements.Select(e => e.FullName));
 
             return args.Aggregate(rootType, (s, t) => s + separator + t);
         }

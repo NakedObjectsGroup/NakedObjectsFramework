@@ -14,7 +14,7 @@ using System.Drawing;
 using System.Linq;
 using NakedFramework.Value;
 
-namespace NakedObjects.Core.Configuration {
+namespace NakedFramework.Core.Configuration {
     public static class ReflectorDefaults {
         public static readonly Type[] DefaultSystemTypes = {
             typeof(bool),

@@ -9,7 +9,7 @@ using System;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Util;
 using NakedObjects.Meta.Menu;
 
 namespace NakedObjects.Meta.Facet {

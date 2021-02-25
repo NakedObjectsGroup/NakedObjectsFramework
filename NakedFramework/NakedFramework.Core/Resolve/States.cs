@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Resolve;
 
-namespace NakedObjects.Core.Resolve {
+namespace NakedFramework.Core.Resolve {
     internal static class States {
         internal static readonly IResolveState AggregatedState;
         internal static readonly IResolveState DestroyedState;

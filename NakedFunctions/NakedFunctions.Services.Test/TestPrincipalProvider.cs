@@ -8,7 +8,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Core.Authentication;
+using NakedFramework.Core.Authentication;
 
 namespace NakedFunctions.Services.Test {
     [TestClass]

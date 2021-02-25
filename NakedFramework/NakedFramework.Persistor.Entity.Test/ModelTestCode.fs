@@ -9,8 +9,8 @@ module NakedObjects.ModelTestCode
 open Moq
 open NakedObjects
 open NakedFramework.Architecture.Adapter
-open NakedObjects.Core.Component
-open NakedObjects.Core.Configuration
+open NakedFramework.Core.Component
+open NakedFramework.Core.Configuration
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Component
 open NUnit.Framework

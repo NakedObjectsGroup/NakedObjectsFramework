@@ -14,10 +14,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 using NakedFramework.Value;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
-using NakedObjects.Core.Util.Query;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Impl.Utility;
 

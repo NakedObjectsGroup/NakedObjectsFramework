@@ -8,9 +8,10 @@
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.transaction;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Transaction {
+namespace NakedFramework.Core.Transaction {
     public sealed class NestedTransaction : ITransaction {
         private readonly ILogger<NestedTransaction> logger;
         private readonly IObjectStore objectStore;

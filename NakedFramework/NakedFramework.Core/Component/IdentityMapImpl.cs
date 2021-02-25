@@ -10,11 +10,12 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 
-namespace NakedObjects.Core.Component {
+namespace NakedFramework.Core.Component {
     public sealed class IdentityMapImpl : IIdentityMap {
         private readonly IIdentityAdapterMap identityAdapterMap;
         private readonly ILogger<IdentityMapImpl> logger;
@@ -53,7 +54,7 @@ namespace NakedObjects.Core.Component {
             }
 
             if (unloadedObjects.ContainsKey(obj)) {
-                var msg = string.Format(Resources.NakedObjects.TransientReferenceMessage, obj);
+                var msg = string.Format(NakedObjects.Resources.NakedObjects.TransientReferenceMessage, obj);
                 throw new TransientReferenceException(logger.LogAndReturn(msg));
             }
 

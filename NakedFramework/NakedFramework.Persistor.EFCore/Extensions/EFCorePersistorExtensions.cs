@@ -13,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Persistor.EFCore.Component;
 using NakedFramework.Persistor.EFCore.Configuration;
-using NakedObjects.Core.Util;
 using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Persistor.Entity.Component;
 

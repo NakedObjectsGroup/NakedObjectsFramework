@@ -17,10 +17,10 @@ using NakedFramework.Architecture.interactions;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedObjects.Core;
-using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Interactions;
-using NakedObjects.Core.Util;
+using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Exception;
+using NakedFramework.Core.Interactions;
+using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Spec {
     public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {

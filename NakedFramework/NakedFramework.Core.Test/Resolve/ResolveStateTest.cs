@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Resolve;
 using NakedFramework.Architecture.Spec;
-using NakedObjects.Core.Resolve;
+using NakedFramework.Core.Resolve;
 using NUnit.Framework;
 
 namespace NakedObjects.Core.Test.Resolve {

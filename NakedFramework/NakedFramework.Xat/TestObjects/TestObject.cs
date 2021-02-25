@@ -13,9 +13,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Resolve;
+using NakedFramework.Core.Util;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
 
 namespace NakedFramework.Xat.TestObjects {
     internal class TestObject : TestHasActions, ITestObject {

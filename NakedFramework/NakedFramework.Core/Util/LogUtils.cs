@@ -7,7 +7,7 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace NakedObjects.Core.Util {
+namespace NakedFramework.Core.Util {
     public static class LogUtils {
         public static string LogAndReturn(this ILogger log, string msg) {
             log.LogError(msg);

@@ -10,9 +10,9 @@ open NUnit.Framework
 
 open Moq
 open NakedFramework.Architecture.Component
-open NakedObjects.Core.Component
-open NakedObjects.Core.Configuration
-open NakedObjects.Core.Authentication
+open NakedFramework.Core.Component
+open NakedFramework.Core.Configuration
+open NakedFramework.Core.Authentication
 open NakedObjects.Persistor.Entity.Util
 open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component
