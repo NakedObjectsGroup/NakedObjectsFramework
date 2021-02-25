@@ -12,7 +12,6 @@ using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;

@@ -14,7 +14,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;

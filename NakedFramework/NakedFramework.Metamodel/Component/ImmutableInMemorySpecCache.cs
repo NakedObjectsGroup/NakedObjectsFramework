@@ -11,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;

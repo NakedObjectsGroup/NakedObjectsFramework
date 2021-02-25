@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 

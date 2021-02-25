@@ -25,7 +25,6 @@ using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestObjects;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;

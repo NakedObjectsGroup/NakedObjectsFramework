@@ -7,11 +7,10 @@
 
 using System;
 using System.Collections.Immutable;
-using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     /// <summary>
     ///     The Reflector is responsible for parsing the code of the domain model and creating the
     ///     MetamodelManager (consisting of Specifications) from this. The Reflector is only run when the

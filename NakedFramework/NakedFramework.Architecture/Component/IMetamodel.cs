@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     /// <summary>
     ///     Provides access to the 'Immutable' object specifications.
     /// </summary>

@@ -5,13 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Adapter {
     /// <summary>
     ///     An INakedObjectAdapter is an adapter to domain objects. The NOF always deals with domain objects via these
-    ///     adapters. The adapter gives access to the <see cref="NakedObjects.Architecture.Component.IMetamodelManager" />
+    ///     adapters. The adapter gives access to the <see cref="IMetamodelManager" />
     ///     (INakedObjectSpecification) for the domain object type,
     ///     provides a unique identifier for the object (Oid), and its current 'lifecycle' state.
     /// </summary>

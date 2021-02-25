@@ -10,7 +10,7 @@ using System.Data.Entity;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Component;
 using NakedObjects.Persistor.Entity.Configuration;

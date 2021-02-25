@@ -10,7 +10,6 @@ using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
-using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.DependencyInjection.FacetFactory {
 

@@ -9,7 +9,7 @@ using System;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Core.Adapter;
 using NUnit.Framework;
 

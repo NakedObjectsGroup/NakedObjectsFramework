@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     /// <summary>
     ///     Provides access to the domain services that have been registered as part of the application.
     /// </summary>

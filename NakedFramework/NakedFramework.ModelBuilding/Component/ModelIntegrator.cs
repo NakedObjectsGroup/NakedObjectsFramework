@@ -11,7 +11,6 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;

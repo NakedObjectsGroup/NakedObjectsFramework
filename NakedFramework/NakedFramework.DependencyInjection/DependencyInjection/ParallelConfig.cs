@@ -11,7 +11,6 @@ using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Component;
 using NakedFramework.ModelBuilding.Component;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Spec;

@@ -7,7 +7,7 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 
 namespace NakedObjects.DependencyInjection.DependencyInjection {
     public class FrameworkResolver : IFrameworkResolver {

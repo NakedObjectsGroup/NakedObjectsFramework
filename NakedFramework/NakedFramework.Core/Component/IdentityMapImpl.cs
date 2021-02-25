@@ -9,7 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;

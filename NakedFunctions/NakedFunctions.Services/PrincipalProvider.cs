@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Security.Principal;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 
 namespace NakedFunctions.Services {
     public class PrincipalProvider : IPrincipalProvider {

@@ -13,7 +13,7 @@ using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;

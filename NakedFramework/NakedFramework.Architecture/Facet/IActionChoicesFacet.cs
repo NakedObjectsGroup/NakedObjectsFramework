@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Facet {

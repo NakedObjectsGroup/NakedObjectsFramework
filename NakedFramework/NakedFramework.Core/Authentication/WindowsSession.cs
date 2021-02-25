@@ -7,7 +7,7 @@
 
 using System.IO;
 using System.Security.Principal;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 
 namespace NakedObjects.Core.Authentication {
     public class WindowsSession : ISession {

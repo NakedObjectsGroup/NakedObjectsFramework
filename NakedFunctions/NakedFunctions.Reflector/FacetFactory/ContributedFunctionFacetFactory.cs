@@ -13,7 +13,6 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFunctions.Reflector.Facet;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;

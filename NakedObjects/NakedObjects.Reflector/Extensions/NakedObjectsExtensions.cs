@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
-using NakedObjects.Architecture.Component;
 using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Reflector.Component;

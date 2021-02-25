@@ -16,7 +16,7 @@ using System.Xml.Linq;
 using System.Xml.Xsl;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;

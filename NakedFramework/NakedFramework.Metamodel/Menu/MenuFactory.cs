@@ -7,7 +7,7 @@
 
 using System;
 using NakedFramework;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 
 namespace NakedObjects.Meta.Menu {
     [Serializable]

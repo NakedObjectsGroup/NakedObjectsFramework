@@ -8,7 +8,6 @@
 using System;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 

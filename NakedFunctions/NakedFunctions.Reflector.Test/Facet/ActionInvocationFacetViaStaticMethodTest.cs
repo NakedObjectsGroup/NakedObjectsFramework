@@ -9,9 +9,9 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFunctions.Reflector.Facet;
 using NakedObjects;
-using NakedObjects.Architecture.Component;
 
 namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]

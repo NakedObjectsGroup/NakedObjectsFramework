@@ -7,9 +7,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestObjects;
-using NakedObjects.Architecture.Component;
 
 namespace NakedFramework.Xat.TestCase {
     public static class XatUtils {

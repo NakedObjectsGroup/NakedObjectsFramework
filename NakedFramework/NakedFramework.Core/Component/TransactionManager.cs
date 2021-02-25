@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.Extensions.Logging;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Transaction;
 using NakedObjects.Core.Util;

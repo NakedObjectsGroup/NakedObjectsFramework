@@ -15,7 +15,6 @@ using Moq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.DependencyInjection.FacetFactory;

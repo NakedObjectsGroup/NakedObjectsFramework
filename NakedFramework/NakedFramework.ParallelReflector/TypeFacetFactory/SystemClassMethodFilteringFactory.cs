@@ -8,7 +8,6 @@
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Util;

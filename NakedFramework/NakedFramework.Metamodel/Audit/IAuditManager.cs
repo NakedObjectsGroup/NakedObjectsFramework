@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Meta.Audit {
     public interface IAuditManager {

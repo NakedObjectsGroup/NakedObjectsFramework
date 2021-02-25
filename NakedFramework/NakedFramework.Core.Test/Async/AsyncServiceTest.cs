@@ -8,7 +8,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NUnit.Framework;
 
 namespace NakedObjects.Core.Async {

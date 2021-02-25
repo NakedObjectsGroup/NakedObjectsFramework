@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.ParallelReflector.FacetFactory {

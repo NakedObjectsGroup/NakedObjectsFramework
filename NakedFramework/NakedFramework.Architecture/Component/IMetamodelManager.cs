@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     /// <summary>
     ///     Provides access to the run-time object specifications (implementations of IObjectSpec).
     ///     The NakedObjectManager takes responsibility to inject these specifications with the necessary framework services.

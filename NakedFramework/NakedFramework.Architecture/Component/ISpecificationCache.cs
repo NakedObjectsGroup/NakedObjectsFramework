@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     public interface ISpecificationCache {
         ITypeSpecImmutable GetSpecification(string key);
         void Clear();

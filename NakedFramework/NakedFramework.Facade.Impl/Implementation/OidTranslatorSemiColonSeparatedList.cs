@@ -7,7 +7,6 @@
 
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Facade.Translation;
 
 namespace NakedObjects.Facade.Impl.Implementation {

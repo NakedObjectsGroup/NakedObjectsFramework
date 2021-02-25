@@ -7,7 +7,6 @@
 
 using System.Reflection;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.FacetFactory {

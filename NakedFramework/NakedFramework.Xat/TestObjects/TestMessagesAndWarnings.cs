@@ -7,8 +7,8 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Architecture.Component;
 using NakedObjects;
-using NakedObjects.Architecture.Component;
 
 namespace NakedFramework.Xat.TestObjects {
     public static class TestMessagesAndWarnings {

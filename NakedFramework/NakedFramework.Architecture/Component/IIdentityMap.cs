@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     /// <summary>
     ///     Maintains a map between domain objects instances (POCOs) and their adapters (INakedObjectAdapter).
     ///     It also ensures that the same object only ever has one adapter.

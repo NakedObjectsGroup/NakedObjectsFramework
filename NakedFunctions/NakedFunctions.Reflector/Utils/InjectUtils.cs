@@ -12,9 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFunctions.Reflector.Component;
 using NakedObjects;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 
 namespace NakedFunctions.Reflector.Utils {

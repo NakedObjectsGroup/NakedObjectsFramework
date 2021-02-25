@@ -7,7 +7,7 @@
 
 
 using System;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IIntegrationFacet : IFacet {

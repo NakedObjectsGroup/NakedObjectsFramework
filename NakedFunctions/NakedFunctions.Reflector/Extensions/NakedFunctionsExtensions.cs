@@ -15,7 +15,6 @@ using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Reflector.FacetFactory;
 using NakedFunctions.Reflector.Reflect;
 using NakedFunctions.Services;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.Extensions;

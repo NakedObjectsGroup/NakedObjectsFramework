@@ -7,7 +7,7 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 

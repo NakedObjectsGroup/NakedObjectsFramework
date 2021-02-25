@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Architecture.Component;
 using NakedObjects.DependencyInjection.FacetFactory;
 
 namespace NakedObjects.DependencyInjection.DependencyInjection {

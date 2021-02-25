@@ -9,9 +9,10 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
+using NakedObjects;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     /// <summary>
     ///     Most of this type's responsibilities will be delegated to an injected INakedObjectManager and/or IObjectPersistor.
     ///     The primary purpose in having a separate interface ILifecycleManager is so that the caller need not

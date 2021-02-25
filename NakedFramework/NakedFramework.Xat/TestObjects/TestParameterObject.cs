@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Xat.Interface;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Core;
 
 namespace NakedFramework.Xat.TestObjects {

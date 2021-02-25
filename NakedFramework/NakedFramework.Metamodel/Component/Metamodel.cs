@@ -7,7 +7,7 @@
 
 using System;
 using Microsoft.Extensions.Logging;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;

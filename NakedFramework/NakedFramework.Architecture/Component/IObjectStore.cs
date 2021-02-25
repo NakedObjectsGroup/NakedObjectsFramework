@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Persist;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     /// <summary>
     ///     Provides a generic interface to a specific persistence mechanism
     /// </summary>

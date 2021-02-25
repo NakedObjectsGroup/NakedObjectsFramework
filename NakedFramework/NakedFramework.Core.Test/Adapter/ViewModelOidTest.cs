@@ -7,7 +7,7 @@
 
 using Moq;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NUnit.Framework;

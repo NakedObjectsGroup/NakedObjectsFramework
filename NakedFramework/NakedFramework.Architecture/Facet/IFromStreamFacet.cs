@@ -7,7 +7,7 @@
 
 using System.IO;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IFromStreamFacet : IFacet {

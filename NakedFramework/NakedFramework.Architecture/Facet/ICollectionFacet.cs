@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
+using NakedFramework.Architecture.Component;
 
 namespace NakedObjects.Architecture.Facet {
     public interface ICollectionFacet : IFacet {

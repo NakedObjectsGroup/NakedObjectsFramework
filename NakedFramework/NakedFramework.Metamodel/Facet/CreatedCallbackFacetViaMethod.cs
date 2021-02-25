@@ -9,7 +9,6 @@ using System;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;

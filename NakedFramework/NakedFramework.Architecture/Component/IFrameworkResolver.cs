@@ -6,8 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedFramework.Architecture.Component {
     public interface IFrameworkResolver : IDisposable {
         INakedObjectsFramework GetFramework();
     }
