@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Facade.Facade;
 using NakedFramework.Rest.Configuration;
-using NakedFramework.Facade;
 using NakedFramework.Rest.API;
 
 

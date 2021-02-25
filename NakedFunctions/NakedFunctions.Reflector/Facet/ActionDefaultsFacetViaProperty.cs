@@ -13,7 +13,6 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
-using NakedObjects;
 
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]

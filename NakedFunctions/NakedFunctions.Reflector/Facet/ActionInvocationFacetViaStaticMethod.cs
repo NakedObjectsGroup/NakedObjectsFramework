@@ -23,7 +23,6 @@ using NakedFramework.Core.Persist;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Component;
-using NakedObjects;
 
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]

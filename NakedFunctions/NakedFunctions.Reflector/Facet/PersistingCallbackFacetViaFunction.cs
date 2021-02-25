@@ -14,7 +14,6 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
-using NakedObjects;
 
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]

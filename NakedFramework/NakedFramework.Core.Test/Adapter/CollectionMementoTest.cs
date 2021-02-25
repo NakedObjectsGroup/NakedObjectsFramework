@@ -17,7 +17,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
 using NakedFramework.Xat.TestCase;
-using NakedObjects.Core.Util;
 using NakedObjects.Services;
 using NUnit.Framework;
 using AdapterUtils = NakedFramework.Core.Util.AdapterUtils;

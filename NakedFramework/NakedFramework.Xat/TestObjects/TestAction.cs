@@ -15,7 +15,6 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestCase;
-using NakedObjects;
 
 namespace NakedFramework.Xat.TestObjects {
     internal class TestAction : ITestAction {

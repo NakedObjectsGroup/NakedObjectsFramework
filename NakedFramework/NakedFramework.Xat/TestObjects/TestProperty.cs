@@ -17,7 +17,6 @@ using NakedFramework.Core.Reflect;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Xat.Interface;
-using NakedObjects;
 
 namespace NakedFramework.Xat.TestObjects {
     public class TestProperty : ITestProperty {

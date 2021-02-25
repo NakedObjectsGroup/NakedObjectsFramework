@@ -12,7 +12,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFunctions.Reflector.Facet;
-using NakedObjects;
 
 namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]

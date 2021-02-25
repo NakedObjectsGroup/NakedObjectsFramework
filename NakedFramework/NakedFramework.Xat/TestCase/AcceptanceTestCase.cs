@@ -36,7 +36,6 @@ using NakedFramework.Rest.Extensions;
 using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestObjects;
 using NakedFunctions.Reflector.Extensions;
-using NakedObjects;
 using NakedObjects.Reflector.Extensions;
 
 namespace NakedFramework.Xat.TestCase {

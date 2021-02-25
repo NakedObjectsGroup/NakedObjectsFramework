@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace NakedFramework.Persistor.EFCore.Util {
     public static class EFCoreHelpers {

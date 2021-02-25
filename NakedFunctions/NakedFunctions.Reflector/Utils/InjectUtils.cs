@@ -16,7 +16,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFunctions.Reflector.Component;
-using NakedObjects;
 
 namespace NakedFunctions.Reflector.Utils {
     public static class InjectUtils {

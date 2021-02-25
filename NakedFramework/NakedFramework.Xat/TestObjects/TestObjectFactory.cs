@@ -14,7 +14,6 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Xat.Interface;
-using NakedObjects;
 
 namespace NakedFramework.Xat.TestObjects {
     public class TestObjectFactory : ITestObjectFactory {

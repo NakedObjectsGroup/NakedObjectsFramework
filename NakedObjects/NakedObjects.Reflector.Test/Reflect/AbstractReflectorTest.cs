@@ -16,7 +16,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Component;
-using NakedFramework.DependencyInjection.FacetFactory;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Component;
 using NakedFramework.ParallelReflector.Component;

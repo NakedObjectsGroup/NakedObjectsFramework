@@ -17,7 +17,6 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.DependencyInjection.Component;
-using NakedFramework.DependencyInjection.FacetFactory;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Reflect;
 
