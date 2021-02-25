@@ -16,11 +16,12 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Facade.Exception;
 using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedObjects.Services;
 
-namespace NakedObjects.Facade.Impl.Utility {
+namespace NakedFramework.Facade.Impl.Utility {
     public class EntityOidStrategy : IOidStrategy {
         private readonly INakedObjectsFramework framework;
         private readonly ILogger<EntityOidStrategy> logger;
@@ -58,7 +59,7 @@ namespace NakedObjects.Facade.Impl.Utility {
             try {
                 spec = framework.MetamodelManager.GetSpecification(type);
             }
-            catch (Exception e) {
+            catch (System.Exception e) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
             }
 
@@ -158,7 +159,7 @@ namespace NakedObjects.Facade.Impl.Utility {
                 _ => RestoreObject(framework, oid)
             };
 
-        private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
+        private string GetCode(ITypeFacade spec) => GetCode(NakedObjects.TypeUtils.GetType(spec.FullName));
 
         private static object CoerceType(Type type, string value) =>
             type switch {
@@ -183,7 +184,7 @@ namespace NakedObjects.Facade.Impl.Utility {
                 var keyDict = CreateKeyDictionary(keys, type);
                 return framework.Persistor.FindByKeys(type, keyDict.Values.ToArray());
             }
-            catch (Exception e) {
+            catch (System.Exception e) {
                 logger.LogWarning(e, "Domain Object not found with exception");
                 var keysvalue = keys == null ? "null" : keys.Aggregate("", (s, t) => $"{s} {t}");
                 var typevalue = type == null ? "null" : type.ToString();
@@ -198,7 +199,7 @@ namespace NakedObjects.Facade.Impl.Utility {
                 spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel, framework);
                 return viewModel;
             }
-            catch (Exception e) {
+            catch (System.Exception e) {
                 logger.LogWarning(e, "View Model not found with exception");
                 var aggregate = keys == null ? "null" : keys.Aggregate("", (s, t) => $"{s} {t}");
                 var specFullName = spec == null ? "null" : spec.FullName;

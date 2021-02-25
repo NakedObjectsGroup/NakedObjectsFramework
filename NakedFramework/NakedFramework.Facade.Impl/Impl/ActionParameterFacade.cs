@@ -16,9 +16,9 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
-using NakedObjects.Facade.Impl.Utility;
+using NakedFramework.Facade.Impl.Utility;
 
-namespace NakedObjects.Facade.Impl {
+namespace NakedFramework.Facade.Impl.Impl {
     public class ActionParameterFacade : IActionParameterFacade {
         private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;
@@ -131,7 +131,7 @@ namespace NakedObjects.Facade.Impl {
             try {
                 return GetValue(parm, rawValue);
             }
-            catch (Exception) {
+            catch (System.Exception) {
                 return null;
             }
         }

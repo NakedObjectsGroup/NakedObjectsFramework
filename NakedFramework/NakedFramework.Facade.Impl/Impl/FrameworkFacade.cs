@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
@@ -27,14 +26,14 @@ using NakedFramework.Core.Util;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Exception;
 using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Impl.Contexts;
+using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Facade.Utility;
-using NakedObjects.Facade.Impl.Contexts;
-using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Meta.Menu;
 
-namespace NakedObjects.Facade.Impl {
+namespace NakedFramework.Facade.Impl.Impl {
     public class FrameworkFacade : IFrameworkFacade {
         private readonly ILogger<FrameworkFacade> logger;
         private readonly IStringHasher stringHasher;
@@ -685,7 +684,7 @@ namespace NakedObjects.Facade.Impl {
                 if (ConsentHandler(actionContext.Action.IsUsable(actionContext.Target), actionResultContext, Cause.Disabled)) {
                     if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
                         var result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray());
-                        var isProxied = result != null && TypeUtils.IsEntityProxy(result.Object.GetType());
+                        var isProxied = result != null && NakedObjects.TypeUtils.IsEntityProxy(result.Object.GetType());
                         // if proxied object is known to EF and so is being persisted
                         var oc = GetObjectContext(result, isProxied);
 
@@ -717,14 +716,14 @@ namespace NakedObjects.Facade.Impl {
                 var whenTo = immutableFacet.Value;
                 switch (whenTo) {
                     case WhenTo.UntilPersisted when !isPersistent:
-                        return new Veto(Resources.NakedObjects.FieldDisabledUntil);
+                        return new Veto(NakedObjects.Resources.NakedObjects.FieldDisabledUntil);
                     case WhenTo.OncePersisted when isPersistent:
-                        return new Veto(Resources.NakedObjects.FieldDisabledOnce);
+                        return new Veto(NakedObjects.Resources.NakedObjects.FieldDisabledOnce);
                 }
 
                 var tgtSpec = target.Spec;
                 if (tgtSpec.IsAlwaysImmutable() || tgtSpec.IsImmutableOncePersisted() && isPersistent) {
-                    return new Veto(Resources.NakedObjects.FieldDisabled);
+                    return new Veto(NakedObjects.Resources.NakedObjects.FieldDisabled);
                 }
             }
 
@@ -749,7 +748,7 @@ namespace NakedObjects.Facade.Impl {
             if (elementSpec != null) {
                 if (elementSpec.IsParseable) {
                     var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), Framework.NakedObjectManager)).ToArray();
-                    var elementType = TypeUtils.GetType(elementSpec.FullName);
+                    var elementType = NakedObjects.TypeUtils.GetType(elementSpec.FullName);
                     var collType = typeof(List<>).MakeGenericType(elementType);
                     var list = ((IList) Activator.CreateInstance(collType))?.AsQueryable();
                     var collection = Framework.NakedObjectManager.CreateAdapter(list, null, null);
@@ -783,7 +782,7 @@ namespace NakedObjects.Facade.Impl {
             catch (NakedObjectsFacadeException) {
                 throw;
             }
-            catch (Exception e) {
+            catch (System.Exception e) {
                 throw FacadeUtils.Map(e);
             }
         }
@@ -1162,7 +1161,7 @@ namespace NakedObjects.Facade.Impl {
                 var spec = (TypeFacade) OidStrategy.GetSpecificationByLinkDomainType(domainTypeId);
                 return spec.WrappedValue;
             }
-            catch (Exception) {
+            catch (System.Exception) {
                 throw new TypeResourceNotFoundNOSException(domainTypeId);
             }
         }
@@ -1275,7 +1274,7 @@ namespace NakedObjects.Facade.Impl {
                                 ProposedValue = rawValue
                             });
                         }
-                        catch (Exception e) {
+                        catch (System.Exception e) {
                             errors.Add(new ChoiceContextFacade(key, GetSpecificationWrapper(expectedType)) {
                                 Reason = e.Message,
                                 ProposedValue = rawValue

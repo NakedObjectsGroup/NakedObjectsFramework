@@ -7,7 +7,7 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedObjects.Facade.Impl.Utility {
+namespace NakedFramework.Facade.Impl.Utility {
     public class ConstantStringHasher : IStringHasher {
         #region IStringHasher Members
 

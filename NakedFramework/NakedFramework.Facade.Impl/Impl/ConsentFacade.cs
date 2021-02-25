@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Facade.Facade;
 
-namespace NakedObjects.Facade.Impl {
+namespace NakedFramework.Facade.Impl.Impl {
     public class ConsentFacade : IConsentFacade {
         private readonly IConsent consent;
 
@@ -23,7 +23,7 @@ namespace NakedObjects.Facade.Impl {
 
         public string Reason => consent.Reason;
 
-        public Exception Exception => consent.Exception;
+        public System.Exception Exception => consent.Exception;
 
         #endregion
 

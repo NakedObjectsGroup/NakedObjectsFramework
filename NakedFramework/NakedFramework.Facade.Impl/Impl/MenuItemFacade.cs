@@ -5,11 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Threading.Tasks.Dataflow;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Facade.Facade;
 
-namespace NakedObjects.Facade.Impl {
+namespace NakedFramework.Facade.Impl.Impl {
     public class MenuItemFacade : IMenuItemFacade {
         public MenuItemFacade(IMenuItemImmutable wrapped) {
             Wrapped = wrapped;

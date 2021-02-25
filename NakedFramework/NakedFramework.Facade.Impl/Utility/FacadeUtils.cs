@@ -15,18 +15,19 @@ using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 using NakedFramework.Facade.Exception;
 using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Impl.Impl;
 
-namespace NakedObjects.Facade.Impl.Utility {
+namespace NakedFramework.Facade.Impl.Utility {
     public static class FacadeUtils {
         public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) => objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject;
 
         public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) => actionParameterFacade == null ? null : ((ActionParameterFacade) actionParameterFacade).WrappedSpec;
 
-        public static NakedObjectsFacadeException Map(Exception e) =>
+        public static NakedObjectsFacadeException Map(System.Exception e) =>
             e switch {
                 FindObjectException _ => new ObjectResourceNotFoundNOSException(e.Message, e),
-                InvalidEntryException _ => new BadRequestNOSException(Resources.NakedObjects.InvalidArguments, e),
-                ArgumentException _ => new BadRequestNOSException(Resources.NakedObjects.InvalidArguments, e),
+                InvalidEntryException _ => new BadRequestNOSException(NakedObjects.Resources.NakedObjects.InvalidArguments, e),
+                ArgumentException _ => new BadRequestNOSException(NakedObjects.Resources.NakedObjects.InvalidArguments, e),
                 TargetParameterCountException _ => new BadRequestNOSException("Missing arguments", e), // todo i18n
                 InvokeException _ when e.InnerException != null => Map(e.InnerException), // recurse on inner exception
                 _ => new GeneralErrorNOSException(e)

@@ -11,8 +11,8 @@ open NakedObjects.Rest
 open NakedObjects.Rest.Test
 open System
 open RestfulObjects.Test.Data
-open NakedObjects.Facade.Impl.Implementation
-open NakedObjects.Facade.Impl.Utility
+open NakedFramework.Facade.Impl
+open NakedFramework.Facade.Impl.Utility
 open NakedObjects.Rest.Test.Helpers
 open NakedObjects.Rest.Test.Functions
 open NakedObjects.Persistor.Entity.Configuration

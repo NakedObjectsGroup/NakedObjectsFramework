@@ -7,16 +7,15 @@
 
 using System;
 using System.Linq;
-using NakedFramework;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Value;
-using NakedObjects.Facade.Impl.Utility;
 
-namespace NakedObjects.Facade.Impl {
+namespace NakedFramework.Facade.Impl.Impl {
     public class TypeFacade : ITypeFacade {
         private readonly INakedObjectsFramework framework;
 
@@ -124,7 +123,7 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsOfType(ITypeFacade otherSpec) => WrappedValue.IsOfType(((TypeFacade) otherSpec).WrappedValue);
 
-        public Type GetUnderlyingType() => TypeUtils.GetType(WrappedValue.FullName);
+        public Type GetUnderlyingType() => NakedObjects.TypeUtils.GetType(WrappedValue.FullName);
 
         public IActionFacade[] GetCollectionContributedActions() {
             if (WrappedValue is IObjectSpec objectSpec) {

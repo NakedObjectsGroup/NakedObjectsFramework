@@ -11,9 +11,9 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Facade;
-using NakedObjects.Facade.Impl.Utility;
+using NakedFramework.Facade.Impl.Utility;
 
-namespace NakedObjects.Facade.Impl {
+namespace NakedFramework.Facade.Impl.Impl {
     public class ActionFacade : IActionFacade {
         private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;

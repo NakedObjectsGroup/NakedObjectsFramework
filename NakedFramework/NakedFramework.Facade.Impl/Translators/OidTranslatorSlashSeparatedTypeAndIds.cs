@@ -10,11 +10,12 @@ using System.Linq;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Impl.Impl;
+using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Translation;
-using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Services;
 
-namespace NakedObjects.Facade.Impl.Implementation {
+namespace NakedFramework.Facade.Impl.Translators {
     public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
         private readonly INakedObjectsFramework framework;
 
@@ -41,7 +42,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
 
         #endregion
 
-        private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
+        private string GetCode(ITypeFacade spec) => GetCode(NakedObjects.TypeUtils.GetType(spec.FullName));
 
         protected (string code, string key) GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
             var code = GetCode(nakedObject.Specification);

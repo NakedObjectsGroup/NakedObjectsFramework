@@ -11,8 +11,9 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Impl.Impl;
 
-namespace NakedObjects.Facade.Impl.Contexts {
+namespace NakedFramework.Facade.Impl.Contexts {
     public class MenuContext {
         public IMenuImmutable[] List { get; set; }
         public IObjectSpec ElementType { get; set; }

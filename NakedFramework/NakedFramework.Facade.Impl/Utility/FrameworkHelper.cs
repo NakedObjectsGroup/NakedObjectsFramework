@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Value;
 
-namespace NakedObjects.Facade.Impl.Utility {
+namespace NakedFramework.Facade.Impl.Utility {
     internal static class FrameworkHelper {
         public static INakedObjectAdapter GetNakedObject(this INakedObjectsFramework framework, object domainObject) => framework.NakedObjectManager.CreateAdapter(domainObject, null, null);
 

@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Facade.Facade;
 
-namespace NakedObjects.Facade.Impl {
+namespace NakedFramework.Facade.Impl.Impl {
     public class VersionFacade : IVersionFacade {
         private readonly IVersion version;
 

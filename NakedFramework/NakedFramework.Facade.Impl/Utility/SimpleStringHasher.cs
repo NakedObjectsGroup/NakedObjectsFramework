@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using NakedFramework.Facade.Interface;
 
-namespace NakedObjects.Facade.Impl.Utility {
+namespace NakedFramework.Facade.Impl.Utility {
     public class SimpleStringHasher : IStringHasher {
         #region IStringHasher Members
 

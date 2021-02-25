@@ -18,11 +18,10 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Value;
-using NakedObjects.Facade.Impl.Utility;
 
-
-namespace NakedObjects.Facade.Impl {
+namespace NakedFramework.Facade.Impl.Impl {
     public class ObjectFacade : IObjectFacade {
         private readonly INakedObjectsFramework framework;
 

@@ -7,13 +7,13 @@
 
 using System;
 using System.Text.RegularExpressions;
-using NakedFramework;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Impl.Impl;
 
-namespace NakedObjects.Facade.Impl.Utility {
+namespace NakedFramework.Facade.Impl.Utility {
     public static class FacetUtils {
         public static string GetMaskedValue(this ISpecification spec, IObjectFacade objectFacade, INakedObjectsFramework framework) {
             if (objectFacade == null) {
