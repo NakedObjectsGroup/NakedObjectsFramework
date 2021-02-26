@@ -7,7 +7,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Facade;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 using NakedFramework.Rest.Model;
