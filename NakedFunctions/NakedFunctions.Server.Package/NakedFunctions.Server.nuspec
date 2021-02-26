@@ -10,7 +10,8 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary></summary>
+    <summary>Initial version of Naked Functions</summary>
+    <description>Initial version of Naked Functions</description>
     <tags>naked functions functional progamming ddd domain driven design</tags>
     <dependencies>
       <group targetFramework="net5.0">
