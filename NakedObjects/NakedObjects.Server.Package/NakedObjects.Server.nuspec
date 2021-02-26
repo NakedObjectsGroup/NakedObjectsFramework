@@ -11,7 +11,7 @@
     <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
-    <description></description>
+    <description>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</description>
     <tags>naked objects nakedobjects ddd domain driven design</tags>
     <dependencies>
       <group targetFramework="net5.0">
