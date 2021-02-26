@@ -1,7 +1,7 @@
 ﻿using NakedFunctions;
 using System;
 
-namespace AdventureWorksFunctionalModel.Test
+namespace NakedFunctions.Test
 {
 
 }

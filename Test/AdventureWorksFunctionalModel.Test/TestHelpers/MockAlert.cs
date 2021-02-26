@@ -1,6 +1,6 @@
 ﻿using NakedFunctions;
 
-namespace AdventureWorksFunctionalModel.Test
+namespace NakedFunctions.Test
 {
     public class MockAlert : IAlert
     {

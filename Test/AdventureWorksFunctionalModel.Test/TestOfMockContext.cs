@@ -3,6 +3,7 @@ using NakedFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NakedFunctions.Test;
 
 namespace AdventureWorksFunctionalModel.Test
 {
@@ -60,17 +61,28 @@ namespace AdventureWorksFunctionalModel.Test
             Assert.AreEqual(4, b_s.Count());
             Assert.AreEqual(10, con.AllInstances.Count());
         }
-        class A { public A(int i) => this.i = i; int i; public override string ToString() => i.ToString();  }
-        class B { public B(int i) => this.i = i; int i; public override string ToString() => i.ToString(); }
-        
+
         [TestMethod]
         public void TestWithNew()
         {
-            var con = new MockContext().WithNew(new A(1)).WithNew(new B(1)).WithNew(new A(2));
-            var a_s = con.Instances<A>();
-            Assert.AreEqual(2, a_s.Count());
-            var b_s = con.Instances<B>();
-            Assert.AreEqual(1, b_s.Count());
+            var a1 = new A(1);
+            var con = new MockContext().WithNew(a1);
+            Assert.AreEqual(0, con.Instances<A>().Count());
+            var a2 = new A(2);
+            con = con.WithSavedNew(a1, a2);
+            Assert.AreEqual(1, con.Instances<A>().Count());
+            Assert.AreEqual(a2, con.Instances<A>().First());
+        }
+
+
+        [TestMethod]
+        public void TestReloadOnNew()
+        {
+            var a1 = new A(1);
+            var con = new MockContext().WithNew(a1);
+            var a2 = new A(2);
+            con = con.WithSavedNew(a1, a2);
+            Assert.AreEqual(a2, con.Reload(a1));
         }
 
         [TestMethod]
@@ -78,7 +90,7 @@ namespace AdventureWorksFunctionalModel.Test
         {
             var a1 = new A(1);
             var a2 = new A(2);
-            var con = new MockContext().WithNew(a1).WithUpdated(a1, a2);
+            var con = new MockContext().WithInstances(a1).WithUpdated(a1, a2);
            
             var a_s = con.Instances<A>();
             Assert.AreEqual(1, a_s.Count());
@@ -86,14 +98,34 @@ namespace AdventureWorksFunctionalModel.Test
         }
 
         [TestMethod]
-        public void TestReload()
+        public void TestReloadOnUpdated()
         {
             var a1 = new A(1);
             var a2 = new A(2);
-            var con = new MockContext().WithNew(a1).WithUpdated(a1, a2);
+            var con = new MockContext().WithInstances(a1).WithUpdated(a1, a2);
+            var a3 = new A(3);
+            con = con.WithSavedUpdated(a1, a2, a3);
+            var a_s = con.Instances<A>();
+            Assert.AreEqual(1, a_s.Count());
+            Assert.AreEqual(a3, a_s.First());
 
-            var a = con.Reload(a1);
-            Assert.AreEqual(a2, a);
+            Assert.AreEqual(a3, con.Reload(a1));
+            Assert.AreEqual(a3, con.Reload(a2));
+        }
+
+        [TestMethod]
+        public void TestWithReplacementForAnAssociatedObject()
+        {
+            var a1 = new A(1);
+            var a2 = new A(2);
+            var con = new MockContext().WithInstances(a1, a2);
+            var a3 = new A(3);
+            con = con.WithReplacementForAnAssociatedObject(a2, a3);
+            var a_s = con.Instances<A>();
+            Assert.AreEqual(2, a_s.Count());
+            Assert.AreEqual(a3, a_s.Last());
+
+
         }
 
         [TestMethod]
@@ -109,7 +141,13 @@ namespace AdventureWorksFunctionalModel.Test
             Assert.AreEqual(5, con2.Instances<A>().Count());
         }
 
+       // [TestMethod]
+
 
 
     }
+
+    internal class A { public A(int i) => this.i = i; int i; public override string ToString() => i.ToString(); }
+    internal class B { public B(int i) => this.i = i; int i; public override string ToString() => i.ToString(); }
+
 }

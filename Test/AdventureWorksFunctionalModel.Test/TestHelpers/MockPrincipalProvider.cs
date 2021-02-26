@@ -1,7 +1,7 @@
 ﻿using NakedFunctions;
 using System.Security.Principal;
 
-namespace AdventureWorksFunctionalModel.Test
+namespace NakedFunctions.Test
 {
     public class MockPrincipalProvider : IPrincipalProvider
     {

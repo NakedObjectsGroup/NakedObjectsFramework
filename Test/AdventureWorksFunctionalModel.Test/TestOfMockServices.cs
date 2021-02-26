@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using NakedFunctions.Test;
 
 namespace AdventureWorksFunctionalModel.Test
 {
