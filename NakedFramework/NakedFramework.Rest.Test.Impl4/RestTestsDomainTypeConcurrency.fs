@@ -26,6 +26,7 @@ open NakedFramework.Rest.Snapshot.Utility
 open Microsoft.Extensions.Configuration
 open NakedFramework
 open NakedFramework.Xat.TestCase
+open NakedFramework.Facade.Utility
 
 type NullStringHasher() = 
     interface IStringHasher with

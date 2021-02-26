@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Menu;
-using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Impl {
     public class MenuItemFacade : IMenuItemFacade {

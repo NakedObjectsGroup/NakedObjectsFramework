@@ -6,9 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Facade {
+namespace NakedFramework.Facade.Interface {
     public interface ITypeFacade : IFacadeHolder, IEquatable<ITypeFacade> {
         IAssociationFacade[] Properties { get; }
         IMenuFacade Menu { get; }

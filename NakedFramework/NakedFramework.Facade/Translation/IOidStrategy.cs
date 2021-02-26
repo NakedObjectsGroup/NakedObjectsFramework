@@ -5,10 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework.Facade.Facade;
-using NakedFramework.Facade.Translation;
+using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Interface {
+namespace NakedFramework.Facade.Translation {
     public interface IOidStrategy {
         // todo make public get while refactoring
         IFrameworkFacade FrameworkFacade { get; set; }

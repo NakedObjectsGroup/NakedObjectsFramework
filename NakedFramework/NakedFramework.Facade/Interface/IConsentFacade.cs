@@ -5,10 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework.Facade.Interface;
-
-namespace NakedFramework.Facade.Facade {
-    public interface IMemberFacade : IFacadeHolder {
-        string Id { get; }
+namespace NakedFramework.Facade.Interface {
+    public interface IConsentFacade {
+        bool IsAllowed { get; }
+        bool IsVetoed { get; }
+        string Reason { get; }
+        System.Exception Exception { get; }
     }
 }

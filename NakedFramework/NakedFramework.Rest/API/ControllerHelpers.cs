@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Net.Http.Headers;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Exception;
-using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Configuration;
 using NakedFramework.Rest.Model;
 using NakedFramework.Rest.Snapshot.Exception;

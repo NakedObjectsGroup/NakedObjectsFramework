@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Utility;
 
 namespace NakedFramework.Facade.Impl.Utility {
     public class ConstantStringHasher : IStringHasher {

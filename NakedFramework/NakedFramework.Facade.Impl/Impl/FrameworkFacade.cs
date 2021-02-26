@@ -25,7 +25,6 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Exception;
-using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Impl.Contexts;
 using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;

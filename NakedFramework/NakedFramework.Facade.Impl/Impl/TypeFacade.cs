@@ -11,8 +11,8 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Impl.Utility;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Value;
 
 namespace NakedFramework.Facade.Impl.Impl {

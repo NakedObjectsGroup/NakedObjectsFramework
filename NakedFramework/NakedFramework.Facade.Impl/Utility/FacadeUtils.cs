@@ -14,8 +14,8 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Exception;
 using NakedFramework.Core.Util;
 using NakedFramework.Facade.Exception;
-using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Impl.Impl;
+using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Utility {
     public static class FacadeUtils {

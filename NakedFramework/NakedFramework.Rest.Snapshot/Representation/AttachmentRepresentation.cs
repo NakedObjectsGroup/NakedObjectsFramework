@@ -9,8 +9,8 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using NakedFramework.Facade.Contexts;
-using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
 namespace NakedFramework.Rest.Snapshot.Representation {

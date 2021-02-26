@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
-using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Translation;
 
 namespace NakedFramework.Rest.Snapshot.Utility {
     public class FieldFacadeAdapter {

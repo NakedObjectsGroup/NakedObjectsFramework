@@ -8,6 +8,7 @@
 using System.Linq;
 using System.Runtime.Serialization;
 using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;

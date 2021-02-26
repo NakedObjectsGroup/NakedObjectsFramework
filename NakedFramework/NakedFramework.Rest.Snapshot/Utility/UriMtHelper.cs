@@ -10,8 +10,8 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using NakedFramework.Facade.Contexts;
-using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 
 namespace NakedFramework.Rest.Snapshot.Utility {

@@ -12,8 +12,8 @@ open RestfulObjects.Test.Data
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.Configuration
 open NakedFramework.Rest.Configuration
-open NakedFramework.Facade.Facade
 open NakedFramework.Rest.API
+open NakedFramework.Facade.Interface
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer = @"Data Source=(localdb)\MSSQLLocalDB;"

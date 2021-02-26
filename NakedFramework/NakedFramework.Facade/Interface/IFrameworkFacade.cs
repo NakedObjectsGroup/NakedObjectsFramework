@@ -7,10 +7,9 @@
 
 using System.Security.Principal;
 using NakedFramework.Facade.Contexts;
-using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 
-namespace NakedFramework.Facade.Facade {
+namespace NakedFramework.Facade.Interface {
     public interface IFrameworkFacade {
         IOidTranslator OidTranslator { get; }
         IOidStrategy OidStrategy { get; }

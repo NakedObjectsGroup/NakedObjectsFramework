@@ -8,8 +8,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
-using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Interface;
+using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 

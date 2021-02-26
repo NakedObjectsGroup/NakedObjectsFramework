@@ -9,8 +9,8 @@ using System.Linq;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Contexts;
-using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Impl.Impl;
+using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Contexts {
     public class ActionContext : Context {

@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using NakedFramework.Facade.Contexts;
 
-namespace NakedFramework.Facade.Facade {
+namespace NakedFramework.Facade.Interface {
     public interface IFieldFacade {
         ITypeFacade Specification { get; }
         Choices IsChoicesEnabled { get; }

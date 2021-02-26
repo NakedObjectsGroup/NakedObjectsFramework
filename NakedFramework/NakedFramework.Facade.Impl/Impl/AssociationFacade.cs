@@ -14,8 +14,8 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Contexts;
-using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Impl.Utility;
+using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Impl {
     public class AssociationFacade : IAssociationFacade {

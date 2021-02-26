@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Rest.Snapshot.Utility {
     public class MenuIdHolder : IMenuFacade {

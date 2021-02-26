@@ -10,8 +10,8 @@ using System.Linq;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Facade.Facade;
 using NakedFramework.Facade.Impl.Utility;
+using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Impl {
     public class ActionFacade : IActionFacade {

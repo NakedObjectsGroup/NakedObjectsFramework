@@ -7,7 +7,7 @@
 
 using System;
 using System.IO;
-using NakedFramework.Facade.Facade;
+using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Rest.Model {
     public class JsonFileAdapter : IAttachmentFacade {
