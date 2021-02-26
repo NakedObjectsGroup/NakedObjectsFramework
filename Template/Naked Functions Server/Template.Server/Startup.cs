@@ -12,11 +12,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
+using NakedFramework.Architecture.Component;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.Entity.Extensions;
+using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
-using NakedObjects.Architecture.Component;
-using NakedObjects.DependencyInjection.Extensions;
-using NakedObjects.Reflector.Extensions;
-using NakedObjects.Rest.Extensions;
 using Newtonsoft.Json;
 using Template.Model;
 
@@ -42,12 +42,6 @@ namespace NakedFunctions.Rest.App.Demo {
                 builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenuTypes());
                 builder.AddEntityPersistor(options => {
                     options.ContextInstallers = new[] { ModelConfig.DbContextInstaller };
-                });
-                // todo - outstanding issues 
-                // 1. Need to still add NakedObjects as missing dependencies - need to fix packaging
-                builder.AddNakedObjects(options =>
-                {
-                    options.NoValidate = true;
                 });
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = ModelConfig.FunctionalTypes();
