@@ -10,6 +10,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Persistor.EFCore.Configuration;
+using NakedFramework.Persistor.EFCore.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreObjectStore : IObjectStore, IDisposable {
@@ -84,10 +85,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         public PropertyInfo[] GetKeys(Type type) {
-            // temp hack 
-
-            return type.GetProperties().Where(p => p.GetCustomAttribute<KeyAttribute>() is not null).ToArray();
-
+            return context.GetKeys(type);
         }
 
         public void Refresh(INakedObjectAdapter nakedObjectAdapter) {

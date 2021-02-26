@@ -7,14 +7,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using NakedFramework.Xat.TestCase;
@@ -60,8 +61,23 @@ namespace NakedFunctions.Rest.Test {
 
         protected override bool EnforceProxies => false;
 
-        protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
-            new Func<IConfiguration, DbContext>[] {config => new MenuDbContext()};
+        protected override Func<IConfiguration, System.Data.Entity.DbContext>[] ContextInstallers =>
+            new Func<IConfiguration, System.Data.Entity.DbContext>[] { config => new MenuDbContext() };
+
+        protected Func<IConfiguration, DbContext> ContextInstaller =>  config => {
+            var c = new EFCoreMenuDbContext();
+            c.Create();
+            return c;
+        };
+
+        protected virtual Action<EFCorePersistorOptions> EFCorePersistorOptions =>
+            options => {
+                options.ContextInstaller = ContextInstaller;
+            };
+
+        //protected override Action<NakedCoreOptions> AddPersistor => builder => {
+        //    builder.AddEFCorePersistor(EFCorePersistorOptions);
+        //};
 
         protected override Action<NakedCoreOptions> AddNakedObjects => _ => { };
 

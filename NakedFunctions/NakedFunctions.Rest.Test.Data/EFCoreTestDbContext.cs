@@ -90,30 +90,30 @@ namespace NakedFunctions.Rest.Test.Data {
             modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 3, Name = "Jack"});
             modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 4, Name = "hide it"});
 
-            //var ur = new UpdatedRecord { Name = "" };
-            //modelBuilder.Entity<UpdatedRecord>().HasData(ur);
+            var ur = new UpdatedRecord {Id = 1, Name = ""};
+            modelBuilder.Entity<UpdatedRecord>().HasData(ur);
 
-            //var dr = new DateRecord();
+            var dr = new DateRecord {Id = 1};
 
-            //modelBuilder.Entity<DateRecord>().HasData(dr);
-            //modelBuilder.Entity<EnumRecord>().HasData(new EnumRecord());
+            modelBuilder.Entity<DateRecord>().HasData(dr);
+            modelBuilder.Entity<EnumRecord>().HasData(new EnumRecord {Id = 1});
 
-            //modelBuilder.Entity<ReferenceRecord>().HasData(new ReferenceRecord { UpdatedRecord = ur, DateRecord = dr });
+            modelBuilder.Entity<ReferenceRecord>().HasData(new ReferenceRecord {Id = 1, UpdatedRecord = ur, DateRecord = dr});
 
-            ////context.CollectionRecords.Add(new CollectionRecord {UpdatedRecords = new List<UpdatedRecord> {ur}});
+            //context.CollectionRecords.Add(new CollectionRecord {UpdatedRecords = new List<UpdatedRecord> {ur}});
 
-            //modelBuilder.Entity<CollectionRecord>().HasData(new CollectionRecord());
+            modelBuilder.Entity<CollectionRecord>().HasData(new CollectionRecord {Id = 1});
 
-            //modelBuilder.Entity<GuidRecord>().HasData(new GuidRecord());
+            modelBuilder.Entity<GuidRecord>().HasData(new GuidRecord {Id = 1});
 
-            //modelBuilder.Entity<DisplayAsPropertyRecord>().HasData(new DisplayAsPropertyRecord());
+            modelBuilder.Entity<DisplayAsPropertyRecord>().HasData(new DisplayAsPropertyRecord {Id = 1});
 
-            //modelBuilder.Entity<OrderedRecord>().HasData(new OrderedRecord());
+            modelBuilder.Entity<OrderedRecord>().HasData(new OrderedRecord {Id = 1});
 
-            //modelBuilder.Entity<EditRecord>().HasData(new EditRecord { Name = "Jane", SimpleRecord = fred, NotMatched = "no" });
+            modelBuilder.Entity<EditRecord>().HasData(new EditRecord {Id = 1, Name = "Jane", SimpleRecord = fred, NotMatched = "no"});
 
-            //modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord());
-            //modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord());
+            modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 1});
+            modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 2});
         }
     }
 
