@@ -10,11 +10,8 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
-    <description>
-      This package is typically used indirectly e.g. by the NakedObjects.Run
-    </description>
-    <tags>naked objects nakedobjects ddd domain driven design</tags>
+    <summary></summary>
+    <tags>naked functions functional progamming ddd domain driven design</tags>
     <dependencies>
       <group targetFramework="net5.0">
         <dependency id="NakedObjects.ProgrammingModel" version="[12.0.0-alpha01, 13)" />

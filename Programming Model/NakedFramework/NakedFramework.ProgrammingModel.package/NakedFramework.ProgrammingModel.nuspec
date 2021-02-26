@@ -10,8 +10,7 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Naked Objects Programming Model. Add to a Model project (class library) for useful Attributes and Helper classes.</description>
-    <tags>naked objects nakedobjects</tags>
+    <description>Provides a common core to the NakedObjects and NakedFunctions programming models</tags>
     <dependencies>
       <group targetFramework="net5.0" />
     </dependencies>
