@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Provides a common core to the NakedObjects and NakedFunctions programming models</tags>
+    <description>Provides a common core to the NakedObjects and NakedFunctions programming models</description>
     <dependencies>
       <group targetFramework="net5.0" />
     </dependencies>
