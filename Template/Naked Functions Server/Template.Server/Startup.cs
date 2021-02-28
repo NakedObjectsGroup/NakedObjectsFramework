@@ -52,10 +52,7 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
                     builder
-                        .WithOrigins("http://localhost:49998",
-                                     "http://localhost:8080",
-                                     "http://nakedfunctionstest.azurewebsites.net",
-                                     "https://nakedfunctionstest.azurewebsites.net")
+                        .WithOrigins("http://localhost:5001")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning", "ETag", "Set-Cookie")
                         .AllowAnyMethod()
