@@ -1,28 +1,28 @@
 This repository is home to two C# application development frameworks:  Naked Objects, and Naked Functions. With Naked Objects you write your application code in pure object-oriented style; with Naked Functions you write it in pure functional programming style.  But it is what they have in common that distinguishes them from other application development frameworks:
 
-•	You write only domain types and logic. For Naked Objects that means classes representing persistent domain entities and view models, with all your domain logic encapsulated as methods. For Naked Functions it means writing C# records (or immutable classes) and freestanding (static) functions that are 100% side-effect free. 
+  •	You write only domain types and logic. For Naked Objects that means classes representing persistent domain entities and view models, with all your domain logic encapsulated as methods. For Naked Functions it means writing C# records (or immutable classes) and freestanding (static) functions that are 100% side-effect free. 
 
-•	Persistence is managed through Entity Framework - either EF 6 or (imminently) EF Core.
+  •	Persistence is managed through Entity Framework - either EF 6 or (imminently) EF Core.
 
-•	Using introspection (during start-up only) the frameworks generate a complete RESTful API for the domain code.
+  •	Using introspection (during start-up only) the frameworks generate a complete RESTful API for the domain code.
 
-•	A generic client consumes this RESTful API to provide a rich user interface. The client, which is common to both Naked Objects and Naked Functions, is written in Angular and runs as a Single Page Application (SPA). 
+  •	A generic client consumes this RESTful API to provide a rich user interface. The client, which is common to both Naked Objects and Naked Functions, is written in Angular and runs as a Single Page Application (SPA). 
 
-•	The generic client may be customised for look and feel using standard Angular patterns, and the beauty of the design is that this customisation may be undertaken completely independently of the domain application development. Many users have found that there is no need to customise it at all: the generic client is good enough for deployment. At the other extreme, since the Client adopts a well-structured layered architecture (each layer being a separate NPM package) you may choose to build your SPA from scratch, using only the lower layers of the generic Client architecture as helpers to interact with the RESTful API.
+  •	The generic client may be customised for look and feel using standard Angular patterns, and the beauty of the design is that this customisation may be undertaken completely independently of the domain application development. Many users have found that there is no need to customise it at all: the generic client is good enough for deployment. At the other extreme, since the Client adopts a well-structured layered architecture (each layer being a separate NPM package) you may choose to build your SPA from scratch, using only the lower layers of the generic Client architecture as helpers to interact with the RESTful API.
 
-•	The frameworks may be used ready-packaged (as NuGet packages for the server side, and as NPM packages for the client) – there is no need to download the source code from this repository. (See instructions below).
+  •	The frameworks may be used ready-packaged (as NuGet packages for the server side, and as NPM packages for the client) – there is no need to download the source code from this repository. (See instructions below).
 
 Both frameworks therefore offer the following advantages:
 
-•	Rapid development cycle.
+  •	Rapid development cycle.
 
-•	Easier maintenance: changing the domain model does not require any changes to the UI code (or to the persistence layer if you adopt Entity Framework best practices).
+  •	Easier maintenance: changing the domain model does not require any changes to the UI code (or to the persistence layer if you adopt Entity Framework best practices).
 
-•	100% consistent UI look and feel, across large, complex, domain models or multiple applications.
+  •	100% consistent UI look and feel, across large, complex, domain models or multiple applications.
 
-•	Stateless server operation with all the deployment benefits of using a pure RESTful API.
+  •	Stateless server operation with all the deployment benefits of using a pure RESTful API.
 
-•	Improved communication between users and developers because the UI corresponds directly to the underlying domain model.
+  •	Improved communication between users and developers because the UI corresponds directly to the underlying domain model.
 
 Naked Objects
 =============
