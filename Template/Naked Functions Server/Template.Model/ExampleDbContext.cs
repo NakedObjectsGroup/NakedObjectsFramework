@@ -12,6 +12,6 @@ namespace Template.Model
         }
 
         public DbSet<Student> Students { get; set; }
-    }
 
+    }
 }
