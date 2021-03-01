@@ -28,7 +28,7 @@ Naked Objects
 =============
 Naked Objects is a mature framework, under continuous development for 20 years (last 7 on GitHub) and now at version 11.
 
-Full documentation of how use the framework (typically starting from the Template projects) is contained in the [Applicaion Developer Manual] (https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx).
+Full documentation of how use the framework (typically starting from the Template projects) is contained in the [Application Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx).
 There is no need to download and build the source, as the recommended way to use the framework is via the published NuGet and NPM packages. (However there are details in the manual on how to build the source for those that want to.)
 
 As of v11, all assemblies will are now built on .NET Core 3. Dependency on System.Dynamic, has been removed, due to concerns that it might be cause of (very rare) runtime errors. The NuGet package structure has also been simplified to just two packages:
