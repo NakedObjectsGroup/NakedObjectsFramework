@@ -4,9 +4,6 @@ using Template.Model.Types;
 
 namespace Template.Model.Functions
 {
-    //This example service acts as both a 'repository' (with methods for
-    //retrieving objects from the database) and as a 'factory' i.e. providing
-    //one or more methods for creating new object(s) from scratch.
     [Named("Students")]
     public static class Student_MenuFunctions
     {
