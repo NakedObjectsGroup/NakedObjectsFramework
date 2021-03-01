@@ -15,21 +15,26 @@ namespace Template.Model
     //specify the lists of types, functions, and menus explicitly.
     public static class ModelConfig
     {
-        //'IsAbstract && IsSealed' defines a static class. Not necessary here: just an extra safety check.
-        public static Type[] FunctionalTypes() => 
-          DomainClasses.Where(t => t.Namespace == "Template.Model.Types" && !(t.IsAbstract && t.IsSealed)).ToArray();
+        public static Type[] Types() => 
+          DomainClasses.Where(t => t.Namespace == "Template.Model.Types" && !t.IsStaticClass()).ToArray();
+
 
         public static Type[] Functions() =>
-          DomainClasses.Where(t => t.Namespace == "Template.Model.Functions"   && t.IsAbstract && t.IsSealed).ToArray();
+          DomainClasses.Where(t => t.Namespace == "Template.Model.Functions"   && t.IsStaticClass()).ToArray();
 
+
+        public static Type[] MainMenus() =>
+            Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
+
+
+        public static Func<IConfiguration, DbContext> DbContextInstaller => 
+            c => new ExampleDbContext(c.GetConnectionString("ExampleCS"), new ExampleDbInitializer());
+
+        #region Helpers
         private static IEnumerable<Type> DomainClasses =>
             typeof(ModelConfig).Assembly.GetTypes().Where(t => t.IsPublic && (t.IsClass || t.IsInterface || t.IsEnum));
 
-
-        public static Func<IConfiguration, DbContext> DbContextInstaller => c => new ExampleDbContext(c.GetConnectionString("ExampleCS"), new ExampleDbInitializer());
-
-        public static Type[] MainMenuTypes() =>
-            Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
-
+        private static bool IsStaticClass(this Type t) => t.IsAbstract && t.IsSealed;
+        #endregion
     }
 }
