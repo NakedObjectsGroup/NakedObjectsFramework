@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Core.Exception;
+using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
 using NakedObjects;
@@ -93,11 +94,10 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private void DeleteObject(object toDelete) {
-            //var adapter = parent.createAdapter(null, toDelete);
-            //context = parent.GetContext(toDelete);
-            //context.WrappedObjectContext.DeleteObject(toDelete);
+            //var adapter = parent.CreateAdapter(toDelete);
+            context = parent.GetContext(toDelete);
+            context.Remove(toDelete);
             //adapter.ResolveState.Handle(Events.DestroyEvent);
-
         }
 
         private void SetKeyAsNecessary(object objectToProxy, object proxy) {
@@ -108,7 +108,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private static object GetOrCreateProxiedObject(object originalObject, DbContext context, object potentialProxy) {
-            var proxy = potentialProxy ?? context.Add(Activator.CreateInstance(originalObject.GetType()));
+            var proxy = potentialProxy ?? context.Add(Activator.CreateInstance(originalObject.GetType())).Entity;
 
             if (proxy is null) {
                 throw new PersistFailedException($"unexpected null proxy for {originalObject} type {originalObject.GetType()}");
@@ -128,7 +128,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
             INakedObjectAdapter proxyAdapter = null;
-            if (persisting) {
+            if (persisting)
+            {
                 proxyAdapter = parent.CreateAdapter(proxy);
             }
 
@@ -141,9 +142,9 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             // need to update
             ProxyReferencesAndCopyValuesToProxy(originalObject, proxy);
-            if (persisting) {
-                parent.RemoveAdapter(proxyAdapter);
-            }
+            //if (persisting) {
+            //    parent.RemoveAdapter(proxyAdapter);
+            //}
 
             detachedObjects.SavedAndUpdated.Add((originalObject, proxy));
 

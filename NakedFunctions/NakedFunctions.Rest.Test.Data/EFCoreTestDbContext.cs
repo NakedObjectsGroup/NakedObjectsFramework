@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace NakedFunctions.Rest.Test.Data {
@@ -80,6 +81,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(cs);
+            optionsBuilder.UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
@@ -93,12 +95,12 @@ namespace NakedFunctions.Rest.Test.Data {
             var ur = new UpdatedRecord {Id = 1, Name = ""};
             modelBuilder.Entity<UpdatedRecord>().HasData(ur);
 
-            var dr = new DateRecord {Id = 1};
+            var dr = new DateRecord {Id = 1, EndDate = DateTime.Now, StartDate = DateTime.Now};
 
             modelBuilder.Entity<DateRecord>().HasData(dr);
             modelBuilder.Entity<EnumRecord>().HasData(new EnumRecord {Id = 1});
 
-            modelBuilder.Entity<ReferenceRecord>().HasData(new ReferenceRecord {Id = 1, UpdatedRecord = ur, DateRecord = dr});
+            modelBuilder.Entity<ReferenceRecord>().HasData(new  {Id = 1, UpdatedRecordId = 1, DateRecordId = 1});
 
             //context.CollectionRecords.Add(new CollectionRecord {UpdatedRecords = new List<UpdatedRecord> {ur}});
 
@@ -110,7 +112,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
             modelBuilder.Entity<OrderedRecord>().HasData(new OrderedRecord {Id = 1});
 
-            modelBuilder.Entity<EditRecord>().HasData(new EditRecord {Id = 1, Name = "Jane", SimpleRecord = fred, NotMatched = "no"});
+            modelBuilder.Entity<EditRecord>().HasData(new  {Id = 1, Name = "Jane", SimpleRecordId = 1, NotMatched = "no"});
 
             modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 1});
             modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 2});

@@ -11,6 +11,8 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework;
@@ -64,10 +66,16 @@ namespace NakedFunctions.Rest.Test {
         protected override Func<IConfiguration, System.Data.Entity.DbContext>[] ContextInstallers =>
             new Func<IConfiguration, System.Data.Entity.DbContext>[] { config => new MenuDbContext() };
 
-        protected Func<IConfiguration, DbContext> ContextInstaller =>  config => {
-            var c = new EFCoreMenuDbContext();
-            c.Create();
-            return c;
+        // EF Core additions 
+
+#pragma warning disable EF1001 // Internal EF Core API usage.
+        protected override Func<Type[], Type[]> SupportedSystemTypes => t => t.Append(typeof(InternalDbSet<>)).Append(typeof(EntityQueryable<>)).ToArray();
+#pragma warning restore EF1001 // Internal EF Core API usage.
+
+        protected Func<IConfiguration, DbContext> ContextInstaller => config => {
+            var context = new EFCoreMenuDbContext();
+            context.Create();
+            return context;
         };
 
         protected virtual Action<EFCorePersistorOptions> EFCorePersistorOptions =>
@@ -75,9 +83,17 @@ namespace NakedFunctions.Rest.Test {
                 options.ContextInstaller = ContextInstaller;
             };
 
-        //protected override Action<NakedCoreOptions> AddPersistor => builder => {
-        //    builder.AddEFCorePersistor(EFCorePersistorOptions);
-        //};
+        protected override Action<NakedCoreOptions> AddPersistor => builder =>
+        {
+            builder.AddEFCorePersistor(EFCorePersistorOptions);
+        };
+
+        private void CleanUpDatabase() {
+            new EFCoreMenuDbContext().Delete();
+            //MenuDbContext.Delete();
+        }
+
+        // end EF Core additions 
 
         protected override Action<NakedCoreOptions> AddNakedObjects => _ => { };
 
@@ -101,14 +117,14 @@ namespace NakedFunctions.Rest.Test {
         [OneTimeSetUp]
         public void FixtureSetUp() {
             ObjectReflectorConfiguration.NoValidate = true;
-            var context = new MenuDbContext();
+            //var context = new MenuDbContext();
             InitializeNakedObjectsFramework(this);
         }
 
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
-            MenuDbContext.Delete();
+            CleanUpDatabase();
         }
 
         protected RestfulObjectsControllerBase Api() {

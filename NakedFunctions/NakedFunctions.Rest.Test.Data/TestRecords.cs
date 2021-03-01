@@ -56,8 +56,8 @@ namespace NakedFunctions.Rest.Test.Data {
         public int Id { get; init; }
 
         public string Name { get; init; }
-        public DateTime EndDate { get; set; } = DateTime.Now;
-        public DateTime StartDate { get; set; } = DateTime.Now;
+        public DateTime EndDate { get; init; }
+        public DateTime StartDate { get; init; }
         public virtual bool Equals(DateRecord other) => ReferenceEquals(this, other);
 
         public override int GetHashCode() => base.GetHashCode();
@@ -92,8 +92,9 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public string Name { get; init; }
 
-        public virtual UpdatedRecord UpdatedRecord { get; init; }
         public virtual DateRecord DateRecord { get; init; }
+        public virtual UpdatedRecord UpdatedRecord { get; init; }
+        
         public virtual bool Equals(ReferenceRecord other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{Name}-{Id}-{UpdatedRecord?.Id}-{DateRecord?.Id}";
@@ -149,7 +150,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public string Name { get; init; }
 
-        public SimpleRecord SimpleRecord { get; set; }
+        public virtual SimpleRecord SimpleRecord { get; set; }
 
         public string NotMatched { get; init; }
 

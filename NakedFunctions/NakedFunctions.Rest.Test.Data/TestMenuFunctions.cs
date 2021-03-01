@@ -144,7 +144,7 @@ namespace NakedFunctions.Rest.Test.Data {
         }
 
         public static (ReferenceRecord, IContext) CreateNewWithNewReferences(IContext context) {
-            var sr = context.Instances<UpdatedRecord>().First();
+           
             var dr = context.Instances<DateRecord>().First();
 
             var nsr = new UpdatedRecord {Name = "Test2"};
@@ -182,7 +182,8 @@ namespace NakedFunctions.Rest.Test.Data {
             var nur = ur with {Name = "Janet"};
             var nrr = new ReferenceRecord {Name = "Test4", UpdatedRecord = nur, DateRecord = rr.DateRecord};
 
-            //context = context.WithPendingSave(sr, nrr);
+            var rr1 = context.Resolve(rr);
+
             context = context.WithNew(nrr).WithUpdated(ur, nur);
             return (nrr, context);
         }
