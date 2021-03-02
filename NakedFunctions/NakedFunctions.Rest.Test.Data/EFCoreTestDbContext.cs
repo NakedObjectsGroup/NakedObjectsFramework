@@ -23,45 +23,6 @@ namespace NakedFunctions.Rest.Test.Data {
         public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;";
     }
 
-    //public class EFCoreDatabaseInitializer {
-    //    protected override void Seed(T context) {
-    //        // keep names 4 characters
-    //        var fred = new SimpleRecord {Name = "Fred"};
-
-    //        context.SimpleRecords.Add(fred);
-    //        context.SimpleRecords.Add(new SimpleRecord {Name = "Bill"});
-    //        context.SimpleRecords.Add(new SimpleRecord {Name = "Jack"});
-    //        context.SimpleRecords.Add(new SimpleRecord {Name = "hide it"});
-
-    //        var ur = new UpdatedRecord {Name = ""};
-    //        context.UpdatedRecords.Add(ur);
-
-    //        var dr = new DateRecord();
-
-    //        context.DateRecords.Add(dr);
-    //        context.EnumRecords.Add(new EnumRecord());
-
-    //        context.ReferenceRecords.Add(new ReferenceRecord {UpdatedRecord = ur, DateRecord = dr});
-
-    //        //context.CollectionRecords.Add(new CollectionRecord {UpdatedRecords = new List<UpdatedRecord> {ur}});
-
-    //        context.CollectionRecords.Add(new CollectionRecord());
-
-    //        context.GuidRecords.Add(new GuidRecord());
-
-    //        context.DisplayAsPropertyRecords.Add(new DisplayAsPropertyRecord());
-
-    //        context.OrderedRecords.Add(new OrderedRecord());
-
-    //        context.EditRecords.Add(new EditRecord {Name = "Jane", SimpleRecord = fred, NotMatched = "no"});
-
-    //        context.DeleteRecords.Add(new DeleteRecord());
-    //        context.DeleteRecords.Add(new DeleteRecord());
-
-    //        context.SaveChanges();
-    //    }
-    //}
-
     public abstract class EFCoreTestDbContext : DbContext {
         private readonly string cs;
 
@@ -100,7 +61,7 @@ namespace NakedFunctions.Rest.Test.Data {
             modelBuilder.Entity<DateRecord>().HasData(dr);
             modelBuilder.Entity<EnumRecord>().HasData(new EnumRecord {Id = 1});
 
-            modelBuilder.Entity<ReferenceRecord>().HasData(new  {Id = 1, UpdatedRecordId = 1, DateRecordId = 1});
+            modelBuilder.Entity<ReferenceRecord>().HasData(new {Id = 1, UpdatedRecordId = 1, DateRecordId = 1});
 
             //context.CollectionRecords.Add(new CollectionRecord {UpdatedRecords = new List<UpdatedRecord> {ur}});
 
@@ -112,7 +73,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
             modelBuilder.Entity<OrderedRecord>().HasData(new OrderedRecord {Id = 1});
 
-            modelBuilder.Entity<EditRecord>().HasData(new  {Id = 1, Name = "Jane", SimpleRecordId = 1, NotMatched = "no"});
+            modelBuilder.Entity<EditRecord>().HasData(new {Id = 1, Name = "Jane", SimpleRecordId = 1, NotMatched = "no"});
 
             modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 1});
             modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 2});
@@ -124,7 +85,6 @@ namespace NakedFunctions.Rest.Test.Data {
         public void Delete() => Database.EnsureDeleted();
 
         public void Create() => Database.EnsureCreated();
-        //protected override void OnModelCreating(ModelBuilder modelBuilder) => OnModelCreating<MenuDbContext>(modelBuilder);
     }
 
     public class EFCoreObjectDbContext : EFCoreTestDbContext {
@@ -132,6 +92,5 @@ namespace NakedFunctions.Rest.Test.Data {
         public void Delete() => Database.EnsureDeleted();
 
         public void Create() => Database.EnsureCreated();
-        //protected override void OnModelCreating(ModelBuilder modelBuilder) => OnModelCreating<ObjectDbContext>(modelBuilder);
     }
 }
