@@ -42,7 +42,7 @@ namespace AW.Mapping
     {
         public static void Map(this EntityTypeBuilder<SalesPerson> builder)
         {
-            //builder.HasKey(t => t.BusinessEntityID);
+            builder.HasKey(t => t.BusinessEntityID);
 
             // Properties
             builder.Property(t => t.BusinessEntityID)
@@ -61,7 +61,7 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
-            builder.HasOne(t => t.EmployeeDetails).WithOne(t => t.SalesPerson);
+            builder.HasOne(t => t.EmployeeDetails).WithOne(t => t.SalesPerson).HasForeignKey<Employee>(t => t.BusinessEntityID);
             builder.HasOne(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
             builder.Ignore(t => t.PersonDetails);

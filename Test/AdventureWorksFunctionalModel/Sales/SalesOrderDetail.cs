@@ -87,23 +87,12 @@ namespace AW.Types {
         public virtual SpecialOfferProduct SpecialOfferProduct { get; init; }
 
         #endregion
-
-        
-        
+    
         [MemberOrder(11)]
-        public virtual Product Product {
-            get { return SpecialOfferProduct == null ? null : SpecialOfferProduct.Product; }
-            set {
-                //Does nothing -  derived field
-            }
-        }
-
+        public virtual Product Product =>  SpecialOfferProduct == null ? null : SpecialOfferProduct.Product; 
         
         [MemberOrder(12)]
-        public virtual SpecialOffer SpecialOffer {
-            get { return SpecialOfferProduct == null ? null : SpecialOfferProduct.SpecialOffer; }
-            set { }
-        }
+        public virtual SpecialOffer SpecialOffer =>  SpecialOfferProduct == null ? null : SpecialOfferProduct.SpecialOffer;
 
         #endregion
 

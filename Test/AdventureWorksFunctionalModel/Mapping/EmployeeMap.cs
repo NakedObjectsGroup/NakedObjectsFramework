@@ -65,7 +65,7 @@ namespace AW.Mapping
     {
         public static void Map(this EntityTypeBuilder<Employee> builder)
         {
-            //builder.HasKey(t => t.BusinessEntityID);
+            builder.HasKey(t => t.BusinessEntityID);
 
             // Properties
             builder.Property(t => t.NationalIDNumber)
@@ -111,7 +111,7 @@ namespace AW.Mapping
             builder.Ignore(t => t.Manager);
             //.WithMany(t => t.DirectReports)
             //.HasForeignKey(d => d.ManagerID);
-            builder.HasOne(t => t.SalesPerson).WithOne(t => t.EmployeeDetails);
+            //builder.HasOne(t => t.SalesPerson).WithOne(t => t.EmployeeDetails);
             builder.HasOne(t => t.PersonDetails).WithOne(t => t.Employee);
         }
     }
