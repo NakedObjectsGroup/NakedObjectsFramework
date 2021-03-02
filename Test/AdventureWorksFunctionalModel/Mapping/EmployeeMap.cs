@@ -65,7 +65,7 @@ namespace AW.Mapping
     {
         public static void Map(this EntityTypeBuilder<Employee> builder)
         {
-            builder.HasKey(t => t.BusinessEntityID);
+            //builder.HasKey(t => t.BusinessEntityID);
 
             // Properties
             builder.Property(t => t.NationalIDNumber)
