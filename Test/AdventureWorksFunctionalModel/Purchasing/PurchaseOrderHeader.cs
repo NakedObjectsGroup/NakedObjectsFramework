@@ -48,7 +48,7 @@ namespace AW.Types {
         [MemberOrder(10)]
         public virtual byte Status { get; init; }
 
-        [Named("Status")]
+        [Named("PO Status")]
         [MemberOrder(1)]
         public virtual POStatus StatusAsEnum => (POStatus) Status;
 

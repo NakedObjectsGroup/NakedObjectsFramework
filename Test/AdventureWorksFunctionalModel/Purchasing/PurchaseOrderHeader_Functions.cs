@@ -73,13 +73,11 @@ namespace AW.Functions
                 });
 
         [MemberOrder(1)]
-        public static IContext Approve(this PurchaseOrderHeader header, IContext context) =>
-            UpdatePOH(header, header with { Status = 2 }, context);
+        public static IContext Approve(this PurchaseOrderHeader po, IContext context) =>
+            UpdatePOH(po, po with { Status = 2 }, context);
 
-        public static bool HideApprove(this PurchaseOrderHeader header)
-        {
-            return !header.IsPending();
-        }
+        public static bool HideApprove(this PurchaseOrderHeader po) => !po.IsPending();
+
 
         public static string DisableApprove(this PurchaseOrderHeader header)
         {
