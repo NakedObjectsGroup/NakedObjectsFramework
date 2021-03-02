@@ -45,7 +45,6 @@ namespace AW.Types {
         #region Status
 
         [Hidden]
-        [MemberOrder(10)]
         public virtual byte Status { get; init; }
 
         [Named("Status")]
@@ -116,6 +115,6 @@ namespace AW.Types {
 
     public enum POStatus
     {
-        Pending, Approved, Rejected, Complete
+        Pending = 1, Approved = 2, Rejected = 3, Complete = 4
     }
 }

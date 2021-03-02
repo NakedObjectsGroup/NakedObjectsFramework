@@ -61,22 +61,15 @@ namespace AW.Functions
             return context.WithNew(newAssignment).WithUpdated(currentAssignment, updatedCA);
         }
 
-        public static Department Default1ChangeDepartmentOrShift(this Employee e)
-        {
-            EmployeeDepartmentHistory current = CurrentAssignment(e);
-            return current != null ? current.Department : null;
-        }
+        public static Department Default1ChangeDepartmentOrShift(this Employee e) =>  CurrentAssignment(e)?.Department;
 
-        public static Shift Default2ChangeDepartmentOrShift(this Employee e)
-        {
-            EmployeeDepartmentHistory current = CurrentAssignment(e);
-            return current != null ? current.Shift : null;
-        }
 
-        private static EmployeeDepartmentHistory CurrentAssignment(Employee e)
-        {
-            return e.DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
-        }
+        public static Shift Default2ChangeDepartmentOrShift(this Employee e) => CurrentAssignment(e)?.Shift;
+  
+
+        private static EmployeeDepartmentHistory CurrentAssignment(Employee e) =>
+            e.DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
+  
 
         #endregion
 
