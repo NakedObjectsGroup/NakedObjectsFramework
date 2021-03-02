@@ -34,7 +34,7 @@ namespace AW.Mapping
     {
         public static void Map(this EntityTypeBuilder<Store> builder)
         {
-            builder.HasKey(t => t.BusinessEntityID);
+            //builder.HasKey(t => t.BusinessEntityID);
 
             builder.Property(t => t.Name)
                 .IsRequired()

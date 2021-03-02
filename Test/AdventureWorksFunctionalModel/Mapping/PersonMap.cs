@@ -53,7 +53,7 @@ namespace AW.Mapping
     {
         public static void Map(this EntityTypeBuilder<Person> builder)
         {
-            builder.HasKey(t => t.BusinessEntityID);
+            //builder.HasKey(t => t.BusinessEntityID);
 
             builder.Property(t => t.Title)
                 .HasMaxLength(8);
