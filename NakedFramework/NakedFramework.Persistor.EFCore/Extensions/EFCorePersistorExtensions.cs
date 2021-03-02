@@ -6,7 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
@@ -30,6 +33,9 @@ namespace NakedFramework.Persistor.EFCore.Extensions {
         public static void AddEFCorePersistor(this NakedCoreOptions coreOptions, Action<EFCorePersistorOptions> setupAction) {
             var options = new EFCorePersistorOptions();
             setupAction(options);
+#pragma warning disable EF1001 // Internal EF Core API usage.
+            coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Append(typeof(InternalDbSet<>)).Append(typeof(EntityQueryable<>)).ToArray();
+#pragma warning restore EF1001 // Internal EF Core API usage.
 
             coreOptions.Services.AddSingleton(p => EntityObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
             coreOptions.Services.AddScoped<IOidGenerator, EntityOidGenerator>();

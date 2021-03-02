@@ -6,10 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
@@ -17,10 +14,6 @@ using NakedFunctions.Rest.Test.Data;
 
 namespace NakedFunctions.Rest.Test {
     public class MenuTestEFCore : MenuTestEF6 {
-#pragma warning disable EF1001 // Internal EF Core API usage.
-        protected override Func<Type[], Type[]> SupportedSystemTypes => t => t.Append(typeof(InternalDbSet<>)).Append(typeof(EntityQueryable<>)).ToArray();
-#pragma warning restore EF1001 // Internal EF Core API usage.
-
         protected Func<IConfiguration, DbContext> ContextInstaller => config => {
             var context = new EFCoreMenuDbContext();
             context.Create();

@@ -14,6 +14,7 @@ using NakedFramework.Metamodel.Profile;
 
 [assembly: InternalsVisibleTo("NakedFunctions.Reflector")]
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity")]
+[assembly: InternalsVisibleTo("NakedFramework.Persistor.EFCore")]
 
 namespace NakedFramework.DependencyInjection.Extensions {
     public class NakedCoreOptions {
