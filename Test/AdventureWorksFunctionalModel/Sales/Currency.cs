@@ -18,11 +18,11 @@ namespace AW.Types
         [Hidden]
         public virtual string Name { get; init; }
 
+        public override string ToString() => $"{CurrencyCode} - {Name}";
+   
         [Hidden]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
-
-        public override string ToString() => Name;
 
         public override int GetHashCode() =>base.GetHashCode();
 
