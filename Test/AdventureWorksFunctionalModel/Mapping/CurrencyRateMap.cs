@@ -68,8 +68,8 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
-            //builder.HasRequired(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);
-            //builder.HasRequired(t => t.Currency1).WithMany().HasForeignKey(t => t.ToCurrencyCode);
+            builder.HasOne(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);
+            builder.HasOne(t => t.Currency1).WithMany().HasForeignKey(t => t.ToCurrencyCode);
         }
     }
 }

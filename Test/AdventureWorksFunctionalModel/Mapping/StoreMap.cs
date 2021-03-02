@@ -50,7 +50,7 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            //builder.HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
+            builder.HasOne(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
         }
     }
 }

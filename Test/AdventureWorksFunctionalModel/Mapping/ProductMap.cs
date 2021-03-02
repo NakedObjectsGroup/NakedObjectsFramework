@@ -155,12 +155,12 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
-            //builder.HasOptional(t => t.ProductModel)
-            //       .WithMany(t => t.ProductVariants)
-            //       .HasForeignKey(d => d.ProductModelID);
-            //builder.HasOptional(t => t.ProductSubcategory).WithMany().HasForeignKey(t => t.ProductSubcategoryID); ;
-            //builder.HasOptional(t => t.SizeUnit).WithMany().HasForeignKey(t => t.SizeUnitMeasureCode);
-            //builder.HasOptional(t => t.WeightUnit).WithMany().HasForeignKey(t => t.WeightUnitMeasureCode);
+            builder.HasOne(t => t.ProductModel)
+                   .WithMany(t => t.ProductVariants)
+                   .HasForeignKey(d => d.ProductModelID);
+            builder.HasOne(t => t.ProductSubcategory).WithMany().HasForeignKey(t => t.ProductSubcategoryID); ;
+            builder.HasOne(t => t.SizeUnit).WithMany().HasForeignKey(t => t.SizeUnitMeasureCode);
+            builder.HasOne(t => t.WeightUnit).WithMany().HasForeignKey(t => t.WeightUnitMeasureCode);
         }
     }
 }

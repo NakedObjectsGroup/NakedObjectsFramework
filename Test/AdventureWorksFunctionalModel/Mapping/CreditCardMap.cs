@@ -62,7 +62,7 @@ namespace AW.Mapping
             builder.Property(t => t.ExpYear).HasColumnName("ExpYear");
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
-            //builder.HasMany(t => t.PersonLinks).WithRequired(t => t.CreditCard);
+            builder.HasMany(t => t.PersonLinks).WithOne(t => t.CreditCard);
         }
     }
 }

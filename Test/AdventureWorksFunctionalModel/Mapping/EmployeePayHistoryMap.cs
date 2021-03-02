@@ -49,12 +49,12 @@ namespace AW.Mapping
             builder.Property(t => t.RateChangeDate).HasColumnName("RateChangeDate");
             builder.Property(t => t.Rate).HasColumnName("Rate");
             builder.Property(t => t.PayFrequency).HasColumnName("PayFrequency");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
-           //builder.HasRequired(t => t.Employee)
-           //        .WithMany(t => t.PayHistory)
-           //        .HasForeignKey(d => d.EmployeeID);
+            builder.HasOne(t => t.Employee)
+                   .WithMany(t => t.PayHistory)
+                   .HasForeignKey(d => d.EmployeeID);
         }
     }
 }

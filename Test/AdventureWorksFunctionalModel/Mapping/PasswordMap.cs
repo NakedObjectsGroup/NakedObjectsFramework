@@ -33,7 +33,7 @@ namespace AW.Mapping {
             builder.Property(t => t.PasswordSalt).HasColumnName("PasswordSalt");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
-           //builder.HasRequired(pw => pw.Person);
+            builder.HasOne(pw => pw.Person);
         }
     }
 }

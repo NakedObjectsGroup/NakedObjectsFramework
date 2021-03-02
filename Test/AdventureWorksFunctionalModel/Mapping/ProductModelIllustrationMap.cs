@@ -57,12 +57,12 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
-           //builder.HasRequired(t => t.Illustration)
-           //        .WithMany(t => t.ProductModelIllustration)
-           //        .HasForeignKey(d => d.IllustrationID);
-           //builder.HasRequired(t => t.ProductModel)
-           //        .WithMany(t => t.ProductModelIllustration)
-           //        .HasForeignKey(d => d.ProductModelID);
+            builder.HasOne(t => t.Illustration)
+                   .WithMany(t => t.ProductModelIllustration)
+                   .HasForeignKey(d => d.IllustrationID);
+            builder.HasOne(t => t.ProductModel)
+                   .WithMany(t => t.ProductModelIllustration)
+                   .HasForeignKey(d => d.ProductModelID);
         }
     }
 }

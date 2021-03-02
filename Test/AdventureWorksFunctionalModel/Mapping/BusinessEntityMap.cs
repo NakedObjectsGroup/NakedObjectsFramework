@@ -31,7 +31,7 @@ namespace AW.Mapping {
             builder.Property(t => t.BusinessEntityRowguid).HasColumnName("rowguid");
             builder.Property(t => t.BusinessEntityModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
-            //builder.HasMany(t => t.Addresses).WithRequired(t => t.BusinessEntity);
+            builder.HasMany(t => t.Addresses).WithOne(t => t.BusinessEntity);
         }
     }
 }

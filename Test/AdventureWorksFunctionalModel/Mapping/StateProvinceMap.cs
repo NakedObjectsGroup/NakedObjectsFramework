@@ -78,10 +78,10 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
-           //builder.HasRequired(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);
-           //builder.HasRequired(t => t.SalesTerritory)
-            //       .WithMany(t => t.StateProvince)
-            //       .HasForeignKey(d => d.TerritoryID);
+            builder.HasOne(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);
+            builder.HasOne(t => t.SalesTerritory)
+                   .WithMany(t => t.StateProvince)
+                   .HasForeignKey(d => d.TerritoryID);
         }
     }
 }

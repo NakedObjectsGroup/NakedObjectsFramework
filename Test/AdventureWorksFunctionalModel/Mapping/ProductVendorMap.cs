@@ -80,14 +80,14 @@ namespace AW.Mapping
             builder.Property(t => t.MaxOrderQty).HasColumnName("MaxOrderQty");
             builder.Property(t => t.OnOrderQty).HasColumnName("OnOrderQty");
             builder.Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
-           //builder.HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
-           //builder.HasRequired(t => t.UnitMeasure).WithMany().HasForeignKey(t => t.UnitMeasureCode);
-           //builder.HasRequired(t => t.Vendor)
-            //       .WithMany(t => t.Products)
-           //        .HasForeignKey(d => d.VendorID);
+            builder.HasOne(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
+            builder.HasOne(t => t.UnitMeasure).WithMany().HasForeignKey(t => t.UnitMeasureCode);
+            builder.HasOne(t => t.Vendor)
+                   .WithMany(t => t.Products)
+                   .HasForeignKey(d => d.VendorID);
         }
     }
 }

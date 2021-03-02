@@ -80,13 +80,13 @@ namespace AW.Mapping
             builder.Property(t => t.UnitPriceDiscount).HasColumnName("UnitPriceDiscount");
             builder.Property(t => t.LineTotal).HasColumnName("LineTotal").ValueGeneratedOnAddOrUpdate();
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
-           //builder.HasRequired(t => t.SalesOrderHeader)
-           //        .WithMany(t => t.Details)
-           //        .HasForeignKey(d => d.SalesOrderID);
-           //builder.HasRequired(t => t.SpecialOfferProduct).WithMany().HasForeignKey(t => new { t.SpecialOfferID, t.ProductID });
+            builder.HasOne(t => t.SalesOrderHeader)
+                   .WithMany(t => t.Details)
+                   .HasForeignKey(d => d.SalesOrderID);
+            builder.HasOne(t => t.SpecialOfferProduct).WithMany().HasForeignKey(t => new {t.SpecialOfferID, t.ProductID});
         }
     }
 }

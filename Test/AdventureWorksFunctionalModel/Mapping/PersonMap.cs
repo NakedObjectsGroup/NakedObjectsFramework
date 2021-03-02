@@ -87,8 +87,8 @@ namespace AW.Mapping
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
-            //builder.HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
-            //builder.HasOptional(t => t.Password).WithRequired(pw => pw.Person);
+            builder.HasOne(t => t.Employee).WithOne(t => t.PersonDetails);
+            builder.HasOne(t => t.Password).WithOne(pw => pw.Person);
         }
     }
 }

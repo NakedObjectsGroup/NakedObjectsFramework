@@ -41,9 +41,9 @@ namespace AW.Mapping {
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             //Relationships
-            //builder.HasRequired(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);
-            //builder.HasRequired(t => t.AddressType).WithMany().HasForeignKey(t => t.AddressTypeID);
-            //builder.HasRequired(t => t.BusinessEntity).WithMany().HasForeignKey(t => t.BusinessEntityID);
+            builder.HasOne(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);
+            builder.HasOne(t => t.AddressType).WithMany().HasForeignKey(t => t.AddressTypeID);
+            builder.HasOne(t => t.BusinessEntity).WithMany().HasForeignKey(t => t.BusinessEntityID);
         }
     }
 }

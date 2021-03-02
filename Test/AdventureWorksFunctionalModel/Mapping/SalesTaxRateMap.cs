@@ -55,7 +55,7 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
-           //builder.HasRequired(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);
+           builder.HasOne(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);
         }
     }
 }

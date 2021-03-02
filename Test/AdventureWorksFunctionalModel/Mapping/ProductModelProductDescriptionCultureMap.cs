@@ -65,15 +65,14 @@ namespace AW.Mapping
             builder.Property(t => t.ProductModelID).HasColumnName("ProductModelID");
             builder.Property(t => t.ProductDescriptionID).HasColumnName("ProductDescriptionID");
             builder.Property(t => t.CultureID).HasColumnName("CultureID");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
-           //builder.HasRequired(t => t.Culture).WithMany().HasForeignKey(t => t.CultureID);
-           //builder.HasRequired(t => t.ProductDescription).WithMany().HasForeignKey(t => t.ProductDescriptionID);
-           //builder.HasRequired(t => t.ProductModel)
-            //       .WithMany(t => t.ProductModelProductDescriptionCulture)
-           //        .HasForeignKey(d => d.ProductModelID);
-
+            builder.HasOne(t => t.Culture).WithMany().HasForeignKey(t => t.CultureID);
+            builder.HasOne(t => t.ProductDescription).WithMany().HasForeignKey(t => t.ProductDescriptionID);
+            builder.HasOne(t => t.ProductModel)
+                   .WithMany(t => t.ProductModelProductDescriptionCulture)
+                   .HasForeignKey(d => d.ProductModelID);
         }
     }
 }

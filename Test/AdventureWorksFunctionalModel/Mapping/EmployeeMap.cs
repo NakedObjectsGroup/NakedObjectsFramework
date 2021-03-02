@@ -111,8 +111,8 @@ namespace AW.Mapping
             builder.Ignore(t => t.Manager);
             //.WithMany(t => t.DirectReports)
             //.HasForeignKey(d => d.ManagerID);
-            //builder.HasOptional(t => t.SalesPerson).WithRequired(t => t.EmployeeDetails);
-            //builder.HasRequired(t => t.PersonDetails).WithOptional(t => t.Employee);
+            builder.HasOne(t => t.SalesPerson).WithOne(t => t.EmployeeDetails);
+            builder.HasOne(t => t.PersonDetails).WithOne(t => t.Employee);
         }
     }
 }

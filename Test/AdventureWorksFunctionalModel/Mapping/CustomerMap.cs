@@ -67,9 +67,9 @@ namespace AW.Mapping
             builder.Property(t => t.CustomerModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            //builder.HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
-            //builder.HasOptional(t => t.Store).WithMany().HasForeignKey(t => t.StoreID);
-            //builder.HasOptional(t => t.Person).WithMany().HasForeignKey(t => t.PersonID);
+            builder.HasOne(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
+            builder.HasOne(t => t.Store).WithMany().HasForeignKey(t => t.StoreID);
+            builder.HasOne(t => t.Person).WithMany().HasForeignKey(t => t.PersonID);
         }
     }
 }

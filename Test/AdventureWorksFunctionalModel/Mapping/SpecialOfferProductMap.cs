@@ -57,10 +57,10 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
-           //builder.HasRequired(t => t.Product)
-           //       .WithMany(t => t.SpecialOfferProduct)
-           //        .HasForeignKey(d => d.ProductID);
-           //builder.HasRequired(t => t.SpecialOffer).WithMany().HasForeignKey(t => t.SpecialOfferID);
+            builder.HasOne(t => t.Product)
+                   .WithMany(t => t.SpecialOfferProduct)
+                   .HasForeignKey(d => d.ProductID);
+            builder.HasOne(t => t.SpecialOffer).WithMany().HasForeignKey(t => t.SpecialOfferID);
         }
     }
 }

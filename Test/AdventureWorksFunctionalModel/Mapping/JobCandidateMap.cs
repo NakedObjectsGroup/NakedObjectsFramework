@@ -40,7 +40,7 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
-            //builder.HasOptional(t => t.Employee).WithMany().HasForeignKey(t => t.EmployeeID);
+            builder.HasOne(t => t.Employee).WithMany().HasForeignKey(t => t.EmployeeID);
         }
     }
 }

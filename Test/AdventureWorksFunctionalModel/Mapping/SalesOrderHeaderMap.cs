@@ -134,14 +134,14 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
-           //builder.HasRequired(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);
-           //builder.HasRequired(t => t.ShippingAddress).WithMany().HasForeignKey(t => t.ShippingAddressID);
-           //builder.HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
-            //builder.HasOptional(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID);
-            //builder.HasOptional(t => t.CurrencyRate).WithMany().HasForeignKey(t => t.CurrencyRateID);
-           //builder.HasRequired(t => t.Customer).WithMany().HasForeignKey(t => t.CustomerID);
-            //builder.HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
-            //builder.HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
+            builder.HasOne(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);
+            builder.HasOne(t => t.ShippingAddress).WithMany().HasForeignKey(t => t.ShippingAddressID);
+            builder.HasOne(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
+            builder.HasOne(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID);
+            builder.HasOne(t => t.CurrencyRate).WithMany().HasForeignKey(t => t.CurrencyRateID);
+            builder.HasOne(t => t.Customer).WithMany().HasForeignKey(t => t.CustomerID);
+            builder.HasOne(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
+            builder.HasOne(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
         }
     }
 }
