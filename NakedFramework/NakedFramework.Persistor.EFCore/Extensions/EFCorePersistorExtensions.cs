@@ -18,18 +18,11 @@ using NakedFramework.Persistor.Entity.Component;
 namespace NakedFramework.Persistor.EFCore.Extensions {
     public static class EFCorePersistorExtensions {
         private static EFCorePersistorConfiguration EntityObjectStoreConfiguration(IConfiguration configuration, EFCorePersistorOptions options) {
-            var config = new EFCorePersistorConfiguration();
-            //{
-            //    //EnforceProxies = options.EnforceProxies,
-            //    //CustomConfig = options.CustomConfig,
-            //    //DefaultMergeOption = options.DefaultMergeOption,
-            //    //MaximumCommitCycles = options.MaximumCommitCycles,
-            //    //NotPersistedTypes = options.NotPersistedTypes,
-            //    //RollBackOnError = options.RollBackOnError,
-            //    //RequireExplicitAssociationOfTypes = options.RequireExplicitAssociationOfTypes
-            //};
+            var config = new EFCorePersistorConfiguration {
+                MaximumCommitCycles = options.MaximumCommitCycles
+            };
 
-            Func<DbContext> context =  () => options.ContextInstaller(configuration);
+            Func<DbContext> context = () => options.ContextInstaller(configuration);
             config.Context = context;
             return config;
         }
@@ -38,11 +31,7 @@ namespace NakedFramework.Persistor.EFCore.Extensions {
             var options = new EFCorePersistorOptions();
             setupAction(options);
 
-            //var unpersistedTypes = options.NotPersistedTypes();
-            //options.NotPersistedTypes = () => unpersistedTypes.Union(coreOptions.AdditionalUnpersistedTypes).ToArray();
-
-            coreOptions.Services.AddSingleton<EFCorePersistorConfiguration>(p => EntityObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
-            //coreOptions.Services.AddScoped<EntityOidGenerator, EntityOidGenerator>();
+            coreOptions.Services.AddSingleton(p => EntityObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
             coreOptions.Services.AddScoped<IOidGenerator, EntityOidGenerator>();
             coreOptions.Services.AddScoped<IObjectStore, EFCoreObjectStore>();
         }

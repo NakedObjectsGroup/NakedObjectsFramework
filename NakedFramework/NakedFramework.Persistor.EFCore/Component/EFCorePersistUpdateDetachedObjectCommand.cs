@@ -11,10 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using NakedFramework.Architecture.Adapter;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Core.Exception;
-using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
 using NakedObjects;
@@ -29,8 +28,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
             this.detachedObjects = detachedObjects;
             this.parent = parent;
         }
-
-       // public INakedObjectAdapter OnObject() => context.CurrentSaveRootObjectAdapter;
 
         private bool IsSavedOrUpdated(object obj) => detachedObjects.SavedAndUpdated.Any(t => t.original == obj);
 
@@ -84,27 +81,17 @@ namespace NakedFramework.Persistor.EFCore.Component {
                     DeleteObject(toDelete);
                 }
 
-
                 return detachedObjects.SavedAndUpdated;
             }
-            catch (Exception ) {
-                //parent.logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
+            catch (Exception e) {
+                parent.Logger.LogWarning($"Error in EFCorePersistUpdateDetachedObjectCommand.Execute: {e.Message}");
                 throw;
             }
         }
 
         private void DeleteObject(object toDelete) {
-            //var adapter = parent.CreateAdapter(toDelete);
             context = parent.GetContext(toDelete);
             context.Remove(toDelete);
-            //adapter.ResolveState.Handle(Events.DestroyEvent);
-        }
-
-        private void SetKeyAsNecessary(object objectToProxy, object proxy) {
-            //if (!context.IdMembersAreIdentity(objectToProxy.GetType())) {
-            //    var idMembers = context.GetIdMembers(objectToProxy.GetType());
-            //    idMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
-            //}
         }
 
         private static object GetOrCreateProxiedObject(object originalObject, DbContext context, object potentialProxy) {
@@ -127,24 +114,13 @@ namespace NakedFramework.Persistor.EFCore.Component {
             var proxy = GetOrCreateProxiedObject(originalObject, context, potentialProxy);
 
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
-            INakedObjectAdapter proxyAdapter = null;
-            if (persisting)
-            {
-                proxyAdapter = parent.CreateAdapter(proxy);
-            }
-
-            SetKeyAsNecessary(originalObject, proxy);
-
             if (persisting) {
-                //context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", proxy);
+                parent.CreateAdapter(proxy);
                 context.Add(proxy);
             }
 
             // need to update
             ProxyReferencesAndCopyValuesToProxy(originalObject, proxy);
-            //if (persisting) {
-            //    parent.RemoveAdapter(proxyAdapter);
-            //}
 
             detachedObjects.SavedAndUpdated.Add((originalObject, proxy));
 
@@ -198,7 +174,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 return ProxyObject(originalObject, proxy);
             }
 
-            //var keys = context.GetKey(originalObject);
             var persisting = parent.EmptyKeys(originalObject);
 
             return persisting ? ProxyObject(originalObject) : originalObject;
