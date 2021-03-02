@@ -1,5 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -28,6 +30,32 @@ namespace AW.Mapping
             // Relationships
             HasRequired(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<SalesTaxRate> builder)
+        {
+            builder.HasKey(t => t.SalesTaxRateID);
+
+            // Properties
+            builder.Property(t => t.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            // Table & Column Mappings
+            builder.ToTable("SalesTaxRate", "Sales");
+            builder.Property(t => t.SalesTaxRateID).HasColumnName("SalesTaxRateID");
+            builder.Property(t => t.StateProvinceID).HasColumnName("StateProvinceID");
+            builder.Property(t => t.TaxType).HasColumnName("TaxType");
+            builder.Property(t => t.TaxRate).HasColumnName("TaxRate");
+            builder.Property(t => t.Name).HasColumnName("Name");
+            builder.Property(t => t.rowguid).HasColumnName("rowguid");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+           //builder.HasRequired(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);
         }
     }
 }

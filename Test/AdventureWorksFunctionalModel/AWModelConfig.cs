@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 
 namespace AW
 {
@@ -19,7 +18,14 @@ namespace AW
             typeof(AWModelConfig).Assembly.GetTypes().Where(t => t.IsPublic && (t.IsClass || t.IsInterface || t.IsEnum));
 
 
-        public static Func<IConfiguration, DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
+        public static Func<IConfiguration, System.Data.Entity.DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
+
+        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCDbContextInstaller => c => {
+            
+            var cc = new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
+
+            return cc;
+        };
 
         public static Type[] MainMenuTypes() =>
             Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();

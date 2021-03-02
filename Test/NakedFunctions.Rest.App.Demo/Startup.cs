@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Persistor.Entity.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
@@ -40,9 +41,14 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = MenuHelper.GenerateMenus(AWModelConfig.MainMenuTypes());
-                builder.AddEntityPersistor(options => {
+                builder.AddEntityPersistor(options =>
+                {
                     options.ContextInstallers = new[] { AWModelConfig.DbContextInstaller };
                 });
+                //builder.AddEFCorePersistor(options =>
+                //{
+                //    options.ContextInstaller =  AWModelConfig.EFCDbContextInstaller;
+                //});
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = AWModelConfig.FunctionalTypes();
                     options.Functions = AWModelConfig.Functions();

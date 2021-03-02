@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -44,6 +46,47 @@ namespace AW.Mapping
                 .HasForeignKey(d => d.SalesOrderID);
             HasRequired(t => t.SpecialOfferProduct).WithMany().HasForeignKey(t => new { t.SpecialOfferID, t.ProductID });
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<SalesOrderDetail> builder)
+        {
+            builder.HasKey(t => new { t.SalesOrderID, t.SalesOrderDetailID });
+
+            //Ignores
+            builder.Ignore(t => t.Product);
+
+            // Properties
+            builder.Property(t => t.SalesOrderID)
+                .ValueGeneratedNever();
+
+            builder.Property(t => t.SalesOrderDetailID)
+                .ValueGeneratedOnAdd();
+
+            builder.Property(t => t.CarrierTrackingNumber)
+                .HasMaxLength(25);
+
+            // Table & Column Mappings
+            builder.ToTable("SalesOrderDetail", "Sales");
+            builder.Property(t => t.SalesOrderID).HasColumnName("SalesOrderID");
+            builder.Property(t => t.SalesOrderDetailID).HasColumnName("SalesOrderDetailID");
+            builder.Property(t => t.CarrierTrackingNumber).HasColumnName("CarrierTrackingNumber");
+            builder.Property(t => t.OrderQty).HasColumnName("OrderQty");
+            builder.Property(t => t.ProductID).HasColumnName("ProductID");
+            builder.Property(t => t.SpecialOfferID).HasColumnName("SpecialOfferID");
+            builder.Property(t => t.UnitPrice).HasColumnName("UnitPrice");
+            builder.Property(t => t.UnitPriceDiscount).HasColumnName("UnitPriceDiscount");
+            builder.Property(t => t.LineTotal).HasColumnName("LineTotal").ValueGeneratedOnAddOrUpdate();
+            builder.Property(t => t.rowguid).HasColumnName("rowguid");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+           //builder.HasRequired(t => t.SalesOrderHeader)
+           //        .WithMany(t => t.Details)
+           //        .HasForeignKey(d => d.SalesOrderID);
+           //builder.HasRequired(t => t.SpecialOfferProduct).WithMany().HasForeignKey(t => new { t.SpecialOfferID, t.ProductID });
         }
     }
 }

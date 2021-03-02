@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -33,6 +35,36 @@ namespace AW.Mapping
                 .WithMany(t => t.ProductProductPhoto)
                 .HasForeignKey(d => d.ProductPhotoID);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<ProductProductPhoto> builder)
+        {
+            builder.HasKey(t => new { t.ProductID, t.ProductPhotoID });
+
+            // Properties
+            builder.Property(t => t.ProductID)
+                .ValueGeneratedNever();
+
+            builder.Property(t => t.ProductPhotoID)
+                .ValueGeneratedNever();
+
+            // Table & Column Mappings
+            builder.ToTable("ProductProductPhoto", "Production");
+            builder.Property(t => t.ProductID).HasColumnName("ProductID");
+            builder.Property(t => t.ProductPhotoID).HasColumnName("ProductPhotoID");
+            builder.Property(t => t.Primary).HasColumnName("Primary");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+           //builder.HasRequired(t => t.Product)
+           //       .WithMany(t => t.ProductProductPhoto)
+            //       .HasForeignKey(d => d.ProductID);
+           //builder.HasRequired(t => t.ProductPhoto)
+            //       .WithMany(t => t.ProductProductPhoto)
+            //       .HasForeignKey(d => d.ProductPhotoID);
         }
     }
 }

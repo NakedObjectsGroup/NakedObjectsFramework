@@ -1,5 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -44,6 +46,49 @@ namespace AW.Mapping
 
             HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
             HasOptional(t => t.Password).WithRequired(pw => pw.Person);
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<Person> builder)
+        {
+            builder.HasKey(t => t.BusinessEntityID);
+
+            builder.Property(t => t.Title)
+                .HasMaxLength(8);
+
+            builder.Property(t => t.FirstName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder.Property(t => t.MiddleName)
+                .HasMaxLength(50);
+
+            builder.Property(t => t.LastName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder.Property(t => t.Suffix)
+                .HasMaxLength(10);
+
+            // Table & Column Mappings
+            builder.ToTable("Person", "Person");
+            builder.Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
+            builder.Property(t => t.PersonType).HasColumnName("PersonType");
+            builder.Property(t => t.NameStyle).HasColumnName("NameStyle");
+            builder.Property(t => t.Title).HasColumnName("Title");
+            builder.Property(t => t.FirstName).HasColumnName("FirstName");
+            builder.Property(t => t.MiddleName).HasColumnName("MiddleName");
+            builder.Property(t => t.LastName).HasColumnName("LastName");
+            builder.Property(t => t.Suffix).HasColumnName("Suffix");
+            builder.Property(t => t.EmailPromotion).HasColumnName("EmailPromotion");
+            builder.Property(t => t.AdditionalContactInfo).HasColumnName("AdditionalContactInfo");
+            builder.Property(t => t.rowguid).HasColumnName("rowguid");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+
+            //builder.HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
+            //builder.HasOptional(t => t.Password).WithRequired(pw => pw.Person);
         }
     }
 }

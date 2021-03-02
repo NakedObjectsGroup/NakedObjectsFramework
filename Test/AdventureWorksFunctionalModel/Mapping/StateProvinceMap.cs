@@ -1,5 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -41,6 +43,45 @@ namespace AW.Mapping
                 .WithMany(t => t.StateProvince)
                 .HasForeignKey(d => d.TerritoryID);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<StateProvince> builder)
+        {
+            builder.HasKey(t => t.StateProvinceID);
+
+            // Properties
+            builder.Property(t => t.StateProvinceCode)
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(3);
+
+            builder.Property(t => t.CountryRegionCode)
+                .IsRequired()
+                .HasMaxLength(3);
+
+            builder.Property(t => t.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            // Table & Column Mappings
+            builder.ToTable("StateProvince", "Person");
+            builder.Property(t => t.StateProvinceID).HasColumnName("StateProvinceID");
+            builder.Property(t => t.StateProvinceCode).HasColumnName("StateProvinceCode");
+            builder.Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
+            builder.Property(t => t.IsOnlyStateProvinceFlag).HasColumnName("IsOnlyStateProvinceFlag");
+            builder.Property(t => t.Name).HasColumnName("Name");
+            builder.Property(t => t.TerritoryID).HasColumnName("TerritoryID");
+            builder.Property(t => t.rowguid).HasColumnName("rowguid");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+           //builder.HasRequired(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);
+           //builder.HasRequired(t => t.SalesTerritory)
+            //       .WithMany(t => t.StateProvince)
+            //       .HasForeignKey(d => d.TerritoryID);
         }
     }
 }

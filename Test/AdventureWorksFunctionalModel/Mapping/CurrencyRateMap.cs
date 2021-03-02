@@ -1,5 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -35,6 +37,39 @@ namespace AW.Mapping
             HasRequired(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);
             HasRequired(t => t.Currency1).WithMany().HasForeignKey(t => t.ToCurrencyCode);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<CurrencyRate> builder)
+        {
+            builder.HasKey(t => t.CurrencyRateID);
+
+            // Properties
+            builder.Property(t => t.FromCurrencyCode)
+                   .IsRequired()
+                   .IsFixedLength()
+                   .HasMaxLength(3);
+
+            builder.Property(t => t.ToCurrencyCode)
+                   .IsRequired()
+                   .IsFixedLength()
+                   .HasMaxLength(3);
+
+            // Table & Column Mappings
+            builder.ToTable("CurrencyRate", "Sales");
+            builder.Property(t => t.CurrencyRateID).HasColumnName("CurrencyRateID");
+            builder.Property(t => t.CurrencyRateDate).HasColumnName("CurrencyRateDate");
+            builder.Property(t => t.FromCurrencyCode).HasColumnName("FromCurrencyCode");
+            builder.Property(t => t.ToCurrencyCode).HasColumnName("ToCurrencyCode");
+            builder.Property(t => t.AverageRate).HasColumnName("AverageRate");
+            builder.Property(t => t.EndOfDayRate).HasColumnName("EndOfDayRate");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+            //builder.HasRequired(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);
+            //builder.HasRequired(t => t.Currency1).WithMany().HasForeignKey(t => t.ToCurrencyCode);
         }
     }
 }

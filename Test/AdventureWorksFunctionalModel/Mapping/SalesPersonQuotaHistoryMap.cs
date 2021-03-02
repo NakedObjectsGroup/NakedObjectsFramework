@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -28,6 +30,31 @@ namespace AW.Mapping
                 .WithMany(t => t.QuotaHistory)
                 .HasForeignKey(d => d.BusinessEntityID);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<SalesPersonQuotaHistory> builder)
+        {
+            builder.HasKey(t => new { t.BusinessEntityID, t.QuotaDate });
+
+            // Properties
+            builder.Property(t => t.BusinessEntityID)
+                .ValueGeneratedNever();
+
+            // Table & Column Mappings
+            builder.ToTable("SalesPersonQuotaHistory", "Sales");
+            builder.Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
+            builder.Property(t => t.QuotaDate).HasColumnName("QuotaDate");
+            builder.Property(t => t.SalesQuota).HasColumnName("SalesQuota");
+            builder.Property(t => t.rowguid).HasColumnName("rowguid");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+           //builder.HasRequired(t => t.SalesPerson)
+            //       .WithMany(t => t.QuotaHistory)
+            //       .HasForeignKey(d => d.BusinessEntityID);
         }
     }
 }

@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -71,6 +73,75 @@ namespace AW.Mapping
             HasRequired(t => t.Customer).WithMany().HasForeignKey(t => t.CustomerID);
             HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
             HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<SalesOrderHeader> builder)
+        {
+            builder.HasKey(t => t.SalesOrderID);
+
+            //Ignores
+            builder.Ignore(t => t.AddItemsFromCart);
+            //Ignore(t => t.Status); //TODO is it necessary to ignore this?
+
+
+            // Properties
+            builder.Property(t => t.SalesOrderNumber)
+                .IsRequired()
+                .HasMaxLength(25).ValueGeneratedOnAddOrUpdate();
+
+            builder.Property(t => t.PurchaseOrderNumber)
+                .HasMaxLength(25);
+
+            builder.Property(t => t.AccountNumber)
+                .HasMaxLength(15);
+
+            builder.Property(t => t.CreditCardApprovalCode)
+                .HasMaxLength(15);
+
+            builder.Property(t => t.Comment)
+                .HasMaxLength(128);
+
+            // Table & Column Mappings
+            builder.ToTable("SalesOrderHeader", "Sales");
+            builder.Property(t => t.SalesOrderID).HasColumnName("SalesOrderID");
+            builder.Property(t => t.RevisionNumber).HasColumnName("RevisionNumber");
+            builder.Property(t => t.OrderDate).HasColumnName("OrderDate");
+            builder.Property(t => t.DueDate).HasColumnName("DueDate");
+            builder.Property(t => t.ShipDate).HasColumnName("ShipDate");
+            builder.Property(t => t.StatusByte).HasColumnName("Status");
+            builder.Property(t => t.OnlineOrder).HasColumnName("OnlineOrderFlag");
+            builder.Property(t => t.SalesOrderNumber).HasColumnName("SalesOrderNumber");
+            builder.Property(t => t.PurchaseOrderNumber).HasColumnName("PurchaseOrderNumber");
+            builder.Property(t => t.AccountNumber).HasColumnName("AccountNumber");
+            builder.Property(t => t.CustomerID).HasColumnName("CustomerID");
+            builder.Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
+            builder.Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
+            builder.Property(t => t.BillingAddressID).HasColumnName("BillToAddressID");
+            builder.Property(t => t.ShippingAddressID).HasColumnName("ShipToAddressID");
+            builder.Property(t => t.ShipMethodID).HasColumnName("ShipMethodID");
+            builder.Property(t => t.CreditCardID).HasColumnName("CreditCardID");
+            builder.Property(t => t.CreditCardApprovalCode).HasColumnName("CreditCardApprovalCode");
+            builder.Property(t => t.CurrencyRateID).HasColumnName("CurrencyRateID");
+            builder.Property(t => t.SubTotal).HasColumnName("SubTotal");
+            builder.Property(t => t.TaxAmt).HasColumnName("TaxAmt");
+            builder.Property(t => t.Freight).HasColumnName("Freight");
+            builder.Property(t => t.TotalDue).HasColumnName("TotalDue").ValueGeneratedOnAddOrUpdate(); 
+            builder.Property(t => t.Comment).HasColumnName("Comment");
+            builder.Property(t => t.rowguid).HasColumnName("rowguid");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+           //builder.HasRequired(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);
+           //builder.HasRequired(t => t.ShippingAddress).WithMany().HasForeignKey(t => t.ShippingAddressID);
+           //builder.HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
+            //builder.HasOptional(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID);
+            //builder.HasOptional(t => t.CurrencyRate).WithMany().HasForeignKey(t => t.CurrencyRateID);
+           //builder.HasRequired(t => t.Customer).WithMany().HasForeignKey(t => t.CustomerID);
+            //builder.HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
+            //builder.HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
         }
     }
 }

@@ -1,5 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping {
     public class EmailAddressMap : EntityTypeConfiguration<EmailAddress> {
@@ -10,6 +12,18 @@ namespace AW.Mapping {
             // Table & Column Mappings
             this.ToTable("EmailAddress", "Person");
             Property(t => t.EmailAddress1).HasColumnName("EmailAddress");
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<EmailAddress> builder)
+        {
+            builder.HasKey(t => new { t.BusinessEntityID, t.EmailAddressID });
+
+            // Table & Column Mappings
+            builder.ToTable("EmailAddress", "Person");
+            builder.Property(t => t.EmailAddress1).HasColumnName("EmailAddress");
         }
     }
 }

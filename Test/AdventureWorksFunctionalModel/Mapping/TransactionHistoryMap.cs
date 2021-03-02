@@ -1,5 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -31,6 +33,35 @@ namespace AW.Mapping
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<TransactionHistory> builder)
+        {
+            builder.HasKey(t => t.TransactionID);
+
+            // Properties
+            builder.Property(t => t.TransactionType)
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
+
+            // Table & Column Mappings
+            builder.ToTable("TransactionHistory", "Production");
+            builder.Property(t => t.TransactionID).HasColumnName("TransactionID");
+            builder.Property(t => t.ProductID).HasColumnName("ProductID");
+            builder.Property(t => t.ReferenceOrderID).HasColumnName("ReferenceOrderID");
+            builder.Property(t => t.ReferenceOrderLineID).HasColumnName("ReferenceOrderLineID");
+            builder.Property(t => t.TransactionDate).HasColumnName("TransactionDate");
+            builder.Property(t => t.TransactionType).HasColumnName("TransactionType");
+            builder.Property(t => t.Quantity).HasColumnName("Quantity");
+            builder.Property(t => t.ActualCost).HasColumnName("ActualCost");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+           //builder.HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
         }
     }
 }

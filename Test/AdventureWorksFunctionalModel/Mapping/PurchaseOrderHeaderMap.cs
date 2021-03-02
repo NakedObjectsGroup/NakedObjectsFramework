@@ -1,5 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -32,6 +34,36 @@ namespace AW.Mapping
             HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
             HasRequired(t => t.Vendor).WithMany().HasForeignKey(t => t.VendorID);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<PurchaseOrderHeader> builder)
+        {
+            builder.HasKey(t => t.PurchaseOrderID);
+
+            // Properties
+            // Table & Column Mappings
+            builder.ToTable("PurchaseOrderHeader", "Purchasing");
+            builder.Property(t => t.PurchaseOrderID).HasColumnName("PurchaseOrderID");
+            builder.Property(t => t.RevisionNumber).HasColumnName("RevisionNumber");
+            builder.Property(t => t.Status).HasColumnName("Status");
+            builder.Property(t => t.OrderPlacedByID).HasColumnName("EmployeeID");
+            builder.Property(t => t.VendorID).HasColumnName("VendorID");
+            builder.Property(t => t.ShipMethodID).HasColumnName("ShipMethodID");
+            builder.Property(t => t.OrderDate).HasColumnName("OrderDate");
+            builder.Property(t => t.ShipDate).HasColumnName("ShipDate");
+            builder.Property(t => t.SubTotal).HasColumnName("SubTotal");
+            builder.Property(t => t.TaxAmt).HasColumnName("TaxAmt");
+            builder.Property(t => t.Freight).HasColumnName("Freight");
+            builder.Property(t => t.TotalDue).HasColumnName("TotalDue").ValueGeneratedOnAddOrUpdate();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+           //builder.HasRequired(t => t.OrderPlacedBy).WithMany().HasForeignKey(t => t.OrderPlacedByID);
+           //builder.HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
+           //builder.HasRequired(t => t.Vendor).WithMany().HasForeignKey(t => t.VendorID);
         }
     }
 }

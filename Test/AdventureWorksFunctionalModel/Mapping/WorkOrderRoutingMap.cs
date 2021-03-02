@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -42,6 +44,45 @@ namespace AW.Mapping
                 .WithMany(t => t.WorkOrderRoutings)
                 .HasForeignKey(d => d.WorkOrderID);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<WorkOrderRouting> builder)
+        {
+            builder.HasKey(t => new { t.WorkOrderID, t.ProductID, t.OperationSequence });
+
+            // Properties
+            builder.Property(t => t.WorkOrderID)
+                .ValueGeneratedNever();
+
+            builder.Property(t => t.ProductID)
+                .ValueGeneratedNever();
+
+            builder.Property(t => t.OperationSequence)
+                .ValueGeneratedNever();
+
+            // Table & Column Mappings
+            builder.ToTable("WorkOrderRouting", "Production");
+            builder.Property(t => t.WorkOrderID).HasColumnName("WorkOrderID");
+            builder.Property(t => t.ProductID).HasColumnName("ProductID");
+            builder.Property(t => t.OperationSequence).HasColumnName("OperationSequence");
+            builder.Property(t => t.LocationID).HasColumnName("LocationID");
+            builder.Property(t => t.ScheduledStartDate).HasColumnName("ScheduledStartDate");
+            builder.Property(t => t.ScheduledEndDate).HasColumnName("ScheduledEndDate");
+            builder.Property(t => t.ActualStartDate).HasColumnName("ActualStartDate");
+            builder.Property(t => t.ActualEndDate).HasColumnName("ActualEndDate");
+            builder.Property(t => t.ActualResourceHrs).HasColumnName("ActualResourceHrs");
+            builder.Property(t => t.PlannedCost).HasColumnName("PlannedCost");
+            builder.Property(t => t.ActualCost).HasColumnName("ActualCost");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+           //builder.HasRequired(t => t.Location).WithMany().HasForeignKey(t => t.LocationID);
+           //builder.HasRequired(t => t.WorkOrder)
+            //       .WithMany(t => t.WorkOrderRoutings)
+            //       .HasForeignKey(d => d.WorkOrderID);
         }
     }
 }

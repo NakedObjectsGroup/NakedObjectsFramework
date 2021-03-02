@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping
 {
@@ -33,6 +35,36 @@ namespace AW.Mapping
                 .HasForeignKey(d => d.BusinessEntityID);
             HasRequired(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<SalesTerritoryHistory> builder)
+        {
+            builder.HasKey(t => new { t.BusinessEntityID, t.SalesTerritoryID, t.StartDate });
+
+            // Properties
+            builder.Property(t => t.BusinessEntityID)
+                .ValueGeneratedNever();
+
+            builder.Property(t => t.SalesTerritoryID)
+                .ValueGeneratedNever();
+
+            // Table & Column Mappings
+            builder.ToTable("SalesTerritoryHistory", "Sales");
+            builder.Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
+            builder.Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
+            builder.Property(t => t.StartDate).HasColumnName("StartDate");
+            builder.Property(t => t.EndDate).HasColumnName("EndDate");
+            builder.Property(t => t.rowguid).HasColumnName("rowguid");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+           //builder.HasRequired(t => t.SalesPerson)
+            //       .WithMany(t => t.TerritoryHistory)
+           //       .HasForeignKey(d => d.BusinessEntityID);
+           //builder.HasRequired(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
         }
     }
 }
