@@ -10,14 +10,10 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Utility;
-using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using NakedFramework.Xat.TestCase;
@@ -32,7 +28,7 @@ namespace NakedFunctions.Rest.Test {
         public string GetHash(string toHash) => null;
     }
 
-    public class ObjectTest : AcceptanceTestCase {
+    public class ObjectTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
             typeof(SimpleRecordFunctions),
             typeof(DateRecordFunctions),
@@ -76,36 +72,10 @@ namespace NakedFunctions.Rest.Test {
         protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
             new Func<IConfiguration, DbContext>[] {config => new ObjectDbContext()};
 
-
-        // EF Core additions 
-
-#pragma warning disable EF1001 // Internal EF Core API usage.
-        protected override Func<Type[], Type[]> SupportedSystemTypes => t => t.Append(typeof(InternalDbSet<>)).Append(typeof(EntityQueryable<>)).ToArray();
-#pragma warning restore EF1001 // Internal EF Core API usage.
-
-        protected Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> ContextInstaller => config => {
-            var context = new EFCoreObjectDbContext();
-            context.Create();
-            return context;
-        };
-
-        protected virtual Action<EFCorePersistorOptions> EFCorePersistorOptions =>
-            options => {
-                options.ContextInstaller = ContextInstaller;
-            };
-
-        protected override Action<NakedCoreOptions> AddPersistor => builder =>
+        protected virtual void CleanUpDatabase()
         {
-            builder.AddEFCorePersistor(EFCorePersistorOptions);
-        };
-
-        private void CleanUpDatabase()
-        {
-            new EFCoreObjectDbContext().Delete();
             ObjectDbContext.Delete();
         }
-
-        // end EF Core additions 
 
         protected override Action<NakedCoreOptions> AddNakedObjects => _ => { };
 
