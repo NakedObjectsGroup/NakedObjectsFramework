@@ -1,4 +1,4 @@
-This repository is home to two C# application development frameworks: **Naked Objects**, and **Naked Functions**. With Naked Objects you write your application code in pure object-oriented style; with Naked Functions you write it in pure functional programming style.  But it is what they have in common that distinguishes them from other application development frameworks:
+This repository is now home to two C# application development frameworks: **Naked Objects**, and **Naked Functions** (Beta). With Naked Objects you write your application code in pure object-oriented style; with Naked Functions you write it in pure functional programming style.  But it is what they have in common that distinguishes them from other application development frameworks:
 
 * You write only domain types and logic. For Naked Objects that means classes representing persistent domain entities and view models, with all your domain logic encapsulated as methods. For Naked Functions it means writing C# records (or immutable classes) and freestanding (static) functions that are 100% side-effect free. 
 
@@ -42,7 +42,7 @@ As of v11, all assemblies will are now built on .NET Core 3. Dependency on Syste
 Naked Functions
 ===============
 
-Naked Functions is a brand new framework, currently at Beta stage.
+Naked Functions is a brand new framework, currently in Beta-release.
 
 While the full Application Developer Manual is currently under construction, the following PowerPoint slides will help:
 
