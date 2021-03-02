@@ -55,7 +55,6 @@ namespace AW.Functions {
                 SalesOrderHeader = soh,
                 OrderQty = quantity,
                 SpecialOfferProduct = specialOfferProduct,
-                Product = product,
                 UnitPrice = product.ListPrice,
                 UnitPriceDiscount = specialOfferProduct.SpecialOffer.DiscountPct,
                 rowguid = context.NewGuid(),
