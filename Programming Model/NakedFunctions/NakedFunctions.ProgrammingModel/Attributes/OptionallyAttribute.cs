@@ -9,7 +9,8 @@ using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     Used to indicate that an action parameter, is optional.
+    ///     Used to indicate that an action parameter, is optional. May be applied to properties, but relevant to editable view
+    ///     models only.
     /// </summary>
     /// <remarks>
     ///     <para>
@@ -17,6 +18,6 @@ namespace NakedFunctions {
     ///         user execute that action unless values have been specified for each parameter.
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Parameter)]
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
     public class OptionallyAttribute : Attribute { }
 }
