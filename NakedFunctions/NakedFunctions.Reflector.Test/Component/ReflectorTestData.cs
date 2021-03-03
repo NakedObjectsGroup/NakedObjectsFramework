@@ -74,15 +74,15 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static (IQueryable<TableViewClass>, IContext) TableViewFunction1(this TableViewClass dac, IContext context) => (new[] {dac}.AsQueryable(), context);
     }
 
-    [Mask("Class Mask")]
+    //[Mask("Class Mask")] (currently) allowed only on property
     public record MaskClass {
         [Mask("Property Mask")]
         public string MaskProperty { get; init; }
     }
 
     public static class MaskFunctions {
-        [Mask("Function Mask")]
-        public static MaskClass MaskFunction(this MaskClass dac, [Mask("Parameter Mask")] string parm, IContext context) => dac;
+        //[Mask("Function Mask")] (currently) allowed only on property
+        public static MaskClass MaskFunction(this MaskClass dac, /*[Mask("Parameter Mask")]*/ string parm, IContext context) => dac;
     }
 
     public static class ContributedCollectionFunctions {
@@ -90,7 +90,7 @@ namespace NakedFunctions.Reflector.Test.Component {
     }
 
     public record OptionallyClass {
-        [Optionally]
+        //[Optionally]  cannot (currently) be applied to a property
         public string OptionallyProperty { get; init; }
 
         public string NotOptionallyProperty { get; init; }

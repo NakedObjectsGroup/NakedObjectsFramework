@@ -18,6 +18,6 @@ namespace NakedFunctions {
     ///         user execute that action unless values have been specified for each parameter.
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Parameter)]
     public class OptionallyAttribute : Attribute { }
 }

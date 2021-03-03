@@ -537,28 +537,29 @@ namespace NakedFunctions.Reflector.Test.Component {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<MaskClass>());
-
-                var facet = spec.GetFacet<IMaskFacet>();
-                Assert.IsNotNull(facet);
-                Assert.AreEqual("Class Mask", facet.Value);
+                
+                //[Mask]  (currently) allowed only on a property
+                //var facet = spec.GetFacet<IMaskFacet>();
+                //Assert.IsNotNull(facet);
+                //Assert.AreEqual("Class Mask", facet.Value);
 
                 var propertySpec = spec.Fields.First();
-
-                facet = propertySpec.GetFacet<IMaskFacet>();
+                var facet = propertySpec.GetFacet<IMaskFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual("Property Mask", facet.Value);
 
-                var actionSpec = spec.ContributedActions.First();
+                //var actionSpec = spec.ContributedActions.First();
 
-                facet = actionSpec.GetFacet<IMaskFacet>();
-                Assert.IsNotNull(facet);
-                Assert.AreEqual("Function Mask", facet.Value);
 
-                var parmSpec = actionSpec.Parameters[1];
+                //facet = actionSpec.GetFacet<IMaskFacet>();
+                //Assert.IsNotNull(facet);
+                //Assert.AreEqual("Function Mask", facet.Value);
 
-                facet = parmSpec.GetFacet<IMaskFacet>();
-                Assert.IsNotNull(facet);
-                Assert.AreEqual("Parameter Mask", facet.Value);
+                //var parmSpec = actionSpec.Parameters[1];
+
+                //facet = parmSpec.GetFacet<IMaskFacet>();
+                //Assert.IsNotNull(facet);
+                //Assert.AreEqual("Parameter Mask", facet.Value);
             }
         }
 
@@ -588,10 +589,11 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual(true, facet.IsMandatory);
                 Assert.AreEqual(false, facet.IsOptional);
 
-                facet = propertySpec2.GetFacet<IMandatoryFacet>();
-                Assert.IsNotNull(facet);
-                Assert.AreEqual(false, facet.IsMandatory);
-                Assert.AreEqual(true, facet.IsOptional);
+                //[Optionally] cannot (currently) be applied to a property
+                //facet = propertySpec2.GetFacet<IMandatoryFacet>();
+                //Assert.IsNotNull(facet);
+                //Assert.AreEqual(false, facet.IsMandatory);
+                //Assert.AreEqual(true, facet.IsOptional);
 
                 var actionSpec = spec.ContributedActions.First();
 
