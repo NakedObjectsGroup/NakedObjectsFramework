@@ -86,9 +86,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("PurchaseOrderHeader--1", "PO from Litware, Inc., 5/17/2005 12:00:00 AM");
             AccessInstanceWithTitle("ShipMethod--1", "XRQ - TRUCK GROUND");
             AccessInstanceWithTitle("Vendor--1492", "Australia Bike Retailer");
-            AccessInstanceWithTitle("CountryRegionCurrency--AE--AED", "CountryRegionCurrency: United Arab Emirates Emirati Dirham");
+            AccessInstanceWithTitle("CountryRegionCurrency--AE--AED", "CountryRegionCurrency: United Arab Emirates AED - Emirati Dirham");
             AccessInstanceWithTitle("CreditCard--1", "**********5310");
-            AccessInstanceWithTitle("Currency--AED", "Emirati Dirham");
+            AccessInstanceWithTitle("Currency--AED", "AED - Emirati Dirham");
             AccessInstanceWithTitle("CurrencyRate--1", "1.0000");
             AccessInstanceWithTitle("Customer--1", "AW00000001 A Bike Store");
             AccessInstanceWithTitle("PersonCreditCard--293--17038", "PersonCreditCard: 293-17038");
