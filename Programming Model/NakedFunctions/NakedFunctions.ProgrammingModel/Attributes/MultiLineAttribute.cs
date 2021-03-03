@@ -21,13 +21,14 @@ namespace NakedFunctions {
 
         public MultiLineAttribute(int numberOfLines) : this(numberOfLines, 0) { }
 
-        public MultiLineAttribute(int numberOfLines, int width) {
+        private MultiLineAttribute(int numberOfLines, int width) {
             NumberOfLines = numberOfLines;
             Width = width;
         }
 
         public int NumberOfLines { get; set; }
 
+        //Included for compatibility with Naked Objects code. Not used in Naked Functions.
         public int Width { get; set; }
     }
 }
