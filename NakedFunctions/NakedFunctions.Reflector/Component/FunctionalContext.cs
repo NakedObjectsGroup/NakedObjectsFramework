@@ -27,10 +27,10 @@ namespace NakedFunctions.Reflector.Component {
 
         public T GetService<T>() => Provider.GetService<T>();
 
-        public IContext WithNew(object newObj) => this with {New = New.Append(newObj).ToArray()};
+        public IContext WithNew<T>(T newObj) where T : class  => this with {New = New.Append(newObj).ToArray()};
 
-        public IContext WithUpdated<T>(T proxy, T updated) => this with {Updated = Updated.Append((proxy, updated)).ToArray()};
-        public IContext WithDeleted(object deleteObj) => this with {Deleted = Deleted.Append(deleteObj).ToArray()};
+        public IContext WithUpdated<T>(T proxy, T updated) where T : class => this with {Updated = Updated.Append((proxy, updated)).ToArray()};
+        public IContext WithDeleted<T>(T deleteObj) where T : class => this with {Deleted = Deleted.Append(deleteObj).ToArray()};
 
         public IContext WithDeferred(Func<IContext, IContext> function) => this with {PostSaveFunction = function};
 
