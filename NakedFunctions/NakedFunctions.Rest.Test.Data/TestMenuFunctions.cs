@@ -25,7 +25,7 @@ namespace NakedFunctions.Rest.Test.Data {
             return instances.Skip(context.RandomSeed().ValueInRange(instances.Count())).FirstOrDefault();
         }
 
-        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithNew(obj));
+        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) where T : class => (obj, context.WithNew(obj));
 
         internal static Func<IContext, IContext> WarnUser(string message) =>
             c => {
