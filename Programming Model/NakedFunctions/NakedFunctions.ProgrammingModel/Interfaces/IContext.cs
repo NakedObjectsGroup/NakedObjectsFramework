@@ -14,13 +14,13 @@ namespace NakedFunctions {
         public IQueryable<T> Instances<T>() where T : class;
 
         //Gets a service that has been configured in services configuration.
-        public T GetService<T>();
+        public T GetService<T>() where T : class;
 
-        public IContext WithNew(object newObj);
+        public IContext WithNew<T>(T newObj) where T : class;
 
-        public IContext WithUpdated<T>(T original, T updated);
+        public IContext WithUpdated<T>(T original, T updated) where T : class;
 
-        public IContext WithDeleted(object deleteObj);
+        public IContext WithDeleted<T>(T deleteObj) where T : class;
 
         IContext WithDeferred(Func<IContext, IContext> function);
 
