@@ -14,7 +14,7 @@ namespace NakedFunctions {
         public IQueryable<T> Instances<T>() where T : class;
 
         //Gets a service that has been configured in services configuration.
-        public T GetService<T>() where T : class;
+        public T GetService<T>();
 
         public IContext WithNew<T>(T newObj) where T : class;
 
