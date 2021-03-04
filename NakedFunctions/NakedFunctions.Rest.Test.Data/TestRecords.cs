@@ -156,4 +156,16 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public override string ToString() => Name;
     }
+
+    [Bounded]
+    public record BoundedRecord {
+        [Key]
+        public int Id { get; init; }
+
+        public string Name { get; init; }
+
+        public virtual bool Equals(BoundedRecord other) => ReferenceEquals(this, other);
+        public override string ToString() => Name;
+        public override int GetHashCode() => base.GetHashCode();
+    }
 }

@@ -60,7 +60,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(OrderedRecord),
             typeof(CollectionRecord),
             typeof(EditRecord),
-            typeof(DeleteRecord)
+            typeof(DeleteRecord),
+            typeof(BoundedRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -475,6 +476,25 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("Bill", choices[1]["title"].ToString());
             Assert.AreEqual("Jack", choices[2]["title"].ToString());
             Assert.AreEqual("hide it", choices[3]["title"].ToString());
+        }
+
+        [Test]
+        public void TestGetRecordActionWithBoundedChoices()
+        {
+            var api = Api();
+            var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(ChoicesRecordFunctions.WithBoundedChoices));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ChoicesRecordFunctions.WithBoundedChoices), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+            var choices = parameters["record"]["choices"];
+
+            Assert.AreEqual(2, choices.Count());
+            Assert.AreEqual("One", choices[0]["title"].ToString());
+            Assert.AreEqual("Two", choices[1]["title"].ToString());
         }
 
         [Test]

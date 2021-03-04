@@ -132,6 +132,9 @@ namespace NakedFunctions.Rest.Test.Data {
         public static SimpleRecord WithChoices(this SimpleRecord sp, SimpleRecord record, IContext context) => record;
         public static IList<SimpleRecord> Choices1WithChoices(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>().ToList();
 
+        public static SimpleRecord WithBoundedChoices(this SimpleRecord sp, BoundedRecord record, IContext context) => sp;
+
+
         public static SimpleRecord WithChoicesWithParameters(this SimpleRecord sp, SimpleRecord record, int parm1, string parm2, IContext context) => record;
 
         public static IList<SimpleRecord> Choices1WithChoicesWithParameters(this SimpleRecord sp, int parm1, string parm2, IContext context) =>

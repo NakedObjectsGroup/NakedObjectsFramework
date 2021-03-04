@@ -96,9 +96,15 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public IQueryable<T> GetInstances<T>(bool tracked = true) where T : class => context.Set<T>();
 
-        public IQueryable GetInstances(Type type) => throw new NotImplementedException();
+        public IQueryable GetInstances(Type type) {
+            var mi = context.GetType().GetMethod("Set", Array.Empty<Type>())?.MakeGenericMethod(type);
+            return (IQueryable) mi?.Invoke(context, Array.Empty<object>());
+        }
 
-        public IQueryable GetInstances(IObjectSpec spec) => throw new NotImplementedException();
+        public IQueryable GetInstances(IObjectSpec spec) {
+            var type = NakedObjects.TypeUtils.GetType(spec.FullName);
+            return GetInstances(type);
+        }
 
         public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class => throw new NotImplementedException();
 

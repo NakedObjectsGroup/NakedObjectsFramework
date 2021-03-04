@@ -39,6 +39,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<OrderedRecord> OrderedRecords { get; set; }
         public DbSet<EditRecord> EditRecords { get; set; }
         public DbSet<DeleteRecord> DeleteRecords { get; set; }
+        public DbSet<BoundedRecord> BoundedRecords { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(cs);
@@ -77,6 +78,9 @@ namespace NakedFunctions.Rest.Test.Data {
 
             modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 1});
             modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 2});
+
+            modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 1, Name = "One"});
+            modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 2, Name = "Two"});
         }
     }
 
