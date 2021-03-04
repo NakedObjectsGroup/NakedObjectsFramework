@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="OOPRecords.Model.Student">
+    <Position X="3.75" Y="1.25" Width="1.5" />
+    <AssociationLine Name="Tutor" Type="OOPRecords.Model.Teacher" FixedFromPoint="true">
+      <Path>
+        <Point X="3.75" Y="2.384" />
+        <Point X="2.5" Y="2.384" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.366" Y="0.044" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACEEQAAiAAgQAEAEAACAAAAAEQAoAAAAAAAAAAAAg=</HashCode>
+      <FileName>Student.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Tutor" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Sets" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="OOPRecords.Model.Teacher">
+    <Position X="1" Y="1.25" Width="1.5" />
+    <AssociationLine Name="Tutees" Type="OOPRecords.Model.Student">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.23" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAwAAAAAAEAEAAAAAAAAAAAAAAAACAAAAAAIAAg=</HashCode>
+      <FileName>Teacher.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Tutees" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="OOPRecords.Model.Set">
+    <Position X="6.25" Y="1.25" Width="1.5" />
+    <AssociationLine Name="Teacher" Type="OOPRecords.Model.Teacher">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-2.941" Y="0.507" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Students" Type="OOPRecords.Model.Student" FixedFromPoint="true">
+      <Path>
+        <Point X="6.25" Y="2.562" />
+        <Point X="5.25" Y="2.562" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.19" Y="0.076" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAMCAAQAAAAgAAAEgIAAIAAAAAAAAAAAAACAQAAAAAA=</HashCode>
+      <FileName>Set.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Subject" />
+      <Property Name="Teacher" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Students" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="OOPRecords.Model.Subject">
+    <Position X="8.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Subject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOPRecords.Model.SubjectReport">
+    <Position X="8.5" Y="3.5" Width="1.75" />
+    <AssociationLine Name="Subject" Type="OOPRecords.Model.Subject">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.872" Y="0.212" Height="0.182" Width="0.763" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAiUAAAQCAAAAAEAIAAAACAAAAAAAABAAEAAAEAABA=</HashCode>
+      <FileName>SubjectReport.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Student" />
+      <Property Name="Subject" />
+      <Property Name="GivenBy" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
