@@ -43,9 +43,8 @@ namespace AdventureWorksFunctionalModel.Test
         [TestMethod]
         public void TestOfMockGuidGenerator()
         {
-            var gen = new MockGuidGenerator();
-            var g =  new System.Guid();
-            gen.NextGuid = g;
+            var g = new Guid();
+            var gen = new MockGuidGenerator(g);
             Assert.AreEqual(g, gen.NewGuid());
             try
             {
@@ -62,7 +61,7 @@ namespace AdventureWorksFunctionalModel.Test
         public void TestMockClock()
         {
             var d = new DateTime(2021, 2, 25, 15, 42, 30);
-            var clock = new MockClock() { Time = d };
+            var clock = new MockClock(d);
             Assert.AreEqual("25/02/2021 00:00:00", clock.Today().ToString());
             Assert.AreEqual("25/02/2021 15:42:30", clock.Now().ToString());
         }

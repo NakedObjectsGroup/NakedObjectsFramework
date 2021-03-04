@@ -40,7 +40,7 @@ namespace AW.Functions
         [MemberOrder(4), CreateNew]
         public static (SpecialOffer, IContext) CreateNewSpecialOffer(
             [MaxLength(50)] string description,
-            [Mask("P")] decimal discountPct,
+            decimal discountPct,
             [DefaultValue("Promotion")] string type,
             [DefaultValue("Customer")] string category,
             [DefaultValue(10)] int minQty,
@@ -77,7 +77,7 @@ namespace AW.Functions
         [MemberOrder(5), MultiLine(2)]
         public static (SpecialOffer, IContext) CreateMultipleSpecialOffers(
             string description,
-            [Mask("P")] decimal discountPct,
+            decimal discountPct,
             [DefaultValue("Promotion")] string type,
             [DefaultValue("Customer")] string category,
             [DefaultValue(10)] int minQty,

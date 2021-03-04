@@ -5,6 +5,8 @@ namespace NakedFunctions.Test
 {
     public class MockClock : IClock
     {
+        public MockClock(DateTime time) => Time = time;
+
         public DateTime Time { get; set; }
 
         #region Implementation of IClock

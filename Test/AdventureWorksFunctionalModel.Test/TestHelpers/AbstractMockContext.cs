@@ -20,10 +20,10 @@ namespace NakedFunctions.Test
 
         public abstract IContext WithDeferred(Func<IContext, IContext> function);
 
-        public abstract IContext WithDeleted(object deleteObj);
+        public abstract IContext WithDeleted<T>(T deleteObj) where T : class;
 
-        public abstract IContext WithNew(object newObj);
+        public abstract IContext WithNew<T>(T newObj) where T : class;
 
-        public abstract IContext WithUpdated<T>(T original, T updated);
+        public abstract IContext WithUpdated<T>(T original, T updated) where T : class;
     }
 }

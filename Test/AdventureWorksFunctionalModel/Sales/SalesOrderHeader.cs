@@ -104,7 +104,7 @@ namespace AW.Types {
         [MemberOrder(11)]
         public virtual ShipMethod ShipMethod { get; init; }
 
-        [Optionally, MemberOrder(12)]
+        [MemberOrder(12)]
         public virtual string AccountNumber { get; init; }
 
         [MemberOrder(20)]

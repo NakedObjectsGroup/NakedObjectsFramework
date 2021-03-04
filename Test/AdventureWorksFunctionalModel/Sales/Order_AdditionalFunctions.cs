@@ -98,8 +98,8 @@ namespace AW.Functions {
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public static IQueryable<SalesOrderHeader> SearchForOrders(
             this Customer customer,
-            [Optionally] [Mask("d")] DateTime? fromDate,
-            [Optionally] [Mask("d")] DateTime? toDate,
+            [Optionally]  DateTime? fromDate,
+            [Optionally]  DateTime? toDate,
             IContext context) {
 
             int customerID = customer.CustomerID;

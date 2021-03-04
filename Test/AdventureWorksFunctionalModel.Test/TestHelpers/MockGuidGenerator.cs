@@ -5,6 +5,8 @@ namespace NakedFunctions.Test
 {
     public class MockGuidGenerator : IGuidGenerator
     {
+        public MockGuidGenerator(Guid g) => NextGuid = g;
+
         public Guid? NextGuid { get; set; }
 
         public Guid NewGuid()

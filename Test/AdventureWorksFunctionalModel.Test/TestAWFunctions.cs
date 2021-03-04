@@ -27,23 +27,58 @@ namespace AdventureWorksFunctionalModel.Test
         [TestMethod]
         public void MenuFunctionCreateNew()
         {
-            var c = new MockContext();
+            var now = DateTime.Now;
+            var g = new Guid();
+            var c = new MockContext()
+                .WithService<IClock>(new MockClock(now))
+                .WithService<IGuidGenerator>(new MockGuidGenerator(g));
+
             var sp = new StateProvince { Name = "UK" };
+            //c = c.WithNewlySaved<Address>(a => a with { /* update Id, add to  */})
             var (a, c2) = Address_MenuFunctions.CreateNewAddress(null, "l1", "l2", "ct", "pc", sp, c);
             Assert.IsInstanceOfType(a, typeof(Address));
             Assert.AreEqual("l1", a.AddressLine1);
             Assert.AreEqual("l2", a.AddressLine2);
             Assert.AreEqual("ct", a.City);
             Assert.AreEqual("pc", a.PostalCode);
-            Assert.AreEqual("UK", a.StateProvince);
+            Assert.AreEqual("UK", a.StateProvince.ToString());
             Assert.AreEqual("l1...", a.ToString());
-            Assert.IsFalse(c2.Instances<Address>().Contains(a));
-            var a2 = a with { AddressID = 1 };
-            var c3 = ((MockContext)c2).WithSavedNew(a, a2);
-
-            Assert.AreEqual(1, c3.Instances<Address>().First().AddressID);
+            Assert.AreEqual(a, c2.Instances<Address>().First());
+            Assert.AreEqual(now, c2.Instances<Address>().First().ModifiedDate);
         }
 
+        [TestMethod]
+        public void MenuFunctionCreateNewWithSimulatedId()
+        {
+            var now = DateTime.Now;
+            var g = new Guid();
+            var c = new MockContext()
+                .WithService<IClock>(new MockClock(now))
+                .WithService<IGuidGenerator>(new MockGuidGenerator(g));
+
+            var sp = new StateProvince { Name = "UK" };
+            c = c.WithOnSavingNew<Address>(a => a with { AddressID = 1});
+            var (a, c2) = Address_MenuFunctions.CreateNewAddress(null, "l1", "l2", "ct", "pc", sp, c);
+            Assert.AreEqual(0, a.AddressID);
+            a = c2.Reload(a);
+            Assert.AreEqual(1, a.AddressID);
+        }
+
+        [TestMethod]
+        public void ObjectEditFunction()
+        {
+            var e = new Employee { NationalIDNumber = "1234" };
+            var now = DateTime.Now;
+            var c = new MockContext()
+                .WithInstances(e)
+                .WithService<IClock>(new MockClock(now));
+
+           var c2 = e.UpdateNationalIDNumber("2345", c);
+            var e2 = c2.Reload(e);
+            Assert.AreEqual("2345", e2.NationalIDNumber);
+
+
+        }
     }
 
 }
