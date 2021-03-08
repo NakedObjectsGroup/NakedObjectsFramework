@@ -59,6 +59,8 @@ namespace NakedFunctions.Rest.Test.Data {
             context.BoundedRecords.Add(new BoundedRecord() { Name = "One"});
             context.BoundedRecords.Add(new BoundedRecord() { Name = "Two" });
 
+            context.ByteArrayRecords.Add(new ByteArrayRecord());
+
             context.SaveChanges();
         }
     }
@@ -78,6 +80,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<EditRecord> EditRecords { get; set; }
         public DbSet<DeleteRecord> DeleteRecords { get; set; }
         public DbSet<BoundedRecord> BoundedRecords { get; set; }
+        public DbSet<ByteArrayRecord> ByteArrayRecords { get; set; }
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
             Database.SetInitializer(new DatabaseInitializer<T>());

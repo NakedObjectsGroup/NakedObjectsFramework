@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedFunctions.Server</id>
-    <version>1.0.0-beta02</version>
+    <version>1.0.0-beta03</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <license type="expression">Apache-2.0</license>
@@ -18,6 +18,8 @@
         <dependency id="NakedObjects.ProgrammingModel" version="[12.0.0-alpha01, 13)" />
         <dependency id="NakedFunctions.ProgrammingModel" version="[1.0.0-beta02, 2)" />
         <dependency id="EntityFramework" version="[6.4.4, 7)" />
+        <dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[5.0.3, 6)" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[5.0.3, 6)" />
         <dependency id="Microsoft.Extensions.DependencyInjection" version="[5.0.0, 6)" />
         <dependency id="Microsoft.Extensions.Configuration" version="[5.0.0, 6)" />
         <dependency id="Microsoft.Extensions.Logging" version="[5.0.0, 6)" />

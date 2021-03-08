@@ -76,6 +76,8 @@ namespace NakedFramework.Rest.API {
 
         public bool AcceptHeaderStrict => config.AcceptHeaderStrict;
 
+        public bool BlobsClobs => config.BlobsClobs;
+
         public bool DebugWarnings => config.DebugWarnings;
 
         protected IFrameworkFacade FrameworkFacade { get; set; }

@@ -61,7 +61,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(CollectionRecord),
             typeof(EditRecord),
             typeof(DeleteRecord),
-            typeof(BoundedRecord)
+            typeof(BoundedRecord),
+            typeof(ByteArrayRecord),
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -242,6 +243,16 @@ namespace NakedFunctions.Rest.Test {
             var result = api.GetObject(FullName<GuidRecord>(), "1");
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+        }
+
+        [Test]
+        public void TestGetByteArrayObject()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<ByteArrayRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
         }
 

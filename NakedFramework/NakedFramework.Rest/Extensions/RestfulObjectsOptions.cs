@@ -37,7 +37,7 @@ namespace NakedFramework.Rest.Extensions {
         public bool DeleteObjects { get; set; } = false;
         public bool ValidateOnly { get; set; } = true;
         public string DomainModel { get; set; } = "simple";
-        public string BlobsClobs { get; set; } = "attachments";
+        public bool BlobsClobs { get; set; } = false;
         public bool InlinedMemberRepresentations { get; set; } = true;
     }
 }

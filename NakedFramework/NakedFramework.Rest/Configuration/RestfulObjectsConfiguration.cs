@@ -19,7 +19,7 @@ namespace NakedFramework.Rest.Configuration {
         public bool DeleteObjects { get; set; }
         public bool ValidateOnly { get; set; }
         public string DomainModel { get; set; }
-        public string BlobsClobs { get; set; }
+        public bool BlobsClobs { get; set; }
         public bool InlinedMemberRepresentations { get; set; }
         public bool AllowMutatingActionOnImmutableObject { get; set; }
     }

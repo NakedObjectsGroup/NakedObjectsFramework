@@ -268,7 +268,7 @@ namespace NakedFramework.Rest.API {
                 {"deleteObjects", config.DeleteObjects ? "yes" : "no"},
                 {"validateOnly", config.ValidateOnly ? "yes" : "no"},
                 {"domainModel", config.DomainModel},
-                {"blobsClobs", config.BlobsClobs},
+                {"blobsClobs", config.BlobsClobs ? "yes" : "no"},
                 {"inlinedMemberRepresentations", config.InlinedMemberRepresentations ? "yes" : "no"}
             };
 
@@ -334,6 +334,7 @@ namespace NakedFramework.Rest.API {
                                                 controller.Page,
                                                 controller.PageSize,
                                                 controller.DomainModel,
+                                                controller.BlobsClobs,
                                                 controller.InlineDetailsInActionMemberRepresentations,
                                                 controller.InlineDetailsInCollectionMemberRepresentations,
                                                 controller.InlinePropertyDetails ?? controller.InlineDetailsInPropertyMemberRepresentations,
@@ -356,6 +357,7 @@ namespace NakedFramework.Rest.API {
                                                 reservedArguments.Page,
                                                 reservedArguments.PageSize,
                                                 reservedArguments.DomainModel,
+                                                controller.BlobsClobs,
                                                 controller.InlineDetailsInActionMemberRepresentations,
                                                 controller.InlineDetailsInCollectionMemberRepresentations,
                                                 reservedArguments.InlinePropertyDetails ?? controller.InlineDetailsInPropertyMemberRepresentations,

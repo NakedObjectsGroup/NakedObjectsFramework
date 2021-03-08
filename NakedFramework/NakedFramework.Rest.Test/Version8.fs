@@ -21,7 +21,7 @@ let internal capabilities =
                   TProperty("validateOnly", TObjectVal("yes"))
                   TProperty("domainModel", TObjectVal("simple"))
                   TProperty("inlinedMemberRepresentations", TObjectVal("yes"))
-                  TProperty("blobsClobs", TObjectVal("attachments")) ])
+                  TProperty("blobsClobs", TObjectVal("no")) ])
 
 
 let internal links = 
