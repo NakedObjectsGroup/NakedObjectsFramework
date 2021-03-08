@@ -14,7 +14,8 @@ using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Persistor.Entity.Extensions;
+using NakedFramework.Persistor.Entity.Extensions; //Needed to work with EF 6
+using NakedFramework.Persistor.EFCore.Extensions; //Needed to work with EF Core
 using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
 using Newtonsoft.Json;
@@ -40,9 +41,13 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                builder.AddEntityPersistor(options => {
-                    options.ContextInstallers = new[] { ModelConfig.DbContextInstaller };
-                });
+                //To use EF6
+                builder.AddEF6Persistor(options => options.ContextInstallers = new[] { ModelConfig.DbContextInstaller });
+                //To use EF Core 
+                // 1. replace above line with the following line
+               // builder.AddEFCorePersistor(options => { options.ContextInstaller = ModelConfig.DbContextInstaller });
+               // 2. Modify the Model project so that it is dependent on EF6 and uses the EF6 version of DbContext and related types.
+
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = ModelConfig.Types();
                     options.Functions = ModelConfig.Functions();
