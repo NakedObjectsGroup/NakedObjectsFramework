@@ -594,7 +594,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void LocalCollectionContributedAction()
         {
-            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=List&d1=AddCarrierTrackingNumber");
+            GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=Table&d1=AddCarrierTrackingNumber");
             WaitForTitle("SO53535");
             var rnd = (new Random()).Next(100000).ToString();
             SelectCheckBox("#details1-1");
@@ -602,10 +602,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             SelectCheckBox("#details1-3");
             TypeIntoFieldWithoutClearing("#ctn1", rnd);
             Click(OKButton());
-            Thread.Sleep(2000); //Otherwise next line does not open the table??!
-            Click(WaitForCss(".icon.table"));
-            WaitForCssNo("tbody tr", 10);
-            Assert.AreEqual(3, br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rnd));
+            wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rnd) >= 3);
         }
 
         // [TestMethod]
