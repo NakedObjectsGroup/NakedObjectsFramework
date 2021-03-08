@@ -642,15 +642,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.IsTrue(num.StartsWith("SO75"));
             OpenObjectActions(Pane.Left);
             OpenActionDialog("Add New Detail", Pane.Left);
-            ClearFieldThenType("#quantity1", "10");
+            ClearFieldThenType("#quantity1", "9");
             var product = WaitForCss("#pane2 .title");
             CopyToClipboard(product);
             PasteIntoInputField("#pane1 .parameter .value.droppable");
             Click(OKButton());
             Click(FullIcon());
             WaitForView(Pane.Single, PaneType.Object);
-            Assert.AreEqual("£297.41", GetPropertyValue("Sub Total"));
-            Assert.AreEqual("£297.41", GetPropertyValue("Total Due"));
+            Assert.AreEqual("£267.67", GetPropertyValue("Sub Total"));
+            Assert.AreEqual("£267.67", GetPropertyValue("Total Due"));
         }
 
         //[TestMethod]
