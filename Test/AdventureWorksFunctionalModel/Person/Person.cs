@@ -49,10 +49,10 @@ namespace AW.Types {
         public virtual ICollection<EmailAddress> EmailAddresses { get; init; }
 
         [AWNotCounted]
-        [TableView(false, 
-            nameof(PersonPhone.PhoneNumberType),
-            nameof(PersonPhone.PhoneNumber))] 
-        public virtual ICollection<PersonPhone> PhoneNumbers { get; init; }
+        [TableView(false,
+                   nameof(PersonPhone.PhoneNumberType),
+                   nameof(PersonPhone.PhoneNumber))]
+        public virtual ICollection<PersonPhone> PhoneNumbers { get; init; } = new List<PersonPhone>();
 
         
         public virtual Password Password { get; init; }
