@@ -36,7 +36,7 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = NakedObjectsRunSettings.MainMenus;
-                builder.AddEntityPersistor(options => {
+                builder.AddEF6Persistor(options => {
                     options.ContextInstallers = new[] { NakedObjectsRunSettings.DbContextInstaller };
                 });
                 builder.AddRestfulObjects(options => {

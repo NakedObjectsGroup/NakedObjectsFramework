@@ -142,7 +142,7 @@ namespace NakedFramework.Xat.TestCase {
                 AddRestfulObjects(builder);
             };
 
-        protected virtual Action<NakedCoreOptions> AddPersistor => builder => builder.AddEntityPersistor(PersistorOptions);
+        protected virtual Action<NakedCoreOptions> AddPersistor => builder => builder.AddEF6Persistor(PersistorOptions);
 
         protected virtual Action<NakedCoreOptions> AddNakedObjects => builder => builder.AddNakedObjects(NakedObjectsOptions);
 
