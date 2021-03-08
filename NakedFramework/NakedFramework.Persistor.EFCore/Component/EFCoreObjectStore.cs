@@ -162,7 +162,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public bool HasChanges() => context.ChangeTracker.HasChanges();
 
-        public T ValidateProxy<T>(T toCheck) where T : class => throw new NotImplementedException();
+        public T ValidateProxy<T>(T toCheck) where T : class => toCheck;
 
         private static TransactionScope CreateTransactionScope() {
             var transactionOptions = new TransactionOptions {IsolationLevel = IsolationLevel.ReadCommitted, Timeout = TimeSpan.MaxValue};
