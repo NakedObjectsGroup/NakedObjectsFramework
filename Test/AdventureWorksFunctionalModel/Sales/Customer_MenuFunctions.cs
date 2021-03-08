@@ -38,12 +38,15 @@ namespace AW.Functions
         [PageSize(2), MemberOrder("Stores", 1)]
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
         public static IQueryable<Customer> FindStoreByName(
-            [DescribedAs("partial match")] string name, IContext context) =>
-            from c in context.Instances<Customer>()
-            from s in context.Instances<Store>()
+            [DescribedAs("partial match")] string name, IContext context)
+        { var customers = context.Instances<Customer>();
+            var stores = context.Instances<Store>();
+            return from c in customers
+            from s in stores
             where s.Name.ToUpper().Contains(name.ToUpper()) &&
                     c.StoreID == s.BusinessEntityID
             select c;
+        }
 
         [MemberOrder("Stores", 2), CreateNew]
         public static (Customer, IContext) CreateNewStoreCustomer(
