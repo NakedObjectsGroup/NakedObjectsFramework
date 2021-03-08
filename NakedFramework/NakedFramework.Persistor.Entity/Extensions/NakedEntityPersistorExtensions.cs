@@ -34,7 +34,7 @@ namespace NakedFramework.Persistor.Entity.Extensions {
             return config;
         }
 
-        public static void AddEntityPersistor(this NakedCoreOptions coreOptions, Action<EntityPersistorOptions> setupAction) {
+        public static void AddEF6Persistor(this NakedCoreOptions coreOptions, Action<EntityPersistorOptions> setupAction) {
             var options = new EntityPersistorOptions();
             setupAction(options);
 
