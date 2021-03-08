@@ -130,7 +130,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public void StartTransaction() { }
 
-        public PropertyInfo[] GetKeys(Type type) => context.GetKeys(type);
+        public PropertyInfo[] GetKeys(Type type) => context.SafeGetKeys(type);
 
         public void Refresh(INakedObjectAdapter nakedObjectAdapter) {
             throw new NotImplementedException();

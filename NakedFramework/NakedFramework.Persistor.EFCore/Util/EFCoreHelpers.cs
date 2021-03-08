@@ -16,11 +16,12 @@ namespace NakedFramework.Persistor.EFCore.Util {
     public static class EFCoreHelpers {
         private static IEntityType GetEntityType(this DbContext context, Type type) => context.Model.FindEntityType(type.GetProxiedType());
 
-        public static PropertyInfo[] GetKeys(this DbContext context, Type type) {
-            var eType = context.GetEntityType(type);
+        private static PropertyInfo[] GetKeys(this IEntityType eType, Type type) {
             var keyProperties = eType.GetKeys().SelectMany(k => k.Properties);
             return keyProperties.Select(p => p.PropertyInfo).ToArray();
         }
+
+        public static PropertyInfo[] SafeGetKeys(this DbContext context, Type type) => context.GetEntityType(type)?.GetKeys(type) ?? Array.Empty<PropertyInfo>();
 
         public static object[] GetKeyValues(this DbContext context, object obj) {
             var eType = context.GetEntityType(obj.GetType());
