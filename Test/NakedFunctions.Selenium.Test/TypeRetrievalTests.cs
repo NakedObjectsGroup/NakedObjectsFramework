@@ -50,7 +50,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("AddressType--1", "Billing");
             AccessInstanceWithTitle("BusinessEntity--2", "Terri Duffy");
             AccessInstanceWithTitle("BusinessEntityAddress--1--2--249", "Home: 4350 Minute Dr....");
-            AccessInstanceWithTitle("BusinessEntityContact--292--291--11", "Untitled Contact");
+            //EF Core:
+            AccessInstanceWithTitle("BusinessEntityContact--292--291--11", "Gustavo Achong");
+            //EF 6: AccessInstanceWithTitle("BusinessEntityContact--292--291--11", "Untitled object");
             AccessInstanceWithTitle("ContactType--1", "Accounting Manager");
             AccessInstanceWithTitle("CountryRegion--AD", "Andorra");
             AccessInstanceWithTitle("EmailAddress--1--1", "ken0@adventure-works.com");
@@ -100,7 +102,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("SalesReason--1", "Price");
             AccessInstanceWithTitle("SalesTaxRate--1", "Sales Tax Rate for Alberta");
             AccessInstanceWithTitle("SalesTerritory--1", "Northwest");
-            AccessInstanceWithTitle("SalesTerritoryHistory--632557728000000000--275--2", "Michael Blythe Northeast");
+            //EF Core:
+            AccessInstanceWithTitle("SalesTerritoryHistory--275--2--632557728000000000", "Michael Blythe Northeast");
+            //EF 6: AccessInstanceWithTitle("SalesTerritoryHistory--632557728000000000--275--2", "Michael Blythe Northeast");
             AccessInstanceWithTitle("ShoppingCartItem--2", "3 x Full-Finger Gloves, M");
             AccessInstanceWithTitle("SpecialOffer--1", "No Discount");
             AccessInstanceWithTitle("SpecialOfferProduct--1--680", "SpecialOfferProduct: 1-680");
