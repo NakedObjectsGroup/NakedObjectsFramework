@@ -32,17 +32,18 @@ namespace NakedFunctions.Test
 
         private ImmutableDictionary<Type, Delegate> OnSavingNew { get; init; } = new Dictionary<Type, Delegate>().ToImmutableDictionary();
 
-        //Called within the test to simulate the changes made to a new object and/or associated objects by the persistor
-        public MockContext WithOnSavingNew<T>(Func<T,T> f) => this with
-        {
-            OnSavingNew = OnSavingNew.Add(typeof(T), f)
-        };
+        //Called within a test to simulate the changes made to updated and/or associated objects by the persistor
+        public MockContext WithOnSavingNew<T>(Func<T,T> f) => 
+            this with { OnSavingNew = OnSavingNew.Add(typeof(T), f) };
 
-         public MockContext WithReplacement<T>(T original, T replacement) => this with
-        {
-             //TODO: check if this is an object being updated, or just any other instance
-            AllInstances = AllInstances.Remove(original).Add(replacement)
-        };
+        public MockContext WithReplacement<T>(T original, T replacement) =>          
+            this with
+            {
+                NewOrUpdated = NewOrUpdated.ContainsKey(original) ? 
+                    NewOrUpdated.Remove(original).Add(original, replacement)
+                    : NewOrUpdated,
+                AllInstances = AllInstances.Remove(original).Add(replacement)
+            };
 
         #endregion
 
