@@ -76,9 +76,31 @@ namespace AdventureWorksFunctionalModel.Test
            var c2 = e.UpdateNationalIDNumber("2345", c);
             var e2 = c2.Reload(e);
             Assert.AreEqual("2345", e2.NationalIDNumber);
-
-
         }
+
+        [TestMethod, Ignore] //Not yet working
+        public void WithDeferredFunction()
+        {
+            var now = DateTime.Now;
+            var g = new Guid();
+            var c = new MockContext()
+                .WithService<IClock>(new MockClock(now))
+                .WithService<IGuidGenerator>(new MockGuidGenerator(g));
+
+            var cust = new Customer();
+            var prod = new Product { ListPrice = 9.99m };
+
+
+            var (soh, c2)  = Order_AdditionalFunctions.QuickOrder(cust, prod, 3, c);
+            var det = c2.Instances<SalesOrderDetail>().First();
+            c.WithReplacement(soh, soh with { Details = soh.Details.WithAdded(det) });
+            c.ExecuteDeferred();
+            Assert.AreEqual(0, soh.TotalDue);
+            var soh2 = c.Instances<SalesOrderHeader>().First();
+            Assert.AreEqual(29.97, soh2.TotalDue);
+        }
+
+        
     }
 
 }
