@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
+using NakedFramework;
 
 namespace NakedFunctions {
     /// <summary>
@@ -15,19 +15,10 @@ namespace NakedFunctions {
     ///     Applied to a function, indicates that the user may invoke the method multiple times in the form of a tabular input
     ///     form.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class MultiLineAttribute : Attribute {
-        public MultiLineAttribute() : this(6, 0) { }
+    public class MultiLineAttribute : AbstractMultiLineAttribute {
 
-        public MultiLineAttribute(int numberOfLines) : this(numberOfLines, 0) { }
+        public MultiLineAttribute(int numberOfLines) : base(numberOfLines) { }
 
-        public MultiLineAttribute(int numberOfLines, int width) {
-            NumberOfLines = numberOfLines;
-            Width = width;
-        }
-
-        public int NumberOfLines { get; set; }
-
-        public int Width { get; set; }
+        public MultiLineAttribute(int numberOfLines, int width) : base(numberOfLines, width) { }
     }
 }

@@ -5,17 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework;
 using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     Serves to validate, and potentially to normalise, the format of the input. The characters that can
-    ///     be used are based on Microsoft's MaskedEdit control
+    ///     Provides formatting control over a property
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class MaskAttribute : Attribute {
-        public MaskAttribute(string s) => Value = s;
-
-        public string Value { get; }
+    public class MaskAttribute : AbstractMaskAttribute {
+        public MaskAttribute(string s) : base(s) { }
     }
 }

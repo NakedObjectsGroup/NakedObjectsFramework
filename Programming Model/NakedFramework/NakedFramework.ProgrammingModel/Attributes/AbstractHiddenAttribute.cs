@@ -6,13 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     A hint added to the associated display element. For example a class on the html.
-    /// </summary>
-    public class PresentationHintAttribute : AbstractPresentationHintAttribute {
-        public PresentationHintAttribute(string s) : base(s) { }
+namespace NakedFramework {
+
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
+    public abstract class AbstractHiddenAttribute : Attribute {
+        protected AbstractHiddenAttribute(WhenTo w) => Value = w;
+
+        public AbstractHiddenAttribute() : this(WhenTo.Always) { }
+
+        public WhenTo Value { get; protected set; }
     }
 }

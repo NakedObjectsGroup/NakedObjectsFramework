@@ -5,12 +5,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
 using System;
 
-namespace NakedFunctions {
-    /// <summary>
-    ///     Specifies that a public property, type, or action is never displayed to the user
-    /// </summary>
-    public class HiddenAttribute : AbstractHiddenAttribute { }
+namespace NakedFramework {
+
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+    public abstract class AbstractMultiLineAttribute : Attribute {
+        public AbstractMultiLineAttribute() : this(6, 0) { }
+
+        public AbstractMultiLineAttribute(int numberOfLines) : this(numberOfLines, 0) { }
+
+        public AbstractMultiLineAttribute(int numberOfLines, int width) {
+            NumberOfLines = numberOfLines;
+            Width = width;
+        }
+
+        public int NumberOfLines { get; set; }
+
+        public int Width { get; set; }
+    }
 }

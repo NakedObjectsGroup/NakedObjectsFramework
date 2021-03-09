@@ -5,12 +5,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
 using System;
 
-namespace NakedFunctions {
-    /// <summary>
-    ///     Specifies that a public property, type, or action is never displayed to the user
-    /// </summary>
-    public class HiddenAttribute : AbstractHiddenAttribute { }
+namespace NakedFramework {
+
+    public abstract class AbstractRegExAttribute : Attribute {
+        public AbstractRegExAttribute(string validation, bool caseSensitive = false) {
+            CaseSensitive = caseSensitive;
+            Validation = validation;
+        }
+
+        /// <summary>
+        ///     Validation regular expression string a match is considered success.
+        /// </summary>
+        public string Validation { get; }
+
+        /// <summary>
+        ///     Case sensitivity - defaults to false (non-sensitive)
+        /// </summary>
+        public bool CaseSensitive { get; }
+    }
 }

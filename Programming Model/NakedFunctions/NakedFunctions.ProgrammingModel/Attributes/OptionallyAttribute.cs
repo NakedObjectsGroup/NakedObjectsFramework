@@ -5,19 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework;
 using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     Used to indicate that an action parameter, is optional. May be applied to properties, but relevant to editable view
-    ///     models only.
+    ///     Used to indicate that an action parameter, is optional.
     /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         By default, the system assumes that all parameters in an action are required and will not let the
-    ///         user execute that action unless values have been specified for each parameter.
-    ///     </para>
-    /// </remarks>
     [AttributeUsage(AttributeTargets.Parameter)]
-    public class OptionallyAttribute : Attribute { }
+    public class OptionallyAttribute : AbstractOptionallyAttribute { }
 }

@@ -5,13 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
+using NakedFramework;
 
 namespace NakedFunctions {
     /// <summary>
     ///     Use on a static function that would otherwise be an action, to have the result of the action
     ///     displayed as a non-persisted read-only derived property on a domain type.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class DisplayAsPropertyAttribute : Attribute { }
+    public class DisplayAsPropertyAttribute : AbstractDisplayAsPropertyAttribute { }
 }
