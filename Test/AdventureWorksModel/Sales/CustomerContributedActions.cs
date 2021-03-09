@@ -11,6 +11,7 @@ using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
 using System;
+using NakedFramework;
 
 namespace AdventureWorksModel {
     public class CustomerCollectionViewModel : IViewModel {

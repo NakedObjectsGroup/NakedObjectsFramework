@@ -13,6 +13,7 @@ using NakedObjects.Services;
 using System;
 using System.Collections.Generic;
 using NakedFramework;
+using NakedFramework.Error;
 
 namespace AdventureWorksModel {
     [DisplayName("Customers")]

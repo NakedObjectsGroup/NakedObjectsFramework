@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using NakedFramework;
 using NakedObjects;
 
 namespace AdventureWorksModel {
