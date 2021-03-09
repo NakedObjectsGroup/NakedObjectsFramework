@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Spec;
 
 namespace NakedFramework.Core.Component {

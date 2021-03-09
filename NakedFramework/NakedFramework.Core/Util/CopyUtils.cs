@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 // ReSharper disable UnusedType.Global
 

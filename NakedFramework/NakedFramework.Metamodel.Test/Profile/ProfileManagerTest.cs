@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Profile;
-using NakedObjects.Profile;
+using NakedFramework.Profile;
 
 namespace NakedObjects.Meta.Test.Profile {
     [TestClass]

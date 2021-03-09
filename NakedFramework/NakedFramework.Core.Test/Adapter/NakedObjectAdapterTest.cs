@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Adapter;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NUnit.Framework;
 
 namespace NakedObjects.Core.Test.Adapter {

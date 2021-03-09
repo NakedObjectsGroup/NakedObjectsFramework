@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Audit;
+using NakedFramework.Audit;
 
 namespace NakedFramework.Metamodel.Audit {
     //Add namespace auditors individually via AddNamespaceAuditor, or create the whole dictionary

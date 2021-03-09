@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Types\NakedFramework.Types.csproj" />
     <ProjectReference Include="..\NakedObjects.Attributes\NakedObjects.Attributes.csproj" />
     <ProjectReference Include="..\NakedObjects.PMResources\NakedObjects.PMResources.csproj" />
     <ProjectReference Include="..\NakedObjects.Types\NakedObjects.Types.csproj" />

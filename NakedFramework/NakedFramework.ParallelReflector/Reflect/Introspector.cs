@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.SpecImmutable;

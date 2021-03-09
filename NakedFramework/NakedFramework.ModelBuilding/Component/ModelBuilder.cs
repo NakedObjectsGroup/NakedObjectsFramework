@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.ModelBuilding.Component {

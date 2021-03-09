@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Component {

@@ -29,7 +29,7 @@ namespace NakedFramework.Metamodel.Facet {
         private (IObjectSpecImmutable spec, string subMenu, string id) FindContributee(IObjectSpecImmutable objectSpec) =>
             IsContributedTo(objectSpec)
                 ? objectContributees.First(t => objectSpec.IsOfType(t.spec))
-                : throw new System.Exception($"Action is not contributed to {objectSpec.Type}");
+                : throw new Exception($"Action is not contributed to {objectSpec.Type}");
 
         #region IContributedActionFacet Members
 

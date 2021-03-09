@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
-using NakedObjects.Profile;
+using NakedFramework.Profile;
 
 namespace NakedFramework.Metamodel.Profile {
     [Serializable]

@@ -19,12 +19,12 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Reflect;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Facade.Contexts;
-using NakedFramework.Facade.Exception;
+using NakedFramework.Facade.Error;
 using NakedFramework.Facade.Impl.Contexts;
 using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
@@ -777,7 +777,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             catch (NakedObjectsFacadeException) {
                 throw;
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 throw FacadeUtils.Map(e);
             }
         }
@@ -1152,7 +1152,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 var spec = (TypeFacade) OidStrategy.GetSpecificationByLinkDomainType(domainTypeId);
                 return spec.WrappedValue;
             }
-            catch (System.Exception) {
+            catch (Exception) {
                 throw new TypeResourceNotFoundNOSException(domainTypeId);
             }
         }
@@ -1265,7 +1265,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                                 ProposedValue = rawValue
                             });
                         }
-                        catch (System.Exception e) {
+                        catch (Exception e) {
                             errors.Add(new ChoiceContextFacade(key, GetSpecificationWrapper(expectedType)) {
                                 Reason = e.Message,
                                 ProposedValue = rawValue

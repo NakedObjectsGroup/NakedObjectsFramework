@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Adapter;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 namespace NakedFramework.Core.Component {
     public sealed class NakedObjectFactory {

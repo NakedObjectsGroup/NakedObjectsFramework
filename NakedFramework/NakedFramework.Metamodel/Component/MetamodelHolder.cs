@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Component {
@@ -47,7 +47,7 @@ namespace NakedFramework.Metamodel.Component {
                 logger.LogError($"Failed to Load Specification for: {(type == null ? "null" : type.FullName)} error: {e}");
                 throw;
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: {e}"));
             }
         }

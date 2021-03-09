@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Exception;
+using NakedFramework.Metamodel.Error;
 
 namespace NakedFramework.Metamodel.Facet {
     [Serializable]
@@ -42,7 +42,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArguments);
 
-        public System.Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
+        public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
         public string InvalidReason(INakedObjectAdapter target, INakedObjectsFramework framework, INakedObjectAdapter[] proposedArguments) {
             if (methodDelegate != null) {

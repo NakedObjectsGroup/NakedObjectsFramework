@@ -14,11 +14,11 @@ using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Net.Http.Headers;
 using NakedFramework.Facade.Contexts;
-using NakedFramework.Facade.Exception;
+using NakedFramework.Facade.Error;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Configuration;
 using NakedFramework.Rest.Model;
-using NakedFramework.Rest.Snapshot.Exception;
+using NakedFramework.Rest.Snapshot.Error;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 

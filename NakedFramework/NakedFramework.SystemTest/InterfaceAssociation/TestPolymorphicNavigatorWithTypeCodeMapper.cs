@@ -9,6 +9,7 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using NakedFramework.Error;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NUnit.Framework;

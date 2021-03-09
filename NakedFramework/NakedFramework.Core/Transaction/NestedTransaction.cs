@@ -8,7 +8,7 @@
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.transaction;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Transaction {

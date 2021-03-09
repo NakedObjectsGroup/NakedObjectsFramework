@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Component {

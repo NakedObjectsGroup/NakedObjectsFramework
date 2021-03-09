@@ -12,7 +12,7 @@ using System.Linq;
 using System.Security.Principal;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Profile;
-using NakedObjects.Profile;
+using NakedFramework.Profile;
 using NakedObjects.Services;
 using NUnit.Framework;
 

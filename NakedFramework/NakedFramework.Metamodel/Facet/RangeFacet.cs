@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Metamodel.Exception;
+using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.Facet {
@@ -113,7 +113,7 @@ namespace NakedFramework.Metamodel.Facet {
             return string.Format(NakedObjects.Resources.NakedObjects.RangeMismatch, Min, Max);
         }
 
-        public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRangeException(ic, Min, Max, Invalidates(ic));
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRangeException(ic, Min, Max, Invalidates(ic));
 
         public IConvertible Min { get; private set; }
         public IConvertible Max { get; private set; }

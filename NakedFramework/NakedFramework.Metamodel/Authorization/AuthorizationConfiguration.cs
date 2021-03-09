@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Security;
+using NakedFramework.Security;
 
 namespace NakedFramework.Metamodel.Authorization {
     public class AuthorizationConfiguration<TDefault>

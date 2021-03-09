@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel;
 using System.Data.Entity;
+using NakedFramework.Error;
 using NakedFramework.Xat.Interface;
 using NakedObjects.Services;
 using NakedObjects.SystemTest;

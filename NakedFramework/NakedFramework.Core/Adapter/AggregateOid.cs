@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 namespace NakedFramework.Core.Adapter {
     public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {

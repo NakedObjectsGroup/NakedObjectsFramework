@@ -13,7 +13,7 @@ using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Test.Facet {

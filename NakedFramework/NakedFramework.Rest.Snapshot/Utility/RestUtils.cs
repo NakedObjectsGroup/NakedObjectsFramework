@@ -437,7 +437,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                 // remove all \" within warning message as they cause format exception 
                 return new WarningHeaderValue(code, agent, $"\"{CleanWarning(warning)}\"");
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 logger.LogWarning(e, $"Failed to parse warning message: {warning}");
                 return new WarningHeaderValue(code, agent, "\"Failed to parse warning message\"");
             }

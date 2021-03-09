@@ -58,7 +58,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         public static Func<RestSnapshot> TypeActionSnapshot(IOidStrategy oidStrategy, Func<TypeActionInvokeContext> typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
             => () => new RestSnapshot(oidStrategy, typeActionInvokeContext(), req, flags);
 
-        public static Func<RestSnapshot> ErrorSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, System.Exception ex, HttpRequest req, RestControlFlags flags)
+        public static Func<RestSnapshot> ErrorSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, Exception ex, HttpRequest req, RestControlFlags flags)
             => () => new RestSnapshot(oidStrategy, frameworkFacade, ex, req, flags);
     }
 }

@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using NakedFramework;
+using NakedFramework.Error;
 using NakedObjects.Services;
 using NUnit.Framework;
 

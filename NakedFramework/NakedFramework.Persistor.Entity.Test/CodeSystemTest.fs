@@ -21,7 +21,7 @@ open TestCode
 open TestCodeOnly
 open Microsoft.Extensions.Configuration
 open NakedFramework.Xat.TestCase
-open NakedFramework.Core.Exception
+open NakedFramework.Core.Error
 
 [<TestFixture>]
 type CodeSystemTests() = 

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 namespace NakedFramework.Persistor.Entity.Configuration {
     public class EntityObjectStoreConfiguration : IEntityObjectStoreConfiguration {

@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.Facet {
     [Serializable]
@@ -24,7 +24,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public virtual string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArgument);
 
-        public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
 
         public abstract string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedParm);
 

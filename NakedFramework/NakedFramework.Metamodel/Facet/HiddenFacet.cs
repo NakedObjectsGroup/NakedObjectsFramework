@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 
 namespace NakedFramework.Metamodel.Facet {
@@ -43,7 +43,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public string HidesForState(bool persisted) => HiddenReason(persisted);
 
-        public System.Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
+        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
         #endregion
     }

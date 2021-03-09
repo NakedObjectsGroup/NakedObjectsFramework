@@ -36,7 +36,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             try {
                 return GetValue(parm, rawValue);
             }
-            catch (System.Exception) {
+            catch (Exception) {
                 return null;
             }
         }

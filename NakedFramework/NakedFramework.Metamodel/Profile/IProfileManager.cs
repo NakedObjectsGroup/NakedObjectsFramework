@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedObjects.Profile;
+using NakedFramework.Profile;
 
 namespace NakedFramework.Metamodel.Profile {
     public interface IProfileManager {

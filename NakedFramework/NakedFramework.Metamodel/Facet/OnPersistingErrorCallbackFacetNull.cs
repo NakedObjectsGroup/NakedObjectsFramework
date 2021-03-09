@@ -15,6 +15,6 @@ namespace NakedFramework.Metamodel.Facet {
         public OnPersistingErrorCallbackFacetNull(ISpecification holder)
             : base(holder) { }
 
-        public override string Invoke(INakedObjectAdapter nakedObjectAdapter, System.Exception exception) => throw exception;
+        public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => throw exception;
     }
 }

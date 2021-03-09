@@ -35,7 +35,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public string Reason => consent.Reason;
 
-        public System.Exception Exception => consent.Exception;
+        public Exception Exception => consent.Exception;
 
         #endregion
     }

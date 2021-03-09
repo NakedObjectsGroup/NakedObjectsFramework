@@ -15,9 +15,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
-using NakedObjects.Security;
+using NakedFramework.Security;
 
 namespace NakedFramework.Metamodel.Authorization {
     [Serializable]

@@ -11,7 +11,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet {
@@ -33,7 +33,7 @@ namespace NakedFramework.Metamodel.Facet {
                 collection.Clear();
                 property.SetValue(inObjectAdapter.GetDomainObject(), collection, null);
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 throw new ReflectionException($"Failed to get/set property {property.Name} in {inObjectAdapter.Spec.FullName}", e);
             }
         }

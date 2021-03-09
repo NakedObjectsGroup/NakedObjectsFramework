@@ -22,7 +22,7 @@ open TestCode
 open TestTypes
 open Moq
 open Microsoft.Extensions.Logging
-open NakedFramework.Core.Exception
+open NakedFramework.Core.Error
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor

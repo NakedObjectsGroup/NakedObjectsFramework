@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Exception;
+using NakedFramework.Metamodel.Error;
 
 namespace NakedFramework.Metamodel.Facet {
     [Serializable]
@@ -43,7 +43,7 @@ namespace NakedFramework.Metamodel.Facet {
             return !Exceeds(proposedArgument) ? null : string.Format(NakedObjects.Resources.NakedObjects.MaximumLengthMismatch, Value);
         }
 
-        public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMaxLengthException(ic, Value, Invalidates(ic));
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMaxLengthException(ic, Value, Invalidates(ic));
 
         #endregion
     }

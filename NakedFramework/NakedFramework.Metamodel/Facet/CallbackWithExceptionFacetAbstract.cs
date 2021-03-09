@@ -18,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         #region ICallbackWithExceptionFacet Members
 
-        public abstract string Invoke(INakedObjectAdapter nakedObjectAdapter, System.Exception exception);
+        public abstract string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception);
 
         #endregion
     }

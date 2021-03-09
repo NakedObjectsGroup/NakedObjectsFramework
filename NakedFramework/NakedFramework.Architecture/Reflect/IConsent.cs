@@ -16,7 +16,7 @@ namespace NakedFramework.Architecture.Reflect {
         /// <para>
         ///     If an <see cref="Exception" /> is present, then will just equal that exception's
         ///     <see
-        ///         cref="System.Exception.Message" />
+        ///         cref="Exception.Message" />
         /// </para>
         string Reason { get; }
 

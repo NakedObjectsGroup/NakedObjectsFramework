@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
-using NakedFramework.Core.Exception;
-using NakedObjects;
+using NakedFramework.Core.Error;
+using NakedFramework.Error;
 
 namespace NakedFramework.Core.Util {
     public static class DelegateUtils {
@@ -53,7 +53,7 @@ namespace NakedFramework.Core.Util {
 
                 return (ret, "");
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 return (null, e.Message);
             }
         }

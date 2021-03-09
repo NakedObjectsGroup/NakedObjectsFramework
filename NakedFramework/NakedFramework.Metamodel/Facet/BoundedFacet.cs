@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.Facet {
     [Serializable]
@@ -27,7 +27,7 @@ namespace NakedFramework.Metamodel.Facet {
                 ? DisabledReason(ic.Target)
                 : null;
 
-        public System.Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
+        public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
         #endregion
     }

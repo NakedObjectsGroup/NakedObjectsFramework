@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Metamodel.Exception;
+using NakedFramework.Metamodel.Error;
 
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 [assembly: InternalsVisibleTo("NakedFunctions.Reflector.Test")]
@@ -74,7 +74,7 @@ namespace NakedFramework.Metamodel.Facet {
             return FailureMessage ?? NakedObjects.Resources.NakedObjects.InvalidEntry;
         }
 
-        public System.Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
+        public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
 
         #endregion
     }

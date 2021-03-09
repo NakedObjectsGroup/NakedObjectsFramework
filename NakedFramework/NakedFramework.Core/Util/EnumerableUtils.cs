@@ -8,7 +8,7 @@
 using System;
 using System.Collections;
 using System.Linq;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 namespace NakedFramework.Core.Util {
     public static class EnumerableUtils {

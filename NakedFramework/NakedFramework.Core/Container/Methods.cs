@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Core.Util;
+using NakedFramework.Error;
 using NakedObjects;
 
 namespace NakedFramework.Core.Container {

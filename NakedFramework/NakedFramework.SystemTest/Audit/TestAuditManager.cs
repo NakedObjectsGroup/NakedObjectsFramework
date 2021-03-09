@@ -11,7 +11,7 @@ using System.Linq;
 using System.Security.Principal;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Audit;
-using NakedObjects.Audit;
+using NakedFramework.Audit;
 using NakedObjects.Services;
 using NUnit.Framework;
 

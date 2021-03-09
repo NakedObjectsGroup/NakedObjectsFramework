@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFramework;
+using NakedFramework.Error;
 using NakedObjects;
 using NakedObjects.Security;
 

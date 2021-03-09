@@ -14,7 +14,7 @@ using System.Web;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Adapter {
@@ -116,7 +116,7 @@ namespace NakedFramework.Core.Adapter {
 
             var objectType = NakedObjects.TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new System.Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
+                throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
 
             if (objectType == typeof(string)) {
@@ -129,12 +129,12 @@ namespace NakedFramework.Core.Adapter {
 
             var parseMethod = objectType.GetMethod("Parse", new[] {typeof(string)});
             if (parseMethod == null) {
-                throw new System.Exception(logger.LogAndReturn($"Cannot find Parse method on type: {objectType}"));
+                throw new Exception(logger.LogAndReturn($"Cannot find Parse method on type: {objectType}"));
             }
 
             var result = parseMethod.Invoke(null, new object[] {value});
             if (result == null) {
-                throw new System.Exception(logger.LogAndReturn($"Failed to Parse value: {value} on type: {objectType}"));
+                throw new Exception(logger.LogAndReturn($"Failed to Parse value: {value} on type: {objectType}"));
             }
 
             return result;
@@ -161,7 +161,7 @@ namespace NakedFramework.Core.Adapter {
 
             var objectType = NakedObjects.TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new System.Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
+                throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
 
             var stream = new MemoryStream();
@@ -184,11 +184,11 @@ namespace NakedFramework.Core.Adapter {
 
             var objectType = NakedObjects.TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new System.Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
+                throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
 
             if (!typeof(IEncodedToStrings).IsAssignableFrom(objectType)) {
-                throw new System.Exception(logger.LogAndReturn($"Type: {objectType} needs to be: {typeof(IEncodedToStrings)}"));
+                throw new Exception(logger.LogAndReturn($"Type: {objectType} needs to be: {typeof(IEncodedToStrings)}"));
             }
 
             return (IEncodedToStrings) Activator.CreateInstance(objectType, metamodel, loggerFactory, encodedData);

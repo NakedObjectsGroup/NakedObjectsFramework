@@ -17,7 +17,7 @@ using SystemTest.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Xat.Interface;
 using NakedObjects;
 using NakedObjects.Services;

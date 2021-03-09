@@ -7,7 +7,7 @@
 
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Constants;
-using NakedFramework.Rest.Snapshot.Exception;
+using NakedFramework.Rest.Snapshot.Error;
 
 namespace NakedFramework.Rest.Snapshot.Utility {
     public class TypeActionInvokeContext {

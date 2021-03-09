@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Interactions;
 using NakedFramework.Core.Reflect;
 using NakedFramework.Core.Util;

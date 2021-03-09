@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedFramework.Facade.Exception;
+using NakedFramework.Facade.Error;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
@@ -87,7 +87,7 @@ namespace NakedFramework.Facade.Impl.Utility {
                 var keyDict = CreateKeyDictionary(keys, type);
                 return framework.Persistor.FindByKeys(type, keyDict.Values.ToArray());
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 logger.LogWarning(e, "Domain Object not found with exception");
                 var keysvalue = keys == null ? "null" : keys.Aggregate("", (s, t) => $"{s} {t}");
                 var typevalue = type == null ? "null" : type.ToString();
@@ -102,7 +102,7 @@ namespace NakedFramework.Facade.Impl.Utility {
                 spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel, framework);
                 return viewModel;
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 logger.LogWarning(e, "View Model not found with exception");
                 var aggregate = keys == null ? "null" : keys.Aggregate("", (s, t) => $"{s} {t}");
                 var specFullName = spec == null ? "null" : spec.FullName;
@@ -171,7 +171,7 @@ namespace NakedFramework.Facade.Impl.Utility {
             try {
                 spec = framework.MetamodelManager.GetSpecification(type);
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
             }
 

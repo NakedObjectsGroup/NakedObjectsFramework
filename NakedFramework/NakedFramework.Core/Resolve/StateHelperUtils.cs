@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Resolve;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 namespace NakedFramework.Core.Resolve {
     public static class StateHelperUtils {

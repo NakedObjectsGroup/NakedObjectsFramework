@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Exception;
+using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 

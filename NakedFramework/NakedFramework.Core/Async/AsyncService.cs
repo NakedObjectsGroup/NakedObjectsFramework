@@ -46,7 +46,7 @@ namespace NakedFramework.Core.Async {
                     action(new DomainObjectContainer(fw, LoggerFactory.CreateLogger<DomainObjectContainer>()));
                     fw.TransactionManager.EndTransaction();
                 }
-                catch (System.Exception e) {
+                catch (Exception e) {
                     Logger.LogError($"Action threw exception {e.Message}");
                     fw.TransactionManager.AbortTransaction();
                     throw;

@@ -17,7 +17,7 @@ open System.Data.Entity.ModelConfiguration
 open TestCode
 open TestCodeOnly
 open TestTypes
-open NakedFramework.Core.Exception
+open NakedFramework.Core.Error
 
 let categorySetter codeOnlyPersistor (c : Category) = 
     c.ID <- GetNextID<Category> codeOnlyPersistor (fun i -> i.ID)

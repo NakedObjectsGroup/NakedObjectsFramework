@@ -13,7 +13,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Persist;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
 using NakedObjects;

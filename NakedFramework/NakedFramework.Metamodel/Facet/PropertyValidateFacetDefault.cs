@@ -19,7 +19,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         #region IPropertyValidateFacet Members
 
-        public System.Exception CreateExceptionFor(IInteractionContext ic) => null;
+        public Exception CreateExceptionFor(IInteractionContext ic) => null;
 
         public string Invalidates(IInteractionContext ic) => null;
 

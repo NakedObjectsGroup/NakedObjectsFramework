@@ -16,11 +16,11 @@ using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using NakedFramework.Facade.Contexts;
-using NakedFramework.Facade.Exception;
+using NakedFramework.Facade.Error;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
-using NakedFramework.Rest.Snapshot.Exception;
+using NakedFramework.Rest.Snapshot.Error;
 using NakedFramework.Rest.Snapshot.Representation;
 using EntityTagHeaderValue = Microsoft.Net.Http.Headers.EntityTagHeaderValue;
 
@@ -162,7 +162,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, System.Exception exception, HttpRequest req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, Exception exception, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true, flags) {
             populator = logger => {
                 MapToHttpError(exception);
@@ -211,7 +211,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                 populator(logger);
                 return this;
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 throw new GeneralErrorNOSException(e);
             }
         }
@@ -287,7 +287,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             }
         }
 
-        private void MapToRepresentation(System.Exception e, HttpRequest req, IFrameworkFacade frameworkFacade) =>
+        private void MapToRepresentation(Exception e, HttpRequest req, IFrameworkFacade frameworkFacade) =>
             Representation = e switch {
                 WithContextNOSException wce when wce.Contexts.Any(c => c.ErrorCause == Cause.Disabled || c.ErrorCause == Cause.Immutable) => NullRepresentation.Create(),
                 BadPersistArgumentsException bpe when bpe.ContextFacade != null && bpe.Contexts.Any() => ArgumentsRepresentation.Create(oidStrategy, frameworkFacade, req, bpe.ContextFacade, bpe.Contexts, ArgumentsRepresentation.Format.Full, bpe.Flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
@@ -316,7 +316,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             }
         }
 
-        private void MapToHttpError(System.Exception e) {
+        private void MapToHttpError(Exception e) {
             const HttpStatusCode unprocessableEntity = (HttpStatusCode) 422;
             const HttpStatusCode preconditionHeaderMissing = (HttpStatusCode) 428;
 
@@ -334,7 +334,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             };
         }
 
-        private void MapToWarningHeader(System.Exception e, ILogger logger) {
+        private void MapToWarningHeader(Exception e, ILogger logger) {
             IList<string> ImmutableWarning() {
                 allowHeaders.Add("GET");
                 return new List<string> {"object is immutable"};

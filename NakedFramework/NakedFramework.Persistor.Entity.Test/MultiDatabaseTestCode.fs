@@ -15,7 +15,7 @@ open System.Data.Entity.Core.Objects
 open TestCode
 open TestCodeOnly
 open TestTypes
-open NakedFramework.Core.Exception
+open NakedFramework.Core.Error
 
 let CanCreateEntityPersistor multiDatabasePersistor = Assert.IsNotNull(multiDatabasePersistor)
 

@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Xat.Interface;
 
 namespace NakedFramework.Xat.TestObjects {

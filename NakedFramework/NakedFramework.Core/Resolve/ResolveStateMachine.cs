@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Resolve;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 [assembly: InternalsVisibleTo("NakedFramework.Core.Test")]
 

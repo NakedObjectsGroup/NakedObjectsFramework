@@ -5,11 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+
 namespace NakedFramework.Facade.Interface {
     public interface IConsentFacade {
         bool IsAllowed { get; }
         bool IsVetoed { get; }
         string Reason { get; }
-        System.Exception Exception { get; }
+        Exception Exception { get; }
     }
 }

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
@@ -12,7 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Resolve;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 
@@ -145,7 +146,7 @@ namespace NakedFramework.Core.Adapter {
 
                 return Spec.GetTitle(this) ?? DefaultTitle;
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 throw new TitleException(logger.LogAndReturn("Exception on ToString POCO: " + (Object == null ? "unknown" : Object.GetType().FullName)), e);
             }
         }

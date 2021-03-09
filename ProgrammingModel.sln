@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.ProgrammingM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.ProgrammingModel.package", "Programming Model\NakedFunctions\NakedFunctions.ProgrammingModel.package\NakedFunctions.ProgrammingModel.package.csproj", "{A517F30B-F5A9-4970-869D-ABBAFA3545AA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Types", "Programming Model\NakedFramework\NakedFramework.Types\NakedFramework.Types.csproj", "{67A8EB6C-5FEB-469E-B2B8-B60AE0263D9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{A9733B95-A753-4598-93BF-8B4A164BAFB6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A517F30B-F5A9-4970-869D-ABBAFA3545AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A517F30B-F5A9-4970-869D-ABBAFA3545AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67A8EB6C-5FEB-469E-B2B8-B60AE0263D9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67A8EB6C-5FEB-469E-B2B8-B60AE0263D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67A8EB6C-5FEB-469E-B2B8-B60AE0263D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67A8EB6C-5FEB-469E-B2B8-B60AE0263D9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

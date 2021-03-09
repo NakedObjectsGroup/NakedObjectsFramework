@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Utils;
 
@@ -35,7 +35,7 @@ namespace NakedFramework.Metamodel.Menu {
         public MenuImpl(IMetamodel metamodel, string name, string id = null) {
             Metamodel = metamodel;
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(id)) {
-                throw new System.Exception("Menu Name and Id must not be null, unless a default type is specified");
+                throw new Exception("Menu Name and Id must not be null, unless a default type is specified");
             }
 
             Name = name;
@@ -130,7 +130,7 @@ namespace NakedFramework.Metamodel.Menu {
 
         public IMenu AddAction(string actionName) {
             if (Type == null) {
-                throw new System.Exception($"No type has been specified for the action: {actionName}");
+                throw new Exception($"No type has been specified for the action: {actionName}");
             }
 
             var actionSpec = ActionsForObject.FirstOrDefault(a => a.Identifier.MemberName == actionName);
@@ -147,7 +147,7 @@ namespace NakedFramework.Metamodel.Menu {
         public IMenu GetSubMenu(string menuName) {
             var menu = GetSubMenuIfExists(menuName);
             if (menu == null) {
-                throw new System.Exception($"No sub-menu named {menuName}");
+                throw new Exception($"No sub-menu named {menuName}");
             }
 
             return menu;
@@ -155,7 +155,7 @@ namespace NakedFramework.Metamodel.Menu {
 
         public IMenu AddRemainingNativeActions() {
             if (Type == null) {
-                throw new System.Exception("No default type has been specified (as the source for the remaining native actions)");
+                throw new Exception("No default type has been specified (as the source for the remaining native actions)");
             }
 
             AddOrderableElementsToMenu(ActionsForObject, this);
@@ -164,7 +164,7 @@ namespace NakedFramework.Metamodel.Menu {
 
         public IMenu AddContributedActions() {
             if (Type == null) {
-                throw new System.Exception("No default type has been specified (as the source for the contributed actions)");
+                throw new Exception("No default type has been specified (as the source for the contributed actions)");
             }
 
             ObjectSpec?.ContributedActions.ForEach(AddContributed);

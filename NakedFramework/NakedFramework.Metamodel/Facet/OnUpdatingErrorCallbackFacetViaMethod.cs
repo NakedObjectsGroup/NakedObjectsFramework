@@ -29,7 +29,7 @@ namespace NakedFramework.Metamodel.Facet {
             methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
-        public override string Invoke(INakedObjectAdapter nakedObjectAdapter, System.Exception exception) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {exception});
+        public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {exception});
 
         protected override string ToStringValues() => $"method={method}";
 

@@ -9,11 +9,12 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>

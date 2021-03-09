@@ -11,7 +11,7 @@ using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Test.Facet {
@@ -51,7 +51,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
             var e = facet.CreateExceptionFor(mockIc.Object);
 
             Assert.IsInstanceOfType(e, typeof(DisabledException));
-            Assert.AreEqual("Exception of type 'NakedFramework.Core.Exception.DisabledException' was thrown.", e.Message);
+            Assert.AreEqual("Exception of type 'NakedFramework.Core.Error.DisabledException' was thrown.", e.Message);
         }
     }
 }

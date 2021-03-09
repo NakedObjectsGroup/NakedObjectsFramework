@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Resolve;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Component;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NUnit.Framework;
 

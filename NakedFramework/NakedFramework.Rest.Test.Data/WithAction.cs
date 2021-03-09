@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using NakedFramework;
+using NakedFramework.Error;
 using NakedObjects;
 using NakedObjects.Security;
 

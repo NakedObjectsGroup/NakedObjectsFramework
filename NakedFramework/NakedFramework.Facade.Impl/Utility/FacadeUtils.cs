@@ -11,9 +11,9 @@ using System.Reflection;
 using System.Threading;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
-using NakedFramework.Facade.Exception;
+using NakedFramework.Facade.Error;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 
@@ -23,7 +23,7 @@ namespace NakedFramework.Facade.Impl.Utility {
 
         public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) => actionParameterFacade == null ? null : ((ActionParameterFacade) actionParameterFacade).WrappedSpec;
 
-        public static NakedObjectsFacadeException Map(System.Exception e) =>
+        public static NakedObjectsFacadeException Map(Exception e) =>
             e switch {
                 FindObjectException _ => new ObjectResourceNotFoundNOSException(e.Message, e),
                 InvalidEntryException _ => new BadRequestNOSException(NakedObjects.Resources.NakedObjects.InvalidArguments, e),

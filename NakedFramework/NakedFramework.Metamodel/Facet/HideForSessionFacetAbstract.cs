@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.Facet {
     /// <summary>
@@ -32,7 +32,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public virtual string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
 
-        public virtual System.Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
         public abstract string HiddenReason(INakedObjectAdapter target, INakedObjectsFramework framework);
 

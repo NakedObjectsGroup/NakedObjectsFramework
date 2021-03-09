@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Profile;
+using NakedFramework.Profile;
 
 namespace NakedFramework.Metamodel.Profile {
     public class ProfileConfiguration<T> : IProfileConfiguration where T : IProfiler {

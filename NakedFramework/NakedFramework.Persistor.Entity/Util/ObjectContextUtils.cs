@@ -16,7 +16,7 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.Entity.Component;
 

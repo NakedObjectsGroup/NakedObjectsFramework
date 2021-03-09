@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Container;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 using NakedObjects;
 
 namespace NakedFramework.Core.Component {

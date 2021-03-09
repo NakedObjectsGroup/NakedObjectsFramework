@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Exception;
+using NakedFramework.Core.Error;
 
 namespace NakedFramework.Core.Component {
     public sealed class BatchRunner : IBatchRunner {
