@@ -45,7 +45,7 @@ namespace NakedFunctions.Rest.App.Demo {
                     options.FunctionalTypes = AWModelConfig.FunctionalTypes();
                     options.Functions = AWModelConfig.Functions();
                 });
-                builder.AddRestfulObjects(_ => { });
+                builder.AddRestfulObjects(options => options.BlobsClobs = true);
             });
             services.AddScoped<IPrincipalProvider, MockPrincipalProvider>();
             services.AddCors(options => {
