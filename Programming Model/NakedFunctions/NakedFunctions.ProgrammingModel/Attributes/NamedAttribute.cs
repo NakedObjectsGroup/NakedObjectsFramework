@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
+using System;
 
 namespace NakedFunctions {
     /// <summary>
@@ -14,8 +14,10 @@ namespace NakedFunctions {
     ///     members (properties, collections, and actions) and to parameters within an action method.
     /// </summary>
     /// <seealso cref="PluralAttribute" />
-    public class NamedAttribute : AbstractNamedAttribute {
-        public NamedAttribute(string s) : base(s) { }
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+    public class NamedAttribute : Attribute {
+        public NamedAttribute(string s) => Value = s;
 
+        public string Value { get; }
     }
 }

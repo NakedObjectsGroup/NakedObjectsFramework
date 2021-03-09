@@ -5,14 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
+using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     Use to overide the default number of objects displayed in each page when a queryable results from the action.
+    ///     Indicates the maximum number of objects displayed in each page when a collection results from the action.
     ///     '0' will result in no paging.
     /// </summary>
-    public class PageSizeAttribute : AbstractPageSizeAttribute {
-        public PageSizeAttribute(int i) : base(i) { }
+    [AttributeUsage(AttributeTargets.Method)]
+    public class PageSizeAttribute : Attribute {
+        public PageSizeAttribute(int i) => Value = i;
+
+        public int Value { get; }
     }
 }

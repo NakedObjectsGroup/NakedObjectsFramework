@@ -5,13 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
+using System;
 
 namespace NakedFunctions {
     /// <summary>
     ///     Provides a user-oriented description for an item that might e.g. be displayed as a tooltip.
     /// </summary>
-    public class DescribedAsAttribute : AbstractDescribedAsAttribute {
-        public DescribedAsAttribute(string s) : base(s) { }
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Parameter)]
+    public class DescribedAsAttribute : Attribute {
+        public DescribedAsAttribute(string s) => Value = s;
+
+        public string Value { get; }
     }
 }

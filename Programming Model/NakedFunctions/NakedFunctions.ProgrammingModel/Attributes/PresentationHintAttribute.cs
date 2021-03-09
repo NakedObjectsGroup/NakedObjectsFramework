@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 
 namespace NakedFunctions {
     /// <summary>
@@ -14,7 +13,9 @@ namespace NakedFunctions {
     ///     the CSS.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class PresentationHintAttribute : AbstractPresentationHintAttribute {
-        public PresentationHintAttribute(string s) : base(s) { }
+    public class PresentationHintAttribute : Attribute {
+        public PresentationHintAttribute(string s) => Value = s;
+
+        public string Value { get; }
     }
 }

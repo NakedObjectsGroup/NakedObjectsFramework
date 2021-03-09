@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
+using System;
 
 namespace NakedFunctions {
     /// <summary>
@@ -15,5 +15,6 @@ namespace NakedFunctions {
     ///     must match
     ///     properties on the contributee type, both in type and name (except for casing).
     /// </summary>
-    public class EditAttribute : AbstractEditAttribute { }
+    [AttributeUsage(AttributeTargets.Method)]
+    public class EditAttribute : Attribute { }
 }
