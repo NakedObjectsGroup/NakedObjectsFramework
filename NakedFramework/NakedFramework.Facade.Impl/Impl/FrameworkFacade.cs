@@ -427,7 +427,11 @@ namespace NakedFramework.Facade.Impl.Impl {
 
             if (transientHash != digest) {
                 logger.LogError($"Transient Integrity failed for: {nakedObject.Id} bad values: {rawValue} old hash: {digest} new hash {transientHash}");
-                throw new BadRequestNOSException("Values provided may not be persisted as an object (ensure any derived properties are annotated NotPersisted");
+                var msg = digest is null
+                    ? "Values provided may not be persisted as an object (expected an etag value in If-Match header)"
+                    : "Values provided may not be persisted as an object (ensure any derived properties are annotated NotPersisted";
+
+                throw new BadRequestNOSException(msg);
             }
         }
 
