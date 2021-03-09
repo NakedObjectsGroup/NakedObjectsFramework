@@ -83,5 +83,10 @@
           target="lib" />
     <file src="..\NakedFunctions.Reflector\bin\Debug\**\NakedFunctions.Reflector.pdb" target="lib" />
     <file src="..\NakedFunctions.Services\bin\Debug\**\NakedFunctions.Services.pdb" target="lib" />
+
+
+    <file src="..\..\NakedObjects\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.dll" target="lib" />
+    <file src="..\..\NakedObjects\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.pdb" target="lib" />
+    
   </files>
 </package>
