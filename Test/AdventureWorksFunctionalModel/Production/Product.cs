@@ -132,7 +132,6 @@ namespace AW.Types
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        [Hidden]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
         
         [Hidden]
