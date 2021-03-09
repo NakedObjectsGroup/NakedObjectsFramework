@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NakedObjects.Resources {
+namespace NakedFramework.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace NakedObjects.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NakedObjects.Resources.ProgrammingModel", typeof(ProgrammingModel).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NakedFramework.Resources.ProgrammingModel", typeof(ProgrammingModel).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Attributes", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Helpers", "Programming Model\NakedObjects\NakedObjects.Helpers\NakedObjects.Helpers.csproj", "{C52B6155-0012-4732-93A1-60AEC9C9E2E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.PMResources", "Programming Model\NakedObjects\NakedObjects.PMResources\NakedObjects.PMResources.csproj", "{1374F9FB-214B-4C08-AA3A-16E027D96B83}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.ProgrammingModel.Package", "Programming Model\NakedObjects\NakedObjects.ProgrammingModel.package\NakedObjects.ProgrammingModel.Package.csproj", "{CC9BE60D-AB04-43D4-9D97-F4394EA4A614}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{C52B6155-0012-4732-93A1-60AEC9C9E2E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C52B6155-0012-4732-93A1-60AEC9C9E2E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C52B6155-0012-4732-93A1-60AEC9C9E2E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1374F9FB-214B-4C08-AA3A-16E027D96B83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1374F9FB-214B-4C08-AA3A-16E027D96B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1374F9FB-214B-4C08-AA3A-16E027D96B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1374F9FB-214B-4C08-AA3A-16E027D96B83}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC9BE60D-AB04-43D4-9D97-F4394EA4A614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC9BE60D-AB04-43D4-9D97-F4394EA4A614}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection

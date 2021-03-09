@@ -5,4 +5,8 @@
     <RootNamespace>NakedFramework</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NakedFramework.PMResources\NakedFramework.PMResources.csproj" />
+  </ItemGroup>
+
 </Project>

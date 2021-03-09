@@ -62,7 +62,7 @@ namespace NakedFramework.Facade.Impl.Utility {
                 _ => RestoreObject(framework, oid)
             };
 
-        private string GetCode(ITypeFacade spec) => GetCode(NakedObjects.TypeUtils.GetType(spec.FullName));
+        private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
 
         private static object CoerceType(Type type, string value) =>
             type switch {

@@ -181,7 +181,7 @@ namespace NakedFramework.Core.Adapter {
                 }
                 else if (parameter.Spec.IsCollection) {
                     var instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter, metamodel.Metamodel);
-                    var instanceType = NakedObjects.TypeUtils.GetType(instanceSpec.FullName);
+                    var instanceType = TypeUtils.GetType(instanceSpec.FullName);
 
                     if (instanceSpec.IsParseable) {
                         helper.Add(ParameterType.ValueCollection);

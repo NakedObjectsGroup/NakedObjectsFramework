@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using NakedFramework;
 using NakedFramework.Error;
 using NakedObjects.UtilInternal;
 using NUnit.Framework;

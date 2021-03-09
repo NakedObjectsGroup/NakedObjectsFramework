@@ -84,7 +84,7 @@ namespace NakedFramework.Xat.TestObjects {
 
         public ITestObject AssertIsType(Type expected) {
             var actualType = NakedObject.GetDomainObject().GetType();
-            actualType = NakedObjects.TypeUtils.IsProxy(actualType) ? actualType.BaseType : actualType;
+            actualType = TypeUtils.IsProxy(actualType) ? actualType.BaseType : actualType;
             Assert.IsTrue(actualType == expected, "Expected type " + expected + " but got " + actualType);
             return this;
         }

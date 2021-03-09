@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects {
+namespace NakedFramework {
     /// <summary>
     ///     Role interface to be implemented by an object that is not itself a persistent object, though it may contain
     ///     references to one or more persistent objects.

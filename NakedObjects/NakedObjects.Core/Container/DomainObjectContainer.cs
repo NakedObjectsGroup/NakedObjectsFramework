@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
@@ -18,10 +19,9 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Error;
-using NakedObjects;
 using NakedObjects.UtilInternal;
 
-namespace NakedFramework.Core.Container {
+namespace NakedObjects.Core.Container {
     public sealed class DomainObjectContainer : IDomainObjectContainer, IInternalAccess {
         private readonly INakedObjectsFramework framework;
         private readonly ILogger<DomainObjectContainer> logger;

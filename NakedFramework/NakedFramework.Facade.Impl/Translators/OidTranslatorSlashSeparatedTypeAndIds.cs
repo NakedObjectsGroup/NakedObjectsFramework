@@ -21,7 +21,7 @@ namespace NakedFramework.Facade.Impl.Translators {
 
         public OidTranslatorSlashSeparatedTypeAndIds(INakedObjectsFramework framework) => this.framework = framework;
 
-        private string GetCode(ITypeFacade spec) => GetCode(NakedObjects.TypeUtils.GetType(spec.FullName));
+        private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
 
         protected (string code, string key) GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
             var code = GetCode(nakedObject.Specification);

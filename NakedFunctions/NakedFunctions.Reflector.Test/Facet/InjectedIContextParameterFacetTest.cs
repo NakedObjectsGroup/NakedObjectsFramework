@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Facet;
+using NakedObjects.Core.Util;
 
 namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]

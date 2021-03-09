@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using NakedFramework;
-using NakedObjects.Resources;
+using NakedFramework.Resources;
 
 namespace NakedObjects.Services {
     /// <summary>

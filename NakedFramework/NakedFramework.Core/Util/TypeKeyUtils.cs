@@ -21,7 +21,7 @@ namespace NakedFramework.Core.Util {
                 return type.GetGenericArguments()[0];
             }
 
-            return NakedObjects.TypeUtils.IsProxy(type) ? type.BaseType : type;
+            return TypeUtils.IsProxy(type) ? type.BaseType : type;
         }
 
         public static bool IsSystemClass(Type introspectedType) => introspectedType.FullName?.StartsWith("System.", StringComparison.Ordinal) == true;
@@ -31,6 +31,6 @@ namespace NakedFramework.Core.Util {
                 ? $"{type.Namespace}.{type.Name}"
                 : FasterTypeUtils.IsObjectArray(type)
                     ? "System.Array"
-                    : NakedObjects.TypeUtils.GetProxiedTypeFullName(type);
+                    : TypeUtils.GetProxiedTypeFullName(type);
     }
 }

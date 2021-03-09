@@ -8,9 +8,9 @@
 using System;
 using System.Linq;
 using System.Text;
-using NakedObjects.Resources;
+using NakedFramework.Resources;
 
-namespace NakedObjects {
+namespace NakedFramework {
     /// <summary>
     ///     Utility methods for manipulating type-name strings.  The Naked Objects framework makes extensive
     ///     use of these utils, but they are provided within the NakedObjects.Helpers

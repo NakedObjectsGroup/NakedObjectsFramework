@@ -21,5 +21,7 @@
     <file src="..\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.pdb" target="lib" />
     <file src="..\NakedFramework.Types\bin\Debug\**\NakedFramework.Types.dll" target="lib" />
     <file src="..\NakedFramework.Types\bin\Debug\**\NakedFramework.Types.pdb" target="lib" />
+    <file src="..\NakedFramework.PMResources\bin\Debug\**\NakedFramework.PMResources.dll" target="lib" />
+    <file src="..\NakedFramework.PMResources\bin\Debug\**\NakedFramework.PMResources.pdb" target="lib" />
   </files>
 </package>

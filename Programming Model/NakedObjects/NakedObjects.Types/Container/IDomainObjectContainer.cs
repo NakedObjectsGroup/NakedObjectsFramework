@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Security.Principal;
+using NakedFramework;
 
 namespace NakedObjects {
     /// <summary>
@@ -63,7 +64,7 @@ namespace NakedObjects {
         T NewTransientInstance<T>() where T : new();
 
         /// <summary>
-        ///     Create a new instance of T, wher T is a View Model
+        ///     Create a new instance of T, where T is a View Model
         /// </summary>
         T NewViewModel<T>() where T : IViewModel, new();
 

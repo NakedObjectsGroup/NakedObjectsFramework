@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using NakedFramework.Error;
-using NakedObjects.Resources;
+using NakedFramework.Resources;
 using NakedObjects.UtilInternal;
 
 namespace NakedObjects {
@@ -20,16 +20,7 @@ namespace NakedObjects {
     ///     assembly to permit optional use within domain code.
     /// </summary>
     public static class KeyUtils {
-        //public static T FindByKey<T>(this IQueryable<T> source, string keyName, object keyValue) {
-        //    string queryString = BuildQueryString(keyName, keyValue);
-        //    return source.Where(queryString).SingleOrDefault();
-        //}
-
-        //public static T FindByKeys<T>(this IQueryable<T> source, IDictionary<string, object> keys) {
-        //    string queryString = BuildQueryString(keys);
-        //    return source.Where(queryString).SingleOrDefault();
-        //}
-
+        
         public static T FindByKey<T>(this IDomainObjectContainer container, object keyValue) {
             return (T) ((IInternalAccess) container).FindByKeys(typeof(T), new[] {keyValue});
         }

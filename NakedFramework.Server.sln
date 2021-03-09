@@ -87,7 +87,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Services", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Services.Test", "NakedFunctions\NakedFunctions.Services.Test\NakedFunctions.Services.Test.csproj", "{F9C1AEE4-7677-43A5-B81E-A8BAA2634185}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedFramework.Persistor.EFCore", "NakedFramework\NakedFramework.Persistor.EFCore\NakedFramework.Persistor.EFCore.csproj", "{23B96CB5-EF8A-49FE-A236-B877C146345A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Persistor.EFCore", "NakedFramework\NakedFramework.Persistor.EFCore\NakedFramework.Persistor.EFCore.csproj", "{23B96CB5-EF8A-49FE-A236-B877C146345A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Core", "NakedObjects\NakedObjects.Core\NakedObjects.Core.csproj", "{5BE55FA2-82CE-4EFA-B992-278981A61D90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -263,6 +265,10 @@ Global
 		{23B96CB5-EF8A-49FE-A236-B877C146345A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23B96CB5-EF8A-49FE-A236-B877C146345A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23B96CB5-EF8A-49FE-A236-B877C146345A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE55FA2-82CE-4EFA-B992-278981A61D90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE55FA2-82CE-4EFA-B992-278981A61D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE55FA2-82CE-4EFA-B992-278981A61D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE55FA2-82CE-4EFA-B992-278981A61D90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

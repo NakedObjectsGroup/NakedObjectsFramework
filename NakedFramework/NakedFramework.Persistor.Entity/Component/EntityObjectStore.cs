@@ -350,7 +350,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             return ObjectContextUtils.MemberValueMap(idmembers, keyValues);
         }
 
-        public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, NakedObjects.TypeUtils.GetType(hint.FullName));
+        public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
 
         public bool EntityFrameworkKnowsType(Type type) {
             try {
@@ -385,7 +385,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         internal void CheckProxies(object objectToCheck) {
             var objectType = objectToCheck.GetType();
-            if (!EnforceProxies || NakedObjects.TypeUtils.IsSystem(objectType) || NakedObjects.TypeUtils.IsMicrosoft(objectType)) {
+            if (!EnforceProxies || TypeUtils.IsSystem(objectType) || TypeUtils.IsMicrosoft(objectType)) {
                 // may be using types provided by System or Microsoft (eg Authentication User). 
                 // No point enforcing proxying on them. 
                 return;
@@ -396,7 +396,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             var explanation = isTransientObject ? NakedObjects.Resources.NakedObjects.ProxyExplanationTransient : NakedObjects.Resources.NakedObjects.ProxyExplanation;
             var msg = "";
 
-            if (!NakedObjects.TypeUtils.IsEntityProxy(objectToCheck.GetType())) {
+            if (!TypeUtils.IsEntityProxy(objectToCheck.GetType())) {
                 msg = string.Format(NakedObjects.Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), explanation);
             }
 
@@ -436,7 +436,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         private void SavingChangesHandler(object sender, EventArgs e) {
             var changedObjects = ObjectContextUtils.GetChangedObjectsInContext((ObjectContext) sender);
-            var adaptedObjects = changedObjects.Where(o => NakedObjects.TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => nakedObjectManager.CreateAdapter(domainObject, null, null)).ToArray();
+            var adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => nakedObjectManager.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
         }
@@ -571,7 +571,7 @@ namespace NakedFramework.Persistor.Entity.Component {
         public void Execute(IPersistenceCommand[] commands) => ExecuteCommands(commands);
 
         public IQueryable GetInstances(IObjectSpec spec) {
-            var type = NakedObjects.TypeUtils.GetType(spec.FullName);
+            var type = TypeUtils.GetType(spec.FullName);
             return GetContext(type).GetObjectSet(type);
         }
 
@@ -602,7 +602,7 @@ namespace NakedFramework.Persistor.Entity.Component {
         public void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field) => field.GetNakedObject(nakedObjectAdapter);
 
         public int CountField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec associationSpec) {
-            var type = NakedObjects.TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
+            var type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
             var countMethod = GetType().GetMethod("Count")?.GetGenericMethodDefinition().MakeGenericMethod(type);
             return (int) (countMethod?.Invoke(this, new object[] {nakedObjectAdapter, associationSpec, nakedObjectManager}) ?? 0);
         }
@@ -619,7 +619,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             // only if not proxied
             var entityType = nakedObjectAdapter.Object.GetType();
 
-            if (!NakedObjects.TypeUtils.IsEntityProxy(entityType)) {
+            if (!TypeUtils.IsEntityProxy(entityType)) {
                 var currentContext = GetContext(entityType);
 
                 var propertynames = currentContext.GetNavigationMembers(entityType).Select(x => x.Name);
@@ -693,7 +693,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class => (T) CreateInstance(typeof(T));
 
-        public PropertyInfo[] GetKeys(Type type) => GetContext(NakedObjects.TypeUtils.GetProxiedType(type)).GetIdMembers(NakedObjects.TypeUtils.GetProxiedType(type));
+        public PropertyInfo[] GetKeys(Type type) => GetContext(TypeUtils.GetProxiedType(type)).GetIdMembers(TypeUtils.GetProxiedType(type));
 
         public void Refresh(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.Spec.GetFacet<IComplexTypeFacet>() == null) {
@@ -721,7 +721,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         public T ValidateProxy<T>(T toCheck) where T : class {
             var toCheckType = toCheck.GetType();
-            if (!NakedObjects.TypeUtils.IsEntityProxy(toCheckType)) {
+            if (!TypeUtils.IsEntityProxy(toCheckType)) {
                 var context = GetContext(toCheck);
                 if (context is null || context.GetReferenceMembers(toCheckType).Any() || context.GetCollectionMembers(toCheckType).Any()) {
                     throw new PersistFailedException($"{toCheck}  type {toCheckType} is not proxy but has reference members or is unknown to EF");

@@ -16,8 +16,8 @@ namespace NakedFramework.Core.Util {
                 var rootType = typeName.Substring(0, typeName.IndexOf('`') + 2);
                 var args = typeName.Substring(typeName.IndexOf('`') + 3).Split('-');
 
-                var genericType = NakedObjects.TypeUtils.GetType(rootType);
-                var argTypes = Enumerable.ToArray(args.Select(NakedObjects.TypeUtils.GetType));
+                var genericType = TypeUtils.GetType(rootType);
+                var argTypes = Enumerable.ToArray(args.Select(TypeUtils.GetType));
 
                 var newType = genericType.MakeGenericType(argTypes);
 
@@ -30,7 +30,7 @@ namespace NakedFramework.Core.Util {
         public static string EncodeTypeName(this IObjectSpec spec, params IObjectSpec[] elements) => EncodeTypeName(spec.FullName, "-", elements);
 
         public static string EncodeTypeName(string typeName, string separator = "-", params IObjectSpec[] elements) {
-            var type = NakedObjects.TypeUtils.GetType(typeName);
+            var type = TypeUtils.GetType(typeName);
 
             return type.IsGenericType ? EncodeGenericTypeName(type, separator, elements) : type.FullName;
         }

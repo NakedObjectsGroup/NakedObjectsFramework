@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Attributes", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Helpers", "Programming Model\NakedObjects\NakedObjects.Helpers\NakedObjects.Helpers.csproj", "{9F3ABE5A-B0E8-4324-8621-05893FC9C80C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.PMResources", "Programming Model\NakedObjects\NakedObjects.PMResources\NakedObjects.PMResources.csproj", "{2F905B95-0C73-40A6-9CAC-BF154D1450AD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Types", "Programming Model\NakedObjects\NakedObjects.Types\NakedObjects.Types.csproj", "{203F9A5E-120F-4543-97F9-E779B436D88A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.ProgrammingModel.Package", "Programming Model\NakedObjects\NakedObjects.ProgrammingModel.Package\NakedObjects.ProgrammingModel.Package.csproj", "{71DFD004-D9D6-4B83-9269-A4576436F085}"
@@ -22,6 +20,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.ProgrammingModel.package", "Programming Model\NakedFunctions\NakedFunctions.ProgrammingModel.package\NakedFunctions.ProgrammingModel.package.csproj", "{A517F30B-F5A9-4970-869D-ABBAFA3545AA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Types", "Programming Model\NakedFramework\NakedFramework.Types\NakedFramework.Types.csproj", "{67A8EB6C-5FEB-469E-B2B8-B60AE0263D9A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.PMResources", "Programming Model\NakedFramework\NakedFramework.PMResources\NakedFramework.PMResources.csproj", "{C313300A-7145-436B-8860-EF2EE534C584}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{9F3ABE5A-B0E8-4324-8621-05893FC9C80C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F3ABE5A-B0E8-4324-8621-05893FC9C80C}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F3ABE5A-B0E8-4324-8621-05893FC9C80C}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{2F905B95-0C73-40A6-9CAC-BF154D1450AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F905B95-0C73-40A6-9CAC-BF154D1450AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F905B95-0C73-40A6-9CAC-BF154D1450AD}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F905B95-0C73-40A6-9CAC-BF154D1450AD}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{203F9A5E-120F-4543-97F9-E779B436D88A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{203F9A5E-120F-4543-97F9-E779B436D88A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{203F9A5E-120F-4543-97F9-E779B436D88A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
@@ -63,6 +59,10 @@ Global
 		{67A8EB6C-5FEB-469E-B2B8-B60AE0263D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67A8EB6C-5FEB-469E-B2B8-B60AE0263D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67A8EB6C-5FEB-469E-B2B8-B60AE0263D9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C313300A-7145-436B-8860-EF2EE534C584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C313300A-7145-436B-8860-EF2EE534C584}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C313300A-7145-436B-8860-EF2EE534C584}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C313300A-7145-436B-8860-EF2EE534C584}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

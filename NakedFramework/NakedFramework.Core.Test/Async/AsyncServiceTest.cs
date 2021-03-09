@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Async;
 using NUnit.Framework;
 
 namespace NakedObjects.Core.Async {

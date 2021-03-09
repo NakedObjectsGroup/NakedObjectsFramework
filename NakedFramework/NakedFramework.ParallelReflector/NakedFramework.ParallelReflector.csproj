@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="NakedFunctions.ProgrammingModel" Version="1.0.0-beta03" />
+    <PackageReference Include="NakedObjects.ProgrammingModel" Version="12.0.0-alpha02" />
   </ItemGroup>
 
   <ItemGroup>

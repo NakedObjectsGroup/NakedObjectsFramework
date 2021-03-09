@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using NakedFramework;
 using NakedObjects.Services;
 using NUnit.Framework;
 

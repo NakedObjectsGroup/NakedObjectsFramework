@@ -9,6 +9,7 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using NakedFramework;
 using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestCase;
 using NUnit.Framework;

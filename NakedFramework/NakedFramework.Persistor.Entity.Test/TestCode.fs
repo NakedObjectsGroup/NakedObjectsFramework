@@ -25,6 +25,7 @@ open Microsoft.Extensions.Logging
 open NakedObjects.Reflector.Configuration
 open NakedFramework.Core.Component
 open NakedFramework.Architecture.Component
+open NakedObjects.Core.Component
 
 let resetPersistor (p : EntityObjectStore) = 
     p.SetupContexts()

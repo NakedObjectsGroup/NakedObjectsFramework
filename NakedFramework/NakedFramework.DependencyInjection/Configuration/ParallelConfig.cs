@@ -19,6 +19,7 @@ using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Metamodel.Component;
 using NakedFramework.Metamodel.Menu;
 using NakedFramework.ModelBuilding.Component;
+using NakedObjects.Core.Component;
 
 namespace NakedFramework.DependencyInjection.Configuration {
     public static class ParallelConfig {

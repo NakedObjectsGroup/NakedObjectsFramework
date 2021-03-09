@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>9.0</LangVersion>
-    <AssemblyName>NakedObjects.PMResources</AssemblyName>
-    <RootNamespace>NakedObjects.Resources</RootNamespace>
+    <AssemblyName>NakedFramework.PMResources</AssemblyName>
+    <RootNamespace>NakedFramework.Resources</RootNamespace>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>

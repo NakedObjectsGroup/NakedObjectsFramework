@@ -680,7 +680,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 if (ConsentHandler(actionContext.Action.IsUsable(actionContext.Target), actionResultContext, Cause.Disabled)) {
                     if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
                         var result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray());
-                        var isProxied = result != null && NakedObjects.TypeUtils.IsEntityProxy(result.Object.GetType());
+                        var isProxied = result != null && TypeUtils.IsEntityProxy(result.Object.GetType());
                         // if proxied object is known to EF and so is being persisted
                         var oc = GetObjectContext(result, isProxied);
 
@@ -743,7 +743,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             if (elementSpec != null) {
                 if (elementSpec.IsParseable) {
                     var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), Framework.NakedObjectManager)).ToArray();
-                    var elementType = NakedObjects.TypeUtils.GetType(elementSpec.FullName);
+                    var elementType = TypeUtils.GetType(elementSpec.FullName);
                     var collType = typeof(List<>).MakeGenericType(elementType);
                     var list = ((IList) Activator.CreateInstance(collType))?.AsQueryable();
                     var collection = Framework.NakedObjectManager.CreateAdapter(list, null, null);

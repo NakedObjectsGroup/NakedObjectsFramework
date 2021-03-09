@@ -102,7 +102,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         public IQueryable GetInstances(IObjectSpec spec) {
-            var type = NakedObjects.TypeUtils.GetType(spec.FullName);
+            var type = TypeUtils.GetType(spec.FullName);
             return GetInstances(type);
         }
 
@@ -137,7 +137,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         public int CountField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec associationSpec) {
-            var type = NakedObjects.TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
+            var type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
             var countMethod = GetType().GetMethod("Count")?.GetGenericMethodDefinition().MakeGenericMethod(type);
             return (int) (countMethod?.Invoke(this, new object[] {nakedObjectAdapter, associationSpec, nakedObjectManager}) ?? 0);
         }

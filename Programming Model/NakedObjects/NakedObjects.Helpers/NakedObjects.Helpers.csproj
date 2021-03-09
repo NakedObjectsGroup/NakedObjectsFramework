@@ -15,13 +15,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NakedFramework.ProgrammingModel" Version="12.0.0-beta01" />
+    <PackageReference Include="NakedFramework.ProgrammingModel" Version="12.0.0-beta03" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Types\NakedFramework.Types.csproj" />
     <ProjectReference Include="..\NakedObjects.Attributes\NakedObjects.Attributes.csproj" />
-    <ProjectReference Include="..\NakedObjects.PMResources\NakedObjects.PMResources.csproj" />
     <ProjectReference Include="..\NakedObjects.Types\NakedObjects.Types.csproj" />
   </ItemGroup>
 

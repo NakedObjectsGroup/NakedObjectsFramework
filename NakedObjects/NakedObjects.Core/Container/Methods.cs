@@ -12,9 +12,8 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Core.Util;
 using NakedFramework.Error;
-using NakedObjects;
 
-namespace NakedFramework.Core.Container {
+namespace NakedObjects.Core.Container {
     internal static class Methods {
         private static readonly MethodInfo CreateMethod = typeof(LoggerFactoryExtensions).GetMethods().Single(m => m.Name == "CreateLogger" && m.ContainsGenericParameters);
         public static void InjectContainer(object target, object container) => InjectContainer(target, container, new[] {"Container", "DomainObjectContainer", "ProxyContainer"});

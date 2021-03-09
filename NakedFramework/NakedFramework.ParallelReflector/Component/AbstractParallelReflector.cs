@@ -108,7 +108,7 @@ namespace NakedFramework.ParallelReflector.Component {
         }
 
         private ITypeSpecBuilder CreateSpecification(Type type) {
-            NakedObjects.TypeUtils.GetType(type.FullName); // This should ensure type is cached
+            TypeUtils.GetType(type.FullName); // This should ensure type is cached
             return ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type), ClassStrategy.IsTypeRecognized(type));
         }
 

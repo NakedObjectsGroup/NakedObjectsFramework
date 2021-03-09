@@ -9,11 +9,10 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Container;
-using NakedObjects;
 using NakedObjects.Async;
+using NakedObjects.Core.Container;
 
-namespace NakedFramework.Core.Async {
+namespace NakedObjects.Core.Async {
     /// <summary>
     ///     A service to be injected into domain code that allows multiple actions to be initiated
     ///     asynchronously -  each running within its own separate NakedObjects context.

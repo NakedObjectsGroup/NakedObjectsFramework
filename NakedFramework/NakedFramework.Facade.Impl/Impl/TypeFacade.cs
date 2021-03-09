@@ -135,7 +135,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public bool IsOfType(ITypeFacade otherSpec) => WrappedValue.IsOfType(((TypeFacade) otherSpec).WrappedValue);
 
-        public Type GetUnderlyingType() => NakedObjects.TypeUtils.GetType(WrappedValue.FullName);
+        public Type GetUnderlyingType() => TypeUtils.GetType(WrappedValue.FullName);
 
         public IActionFacade[] GetCollectionContributedActions() {
             if (WrappedValue is IObjectSpec objectSpec) {

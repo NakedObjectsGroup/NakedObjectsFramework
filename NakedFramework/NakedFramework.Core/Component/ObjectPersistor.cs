@@ -177,7 +177,7 @@ namespace NakedFramework.Core.Component {
         }
 
         public object CreateObject(ITypeSpec spec) {
-            var type = NakedObjects.TypeUtils.GetType(spec.FullName);
+            var type = TypeUtils.GetType(spec.FullName);
             return objectStore.CreateInstance(type);
         }
 

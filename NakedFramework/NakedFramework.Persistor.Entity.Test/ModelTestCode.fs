@@ -24,6 +24,7 @@ open NakedObjects.Reflector.Configuration
 open NakedFramework.Core.Component
 open NakedFramework.Architecture.Framework
 open NakedFramework.Architecture.Spec
+open NakedObjects.Core.Component
 
 let ModelConfig = 
     let pc = new CodeFirstEntityContextConfiguration()

@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using NakedFramework;
 using NakedFramework.Error;
 
 namespace NakedObjects.Services {

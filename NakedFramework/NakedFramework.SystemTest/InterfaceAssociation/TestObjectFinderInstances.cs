@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using NakedFramework;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderGuid;
 using NUnit.Framework;

@@ -21,7 +21,7 @@ namespace NakedFramework.Metamodel.Facet {
         //Creates a menu based on the object's actions and their specified ordering
         //For backwards compatibility of UI only, it gives the menu an Id of the type name
         public override void CreateMenu(IMetamodelBuilder metamodel) {
-            if (NakedObjects.TypeUtils.IsSystem(Spec.Type)) {
+            if (TypeUtils.IsSystem(Spec.Type)) {
                 return; //Menu not relevant, and could cause error below
             }
 

@@ -7,6 +7,7 @@
 
 using System.Linq;
 using NakedFramework.Error;
+using NakedFramework;
 
 namespace NakedObjects {
     /// <summary>

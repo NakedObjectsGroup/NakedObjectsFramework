@@ -57,7 +57,7 @@ namespace NakedFramework.Core.Component {
         }
 
         private object CreateObject(ITypeSpec spec) {
-            var type = NakedObjects.TypeUtils.GetType(spec.FullName);
+            var type = TypeUtils.GetType(spec.FullName);
             return spec.IsViewModel || spec is IServiceSpec || spec.ContainsFacet<INotPersistedFacet>() ? CreateNotPersistedObject(type, spec is IServiceSpec) : objectPersistor.CreateObject(spec);
         }
 

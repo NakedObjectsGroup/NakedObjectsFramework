@@ -83,7 +83,7 @@ namespace NakedFramework.Core.Adapter {
             var list = new List<object>();
             var count = GetNextInt();
             var type = GetNextString();
-            instanceType = NakedObjects.TypeUtils.GetType(type);
+            instanceType = TypeUtils.GetType(type);
 
             for (var i = 0; i < count; i++) {
                 list.Add(GetNextObject());
@@ -96,7 +96,7 @@ namespace NakedFramework.Core.Adapter {
             var list = new List<IEncodedToStrings>();
             var count = GetNextInt();
             var type = GetNextString();
-            instanceType = NakedObjects.TypeUtils.GetType(type);
+            instanceType = TypeUtils.GetType(type);
 
             for (var i = 0; i < count; i++) {
                 list.Add(GetNextEncodedToStrings());
@@ -114,7 +114,7 @@ namespace NakedFramework.Core.Adapter {
                 return null;
             }
 
-            var objectType = NakedObjects.TypeUtils.GetType(type);
+            var objectType = TypeUtils.GetType(type);
             if (objectType == null) {
                 throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
@@ -159,7 +159,7 @@ namespace NakedFramework.Core.Adapter {
                 return null;
             }
 
-            var objectType = NakedObjects.TypeUtils.GetType(type);
+            var objectType = TypeUtils.GetType(type);
             if (objectType == null) {
                 throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
@@ -182,7 +182,7 @@ namespace NakedFramework.Core.Adapter {
                 return null;
             }
 
-            var objectType = NakedObjects.TypeUtils.GetType(type);
+            var objectType = TypeUtils.GetType(type);
             if (objectType == null) {
                 throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }

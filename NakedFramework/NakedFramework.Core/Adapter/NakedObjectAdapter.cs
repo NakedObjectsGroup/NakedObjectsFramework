@@ -94,7 +94,7 @@ namespace NakedFramework.Core.Adapter {
                 str.Append("Type", spec.FullName);
             }
 
-            if (Object != null && NakedObjects.TypeUtils.IsProxy(Object.GetType())) {
+            if (Object != null && TypeUtils.IsProxy(Object.GetType())) {
                 str.Append("proxy", Object.GetType().FullName);
             }
             else {

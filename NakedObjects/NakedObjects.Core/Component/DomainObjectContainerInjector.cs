@@ -11,11 +11,10 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Container;
 using NakedFramework.Core.Error;
-using NakedObjects;
+using NakedObjects.Core.Container;
 
-namespace NakedFramework.Core.Component {
+namespace NakedObjects.Core.Component {
     public sealed class DomainObjectContainerInjector : IDomainObjectInjector {
         private readonly ILoggerFactory loggerFactory;
         private readonly List<Type> serviceTypes;

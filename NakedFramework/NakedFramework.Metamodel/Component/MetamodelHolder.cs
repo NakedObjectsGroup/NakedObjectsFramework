@@ -26,7 +26,7 @@ namespace NakedFramework.Metamodel.Component {
 
         private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
             var key = TypeKeyUtils.GetKeyForType(type);
-            NakedObjects.TypeUtils.GetType(type.FullName); // This should ensure type is cached 
+            TypeUtils.GetType(type.FullName); // This should ensure type is cached 
             return cache.GetSpecification(key);
         }
 
@@ -53,7 +53,7 @@ namespace NakedFramework.Metamodel.Component {
         }
 
         public ITypeSpecImmutable GetSpecification(string name) {
-            var type = NakedObjects.TypeUtils.GetType(name);
+            var type = TypeUtils.GetType(name);
             return GetSpecification(type);
         }
 

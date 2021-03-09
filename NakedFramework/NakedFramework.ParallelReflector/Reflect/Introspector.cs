@@ -55,7 +55,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
         /// </summary>
         public string ClassName => IntrospectedType.Name;
 
-        public string FullName => NakedObjects.TypeUtils.GetProxiedTypeFullName(SpecificationType);
+        public string FullName => TypeUtils.GetProxiedTypeFullName(SpecificationType);
 
         public string ShortName => TypeNameUtils.GetShortName(SpecificationType.Name);
 
@@ -69,7 +69,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
         public ITypeSpecBuilder Superclass { get; set; }
 
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!NakedObjects.TypeUtils.IsPublic(typeToIntrospect)) {
+            if (!TypeUtils.IsPublic(typeToIntrospect)) {
                 throw new ReflectionException(string.Format(NakedObjects.Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect));
             }
 
@@ -315,7 +315,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             public void RemoveMethod(MethodInfo methodToRemove) {
                 for (var i = 0; i < methods.Length; i++) {
                     if (methods[i] != null) {
-                        if (NakedObjects.TypeUtils.MemberInfoEquals(methods[i], methodToRemove)) {
+                        if (TypeUtils.MemberInfoEquals(methods[i], methodToRemove)) {
                             methods[i] = null;
                         }
                     }
@@ -325,7 +325,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             public void RemoveMethods(IList<MethodInfo> methodList) {
                 for (var i = 0; i < methods.Length; i++) {
                     if (methods[i] != null) {
-                        if (methodList.Any(methodToRemove => NakedObjects.TypeUtils.MemberInfoEquals(methods[i], methodToRemove))) {
+                        if (methodList.Any(methodToRemove => TypeUtils.MemberInfoEquals(methods[i], methodToRemove))) {
                             methods[i] = null;
                         }
                     }
