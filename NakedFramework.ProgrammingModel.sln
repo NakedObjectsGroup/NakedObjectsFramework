@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.ProgrammingModel", "Programming Model\NakedFramework\NakedFramework.ProgrammingModel\NakedFramework.ProgrammingModel.csproj", "{33B82BFA-6571-47A1-8C53-A69DA71F5D2E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.ProgrammingModel.Package", "Programming Model\NakedFramework\NakedFramework.ProgrammingModel.package\NakedFramework.ProgrammingModel.Package.csproj", "{0BFFCE35-0037-402F-81F0-0C6D7F8EF38C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Types", "Programming Model\NakedFramework\NakedFramework.Types\NakedFramework.Types.csproj", "{DF343ECB-B986-498D-A8EE-F16123B7299B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.ProgrammingModel", "Programming Model\NakedFramework\NakedFramework.ProgrammingModel\NakedFramework.ProgrammingModel.csproj", "{AF971EBB-4613-4419-B65F-6E197E375D7C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Types", "Programming Model\NakedFramework\NakedFramework.Types\NakedFramework.Types.csproj", "{AF918615-D0F7-4D07-B9E5-577E8E2707A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,16 +15,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{33B82BFA-6571-47A1-8C53-A69DA71F5D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33B82BFA-6571-47A1-8C53-A69DA71F5D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33B82BFA-6571-47A1-8C53-A69DA71F5D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33B82BFA-6571-47A1-8C53-A69DA71F5D2E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0BFFCE35-0037-402F-81F0-0C6D7F8EF38C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0BFFCE35-0037-402F-81F0-0C6D7F8EF38C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF343ECB-B986-498D-A8EE-F16123B7299B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF343ECB-B986-498D-A8EE-F16123B7299B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF343ECB-B986-498D-A8EE-F16123B7299B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF343ECB-B986-498D-A8EE-F16123B7299B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF971EBB-4613-4419-B65F-6E197E375D7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF971EBB-4613-4419-B65F-6E197E375D7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF971EBB-4613-4419-B65F-6E197E375D7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF971EBB-4613-4419-B65F-6E197E375D7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF918615-D0F7-4D07-B9E5-577E8E2707A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF918615-D0F7-4D07-B9E5-577E8E2707A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF918615-D0F7-4D07-B9E5-577E8E2707A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF918615-D0F7-4D07-B9E5-577E8E2707A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
