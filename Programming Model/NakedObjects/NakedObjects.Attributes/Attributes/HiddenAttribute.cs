@@ -10,16 +10,9 @@ using NakedFramework;
 
 namespace NakedObjects {
     /// <summary>
-    ///     Indicates that the member (property, collection or action) to which it is applied should never be
-    ///     visible to the user
+    ///     Specifies that a public property, type, or action is never displayed to the user
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
-    public class HiddenAttribute : Attribute {
-        public HiddenAttribute(WhenTo w) => Value = w;
-
-        //Equivalent to specifying WhenTo.Always
-        public HiddenAttribute() : this(WhenTo.Always) { }
-
-        public WhenTo Value { get; }
+    public class HiddenAttribute : AbstractHiddenAttribute {
+        public HiddenAttribute(WhenTo w) : base(w) { }
     }
 }

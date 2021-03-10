@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework;
 
 namespace NakedObjects {
     /// <summary>
@@ -20,6 +21,5 @@ namespace NakedObjects {
     ///         is not specified).
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-    public class BoundedAttribute : Attribute { }
+    public class BoundedAttribute : AbstractBoundedAttribute { }
 }

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework;
 
 namespace NakedFunctions {
     /// <summary>
@@ -18,6 +19,5 @@ namespace NakedFunctions {
     ///     fluent data mapping API) - but these are two separate checks, and both are typically .
     ///     necessary in a multi-user system.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class VersionedAttribute : Attribute { }
+    public class VersionedAttribute : AbstractVersionedAttribute { }
 }

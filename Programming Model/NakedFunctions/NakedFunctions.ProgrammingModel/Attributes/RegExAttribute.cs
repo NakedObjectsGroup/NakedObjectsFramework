@@ -14,7 +14,8 @@ namespace NakedFunctions {
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public class RegExAttribute : Attribute {
-        public RegExAttribute(string validation, bool caseSensitive = false) {
+        public RegExAttribute(string validation, bool caseSensitive = false)
+        {
             CaseSensitive = caseSensitive;
             Validation = validation;
         }
