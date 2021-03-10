@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 
 namespace NakedObjects {
     /// <summary>
@@ -30,9 +29,16 @@ namespace NakedObjects {
     ///     </para>
     /// </remarks>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class RegExAttribute : AbstractRegExAttribute {
+    public class RegExAttribute : Attribute {
+        public RegExAttribute() {
+            CaseSensitive = false;
+            Format = "";
+        }
 
-        public RegExAttribute(string validation, bool caseSensitive = false) : base(validation, caseSensitive) { }
+        /// <summary>
+        ///     Validation regular expression string a match is considered success.
+        /// </summary>
+        public string Validation { get; set; }
 
         /// <summary>
         ///     Message to display if the validation fails
@@ -46,5 +52,10 @@ namespace NakedObjects {
         ///     http://msdn.microsoft.com/en-us/library/ewy2t5e0.aspx"/>
         /// </para>
         public string Format { get; set; }
+
+        /// <summary>
+        ///     Case sensitivity - defaults to false (non-sensitive)
+        /// </summary>
+        public bool CaseSensitive { get; set; }
     }
 }

@@ -18,11 +18,11 @@ namespace NakedFramework {
         /// <summary>
         ///     Validation regular expression string a match is considered success.
         /// </summary>
-        public string Validation { get; set; }
+        public string Validation { get; }
 
         /// <summary>
         ///     Case sensitivity - defaults to false (non-sensitive)
         /// </summary>
-        public bool CaseSensitive { get; set; }
+        public bool CaseSensitive { get; }
     }
 }
