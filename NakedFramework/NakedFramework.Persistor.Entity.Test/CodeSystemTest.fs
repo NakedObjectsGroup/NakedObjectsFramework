@@ -22,6 +22,7 @@ open TestCodeOnly
 open Microsoft.Extensions.Configuration
 open NakedFramework.Xat.TestCase
 open NakedFramework.Core.Error
+open NakedFramework.DependencyInjection.Extensions
 
 [<TestFixture>]
 type CodeSystemTests() = 
@@ -32,6 +33,8 @@ type CodeSystemTests() =
         
 
     override x.Services =  [| typeof<SimpleRepository<Person>> |]
+
+    override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ());
 
     override x.ObjectTypes = [| typeof<Address>;
                                 typeof<Category>;

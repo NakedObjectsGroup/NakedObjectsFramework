@@ -19,17 +19,13 @@ open SystemTestCode
 open TestCode
 open Microsoft.Extensions.Configuration
 open NakedFramework.Xat.TestCase
+open NakedFramework.DependencyInjection.Extensions
 
 [<TestFixture>]
 type ModelSystemTests() = 
     inherit AcceptanceTestCase()
-    
-    //override x.Persistor = 
-    //    let config = new EntityObjectStoreConfiguration()
-    //    config.EnforceProxies <- false                      
-    //    let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
-    //    config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-    //    config
+
+    override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ());
 
     override x.EnforceProxies = false
 

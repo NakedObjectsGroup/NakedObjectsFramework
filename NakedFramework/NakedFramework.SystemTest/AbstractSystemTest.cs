@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using NakedFramework;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestCase;
 using NUnit.Framework;
@@ -33,6 +34,8 @@ namespace NakedObjects.SystemTest {
         where TContext : DbContext {
 
         protected override bool EnforceProxies => false;
+
+        protected override Action<NakedCoreOptions> AddNakedFunctions => builder => { };
 
         protected override Func<IConfiguration, DbContext>[] ContextInstallers => 
             new Func<IConfiguration, DbContext>[] { config => Activator.CreateInstance<TContext>() };

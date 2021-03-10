@@ -38,7 +38,6 @@ namespace NakedFramework.DependencyInjection.Configuration {
         public static void RegisterCoreScopedTypes(IServiceCollection services) {
             services.AddScoped<INakedObjectAdapterMap, NakedObjectAdapterHashMap>();
             services.AddScoped<IIdentityAdapterMap, IdentityAdapterHashMap>();
-            services.AddScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
             services.AddScoped<SpecFactory, SpecFactory>();
             services.AddScoped<IMetamodelManager, MetamodelManager>();
             services.AddScoped<IPersistAlgorithm, FlatPersistAlgorithm>();

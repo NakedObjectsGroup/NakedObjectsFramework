@@ -21,6 +21,7 @@ open TestCode
 open TestData
 open Microsoft.Extensions.Configuration
 open NakedFramework.Xat.TestCase
+open NakedFramework.DependencyInjection.Extensions
 
 let assemblyName = "NakedFramework.Persistor.Test.Data"
 
@@ -127,6 +128,8 @@ type EntityTestSuite() =
     inherit AcceptanceTestCase()
 
     override x.EnforceProxies = false
+
+    override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ());
 
     override x.ContextInstallers = 
         [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new TestDataContext(csTDCO) :> Data.Entity.DbContext) |]

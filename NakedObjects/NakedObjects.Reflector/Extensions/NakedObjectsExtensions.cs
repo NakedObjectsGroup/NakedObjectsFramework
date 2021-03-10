@@ -12,6 +12,7 @@ using NakedFramework.Core.Component;
 using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.ParallelReflector.FacetFactory;
+using NakedObjects.Core.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.Reflect;
@@ -36,6 +37,8 @@ namespace NakedObjects.Reflector.Extensions {
             coreOptions.Services.AddSingleton<IReflector, ObjectReflector>();
             coreOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
             coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.Services));
+
+            coreOptions.Services.AddScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
         }
     }
 }

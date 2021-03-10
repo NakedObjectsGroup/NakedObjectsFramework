@@ -22,6 +22,7 @@ open Microsoft.Extensions.Configuration
 open NakedFramework.Xat.TestCase
 open NakedFramework.Snapshot.Xml.Utility
 open NakedFramework.Snapshot.Xml.Service
+open NakedFramework.DependencyInjection.Extensions
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"
@@ -63,6 +64,8 @@ type DomainTests() =
         inherit AcceptanceTestCase()
         
         override x.EnforceProxies = false
+
+        override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ());
         
         override x.ContextInstallers = 
             [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new TestObjectContext(cs) :> Data.Entity.DbContext) |]

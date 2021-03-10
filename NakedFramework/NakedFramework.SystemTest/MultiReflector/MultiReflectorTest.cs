@@ -8,6 +8,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Services;
 using NUnit.Framework;
 
@@ -40,6 +42,8 @@ namespace NakedObjects.SystemTest.MultiReflector {
             CleanupNakedObjectsFramework(this);
             FooContext.Delete();
         }
+
+        protected override Action<NakedCoreOptions> AddNakedFunctions => builder => builder.AddNakedFunctions(NakedFunctionsOptions);
 
         protected override Type[] ObjectTypes => new[] {typeof(Foo)};
 

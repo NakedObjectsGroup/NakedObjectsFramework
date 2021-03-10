@@ -16,7 +16,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Xat.TestCase;
+using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Services;
 using NUnit.Framework;
 using AdapterUtils = NakedFramework.Core.Util.AdapterUtils;
@@ -107,7 +109,9 @@ namespace NakedObjects.Core.Test.Adapter {
                 }
             };
 
-        #region Setup/Teardown
+        protected override Action<NakedCoreOptions> AddNakedFunctions => builder => { };
+
+            #region Setup/Teardown
 
         [SetUp]
         public void Setup() {

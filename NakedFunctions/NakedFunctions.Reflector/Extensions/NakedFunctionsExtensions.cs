@@ -48,6 +48,8 @@ namespace NakedFunctions.Reflector.Extensions {
             coreOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
             coreOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
             coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
+
+            coreOptions.Services.AddScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
         }
 
         public static void RegisterWellKnownServices(IServiceCollection services) {

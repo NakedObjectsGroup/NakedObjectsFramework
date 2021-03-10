@@ -27,6 +27,7 @@ open Microsoft.Extensions.Configuration
 open NakedFramework
 open NakedFramework.Xat.TestCase
 open NakedFramework.Facade.Utility
+open NakedFramework.DependencyInjection.Extensions
 
 type NullStringHasher() = 
     interface IStringHasher with
@@ -39,6 +40,8 @@ type Tests() =
     class
         inherit AcceptanceTestCase()
         
+        override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ());
+
         override x.ObjectTypes = 
             [| typeof<Immutable>
                typeof<WithActionViewModel>
