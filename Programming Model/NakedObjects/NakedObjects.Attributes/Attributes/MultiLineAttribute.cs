@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
 using System;
 
 namespace NakedObjects {
@@ -14,11 +13,19 @@ namespace NakedObjects {
     ///     default number of lines and width,
     ///     which may be used by the display.
     /// </summary>
-    public class MultiLineAttribute : AbstractMultiLineAttribute {
-        public MultiLineAttribute() : base() { }
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+    public class MultiLineAttribute : Attribute {
+        public MultiLineAttribute() : this(6, 0) { }
 
-        public MultiLineAttribute(int numberOfLines) : base(numberOfLines) { }
+        public MultiLineAttribute(int numberOfLines) : this(numberOfLines, 0) { }
 
-        public MultiLineAttribute(int numberOfLines, int width) : base(numberOfLines, width) { }
+        public MultiLineAttribute(int numberOfLines, int width) {
+            NumberOfLines = numberOfLines;
+            Width = width;
+        }
+
+        public int NumberOfLines { get; set; }
+
+        public int Width { get; set; }
     }
 }

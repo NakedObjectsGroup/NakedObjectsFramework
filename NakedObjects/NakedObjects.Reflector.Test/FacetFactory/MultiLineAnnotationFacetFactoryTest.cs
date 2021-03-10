@@ -87,6 +87,20 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
+        public void TestMultiLineAnnotationPickedUpOnClass() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            var facet = Specification.GetFacet(typeof(IMultiLineFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is MultiLineFacetAnnotation);
+            var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
+            Assert.AreEqual(3, multiLineFacetAnnotation.NumberOfLines);
+            Assert.AreEqual(9, multiLineFacetAnnotation.Width);
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
         public void TestMultiLineAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
@@ -114,6 +128,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.AreEqual(1, multiLineFacetAnnotation.NumberOfLines);
             Assert.IsNotNull(metamodel);
         }
+
+        #region Nested type: Customer
+
+        [MultiLine(NumberOfLines = 3, Width = 9)]
+        private class Customer { }
+
+        #endregion
 
         #region Nested type: Customer1
 

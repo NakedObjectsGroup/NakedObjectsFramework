@@ -10,9 +10,6 @@ using System;
 namespace NakedFramework {
 
     public abstract class AbstractRegExAttribute : Attribute {
-
-        public AbstractRegExAttribute() { }
-
         public AbstractRegExAttribute(string validation, bool caseSensitive = false) {
             CaseSensitive = caseSensitive;
             Validation = validation;
@@ -21,11 +18,11 @@ namespace NakedFramework {
         /// <summary>
         ///     Validation regular expression string a match is considered success.
         /// </summary>
-        public virtual string Validation { get; }
+        public string Validation { get; }
 
         /// <summary>
         ///     Case sensitivity - defaults to false (non-sensitive)
         /// </summary>
-        public virtual bool CaseSensitive { get; }
+        public bool CaseSensitive { get; }
     }
 }
