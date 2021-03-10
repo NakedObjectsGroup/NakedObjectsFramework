@@ -42,7 +42,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestMultiLineAnnotationDefaults() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification, metamodel);
+
+            var property = FindProperty(typeof(Customer3), "FirstName");
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IMultiLineFacet));
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(6, multiLineFacetAnnotation.NumberOfLines);
@@ -119,7 +121,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         private class Customer1 {
             [MultiLine(NumberOfLines = 12, Width = 36)]
-
             public string FirstName => null;
         }
 
@@ -137,8 +138,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         #region Nested type: Customer3
 
-        [MultiLine]
-        private class Customer3 { }
+        private class Customer3
+        {
+            [MultiLine()]
+            public string FirstName => null;
+        }
 
         #endregion
 
