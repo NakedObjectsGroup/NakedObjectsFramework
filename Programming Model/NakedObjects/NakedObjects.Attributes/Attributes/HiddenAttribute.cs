@@ -13,6 +13,7 @@ namespace NakedObjects {
     ///     Specifies that a public property, type, or action is never displayed to the user
     /// </summary>
     public class HiddenAttribute : AbstractHiddenAttribute {
+        public HiddenAttribute() : base() { }
         public HiddenAttribute(WhenTo w) : base(w) { }
     }
 }
