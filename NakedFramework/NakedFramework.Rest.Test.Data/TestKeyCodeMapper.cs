@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using NakedObjects.Services;
+using NakedFramework.Architecture.Component;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

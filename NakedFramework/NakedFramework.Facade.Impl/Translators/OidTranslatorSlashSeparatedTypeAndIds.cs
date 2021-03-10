@@ -7,19 +7,24 @@
 
 using System;
 using System.Linq;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Facade.Impl.Impl;
-using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
-using NakedObjects.Services;
 
 namespace NakedFramework.Facade.Impl.Translators {
     public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
         private readonly INakedObjectsFramework framework;
+        private readonly ITypeCodeMapper typeCodeMapper;
+        private readonly IKeyCodeMapper keyCodeMapper;
 
-        public OidTranslatorSlashSeparatedTypeAndIds(INakedObjectsFramework framework) => this.framework = framework;
+        public OidTranslatorSlashSeparatedTypeAndIds(INakedObjectsFramework framework, ITypeCodeMapper typeCodeMapper, IKeyCodeMapper keyCodeMapper) {
+            this.framework = framework;
+            this.typeCodeMapper = typeCodeMapper;
+            this.keyCodeMapper = keyCodeMapper;
+        }
 
         private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
 
@@ -50,18 +55,10 @@ namespace NakedFramework.Facade.Impl.Translators {
                 keys = keyPropertyInfo.Select(pi => KeyRepresentation(pi.GetValue(nakedObjectForKey.Object, null))).ToArray();
             }
 
-            return GetKeyCodeMapper().CodeFromKey(keys, nakedObjectForKey.Object.GetType());
+            return keyCodeMapper.CodeFromKey(keys, nakedObjectForKey.Object.GetType());
         }
 
-        private ITypeCodeMapper GetTypeCodeMapper() =>
-            (ITypeCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
-            ?? new DefaultTypeCodeMapper();
-
-        private IKeyCodeMapper GetKeyCodeMapper() =>
-            (IKeyCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
-            ?? new DefaultKeyCodeMapper();
-
-        private string GetCode(Type type) => GetTypeCodeMapper().CodeFromType(type);
+        private string GetCode(Type type) => typeCodeMapper.CodeFromType(type);
 
         #region IOidTranslator Members
 

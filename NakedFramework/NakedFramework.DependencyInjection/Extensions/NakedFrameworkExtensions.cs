@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
+using NakedFramework.Core.Component;
 using NakedFramework.Core.Configuration;
 using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.Facade.Impl.Impl;
@@ -67,6 +68,8 @@ namespace NakedFramework.DependencyInjection.Extensions {
             services.AddSingleton<IReflector, SystemTypeReflector>();
 
             // frameworkFacade
+            services.AddTransient<ITypeCodeMapper, DefaultTypeCodeMapper>();
+            services.AddTransient<IKeyCodeMapper, DefaultKeyCodeMapper>();
             services.AddTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
             services.AddTransient<IOidStrategy, EntityOidStrategy>();
             services.AddTransient<IStringHasher, InvariantStringHasher>();

@@ -10,9 +10,6 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Translation {
     public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {
-        static OidTranslationSlashSeparatedTypeAndIds() =>
-            // default 
-            KeySeparator = "--";
 
         // when using this ctor be aware of encoded values that might include a "/"
         public OidTranslationSlashSeparatedTypeAndIds(string id) {
@@ -25,8 +22,6 @@ namespace NakedFramework.Facade.Translation {
             DomainType = domainType;
             InstanceId = instanceId;
         }
-
-        public static string KeySeparator { get; }
 
         public override string ToString() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "-" + InstanceId);
 

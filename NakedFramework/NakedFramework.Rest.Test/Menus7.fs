@@ -19,13 +19,11 @@ let internal getExpected() =
     let sName1 = "RestDataRepository"
     let sName2 = "WithActionService"
     let sName3 = "ContributorService"
-    let sName4 = "TestTypeCodeMapper"
-    let sName5 = "TestKeyCodeMapper"
+ 
     let srvRel1 = RelValues.Menu + makeParm RelParamValues.MenuId sName1
     let srvRel2 = RelValues.Menu + makeParm RelParamValues.MenuId sName2
     let srvRel3 = RelValues.Menu + makeParm RelParamValues.MenuId sName3
-    let srvRel4 = RelValues.Menu + makeParm RelParamValues.MenuId sName4
-    let srvRel5 = RelValues.Menu + makeParm RelParamValues.MenuId sName5
+  
     
     let simpleLinks = 
         TArray([ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self SegmentValues.Menus RepresentationTypes.List "" (ttc "System.Object") true)
@@ -58,15 +56,7 @@ let internal getExpected() =
                
                TObjectJson
                    (TProperty(JsonPropertyNames.Title, TObjectVal("Contributor Service")) 
-                    :: makeGetLinkProp srvRel3 (sprintf "menus/%s" sName3) RepresentationTypes.Menu "") 
-
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Test Type Code Mapper")) 
-                    :: makeGetLinkProp srvRel4 (sprintf "menus/%s" sName4) RepresentationTypes.Menu "") 
-
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Test Key Code Mapper")) 
-                    :: makeGetLinkProp srvRel5 (sprintf "menus/%s" sName5) RepresentationTypes.Menu "") ])
+                    :: makeGetLinkProp srvRel3 (sprintf "menus/%s" sName3) RepresentationTypes.Menu "")  ])
     
     let simpleExpected = 
         [ TProperty(JsonPropertyNames.Links, simpleLinks)

@@ -27,6 +27,7 @@ open Microsoft.Extensions.Configuration
 open NakedFramework
 open NakedFramework.Xat.TestCase
 open NakedFramework.Facade.Utility
+open NakedFramework.Architecture.Component
 
 type NullStringHasher() = 
     interface IStringHasher with
@@ -76,17 +77,13 @@ type Tests() =
         override x.Services = 
            [| typeof<RestDataRepository>
               typeof<WithActionService>
-              typeof<ContributorService>
-              typeof<TestTypeCodeMapper>
-              typeof<TestKeyCodeMapper> |]
+              typeof<ContributorService> |]
 
         override x.MainMenus (factory : IMenuFactory)  = 
                let menu1 = factory.NewMenu<RestDataRepository>(true)
                let menu2 = factory.NewMenu<WithActionService>(true)
                let menu3 = factory.NewMenu<ContributorService>(true)
-               let menu4 = factory.NewMenu<TestTypeCodeMapper>(true)
-               let menu5 = factory.NewMenu<TestKeyCodeMapper>(true)
-               [| menu1; menu2; menu3; menu4; menu5 |]
+               [| menu1; menu2; menu3 |]
 
         override x.EnforceProxies = false
         
@@ -97,6 +94,9 @@ type Tests() =
         override x.RegisterTypes(services) =
           base.RegisterTypes(services)
           services.AddTransient<RestfulObjectsController, RestfulObjectsController>() |> ignore
+          services.AddTransient<ITypeCodeMapper, TestTypeCodeMapper>() |> ignore
+          services.AddTransient<IKeyCodeMapper, TestKeyCodeMapper>() |> ignore
+
           services.AddMvc(fun (options) -> options.EnableEndpointRouting <- false)
                   .AddNewtonsoftJson(fun (options) -> options.SerializerSettings.DateTimeZoneHandling <- DateTimeZoneHandling.Utc)
                   |> ignore
