@@ -16,6 +16,7 @@ using NakedFramework.Persistor.Entity.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
+using RestfulObjects.Test.Data;
 
 namespace NakedObjects.Rest.Test.App {
     public class Startup {
@@ -48,6 +49,7 @@ namespace NakedObjects.Rest.Test.App {
                     options.ConcurrencyCheck = false;
                     options.NoValidate = true;
                 });
+                builder.Services.AddTransient<ITypeCodeMapper, TestTypeCodeMapper>();
             });
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
