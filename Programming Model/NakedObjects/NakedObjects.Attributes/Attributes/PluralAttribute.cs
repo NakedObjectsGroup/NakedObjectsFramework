@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework;
 using System;
 
 namespace NakedObjects {
@@ -22,9 +23,7 @@ namespace NakedObjects {
     ///     </para>
     /// </remarks>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
-    public class PluralAttribute : Attribute {
-        public PluralAttribute(string s) => Value = s;
-
-        public string Value { get; }
+    public class PluralAttribute : AbstractPluralAttribute {
+        public PluralAttribute(string s) : base(s) { }
     }
 }
