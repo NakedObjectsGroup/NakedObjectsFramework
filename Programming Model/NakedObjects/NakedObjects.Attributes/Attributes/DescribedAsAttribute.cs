@@ -6,13 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 
 namespace NakedObjects {
     /// <summary>
-    ///     Provides a user-oriented description for an item that might e.g. be displayed as a tooltip.
+    ///     Used to provide a short description of something that features on the user interface.
     /// </summary>
-    public class DescribedAsAttribute : AbstractDescribedAsAttribute {
-        public DescribedAsAttribute(string s) : base(s) { }
+    /// <remarks>
+    ///     <para>
+    ///         How this description is used will depend upon the viewing mechanism
+    ///         - but it may be thought of as being like a 'tool tip'. Descriptions may be provided for objects,
+    ///         members (properties, collections and actions), and for individual parameters within an action method.
+    ///         DescribedAs therefore works in a very similar manner to <see cref="NamedAttribute" />.
+    ///     </para>
+    ///     <para>
+    ///         Instead of this may use <see cref="System.ComponentModel.DescriptionAttribute" />
+    ///     </para>
+    /// </remarks>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+    public class DescribedAsAttribute : Attribute {
+        public DescribedAsAttribute(string s) => Value = s;
+
+        public string Value { get; }
     }
 }

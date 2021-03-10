@@ -19,6 +19,6 @@ namespace NakedObjects {
     ///         user execute that action unless values have been specified for each parameter.
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
     public class OptionallyAttribute : Attribute { }
 }
