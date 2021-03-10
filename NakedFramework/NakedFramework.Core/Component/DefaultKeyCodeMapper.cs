@@ -7,14 +7,13 @@
 
 using System;
 using System.Linq;
-using NakedFramework.Facade.Translation;
-using NakedObjects.Services;
+using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Facade.Impl.Utility {
+namespace NakedFramework.Core.Component {
     public class DefaultKeyCodeMapper : IKeyCodeMapper {
         private readonly string keySeparator;
 
-        public DefaultKeyCodeMapper() => keySeparator = OidTranslationSlashSeparatedTypeAndIds.KeySeparator;
+        public DefaultKeyCodeMapper() => keySeparator = "--";
 
         #region IKeyCodeMapper Members
 

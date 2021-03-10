@@ -6,16 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Services;
 
-namespace NakedFramework.Facade.Impl.Utility {
-    public class DefaultTypeCodeMapper : ITypeCodeMapper {
-        #region ITypeCodeMapper Members
+namespace NakedFramework.Architecture.Component {
+    /// <summary>
+    ///     Defines a service that can convert between a Type and a string code where you don't wish to use the fully-qualified
+    ///     type name as the string representation.
+    ///     Possible uses include:
+    ///     - To create compound keys for defining polymorphic associations
+    ///     - To create Oids for use in URLs
+    /// </summary>
+    public interface ITypeCodeMapper {
+        Type TypeFromCode(string code);
 
-        public Type TypeFromCode(string code) => Type.GetType(code) ?? TypeUtils.GetType(code);
-
-        public string CodeFromType(Type type) => type.FullName;
-
-        #endregion
+        string CodeFromType(Type type);
     }
 }

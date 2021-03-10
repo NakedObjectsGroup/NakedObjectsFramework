@@ -9,7 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework;
-using NakedObjects.Services;
+using NakedFramework.Architecture.Component;
+
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

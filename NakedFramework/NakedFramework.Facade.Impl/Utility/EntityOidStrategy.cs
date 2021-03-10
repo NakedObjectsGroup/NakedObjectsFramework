@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
@@ -18,15 +19,18 @@ using NakedFramework.Facade.Error;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
-using NakedObjects.Services;
 
 namespace NakedFramework.Facade.Impl.Utility {
     public class EntityOidStrategy : IOidStrategy {
         private readonly INakedObjectsFramework framework;
+        private readonly ITypeCodeMapper typeCodeMapper;
+        private readonly IKeyCodeMapper keyCodeMapper;
         private readonly ILogger<EntityOidStrategy> logger;
 
-        public EntityOidStrategy(INakedObjectsFramework framework, ILogger<EntityOidStrategy> logger) {
+        public EntityOidStrategy(INakedObjectsFramework framework, ITypeCodeMapper typeCodeMapper, IKeyCodeMapper keyCodeMapper, ILogger<EntityOidStrategy> logger) {
             this.framework = framework;
+            this.typeCodeMapper = typeCodeMapper;
+            this.keyCodeMapper = keyCodeMapper;
             this.logger = logger;
         }
 
@@ -111,19 +115,11 @@ namespace NakedFramework.Facade.Impl.Utility {
             }
         }
 
-        private Type GetType(string typeName) => GetTypeCodeMapper().TypeFromCode(typeName);
+        private Type GetType(string typeName) => typeCodeMapper.TypeFromCode(typeName);
 
-        private ITypeCodeMapper GetTypeCodeMapper() =>
-            (ITypeCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
-            ?? new DefaultTypeCodeMapper();
+        private string[] GetKeys(string instanceId, Type type) => keyCodeMapper.KeyFromCode(instanceId, type);
 
-        private IKeyCodeMapper GetKeyCodeMapper() =>
-            (IKeyCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
-            ?? new DefaultKeyCodeMapper();
-
-        private string[] GetKeys(string instanceId, Type type) => GetKeyCodeMapper().KeyFromCode(instanceId, type);
-
-        private string GetCode(Type type) => GetTypeCodeMapper().CodeFromType(type);
+        private string GetCode(Type type) => typeCodeMapper.CodeFromType(type);
 
         private Type ValidateServiceId(IOidTranslation objectId) => ValidateId(objectId, () => throw new ServiceResourceNotFoundNOSException($"{objectId}: Type not found"));
 

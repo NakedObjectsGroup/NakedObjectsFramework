@@ -19,13 +19,9 @@ let internal getExpected() =
     let sName1 = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let sName2 = ttc "RestfulObjects.Test.Data.WithActionService"
     let sName3 = ttc "RestfulObjects.Test.Data.ContributorService"
-    let sName4 = ttc "RestfulObjects.Test.Data.TestTypeCodeMapper"
-    let sName5 = ttc "RestfulObjects.Test.Data.TestKeyCodeMapper"
     let srvRel1 = RelValues.Service + makeParm RelParamValues.ServiceId sName1
     let srvRel2 = RelValues.Service + makeParm RelParamValues.ServiceId sName2
     let srvRel3 = RelValues.Service + makeParm RelParamValues.ServiceId sName3
-    let srvRel4 = RelValues.Service + makeParm RelParamValues.ServiceId sName4
-    let srvRel5 = RelValues.Service + makeParm RelParamValues.ServiceId sName5
     
     let simpleLinks = 
         TArray([ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self SegmentValues.Services RepresentationTypes.List "" (ttc "System.Object") true)
@@ -59,15 +55,7 @@ let internal getExpected() =
                
                TObjectJson
                    (TProperty(JsonPropertyNames.Title, TObjectVal("Contributor Service")) 
-                    :: makeGetLinkProp srvRel3 (sprintf "services/%s" sName3) RepresentationTypes.Object sName3) 
-
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Test Type Code Mapper")) 
-                    :: makeGetLinkProp srvRel4 (sprintf "services/%s" sName4) RepresentationTypes.Object sName4) 
-
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Test Key Code Mapper")) 
-                    :: makeGetLinkProp srvRel5 (sprintf "services/%s" sName5) RepresentationTypes.Object sName5) ])
+                    :: makeGetLinkProp srvRel3 (sprintf "services/%s" sName3) RepresentationTypes.Object sName3)  ])
    
     let simpleExpected = 
         [ TProperty(JsonPropertyNames.Links, simpleLinks)
