@@ -24,6 +24,7 @@ namespace AW.Types {
         }
 
         public virtual string ThumbnailPhotoFileName { get; init; }
+
         public virtual byte[] LargePhoto {
             get { return _LargePhoto; }
             set { _LargePhoto = value; }

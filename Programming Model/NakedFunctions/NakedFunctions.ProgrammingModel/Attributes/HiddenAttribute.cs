@@ -5,12 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework;
 using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     Specified that a property is never displayed to the user
+    ///     Specifies that a public property, type, or action is never displayed to the user
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class HiddenAttribute : Attribute { }
+    public class HiddenAttribute : AbstractHiddenAttribute { }
 }

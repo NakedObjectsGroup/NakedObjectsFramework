@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework;
 
 namespace NakedFunctions {
     /// <summary>
@@ -13,20 +14,7 @@ namespace NakedFunctions {
     ///     Optional second parameter may be set to true to enforce case sensitivity.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
-    public class RegExAttribute : Attribute {
-        public RegExAttribute(string validation, bool caseSensitive = false) {
-            CaseSensitive = caseSensitive;
-            Validation = validation;
-        }
-
-        /// <summary>
-        ///     Validation regular expression string a match is considered success.
-        /// </summary>
-        public string Validation { get; }
-
-        /// <summary>
-        ///     Case sensitivity - defaults to false (non-sensitive)
-        /// </summary>
-        public bool CaseSensitive { get; }
+    public class RegExAttribute : AbstractRegExAttribute {
+        public RegExAttribute(string validation, bool caseSensitive = false) : base(validation, caseSensitive) { }
     }
 }
