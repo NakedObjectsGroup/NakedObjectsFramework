@@ -16,6 +16,7 @@ namespace NakedFunctions {
     ///     form.
     /// </summary>
     public class MultiLineAttribute : AbstractMultiLineAttribute {
+        public MultiLineAttribute() : base() { }
 
         public MultiLineAttribute(int numberOfLines) : base(numberOfLines) { }
 
