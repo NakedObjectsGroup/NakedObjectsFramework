@@ -28,6 +28,7 @@ namespace NakedObjects.Reflector.Reflect {
                 typeof(ValidateObjectFacetFactory),
                 typeof(ComplexTypeAnnotationFacetFactory),
                 typeof(ViewModelFacetFactory),
+                typeof(RedirectedObjectFacetFactory),
                 typeof(BoundedAnnotationFacetFactory),
                 typeof(EnumFacetFactory),
                 typeof(ActionDefaultAnnotationFacetFactory),

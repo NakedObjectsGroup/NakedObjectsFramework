@@ -28,8 +28,8 @@ namespace NakedObjects.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (typeof(IViewModel).IsAssignableFrom(type)) {
                 IFacet facet;
-                var deriveMethod = type.GetMethod("DeriveKeys", new Type[] { });
-                var populateMethod = type.GetMethod("PopulateUsingKeys", new[] {typeof(string[])});
+                var deriveMethod = type.GetMethod(nameof(IViewModel.DeriveKeys), new Type[] { });
+                var populateMethod = type.GetMethod(nameof(IViewModel.PopulateUsingKeys), new[] {typeof(string[])});
 
                 var toRemove = new List<MethodInfo> {deriveMethod, populateMethod};
 
@@ -37,7 +37,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                     facet = new ViewModelEditFacetConvention(specification);
                 }
                 else if (typeof(IViewModelSwitchable).IsAssignableFrom(type)) {
-                    var isEditViewMethod = type.GetMethod("IsEditView");
+                    var isEditViewMethod = type.GetMethod(nameof(IViewModelSwitchable.IsEditView));
                     toRemove.Add(isEditViewMethod);
                     facet = new ViewModelSwitchableFacetConvention(specification);
                 }

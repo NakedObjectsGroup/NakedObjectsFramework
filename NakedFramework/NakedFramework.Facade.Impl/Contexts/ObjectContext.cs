@@ -7,11 +7,11 @@
 
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedObjects.Redirect;
 
 namespace NakedFramework.Facade.Impl.Contexts {
     public class ObjectContext : Context {
@@ -19,8 +19,8 @@ namespace NakedFramework.Facade.Impl.Contexts {
 
         public bool Mutated { get; set; }
 
-        public (string serverName, string oid)? Redirected => Target.Object is IRedirectedObject rdo ? (rdo.ServerName, rdo.Oid) : ((string ServerName, string Oid)?) null;
-
+        public (string serverName, string oid)? Redirected => Specification?.GetFacet<IRedirectedFacet>()?.GetRedirection(Target.Object);
+        
         public override string Id => Target.Oid.ToString();
 
         public override ITypeSpec Specification => Target.Spec;
