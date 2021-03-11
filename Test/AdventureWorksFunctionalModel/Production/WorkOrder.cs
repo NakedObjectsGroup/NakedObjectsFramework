@@ -57,7 +57,7 @@ namespace AW.Types
 
         [RenderEagerly]
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
-        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; init; } = new List<WorkOrderRouting>();
+        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; init; }
 
 
         // for testing 

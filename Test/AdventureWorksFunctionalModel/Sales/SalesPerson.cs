@@ -62,10 +62,10 @@ namespace AW.Types
         public virtual Guid rowguid { get; init; }
 
         [TableView(false, "QuotaDate", "SalesQuota")] //Column name deliberately duplicated to test that this is ignored
-        public virtual ICollection<SalesPersonQuotaHistory> QuotaHistory { get; init; } = new List<SalesPersonQuotaHistory>();
+        public virtual ICollection<SalesPersonQuotaHistory> QuotaHistory { get; init; }
 
         [TableView(false, "StartDate", "EndDate", "SalesTerritory")]
-        public virtual ICollection<SalesTerritoryHistory> TerritoryHistory { get; init; } = new List<SalesTerritoryHistory>();
+        public virtual ICollection<SalesTerritoryHistory> TerritoryHistory { get; init; }
   
         public override string ToString() => $"{EmployeeDetails}";
 

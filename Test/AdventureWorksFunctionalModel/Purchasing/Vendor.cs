@@ -43,25 +43,15 @@ namespace AW.Types {
         [Named("Product - Order Info")]
         [TableView(true)] //  Not obvious which of many possible fields should be shown here
         [AWNotCounted] //To test this capability
-        public virtual ICollection<ProductVendor> Products {get; init;} = new List<ProductVendor>();
-
-        //private ICollection<VendorAddress> _VendorAddress = new List<VendorAddress>();
+        public virtual ICollection<ProductVendor> Products { get; init; }
 
         //[RenderEagerly]
         //[TableView(true)] // TableView == ListView
-        //public virtual ICollection<VendorAddress> Addresses {
-        //    get { return _VendorAddress; }
-        //    set { _VendorAddress = value; }
-        //}
-
-        //private ICollection<VendorContact> _VendorContact = new List<VendorContact>();
+        //public virtual ICollection<VendorAddress> Addresses { get; init; }
 
         //[RenderEagerly]
         //[TableView(true)] // TableView == ListView
-        //public virtual ICollection<VendorContact> Contacts {
-        //    get { return _VendorContact; }
-        //    set { _VendorContact = value; }
-        //}
+        //public virtual ICollection<VendorContact> Contacts { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
