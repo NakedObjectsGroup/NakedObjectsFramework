@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Configuration;
 using NakedFramework.Core.Component;
 using NakedFramework.Core.Configuration;
 using NakedFramework.DependencyInjection.Configuration;
+using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Impl.Translators;
 using NakedFramework.Facade.Impl.Utility;
@@ -47,33 +48,33 @@ namespace NakedFramework.DependencyInjection.Extensions {
 
             if (options.AuthorizationConfiguration is not null) {
                 services.AddSingleton(options.AuthorizationConfiguration);
-                services.AddSingleton<IFacetDecorator, AuthorizationManager>();
+                services.AddDefaultSingleton<IFacetDecorator, AuthorizationManager>();
             }
 
             if (options.AuditConfiguration is not null) {
                 services.AddSingleton(options.AuditConfiguration);
-                services.AddSingleton<IFacetDecorator, AuditManager>();
+                services.AddDefaultSingleton<IFacetDecorator, AuditManager>();
             }
 
             if (options.ProfileConfiguration is not null) {
                 services.AddSingleton(options.ProfileConfiguration);
-                services.AddSingleton<IFacetDecorator, ProfileManager>();
+                services.AddDefaultSingleton<IFacetDecorator, ProfileManager>();
             }
 
             services.AddSingleton<ICoreConfiguration>(p => CoreConfig(options));
 
             services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(TypeFacetFactories.FacetFactories());
-            services.AddSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
-            services.AddSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
+            services.AddDefaultSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
+            services.AddDefaultSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
             services.AddSingleton<IReflector, SystemTypeReflector>();
 
             // frameworkFacade
-            services.AddTransient<ITypeCodeMapper, DefaultTypeCodeMapper>();
-            services.AddTransient<IKeyCodeMapper, DefaultKeyCodeMapper>();
-            services.AddTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
-            services.AddTransient<IOidStrategy, EntityOidStrategy>();
-            services.AddTransient<IStringHasher, InvariantStringHasher>();
-            services.AddTransient<IFrameworkFacade, FrameworkFacade>();
+            services.AddDefaultTransient<ITypeCodeMapper, DefaultTypeCodeMapper>();
+            services.AddDefaultTransient<IKeyCodeMapper, DefaultKeyCodeMapper>();
+            services.AddDefaultTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
+            services.AddDefaultTransient<IOidStrategy, EntityOidStrategy>();
+            services.AddDefaultTransient<IStringHasher, InvariantStringHasher>();
+            services.AddDefaultTransient<IFrameworkFacade, FrameworkFacade>();
 
             //Externals
             services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);

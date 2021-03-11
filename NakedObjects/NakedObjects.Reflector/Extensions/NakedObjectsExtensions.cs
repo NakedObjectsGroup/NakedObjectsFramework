@@ -11,6 +11,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Component;
 using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedObjects.Core.Component;
 using NakedObjects.Reflector.Component;
@@ -28,17 +29,17 @@ namespace NakedObjects.Reflector.Extensions {
             var options = new NakedObjectsOptions();
             setupAction(options);
 
-            options.RegisterCustomTypes?.Invoke(coreOptions.Services);
-
             coreOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
-            coreOptions.Services.AddSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
-            coreOptions.Services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
+            coreOptions.Services.AddDefaultSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
+            coreOptions.Services.AddDefaultSingleton<ObjectClassStrategy, ObjectClassStrategy>();
 
             coreOptions.Services.AddSingleton<IReflector, ObjectReflector>();
             coreOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
             coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.Services));
 
-            coreOptions.Services.AddScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
+            coreOptions.Services.AddDefaultScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
+
+            options.RegisterCustomTypes?.Invoke(coreOptions.Services);
         }
     }
 }

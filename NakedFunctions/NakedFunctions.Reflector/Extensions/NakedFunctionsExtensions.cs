@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Configuration;
 using NakedFramework.Core.Component;
 using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.DependencyInjection.Utils;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Reflector.FacetFactory;
@@ -39,25 +40,25 @@ namespace NakedFunctions.Reflector.Extensions {
                 options.FunctionalTypes = options.FunctionalTypes.Append(typeof(IContext)).Append(typeof(FunctionalContext)).Distinct().ToArray();
             }
 
-            options.RegisterCustomTypes?.Invoke(coreOptions.Services);
-
             RegisterWellKnownServices(coreOptions.Services);
             coreOptions.Services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
-            coreOptions.Services.AddSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
-            coreOptions.Services.AddSingleton<FunctionClassStrategy, FunctionClassStrategy>();
+            coreOptions.Services.AddDefaultSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
+            coreOptions.Services.AddDefaultSingleton<FunctionClassStrategy, FunctionClassStrategy>();
             coreOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
             coreOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
             coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
 
-            coreOptions.Services.AddScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
+            coreOptions.Services.AddDefaultScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
+
+            options.RegisterCustomTypes?.Invoke(coreOptions.Services);
         }
 
         public static void RegisterWellKnownServices(IServiceCollection services) {
-            services.AddScoped<IAlert, Alert>();
-            services.AddScoped<IClock, Clock>();
-            services.AddScoped<IGuidGenerator, GuidGenerator>();
-            services.AddScoped<IPrincipalProvider, PrincipalProvider>();
-            services.AddScoped<IRandomSeedGenerator, RandomSeedGenerator>();
+            services.AddDefaultScoped<IAlert, Alert>();
+            services.AddDefaultScoped<IClock, Clock>();
+            services.AddDefaultScoped<IGuidGenerator, GuidGenerator>();
+            services.AddDefaultScoped<IPrincipalProvider, PrincipalProvider>();
+            services.AddDefaultScoped<IRandomSeedGenerator, RandomSeedGenerator>();
         }
     }
 }

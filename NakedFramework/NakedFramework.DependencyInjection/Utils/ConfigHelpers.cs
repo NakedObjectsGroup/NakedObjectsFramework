@@ -13,6 +13,34 @@ using NakedFramework.DependencyInjection.FacetFactory;
 
 namespace NakedFramework.DependencyInjection.Utils {
     public static class ConfigHelpers {
+        private static bool ServiceImplementationExists(this IServiceCollection services, Type tService) => services.Any(descriptor => descriptor.ServiceType == tService);
+
+        private static bool ServiceImplementationExists<TService>(this IServiceCollection services) => services.ServiceImplementationExists(typeof(TService));
+
+        public static void AddDefaultSingleton(this IServiceCollection services, Type tService, Type tImplementation) {
+            if (!services.ServiceImplementationExists(tService)) {
+                services.AddSingleton(tService, tImplementation);
+            }
+        }
+
+        public static void AddDefaultSingleton<TService, TImplementation>(this IServiceCollection services) where TService : class where TImplementation : class, TService {
+            if (!services.ServiceImplementationExists<TService>()) {
+                services.AddSingleton<TService, TImplementation>();
+            }
+        }
+
+        public static void AddDefaultScoped<TService, TImplementation>(this IServiceCollection services) where TService : class where TImplementation : class, TService {
+            if (!services.ServiceImplementationExists<TService>()) {
+                services.AddScoped<TService, TImplementation>();
+            }
+        }
+
+        public static void AddDefaultTransient<TService, TImplementation>(this IServiceCollection services) where TService : class where TImplementation : class, TService {
+            if (!services.ServiceImplementationExists<TService>()) {
+                services.AddScoped<TService, TImplementation>();
+            }
+        }
+
         public static void RegisterFacetFactory<T>(this IServiceCollection services, Type factory) where T : IFacetFactory {
             FacetFactoryTypesProvider.AddType(factory);
             services.AddSingleton(typeof(T), factory);
