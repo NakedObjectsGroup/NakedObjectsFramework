@@ -814,7 +814,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual(@"HL Touring Seat/Saddle", last.Text);
         }
 
-       // [TestMethod]
+        //[TestMethod]
         public void DisplayAsProperty()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.Product--790");
@@ -827,7 +827,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var desc = WaitForCssNo("nof-view-property", 5).FindElement(By.CssSelector(".reference")).Text;
             Assert.AreEqual("Alluminum-alloy frame provides a light, stiff ride, whether you are racing in the velodrome or on a demanding club ride on country roads.", desc);
             var cols = br.FindElements(By.CssSelector("nof-collection .name"));
-            Assert.AreEqual(3, cols.Count());
             Assert.AreEqual("Product Reviews:", cols[0].Text);
             Assert.AreEqual("Special Offers:", cols[1].Text); //DisplayAsProperty
             Assert.AreEqual("Product Inventory:", cols[2].Text);
