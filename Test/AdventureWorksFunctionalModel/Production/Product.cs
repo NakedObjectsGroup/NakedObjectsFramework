@@ -91,14 +91,14 @@ namespace AW.Types
         #region Visible Collections
         [MemberOrder(100)]
         [TableView(true, nameof(ProductReview.Rating), nameof(ProductReview.Comments))]
-        public virtual ICollection<ProductReview> ProductReviews { get; init; }
+        public virtual ICollection<ProductReview> ProductReviews { get; init; } = new List<ProductReview>();
 
         [MemberOrder(120), RenderEagerly, TableView(false,
     nameof(Types.ProductInventory.Quantity),
     nameof(Types.ProductInventory.Location),
     nameof(Types.ProductInventory.Shelf),
     nameof(Types.ProductInventory.Bin))]
-        public virtual ICollection<ProductInventory> ProductInventory { get; init; }
+        public virtual ICollection<ProductInventory> ProductInventory { get; init; } = new List<ProductInventory>();
         #endregion
 
         #region Hidden Properties & Collections
@@ -132,10 +132,10 @@ namespace AW.Types
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; }
+        public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
         
         [Hidden]
-        public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; }
+        public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; } = new List<SpecialOfferProduct>();
         #endregion
 
         public override string ToString()=> Name;

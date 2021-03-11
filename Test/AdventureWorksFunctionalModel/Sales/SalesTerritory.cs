@@ -48,7 +48,7 @@ namespace AW.Types
 		public virtual DateTime ModifiedDate { get; init; }
 
         [Named("States/Provinces covered"), TableView(true)] //Table View == List View
-        public virtual ICollection<StateProvince> StateProvince { get; init; }
+        public virtual ICollection<StateProvince> StateProvince { get; init; } = new List<StateProvince>();
 
         public override string ToString() => Name;
 

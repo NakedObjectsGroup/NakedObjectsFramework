@@ -20,7 +20,7 @@ namespace AW.Types {
         public virtual string Name { get; init; }
 
         [Named("Subcategories"), TableView(true)] //TableView == ListView ?
-        public virtual ICollection<ProductSubcategory> ProductSubcategory { get; init; }
+        public virtual ICollection<ProductSubcategory> ProductSubcategory { get; init; } = new List<ProductSubcategory>();
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
