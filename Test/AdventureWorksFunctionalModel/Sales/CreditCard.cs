@@ -10,8 +10,10 @@ using System.Collections.Generic;
 using NakedFunctions;
 using AW.Functions;
 
-namespace AW.Types {
-        public record CreditCard {
+namespace AW.Types
+{
+    public record CreditCard
+    {
         [Hidden]
         public virtual int CreditCardID { get; init; }
 
@@ -28,15 +30,14 @@ namespace AW.Types {
         public virtual short ExpYear { get; init; }
 
         [Named("Persons"), MemberOrder(5), TableView(false, nameof(PersonCreditCard.Person))]
-        public virtual ICollection<PersonCreditCard> PersonLinks { get; init; }  = new List<PersonCreditCard>();
+        public virtual ICollection<PersonCreditCard> PersonLinks { get; init; }
 
-        [MemberOrder(99)]
-        [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        [MemberOrder(99), Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => CreditCard_Functions.ObfuscatedNumber(this);
 
-		public override int GetHashCode() =>base.GetHashCode();
+        public override int GetHashCode() => base.GetHashCode();
 
         public virtual bool Equals(CreditCard other) => ReferenceEquals(this, other);
     }

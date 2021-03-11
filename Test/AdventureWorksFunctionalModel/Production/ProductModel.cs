@@ -35,14 +35,13 @@ namespace AW.Types
         public virtual string Instructions { get; init; }
 
         [TableView(true, "Name", "Number", "Color", "ProductInventory")]
-        public virtual ICollection<Product> ProductVariants { get; init; } = new List<Product>();
+        public virtual ICollection<Product> ProductVariants { get; init; }
 
         [Hidden]
-        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
+        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; }
 
         [Hidden]
-        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; } = new List<ProductModelProductDescriptionCulture>();
-
+        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }

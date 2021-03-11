@@ -43,7 +43,7 @@ namespace AW.Types {
         }
 
         [Hidden]
-        public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
+        public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; }
 
         [MemberOrder(99)]
         [Versioned]

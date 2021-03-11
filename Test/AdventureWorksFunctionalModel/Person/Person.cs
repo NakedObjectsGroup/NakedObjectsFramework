@@ -52,7 +52,7 @@ namespace AW.Types {
         [TableView(false,
                    nameof(PersonPhone.PhoneNumberType),
                    nameof(PersonPhone.PhoneNumber))]
-        public virtual ICollection<PersonPhone> PhoneNumbers { get; init; } = new List<PersonPhone>();
+        public virtual ICollection<PersonPhone> PhoneNumbers { get; init; }
 
         
         public virtual Password Password { get; init; }
