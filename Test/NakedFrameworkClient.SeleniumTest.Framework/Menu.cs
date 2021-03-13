@@ -11,7 +11,7 @@ namespace NakedFrameworkClient.TestFramework
 
         public ActionWithDialog GetActionWithDialog(string actionName) => throw new NotImplementedException();
 
-        public ActionWithoutDialog GetImmediateAction(string actionName) => throw new NotImplementedException();
+        public ActionWithoutDialog GetActionWithoutDialog(string actionName) => throw new NotImplementedException();
 
         public Menu GetSubMenu(string subMenuName) => throw new NotImplementedException();
   

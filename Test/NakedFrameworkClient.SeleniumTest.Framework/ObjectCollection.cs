@@ -17,17 +17,21 @@ namespace NakedFrameworkClient.TestFramework
 
         ObjectCollection AssertIsOpenAsList() => throw new NotImplementedException();
 
-        ObjectCollection ClickListIcon() => throw new NotImplementedException();
+        ObjectCollection ClickListView() => throw new NotImplementedException();
 
         ObjectCollection AssertIsOpenAsTable() => throw new NotImplementedException();
 
-        ObjectCollection ClickTableIcon() => throw new NotImplementedException();
+        ObjectCollection ClickTableView() => throw new NotImplementedException();
 
+        ObjectCollection AssertTableHeaderHasColumns(params string[] columns) => throw new NotImplementedException();
+
+        //Row number counts from zero
         public ObjectCollection CheckRow(int rowNumber) => throw new NotImplementedException();
 
-        public TableRow GetRowFromTable(int number) => throw new NotImplementedException();
+        //Row number counts from zero
+        public TableRow GetRowFromTable(int rowNumber) => throw new NotImplementedException();
 
-        public Reference GetRowFromList(int number) => throw new NotImplementedException();
-
+        //Row number counts from zero
+        public Reference GetRowFromList(int rowNumber) => throw new NotImplementedException();
     }
 }

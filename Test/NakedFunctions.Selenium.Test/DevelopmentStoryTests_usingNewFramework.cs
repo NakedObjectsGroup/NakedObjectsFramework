@@ -25,7 +25,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
         #region initialization
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
+        public static void InitialiseClass(TestContext context)
         {
             //FilePath(@"drivers.chromedriver.exe");
             GeminiTest.InitialiseClass(context);
@@ -121,41 +121,44 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void OverriddenPrincipalProviderService()
         {
-            Browser.Home().OpenMainMenu("Employees").GetImmediateAction("Me")
+            Browser.Home().OpenMainMenu("Employees").GetActionWithoutDialog("Me")
                 .ClickToViewObject().AssertTitleIs("Ken Sánchez");
         }
 
+        [TestMethod]
+        public void UseOfRandomSeedGenerator()
+        {
+            string prod1Title = Browser.Home().OpenMainMenu("Products")
+                .GetActionWithoutDialog("Random Product")
+                .ClickToViewObject()
+                .AssertHasType("Product")
+                .GetTitle();
+
+            string prod2Title = Browser.Home().OpenMainMenu("Products")
+              .GetActionWithoutDialog("Random Product")
+              .ClickToViewObject()
+              .AssertHasType("Product")
+              .GetTitle();
+
+            Assert.AreNotEqual(prod2Title, prod1Title);
+        }
+
         //[TestMethod]
-        //public void UseOfRandomSeedGenerator()
-        //{
-        //    Home();
-        //    OpenMainMenuAction("Products", "Random Product");
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    Assert.IsTrue(br.Url.Contains(".Product-"));
-        //    string product1Url = br.Url;
-        //    OpenMainMenuAction("Products", "Random Product");
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    Assert.IsTrue(br.Url.Contains(".Product-"));
-        //    Assert.AreNotEqual(product1Url, br.Url);
-        //}
+        public void ObjectContributedAction()
+        {
+            //Tests that an action (side effect free) can be associated with an object
+            Browser.GetObjectView("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open")
+                .AssertTitleIs("Mountain Tire Sale")
+                .OpenActions().GetActionWithoutDialog("List Associated Products")
+                .ClickToViewList()
+                .GetRowFromList(2)
+                .AssertTitleIs("LL Mountain Tire");
+        }
 
-        ////[TestMethod]
-        //public void ObjectContributedAction()
-        //{
-        //    //Tests that an action (side effect free) can be associated with an object
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open");
-        //    WaitForTitle("Mountain Tire Sale");
-        //    var action = GetObjectAction("List Associated Products");
-        //    RightClick(action);
-        //    WaitForView(Pane.Right, PaneType.List);
-        //    var product = WaitForCss("td label[for=\"item2-0\"]");
-        //    Assert.AreEqual("LL Mountain Tire", product.Text);
-        //}
-
-        ////[TestMethod]
+        //[TestMethod]
         //public void InformUserViaIAlertService()
         //{
-        //    //Corresponds to Story #201
+
         //    GeminiUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928");
         //    var title = WaitForCss("#pane2 .header .title");
         //    Assert.AreEqual("LL Mountain Tire", title.Text);
