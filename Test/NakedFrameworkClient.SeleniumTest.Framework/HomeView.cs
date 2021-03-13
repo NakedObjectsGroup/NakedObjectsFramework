@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace NakedFrameworkClient.SeleniumTestFramework
+namespace NakedFrameworkClient.TestFramework
 {
     public class HomeView : Element
     {

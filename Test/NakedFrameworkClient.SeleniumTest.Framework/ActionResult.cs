@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NakedFrameworkClient.SeleniumTestFramework
+namespace NakedFrameworkClient.TestFramework
 {
     public abstract class ActionResult : Element
     {

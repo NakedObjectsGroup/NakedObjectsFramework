@@ -7,7 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
-using NakedFrameworkClient.SeleniumTestFramework;
+using NakedFrameworkClient.TestFramework;
 using OpenQA.Selenium;
 using System;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 {
 
     [TestClass]
-    public class DevelopmentStoryTests2
+    public class DevelopmentStoryTests_usingNewFramework
     {
 
         protected Browser Browser = new Browser(TestConfig.BaseFunctionalUrl);

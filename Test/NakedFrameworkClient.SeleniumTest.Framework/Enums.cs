@@ -1,4 +1,4 @@
-﻿namespace NakedFrameworkClient.SeleniumTestFramework
+﻿namespace NakedFrameworkClient.TestFramework
 {
     public enum Pane
     {
