@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NakedFunctions.Selenium.Test.Framework
+namespace NakedFrameworkClient.SeleniumTestFramework
 {
     public class ReferenceInputField : InputField
     {
@@ -19,5 +19,9 @@ namespace NakedFunctions.Selenium.Test.Framework
         public override ReferenceInputField Clear()=> throw new NotImplementedException();
 
         public override ReferenceInputField Enter(string characters) => throw new NotImplementedException();
+
+        //Use this to simulate 'dropping' a reference (previously copied to clipboard).
+        public ReferenceInputField PasteReferenceFromClipboard() => throw new NotImplementedException();
+
     }
 }

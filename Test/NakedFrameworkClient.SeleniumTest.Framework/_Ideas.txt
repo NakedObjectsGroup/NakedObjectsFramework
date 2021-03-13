@@ -1,0 +1,11 @@
+﻿1. All 'actions' should know the expected resulting view(s) and should wait for view(s) of that type.  
+If the view(s) would be the same TYPE(s) as before, then it should wait for a change.
+Ideally, this can be done generically, by testing equality of view level web element.
+
+Might have to watch out for derived properties or collections where there is a delay. 
+
+Alternative is to have specific 'wait for change to' options e.g. title, property value. 
+
+2. All click actions should offer option to specify left/right, defaulting to left. 
+The returned view may therefore be left or right or single pane. (Probably need a Pane view type as
+superclass of ListView ObjectView HomeView Error etc -  there was an Enum in previous framework?)

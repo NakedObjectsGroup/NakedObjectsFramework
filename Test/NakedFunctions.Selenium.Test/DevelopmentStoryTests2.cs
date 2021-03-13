@@ -7,7 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
-using NakedFunctions.Selenium.Test.Framework;
+using NakedFrameworkClient.SeleniumTestFramework;
 using OpenQA.Selenium;
 using System;
 using System.Linq;
@@ -102,7 +102,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var dialog = Browser.Home().OpenMainMenu("Products").GetActionWithDialog("Find Product By Name")
                 .AssertIsEnabled().Open();
             dialog.GetField<ValueInputField>("Search String").Clear().Enter("handlebar tube");
-            dialog.ClickOK<ListView>().AssertTitleIs("Find Product By Name").GetRow(1).AssertTextIs("Handlebar Tube");
+            dialog.ClickOKToViewList().AssertTitleIs("Find Product By Name").GetRowFromList(1).AssertTitleIs("Handlebar Tube");
         }
 
         //[TestMethod]
@@ -111,18 +111,18 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var offer = Browser.GetObjectView("object?i1=View&o1=AW.Types.SpecialOffer--5").AssertTitleIs("Volume Discount 41+");
             var dialog = offer.OpenActions().GetActionWithDialog("Edit Description").Open();
             dialog.GetField<ValueInputField>("Description").Clear().Enter("Volume Discount 41 to 60").AssertNoValidationError();
-            dialog.AssertOKIsEnabled().ClickOK<ObjectView>();
-            dialog = offer.WaitForTitle("Volume Discount 41 to 60").OpenActions().GetActionWithDialog("Edit Description").Open();
+            offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
+            dialog = offer.AssertTitleIs("Volume Discount 41 to 60").OpenActions().GetActionWithDialog("Edit Description").Open();
             dialog.GetField<ValueInputField>("Description").Clear().Enter("Volume Discount 41+");
-            offer = dialog.AssertOKIsEnabled().ClickOK<ObjectView>();
-            offer.WaitForTitle("Volume Discount 41+");
+            offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
+            offer.AssertTitleIs("Volume Discount 41+");
         }
 
         //[TestMethod]
         public void OverriddenPrincipalProviderService()
         {
             Browser.Home().OpenMainMenu("Employees").GetImmediateAction("Me")
-                .Click<ObjectView>().AssertTitleIs("Ken Sánchez");
+                .ClickToViewObject().AssertTitleIs("Ken Sánchez");
         }
 
         //[TestMethod]

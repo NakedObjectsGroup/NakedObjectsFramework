@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFunctions.Selenium.Test.Framework
+namespace NakedFrameworkClient.SeleniumTestFramework
 {
     public class Browser
     {

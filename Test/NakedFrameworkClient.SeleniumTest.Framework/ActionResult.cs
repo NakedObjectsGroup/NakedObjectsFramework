@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NakedFunctions.Selenium.Test.Framework
+namespace NakedFrameworkClient.SeleniumTestFramework
 {
     public abstract class ActionResult : Element
     {
@@ -8,6 +8,6 @@ namespace NakedFunctions.Selenium.Test.Framework
 
         public Menu OpenActions() => throw new NotImplementedException();
 
-        public ActionResult WaitForTitle(string newDesc) => throw new NotImplementedException();
+        public virtual ActionResult ClickReload() => throw new NotImplementedException();
     }
 }
