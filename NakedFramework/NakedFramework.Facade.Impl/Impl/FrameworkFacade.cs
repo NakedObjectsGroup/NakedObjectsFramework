@@ -203,13 +203,13 @@ namespace NakedFramework.Facade.Impl.Impl {
                 throw new BadRequestNOSException();
             }
 
-            IEnumerable<IAssociationSpec> propertyQuery = ((IObjectSpec) nakedObject.Spec).Properties;
+            var propertyQuery = ((IObjectSpec) nakedObject.Spec).Properties.Where(p => p.Id == propertyName);
 
             if (onlyVisible) {
                 propertyQuery = propertyQuery.Where(p => p.IsVisible(nakedObject));
             }
 
-            var property = propertyQuery.SingleOrDefault(p => p.Id == propertyName);
+            var property = propertyQuery.SingleOrDefault();
 
             if (property == null) {
                 throw new PropertyResourceNotFoundNOSException(propertyName);
@@ -860,14 +860,10 @@ namespace NakedFramework.Facade.Impl.Impl {
                 throw new BadRequestNOSException();
             }
 
-            var actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
-            var action =
-                GetAction(actionName, nakedObject, actions) ??
-                GetActionFromElementSpec(actionName, nakedObject);
-
-            if (action == null) {
-                throw new ActionResourceNotFoundNOSException(actionName);
-            }
+            var action = nakedObject.Spec.GetActionLeafNodes().Where(p => p.Id == actionName).SingleOrDefault(p => p.IsVisible(nakedObject)) ??
+                         FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec) ??
+                         GetActionFromElementSpec(actionName, nakedObject) ??
+                         throw new ActionResourceNotFoundNOSException(actionName);
 
             return (action, FacadeUtils.GetOverloadedUId(action, nakedObject.Spec));
         }
@@ -881,15 +877,13 @@ namespace NakedFramework.Facade.Impl.Impl {
                 var elementSpec = Framework.MetamodelManager.GetSpecification(elementSpecImmut);
 
                 if (elementSpec != null) {
-                    var actions = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
-                    action = GetAction(actionName, nakedObject, actions);
+                    action = elementSpec.GetCollectionContributedActions().Where(p => p.Id == actionName).SingleOrDefault(p => p.IsVisible(nakedObject)) ??
+                             FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec);
                 }
             }
 
             return action;
         }
-
-        private static IActionSpec GetAction(string actionName, INakedObjectAdapter nakedObject, IActionSpec[] actions) => actions.SingleOrDefault(p => p.Id == actionName) ?? FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec);
 
         private static IActionParameterSpec GetParameterInternal(IActionSpec action, string parmName) {
             if (string.IsNullOrWhiteSpace(parmName) || string.IsNullOrWhiteSpace(parmName)) {
