@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +17,8 @@ using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class WithReferenceViewModelEdit : IViewModelEdit {
+        private int deriveCheck;
+        private int populateCheck;
         public IDomainObjectContainer Container { set; protected get; }
 
         [Hidden(WhenTo.Always)]
@@ -45,10 +48,28 @@ namespace RestfulObjects.Test.Data {
         [Eagerly(Do.Rendering)]
         public virtual MostSimple AnEagerReference { get; set; }
 
+        public virtual MostSimple[] ChoicesAChoicesReference() {
+            return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
+        }
+
+        public virtual string Validate(MostSimple aReference, MostSimple aChoicesReference) {
+            if (aReference != null && aReference.Id == 1 && aChoicesReference.Id == 2) {
+                return "Cross validation failed";
+            }
+
+            return "";
+        }
+
         #region IViewModelEdit Members
 
         [NakedObjectsIgnore]
         public string[] DeriveKeys() {
+            deriveCheck++;
+
+            if (deriveCheck > 1) {
+                throw new Exception("Derive called multiple times");
+            }
+
             var keys = new List<string> {
                 AReference.Id.ToString(),
                 ADisabledReference.Id.ToString(),
@@ -61,6 +82,12 @@ namespace RestfulObjects.Test.Data {
 
         [NakedObjectsIgnore]
         public void PopulateUsingKeys(string[] keys) {
+            populateCheck++;
+
+            if (populateCheck > 1) {
+                throw new Exception("PopulateUsingKeys called multiple times");
+            }
+
             var rId = int.Parse(keys[0]);
             var drId = int.Parse(keys[1]);
             var hrId = int.Parse(keys[2]);
@@ -76,17 +103,5 @@ namespace RestfulObjects.Test.Data {
         }
 
         #endregion
-
-        public virtual MostSimple[] ChoicesAChoicesReference() {
-            return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
-        }
-
-        public virtual string Validate(MostSimple aReference, MostSimple aChoicesReference) {
-            if (aReference != null && aReference.Id == 1 && aChoicesReference.Id == 2) {
-                return "Cross validation failed";
-            }
-
-            return "";
-        }
     }
 }

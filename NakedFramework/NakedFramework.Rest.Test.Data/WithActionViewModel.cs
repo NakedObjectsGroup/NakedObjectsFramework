@@ -19,33 +19,16 @@ using NakedObjects.Security;
 
 namespace RestfulObjects.Test.Data {
     public class WithActionViewModel : WithAction, IViewModel {
+        private int deriveCheck;
         private WithDateTimeKey dt1;
         private MostSimple ms1;
+        private int populateCheck;
         private MostSimpleViewModel vm1;
 
         [Key]
         [Title]
         [ConcurrencyCheck]
         public virtual int Id { get; set; }
-
-        #region IViewModel Members
-
-        [NakedObjectsIgnore]
-        public string[] DeriveKeys() {
-            return new[] {Id.ToString()};
-        }
-
-        [NakedObjectsIgnore]
-        public void PopulateUsingKeys(string[] keys) {
-            Id = int.Parse(keys.First());
-
-            ms1 = Container.Instances<MostSimple>().Single(x => x.Id == 1);
-            dt1 = Container.Instances<WithDateTimeKey>().FirstOrDefault();
-            vm1 = Container.NewViewModel<MostSimpleViewModel>();
-            vm1.Id = 1;
-        }
-
-        #endregion
 
         public override MostSimpleViewModel AnActionReturnsViewModel() => vm1;
 
@@ -240,5 +223,36 @@ namespace RestfulObjects.Test.Data {
         public override IQueryable<MostSimple> AnErrorQuery() => throw new DomainException("An error exception");
 
         public override ICollection<MostSimple> AnErrorCollection() => throw new DomainException("An error exception");
+
+        #region IViewModel Members
+
+        [NakedObjectsIgnore]
+        public string[] DeriveKeys() {
+            deriveCheck++;
+
+            if (deriveCheck > 1) {
+                throw new Exception("Derive called multiple times");
+            }
+
+            return new[] {Id.ToString()};
+        }
+
+        [NakedObjectsIgnore]
+        public void PopulateUsingKeys(string[] keys) {
+            populateCheck++;
+
+            if (populateCheck > 1) {
+                throw new Exception("PopulateUsingKeys called multiple times");
+            }
+
+            Id = int.Parse(keys.First());
+
+            ms1 = Container.Instances<MostSimple>().Single(x => x.Id == 1);
+            dt1 = Container.Instances<WithDateTimeKey>().FirstOrDefault();
+            vm1 = Container.NewViewModel<MostSimpleViewModel>();
+            vm1.Id = 1;
+        }
+
+        #endregion
     }
 }

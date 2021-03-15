@@ -214,13 +214,11 @@ namespace NakedFramework.Core.Component {
         }
 
         public void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
-            var vmoid = nakedObjectAdapter.Oid as ViewModelOid;
-
-            if (vmoid == null) {
-                throw new UnknownTypeException(logger.LogAndReturn($"Expect ViewModelOid got {(nakedObjectAdapter.Oid == null ? "null" : nakedObjectAdapter.Oid.GetType().ToString())}"));
+            if (nakedObjectAdapter.Oid is not ViewModelOid vmOid) {
+                throw new UnknownTypeException(logger.LogAndReturn($"Expect ViewModelOid got {nakedObjectAdapter.Oid?.GetType().ToString() ?? "null"}"));
             }
 
-            vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, framework), true);
+            vmOid.UpdateKeysIfNecessary(nakedObjectAdapter, framework);
         }
 
         public IOid RestoreOid(string[] encodedData, INakedObjectsFramework framework) => RestoreGenericOid(encodedData, framework) ?? oidGenerator.RestoreOid(encodedData);

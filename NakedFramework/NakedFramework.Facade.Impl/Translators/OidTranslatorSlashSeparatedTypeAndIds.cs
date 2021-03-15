@@ -10,6 +10,7 @@ using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Adapter;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
@@ -47,8 +48,9 @@ namespace NakedFramework.Facade.Impl.Translators {
             string[] keys;
             var wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
 
-            if (wrappedNakedObject.Spec.IsViewModel) {
-                keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework);
+            if (wrappedNakedObject.Oid is ViewModelOid vmOid) {
+                vmOid.UpdateKeysIfNecessary(wrappedNakedObject, framework);
+                keys = vmOid.Keys;
             }
             else {
                 var keyPropertyInfo = nakedObjectForKey.GetKeys();

@@ -10,6 +10,8 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
@@ -87,6 +89,12 @@ namespace NakedFramework.Core.Adapter {
             Keys = newKeys; // after old key is saved ! 
             IsFinal = final;
             CacheState();
+        }
+
+        public void UpdateKeysIfNecessary(INakedObjectAdapter adapter, INakedObjectsFramework framework) {
+            if (!IsFinal) {
+                UpdateKeys(adapter.Spec.GetFacet<IViewModelFacet>().Derive(adapter, framework), true);
+            }
         }
 
         #endregion
