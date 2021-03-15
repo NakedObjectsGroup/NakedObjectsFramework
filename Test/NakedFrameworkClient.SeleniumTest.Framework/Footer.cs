@@ -9,22 +9,9 @@ using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
-    public class Browser
+    public class Footer : Element
     {
-        private string baseFunctionalUrl;
-
-        public Browser(string baseFunctionalUrl) =>  this.baseFunctionalUrl = baseFunctionalUrl;
-
-        public HomeView Home() => throw new NotImplementedException();
-
-        public Browser GotoUrl(string url) => throw new NotImplementedException();
-
-        public ObjectView GetObjectView(Pane pane = Pane.Single) => throw new NotImplementedException();
-
-        public ListView GetListView(Pane pane = Pane.Single) => throw new NotImplementedException();
-
-        public HomeView GetHomeView(Pane pane) => throw new NotImplementedException();
-
-        public Footer GetFooter() => throw new NotImplementedException();
+        public void AssertHasMessage(string message) =>  throw new NotImplementedException();
+        
     }
 }

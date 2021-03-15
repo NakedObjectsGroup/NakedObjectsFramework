@@ -18,6 +18,8 @@ namespace NakedFrameworkClient.TestFramework
 
         public virtual InputField AssertHasPlaceholder() => throw new NotImplementedException();
 
+        public virtual InputField AssertIsEmpty() => throw new NotImplementedException();
+
         public virtual InputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 
         public virtual InputField AssertNoValidationError() => throw new NotImplementedException();

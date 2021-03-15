@@ -2,7 +2,7 @@
 
 namespace NakedFrameworkClient.TestFramework
 {
-    public class AutoCompleteField : InputField
+    public class AutoCompleteField : ReferenceInputField
     {
         public override AutoCompleteField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 

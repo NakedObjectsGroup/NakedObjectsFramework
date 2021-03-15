@@ -108,7 +108,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void ObjectActionThatReturnsJustAContext()
         {
-            var offer = Browser.GetObjectView("object?i1=View&o1=AW.Types.SpecialOffer--5").AssertTitleIs("Volume Discount 41+");
+            var offer = Browser.GotoUrl("object?i1=View&o1=AW.Types.SpecialOffer--5").GetObjectView();
+            offer.AssertTitleIs("Volume Discount 41+");
             var dialog = offer.OpenActions().GetActionWithDialog("Edit Description").Open();
             dialog.GetField<ValueInputField>("Description").Clear().Enter("Volume Discount 41 to 60").AssertNoValidationError();
             offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
@@ -147,29 +148,32 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void ObjectContributedAction()
         {
             //Tests that an action (side effect free) can be associated with an object
-            Browser.GetObjectView("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open")
+            Browser.GotoUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open").GetObjectView()
                 .AssertTitleIs("Mountain Tire Sale")
                 .OpenActions().GetActionWithoutDialog("List Associated Products")
                 .ClickToViewList()
+                .AssertNoOfRowsIs(3)
                 .GetRowFromList(2)
                 .AssertTitleIs("LL Mountain Tire");
         }
 
-        //[TestMethod]
-        //public void InformUserViaIAlertService()
-        //{
+        [TestMethod]
+        public void InformUserViaIAlertService()
+        {
 
-        //    GeminiUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928");
-        //    var title = WaitForCss("#pane2 .header .title");
-        //    Assert.AreEqual("LL Mountain Tire", title.Text);
-        //    title.Click();
-        //    CopyToClipboard(title);
-        //    PasteIntoInputField("#pane1 .parameter .value.droppable");
-        //    Click(OKButton());
-        //    wait.Until(d => d.FindElement(By.CssSelector(".footer .messages")).Text != "");
-        //    var msg = WaitForCss(".footer .messages").Text;
-        //    Assert.AreEqual("Mountain Tire Sale is already associated with LL Mountain Tire", msg);
-        //}
+            Browser.GotoUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928");
+            var offer = Browser.GetObjectView(Pane.Left);
+            var dialog = offer.GetOpenedDialog();
+            var field = dialog.GetField<ReferenceInputField>("Product");
+            var prod = Browser.GetObjectView(Pane.Right).AssertTitleIs("LL Mountain Tire");
+            prod.DragTitleAndDropOnto(field);
+            dialog.ClickOKToViewObject();
+            Browser.GetFooter().AssertHasMessage("Mountain Tire Sale is already associated with LL Mountain Tire");
+
+            //wait.Until(d => d.FindElement(By.CssSelector(".footer .messages")).Text != "");
+            //var msg = WaitForCss(".footer .messages").Text;
+            //Assert.AreEqual("Mountain Tire Sale is already associated with LL Mountain Tire", msg);
+        }
 
         ////[TestMethod]
         //public void EditAction()

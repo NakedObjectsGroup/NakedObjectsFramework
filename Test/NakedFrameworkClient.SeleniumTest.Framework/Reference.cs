@@ -8,6 +8,6 @@ namespace NakedFrameworkClient.TestFramework
 
         public ObjectView Click(MouseClick button = MouseClick.MainButton) => throw new NotImplementedException();
    
-        public Reference CopyReferenceToClipboard() => throw new NotImplementedException();
+        public Reference DragAndDropOnto(ReferenceInputField field) => throw new NotImplementedException();
     }
 }
