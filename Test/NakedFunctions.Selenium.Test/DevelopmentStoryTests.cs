@@ -178,20 +178,21 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void EditAction()
         {
-            //Corresponds to Story #202
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
+            string props = WaitForCss("nof-properties").Text;
             var title = WaitForTitle("Road-650 Overstock");
-            var original = GetPropertyValue("Max Qty");
-            var newQty = original+"1";
+            var oldQty = GetPropertyValue("Max Qty");
+            var newQty = (Convert.ToInt32(oldQty) + 1).ToString();
             ClearFieldThenType("#maxqty1", newQty);
             Click(OKButton());
-            Thread.Sleep(1000);
+            wait.Until(br => br.FindElement(By.CssSelector("nof-properties")).Text != props);
+            props = WaitForCss("nof-properties").Text;
             Assert.AreEqual(newQty, GetPropertyValue("Max Qty"));
             OpenActionDialog("Edit Quantities");
-            ClearFieldThenType("#maxqty1", original);
-            Click(OKButton());
-            Reload();
-            Assert.AreEqual(original, GetPropertyValue("Max Qty"));
+            ClearFieldThenType("#maxqty1", oldQty);
+            Click(OKButton()); 
+            wait.Until(br => br.FindElement(By.CssSelector("nof-properties")).Text != props);
+            Assert.AreEqual(oldQty, GetPropertyValue("Max Qty"));
         }
 
         //[TestMethod]
