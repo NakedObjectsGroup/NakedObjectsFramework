@@ -10,7 +10,9 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
@@ -79,6 +81,12 @@ namespace NakedObjects.Core.Adapter {
         }
 
         #endregion
+
+        public void UpdateKeysIfNecessary(INakedObjectAdapter adapter, INakedObjectManager manager, IDomainObjectInjector injector) {
+            if (!IsFinal) {
+                UpdateKeys(adapter.Spec.GetFacet<IViewModelFacet>().Derive(adapter, manager, injector), true);
+            }
+        }
 
         private void CacheState() {
             cachedHashCode = HashCodeUtils.Seed;

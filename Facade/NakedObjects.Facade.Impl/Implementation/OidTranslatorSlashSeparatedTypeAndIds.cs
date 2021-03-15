@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Core.Adapter;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Services;
@@ -61,8 +62,9 @@ namespace NakedObjects.Facade.Impl.Implementation {
             string[] keys;
             var wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
 
-            if (wrappedNakedObject.Spec.IsViewModel) {
-                keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);
+            if (wrappedNakedObject.Oid is ViewModelOid vmOid) {
+                vmOid.UpdateKeysIfNecessary(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);
+                keys = vmOid.Keys;
             }
             else {
                 var keyPropertyInfo = nakedObjectForKey.GetKeys();

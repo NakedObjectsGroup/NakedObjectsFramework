@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,6 +16,8 @@ using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class WithNestedViewModel : IViewModel {
+        private int deriveCheck;
+        private int populateCheck;
         public IDomainObjectContainer Container { set; protected get; }
 
         [Key]
@@ -35,13 +38,25 @@ namespace RestfulObjects.Test.Data {
 
         [NakedObjectsIgnore]
         public string[] DeriveKeys() {
+            deriveCheck++;
+
+            if (deriveCheck > 1) {
+                throw new Exception("Derive called multiple times");
+            }
+
             var keys = new List<string> {AReference.Id.ToString()};
-            keys.AddRange(AViewModelReference.DeriveKeys());
+            keys.AddRange(AViewModelReference.TestDeriveKeys());
             return keys.ToArray();
         }
 
         [NakedObjectsIgnore]
         public void PopulateUsingKeys(string[] keys) {
+            populateCheck++;
+
+            if (populateCheck > 1) {
+                throw new Exception("PopulateUsingKeys called multiple times");
+            }
+
             var msId = int.Parse(keys[0]);
             var vmKey = keys.Skip(1).ToArray();
 

@@ -135,13 +135,12 @@ namespace NakedObjects.Core.Component {
         }
 
         public void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter) {
-            var vmoid = nakedObjectAdapter.Oid as ViewModelOid;
-
-            if (vmoid == null) {
-                throw new UnknownTypeException(logger.LogAndReturn($"Expect ViewModelOid got {(nakedObjectAdapter.Oid == null ? "null" : nakedObjectAdapter.Oid.GetType().ToString())}"));
+            if (nakedObjectAdapter.Oid is ViewModelOid vmOid) {
+                vmOid.UpdateKeysIfNecessary(nakedObjectAdapter, nakedObjectManager, injector);
+                return;
             }
 
-            vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, nakedObjectManager, injector), true);
+            throw new UnknownTypeException(logger.LogAndReturn($"Expect ViewModelOid got {nakedObjectAdapter.Oid?.GetType().ToString() ?? "null"}"));
         }
 
         public IOid RestoreOid(string[] encodedData) => RestoreGenericOid(encodedData) ?? oidGenerator.RestoreOid(encodedData);

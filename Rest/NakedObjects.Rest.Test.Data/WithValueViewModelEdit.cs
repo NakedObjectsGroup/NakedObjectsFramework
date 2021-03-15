@@ -15,6 +15,9 @@ using NakedObjects.Security;
 
 namespace RestfulObjects.Test.Data {
     public class WithValueViewModelEdit : IViewModelEdit {
+        private int deriveCheck;
+        private int populateCheck;
+
         [Key]
         [Title]
         [ConcurrencyCheck]
@@ -56,10 +59,28 @@ namespace RestfulObjects.Test.Data {
         [AuthorizeProperty(EditUsers = "editUser")]
         public virtual int AUserDisabledValue { get; set; }
 
+        public virtual int[] ChoicesAChoicesValue() {
+            return new[] {1, 2, 3};
+        }
+
+        public virtual string Validate(int aValue, int aChoicesValue) {
+            if (aValue == 101 && aChoicesValue == 3) {
+                return "Cross validation failed";
+            }
+
+            return "";
+        }
+
         #region IViewModelEdit Members
 
         [NakedObjectsIgnore]
         public string[] DeriveKeys() {
+            deriveCheck++;
+
+            if (deriveCheck > 1) {
+                throw new Exception("Derive called multiple times");
+            }
+
             return new[] {
                 Id.ToString(),
                 AValue.ToString(),
@@ -76,6 +97,12 @@ namespace RestfulObjects.Test.Data {
 
         [NakedObjectsIgnore]
         public void PopulateUsingKeys(string[] instanceId) {
+            populateCheck++;
+
+            if (populateCheck > 1) {
+                throw new Exception("PopulateUsingKeys called multiple times");
+            }
+
             Id = int.Parse(instanceId[0]);
             AValue = int.Parse(instanceId[1]);
             ADisabledValue = int.Parse(instanceId[2]);
@@ -89,17 +116,5 @@ namespace RestfulObjects.Test.Data {
         }
 
         #endregion
-
-        public virtual int[] ChoicesAChoicesValue() {
-            return new[] {1, 2, 3};
-        }
-
-        public virtual string Validate(int aValue, int aChoicesValue) {
-            if (aValue == 101 && aChoicesValue == 3) {
-                return "Cross validation failed";
-            }
-
-            return "";
-        }
     }
 }

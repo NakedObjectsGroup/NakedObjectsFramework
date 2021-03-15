@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace RestfulObjects.Test.Data {
     [NotPersisted]
     [NotMapped]
     public class MostSimpleViewModel : IViewModel {
+        private int deriveCheck;
+        private int populateCheck;
         public virtual IDomainObjectContainer Container { set; protected get; }
 
         [Hidden(WhenTo.Always)]
@@ -32,11 +35,23 @@ namespace RestfulObjects.Test.Data {
 
         [NakedObjectsIgnore]
         public string[] DeriveKeys() {
+            deriveCheck++;
+
+            if (deriveCheck > 1) {
+                throw new Exception("Derive called multiple times");
+            }
+
             return new[] {Id.ToString()};
         }
 
         [NakedObjectsIgnore]
         public void PopulateUsingKeys(string[] keys) {
+            populateCheck++;
+
+            if (populateCheck > 1) {
+                throw new Exception("PopulateUsingKeys called multiple times");
+            }
+
             Id = int.Parse(keys.First());
         }
 
