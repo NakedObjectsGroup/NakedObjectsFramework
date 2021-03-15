@@ -22,8 +22,9 @@ namespace AW.Functions
         public static IQueryable<SpecialOffer> CurrentSpecialOffers(IContext context)
         {
             var today = context.Today();
+            var start = new DateTime(2004, 6, 1);
             return AllSpecialOffers(context).Where(x => x.StartDate <= today &&
-                          x.EndDate >= new DateTime(2004, 6, 1));
+                          x.EndDate >= start);
         }
 
         //Returns most recently-modified first

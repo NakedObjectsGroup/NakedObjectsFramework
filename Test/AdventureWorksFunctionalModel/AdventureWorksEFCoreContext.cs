@@ -83,6 +83,7 @@ namespace AW
         {
             optionsBuilder.UseSqlServer(_nameOrConnectionString);
             optionsBuilder.UseLazyLoadingProxies();
+            //optionsBuilder.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
