@@ -1,9 +1,12 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
     public class ReferenceInputField : InputField
     {
+        public ReferenceInputField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
+
         public override ReferenceInputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 
         public override ReferenceInputField AssertHasPlaceholder() => throw new NotImplementedException();

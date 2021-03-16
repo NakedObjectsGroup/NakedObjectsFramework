@@ -1,9 +1,12 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
     public class SelectionInputField : InputField
     {
+        public SelectionInputField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
+
         public override SelectionInputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 
         public override SelectionInputField AssertIsMandatory() => throw new NotImplementedException();

@@ -1,11 +1,24 @@
-﻿1. All 'actions' should know the expected resulting view(s) and should wait for view(s) of that type.  
-If the view(s) would be the same TYPE(s) as before, then it should wait for a change.
-Ideally, this can be done generically, by testing equality of view level web element.
+﻿1) New to reintroduce an abstract View type to cover all top level pane views
 
-Might have to watch out for derived properties or collections where there is a delay. 
+2) All test actions that result in a change to the view should wait for that change before exiting.
 
-Alternative is to have specific 'wait for change to' options e.g. title, property value. 
+For actions returning an updated or different view (including 'void' actions that stay on same object or list):
 
-2. All click actions should offer option to specify left/right, defaulting to left. 
+If the expected view type is different from the current view type, wait for the new view of expected type.
+If type is the same then wait until the 'contents' of the view have changed.
+For an object view, contents is the Title, Properties, & Collections. Should use a method
+that short circuits based on first difference detected.
+For a list view it is the list/table, including the header.
+In all cases compare the .Text of the element.
+Note that must avoid risk of the difference being in the closing of an action dialog.
+
+
+Have a generic method:
+
+WaitForChangeInView(currentViewType, currentPane, newViewType, newPane)
+
+Must also cope with not knowing if new view is same or different type e.g. Back/Forward buttons
+
+3) All click actions should offer option to specify left/right, defaulting to left. 
 The returned view may therefore be left or right or single pane. (Probably need a Pane view type as
 superclass of ListView ObjectView HomeView Error etc -  there was an Enum in previous framework?)

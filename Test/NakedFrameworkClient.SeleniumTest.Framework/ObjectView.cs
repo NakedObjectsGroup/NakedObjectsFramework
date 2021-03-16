@@ -1,11 +1,14 @@
 ﻿
 
+using OpenQA.Selenium;
 using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
     public class ObjectView : ActionResult
     {
+        public ObjectView(IWebElement element, Helper helper, Pane pane = Pane.Single) : base(element, helper, pane) { }
+
         public override ObjectView AssertTitleIs(string title) => throw new NotImplementedException();
 
         //Type is the unqualified type name (held in a span but not displayed in default client)

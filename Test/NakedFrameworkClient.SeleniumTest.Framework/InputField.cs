@@ -1,9 +1,12 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
-    public abstract class InputField
+    public abstract class InputField : SubView
     {
+        protected InputField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
+
         public virtual InputField Clear() => throw new NotImplementedException();
 
         public virtual InputField Enter(string characters) => throw new NotImplementedException();

@@ -20,37 +20,37 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
     public class DevelopmentStoryTests_usingNewFramework
     {
 
-        protected Browser Browser = new Browser(TestConfig.BaseFunctionalUrl);
+        private string baseUrl = "http://nakedfunctionstest.azurewebsites.net/";
+        private Helper helper;
 
+        [Obsolete]
+        private IWebDriver br;
 
-        #region initialization
+        #region Initialization & Clean Up
         [ClassInitialize]
         public static void InitialiseClass(TestContext context)
         {
-            //FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
+            Helper.FilePath(@"drivers.chromedriver.exe");
         }
 
         [TestInitialize]
         public virtual void InitializeTest()
         {
-            //InitChromeDriver();
-            //Url(BaseUrl);
+            helper = new Helper(baseUrl);
+            br = helper.br;
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            //CleanUpTest();
-        }
+        public virtual void CleanUpTest() => helper.CleanUp();
         #endregion
 
-        //[TestMethod]
+
+        [TestMethod]
         public void AllWorkingStories()
         {
             RetrieveObjectViaMenuAction();
-            ObjectActionThatReturnsJustAContext();
-            OverriddenPrincipalProviderService();
+            //ObjectActionThatReturnsJustAContext();
+            //OverriddenPrincipalProviderService();
             //UseOfRandomSeedGenerator();
             //ObjectContributedAction();
             //InformUserViaIAlertService();
@@ -99,22 +99,22 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void RetrieveObjectViaMenuAction()
         {
-            var dialog = Browser.Home().OpenMainMenu("Products").GetActionWithDialog("Find Product By Name")
-                .AssertIsEnabled().Open();
-            dialog.GetField<ValueInputField>("Search String").Clear().Enter("handlebar tube");
-            dialog.ClickOKToViewList().AssertTitleIs("Find Product By Name").GetRowFromList(1).AssertTitleIs("Handlebar Tube");
+            var dialog = helper.GotoHome().OpenMainMenu("Products").GetActionWithDialog("Find Product By Name")
+                .AssertIsEnabled().Open().AssertOKIsDisabled("Missing mandatory fields: Search String; ");
+            dialog.GetTextField("Search String").Clear().Enter("handlebar tube");
+            dialog.AssertOKIsEnabled().ClickOKToViewList().AssertTitleIs("Find Product By Name").GetRowFromList(0).AssertTitleIs("Handlebar Tube");
         }
 
         //[TestMethod]
         public void ObjectActionThatReturnsJustAContext()
         {
-            var offer = Browser.GotoUrl("object?i1=View&o1=AW.Types.SpecialOffer--5").GetObjectView();
+            var offer = helper.GoDirectToUrl("object?i1=View&o1=AW.Types.SpecialOffer--5").GetObjectView();
             offer.AssertTitleIs("Volume Discount 41+");
             var dialog = offer.OpenActions().GetActionWithDialog("Edit Description").Open();
-            dialog.GetField<ValueInputField>("Description").Clear().Enter("Volume Discount 41 to 60").AssertNoValidationError();
+            dialog.GetTextField("Description").Clear().Enter("Volume Discount 41 to 60").AssertNoValidationError();
             offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
             dialog = offer.AssertTitleIs("Volume Discount 41 to 60").OpenActions().GetActionWithDialog("Edit Description").Open();
-            dialog.GetField<ValueInputField>("Description").Clear().Enter("Volume Discount 41+");
+            dialog.GetTextField("Description").Clear().Enter("Volume Discount 41+");
             offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
             offer.AssertTitleIs("Volume Discount 41+");
         }
@@ -122,20 +122,20 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void OverriddenPrincipalProviderService()
         {
-            Browser.Home().OpenMainMenu("Employees").GetActionWithoutDialog("Me")
+            helper.GotoHome().OpenMainMenu("Employees").GetActionWithoutDialog("Me")
                 .ClickToViewObject().AssertTitleIs("Ken Sánchez");
         }
 
         [TestMethod]
         public void UseOfRandomSeedGenerator()
         {
-            string prod1Title = Browser.Home().OpenMainMenu("Products")
+            string prod1Title = helper.GotoHome().OpenMainMenu("Products")
                 .GetActionWithoutDialog("Random Product")
                 .ClickToViewObject()
                 .AssertHasType("Product")
                 .GetTitle();
 
-            string prod2Title = Browser.Home().OpenMainMenu("Products")
+            string prod2Title = helper.GotoHome().OpenMainMenu("Products")
               .GetActionWithoutDialog("Random Product")
               .ClickToViewObject()
               .AssertHasType("Product")
@@ -148,7 +148,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void ObjectContributedAction()
         {
             //Tests that an action (side effect free) can be associated with an object
-            Browser.GotoUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open").GetObjectView()
+            helper.GoDirectToUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open").GetObjectView()
                 .AssertTitleIs("Mountain Tire Sale")
                 .OpenActions().GetActionWithoutDialog("List Associated Products")
                 .ClickToViewList()
@@ -161,14 +161,14 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void InformUserViaIAlertService()
         {
 
-            Browser.GotoUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928");
-            var offer = Browser.GetObjectView(Pane.Left);
+            helper.GoDirectToUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928");
+            var offer = helper.GetObjectView(Pane.Left);
             var dialog = offer.GetOpenedDialog();
-            var field = dialog.GetField<ReferenceInputField>("Product");
-            var prod = Browser.GetObjectView(Pane.Right).AssertTitleIs("LL Mountain Tire");
+            var field = dialog.GetReferenceField("Product");
+            var prod = helper.GetObjectView(Pane.Right).AssertTitleIs("LL Mountain Tire");
             prod.DragTitleAndDropOnto(field);
             dialog.ClickOKToViewObject();
-            Browser.GetFooter().AssertHasMessage("Mountain Tire Sale is already associated with LL Mountain Tire");
+            helper.GetFooter().AssertHasMessage("Mountain Tire Sale is already associated with LL Mountain Tire");
 
             //wait.Until(d => d.FindElement(By.CssSelector(".footer .messages")).Text != "");
             //var msg = WaitForCss(".footer .messages").Text;
