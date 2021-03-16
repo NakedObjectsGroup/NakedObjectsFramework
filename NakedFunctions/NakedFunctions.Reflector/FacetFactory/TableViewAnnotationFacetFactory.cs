@@ -41,7 +41,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         private ITableViewFacet CreateTableViewFacet(TableViewAttribute attribute, ISpecification holder) {
-            var columns = attribute.Columns ?? new string[] { };
+            var columns = attribute.Columns ?? Array.Empty<string>();
             var distinctColumns = columns.Distinct().ToArray();
 
             if (columns.Length != distinctColumns.Length) {

@@ -24,10 +24,10 @@ namespace NakedFramework.Metamodel.Adapter {
         private string identityString;
 
         public IdentifierImpl(string className)
-            : this(className, "", new string[0], new string[0], false) { }
+            : this(className, "", Array.Empty<string>(), Array.Empty<string>(), false) { }
 
         public IdentifierImpl(string className, string fieldName)
-            : this(className, fieldName, new string[0], new string[0], true) { }
+            : this(className, fieldName, Array.Empty<string>(), Array.Empty<string>(), true) { }
 
         public IdentifierImpl(string className, string methodName, ParameterInfo[] parameters)
             : this(className, methodName, parameters.Select(p => p.Name).ToArray(), ToParameterStringArray(parameters.Select(p => p.ParameterType).ToArray()), false) { }
@@ -137,7 +137,7 @@ namespace NakedFramework.Metamodel.Adapter {
 
             name = asString.Substring(indexOfHash + 1, indexOfOpenBracket - (indexOfHash + 1));
             var allParms = asString.Substring(indexOfOpenBracket + 1, indexOfCloseBracket - (indexOfOpenBracket + 1)).Trim();
-            var parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : new string[] { };
+            var parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
             return new IdentifierImpl(className, name, parms);
         }
 

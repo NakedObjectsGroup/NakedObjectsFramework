@@ -25,7 +25,7 @@ namespace NakedFramework.Core.Spec {
 
         public override bool IsAutoCompleteEnabled => false;
 
-        public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => new INakedObjectAdapter[0];
+        public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => System.Array.Empty<INakedObjectAdapter>();
 
         private INakedObjectAdapter GetCollection(INakedObjectAdapter inObjectAdapter) {
             var collection = GetFacet<IPropertyAccessorFacet>().GetProperty(inObjectAdapter, Framework);

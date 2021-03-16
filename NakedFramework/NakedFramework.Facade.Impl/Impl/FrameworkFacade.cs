@@ -166,7 +166,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                     parent = parent + (string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider) + menuFacade.Name;
                     return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
                 default:
-                    return new (string, ActionContextFacade)[] { };
+                    return Array.Empty<(string, ActionContextFacade)>();
             }
         }
 
@@ -238,7 +238,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             item switch {
                 IMenuActionImmutable actionImmutable => new[] {actionImmutable},
                 IMenuImmutable menu => menu.MenuItems.SelectMany(GetMenuActions).ToArray(),
-                _ => new IMenuActionImmutable[] { }
+                _ => Array.Empty<IMenuActionImmutable>()
             };
 
         private bool IsVisible(IActionSpecImmutable specIm) {
@@ -1060,7 +1060,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             return item switch {
                 IMenuActionImmutable menuAction => new[] {(parent, menuAction.Action)},
                 IMenuImmutable menu => menu.MenuItems.SelectMany(i => GetMenuItem(i, $"{parent}{MenuItemDivider()}{menu.Name}")).ToArray(),
-                _ => new (string, IActionSpecImmutable)[] { }
+                _ => Array.Empty<(string, IActionSpecImmutable)>()
             };
         }
 
@@ -1094,9 +1094,9 @@ namespace NakedFramework.Facade.Impl.Impl {
             var actions = menuActions.Select(m => new {m.parent, action = GetLeaf(m.action)}).Where(a => a.action != null);
 
             var objectSpec = nakedObject.Spec as IObjectSpec;
-            var properties = objectSpec?.Properties.Where(p => IsVisible(p, nakedObject, isPersisted)).ToArray() ?? new IAssociationSpec[] { };
+            var properties = objectSpec?.Properties.Where(p => IsVisible(p, nakedObject, isPersisted)).ToArray() ?? Array.Empty<IAssociationSpec>();
 
-            ActionContext[] ccaContexts = { };
+            ActionContext[] ccaContexts = Array.Empty<ActionContext>();
 
             if (nakedObject.Spec.IsQueryable) {
                 var typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();
@@ -1190,7 +1190,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 CheckAutocompleOrConditional();
             }
 
-            private bool IsAutoCompleteEnabled => prop == null ? parm.IsAutoCompleteEnabled : prop.IsAutoCompleteEnabled;
+            private bool IsAutoCompleteEnabled => prop?.IsAutoCompleteEnabled ?? parm.IsAutoCompleteEnabled;
 
             public IObjectSpec Specification => prop == null ? parm.Spec : prop.ReturnSpec;
 

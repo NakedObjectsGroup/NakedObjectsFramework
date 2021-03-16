@@ -129,7 +129,7 @@ namespace NakedFramework.Core.Adapter {
         public bool IsNotQueryable { get; set; }
 
         public object[] SelectedObjects {
-            get { return selectedObjects ?? new object[] { }; }
+            get { return selectedObjects ?? Array.Empty<object>(); }
             private set => selectedObjects = value;
         }
 
@@ -166,7 +166,7 @@ namespace NakedFramework.Core.Adapter {
 
         public string[] ToEncodedStrings() {
             var helper = new StringEncoderHelper {Encode = true};
-            helper.Add(Action.ReturnSpec.EncodeTypeName(Action.ReturnSpec.IsCollection ? new[] {Action.ElementSpec} : new IObjectSpec[] { }));
+            helper.Add(Action.ReturnSpec.EncodeTypeName(Action.ReturnSpec.IsCollection ? new[] {Action.ElementSpec} : Array.Empty<IObjectSpec>()));
             helper.Add(Action.Id);
             helper.Add(Target.Oid as IEncodedToStrings);
 

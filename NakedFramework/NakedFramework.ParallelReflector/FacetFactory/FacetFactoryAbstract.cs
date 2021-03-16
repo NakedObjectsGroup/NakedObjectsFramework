@@ -25,9 +25,9 @@ namespace NakedFramework.ParallelReflector.FacetFactory {
 
         protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
 
-        public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => new PropertyInfo[] { };
+        public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => System.Array.Empty<PropertyInfo>();
 
-        public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => new PropertyInfo[] { };
+        public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => System.Array.Empty<PropertyInfo>();
 
         #region IFacetFactory Members
 

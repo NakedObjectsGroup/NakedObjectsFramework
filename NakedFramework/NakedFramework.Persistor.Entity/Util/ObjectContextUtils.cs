@@ -62,7 +62,7 @@ namespace NakedFramework.Persistor.Entity.Util {
             var et = GetEntityType(context, type);
             return et != null
                 ? type.GetProperties().Join(getMembers(et), pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray()
-                : new PropertyInfo[] { };
+                : Array.Empty<PropertyInfo>();
         }
 
         public static PropertyInfo[] GetIdMembers(this LocalContext context, Type type) => context.SafeGetMembers(type, et => et.KeyMembers);
@@ -78,7 +78,7 @@ namespace NakedFramework.Persistor.Entity.Util {
                 return type.GetProperties().Join(cm, pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray();
             }
 
-            return new PropertyInfo[] { };
+            return Array.Empty<PropertyInfo>();
         }
 
         public static PropertyInfo[] GetReferenceMembers(this LocalContext context, Type type) => context.GetNavigationMembers(type).Where(x => !CollectionUtils.IsCollection(x.PropertyType)).ToArray();
@@ -90,7 +90,7 @@ namespace NakedFramework.Persistor.Entity.Util {
         public static object CreateQuery(this LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {
             var mostBaseType = context.GetMostBaseType(type);
             var mi = context.WrappedObjectContext.GetType().GetMethod("CreateQuery").MakeGenericMethod(mostBaseType);
-            var parms = new List<object> {queryString, new ObjectParameter[] { }};
+            var parms = new List<object> {queryString, Array.Empty<ObjectParameter>() };
 
             var os = mi.Invoke(context.WrappedObjectContext, parms.ToArray());
 

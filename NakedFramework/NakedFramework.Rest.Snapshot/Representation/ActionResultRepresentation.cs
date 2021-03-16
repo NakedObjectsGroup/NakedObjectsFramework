@@ -66,7 +66,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
         }
 
         private void SetLinks(HttpRequest req, ActionResultContextFacade actionResult) {
-            Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : new LinkRepresentation[] { };
+            Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : System.Array.Empty<LinkRepresentation>();
         }
 
         private void SetResultType(ActionResultContextFacade actionResult) {
@@ -98,7 +98,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                             ? visibleParamContext.ProposedValue
                             : visibleParamContext.ProposedObjectFacade?.Object) as IEnumerable;
 
-                        var proposedCollection = proposedEnumerable == null ? new object[] { } : proposedEnumerable.Cast<object>();
+                        var proposedCollection = proposedEnumerable == null ? System.Array.Empty<object>() : proposedEnumerable.Cast<object>();
 
                         var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(i, false)).ToArray();
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));

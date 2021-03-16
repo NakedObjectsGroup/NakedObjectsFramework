@@ -33,7 +33,7 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
 
         #region IDateValueFacet Members
 
-        public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter == null ? Now() : (DateTime) nakedObjectAdapter.Object;
+        public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => (DateTime?) nakedObjectAdapter?.Object ?? Now();
 
         #endregion
 

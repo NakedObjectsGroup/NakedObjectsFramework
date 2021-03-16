@@ -89,8 +89,8 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             var dataMemberAttrType = typeof(DataMemberAttribute);
             var prop = dataMemberAttrType.GetProperty("Name");
 
-            var customAttribute = new CustomAttributeBuilder(dataMemberAttrType.GetConstructor(new Type[] { }),
-                                                             new object[] { },
+            var customAttribute = new CustomAttributeBuilder(dataMemberAttrType.GetConstructor(Array.Empty<Type>()),
+                                                             Array.Empty<object>(),
                                                              new[] {prop},
                                                              new object[] {name});
 

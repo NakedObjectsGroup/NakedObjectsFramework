@@ -110,13 +110,13 @@ namespace NakedFramework.Facade.Impl.Impl {
         public IAssociationFacade[] Properties =>
             WrappedValue is IObjectSpec objectSpec
                 ? objectSpec.Properties.Select(p => new AssociationFacade(p, FrameworkFacade, framework)).Cast<IAssociationFacade>().ToArray()
-                : new IAssociationFacade[] { };
+                : Array.Empty<IAssociationFacade>();
 
         public IMenuFacade Menu => new MenuFacade(WrappedValue.Menu, FrameworkFacade, framework);
 
         public bool IsImmutable(IObjectFacade objectFacade) => WrappedValue.IsAlwaysImmutable() || WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient;
 
-        public string GetIconName(IObjectFacade objectFacade) => WrappedValue.GetIconName(objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject);
+        public string GetIconName(IObjectFacade objectFacade) => WrappedValue.GetIconName(((ObjectFacade) objectFacade)?.WrappedNakedObject);
 
         public IActionFacade[] GetActionLeafNodes() {
             var actionsAndUid = FacadeUtils.GetActionsandUidFromSpec(WrappedValue);
@@ -142,7 +142,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 return objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
             }
 
-            return new IActionFacade[] { };
+            return Array.Empty<IActionFacade>();
         }
 
         public IActionFacade[] GetLocallyContributedActions(ITypeFacade typeFacade, string id) {
@@ -150,7 +150,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 return objectSpec.GetLocallyContributedActions(((TypeFacade) typeFacade).WrappedValue, id).Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
             }
 
-            return new IActionFacade[] { };
+            return Array.Empty<IActionFacade>();
         }
 
         public IFrameworkFacade FrameworkFacade { get; set; }

@@ -19,7 +19,7 @@ namespace NakedFramework.Metamodel.Utils {
     public static class FacetUtils {
         public static string[] SplitOnComma(string toSplit) {
             if (string.IsNullOrEmpty(toSplit)) {
-                return new string[] { };
+                return Array.Empty<string>();
             }
 
             return toSplit.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();

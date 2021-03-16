@@ -86,7 +86,7 @@ namespace NakedFramework.Core.Spec {
         public (string, IObjectSpec)[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             return propertyChoicesFacet == null
-                ? new (string, IObjectSpec)[] { }
+                ? System.Array.Empty<(string, IObjectSpec)>()
                 : propertyChoicesFacet.ParameterNamesAndTypes.Select(t => {
                     var (pName, pSpec) = t;
                     return (pName, Framework.MetamodelManager.GetSpecification(pSpec));
@@ -97,7 +97,7 @@ namespace NakedFramework.Core.Spec {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             var enumFacet = GetFacet<IEnumFacet>();
 
-            var objectOptions = propertyChoicesFacet == null ? null : propertyChoicesFacet.GetChoices(target, parameterNameValues);
+            var objectOptions = propertyChoicesFacet?.GetChoices(target, parameterNameValues);
             if (objectOptions != null) {
                 if (enumFacet == null) {
                     return Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
@@ -106,7 +106,7 @@ namespace NakedFramework.Core.Spec {
                 return Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(target, objectOptions)).ToArray();
             }
 
-            objectOptions = enumFacet == null ? null : enumFacet.GetChoices(target);
+            objectOptions = enumFacet?.GetChoices(target);
             if (objectOptions != null) {
                 return Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
             }

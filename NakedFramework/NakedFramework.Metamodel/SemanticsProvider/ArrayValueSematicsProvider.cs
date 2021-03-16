@@ -74,7 +74,7 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
             }
             catch (OverflowException) {
                 // no simple way of getting min and maxvalue of 'T' = complexity isn't worth the risk just for an error message
-                throw new InvalidEntryException(OutOfRangeMessage(entry, new T[] { }, new T[] { }));
+                throw new InvalidEntryException(OutOfRangeMessage(entry, Array.Empty<T>(), Array.Empty<T>()));
             }
         }
 

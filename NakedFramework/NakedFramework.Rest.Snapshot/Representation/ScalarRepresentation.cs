@@ -33,7 +33,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetScalars(ObjectContextFacade objectContext) => Value = RestUtils.ObjectToPredefinedType(objectContext.Target.Object, false);
 
-        private void SetLinks(HttpRequest req, ObjectContextFacade objectContext) => Links = new LinkRepresentation[] { };
+        private void SetLinks(HttpRequest req, ObjectContextFacade objectContext) => Links = System.Array.Empty<LinkRepresentation>();
 
         private void SetExtensions() => Extensions = MapRepresentation.Create();
 

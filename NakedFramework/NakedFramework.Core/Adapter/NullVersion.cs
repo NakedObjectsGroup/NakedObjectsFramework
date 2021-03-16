@@ -25,9 +25,9 @@ namespace NakedFramework.Core.Adapter {
 
         #region IEncodedToStrings Members
 
-        public string[] ToEncodedStrings() => new string[0];
+        public string[] ToEncodedStrings() => Array.Empty<string>();
 
-        public string[] ToShortEncodedStrings() => new string[0];
+        public string[] ToShortEncodedStrings() => Array.Empty<string>();
 
         #endregion
 

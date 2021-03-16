@@ -39,7 +39,7 @@ namespace NakedFramework.Metamodel.Facet {
         public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
-            var defaultValue = MethodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
+            var defaultValue = MethodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
             return (defaultValue, TypeOfDefaultValue.Explicit);
         }
 

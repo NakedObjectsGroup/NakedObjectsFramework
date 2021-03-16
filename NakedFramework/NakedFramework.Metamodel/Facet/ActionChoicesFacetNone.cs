@@ -20,11 +20,11 @@ namespace NakedFramework.Metamodel.Facet {
 
         public override bool IsNoOp => true;
 
-        public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => new ValueTuple<string, IObjectSpecImmutable>[] { };
+        public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();
 
         public override bool IsMultiple => false;
 
-        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) => new object[0];
+        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) => Array.Empty<object>();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

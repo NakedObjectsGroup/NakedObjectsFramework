@@ -177,7 +177,7 @@ namespace NakedFramework.Xat.TestObjects {
                 var canUse = actionSpec.IsUsable(owningObject.NakedObject);
                 LastMessage = canUse.Reason;
                 if (canUse.IsAllowed) {
-                    var parameterObjectsAdapter = parsedParameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x == null ? null : x.NakedObject).ToArray();
+                    var parameterObjectsAdapter = parsedParameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x?.NakedObject).ToArray();
                     var canExecute = actionSpec.IsParameterSetValid(owningObject.NakedObject, parameterObjectsAdapter);
                     LastMessage = canExecute.Reason;
                     Assert.IsFalse(canExecute.IsAllowed, "Action '" + Name + "' is usable and executable");
@@ -194,7 +194,7 @@ namespace NakedFramework.Xat.TestObjects {
 
             var parsedParameters = ParsedParameters(parameters);
 
-            var parameterObjectsAdapter = parsedParameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x == null ? null : x.NakedObject).ToArray();
+            var parameterObjectsAdapter = parsedParameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x?.NakedObject).ToArray();
             var canExecute = actionSpec.IsParameterSetValid(owningObject.NakedObject, parameterObjectsAdapter);
             Assert.IsTrue(canExecute.IsAllowed, "Action '" + Name + "' is unusable: " + canExecute.Reason);
             return this;

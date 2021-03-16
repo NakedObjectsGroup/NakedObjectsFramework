@@ -24,7 +24,7 @@ namespace NakedFramework.Core.Reflect {
 
         protected internal ConsentAbstract(Exception exception) {
             Exception = exception;
-            reason = exception != null ? exception.Message : null;
+            reason = exception?.Message;
         }
 
         /// <summary>

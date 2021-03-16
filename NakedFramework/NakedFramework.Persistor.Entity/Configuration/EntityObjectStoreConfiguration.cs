@@ -21,7 +21,7 @@ namespace NakedFramework.Persistor.Entity.Configuration {
             RollBackOnError = false;
             DefaultMergeOption = MergeOption.AppendOnly;
             DbContextConstructors = new List<(Func<DbContext>, Func<Type[]>)>();
-            NotPersistedTypes = () => new Type[] { };
+            NotPersistedTypes = () => Array.Empty<Type>();
             MaximumCommitCycles = 10;
             IsInitializedCheck = () => true;
             CustomConfig = oc => { };
@@ -41,7 +41,7 @@ namespace NakedFramework.Persistor.Entity.Configuration {
 
             public EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration, Func<DbContext> f)
                 : this(entityObjectStoreConfiguration) {
-                entityObjectStoreConfiguration.DbContextConstructors.Add((f, () => new Type[] { }));
+                entityObjectStoreConfiguration.DbContextConstructors.Add((f, () => Array.Empty<Type>()));
                 contextIndex = entityObjectStoreConfiguration.DbContextConstructors.Count - 1;
             }
 

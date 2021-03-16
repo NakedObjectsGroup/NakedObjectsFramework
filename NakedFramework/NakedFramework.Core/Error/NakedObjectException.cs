@@ -17,7 +17,6 @@ namespace NakedFramework.Core.Error {
         protected NakedObjectException(string messsage, Exception cause)
             : base(messsage, cause) { }
 
-        protected NakedObjectException(Exception cause)
-            : base(cause == null ? null : cause.ToString(), cause) { }
+        protected NakedObjectException(Exception cause) : base(cause?.ToString(), cause) { }
     }
 }

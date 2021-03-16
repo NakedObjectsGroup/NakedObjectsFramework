@@ -53,8 +53,6 @@ namespace NakedFramework.Core.Spec {
 
         private IActionInvocationFacet ActionInvocationFacet => actionSpecImmutable.GetFacet<IActionInvocationFacet>();
 
-        public IActionSpec[] Actions => new IActionSpec[0];
-
         private bool FindServiceOnSpecOrSpecSuperclass(ITypeSpec spec) => spec != null && (spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass));
 
         private INakedObjectAdapter FindService() {
@@ -198,7 +196,7 @@ namespace NakedFramework.Core.Spec {
         public override bool IsVisibleWhenPersistent(INakedObjectAdapter target) => base.IsVisibleWhenPersistent(RealTarget(target));
 
         public INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) {
-            return parameterSet ?? (IsContributedMethod ? new[] {target} : new INakedObjectAdapter[0]);
+            return parameterSet ?? (IsContributedMethod ? new[] {target} : Array.Empty<INakedObjectAdapter>());
         }
 
         public bool IsLocallyContributedTo(ITypeSpec typeSpec, string id) {

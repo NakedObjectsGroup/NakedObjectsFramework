@@ -124,7 +124,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             ActionContextFacade[] visibleActions;
 
             if (IsProtoPersistent(objectContext.Target)) {
-                visibleActions = new ActionContextFacade[] { };
+                visibleActions = System.Array.Empty<ActionContextFacade>();
             }
             else if (IsForm(objectContext.Target)) {
                 visibleActions = objectContext.VisibleActions.Where(af => af.Action.ParameterCount == 0).ToArray();

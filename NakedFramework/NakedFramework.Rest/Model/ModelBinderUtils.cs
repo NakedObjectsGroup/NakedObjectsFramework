@@ -40,7 +40,7 @@ namespace NakedFramework.Rest.Model {
                 return br.ReadBytes((int) stream.Length);
             }
 
-            return new byte[] { };
+            return Array.Empty<byte>();
         }
 
         public static Stream QueryStringToStream(string qs) {

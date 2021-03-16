@@ -48,7 +48,7 @@ namespace NakedFramework.Metamodel.Facet {
                 return null;
             }
 
-            var isHidden = (bool) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
+            var isHidden = (bool) methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
             return isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
         }
 

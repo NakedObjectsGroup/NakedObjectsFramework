@@ -31,7 +31,7 @@ namespace NakedFramework.Metamodel.Facet {
         }
 
         public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
-            var obj = methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
+            var obj = methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
             return obj == null ? null : framework.NakedObjectManager.CreateAdapter(obj, null, null).TitleString();
         }
 

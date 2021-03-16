@@ -200,7 +200,7 @@ namespace NakedFramework.Core.Component {
                 return Instances(spec);
             }
 
-            return new object[] { };
+            return Array.Empty<object>();
         }
 
         public void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost) => objectStore.LoadComplexTypesIntoNakedObjectFramework(adapter, isGhost);

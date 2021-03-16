@@ -19,9 +19,9 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Utility {
     public static class FacadeUtils {
-        public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) => objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject;
+        public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) => ((ObjectFacade) objectFacade)?.WrappedNakedObject;
 
-        public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) => actionParameterFacade == null ? null : ((ActionParameterFacade) actionParameterFacade).WrappedSpec;
+        public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) => ((ActionParameterFacade) actionParameterFacade)?.WrappedSpec;
 
         public static NakedObjectsFacadeException Map(Exception e) =>
             e switch {

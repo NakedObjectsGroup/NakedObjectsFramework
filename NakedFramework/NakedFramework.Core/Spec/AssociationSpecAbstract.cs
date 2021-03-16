@@ -103,7 +103,7 @@ namespace NakedFramework.Core.Spec {
 
             if (reason == null) {
                 var fs = GetFacet<IDisableForSessionFacet>();
-                reason = fs == null ? null : fs.DisabledReason(target, Framework);
+                reason = fs?.DisabledReason(target, Framework);
             }
 
             return GetConsent(reason);

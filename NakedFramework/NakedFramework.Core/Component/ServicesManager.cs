@@ -8,10 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
@@ -19,7 +17,6 @@ using NakedFramework.Core.Util;
 namespace NakedFramework.Core.Component {
     public sealed class ServicesManager : IServicesManager {
         private readonly IDomainObjectInjector injector;
-        private readonly ILogger<ServicesManager> logger;
         private readonly INakedObjectManager manager;
 
         private readonly List<object> services;
@@ -30,12 +27,9 @@ namespace NakedFramework.Core.Component {
 
         public ServicesManager(IDomainObjectInjector injector,
                                INakedObjectManager manager,
-                               IAllServiceList serviceList,
-                               ILogger<ServicesManager> logger,
-                               IFunctionalReflectorConfiguration fConfig = null) {
+                               IAllServiceList serviceList) {
             this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
             this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
-            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
 
             services = serviceList.Services.Select(Activator.CreateInstance).ToList();
         }

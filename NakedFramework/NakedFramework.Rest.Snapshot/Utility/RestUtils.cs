@@ -334,7 +334,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequest req, (string name, ITypeFacade type) pnt, RestControlFlags flags) {
             return new(pnt.name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)),
-                                                          new OptionalProperty(JsonPropertyNames.Links, new LinkRepresentation[] { })));
+                                                          new OptionalProperty(JsonPropertyNames.Links, Array.Empty<LinkRepresentation>())));
         }
 
         public static string DefaultMimeType(this AttachmentContextFacade attachment) {

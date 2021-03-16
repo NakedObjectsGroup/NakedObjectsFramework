@@ -46,7 +46,7 @@ namespace NakedFramework.Core.Component {
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
-        private IOid GetOidForService(string name, string typeName) => oidGenerator.CreateOid(typeName, new object[] {0});
+        private IOid GetOidForService(string typeName) => oidGenerator.CreateOid(typeName, new object[] {0});
 
         private INakedObjectAdapter AdapterForNoIdentityObject(object domainObject) {
             var adapter = adapterCache.GetAdapter(domainObject);
@@ -206,7 +206,7 @@ namespace NakedFramework.Core.Component {
              select CreateAdapter(domainObject, null, null)).ToList();
 
         public INakedObjectAdapter GetServiceAdapter(object service) {
-            var oid = GetOidForService(ServiceUtils.GetId(service), service.GetType().FullName);
+            var oid = GetOidForService(service.GetType().FullName);
             return AdapterForService(oid, service);
         }
 

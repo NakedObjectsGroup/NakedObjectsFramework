@@ -15,9 +15,9 @@ namespace NakedFramework.Persistor.Entity.Configuration {
         public MergeOption DefaultMergeOption { get; set; }
         public Action<ObjectContext> CustomConfig { get; set; }
 
-        public Func<Type[]> PreCachedTypes { get; set; } = () => new Type[] { };
+        public Func<Type[]> PreCachedTypes { get; set; } = () => Array.Empty<Type>();
 
-        public Func<Type[]> NotPersistedTypes { get; set; } = () => new Type[] { };
+        public Func<Type[]> NotPersistedTypes { get; set; } = () => Array.Empty<Type>();
     }
 
     public class CodeFirstEntityContextConfiguration : EntityContextConfiguration {

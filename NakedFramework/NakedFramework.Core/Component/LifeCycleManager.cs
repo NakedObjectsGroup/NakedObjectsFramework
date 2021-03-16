@@ -32,7 +32,6 @@ namespace NakedFramework.Core.Component {
         private readonly IObjectPersistor objectPersistor;
         private readonly IOidGenerator oidGenerator;
         private readonly IPersistAlgorithm persistAlgorithm;
-        private readonly ISession session;
 
         public LifeCycleManager(
             IMetamodelManager metamodel,
@@ -51,7 +50,6 @@ namespace NakedFramework.Core.Component {
             this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
             this.objectPersistor = objectPersistor ?? throw new InitialisationException($"{nameof(objectPersistor)} is null");
             this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
-            this.session = session;
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }

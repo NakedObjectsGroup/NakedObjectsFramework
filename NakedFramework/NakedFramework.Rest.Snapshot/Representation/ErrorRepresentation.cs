@@ -19,9 +19,9 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             : base(oidStrategy, RestControlFlags.DefaultFlags()) {
             var exception = GetInnermostException(e);
             Message = exception.Message;
-            StackTrace = exception.StackTrace?.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray() ?? new string[] { };
+            StackTrace = exception.StackTrace?.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray() ?? Array.Empty<string>();
 
-            Links = new LinkRepresentation[] { };
+            Links = Array.Empty<LinkRepresentation>();
             Extensions = new MapRepresentation();
         }
 

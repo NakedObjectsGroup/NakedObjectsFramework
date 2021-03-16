@@ -9,23 +9,23 @@ using NakedFramework.Architecture.Resolve;
 
 namespace NakedFramework.Core.Resolve {
     public static class Events {
-        public static IResolveEvent DestroyEvent;
-        public static IResolveEvent EndPartResolvingEvent;
-        public static IResolveEvent EndPartSetupEvent;
-        public static IResolveEvent EndResolvingEvent;
-        public static IResolveEvent EndSerializingEvent;
-        public static IResolveEvent EndSetupEvent;
-        public static IResolveEvent EndUpdatingEvent;
-        public static IResolveEvent InitializeAggregateEvent;
-        public static IResolveEvent InitializePersistentEvent;
-        public static IResolveEvent InitializeTransientEvent;
-        public static IResolveEvent ResetEvent;
-        public static IResolveEvent StartPartResolvingEvent;
-        public static IResolveEvent StartPartSetupEvent;
-        public static IResolveEvent StartResolvingEvent;
-        public static IResolveEvent StartSerializingEvent;
-        public static IResolveEvent StartSetupEvent;
-        public static IResolveEvent StartUpdatingEvent;
+        public static readonly IResolveEvent DestroyEvent;
+        public static readonly IResolveEvent EndPartResolvingEvent;
+        public static readonly IResolveEvent EndPartSetupEvent;
+        public static readonly IResolveEvent EndResolvingEvent;
+        public static readonly IResolveEvent EndSerializingEvent;
+        public static readonly IResolveEvent EndSetupEvent;
+        public static readonly IResolveEvent EndUpdatingEvent;
+        public static readonly IResolveEvent InitializeAggregateEvent;
+        public static readonly IResolveEvent InitializePersistentEvent;
+        public static readonly IResolveEvent InitializeTransientEvent;
+        public static readonly IResolveEvent ResetEvent;
+        public static readonly IResolveEvent StartPartResolvingEvent;
+        public static readonly IResolveEvent StartPartSetupEvent;
+        public static readonly IResolveEvent StartResolvingEvent;
+        public static readonly IResolveEvent StartSerializingEvent;
+        public static readonly IResolveEvent StartSetupEvent;
+        public static readonly IResolveEvent StartUpdatingEvent;
 
         static Events() {
             DestroyEvent = new ResolveStateMachine.DestroyEvent();

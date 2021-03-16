@@ -283,13 +283,13 @@ namespace NakedFramework.Core.Spec {
 
         public string GetTitle(INakedObjectAdapter nakedObjectAdapter) {
             var titleFacet = GetFacet<ITitleFacet>();
-            var title = titleFacet == null ? null : titleFacet.GetTitle(nakedObjectAdapter, Framework);
+            var title = titleFacet?.GetTitle(nakedObjectAdapter, Framework);
             return title ?? DefaultTitle();
         }
 
         public string GetInvariantString(INakedObjectAdapter nakedObjectAdapter) {
             var parser = GetFacet<IParseableFacet>();
-            return parser == null ? null : parser.InvariantString(nakedObjectAdapter);
+            return parser?.InvariantString(nakedObjectAdapter);
         }
 
         public string GetIconName(INakedObjectAdapter forObjectAdapter) => InnerSpec.GetIconName(forObjectAdapter, Framework.MetamodelManager.Metamodel);

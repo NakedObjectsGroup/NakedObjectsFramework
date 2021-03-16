@@ -39,7 +39,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetScalars(IPrincipal user) {
             UserName = user.Identity?.Name ?? "";
-            Roles = new string[] { };
+            Roles = System.Array.Empty<string>();
         }
 
         private void SetHeader() => Caching = CacheType.UserInfo;

@@ -126,7 +126,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public PropertyInfo[] GetKeys() =>
             WrappedNakedObject.Spec is IServiceSpec
-                ? new PropertyInfo[] { }
+                ? Array.Empty<PropertyInfo>()
                 : framework.Persistor.GetKeys(WrappedNakedObject.Object.GetType());
 
         public IVersionFacade Version => new VersionFacade(WrappedNakedObject.Version);

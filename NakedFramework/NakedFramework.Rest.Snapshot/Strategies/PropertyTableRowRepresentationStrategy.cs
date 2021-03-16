@@ -21,7 +21,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
         public override bool ShowChoices() => false;
 
-        public override LinkRepresentation[] GetLinks() => new LinkRepresentation[] { };
+        public override LinkRepresentation[] GetLinks() => System.Array.Empty<LinkRepresentation>();
 
         protected override bool AddChoices() =>
             PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&

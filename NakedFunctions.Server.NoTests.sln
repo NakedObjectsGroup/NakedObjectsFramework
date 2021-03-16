@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.DependencyIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Xat", "NakedFramework\NakedFramework.Xat\NakedFramework.Xat.csproj", "{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Snapshot.Xml", "NakedFramework\NakedFramework.Snapshot.Xml\NakedFramework.Snapshot.Xml.csproj", "{601A68BC-8CE4-4B20-ADFA-171E7E2F166E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Facade", "NakedFramework\NakedFramework.Facade\NakedFramework.Facade.csproj", "{02D8F580-CDF9-40F1-B8D5-2C5F86531D4E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Facade.Impl", "NakedFramework\NakedFramework.Facade.Impl\NakedFramework.Facade.Impl.csproj", "{F21030D2-292B-4808-955B-6BB551409092}"
@@ -73,10 +71,6 @@ Global
 		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Release|Any CPU.Build.0 = Release|Any CPU
-		{601A68BC-8CE4-4B20-ADFA-171E7E2F166E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{601A68BC-8CE4-4B20-ADFA-171E7E2F166E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{601A68BC-8CE4-4B20-ADFA-171E7E2F166E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{601A68BC-8CE4-4B20-ADFA-171E7E2F166E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02D8F580-CDF9-40F1-B8D5-2C5F86531D4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{02D8F580-CDF9-40F1-B8D5-2C5F86531D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02D8F580-CDF9-40F1-B8D5-2C5F86531D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU

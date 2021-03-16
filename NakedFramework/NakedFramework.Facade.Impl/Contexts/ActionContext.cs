@@ -25,12 +25,12 @@ namespace NakedFramework.Facade.Impl.Contexts {
         public override ITypeSpec Specification => Action.ReturnSpec;
 
         public ParameterContext[] VisibleParameters {
-            get => parameters ?? new ParameterContext[] { };
+            get => parameters ?? System.Array.Empty<ParameterContext>();
             set => parameters = value;
         }
 
         public PropertyContext[] VisibleProperties {
-            get => properties ?? new PropertyContext[] { };
+            get => properties ?? System.Array.Empty<PropertyContext>();
             set => properties = value;
         }
 

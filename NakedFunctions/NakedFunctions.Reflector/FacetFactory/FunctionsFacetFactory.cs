@@ -31,7 +31,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
     public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory {
-        private static readonly string[] FixedPrefixes = { };
+        private static readonly string[] FixedPrefixes = Array.Empty<string>();
 
         private readonly ILogger<FunctionsFacetFactory> logger;
 

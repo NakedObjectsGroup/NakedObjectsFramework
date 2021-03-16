@@ -62,7 +62,7 @@ namespace NakedFramework.Xat.TestCase {
         protected virtual ITestObjectFactory TestObjectFactoryClass => testObjectFactory ??= new TestObjectFactory(NakedObjectsFramework);
 
         protected virtual IPrincipal TestPrincipal {
-            get { return testPrincipal ??= CreatePrincipal("Test", new string[] { }); }
+            get { return testPrincipal ??= CreatePrincipal("Test", Array.Empty<string>()); }
             set => testPrincipal = value;
         }
 
@@ -71,7 +71,7 @@ namespace NakedFramework.Xat.TestCase {
         protected ILoggerFactory LoggerFactory { get; set; }
 
         protected virtual object[] Fixtures {
-            get { return new object[] { }; }
+            get { return Array.Empty<object>(); }
         }
 
         /// <summary>
@@ -81,19 +81,19 @@ namespace NakedFramework.Xat.TestCase {
         ///     will be ignored.
         /// </summary>
         protected virtual Type[] Services {
-            get { return new Type[] { }; }
+            get { return Array.Empty<Type>(); }
         }
 
         protected virtual Type[] ObjectTypes {
-            get { return new Type[] { }; }
+            get { return Array.Empty<Type>(); }
         }
 
         protected virtual Type[] Records {
-            get { return new Type[] { }; }
+            get { return Array.Empty<Type>(); }
         }
 
         protected virtual Type[] Functions {
-            get { return new Type[] { }; }
+            get { return Array.Empty<Type>(); }
         }
 
         protected virtual Func<Type[], Type[]> SupportedSystemTypes => t => t;
@@ -205,12 +205,12 @@ namespace NakedFramework.Xat.TestCase {
         }
 
         private static MethodInfo GetInstallMethod(object fixture) =>
-            fixture.GetType().GetMethod("Install", new Type[0]) ??
-            fixture.GetType().GetMethod("install", new Type[0]);
+            fixture.GetType().GetMethod("Install", Array.Empty<Type>()) ??
+            fixture.GetType().GetMethod("install", Array.Empty<Type>());
 
         protected virtual object[] GetFixtures(object fixture) {
-            var getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", new Type[] { });
-            return getFixturesMethod == null ? new object[] { } : (object[]) getFixturesMethod.Invoke(fixture, new object[] { });
+            var getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", Array.Empty<Type>());
+            return getFixturesMethod == null ? Array.Empty<object>() : (object[]) getFixturesMethod.Invoke(fixture, Array.Empty<object>());
         }
 
         protected virtual void InstallFixture(object fixture) {
@@ -219,7 +219,7 @@ namespace NakedFramework.Xat.TestCase {
 
             var installMethod = GetInstallMethod(fixture);
             try {
-                installMethod.Invoke(fixture, new object[0]);
+                installMethod.Invoke(fixture, Array.Empty<object>());
             }
             catch (TargetInvocationException e) {
                 InvokeUtils.InvocationException("Exception executing " + installMethod, e);
@@ -348,16 +348,16 @@ namespace NakedFramework.Xat.TestCase {
 
         protected virtual void SetUser(string username, params string[] roles) {
             testPrincipal = CreatePrincipal(username, roles);
-            var ts = NakedObjectsFramework == null ? null : NakedObjectsFramework.Session as TestSession;
+            var ts = NakedObjectsFramework?.Session as TestSession;
             ts?.ReplacePrincipal(testPrincipal);
         }
 
         protected virtual void SetUser(string username) {
-            SetUser(username, new string[] { });
+            SetUser(username, Array.Empty<string>());
         }
 
         protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
-            host = tc.CreateHostBuilder(new string[] { }).Build();
+            host = tc.CreateHostBuilder(Array.Empty<string>()).Build();
             tc.RootServiceProvider = host.Services;
             tc.servicesCache = new Dictionary<string, ITestService>();
             tc.RootServiceProvider.GetService<IModelBuilder>().Build();

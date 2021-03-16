@@ -14,7 +14,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
         private MediaTypeHeaderValue mediaType;
         public MapRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }
 
-        public static MapRepresentation Create(params OptionalProperty[] properties) => properties.Any() ? CreateWithOptionals<MapRepresentation>(new object[] { }, properties) : new MapRepresentation();
+        public static MapRepresentation Create(params OptionalProperty[] properties) => properties.Any() ? CreateWithOptionals<MapRepresentation>(System.Array.Empty<object>(), properties) : new MapRepresentation();
 
         public void SetContentType(MediaTypeHeaderValue mt) => mediaType = mt;
 

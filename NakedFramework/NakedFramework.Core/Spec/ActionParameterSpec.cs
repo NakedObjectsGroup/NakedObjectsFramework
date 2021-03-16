@@ -52,7 +52,7 @@ namespace NakedFramework.Core.Spec {
             get {
                 if (!checkedForElementSpec) {
                     var facet = GetFacet<IElementTypeFacet>();
-                    var es = facet != null ? facet.ValueSpec : null;
+                    var es = facet?.ValueSpec;
                     elementSpec = es == null ? null : Framework.MetamodelManager.GetSpecification(es);
                     checkedForElementSpec = true;
                 }
@@ -177,7 +177,7 @@ namespace NakedFramework.Core.Spec {
             if (choicesParameters == null) {
                 var choicesFacet = GetFacet<IActionChoicesFacet>();
                 choicesParameters = choicesFacet == null
-                    ? new (string, IObjectSpec)[] { }
+                    ? Array.Empty<(string, IObjectSpec)>()
                     : choicesFacet.ParameterNamesAndTypes.Select(t => {
                         var (pName, pSpec) = t;
                         return (pName, Framework.MetamodelManager.GetSpecification(pSpec));

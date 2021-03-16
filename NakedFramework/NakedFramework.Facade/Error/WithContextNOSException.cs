@@ -28,7 +28,7 @@ namespace NakedFramework.Facade.Error {
         public IList<ContextFacade> Contexts {
             get {
                 if (contexts == null) {
-                    return ContextFacade == null ? new ContextFacade[] { } : new[] {ContextFacade};
+                    return ContextFacade == null ? Array.Empty<ContextFacade>() : new[] {ContextFacade};
                 }
 
                 return contexts;
