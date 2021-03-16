@@ -1,9 +1,12 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
     public class ReferenceInputField : InputField
     {
+        public ReferenceInputField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
+
         public override ReferenceInputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 
         public override ReferenceInputField AssertHasPlaceholder() => throw new NotImplementedException();
@@ -21,7 +24,11 @@ namespace NakedFrameworkClient.TestFramework
         public override ReferenceInputField Enter(string characters) => throw new NotImplementedException();
 
         //Use this to simulate 'dropping' a reference (previously copied to clipboard).
-        public ReferenceInputField PasteReferenceFromClipboard() => throw new NotImplementedException();
+        public ReferenceInputField PasteReferenceFromClipboard()
+        {
+            helper.PasteIntoInputField(helper.WaitForChildElement(element, "input"));
+            return this;
+        }
 
     }
 }

@@ -12,4 +12,17 @@
         MainButton = 0,
         SecondaryButton = 1
     }
+
+    public enum PaneType
+    {
+        Home,
+        Object,
+        List,
+        Recent,
+        MultiLineDialog,
+        Attachment,
+        ApplicationProperties,
+        Error,
+        Logoff
+    }
 }

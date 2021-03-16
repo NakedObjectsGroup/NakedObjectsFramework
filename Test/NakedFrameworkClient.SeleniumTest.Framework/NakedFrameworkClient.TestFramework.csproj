@@ -1,12 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="drivers\chromedriver.exe" />
+    <None Remove="drivers\IEDriverServer.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="drivers\chromedriver.exe" />
+    <EmbeddedResource Include="drivers\IEDriverServer.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NakedFramework.Selenium.Helpers\NakedFramework.Selenium.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

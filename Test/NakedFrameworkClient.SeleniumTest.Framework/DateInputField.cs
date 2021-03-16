@@ -1,9 +1,12 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
     public class DateInputField : InputField
     {
+        public DateInputField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
+
         public override DateInputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 
         public override DateInputField AssertHasPlaceholder() => throw new NotImplementedException();

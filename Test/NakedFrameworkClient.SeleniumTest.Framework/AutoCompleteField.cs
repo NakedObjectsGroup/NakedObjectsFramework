@@ -1,9 +1,12 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
     public class AutoCompleteField : ReferenceInputField
     {
+        public AutoCompleteField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
+
         public override AutoCompleteField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 
         public override AutoCompleteField AssertHasPlaceholder() => throw new NotImplementedException();

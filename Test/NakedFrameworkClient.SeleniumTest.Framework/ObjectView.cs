@@ -1,15 +1,21 @@
 ﻿
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
     public class ObjectView : ActionResult
     {
-        public override ObjectView AssertTitleIs(string title) => throw new NotImplementedException();
+        public ObjectView(IWebElement element, Helper helper, Pane pane = Pane.Single) : base(element, helper, pane) { }
 
-        //Type is the unqualified type name (held in a span but not displayed in default client)
-        public ObjectView AssertHasType(string typeName) => throw new NotImplementedException();
+        public override ObjectView AssertTitleIs(string title)
+        {
+            Assert.AreEqual(title, element.FindElement(By.CssSelector(".title")).Text);
+            return this;
+        }
+
         //Properties, here, includes any collections. The list of names should be specified in display order
         public ObjectView AssertPropertiesAre(params string[] propertyNames) => throw new NotImplementedException();
 
@@ -17,11 +23,20 @@ namespace NakedFrameworkClient.TestFramework
 
         public ObjectCollection GetCollection(string collectionName) => throw new NotImplementedException();
 
-        public ObjectView DragTitleAndDropOnto(ReferenceInputField field) => throw new NotImplementedException();
+        public ObjectView DragTitleAndDropOnto(ReferenceInputField field)
+        {
+            var title = helper.WaitForChildElement(element, ".title");
+            helper.CopyToClipboard(title);
+            field.PasteReferenceFromClipboard();
+            return this;
+        }
 
-        public string GetTitle() => throw new NotImplementedException();
 
         //Works only when there is already an open dialog in view - otherwise open one through action menu
-        public Dialog GetOpenedDialog() => throw new NotImplementedException();
+        public Dialog GetOpenedDialog()
+        {
+            var we = helper.WaitForChildElement(element, ".dialog");
+            return new Dialog(we, helper, this);
+        }
     }
 }

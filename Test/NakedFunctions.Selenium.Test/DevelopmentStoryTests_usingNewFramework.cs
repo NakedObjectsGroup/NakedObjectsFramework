@@ -20,39 +20,39 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
     public class DevelopmentStoryTests_usingNewFramework
     {
 
-        protected Browser Browser = new Browser(TestConfig.BaseFunctionalUrl);
+        private string baseUrl = "http://nakedfunctionstest.azurewebsites.net/";
+        private Helper helper;
 
+        [Obsolete]
+        private IWebDriver br;
 
-        #region initialization
+        #region Initialization & Clean Up
         [ClassInitialize]
         public static void InitialiseClass(TestContext context)
         {
-            //FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
+            Helper.FilePath(@"drivers.chromedriver.exe");
         }
 
         [TestInitialize]
         public virtual void InitializeTest()
         {
-            //InitChromeDriver();
-            //Url(BaseUrl);
+            helper = new Helper(baseUrl);
+            br = helper.br;
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            //CleanUpTest();
-        }
+        public virtual void CleanUpTest() => helper.CleanUp();
         #endregion
 
-        //[TestMethod]
+
+        [TestMethod]
         public void AllWorkingStories()
         {
             RetrieveObjectViaMenuAction();
             ObjectActionThatReturnsJustAContext();
             OverriddenPrincipalProviderService();
-            //UseOfRandomSeedGenerator();
-            //ObjectContributedAction();
+            UseOfRandomSeedGenerator();
+            ObjectContributedAction();
             //InformUserViaIAlertService();
             //EditAction();
             //EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
@@ -99,46 +99,44 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void RetrieveObjectViaMenuAction()
         {
-            var dialog = Browser.Home().OpenMainMenu("Products").GetActionWithDialog("Find Product By Name")
-                .AssertIsEnabled().Open();
-            dialog.GetField<ValueInputField>("Search String").Clear().Enter("handlebar tube");
-            dialog.ClickOKToViewList().AssertTitleIs("Find Product By Name").GetRowFromList(1).AssertTitleIs("Handlebar Tube");
+            var dialog = helper.GotoHome().OpenMainMenu("Products").GetActionWithDialog("Find Product By Name")
+                .AssertIsEnabled().Open().AssertOKIsDisabled("Missing mandatory fields: Search String; ");
+            dialog.GetTextField("Search String").Clear().Enter("handlebar tube");
+            dialog.AssertOKIsEnabled().ClickOKToViewList().AssertTitleIs("Find Product By Name").GetRowFromList(0).AssertTitleIs("Handlebar Tube");
         }
 
         //[TestMethod]
         public void ObjectActionThatReturnsJustAContext()
         {
-            var offer = Browser.GotoUrl("object?i1=View&o1=AW.Types.SpecialOffer--5").GetObjectView();
-            offer.AssertTitleIs("Volume Discount 41+");
+            var offer = helper.GoDirectToUrl("object?i1=View&o1=AW.Types.SpecialOffer--5")
+                .GetObjectView().AssertTitleIs("Volume Discount 41 to 60");
             var dialog = offer.OpenActions().GetActionWithDialog("Edit Description").Open();
-            dialog.GetField<ValueInputField>("Description").Clear().Enter("Volume Discount 41 to 60").AssertNoValidationError();
+            dialog.GetTextField("Description").Clear().Enter("Volume Discount 41+").AssertNoValidationError();
             offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
-            dialog = offer.AssertTitleIs("Volume Discount 41 to 60").OpenActions().GetActionWithDialog("Edit Description").Open();
-            dialog.GetField<ValueInputField>("Description").Clear().Enter("Volume Discount 41+");
+            dialog = offer.AssertTitleIs("Volume Discount 41+").OpenActions().GetActionWithDialog("Edit Description").Open();
+            dialog.GetTextField("Description").Clear().Enter("Volume Discount 41 to 60");
             offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
-            offer.AssertTitleIs("Volume Discount 41+");
+            offer.AssertTitleIs("Volume Discount 41 to 60");
         }
 
         //[TestMethod]
         public void OverriddenPrincipalProviderService()
         {
-            Browser.Home().OpenMainMenu("Employees").GetActionWithoutDialog("Me")
+            helper.GotoHome().OpenMainMenu("Employees").GetActionWithoutDialog("Me")
                 .ClickToViewObject().AssertTitleIs("Ken Sánchez");
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void UseOfRandomSeedGenerator()
         {
-            string prod1Title = Browser.Home().OpenMainMenu("Products")
+            string prod1Title = helper.GotoHome().OpenMainMenu("Products")
                 .GetActionWithoutDialog("Random Product")
                 .ClickToViewObject()
-                .AssertHasType("Product")
                 .GetTitle();
 
-            string prod2Title = Browser.Home().OpenMainMenu("Products")
+            string prod2Title = helper.GotoHome().OpenMainMenu("Products")
               .GetActionWithoutDialog("Random Product")
               .ClickToViewObject()
-              .AssertHasType("Product")
               .GetTitle();
 
             Assert.AreNotEqual(prod2Title, prod1Title);
@@ -148,51 +146,52 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void ObjectContributedAction()
         {
             //Tests that an action (side effect free) can be associated with an object
-            Browser.GotoUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open").GetObjectView()
+            helper.GoDirectToUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open").GetObjectView()
                 .AssertTitleIs("Mountain Tire Sale")
                 .OpenActions().GetActionWithoutDialog("List Associated Products")
                 .ClickToViewList()
                 .AssertNoOfRowsIs(3)
                 .GetRowFromList(2)
-                .AssertTitleIs("LL Mountain Tire");
+                .AssertTitleIs("HL Mountain Tire");
         }
 
-        [TestMethod]
+        [TestMethod] //Not yet working
         public void InformUserViaIAlertService()
         {
 
-            Browser.GotoUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928");
-            var offer = Browser.GetObjectView(Pane.Left);
-            var dialog = offer.GetOpenedDialog();
-            var field = dialog.GetField<ReferenceInputField>("Product");
-            var prod = Browser.GetObjectView(Pane.Right).AssertTitleIs("LL Mountain Tire");
+            var dialog = helper.GoDirectToUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928")
+            .GetObjectView(Pane.Left).GetOpenedDialog();
+            var field = dialog.GetReferenceField("Product");
+            var prod = helper.GetObjectView(Pane.Right).AssertTitleIs("LL Mountain Tire");
             prod.DragTitleAndDropOnto(field);
-            dialog.ClickOKToViewObject();
-            Browser.GetFooter().AssertHasMessage("Mountain Tire Sale is already associated with LL Mountain Tire");
+
+            //Problem here, because the object view has not changed. Need a different method?
+            //Also needed to test co-validation.
+            dialog.ClickOKWithNoResultExpected();
+            helper.GetFooter().AssertHasMessage("Mountain Tire Sale is already associated with LL Mountain Tire");
 
             //wait.Until(d => d.FindElement(By.CssSelector(".footer .messages")).Text != "");
             //var msg = WaitForCss(".footer .messages").Text;
             //Assert.AreEqual("Mountain Tire Sale is already associated with LL Mountain Tire", msg);
         }
 
-        ////[TestMethod]
-        //public void EditAction()
-        //{
-        //    //Corresponds to Story #202
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
-        //    var title = WaitForTitle("Road-650 Overstock");
-        //    var original = GetPropertyValue("Max Qty");
-        //    var newQty = original + "1";
-        //    ClearFieldThenType("#maxqty1", newQty);
-        //    Click(OKButton());
-        //    Thread.Sleep(1000);
-        //    Assert.AreEqual(newQty, GetPropertyValue("Max Qty"));
-        //    OpenActionDialog("Edit Quantities");
-        //    ClearFieldThenType("#maxqty1", original);
-        //    Click(OKButton());
-        //    Reload();
-        //    Assert.AreEqual(original, GetPropertyValue("Max Qty"));
-        //}
+        //[TestMethod]
+        public void EditAction()
+        {
+            //GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
+            //var title = WaitForTitle("Road-650 Overstock");
+            //var original = GetPropertyValue("Max Qty");
+            //var newQty = original + "1";
+            //ClearFieldThenType("#maxqty1", newQty);
+            //Click(OKButton());
+            //Thread.Sleep(1000);
+            //Assert.AreEqual(newQty, GetPropertyValue("Max Qty"));
+            //OpenActionDialog("Edit Quantities");
+            //ClearFieldThenType("#maxqty1", original);
+            //Click(OKButton());
+            //Reload();
+            //Assert.AreEqual(original, GetPropertyValue("Max Qty"));
+        }
 
         ////[TestMethod]
         //public void EditActionWithDefaultSuppliedAutomaticallyByEditAttribute()
