@@ -20,7 +20,13 @@ namespace NakedFrameworkClient.TestFramework
             return new ActionWithDialog(act, helper, enclosingView);
         }
 
-        public ActionWithoutDialog GetActionWithoutDialog(string actionName) => throw new NotImplementedException();
+        public ActionWithoutDialog GetActionWithoutDialog(string actionName)
+        {
+            string actionSelector = $"nof-action input[value=\"{actionName}\"]";
+            var act = helper.wait.Until(d => element.FindElement(By.CssSelector(actionSelector)));
+            //TODO: test that it does not generate a dialog - information not currently available in HTML see #292
+            return new ActionWithoutDialog(act, helper, enclosingView);
+        }
 
         public Menu GetSubMenu(string subMenuName) => throw new NotImplementedException();
   

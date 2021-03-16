@@ -49,10 +49,10 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void AllWorkingStories()
         {
             RetrieveObjectViaMenuAction();
-            //ObjectActionThatReturnsJustAContext();
-            //OverriddenPrincipalProviderService();
-            //UseOfRandomSeedGenerator();
-            //ObjectContributedAction();
+            ObjectActionThatReturnsJustAContext();
+            OverriddenPrincipalProviderService();
+            UseOfRandomSeedGenerator();
+            ObjectContributedAction();
             //InformUserViaIAlertService();
             //EditAction();
             //EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
@@ -108,15 +108,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void ObjectActionThatReturnsJustAContext()
         {
-            var offer = helper.GoDirectToUrl("object?i1=View&o1=AW.Types.SpecialOffer--5").GetObjectView();
-            offer.AssertTitleIs("Volume Discount 41+");
+            var offer = helper.GoDirectToUrl("object?i1=View&o1=AW.Types.SpecialOffer--5")
+                .GetObjectView().AssertTitleIs("Volume Discount 41 to 60");
             var dialog = offer.OpenActions().GetActionWithDialog("Edit Description").Open();
-            dialog.GetTextField("Description").Clear().Enter("Volume Discount 41 to 60").AssertNoValidationError();
+            dialog.GetTextField("Description").Clear().Enter("Volume Discount 41+").AssertNoValidationError();
             offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
-            dialog = offer.AssertTitleIs("Volume Discount 41 to 60").OpenActions().GetActionWithDialog("Edit Description").Open();
-            dialog.GetTextField("Description").Clear().Enter("Volume Discount 41+");
+            dialog = offer.AssertTitleIs("Volume Discount 41+").OpenActions().GetActionWithDialog("Edit Description").Open();
+            dialog.GetTextField("Description").Clear().Enter("Volume Discount 41 to 60");
             offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
-            offer.AssertTitleIs("Volume Discount 41+");
+            offer.AssertTitleIs("Volume Discount 41 to 60");
         }
 
         //[TestMethod]
@@ -126,19 +126,17 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .ClickToViewObject().AssertTitleIs("Ken Sánchez");
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void UseOfRandomSeedGenerator()
         {
             string prod1Title = helper.GotoHome().OpenMainMenu("Products")
                 .GetActionWithoutDialog("Random Product")
                 .ClickToViewObject()
-                .AssertHasType("Product")
                 .GetTitle();
 
             string prod2Title = helper.GotoHome().OpenMainMenu("Products")
               .GetActionWithoutDialog("Random Product")
               .ClickToViewObject()
-              .AssertHasType("Product")
               .GetTitle();
 
             Assert.AreNotEqual(prod2Title, prod1Title);
@@ -154,19 +152,20 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .ClickToViewList()
                 .AssertNoOfRowsIs(3)
                 .GetRowFromList(2)
-                .AssertTitleIs("LL Mountain Tire");
+                .AssertTitleIs("HL Mountain Tire");
         }
 
-        [TestMethod]
+        [TestMethod, Ignore] //Not yet working
         public void InformUserViaIAlertService()
         {
 
-            helper.GoDirectToUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928");
-            var offer = helper.GetObjectView(Pane.Left);
-            var dialog = offer.GetOpenedDialog();
+            var dialog = helper.GoDirectToUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928")
+            .GetObjectView(Pane.Left).GetOpenedDialog();
             var field = dialog.GetReferenceField("Product");
             var prod = helper.GetObjectView(Pane.Right).AssertTitleIs("LL Mountain Tire");
             prod.DragTitleAndDropOnto(field);
+
+            //Problem here, because the object view has not changed. Need a different method?
             dialog.ClickOKToViewObject();
             helper.GetFooter().AssertHasMessage("Mountain Tire Sale is already associated with LL Mountain Tire");
 
@@ -175,24 +174,23 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //Assert.AreEqual("Mountain Tire Sale is already associated with LL Mountain Tire", msg);
         }
 
-        ////[TestMethod]
-        //public void EditAction()
-        //{
-        //    //Corresponds to Story #202
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
-        //    var title = WaitForTitle("Road-650 Overstock");
-        //    var original = GetPropertyValue("Max Qty");
-        //    var newQty = original + "1";
-        //    ClearFieldThenType("#maxqty1", newQty);
-        //    Click(OKButton());
-        //    Thread.Sleep(1000);
-        //    Assert.AreEqual(newQty, GetPropertyValue("Max Qty"));
-        //    OpenActionDialog("Edit Quantities");
-        //    ClearFieldThenType("#maxqty1", original);
-        //    Click(OKButton());
-        //    Reload();
-        //    Assert.AreEqual(original, GetPropertyValue("Max Qty"));
-        //}
+        //[TestMethod]
+        public void EditAction()
+        {
+            //GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
+            //var title = WaitForTitle("Road-650 Overstock");
+            //var original = GetPropertyValue("Max Qty");
+            //var newQty = original + "1";
+            //ClearFieldThenType("#maxqty1", newQty);
+            //Click(OKButton());
+            //Thread.Sleep(1000);
+            //Assert.AreEqual(newQty, GetPropertyValue("Max Qty"));
+            //OpenActionDialog("Edit Quantities");
+            //ClearFieldThenType("#maxqty1", original);
+            //Click(OKButton());
+            //Reload();
+            //Assert.AreEqual(original, GetPropertyValue("Max Qty"));
+        }
 
         ////[TestMethod]
         //public void EditActionWithDefaultSuppliedAutomaticallyByEditAttribute()

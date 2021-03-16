@@ -22,21 +22,25 @@ namespace NakedFrameworkClient.TestFramework
 
         public override TextInputField Clear()
         {
-            if (element.GetAttribute("value") != "")
+            var input = Input();
+            if (input.GetAttribute("value") != "")
             {
-                element.SendKeys(Keys.Control + "a");
+                input.SendKeys(Keys.Control + "a");
                 Thread.Sleep(100);
-                element.SendKeys(Keys.Delete);
+                input.SendKeys(Keys.Delete);
             }
-            helper.wait.Until(dr => element.GetAttribute("value") == "");
+            helper.wait.Until(dr => input.GetAttribute("value") == "");
             return this;
         }
 
         public override TextInputField Enter(string characters)
         {
-            element.SendKeys(characters);
-            helper.wait.Until(dr => element.GetAttribute("value") == characters);
+            var input = Input();
+            input.SendKeys(characters);
+            helper.wait.Until(dr => input.GetAttribute("value") == characters);
             return this;
         }
+
+        private IWebElement Input() => element.FindElement(By.TagName("input"));
     }
 }

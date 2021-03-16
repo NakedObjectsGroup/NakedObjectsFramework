@@ -16,7 +16,11 @@ namespace NakedFrameworkClient.TestFramework
 
         public ListView AssertHeaderIs(string header) => throw new NotImplementedException();
 
-        public ListView AssertNoOfRowsIs(int rows) => throw new NotImplementedException();
+        public ListView AssertNoOfRowsIs(int rows)
+        {
+            Assert.AreEqual(rows, element.FindElements(By.CssSelector("table tbody tr")).Count);
+            return this;
+        }
 
         public ListView AssertIsList() => throw new NotImplementedException();
 

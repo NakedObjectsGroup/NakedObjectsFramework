@@ -175,6 +175,11 @@ namespace NakedFrameworkClient.TestFramework
             return wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
         }
 
+        public IWebElement WaitForChildElement(IWebElement parent, string cssSelector)
+        {
+            return wait.Until(d => parent.FindElement(By.CssSelector(cssSelector)));
+        }
+
         private IWebElement WaitForTextEquals(string cssSelector, string text)
         {
             wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text.Trim() == text.Trim());
@@ -413,6 +418,10 @@ namespace NakedFrameworkClient.TestFramework
                     throw new NotImplementedException();
             }
         }
+
+        internal string CssSelectorFor(Pane pane, PaneType type) =>
+            CssSelectorFor(pane) + " ." + type.ToString().ToLower();
+
 
         public void WaitForView(Pane pane, PaneType type, string title = null)
         {
@@ -776,14 +785,13 @@ namespace NakedFrameworkClient.TestFramework
             return WaitForCss(cssSelector);
         }
 
-        private IWebElement PasteIntoReferenceField(string cssSelector)
+        public IWebElement PasteIntoInputField(IWebElement target)
         {
-            var target = WaitForCss(cssSelector);
             var copying = WaitForCss(".footer .currentcopy .reference").Text;
             target.Click();
             target.SendKeys(Keys.Control + "v");
-            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).GetAttribute("value") == copying);
-            return WaitForCss(cssSelector);
+            wait.Until(dr => target.GetAttribute("value") == copying);
+            return target;
         }
 
         private IWebElement Tab(int numberIfTabs = 1)
@@ -848,15 +856,74 @@ namespace NakedFrameworkClient.TestFramework
             return new HomeView(el, this);
         }
 
-        public Helper GoDirectToUrl(string url) => throw new NotImplementedException();
+        public Helper GoDirectToUrl(string url)
+        {
+            GotoUrl(url);
+            return this;
+        }
 
-        public ObjectView GetObjectView(Pane pane = Pane.Single) => throw new NotImplementedException();
+        public ObjectView GetObjectView(Pane pane = Pane.Single)
+        {
+            WaitForView(pane, PaneType.Object);
+            var el = WaitForCss(CssSelectorFor(pane) + " .object");
+            return new ObjectView(el, this, pane);
+        }
 
         public ListView GetListView(Pane pane = Pane.Single) => throw new NotImplementedException();
 
         public HomeView GetHomeView(Pane pane) => throw new NotImplementedException();
 
         public Footer GetFooter() => throw new NotImplementedException();
+
+        internal Pane GetNewPane(Pane pane, MouseClick button)
+        {
+            return pane switch
+            {
+                Pane.Single => button switch { MouseClick.MainButton => Pane.Single, _ => Pane.Right },
+                Pane.Left => button switch { MouseClick.MainButton => Pane.Left, _ => Pane.Right },
+                _ => button switch { MouseClick.MainButton => Pane.Right, _ => Pane.Left }
+            };
+        }
+
+       internal ListView WaitForNewListView(View enclosingView, MouseClick button)
+        { 
+            Pane newPane = GetNewPane(enclosingView.pane, button);
+            if (enclosingView is not ListView)
+            {
+                return new ListView(WaitForCss(CssSelectorFor(newPane, PaneType.List)), this, newPane);
+            } else
+            {
+                //wait for list view new pane where contents differ
+                throw new NotImplementedException();
+            }
+        }
+
+        internal ObjectView WaitForNewObjectView(View enclosingView, MouseClick button)
+        {
+            Pane newPane = GetNewPane(enclosingView.pane, button);
+            var css = CssSelectorFor(newPane, PaneType.Object);
+            if (enclosingView is not ObjectView)
+            {
+                return new ObjectView(WaitForCss(css), this, newPane);
+            }
+            else
+            {
+                var original = PropsAndColls(enclosingView.element);
+                wait.Until(dr => PropsAndColls(dr.FindElement(By.CssSelector(css))) != original);
+                return new ObjectView(WaitForCss(css), this, newPane);
+            }
+        }
+
+        private string PropsAndColls(IWebElement objectView)
+        {
+            return objectView.FindElement(By.CssSelector("nof-properties")).Text +
+                objectView.FindElement(By.CssSelector("nof-collections")).Text;
+        }
+
+        internal void Click(IWebElement we, MouseClick button)
+        {
+            if (button == MouseClick.MainButton) { we.Click(); } else { RightClick(we); }
+        }
         #endregion
     }
 

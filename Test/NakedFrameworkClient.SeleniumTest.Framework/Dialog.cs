@@ -25,18 +25,18 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public ObjectView ClickOKToViewObject(MouseClick button = MouseClick.MainButton) => throw new NotImplementedException();
+        public ObjectView ClickOKToViewObject(MouseClick button = MouseClick.MainButton)
+        {
+            var ok = GetOKButton().AssertIsEnabled();
+            helper.Click(ok, button);
+            return helper.WaitForNewObjectView(enclosingView, button);
+        }
 
         public ListView ClickOKToViewList(MouseClick button = MouseClick.MainButton)
         {
-            GetOKButton().AssertIsEnabled().Click(); //TODO just doing left click now
-            //TODO not checking if current view type is same (so then checking for different content).
-            //Need better helper methods
-            //Get new Pane from current pane, mouse click type
-            helper.WaitForView(enclosingView.pane, PaneType.List); //TODO temp 
-            var selector = helper.CssSelectorFor(enclosingView.pane) + " .list";
-            var list = helper.WaitForCss(selector);
-            return new ListView(list, helper, enclosingView.pane); //Todo specify new pane
+            var ok = GetOKButton().AssertIsEnabled();
+            helper.Click(ok, button);
+            return helper.WaitForNewListView(enclosingView, button);
         }
 
         private IWebElement GetOKButton() => element.FindElement(By.CssSelector(".ok"));
@@ -45,15 +45,19 @@ namespace NakedFrameworkClient.TestFramework
         {
             var param = element.FindElements(By.CssSelector("nof-edit-parameter")).Single(x => x.Text == fieldName);
             var input = param.FindElement(By.TagName("input"));
-            Assert.AreEqual("text", input.GetAttribute("type"), $"{fieldName} is not a Text field");
-            return new TextInputField(input, helper, enclosingView);
+            //Not a valid test!
+            //Assert.AreEqual("text", input.GetAttribute("type"), $"{fieldName} is not a Text field");
+            return new TextInputField(param, helper, enclosingView);
         }
 
-
+        //TODO: Factor out common logic
         public ReferenceInputField GetReferenceField(string fieldName)
         {
-            throw new NotImplementedException();
+            var param = element.FindElements(By.CssSelector("nof-edit-parameter")).Single(x => x.Text == fieldName);
+            var input = param.FindElement(By.TagName("input"));
+            Assert.IsTrue(input.GetAttribute("class").Contains("droppable"));
+            //Assert.AreEqual("text", input.GetAttribute("type"), $"{fieldName} is not a Text field");
+            return new ReferenceInputField(param, helper, enclosingView);
         }
     }
 }
- 

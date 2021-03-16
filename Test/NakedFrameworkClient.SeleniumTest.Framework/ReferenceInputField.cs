@@ -24,7 +24,11 @@ namespace NakedFrameworkClient.TestFramework
         public override ReferenceInputField Enter(string characters) => throw new NotImplementedException();
 
         //Use this to simulate 'dropping' a reference (previously copied to clipboard).
-        public ReferenceInputField PasteReferenceFromClipboard() => throw new NotImplementedException();
+        public ReferenceInputField PasteReferenceFromClipboard()
+        {
+            helper.PasteIntoInputField(helper.WaitForChildElement(element, "input"));
+            return this;
+        }
 
     }
 }
