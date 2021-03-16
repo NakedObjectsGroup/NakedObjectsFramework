@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
@@ -76,6 +77,11 @@ namespace NakedObjects.Core.Component {
 
             Methods.InjectRoot(root, inlineObject);
         }
+
+        public void InjectParentIntoChild(object parent, object child) =>
+            child.GetType().GetProperties().SingleOrDefault(p => p.CanWrite &&
+                                                                 p.PropertyType.IsInstanceOfType(parent) &&
+                                                                 p.IsDefined(typeof(RootAttribute), false))?.SetValue(child, parent, null);
 
         #endregion
     }

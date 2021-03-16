@@ -30,7 +30,6 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.Entity.Configuration;
 using NakedFramework.Persistor.Entity.Util;
-using NakedObjects;
 
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
 
@@ -378,10 +377,6 @@ namespace NakedFramework.Persistor.Entity.Component {
             return msg.ToString();
         }
 
-        private static void InjectParentIntoChild(object parent, object child) =>
-            child.GetType().GetProperties().SingleOrDefault(p => p.CanWrite &&
-                                                                 p.PropertyType.IsInstanceOfType(parent) &&
-                                                                 p.GetCustomAttribute<RootAttribute>() != null)?.SetValue(child, parent, null);
 
         internal void CheckProxies(object objectToCheck) {
             var objectType = objectToCheck.GetType();
@@ -492,6 +487,14 @@ namespace NakedFramework.Persistor.Entity.Component {
             return field.GetNakedObject(nakedObjectAdapter).GetAsEnumerable(manager).Count();
         }
 
+        public bool IsNotPersisted(object owner, PropertyInfo pi) {
+            if (metamodelManager.GetSpecification(owner.GetEntityProxiedType()) is IObjectSpec objectSpec) {
+                return objectSpec.Properties.SingleOrDefault(p => p.Id == pi.Name)?.ContainsFacet<INotPersistedFacet>() == true;
+            }
+
+            return false;
+        }
+
         #region Delegates
 
         public delegate INakedObjectAdapter CreateAdapterDelegate(IOid oid, object domainObject);
@@ -522,7 +525,7 @@ namespace NakedFramework.Persistor.Entity.Component {
                         throw new NakedObjectSystemException("Complex type members should never be null");
                     }
 
-                    InjectParentIntoChild(adapter.Object, complexObject);
+                    injector.InjectParentIntoChild(adapter.Object, complexObject);
                     injector.InjectInto(complexObject);
                     createAggregatedAdapter(adapter, pi, complexObject);
                 }

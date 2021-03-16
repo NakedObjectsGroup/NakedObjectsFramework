@@ -21,6 +21,8 @@ namespace NakedFramework.Architecture.Component {
         void InjectInto(object obj);
 
         void InjectIntoInline(object root, object inlineObject);
+
+        void InjectParentIntoChild(object parent, object child);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

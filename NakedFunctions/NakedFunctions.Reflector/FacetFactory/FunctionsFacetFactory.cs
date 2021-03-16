@@ -25,7 +25,6 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Facet;
-using NakedObjects;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
@@ -41,10 +40,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             logger = loggerFactory.CreateLogger<FunctionsFacetFactory>();
 
         public string[] Prefixes => FixedPrefixes;
-
-        private static bool IsQueryOnly(MethodInfo method) =>
-            method.GetCustomAttribute<IdempotentAttribute>() is null &&
-            method.GetCustomAttribute<QueryOnlyAttribute>() is not null;
 
         // separate methods to reproduce old reflector behaviour
         private static bool IsParameterCollection(Type type) =>
@@ -138,7 +133,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
 
             ITypeSpecImmutable elementSpec = null;
-            var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(returnType);
+            var isQueryable = CollectionUtils.IsQueryable(returnType);
             if (returnSpec is IObjectSpecBuilder && IsCollection(returnType)) {
                 var elementType = CollectionUtils.ElementType(returnType);
                 (elementSpec, metamodel) = reflector.LoadSpecification(elementType, metamodel);

@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NakedObjects\NakedObjects.Core\NakedObjects.Core.csproj" />
     <ProjectReference Include="..\NakedFramework.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
     <ProjectReference Include="..\NakedFramework.Facade\NakedFramework.Facade.csproj" />
     <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />

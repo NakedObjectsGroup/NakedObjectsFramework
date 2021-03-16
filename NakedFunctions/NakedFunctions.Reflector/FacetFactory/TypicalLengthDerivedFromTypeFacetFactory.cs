@@ -21,7 +21,6 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.Value;
-using NakedObjects;
 
 #pragma warning disable 612
 
@@ -73,12 +72,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private static void AddFacetDerivedFromTypeIfPresent(ISpecification holder, Type type, IClassStrategy classStrategy) => FacetUtils.AddFacet(GetTypicalLengthFacet(type, holder, classStrategy));
 
         private static ITypicalLengthFacet GetTypicalLengthFacet(Type type, ISpecification holder, IClassStrategy classStrategy) {
-            var attribute = type.GetCustomAttribute<TypicalLengthAttribute>();
-
-            if (attribute is not null) {
-                return new TypicalLengthFacetDerivedFromType(attribute.Value, holder);
-            }
-
             var length = GetValueTypeTypicalLength(type, classStrategy);
             return length is not null ? new TypicalLengthFacetDerivedFromType(length.Value, holder) : null;
         }

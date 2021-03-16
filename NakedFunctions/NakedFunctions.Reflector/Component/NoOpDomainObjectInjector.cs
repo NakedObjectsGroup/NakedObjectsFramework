@@ -13,5 +13,6 @@ namespace NakedFunctions.Reflector.Component {
         public INakedObjectsFramework Framework { get; set; }
         public void InjectInto(object obj) { }
         public void InjectIntoInline(object root, object inlineObject) { }
+        public void InjectParentIntoChild(object parent, object child) { }
     }
 }

@@ -33,15 +33,17 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
+        private readonly IMetamodelManager metamodelManager;
 
         public Func<IDictionary<object, object>, bool> FunctionalPostSave = _ => false;
 
         private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
 
-        public EFCoreObjectStore(EFCorePersistorConfiguration config, IOidGenerator oidGenerator, INakedObjectManager nakedObjectManager, ISession session, ILogger<EFCoreObjectStore> logger) {
+        public EFCoreObjectStore(EFCorePersistorConfiguration config, IOidGenerator oidGenerator, INakedObjectManager nakedObjectManager, ISession session, IMetamodelManager metamodelManager,  ILogger<EFCoreObjectStore> logger) {
             this.oidGenerator = oidGenerator;
             this.nakedObjectManager = nakedObjectManager;
             this.session = session;
+            this.metamodelManager = metamodelManager;
             Logger = logger;
             context = config.Context();
             MaximumCommitCycles = config.MaximumCommitCycles;
@@ -299,5 +301,13 @@ namespace NakedFramework.Persistor.EFCore.Component {
             };
 
         public bool EmptyKeys(object obj) => GetKeys(obj.GetType()).Select(k => k.GetValue(obj, null)).All(EmptyKey);
+
+        public bool IsNotPersisted(object owner, PropertyInfo pi) {
+            if (metamodelManager.GetSpecification(owner.GetEntityProxiedType()) is IObjectSpec objectSpec) {
+                return objectSpec.Properties.SingleOrDefault(p => p.Id == pi.Name)?.ContainsFacet<INotPersistedFacet>() == true;
+            }
+
+            return false;
+        }
     }
 }

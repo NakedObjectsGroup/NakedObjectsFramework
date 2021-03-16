@@ -26,6 +26,10 @@ namespace NakedFramework.Persistor.Entity.Util {
 
         public static string GetEntityProxiedTypeName(object domainObject) => domainObject.GetEntityProxiedType().FullName;
 
-        public static Type GetEntityProxiedType(this object domainObject) => IsEntityProxy(domainObject.GetType()) ? domainObject.GetType().BaseType : domainObject.GetType();
+        public static Type GetEntityProxiedType(this object domainObject) =>
+            domainObject.GetType() switch {
+                { } t when IsEntityProxy(t) => t.BaseType,
+                { } t => t
+            };
     }
 }

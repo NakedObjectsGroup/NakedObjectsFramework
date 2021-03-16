@@ -147,7 +147,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 }
             }
 
-            var notPersistedMembers = originalObject.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && p.GetCustomAttribute<NotPersistedAttribute>() != null).ToArray();
+            var notPersistedMembers = originalObject.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && parent.IsNotPersisted(originalObject, p)).ToArray();
             notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
         }
 
