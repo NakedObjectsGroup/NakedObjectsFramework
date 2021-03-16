@@ -50,11 +50,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
-    <ProjectReference Include="..\NakedFramework.Core\NakedFramework.Core.csproj" />
-    <ProjectReference Include="..\NakedFramework.Snapshot.Xml.Test.Data\NakedFramework.Snapshot.Xml.Test.Data.csproj" />
-    <ProjectReference Include="..\NakedFramework.Snapshot.Xml\NakedFramework.Snapshot.Xml.csproj" />
-    <ProjectReference Include="..\NakedFramework.Xat\NakedFramework.Xat.csproj" />
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Core\NakedFramework.Core.csproj" />
+    <ProjectReference Include="..\NakedObjects.Snapshot.Xml.Test.Data\NakedObjects.Snapshot.Xml.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedObjects.Snapshot.Xml\NakedObjects.Snapshot.Xml.csproj" />
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Xat\NakedFramework.Xat.csproj" />
   </ItemGroup>
 
   

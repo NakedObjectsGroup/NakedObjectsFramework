@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
-    <ProjectReference Include="..\NakedFramework.Core\NakedFramework.Core.csproj" />
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Core\NakedFramework.Core.csproj" />
   </ItemGroup>
 </Project>

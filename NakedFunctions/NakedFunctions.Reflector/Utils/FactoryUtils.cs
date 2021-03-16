@@ -6,9 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
+using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.FacetFactory;
+using NakedFramework.Architecture.Spec;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedFunctions.Reflector.Utils {
     public static class FactoryUtils {
@@ -34,6 +42,13 @@ namespace NakedFunctions.Reflector.Utils {
             }
 
             return complementaryMethod;
+        }
+
+        public static void FindHideMethodAndAddFacet(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory) {
+            var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{RecognisedMethodsAndPrefixes.HidePrefix}{capitalizedName}", typeof(bool), Type.EmptyTypes);
+            if (method is not null) {
+                facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
+            }
         }
     }
 }

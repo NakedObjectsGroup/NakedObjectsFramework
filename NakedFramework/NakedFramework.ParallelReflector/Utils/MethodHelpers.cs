@@ -16,8 +16,6 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedObjects;
 
 #pragma warning disable 612
 
@@ -27,23 +25,7 @@ namespace NakedFramework.ParallelReflector.Utils {
             FindMethod(reflector, type, methodType, name, returnType, parms) ??
             FindMethod(reflector, type, methodType, name, returnType, Type.EmptyTypes);
 
-        /// <summary>
-        ///     Returns  specific public methods that: have the specified prefix; have the specified return Type, or
-        ///     void, and has the specified number of parameters. If the returnType is specified as null then the return
-        ///     Type is ignored.
-        /// </summary>
-        /// <param name="reflector"></param>
-        /// <param name="type"></param>
-        /// <param name="methodType"></param>
-        /// <param name="name"></param>
-        /// <param name="returnType"></param>
-        public static MethodInfo[] FindMethods(IReflector reflector,
-                                               Type type,
-                                               MethodType methodType,
-                                               string name,
-                                               Type returnType = null) =>
-            type.GetMethods(GetBindingFlagsForMethodType(methodType, reflector)).Where(m => m.Name == name).Where(m => m.IsStatic && methodType == MethodType.Class || !m.IsStatic && methodType == MethodType.Object).Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null).Where(m => returnType == null || returnType.IsAssignableFrom(m.ReturnType)).ToArray();
-
+      
         /// <summary>
         ///     Returns  specific public methods that: have the specified prefix; have the specified return Type, or
         ///     void, and has the specified number of parameters. If the returnType is specified as null then the return
@@ -131,22 +113,22 @@ namespace NakedFramework.ParallelReflector.Utils {
             }
         }
 
-        public static void FindDefaultHideMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory) {
-            var method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
-            if (method != null) {
-                facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
-                AddOrAddToExecutedWhereFacet(method, specification);
-            }
-        }
+        //public static void FindDefaultHideMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory) {
+        //    var method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
+        //    if (method != null) {
+        //        facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
+        //        AddOrAddToExecutedWhereFacet(method, specification);
+        //    }
+        //}
 
-        public static void FindAndRemoveHideMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory, IMethodRemover methodRemover = null) {
-            var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
-            if (method != null) {
-                methodRemover?.RemoveMethod(method);
-                facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
-                AddOrAddToExecutedWhereFacet(method, specification);
-            }
-        }
+        //public static void FindAndRemoveHideMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory, IMethodRemover methodRemover = null) {
+        //    var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
+        //    if (method != null) {
+        //        methodRemover?.RemoveMethod(method);
+        //        facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
+        //        AddOrAddToExecutedWhereFacet(method, specification);
+        //    }
+        //}
 
         public static void AddHideForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new HideForSessionFacetNone(specification));
 
@@ -154,31 +136,31 @@ namespace NakedFramework.ParallelReflector.Utils {
 
         public static void AddDisableFacetAlways(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisabledFacetAlways(specification));
 
-        public static void AddOrAddToExecutedWhereFacet(MethodInfo method, ISpecification holder) {
-            var attribute = method.GetCustomAttribute<ExecutedAttribute>();
-            if (attribute != null && !attribute.IsAjax) {
-                var executedFacet = holder.GetFacet<IExecutedControlMethodFacet>();
-                if (executedFacet == null) {
-                    FacetUtils.AddFacet(new ExecutedControlMethodFacet(method, attribute.Value, holder));
-                }
-                else {
-                    executedFacet.AddMethodExecutedWhere(method, attribute.Value);
-                }
-            }
-        }
+        //public static void AddOrAddToExecutedWhereFacet(MethodInfo method, ISpecification holder) {
+        //    var attribute = method.GetCustomAttribute<ExecutedAttribute>();
+        //    if (attribute != null && !attribute.IsAjax) {
+        //        var executedFacet = holder.GetFacet<IExecutedControlMethodFacet>();
+        //        if (executedFacet == null) {
+        //            FacetUtils.AddFacet(new ExecutedControlMethodFacet(method, attribute.Value, holder));
+        //        }
+        //        else {
+        //            executedFacet.AddMethodExecutedWhere(method, attribute.Value);
+        //        }
+        //    }
+        //}
 
-        public static void AddAjaxFacet(MethodInfo method, ISpecification holder) {
-            if (method == null) {
-                FacetUtils.AddFacet(new AjaxFacet(holder));
-            }
-            else {
-                var attribute = method.GetCustomAttribute<ExecutedAttribute>();
-                if (attribute != null && attribute.IsAjax) {
-                    if (attribute.AjaxValue == Ajax.Disabled) {
-                        FacetUtils.AddFacet(new AjaxFacet(holder));
-                    }
-                }
-            }
-        }
+        //public static void AddAjaxFacet(MethodInfo method, ISpecification holder) {
+        //    if (method == null) {
+        //        FacetUtils.AddFacet(new AjaxFacet(holder));
+        //    }
+        //    else {
+        //        var attribute = method.GetCustomAttribute<ExecutedAttribute>();
+        //        if (attribute != null && attribute.IsAjax) {
+        //            if (attribute.AjaxValue == Ajax.Disabled) {
+        //                FacetUtils.AddFacet(new AjaxFacet(holder));
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

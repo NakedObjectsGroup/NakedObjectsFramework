@@ -16,7 +16,6 @@
     <dependencies>
       <group targetFramework="net5.0">
         <dependency id="NakedObjects.ProgrammingModel" version="[12.0.0-alpha02, 13)" />
-        <dependency id="NakedFunctions.ProgrammingModel" version="[1.0.0-beta03, 2)" />
         <dependency id="EntityFramework" version="[6.4.4, 7)" />
         <dependency id="Microsoft.Extensions.DependencyInjection" version="[5.0.0, 6)" />
         <dependency id="Microsoft.Extensions.Configuration" version="[5.0.0, 6)" />
@@ -43,6 +42,8 @@
     <file src="..\..\NakedFramework\NakedFramework.Rest.Snapshot\bin\Debug\**\NakedFramework.Rest.Snapshot.dll" target="lib" />
     <file src="..\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.dll" target="lib" />
     <file src="..\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.dll" target="lib" />
+    <file src="..\NakedObjects.Snapshot.Xml\bin\Debug\**\NakedObjects.Snapshot.Xml.dll" target="lib" />
+
 
 
     <file src="..\..\NakedFramework\NakedFramework.ModelBuilding\bin\Debug\**\NakedFramework.ModelBuilding.pdb" target="lib" />
@@ -59,5 +60,6 @@
     <file src="..\..\NakedFramework\NakedFramework.Rest.Snapshot\bin\Debug\**\NakedFramework.Rest.Snapshot.pdb" target="lib" />
     <file src="..\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.pdb" target="lib" />
     <file src="..\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib" />
+    <file src="..\NakedObjects.Snapshot.Xml\bin\Debug\**\NakedObjects.Snapshot.Xml.pdb" target="lib" />
   </files>
 </package>

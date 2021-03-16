@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Snapshot.Xml.Utility {
+namespace NakedObjects.Snapshot.Xml.utility {
     public static class NofMetaModel {
         //The generated XML schema references the NOF metamodel schema. This is the
         //default location for this schema.

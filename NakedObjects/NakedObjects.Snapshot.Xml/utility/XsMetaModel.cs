@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace NakedFramework.Snapshot.Xml.Utility {
+namespace NakedObjects.Snapshot.Xml.utility {
     public static class XsMetaModel {
         #region xmlns
 

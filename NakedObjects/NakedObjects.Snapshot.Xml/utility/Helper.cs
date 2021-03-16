@@ -7,7 +7,7 @@
 
 using System.Xml.Linq;
 
-namespace NakedFramework.Snapshot.Xml.Utility {
+namespace NakedObjects.Snapshot.Xml.utility {
     public static class Helper {
         // Helper method
         public static string TrailingSlash(string str) => str.EndsWith("/") ? str : str + "/";

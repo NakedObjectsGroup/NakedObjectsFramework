@@ -20,9 +20,10 @@ open System.Text.RegularExpressions
 open System.Xml.Linq
 open Microsoft.Extensions.Configuration
 open NakedFramework.Xat.TestCase
-open NakedFramework.Snapshot.Xml.Utility
-open NakedFramework.Snapshot.Xml.Service
 open NakedFramework.DependencyInjection.Extensions
+open NakedObjects.Snapshot.Xml.utility
+open NakedObjects
+open NakedObjects.Snapshot.Xml.service
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"

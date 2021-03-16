@@ -72,7 +72,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     }
 
                     FacetUtils.AddFacet(new ActionChoicesFacetViaFunction(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], isMultiple));
-                    MethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
             }
 

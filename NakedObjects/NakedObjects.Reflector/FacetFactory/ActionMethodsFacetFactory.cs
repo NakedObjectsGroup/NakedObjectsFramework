@@ -24,6 +24,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
+using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
@@ -131,7 +132,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                     // add facets directly to parameters, not to actions
                     FacetUtils.AddFacet(new ActionDefaultsFacetViaMethod(methodToUse, parameters[i], Logger<ActionDefaultsFacetViaMethod>()));
-                    MethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
+                    ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
             }
         }
@@ -150,7 +151,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 var returnType = typeof(IEnumerable<>).MakeGenericType(paramType);
                 var methodName = $"{RecognisedMethodsAndPrefixes.ParameterChoicesPrefix}{i}{capitalizedName}";
 
-                var methods = MethodHelpers.FindMethods(
+                var methods = ObjectMethodHelpers.FindMethods(
                     reflector,
                     type,
                     MethodType.Object,
@@ -193,7 +194,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                     }
 
                     FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], Logger<ActionChoicesFacetViaMethod>(), isMultiple));
-                    MethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
+                    ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
             }
 
@@ -227,7 +228,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                         // add facets directly to parameters, not to actions
                         FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, parameters[i], Logger<AutoCompleteFacet>()));
-                        MethodHelpers.AddOrAddToExecutedWhereFacet(method, parameters[i]);
+                        ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(method, parameters[i]);
                     }
                 }
             }
@@ -270,11 +271,11 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                     // add facets directly to parameters, not to actions
                     FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, parameters[i], Logger<ActionParameterValidation>()));
-                    MethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
-                    MethodHelpers.AddAjaxFacet(methodToUse, parameters[i]);
+                    ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
+                    ObjectMethodHelpers.AddAjaxFacet(methodToUse, parameters[i]);
                 }
                 else {
-                    MethodHelpers.AddAjaxFacet(null, parameters[i]);
+                    ObjectMethodHelpers.AddAjaxFacet(null, parameters[i]);
                 }
             }
         }
@@ -311,8 +312,8 @@ namespace NakedObjects.Reflector.FacetFactory {
 
             MethodHelpers.AddHideForSessionFacetNone(facets, action);
             MethodHelpers.AddDisableForSessionFacetNone(facets, action);
-            MethodHelpers.FindDefaultHideMethod(reflector, facets, type, methodType, "ActionDefault", action, LoggerFactory);
-            MethodHelpers.FindAndRemoveHideMethod(reflector, facets, type, methodType, capitalizedName, action, LoggerFactory, methodRemover);
+            ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, type, methodType, "ActionDefault", action, LoggerFactory);
+            ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, type, methodType, capitalizedName, action, LoggerFactory, methodRemover);
             MethodHelpers.FindDefaultDisableMethod(reflector, facets, type, methodType, "ActionDefault", action, LoggerFactory);
             MethodHelpers.FindAndRemoveDisableMethod(reflector, facets, type, methodType, capitalizedName, action, LoggerFactory, methodRemover);
 

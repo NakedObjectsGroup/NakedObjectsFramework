@@ -24,6 +24,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
+using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class PropertyMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
@@ -83,8 +84,8 @@ namespace NakedObjects.Reflector.FacetFactory {
 
             MethodHelpers.AddHideForSessionFacetNone(facets, specification);
             MethodHelpers.AddDisableForSessionFacetNone(facets, specification);
-            MethodHelpers.FindDefaultHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
-            MethodHelpers.FindAndRemoveHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory, methodRemover);
+            ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
+            ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory, methodRemover);
             MethodHelpers.FindDefaultDisableMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
             MethodHelpers.FindAndRemoveDisableMethod(reflector, facets, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory, methodRemover);
 
@@ -111,10 +112,10 @@ namespace NakedObjects.Reflector.FacetFactory {
             methodRemover.SafeRemoveMethod(method);
             if (method is not null) {
                 propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger<PropertyValidateFacetViaMethod>()));
-                MethodHelpers.AddAjaxFacet(method, property);
+                ObjectMethodHelpers.AddAjaxFacet(method, property);
             }
             else {
-                MethodHelpers.AddAjaxFacet(null, property);
+                ObjectMethodHelpers.AddAjaxFacet(null, property);
             }
         }
 
@@ -129,7 +130,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             methodRemover.SafeRemoveMethod(method);
             if (method is not null) {
                 propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property, Logger<PropertyDefaultFacetViaMethod>()));
-                MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
+                ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
             }
         }
 
@@ -141,11 +142,11 @@ namespace NakedObjects.Reflector.FacetFactory {
                                                                                           Type returnType,
                                                                                           ISpecification property,
                                                                                           IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var methods = MethodHelpers.FindMethods(reflector,
-                                                    type,
-                                                    MethodType.Object,
-                                                    RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName,
-                                                    typeof(IEnumerable<>).MakeGenericType(returnType));
+            var methods = ObjectMethodHelpers.FindMethods(reflector,
+                                                          type,
+                                                          MethodType.Object,
+                                                          RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName,
+                                                          typeof(IEnumerable<>).MakeGenericType(returnType));
 
             if (methods.Length > 1) {
                 var name = $"{RecognisedMethodsAndPrefixes.ChoicesPrefix}{capitalizedName}";
@@ -164,7 +165,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 }
 
                 propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), property, Logger<PropertyChoicesFacet>()));
-                MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
+                ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
             }
 
             return metamodel;
@@ -201,7 +202,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                     methodRemover.SafeRemoveMethod(method);
                     propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
-                    MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
+                    ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
                 }
             }
         }
