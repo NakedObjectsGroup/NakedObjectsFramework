@@ -873,7 +873,11 @@ namespace NakedFrameworkClient.TestFramework
 
         public HomeView GetHomeView(Pane pane) => throw new NotImplementedException();
 
-        public Footer GetFooter() => throw new NotImplementedException();
+        public Footer GetFooter()
+        {
+            var we = WaitForCss(".footer");
+            return new Footer(we, this);
+        }
 
         internal Pane GetNewPane(Pane pane, MouseClick button)
         {

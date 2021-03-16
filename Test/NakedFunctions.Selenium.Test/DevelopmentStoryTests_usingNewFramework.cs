@@ -155,7 +155,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .AssertTitleIs("HL Mountain Tire");
         }
 
-        [TestMethod, Ignore] //Not yet working
+        [TestMethod] //Not yet working
         public void InformUserViaIAlertService()
         {
 
@@ -166,7 +166,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             prod.DragTitleAndDropOnto(field);
 
             //Problem here, because the object view has not changed. Need a different method?
-            dialog.ClickOKToViewObject();
+            //Also needed to test co-validation.
+            dialog.ClickOKWithNoResultExpected();
             helper.GetFooter().AssertHasMessage("Mountain Tire Sale is already associated with LL Mountain Tire");
 
             //wait.Until(d => d.FindElement(By.CssSelector(".footer .messages")).Text != "");

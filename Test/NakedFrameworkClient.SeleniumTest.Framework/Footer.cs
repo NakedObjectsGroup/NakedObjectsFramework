@@ -5,16 +5,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
-    public class Footer : View
+    public class Footer
     {
-        public Footer(IWebElement element, Helper helper, Pane pane = Pane.Single) : base(element, helper, pane) { }
+        private IWebElement element;
+        private Helper helper;
 
-        public void AssertHasMessage(string message) =>  throw new NotImplementedException();
+        public Footer(IWebElement element, Helper helper)
+        {
+            this.element = element;
+            this.helper = helper;
+        }
+
+        public Footer AssertHasMessage(string message)
+        {
+            var actual = helper.WaitForChildElement(element, ".messages").Text;
+            Assert.AreEqual(message, actual);
+            return this;
+        }
 
         public HomeView ClickHome(MouseClick button = MouseClick.MainButton) => throw new NotImplementedException();
 

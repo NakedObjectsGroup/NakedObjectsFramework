@@ -25,6 +25,12 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
+        public void ClickOKWithNoResultExpected(MouseClick button = MouseClick.MainButton)
+        {
+            var ok = GetOKButton().AssertIsEnabled();
+            helper.Click(ok, button);
+        }
+
         public ObjectView ClickOKToViewObject(MouseClick button = MouseClick.MainButton)
         {
             var ok = GetOKButton().AssertIsEnabled();
