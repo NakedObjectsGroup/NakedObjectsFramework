@@ -865,7 +865,7 @@ namespace NakedFrameworkClient.TestFramework
         public ObjectView GetObjectView(Pane pane = Pane.Single)
         {
             WaitForView(pane, PaneType.Object);
-            var el = WaitForCss(CssSelectorFor(pane) + " .object .title");
+            var el = WaitForCss(CssSelectorFor(pane) + " .object");
             return new ObjectView(el, this, pane);
         }
 
