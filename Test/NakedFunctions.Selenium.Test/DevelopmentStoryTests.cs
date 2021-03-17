@@ -175,7 +175,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual("Mountain Tire Sale is already associated with LL Mountain Tire", msg);
         }
 
-        [TestMethod]
+       //[TestMethod]
         public void EditAction()
         {
             GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
