@@ -26,8 +26,8 @@ namespace NakedFrameworkClient.TestFramework
     public class Helper
     {
         private readonly string GeminiBaseUrl;
-        public readonly IWebDriver br; 
-        public readonly SafeWebDriverWait wait;
+        internal readonly IWebDriver br; 
+        internal readonly SafeWebDriverWait wait;
 
         public Helper(string baseUrl)
         {
@@ -110,8 +110,6 @@ namespace NakedFrameworkClient.TestFramework
 
         #region Helpers
 
-        public void GotoUrl(string url) => br.Navigate().GoToUrl(GeminiBaseUrl + url);
-
         private void WaitUntilGone<TResult>(Func<IWebDriver, TResult> condition)
         {
             wait.Until(d =>
@@ -145,7 +143,7 @@ namespace NakedFrameworkClient.TestFramework
             actions.Perform();
         }
 
-        public void Click(IWebElement element)
+        internal void Click(IWebElement element)
         {
             WaitUntilEnabled(element);
             ScrollTo(element);
@@ -157,7 +155,7 @@ namespace NakedFrameworkClient.TestFramework
             wait.Until(dr => element.GetAttribute("disabled") == null);
         }
 
-        public void RightClick(IWebElement element)
+        internal void RightClick(IWebElement element)
         {
             var webDriver = wait.Driver;
             ScrollTo(element);
@@ -170,12 +168,12 @@ namespace NakedFrameworkClient.TestFramework
             actions.Perform();
         }
 
-        public IWebElement WaitForCss(string cssSelector)
+        internal IWebElement WaitForCss(string cssSelector)
         {
             return wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
         }
 
-        public IWebElement WaitForChildElement(IWebElement parent, string cssSelector)
+        internal IWebElement WaitForChildElement(IWebElement parent, string cssSelector)
         {
             return wait.Until(d => parent.FindElement(By.CssSelector(cssSelector)));
         }
@@ -210,7 +208,7 @@ namespace NakedFrameworkClient.TestFramework
         /// <summary>
         /// Waits for the Nth match and returns it (counting from zero).
         /// </summary>
-        public IWebElement WaitForCssNo(string cssSelector, int number)
+        internal IWebElement WaitForCssNo(string cssSelector, int number)
         {
             return WaitForCss(cssSelector, number + 1)[number];
         }
@@ -221,7 +219,7 @@ namespace NakedFrameworkClient.TestFramework
             wait.Until(dr => dr.FindElement(By.CssSelector(p + ".header .messages")).Text == message);
         }
 
-        public  void ClearFieldThenType(string cssFieldId, string characters)
+        internal  void ClearFieldThenType(string cssFieldId, string characters)
         {
             var input = WaitForCss(cssFieldId);
             if (input.GetAttribute("value") != "")
@@ -254,13 +252,13 @@ namespace NakedFrameworkClient.TestFramework
             input.SendKeys(characters);
         }
 
-        public void TypeIntoFieldWithoutClearing(string cssFieldId, string characters)
+        internal void TypeIntoFieldWithoutClearing(string cssFieldId, string characters)
         {
             var input = WaitForCss(cssFieldId);
             input.SendKeys(characters);
         }
 
-        public void SelectCheckBox(string css, bool alreadySelected = false)
+        internal void SelectCheckBox(string css, bool alreadySelected = false)
         {
             wait.Until(dr => dr.FindElement(By.CssSelector(css)).Selected == alreadySelected);
             var checkbox = br.FindElement(By.CssSelector(css));
@@ -281,14 +279,14 @@ namespace NakedFrameworkClient.TestFramework
             return sb.ToString();
         }
 
-        public void SelectDropDownOnField(string cssFieldId, string characters)
+        internal void SelectDropDownOnField(string cssFieldId, string characters)
         {
             var selected = new SelectElement(WaitForCss(cssFieldId));
             selected.SelectByText(characters);
             wait.Until(dr => selected.SelectedOption.Text == characters);
         }
 
-        public void SelectDropDownOnField(string cssFieldId, int index)
+        internal void SelectDropDownOnField(string cssFieldId, int index)
         {
             var selected = new SelectElement(WaitForCss(cssFieldId));
             selected.SelectByIndex(index);
@@ -318,7 +316,7 @@ namespace NakedFrameworkClient.TestFramework
             }
         }
 
-        public void OpenObjectActions(Pane pane = Pane.Single)
+        internal void OpenObjectActions(Pane pane = Pane.Single)
         {
             string paneSelector = CssSelectorFor(pane);
             var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == "Actions"));
@@ -326,7 +324,7 @@ namespace NakedFrameworkClient.TestFramework
             wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
         }
 
-        public void OpenSubMenu(string menuName, Pane pane = Pane.Single)
+        internal void OpenSubMenu(string menuName, Pane pane = Pane.Single)
         {
             string paneSelector = CssSelectorFor(pane);
             var sub = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .submenu")).Single(el => el.Text == menuName));
@@ -369,26 +367,26 @@ namespace NakedFrameworkClient.TestFramework
 
      
 
-        public enum ClickType
+        internal enum ClickType
         {
             Left,
             Right
         }
 
-        public string GetPropertyValue(string propertyName, Pane pane = Pane.Single)
+        internal string GetPropertyValue(string propertyName, Pane pane = Pane.Single)
         {
             var prop = GetProperty(propertyName, pane);
             return prop.FindElement(By.CssSelector(".value")).Text.Trim();
         }
 
-        public IWebElement GetProperty(string propertyName, Pane pane = Pane.Single)
+        internal IWebElement GetProperty(string propertyName, Pane pane = Pane.Single)
         {
             string propCss = CssSelectorFor(pane) + " " + "nof-view-property";
             return wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
                 .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":").Single());
         }
 
-        public IWebElement GetReferenceFromProperty(string propertyName, Pane pane = Pane.Single)
+        internal IWebElement GetReferenceFromProperty(string propertyName, Pane pane = Pane.Single)
         {
             var prop = GetProperty(propertyName, pane);
             return prop.FindElement(By.CssSelector(".reference"));
@@ -423,7 +421,7 @@ namespace NakedFrameworkClient.TestFramework
             CssSelectorFor(pane) + " ." + type.ToString().ToLower();
 
 
-        public void WaitForView(Pane pane, PaneType type, string title = null)
+        internal void WaitForView(Pane pane, PaneType type, string title = null)
         {
             var selector = CssSelectorFor(pane) + " ." + type.ToString().ToLower();
 
@@ -455,7 +453,7 @@ namespace NakedFrameworkClient.TestFramework
             wait.Until(d => d.FindElement(By.CssSelector(".footer .icon.forward")).Displayed);
         }
 
-        public void AssertTopItemInListIs(string title)
+        internal void AssertTopItemInListIs(string title)
         {
             string topItem = WaitForCss("tr td.reference").Text;
 
@@ -581,7 +579,7 @@ namespace NakedFrameworkClient.TestFramework
             wait.Until(dr => dr.FindElements(By.CssSelector($"nof-action-list nof-action inputinput[type='{action}']")).FirstOrDefault() == null);
         }
 
-        public IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single, string subMenuName = null)
+        internal IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single, string subMenuName = null)
         {
             if (subMenuName != null)
             {
@@ -618,7 +616,7 @@ namespace NakedFrameworkClient.TestFramework
             throw new Exception("Action not enabled");
         }
 
-        public IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single, int? noOfParams = null)
+        internal IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single, int? noOfParams = null)
         {
             Click(GetObjectEnabledAction(actionName, pane));
 
@@ -641,7 +639,7 @@ namespace NakedFrameworkClient.TestFramework
             return dialog.FindElements(By.CssSelector(".parameter .value input"))[no];
         }
 
-        public IWebElement OKButton()
+        internal IWebElement OKButton()
         {
             return WaitForCss(".dialog .ok");
         }
@@ -689,7 +687,7 @@ namespace NakedFrameworkClient.TestFramework
             wait.Until(dr => dr.SwitchTo().ActiveElement() == el);
         }
 
-        public void Reload(Pane pane = Pane.Single)
+        internal void Reload(Pane pane = Pane.Single)
         {
             Click(GetInputButton("Reload", pane));
         }
@@ -714,24 +712,7 @@ namespace NakedFrameworkClient.TestFramework
 
         #region CCAs
 
-        private void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
-        {
-            GotoUrl("object?o1=___1.SpecialOffer--" + (itemNo + 1));
-            var html = label + "\r\n" + value;
-            if (equal)
-            {
-                //Thread.Sleep(2000);
-
-                //var t = br.FindElements(By.CssSelector(".property")).First().Text;
-
-                wait.Until(dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text == html);
-            }
-            else
-            {
-                wait.Until(dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text != html);
-            }
-        }
-
+    
         private void WaitForSelectedCheckboxes(int number)
         {
             wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) == number);
@@ -751,7 +732,7 @@ namespace NakedFrameworkClient.TestFramework
             return WaitForCss(".footer .icon.swap");
         }
 
-        public IWebElement FullIcon()
+        internal IWebElement FullIcon()
         {
             return WaitForCss(".footer .icon.full");
         }
@@ -768,14 +749,14 @@ namespace NakedFrameworkClient.TestFramework
 
         #region Keyboard navigation 
 
-        public void CopyToClipboard(IWebElement element)
+        internal void CopyToClipboard(IWebElement element)
         {
             var title = element.Text;
             element.SendKeys(Keys.Control + "c");
             wait.Until(dr => dr.FindElement(By.CssSelector(".footer .currentcopy .reference")).Text == title);
         }
 
-        public IWebElement PasteIntoInputField(string cssSelector)
+        internal IWebElement PasteIntoInputField(string cssSelector)
         {
             var target = WaitForCss(cssSelector);
             var copying = WaitForCss(".footer .currentcopy .reference").Text;
@@ -785,7 +766,7 @@ namespace NakedFrameworkClient.TestFramework
             return WaitForCss(cssSelector);
         }
 
-        public IWebElement PasteIntoInputField(IWebElement target)
+        internal IWebElement PasteIntoInputField(IWebElement target)
         {
             var copying = WaitForCss(".footer .currentcopy .reference").Text;
             target.Click();
@@ -815,20 +796,14 @@ namespace NakedFrameworkClient.TestFramework
             IWebElement menu = br.FindElement(By.CssSelector($"nof-menu-bar nof-action input[title=\"{menuName}\"]"));
             Click(menu);
         }
-        public void OpenMainMenuAction(string menuName, string actionName)
+        internal void OpenMainMenuAction(string menuName, string actionName)
         {
             OpenMainMenu(menuName);
             string actionSelector = $"nof-action-list nof-action input[value=\"{actionName}\"]";
             Click(WaitForCss(actionSelector));
         }
 
-        public void Home()
-        {
-            GotoUrl("home");
-            WaitForTextEquals(".title", "Home");
-        }
-
-        public IWebElement WaitForTitle(string title, Pane pane = Pane.Single) => 
+        internal IWebElement WaitForTitle(string title, Pane pane = Pane.Single) => 
             WaitForTextEquals(CssSelectorFor(pane)+" .title", title);
 
         private void AssertElementExists(string cssSelector)
@@ -851,20 +826,25 @@ namespace NakedFrameworkClient.TestFramework
         //Goes to a single-pane view of home
         public HomeView GotoHome()
         {
-            Home();
-            var el = WaitForCss(".home");
+            br.Navigate().GoToUrl(GeminiBaseUrl + "home");
+            WaitForView(Pane.Single, PaneType.Home);
+            var el = WaitForCss(".home");            
             return new HomeView(el, this);
         }
 
-        public Helper GoDirectToUrl(string url)
+        public Helper GotoUrl(string url)
         {
-            GotoUrl(url);
+            GotoHome(); //This is to ensure that the view has changed from any existing object/list view
+            br.Navigate().GoToUrl(GeminiBaseUrl + url);
             return this;
         }
 
         public ObjectView GetObjectView(Pane pane = Pane.Single)
         {
-            WaitForView(pane, PaneType.Object);
+
+            WaitForCss(CssSelectorFor(pane) + " .object .title");
+            WaitForCss(CssSelectorFor(pane) + " .object .properties");
+            WaitForCss(CssSelectorFor(pane) + " .object .collections");
             var el = WaitForCss(CssSelectorFor(pane) + " .object");
             return new ObjectView(el, this, pane);
         }
@@ -879,7 +859,7 @@ namespace NakedFrameworkClient.TestFramework
             return new Footer(we, this);
         }
 
-        internal Pane GetNewPane(Pane pane, MouseClick button)
+        private Pane GetNewPane(Pane pane, MouseClick button)
         {
             return pane switch
             {

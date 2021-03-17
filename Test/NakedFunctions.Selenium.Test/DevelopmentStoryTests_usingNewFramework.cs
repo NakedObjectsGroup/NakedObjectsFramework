@@ -23,9 +23,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         private string baseUrl = "http://nakedfunctionstest.azurewebsites.net/";
         private Helper helper;
 
-        [Obsolete]
-        private IWebDriver br;
-
         #region Initialization & Clean Up
         [ClassInitialize]
         public static void InitialiseClass(TestContext context)
@@ -37,7 +34,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public virtual void InitializeTest()
         {
             helper = new Helper(baseUrl);
-            br = helper.br;
         }
 
         [TestCleanup]
@@ -108,7 +104,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void ObjectActionThatReturnsJustAContext()
         {
-            var offer = helper.GoDirectToUrl("object?i1=View&o1=AW.Types.SpecialOffer--5")
+            var offer = helper.GotoUrl("object?i1=View&o1=AW.Types.SpecialOffer--5")
                 .GetObjectView().AssertTitleIs("Volume Discount 41 to 60");
             var dialog = offer.OpenActions().GetActionWithDialog("Edit Description").Open();
             dialog.GetTextField("Description").Clear().Enter("Volume Discount 41+").AssertNoValidationError();
@@ -146,7 +142,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void ObjectContributedAction()
         {
             //Tests that an action (side effect free) can be associated with an object
-            helper.GoDirectToUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open").GetObjectView()
+            helper.GotoUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open").GetObjectView()
                 .AssertTitleIs("Mountain Tire Sale")
                 .OpenActions().GetActionWithoutDialog("List Associated Products")
                 .ClickToViewList()
@@ -159,7 +155,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void InformUserViaIAlertService()
         {
 
-            var dialog = helper.GoDirectToUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928")
+            var dialog = helper.GotoUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928")
             .GetObjectView(Pane.Left).GetOpenedDialog();
             var field = dialog.GetReferenceField("Product");
             var prod = helper.GetObjectView(Pane.Right).AssertTitleIs("LL Mountain Tire");
