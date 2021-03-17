@@ -58,7 +58,7 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
         protected override Image DoRestore(string data) {
             var offset = data.IndexOf(' ');
             var mime = data.Substring(0, offset);
-            var buffer = Convert.FromBase64String(data.Substring(offset));
+            var buffer = Convert.FromBase64String(data[offset..]);
             var stream = new MemoryStream(buffer);
             return new Image(stream);
         }

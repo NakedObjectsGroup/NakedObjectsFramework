@@ -47,7 +47,7 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
             return text.Equals("NULL") || IsEscaped(text) ? EscapeText(text) : text;
         }
 
-        protected override string DoRestore(string data) => IsEscaped(data) ? data.Substring(1) : data;
+        protected override string DoRestore(string data) => IsEscaped(data) ? data[1..] : data;
 
         private static bool IsEscaped(string text) => text.StartsWith("/");
 

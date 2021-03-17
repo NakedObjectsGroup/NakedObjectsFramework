@@ -34,7 +34,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private IRangeFacet Create(ValueRangeAttribute attribute, bool isDate, ISpecification holder) =>
+        private static IRangeFacet Create(ValueRangeAttribute attribute, bool isDate, ISpecification holder) =>
             attribute is null ? null : new RangeFacet(attribute.Minimum, attribute.Maximum, isDate, holder);
     }
 }

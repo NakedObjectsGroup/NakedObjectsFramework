@@ -68,7 +68,7 @@ namespace NakedFramework.Metamodel.Facet {
 
             if (GetType() != FacetType) {
                 var sFacetType = FacetType.FullName;
-                details += $"type={sFacetType.Substring(sFacetType.LastIndexOf('.') + 1)}";
+                details += $"type={sFacetType[(sFacetType.LastIndexOf('.') + 1)..]}";
             }
 
             var stringValues = ToStringValues();
@@ -82,7 +82,7 @@ namespace NakedFramework.Metamodel.Facet {
                 last = typeName.Length - 1;
             }
 
-            return $"{typeName.Substring(typeName.LastIndexOf('.', last) + 1)}[{details}{stringValues}]";
+            return $"{typeName[(typeName.LastIndexOf('.', last) + 1)..]}[{details}{stringValues}]";
         }
 
         protected virtual string ToStringValues() => "";

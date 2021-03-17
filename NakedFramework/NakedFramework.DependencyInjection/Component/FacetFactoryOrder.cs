@@ -16,7 +16,7 @@ namespace NakedFramework.DependencyInjection.Component {
         private readonly Type[] facetFactories;
 
         public FacetFactoryOrder(FacetFactoryTypesProvider facetFactories) =>
-            this.facetFactories = facetFactories.FacetFactoryTypes.GroupBy(Group).OrderBy(kvp => kvp.Key).SelectMany(kvp => kvp).ToArray();
+            this.facetFactories = FacetFactoryTypesProvider.FacetFactoryTypes.GroupBy(Group).OrderBy(kvp => kvp.Key).SelectMany(kvp => kvp).ToArray();
 
         public int Order => Array.IndexOf(facetFactories, typeof(T));
 
@@ -37,7 +37,7 @@ namespace NakedFramework.DependencyInjection.Component {
     }
 
     public class AppendFacetFactoryOrder<T> : IFacetFactoryOrder<T> {
-        public AppendFacetFactoryOrder(FacetFactoryTypesProvider facetFactories) => LastIndex = facetFactories.FacetFactoryTypes.Length - 1;
+        public AppendFacetFactoryOrder(FacetFactoryTypesProvider facetFactories) => LastIndex = FacetFactoryTypesProvider.FacetFactoryTypes.Length - 1;
 
         private int LastIndex { get; set; }
 

@@ -35,7 +35,7 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
 
         #endregion
 
-        public object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
+        public static object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
 
         public static bool IsAdaptedType(Type type) => type == typeof(uint);
 

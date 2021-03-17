@@ -24,7 +24,7 @@ namespace NakedFunctions.Reflector.Facet {
             this.property = property;
 
         // for testing only 
-        internal Func<object, object[], object> MethodDelegate => null;
+        internal static Func<object, object[], object> MethodDelegate => null;
 
         public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             // type safety is given by the reflector only identifying methods that match the 
@@ -38,7 +38,7 @@ namespace NakedFunctions.Reflector.Facet {
         protected override string ToStringValues() => $"property={property}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) { }
+        private static void OnDeserialized(StreamingContext context) { }
 
         #region IImperativeFacet Members
 

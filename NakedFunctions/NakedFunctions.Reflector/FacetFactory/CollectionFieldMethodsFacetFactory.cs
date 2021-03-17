@@ -42,7 +42,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return PropertiesToBeIntrospected(candidates, classStrategy);
         }
 
-        private IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
+        private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
             candidates.Where(property => property.HasPublicGetter() &&
                                          !classStrategy.IsIgnored(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();

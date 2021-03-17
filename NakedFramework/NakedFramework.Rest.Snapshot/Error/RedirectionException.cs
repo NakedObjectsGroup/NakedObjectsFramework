@@ -11,7 +11,7 @@ using System.Net;
 namespace NakedFramework.Rest.Snapshot.Error {
     public class RedirectionException : Exception {
         public RedirectionException(Uri redirectAddress) => RedirectAddress = redirectAddress;
-        public int StatusCode => (int) HttpStatusCode.MovedPermanently;
+        public static int StatusCode => (int) HttpStatusCode.MovedPermanently;
         public Uri RedirectAddress { get; }
     }
 }

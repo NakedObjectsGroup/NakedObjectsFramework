@@ -24,7 +24,7 @@ namespace NakedFramework.Rest.Model {
         public Stream InputStream {
             get {
                 // This assumes the data url is base64 encoded  
-                var body = data.Substring(data.IndexOf(",", StringComparison.InvariantCulture) + 1);
+                var body = data[(data.IndexOf(",", StringComparison.InvariantCulture) + 1)..];
                 var bytes = Convert.FromBase64String(body);
                 return new MemoryStream(bytes);
             }

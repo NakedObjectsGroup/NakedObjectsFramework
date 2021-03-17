@@ -74,7 +74,7 @@ namespace NakedFramework.Metamodel.Menu {
 
         private MenuImpl GetSubMenuIfExists(string menuName) => MenuItems.OfType<MenuImpl>().FirstOrDefault(a => a.Name == menuName);
 
-        private void AddOrderableElementsToMenu(IList<IActionSpecImmutable> ordeableElements, MenuImpl toMenu) {
+        private static void AddOrderableElementsToMenu(IList<IActionSpecImmutable> ordeableElements, MenuImpl toMenu) {
             foreach (var action in ordeableElements) {
                 if (action != null) {
                     if (!toMenu.HasActionOrSuperMenuHasAction(action)) {
@@ -106,7 +106,7 @@ namespace NakedFramework.Metamodel.Menu {
             if (subMenuName != null) {
                 var id = facet.IdWhenContributedTo(spec);
                 var subMenu = GetSubMenuIfExists(subMenuName) ?? CreateMenuImmutableAsSubMenu(subMenuName, id);
-                subMenu.AddOrderableElementsToMenu(new List<IActionSpecImmutable> {ca}, subMenu);
+                AddOrderableElementsToMenu(new List<IActionSpecImmutable> {ca}, subMenu);
             }
             else {
                 //i.e. no sub-menu

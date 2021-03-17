@@ -30,7 +30,7 @@ namespace NakedFunctions.Reflector.Facet {
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) { }
+        private static void OnDeserialized(StreamingContext context) { }
 
         #region IActionValidationFacet Members
 

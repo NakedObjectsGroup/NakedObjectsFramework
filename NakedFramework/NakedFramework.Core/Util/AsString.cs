@@ -48,7 +48,7 @@ namespace NakedFramework.Core.Util {
 
         public static string Name(object forObject) {
             var name = forObject.GetType().FullName;
-            return name.Substring(name.LastIndexOf('.') + 1);
+            return name[(name.LastIndexOf('.') + 1)..];
         }
 
         public AsString Append(string text) {

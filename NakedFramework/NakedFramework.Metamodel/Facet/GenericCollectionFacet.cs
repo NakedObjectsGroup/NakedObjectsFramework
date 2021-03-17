@@ -26,15 +26,15 @@ namespace NakedFramework.Metamodel.Facet {
 
         private static ICollection<T> AsGenericCollection<T>(INakedObjectAdapter collection) => (ICollection<T>) collection.Object;
 
-        public IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) => AsGenericCollection<T>(collection).Select(arg => manager.CreateAdapter(arg, null, null));
+        public static IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) => AsGenericCollection<T>(collection).Select(arg => manager.CreateAdapter(arg, null, null));
 
-        public IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericCollection<T>(collection).AsQueryable();
+        public static IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericCollection<T>(collection).AsQueryable();
 
-        public bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericCollection<T>(collection).Contains((T) element.Object);
+        public static bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericCollection<T>(collection).Contains((T) element.Object);
 
-        public INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => manager.CreateAdapter(AsGenericCollection<T>(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
+        public static INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => manager.CreateAdapter(AsGenericCollection<T>(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
 
-        public void InitInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
+        public static void InitInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
             var wrappedCollection = AsGenericCollection<T>(collection);
             IList<T> newData = initData.Select(x => x.GetDomainObject<T>()).ToList();
 

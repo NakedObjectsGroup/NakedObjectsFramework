@@ -32,7 +32,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private void Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<MaxLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }

@@ -16,7 +16,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 
 namespace NakedFramework.Rest.Snapshot.Utility {
     public class UriMtHelper {
-        public static Func<HttpRequest, string> GetAuthority;
+        private static readonly Func<HttpRequest, string> GetAuthority;
         public static Func<HttpRequest, string> GetApplicationPath;
         private readonly IActionFacade action;
         private readonly IAssociationFacade assoc;
@@ -468,11 +468,11 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                 _ => throw new ArgumentException("Unexpected type:" + memberFacade.GetType())
             };
 
-        public string GetRelParametersFor(string actionId, string parmId) => FormatParameter(RelParamValues.Action, actionId) + FormatParameter(RelParamValues.Param, parmId);
+        public static string GetRelParametersFor(string actionId, string parmId) => FormatParameter(RelParamValues.Action, actionId) + FormatParameter(RelParamValues.Param, parmId);
 
         public string GetRelParametersFor(IActionParameterFacade actionParameterFacade) => GetRelParametersFor(actionParameterFacade.Action.Id, actionParameterFacade.Id);
 
-        public string GetRelParametersFor(string name) => FormatParameter(RelParamValues.TypeAction, name);
+        public static string GetRelParametersFor(string name) => FormatParameter(RelParamValues.TypeAction, name);
 
         public Uri GetMenuUri() {
             CheckArgumentNotNull(CachedType, "service type");

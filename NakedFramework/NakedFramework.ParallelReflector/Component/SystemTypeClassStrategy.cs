@@ -17,7 +17,7 @@ namespace NakedFramework.ParallelReflector.Component {
     /// </summary>
     [Serializable]
     public class SystemTypeClassStrategy : AbstractClassStrategy {
-        private Type[] supportedSystemTypes;
+        private readonly Type[] supportedSystemTypes;
 
         public SystemTypeClassStrategy(ICoreConfiguration coreConfiguration) => supportedSystemTypes = coreConfiguration.SupportedSystemTypes.ToArray();
 

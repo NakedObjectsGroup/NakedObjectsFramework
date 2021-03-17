@@ -656,7 +656,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             // do nothing 
         }
 
-        private IQueryable<T> EagerLoad<T>(LocalContext context, Type entityType, IQueryable queryable) => (IQueryable<T>) queryable.AsNoTracking();
+        private static IQueryable<T> EagerLoad<T>(LocalContext context, Type entityType, IQueryable queryable) => (IQueryable<T>) queryable.AsNoTracking();
 
         public IQueryable<T> GetInstances<T>(bool tracked = true) where T : class {
             var context = GetContext(typeof(T));

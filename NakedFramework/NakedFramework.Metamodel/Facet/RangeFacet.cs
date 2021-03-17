@@ -50,14 +50,14 @@ namespace NakedFramework.Metamodel.Facet {
 
         #endregion
 
-        protected int Compare<T>(T val, T min, T max) where T : struct, IComparable =>
+        protected static int Compare<T>(T val, T min, T max) where T : struct, IComparable =>
             val.CompareTo(min) < 0
                 ? -1
                 : val.CompareTo(max) > 0
                     ? 1
                     : 0;
 
-        protected int DateCompare(DateTime date, double min, double max) {
+        protected static int DateCompare(DateTime date, double min, double max) {
             var earliest = DateTime.Today.AddDays(min);
             var latest = DateTime.Today.AddDays(max);
             if (date < earliest) {

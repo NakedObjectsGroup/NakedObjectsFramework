@@ -26,7 +26,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Everything) =>
             logger = loggerFactory.CreateLogger<DescribedAsAnnotationFacetFactory>();
 
-        private void Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DescribedAsAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }

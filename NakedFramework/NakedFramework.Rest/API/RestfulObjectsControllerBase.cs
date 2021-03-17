@@ -405,7 +405,7 @@ namespace NakedFramework.Rest.API {
                 logger.LogInformation(redirectionException, DisplayState);
                 var responseHeaders = ControllerContext.HttpContext.Response.GetTypedHeaders();
                 responseHeaders.Location = redirectionException.RedirectAddress;
-                return StatusCode(redirectionException.StatusCode);
+                return StatusCode(RedirectionException.StatusCode);
             }
             catch (NakedObjectsFacadeException e) {
                 LogFacadeException(e)(DisplayState);

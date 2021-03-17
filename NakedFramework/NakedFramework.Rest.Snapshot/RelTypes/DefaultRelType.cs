@@ -20,6 +20,6 @@ namespace NakedFramework.Rest.Snapshot.RelTypes {
             this.paramId = paramId;
         }
 
-        public override string Name => $"{base.Name}{Helper.GetRelParametersFor(actionId, paramId)}";
+        public override string Name => $"{base.Name}{UriMtHelper.GetRelParametersFor(actionId, paramId)}";
     }
 }

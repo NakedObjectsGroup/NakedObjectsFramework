@@ -18,7 +18,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
     ///     string.
     /// </summary>
     public sealed class SystemClassMethodFilteringFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory {
-        private ILogger<SystemClassMethodFilteringFactory> logger;
+        private readonly ILogger<SystemClassMethodFilteringFactory> logger;
 
         public SystemClassMethodFilteringFactory(IFacetFactoryOrder<SystemClassMethodFilteringFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Actions) =>

@@ -39,7 +39,7 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
 
         #endregion
 
-        public object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
+        public static object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
 
         public static bool IsAdaptedType(Type type) => type == typeof(Color);
 
@@ -47,10 +47,10 @@ namespace NakedFramework.Metamodel.SemanticsProvider {
             try {
                 int argb;
                 if (entry.StartsWith("0x")) {
-                    argb = int.Parse(entry.Substring(2), NumberStyles.AllowHexSpecifier);
+                    argb = int.Parse(entry[2..], NumberStyles.AllowHexSpecifier);
                 }
                 else {
-                    argb = entry.StartsWith("#") ? int.Parse(entry.Substring(1), NumberStyles.AllowHexSpecifier) : int.Parse(entry);
+                    argb = entry.StartsWith("#") ? int.Parse(entry[1..], NumberStyles.AllowHexSpecifier) : int.Parse(entry);
                 }
 
                 return Color.FromArgb(argb);

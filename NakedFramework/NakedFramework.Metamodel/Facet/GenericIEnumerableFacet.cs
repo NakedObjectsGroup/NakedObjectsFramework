@@ -35,13 +35,13 @@ namespace NakedFramework.Metamodel.Facet {
             return new IteratorWrapper<T>((IEnumerable) collection.Object);
         }
 
-        public INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => manager.CreateAdapter(AsGenericIEnumerable<T>(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
+        public static INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => manager.CreateAdapter(AsGenericIEnumerable<T>(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
 
-        public IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) => AsGenericIEnumerable<T>(collection).Select(arg => manager.CreateAdapter(arg, null, null));
+        public static IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) => AsGenericIEnumerable<T>(collection).Select(arg => manager.CreateAdapter(arg, null, null));
 
-        public IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericIEnumerable<T>(collection).AsQueryable();
+        public static IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericIEnumerable<T>(collection).AsQueryable();
 
-        public bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericIEnumerable<T>(collection).Contains((T) element.Object);
+        public static bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericIEnumerable<T>(collection).Contains((T) element.Object);
 
         public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) => (IEnumerable<INakedObjectAdapter>) Call("AsEnumerableInternal", collection, collection, manager);
 

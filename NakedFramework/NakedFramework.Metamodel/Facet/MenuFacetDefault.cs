@@ -31,7 +31,7 @@ namespace NakedFramework.Metamodel.Facet {
             CreateDefaultMenu(metamodel, Spec.Type, GetMenuName(Spec), id);
         }
 
-        private string UniqueShortName(ITypeSpecImmutable spec) {
+        private static string UniqueShortName(ITypeSpecImmutable spec) {
             var usn = spec.ShortName;
             var type = spec.Type;
             if (type.IsGenericType) {

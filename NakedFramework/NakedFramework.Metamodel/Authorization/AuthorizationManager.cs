@@ -28,7 +28,7 @@ namespace NakedFramework.Metamodel.Authorization {
         private readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
         private readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
 
-        private object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
+        private static object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
 
         private object GetAuthorizer(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
             //Look for exact-fit TypeAuthorizer

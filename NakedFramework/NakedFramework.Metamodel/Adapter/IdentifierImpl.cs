@@ -124,19 +124,19 @@ namespace NakedFramework.Metamodel.Adapter {
             var indexOfHash = asString.IndexOf("#", StringComparison.InvariantCulture);
             var indexOfOpenBracket = asString.IndexOf("(", StringComparison.InvariantCulture);
             var indexOfCloseBracket = asString.IndexOf(")", StringComparison.InvariantCulture);
-            var className = asString.Substring(0, (indexOfHash == -1 ? asString.Length : indexOfHash) - 0);
+            var className = asString[..(indexOfHash == -1 ? asString.Length : indexOfHash)];
             if (indexOfHash == -1 || indexOfHash == asString.Length - 1) {
                 return new IdentifierImpl(className);
             }
 
             string name;
             if (indexOfOpenBracket == -1) {
-                name = asString.Substring(indexOfHash + 1);
+                name = asString[(indexOfHash + 1)..];
                 return new IdentifierImpl(className, name);
             }
 
-            name = asString.Substring(indexOfHash + 1, indexOfOpenBracket - (indexOfHash + 1));
-            var allParms = asString.Substring(indexOfOpenBracket + 1, indexOfCloseBracket - (indexOfOpenBracket + 1)).Trim();
+            name = asString[(indexOfHash + 1)..indexOfOpenBracket];
+            var allParms = asString[(indexOfOpenBracket + 1)..indexOfCloseBracket].Trim();
             var parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
             return new IdentifierImpl(className, name, parms);
         }

@@ -57,7 +57,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return new Dictionary<ParameterInfo, PropertyInfo>();
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> Process(MethodInfo method, Action<IDictionary<ParameterInfo, PropertyInfo>> addFacet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> Process(MethodInfo method, Action<IDictionary<ParameterInfo, PropertyInfo>> addFacet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsEditMethod(method)) {
                 var matches = MatchParmsAndProperties(method);
 

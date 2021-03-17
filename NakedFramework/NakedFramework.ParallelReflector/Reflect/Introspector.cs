@@ -236,7 +236,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             return (specs, metamodel);
         }
 
-        private Type GetSpecificationType(Type type) =>
+        private static Type GetSpecificationType(Type type) =>
             FasterTypeUtils.IsGenericCollection(type)
                 ? type.GetGenericTypeDefinition()
                 : FasterTypeUtils.IsObjectArray(type)

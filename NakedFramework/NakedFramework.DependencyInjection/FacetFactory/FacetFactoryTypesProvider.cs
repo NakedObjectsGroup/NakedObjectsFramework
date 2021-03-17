@@ -5,7 +5,7 @@ namespace NakedFramework.DependencyInjection.FacetFactory {
     public class FacetFactoryTypesProvider {
         private static List<Type> FacetFactoryTypesList { get; } = new();
 
-        public Type[] FacetFactoryTypes => FacetFactoryTypesList.ToArray();
+        public static Type[] FacetFactoryTypes => FacetFactoryTypesList.ToArray();
 
         public static void AddType(Type type) => FacetFactoryTypesList.Add(type);
     }

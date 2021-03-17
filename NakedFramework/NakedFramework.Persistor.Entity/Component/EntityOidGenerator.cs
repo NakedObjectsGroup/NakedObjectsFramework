@@ -22,7 +22,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
         }
 
-        public string Name => "Entity Oids";
+        public static string Name => "Entity Oids";
 
         private ILogger<EntityOid> Logger() => loggerFactory.CreateLogger<EntityOid>();
 

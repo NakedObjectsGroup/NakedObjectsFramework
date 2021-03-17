@@ -55,7 +55,7 @@ namespace NakedFramework.Metamodel.Audit {
             return auditor != null ? CreateAuditor(auditor, lifecycleManager) : null;
         }
 
-        private IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
+        private static IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
 
         private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(defaultAuditor, lifecycleManager);
 

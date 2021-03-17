@@ -22,7 +22,7 @@ using NakedObjects;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class DefaultNamingFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private ILogger<DefaultNamingFacetFactory> logger;
+        private readonly ILogger<DefaultNamingFacetFactory> logger;
 
         public DefaultNamingFacetFactory(IFacetFactoryOrder<DefaultNamingFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>

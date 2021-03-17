@@ -29,7 +29,7 @@ namespace NakedFramework.Metamodel.Facet {
             return queryable.IsOrdered() ? queryable : queryable.OrderBy(x => "");
         }
 
-        public INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) {
+        public static INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) {
             // page = 0 causes empty collection to be returned
             IEnumerable<T> newCollection = page == 0 ? AsGenericIQueryable<T>(collection).Take(0) : AsGenericIQueryable<T>(collection).Skip((page - 1) * size).Take(size);
             if (forceEnumerable) {
@@ -39,11 +39,11 @@ namespace NakedFramework.Metamodel.Facet {
             return manager.CreateAdapter(newCollection, null, null);
         }
 
-        public IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) => AsGenericIQueryable<T>(collection).AsEnumerable().Select(arg => manager.CreateAdapter(arg, null, null));
+        public static IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) => AsGenericIQueryable<T>(collection).AsEnumerable().Select(arg => manager.CreateAdapter(arg, null, null));
 
-        public IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericIQueryable<T>(collection);
+        public static IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericIQueryable<T>(collection);
 
-        public bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericIQueryable<T>(collection).Contains((T) element.Object);
+        public static bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericIQueryable<T>(collection).Contains((T) element.Object);
 
         public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => (INakedObjectAdapter) Call("PageInternal", collection, page, size, collection, manager, forceEnumerable);
 

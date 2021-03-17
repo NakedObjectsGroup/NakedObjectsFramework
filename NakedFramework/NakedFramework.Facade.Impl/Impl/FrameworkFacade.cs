@@ -815,7 +815,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 _ => false
             };
 
-        private ParameterContext[] FilterParmsForFunctions(IActionSpec action, string uid) =>
+        private static ParameterContext[] FilterParmsForFunctions(IActionSpec action, string uid) =>
             action.Parameters
                   .Where(p => !IsTargetParm(action, p))
                   .Where(p => !p.IsInjected)

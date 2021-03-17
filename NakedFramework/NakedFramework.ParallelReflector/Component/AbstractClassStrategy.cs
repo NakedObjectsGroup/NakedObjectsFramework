@@ -25,7 +25,7 @@ namespace NakedFramework.ParallelReflector.Component {
 
         protected virtual Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 
-        private bool IsTypeUnsupportedByReflector(Type type) =>
+        private static bool IsTypeUnsupportedByReflector(Type type) =>
             type.IsPointer ||
             type.IsByRef ||
             CollectionUtils.IsDictionary(type) ||

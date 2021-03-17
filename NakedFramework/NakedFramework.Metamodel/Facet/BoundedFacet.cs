@@ -18,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet {
         public BoundedFacet(ISpecification holder)
             : base(typeof(IBoundedFacet), holder) { }
 
-        public string DisabledReason(INakedObjectAdapter inObjectAdapter) => NakedObjects.Resources.NakedObjects.Bounded;
+        public static string DisabledReason(INakedObjectAdapter inObjectAdapter) => NakedObjects.Resources.NakedObjects.Bounded;
 
         #region IBoundedFacet Members
 

@@ -44,7 +44,7 @@ namespace NakedFramework.Core.Resolve {
         private class HistoryEvent {
             // ReSharper disable once NotAccessedField.Local
             // for viewing via debugger
-            private StackTrace trace;
+            private readonly StackTrace trace;
 
             public HistoryEvent(IResolveState startState, IResolveState endState, IResolveEvent rEvent, bool fullTrace) {
                 StartState = startState;

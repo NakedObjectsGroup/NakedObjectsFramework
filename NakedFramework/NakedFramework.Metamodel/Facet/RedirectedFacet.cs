@@ -13,8 +13,8 @@ using NakedFramework.Architecture.Spec;
 namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet {
-        private PropertyInfo oid;
-        private PropertyInfo serverName;
+        private readonly PropertyInfo oid;
+        private readonly PropertyInfo serverName;
 
         public RedirectedFacet(ISpecification holder, PropertyInfo serverName, PropertyInfo oid)
             : base(Type, holder) {
