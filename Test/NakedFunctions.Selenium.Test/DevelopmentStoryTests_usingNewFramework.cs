@@ -53,7 +53,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             OverriddenPrincipalProviderService();
             UseOfRandomSeedGenerator();
             ObjectContributedAction();
-            //InformUserViaIAlertService();
+            InformUserViaIAlertService();
             //EditAction();
             //EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
             //AccessToIClock();
@@ -155,7 +155,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .AssertTitleIs("HL Mountain Tire");
         }
 
-        [TestMethod] //Not yet working
+        //[TestMethod]
         public void InformUserViaIAlertService()
         {
 
