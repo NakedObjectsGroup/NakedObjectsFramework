@@ -832,9 +832,17 @@ namespace NakedFrameworkClient.TestFramework
             return new HomeView(el, this);
         }
 
-        public Helper GotoUrl(string url)
+        //Going via home ensures that any existing object/list view will have been removed before
+        //going to new URL
+        public Helper GotoUrlViaHome(string url)
         {
             GotoHome(); //This is to ensure that the view has changed from any existing object/list view
+            br.Navigate().GoToUrl(GeminiBaseUrl + url);
+            return this;
+        }
+
+        public Helper GotoUrlDirectly(string url)
+        {
             br.Navigate().GoToUrl(GeminiBaseUrl + url);
             return this;
         }
@@ -882,7 +890,7 @@ namespace NakedFrameworkClient.TestFramework
             }
         }
 
-        internal ObjectView WaitForNewObjectView(View enclosingView, MouseClick button)
+        public ObjectView WaitForNewObjectView(View enclosingView, MouseClick button)
         {
             Pane newPane = GetNewPane(enclosingView.pane, button);
             var css = CssSelectorFor(newPane, PaneType.Object);
