@@ -128,7 +128,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetActionWithoutDialog("Random Product")
                 .ClickToViewObject()
                 .GetTitle();
-
+            helper.GotoHome();
             string prod2Title = helper.GotoHome().OpenMainMenu("Products")
               .GetActionWithoutDialog("Random Product")
               .ClickToViewObject()
