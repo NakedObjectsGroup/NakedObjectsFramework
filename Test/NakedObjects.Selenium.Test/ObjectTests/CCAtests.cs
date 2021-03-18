@@ -137,12 +137,13 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
-            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox") == 17);
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox") > 10);
+            int count = br.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox");
             WaitForSelectedCheckboxes(0);
 
             //Select all
             SelectCheckBox("#item1-all");
-            WaitForSelectedCheckboxes(17);
+            WaitForSelectedCheckboxes(count);
 
             //Deslect all
             SelectCheckBox("#item1-all", true);
@@ -160,7 +161,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
 
             //Select all
             SelectCheckBox("#item1-all");
-            WaitForSelectedCheckboxes(17);
+            WaitForSelectedCheckboxesAtLeast(17);
 
             //Deslect all
             SelectCheckBox("#item1-all", true);

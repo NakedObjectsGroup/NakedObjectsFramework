@@ -505,20 +505,20 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             WaitForOutput("Too many arguments provided");
             //Now try for a list context
             CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&c1=List");
-            WaitForOutput("Result from Current Special Offers:\r\n16 items");
+            WaitForOutputStarting("Result from Current Special Offers:\r\n");
             EnterCommand("go 1");
             WaitForOutput("Special Offer: No Discount");
             CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&c1=List");
-            WaitForOutput("Result from Current Special Offers:\r\n16 items");
+            WaitForOutputStarting("Result from Current Special Offers:\r\n");
             EnterCommand("go 16");
             WaitForOutput("Special Offer: Mountain-500 Silver Clearance Sale");
             //Try out of range
             CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&c1=List");
-            WaitForOutput("Result from Current Special Offers:\r\n16 items");
+            WaitForOutputStarting("Result from Current Special Offers:\r\n");
             EnterCommand("go 0");
             WaitForOutput("0 is out of range for displayed items");
-            EnterCommand("go 17");
-            WaitForOutput("17 is out of range for displayed items");
+            EnterCommand("go 40");
+            WaitForOutput("40 is out of range for displayed items");
             EnterCommand("go x");
             WaitForOutput("x is not a number");
             EnterCommand("go 1x"); //Because of behaviour of tryParse
@@ -934,7 +934,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             #region In a list
 
             CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers");
-            WaitForOutput("Result from Current Special Offers:\r\n16 items");
+            WaitForOutputStarting("Result from Current Special Offers:\r\n");
             EnterCommand("show 1");
             WaitForOutput("item 1: No Discount");
             EnterCommand("show 16");

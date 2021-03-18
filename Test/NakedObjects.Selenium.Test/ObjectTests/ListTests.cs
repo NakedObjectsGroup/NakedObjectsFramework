@@ -23,7 +23,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
         private bool PageTitleOK() {
             var text = WaitForCss(".list .summary .details").Text;
 
-            return text.StartsWith("Page 1 of 1574; viewing 20 of") || text.StartsWith("Page 1 of 1575; viewing 20 of");
+            return text.StartsWith("Page 1 of 15");
 
         }
 

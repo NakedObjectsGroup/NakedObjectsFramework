@@ -783,6 +783,10 @@ namespace NakedFramework.Selenium.Helpers.Tests
             wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) == number);
         }
 
+        protected void WaitForSelectedCheckboxesAtLeast(int number)
+        {
+            wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) >= number);
+        }
         #endregion
 
         #region ToolBar icons
