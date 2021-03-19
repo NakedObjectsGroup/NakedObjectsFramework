@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -10,6 +11,12 @@ namespace NakedFrameworkClient.TestFramework
         public Property AssertValueIs(string expected)
         {
             Assert.AreEqual(expected, element.FindElement(By.CssSelector(".value")).Text);
+            return this;
+        }
+
+        public Property AssertIsMultiLine()
+        {
+            element.FindElement(By.CssSelector(".multiline"));
             return this;
         }
     }

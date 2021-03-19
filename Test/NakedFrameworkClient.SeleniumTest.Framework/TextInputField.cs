@@ -29,6 +29,12 @@ namespace NakedFrameworkClient.TestFramework
 
         public override TextInputField AssertIsOptional() => throw new NotImplementedException();
 
+        public TextInputField AssertIsEmpty()
+        {
+            Assert.AreEqual("", Input().GetAttribute("value"));
+            return this;
+        }
+
         public override TextInputField Clear()
         {
             var input = Input();
@@ -51,5 +57,17 @@ namespace NakedFrameworkClient.TestFramework
         }
 
         private IWebElement Input() => element.FindElement(By.TagName("input"));
+
+        public TextInputField AssertIsPassword()
+        {
+            Assert.AreEqual("password", Input().GetAttribute("type"));
+            return this;
+        }
+
+        public TextInputField AssertHasValue(string value)
+        {
+            Assert.AreEqual(value, Input().GetAttribute("value"));
+            return this;
+        }
     }
 }

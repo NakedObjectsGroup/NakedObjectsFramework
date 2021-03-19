@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
+using System.Linq;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -14,7 +15,12 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public ListView AssertHeaderIs(string header) => throw new NotImplementedException();
+        public ListView AssertDetails(string expected)
+        {
+            var actual = helper.WaitForChildElement(element, ".summary .details").Text;
+            Assert.AreEqual(expected, actual);
+            return this;
+        }
 
         public ListView AssertNoOfRowsIs(int rows)
         {
@@ -26,11 +32,30 @@ namespace NakedFrameworkClient.TestFramework
 
         public ListView ClickListView() => throw new NotImplementedException();
 
-        public ListView AssertIsTable() => throw new NotImplementedException();
+        public ListView AssertIsTable()
+        {
+            var head = element.FindElement(By.CssSelector("thead"));
+            Assert.IsTrue(head.FindElements(By.CssSelector("th")).Any());
+            return this;
+        }
 
-        public ListView ClickTableView() => throw new NotImplementedException();
+        public ListView ClickTableView()
+        {
+            element.FindElement(By.CssSelector(".icon.table")).Click();
+            helper.WaitForChildElement(element, "thead th");
+            return this;
+        }
 
-        public ListView AssertTableHeaderHasColumns(params string[] columns) => throw new NotImplementedException();
+        public ListView AssertTableHeaderHasColumns(params string[] columnNames)
+        {
+            var cols = element.FindElements(By.CssSelector("thead th"));
+            Assert.AreEqual(columnNames.Count(), cols.Count);
+            for (int i = 0; i < columnNames.Count(); i++)
+            {
+                Assert.AreEqual(columnNames[i], cols[i].Text);
+            }
+            return this;
+        }
 
         //Row number counts from zero
         public ListView CheckRow(int rowNumber) => throw new NotImplementedException();

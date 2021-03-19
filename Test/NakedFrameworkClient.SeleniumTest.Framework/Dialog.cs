@@ -49,7 +49,8 @@ namespace NakedFrameworkClient.TestFramework
 
         public TextInputField GetTextField(string fieldName)
         {
-            var field = element.FindElements(By.CssSelector("nof-edit-parameter")).Single(x => x.Text == fieldName);
+            var field = element.FindElements(By.CssSelector("nof-edit-parameter"))
+                .Single(x => x.FindElement(By.CssSelector("label")).Text == fieldName);
             var input = field.FindElement(By.TagName("input"));
             //Not a valid test!
             //Assert.AreEqual("text", input.GetAttribute("type"), $"{fieldName} is not a Text field");

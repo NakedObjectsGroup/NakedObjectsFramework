@@ -1,6 +1,8 @@
 ﻿
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
+using System.Linq;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -18,6 +20,15 @@ namespace NakedFrameworkClient.TestFramework
             return new Menu(menuEl, helper, this);
         }
 
-        public HomeView AssertMainMenusAre(params string[] menuNames) => throw new NotImplementedException();
+        public HomeView AssertMainMenusAre(params string[] menuNames)
+        {
+            var menus = element.FindElements(By.CssSelector("nof-menu-bar nof-action"));
+            Assert.AreEqual(menus.Count(), menuNames.Count(), "Number of menus specified does not match the view");
+            for (int i = 0; i < menus.Count; i++)
+            {
+                Assert.AreEqual(menuNames[i], menus[i].FindElement(By.CssSelector("input")).GetAttribute("value"));
+            }
+            return this;
+        }
     }
 }

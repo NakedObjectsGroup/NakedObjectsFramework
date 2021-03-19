@@ -49,15 +49,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Mask();
             MaxLength();
             MemberOrder();
-            //MultiLine();
-            //Named();
-            //Optionally();
-            //PageSize();
-            //Password();
-            //RegEx();
-            //RenderEagerly();
-            //TableView();
-            //ValueRangeInt();
+            MultiLine();
+            Named();
+            Optionally();
+            PageSize();
+            Password();
+            RegEx();
+            RenderEagerly();
+            TableView();
+            ValueRangeInt();
         }
 
         //[TestMethod]
@@ -133,121 +133,95 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void MemberOrder()
         {
-            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Store--670").GetObjectView().AssertTitleIs("Fitness Cycling")
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Store--670")
+                .GetObjectView().AssertTitleIs("Fitness Cycling")
                 .AssertPropertiesAre("Store Name", "Demographics", "Sales Person", "Modified Date");
         }
 
 
-        //  //[TestMethod]
-        //  public void MultiLine()
-        //  {
-        //      GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--51131");
-        //      WaitForTitle("SO51131");
-        //      var comment = GetProperty("Comment");
-        //      comment.FindElement(By.CssSelector(".multiline"));
-        //  }
+        //[TestMethod]
+        public void MultiLine()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--51131")
+                .GetObjectView().AssertTitleIs("SO51131")
+                .GetProperty("Comment").AssertIsMultiLine();
+        }
 
-        //  // [TestMethod]
-        //  public void Named()
-        //  {
-        //      Home();
-        //      var employee_menuFunctions = WaitForCssNo("nof-menu-bar nof-action input", 0);
-        //      Assert.AreEqual("Employees", employee_menuFunctions.GetAttribute("value"));
-        //  }
+        // [TestMethod]
+        public void Named()
+        {
+            helper.GotoHome().AssertMainMenusAre("Employees", "Addresses", "Persons", "Products", 
+                "Work Orders", "Purchase Orders", "Vendors", "Customers", "Orders", "Sales", "Cart", "Special Offers");
+        }
 
-        //  //[TestMethod]
-        //  public void Optionally()
-        //  {
-        //      GeminiUrl("home?m1=Employee_MenuFunctions&d1=FindEmployeeByName");
-        //      var lastName = WaitForCss("input#lastname1");
-        //      Assert.IsTrue(lastName.GetAttribute("placeholder").Contains("*"));
-        //      Assert.AreEqual("", lastName.GetAttribute("value"));
-        //      var firstName = WaitForCss("input#firstname1");
-        //      var placeholder = firstName.GetAttribute("placeholder");
-        //      Assert.IsTrue(placeholder is null || placeholder == "");
-        //      Assert.AreEqual("", firstName.GetAttribute("value"));
-        //      Assert.AreEqual("Missing mandatory fields: Last Name; ", OKButton().GetAttribute("title"));
-        //  }
+        //TestMethod]
+        public void Optionally()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Employees")
+                .GetActionWithDialog("Find Employee By Name").AssertIsEnabled().Open();
+            dialog.GetTextField("Last Name").AssertHasPlaceholder("* ").AssertIsEmpty();
+            dialog.GetTextField("First Name").AssertHasPlaceholder("").AssertIsEmpty();
+            dialog.AssertOKIsDisabled("Missing mandatory fields: Last Name; ");
+        }
 
-        //  //[TestMethod]
-        //  public void PageSize()
-        //  {
-        //      GeminiUrl("home?m1=Employee_MenuFunctions");
-        //      WaitForTitle("Home");
-        //      Click(WaitForCss("input[value=\"All Employees\""));
-        //      WaitForTitle("All Employees");
-        //      var page = WaitForCss(".summary .details");
-        //      Assert.AreEqual("Page 1 of 20; viewing 15 of 290 items", page.Text);
-        //  }
+        //[TestMethod]
+        public void PageSize()
+        {
+            helper.GotoHome().OpenMainMenu("Employees").GetActionWithoutDialog("All Employees").ClickToViewList()
+                .AssertDetails("Page 1 of 20; viewing 15 of 290 items");
+        }
 
-        //  //[TestMethod]
-        //  public void Password()
-        //  {
-        //      GeminiUrl("object?i1=View&o1=AW.Types.Person--11714&as1=open&d1=ChangePassword");
-        //      WaitForTitle("Marshall Black");
-        //      var oldPWField = WaitForCss("input#oldpassword1");
-        //      Assert.AreEqual("password", oldPWField.GetAttribute("type"));
-        //  }
+        //[TestMethod]
+        public void Password()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Person--11714")
+                .GetObjectView().AssertTitleIs("Marshall Black")
+                .OpenActions().GetActionWithDialog("Change Password").AssertIsEnabled().Open()
+                .GetTextField("Old Password").AssertIsPassword();
+        }
 
-        //  //[TestMethod]
-        //  public void RegEx()
-        //  {
-        //      GeminiUrl("home?m1=Customer_MenuFunctions&d1=FindCustomerByAccountNumber");
-        //      WaitForTitle("Home");
-        //      string invalid = "Invalid entry";
-        //      var input = "input#accountnumber1";
-        //      Assert.AreEqual("AW", WaitForCss(input).GetAttribute("value"));
-        //      var validation = WaitForCss("nof-edit-parameter .validation");
-        //      Assert.AreEqual(invalid, validation.Text);
+        //[TestMethod]
+        public void RegEx()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Customers")
+                .GetActionWithDialog("Find Customer By Account Number").Open();
 
-        //      ClearFieldThenType(input, "12345");
-        //      Assert.AreEqual(invalid, validation.Text);
+            dialog.GetTextField("Account Number").AssertHasValidationError("Invalid entry")
+                .Clear().Enter("12345").AssertHasValidationError("Invalid entry")
+                 .Clear().Enter("AW12345").AssertHasValidationError("Invalid entry")
+                 .Clear().Enter("AW00012345").AssertNoValidationError();
+        }
 
-        //      ClearFieldThenType(input, "AW12345");
-        //      Assert.AreEqual(invalid, validation.Text);
+        //[TestMethod]
+        public void RenderEagerly()
+        {
+            helper.GotoHome().OpenMainMenu("Employees")
+                .GetActionWithoutDialog("List All Departments").ClickToViewList()
+                .AssertIsTable().AssertTableHeaderHasColumns("", "Group Name");
+        }
 
-        //      ClearFieldThenType(input, "AW00012345");
-        //      Assert.AreEqual("", validation.Text);
+        //[TestMethod]
+        public void TableView()
+        {
+            helper.GotoHome().OpenMainMenu("Purchase Orders")
+                .GetActionWithoutDialog("All Open Purchase Orders").ClickToViewList()
+                .ClickTableView()
+                .AssertTableHeaderHasColumns("", "Vendor", "Order Date", "Total Due");
+        }
 
-        //  }
-
-        //  //[TestMethod]
-        //  public void RenderEagerly()
-        //  {
-        //      GeminiUrl("home");
-        //      WaitForTitle("Home");
-        //      OpenMainMenuAction("Employees", "List All Departments");
-        //      WaitForTitle("List All Departments");
-        //      wait.Until(dr => dr.FindElements(By.CssSelector("th")).Where(el => el.Text == "Group Name").Single());
-        //  }
-
-        //  //[TestMethod]
-        //  public void TableView()
-        //  {
-        //      GeminiUrl("home");
-        //      WaitForTitle("Home");
-        //      OpenMainMenuAction("Purchase Orders","All Open Purchase Orders");
-        //      Click(WaitForCss(".summary .icon.table"));
-        //      Assert.AreEqual("Total Due", WaitForCssNo("thead th", 3).Text);
-        //      Assert.AreEqual("Order Date", WaitForCssNo("thead th", 2).Text);
-        //      Assert.AreEqual("Vendor", WaitForCssNo("thead th", 1).Text);
-        //      Assert.AreEqual("", WaitForCssNo("thead th", 0).Text);
-        //  }
-
-        //  //[TestMethod]
-        //  public void ValueRangeInt()
-        //  {
-        //      GeminiUrl("object?i1=View&o1=AW.Types.Product--890&as1=open&d1=BestSpecialOffer");
-        //      WaitForTitle("HL Touring Frame - Blue, 46");
-        //      var qty = "input#quantity1";
-        //      var val = WaitForCss("nof-edit-parameter .validation");
-        //      Assert.AreEqual("", val.Text);
-        //      ClearFieldThenType(qty, "1000");
-        //      Assert.AreEqual("Value is outside the range 1 to 999", val.Text);
-        //      ClearFieldThenType(qty, "10");
-        //      Assert.AreEqual("", val.Text);
-        //      ClearFieldThenType(qty, "1000");
-        //      Assert.AreEqual("Value is outside the range 1 to 999", val.Text);
-        //  }
+       //[TestMethod]
+        public void ValueRangeInt()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--890")
+                .GetObjectView().AssertTitleIs("HL Touring Frame - Blue, 46")
+                .OpenActions().GetActionWithDialog("Best Special Offer").AssertIsEnabled().Open()
+                .GetTextField("Quantity")
+                .AssertIsEmpty().AssertNoValidationError()
+                .Clear().Enter("1000").AssertHasValidationError("Value is outside the range 1 to 999")
+                .Clear().Enter("999").AssertNoValidationError()
+                .Clear().Enter("0").AssertHasValidationError("Value is outside the range 1 to 999")
+                 .Clear().Enter("1").AssertNoValidationError()
+                .Clear().Enter("-1").AssertHasValidationError("Value is outside the range 1 to 999");
+        }
     }
 }
