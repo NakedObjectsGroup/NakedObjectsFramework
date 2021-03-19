@@ -294,7 +294,7 @@ namespace NakedFrameworkClient.TestFramework
 
         private void WaitForMenus()
         {
-            wait.Until(dr => dr.FindElements(By.CssSelector("nof-menu-bar nof-action")).Count == 10);
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-menu-bar nof-action")).Count > 1);
         }
 
         private void GoToMenuFromHomePage(string menuName)
@@ -828,7 +828,8 @@ namespace NakedFrameworkClient.TestFramework
         {
             br.Navigate().GoToUrl(GeminiBaseUrl + "home");
             WaitForView(Pane.Single, PaneType.Home);
-            var el = WaitForCss(".home");            
+            var el = WaitForCss(".home");
+            WaitForMenus();
             return new HomeView(el, this);
         }
 
