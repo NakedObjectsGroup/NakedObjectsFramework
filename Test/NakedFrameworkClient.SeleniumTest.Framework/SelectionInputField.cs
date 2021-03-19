@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using System;
 
 namespace NakedFrameworkClient.TestFramework
@@ -26,7 +27,12 @@ namespace NakedFrameworkClient.TestFramework
 
         public SelectionInputField AssertOptionsAre(params string[] titles) => throw new NotImplementedException();
 
-        public SelectionInputField AssertOptionIs(int optionNumber, string title) => throw new NotImplementedException();
+        public SelectionInputField AssertOptionIs(int optionNumber, string title)
+        {
+            var option = helper.wait.Until(dr => element.FindElements(By.CssSelector("select option"))[optionNumber]);
+            Assert.AreEqual(title, option.Text);
+            return this;
+        }
 
     }
 }

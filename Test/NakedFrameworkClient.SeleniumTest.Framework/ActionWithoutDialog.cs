@@ -3,11 +3,13 @@ using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
-    public class ActionWithoutDialog : SubView
+    public class ActionWithoutDialog : MenuAction
     {
         public ActionWithoutDialog(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
 
-        public ActionWithoutDialog AssertIsEnabled() => throw new NotImplementedException();
+        public override ActionWithoutDialog AssertIsEnabled() => (ActionWithoutDialog) base.AssertIsEnabled();
+
+        public override ActionWithoutDialog AssertHasTooltip(string tooltip) => (ActionWithoutDialog) base.AssertHasTooltip(tooltip);
 
 
         public ObjectView ClickToViewObject(MouseClick button = MouseClick.MainButton)

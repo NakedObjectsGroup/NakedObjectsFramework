@@ -26,12 +26,13 @@ namespace NakedFrameworkClient.TestFramework
 
         public virtual InputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 
-        public virtual InputField AssertNoValidationError()
+        public virtual InputField AssertNoValidationError() =>
+            AssertHasValidationError(string.Empty);
+
+        public virtual InputField AssertHasValidationError(string message)
         {
-            Assert.AreEqual(string.Empty, element.FindElement(By.CssSelector(".validation")).Text);
+            Assert.AreEqual(message, element.FindElement(By.CssSelector(".validation")).Text);
             return this;
         }
-
-        public virtual InputField AssertHasValidationError() => throw new NotImplementedException();
     }
 }

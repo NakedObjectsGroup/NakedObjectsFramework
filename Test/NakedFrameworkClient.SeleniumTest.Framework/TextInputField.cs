@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using System;
 using System.Threading;
 
@@ -8,9 +9,17 @@ namespace NakedFrameworkClient.TestFramework
     {
         public TextInputField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
 
-        public override TextInputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
+        public override TextInputField AssertDefaultValueIs(string value)
+        {
+            Assert.AreEqual(value, Input().GetAttribute("value"));
+            return this;
+        }
 
-        public override TextInputField AssertHasPlaceholder() => throw new NotImplementedException();
+        public TextInputField AssertHasPlaceholder(string text)
+        {
+            Assert.AreEqual(text, Input().GetAttribute("placeholder"));
+            return this;
+        }
 
         public override TextInputField AssertIsDisabled() => throw new NotImplementedException();
 

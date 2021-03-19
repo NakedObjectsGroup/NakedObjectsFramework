@@ -1,17 +1,15 @@
 ﻿using OpenQA.Selenium;
-using System;
+
 
 namespace NakedFrameworkClient.TestFramework
 {
-    public class ActionWithDialog : SubView
+    public class ActionWithDialog : MenuAction
     {
         public ActionWithDialog(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
 
-        public ActionWithDialog AssertIsEnabled()
-        {
-            element.AssertIsEnabled();
-            return this;
-        }
+        public override ActionWithDialog AssertIsEnabled() => (ActionWithDialog) base.AssertIsEnabled();
+
+        public override ActionWithDialog AssertHasTooltip(string tooltip) => (ActionWithDialog) base.AssertHasTooltip(tooltip);
 
         public Dialog Open()
         {

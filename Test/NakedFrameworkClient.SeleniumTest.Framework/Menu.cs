@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using System.Linq;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -28,7 +29,13 @@ namespace NakedFrameworkClient.TestFramework
             return new ActionWithoutDialog(act, helper, enclosingView);
         }
 
-        public Menu GetSubMenu(string subMenuName) => throw new NotImplementedException();
+        public Menu OpenSubMenu(string subMenuName)
+        {
+            var sub = element.FindElements(By.CssSelector(".submenu")).Single(element => element.Text == subMenuName);
+            helper.Click(sub);
+            var el = helper.WaitForChildElement(element, ".menuitem.open");
+            return new Menu(el, helper, enclosingView);
+        }
   
         public void Close() => throw new NotImplementedException();
     }

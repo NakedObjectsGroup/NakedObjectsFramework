@@ -49,21 +49,28 @@ namespace NakedFrameworkClient.TestFramework
 
         public TextInputField GetTextField(string fieldName)
         {
-            var param = element.FindElements(By.CssSelector("nof-edit-parameter")).Single(x => x.Text == fieldName);
-            var input = param.FindElement(By.TagName("input"));
+            var field = element.FindElements(By.CssSelector("nof-edit-parameter")).Single(x => x.Text == fieldName);
+            var input = field.FindElement(By.TagName("input"));
             //Not a valid test!
             //Assert.AreEqual("text", input.GetAttribute("type"), $"{fieldName} is not a Text field");
-            return new TextInputField(param, helper, enclosingView);
+            return new TextInputField(field, helper, enclosingView);
         }
 
         //TODO: Factor out common logic
         public ReferenceInputField GetReferenceField(string fieldName)
         {
-            var param = element.FindElements(By.CssSelector("nof-edit-parameter")).Single(x => x.Text == fieldName);
-            var input = param.FindElement(By.TagName("input"));
+            var field = element.FindElements(By.CssSelector("nof-edit-parameter")).Single(x => x.Text == fieldName);
+            var input = field.FindElement(By.TagName("input"));
             Assert.IsTrue(input.GetAttribute("class").Contains("droppable"));
             //Assert.AreEqual("text", input.GetAttribute("type"), $"{fieldName} is not a Text field");
-            return new ReferenceInputField(param, helper, enclosingView);
+            return new ReferenceInputField(field, helper, enclosingView);
+        }
+
+        public SelectionInputField GetSelectionField(string fieldName)
+        {
+            var field = element.FindElements(By.CssSelector("nof-edit-parameter")).Single(x => x.FindElement(By.CssSelector(".name")).Text == fieldName);
+            Assert.IsTrue(field.FindElement(By.TagName("select")) is not null);
+            return new SelectionInputField(field, helper, enclosingView);
         }
     }
 }
