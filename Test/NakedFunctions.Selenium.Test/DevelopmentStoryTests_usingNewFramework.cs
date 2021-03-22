@@ -49,12 +49,14 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             UseOfRandomSeedGenerator();
             ObjectContributedAction();
             InformUserViaIAlertService();
-            //EditAction();
-            //EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
-            //AccessToIClock();
-            //RecordsDoNotHaveEditButton();
-            //EnumProperty();
-            //EnumParam();
+            EditAction();
+            EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
+            AccessToIClock();
+            RecordsDoNotHaveEditButton();
+            EnumProperty();
+            EnumParam();
+            DisplayValueAsProperty();
+            DisplayCollectionAsProperty();
             //DisplayGuidProperty();
             //ParameterChoicesSimple();
             //ParameterChoicesDependent();
@@ -88,7 +90,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //QueryContributedActionWithChoicesFunction();
             //QueryContributedActionWithCoValidation();
             //ActionReturingImmutableList();
-            //DisplayAsProperty();
+            //
         }
 
         //[TestMethod]
@@ -173,72 +175,79 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void EditAction()
         {
-            //GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
-            //var title = WaitForTitle("Road-650 Overstock");
-            //var original = GetPropertyValue("Max Qty");
-            //var newQty = original + "1";
-            //ClearFieldThenType("#maxqty1", newQty);
-            //Click(OKButton());
-            //Thread.Sleep(1000);
-            //Assert.AreEqual(newQty, GetPropertyValue("Max Qty"));
-            //OpenActionDialog("Edit Quantities");
-            //ClearFieldThenType("#maxqty1", original);
-            //Click(OKButton());
-            //Reload();
-            //Assert.AreEqual(original, GetPropertyValue("Max Qty"));
+            var offer = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities")
+                .GetObjectView(Pane.Left).AssertTitleIs("Road-650 Overstock");
+
+            string original = offer.GetProperty("Max Qty").GetValue();
+            string newQty = new Random().Next(1000).ToString();
+
+            var dialog = offer.GetOpenedDialog();
+            dialog.GetTextField("Max Qty").Clear().Enter(newQty);
+            dialog.ClickOKToViewObject().GetProperty("Max Qty").AssertValueIs(newQty);
+
+            dialog = offer.OpenActions().GetActionWithDialog("Edit Quantities").Open();
+            dialog.GetTextField("Max Qty").Clear().Enter(original);
+            dialog.ClickOKToViewObject().GetProperty("Max Qty").AssertValueIs(original);
         }
 
-        ////[TestMethod]
-        //public void EditActionWithDefaultSuppliedAutomaticallyByEditAttribute()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditDescription");
-        //    var title = WaitForTitle("Road-650 Overstock");
-        //    var input = WaitForCss("#description1");
-        //    Assert.AreEqual("Road-650 Overstock", input.GetAttribute("value"));
-        //}
+        //[TestMethod]
+        public void EditActionWithDefaultSuppliedAutomaticallyByEditAttribute()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditDescription")
+              .GetObjectView(Pane.Left).AssertTitleIs("Road-650 Overstock")
+              .GetOpenedDialog().GetTextField("Description").AssertDefaultValueIs("Road-650 Overstock");
 
-        ////[TestMethod] 
-        //public void AccessToIClock()
-        //{
-        //    //Corresponds to #203
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--1&as1=open&d1=EditDates");
-        //    var endDate = WaitForCss("input#enddate1");
-        //    var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
-        //    Assert.AreEqual(oneMonthOn, endDate.GetAttribute("value"));
-        //}
+        }
 
-        ////[TestMethod]
-        //public void RecordsDoNotHaveEditButton()
-        //{
-        //    //Corresponds to #229
-        //    GeminiUrl("object?i1=View&o1=AW.Types.WorkOrder--4717");
-        //    WaitForTitle("Road-650 Red, 58: 10/30/2005 12:00:00 AM");
-        //    WaitForCssNo("nof-action-bar nof-action", 2);
-        //    var edit = WaitForCssNo("nof-action-bar nof-action", 1);
-        //    var title = edit.GetAttribute("value");
-        //    Assert.IsTrue(title is null || title == "");
-        //}
+        //[TestMethod] 
+        public void AccessToIClock()
+        {
+            var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--1&as1=open&d1=EditDates")
+                .GetObjectView().GetOpenedDialog().GetTextField("End Date").AssertDefaultValueIs(oneMonthOn);
+        }
 
-        ////[TestMethod]
-        //public void EnumProperty()
-        //{
-        //    //Coresponds to (part of) #232
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--55864");
-        //    WaitForTitle("SO55864");
-        //    string value = GetPropertyValue("Status");
-        //    Assert.AreEqual("Shipped", value);
-        //}
+        //[TestMethod]
+        public void RecordsDoNotHaveEditButton()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.WorkOrder--4717")
+                .GetObjectView().AssertTitleIs("Road-650 Red, 58: 10/30/2005 12:00:00 AM")
+                .AssertIsNotEditable();
+        }
 
-        ////[TestMethod]
-        //public void EnumParam()
-        //{
-        //    //Coresponds to (part of) #232
-        //    GeminiUrl("home?m1=Order_MenuFunctions&d1=OrdersByStatus");
-        //    WaitForCssNo("#status1 option", 6);
-        //    Assert.AreEqual("Shipped", WaitForCssNo("#status1 option", 6).Text);
-        //    Assert.AreEqual("Rejected", WaitForCssNo("#status1 option", 5).Text);
-        //    Assert.AreEqual("*", WaitForCssNo("#status1 option", 0).Text);
-        //}
+        //[TestMethod]
+        public void EnumProperty()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--55864")
+             .GetObjectView().AssertTitleIs("SO55864")
+             .GetProperty("Status").AssertValueIs("Shipped");
+        }
+
+        //[TestMethod]
+        public void EnumParam()
+        {
+            helper.GotoHome().OpenMainMenu("Orders").GetActionWithDialog("Orders By Status").Open()
+                .GetSelectionField("Status")
+                .AssertNoOfOptionsIs(7).AssertOptionIs(0, "*").AssertOptionIs(6, "Shipped");
+        }
+
+        //[TestMethod]
+        public void DisplayValueAsProperty()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--790")
+                .GetObjectView().AssertTitleIs("Road-250 Red, 48")
+                .GetProperty(5).AssertNameIs("Description").GetReference()
+                .AssertTitleIs("Alluminum-alloy frame provides a light, stiff ride, whether you are racing in the velodrome or on a demanding club ride on country roads.");
+        }
+
+
+        //[TestMethod]
+        public void DisplayCollectionAsProperty()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--790")
+                .GetObjectView().AssertTitleIs("Road-250 Red, 48")
+                .GetCollection("Special Offers").AssertDetails("2 Items");
+        }
 
         ////[TestMethod]
         //public void DisplayGuidProperty()
@@ -808,25 +817,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //    Assert.AreEqual(@"HL Touring Seat/Saddle", last.Text);
         //}
 
-        ////[TestMethod]
-        //public void DisplayAsProperty()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Product--790");
-        //    WaitForView(Pane.Single, PaneType.Object, "Road-250 Red, 48");
-        //    var props = br.FindElements(By.CssSelector("nof-view-property .name"));
-        //    Assert.AreEqual(24, props.Count());
-        //    Assert.AreEqual("Product Model:", props[4].Text);
-        //    Assert.AreEqual("Description:", props[5].Text); //DisplayAsProperty
-        //    Assert.AreEqual("List Price:", props[6].Text);
-        //    var desc = WaitForCssNo("nof-view-property", 5).FindElement(By.CssSelector(".reference")).Text;
-        //    Assert.AreEqual("Alluminum-alloy frame provides a light, stiff ride, whether you are racing in the velodrome or on a demanding club ride on country roads.", desc);
-        //    var cols = br.FindElements(By.CssSelector("nof-collection .name"));
-        //    Assert.AreEqual("Product Reviews:", cols[0].Text);
-        //    Assert.AreEqual("Special Offers:", cols[1].Text); //DisplayAsProperty
-        //    Assert.AreEqual("Product Inventory:", cols[2].Text);
-        //    var offers = WaitForCssNo("nof-collection .details", 1).Text;
-        //    Assert.AreEqual("2 Items", offers);
-        //}
+
 
     }
 }

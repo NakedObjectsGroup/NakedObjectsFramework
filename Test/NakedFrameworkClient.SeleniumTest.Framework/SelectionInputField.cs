@@ -1,12 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
     public class SelectionInputField : InputField
     {
-        public SelectionInputField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
+        public SelectionInputField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) {
+            SelectElement = new SelectElement(element.FindElement(By.TagName("select")));
+        }
+
+        private SelectElement SelectElement;
 
         public override SelectionInputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 
@@ -16,23 +21,44 @@ namespace NakedFrameworkClient.TestFramework
 
         public override SelectionInputField Clear()=> throw new NotImplementedException();
 
-        public override SelectionInputField Enter(string selection) => throw new NotImplementedException();
-
-        //OptionNumber counts from zero
-        public SelectionInputField Select(int optionNumber) => throw new NotImplementedException();
-
-        public SelectionInputField SelectMultiple(params int[] options) => throw new NotImplementedException();
-
-        public SelectionInputField AssertNoOfOptionsIs(int number) => throw new NotImplementedException();
-
-        public SelectionInputField AssertOptionsAre(params string[] titles) => throw new NotImplementedException();
-
-        public SelectionInputField AssertOptionIs(int optionNumber, string title)
+        public override SelectionInputField Enter(string selection)
         {
-            var option = helper.wait.Until(dr => element.FindElements(By.CssSelector("select option"))[optionNumber]);
-            Assert.AreEqual(title, option.Text);
+            SelectElement.SelectByText(selection);
+            helper.wait.Until(dr => SelectElement.SelectedOption.Text == selection);
             return this;
         }
 
+        //OptionNumber counts from zero
+        public SelectionInputField Select(int optionNumber)
+
+        {
+            SelectElement.SelectByIndex(optionNumber);
+            helper.wait.Until(dr => SelectElement.SelectedOption.Text == SelectElement.AllSelectedOptions[optionNumber].Text);
+            return this;
+        }
+
+        public SelectionInputField SelectMultiple(params int[] options) => throw new NotImplementedException();
+
+        public SelectionInputField AssertNoOfOptionsIs(int number)
+        {
+            Assert.AreEqual(number, SelectElement.Options.Count);
+            return this;
+        }
+
+        public SelectionInputField AssertOptionsAre(params string[] titles)
+        {
+            var s = SelectElement.Options;
+            for (int i = 0; i < s.Count; i++)
+            {
+                Assert.AreEqual(titles[i], s[i].Text);
+            }
+            return this;
+        }
+
+        public SelectionInputField AssertOptionIs(int optionNumber, string title)
+        {
+            Assert.AreEqual(title, SelectElement.Options[optionNumber].Text);
+            return this;
+        }
     }
 }
