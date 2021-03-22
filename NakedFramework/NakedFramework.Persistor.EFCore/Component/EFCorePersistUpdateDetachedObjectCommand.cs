@@ -9,14 +9,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
-using NakedObjects;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCorePersistUpdateDetachedObjectCommand {
@@ -37,7 +35,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             var (proxy, updated) = updateTuple;
 
             if (!IsSavedOrUpdated(updated)) {
-                context = parent.GetContext(updated);
+                context = parent.GetContext(updated).WrappedDbContext;
                 ProxyObjectIfAppropriate(updated, proxy);
             }
         }
@@ -46,7 +44,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             var errors = new List<string>();
 
             foreach (var toSave in detachedObjects.ToSave) {
-                context = parent.GetContext(toSave);
+                context = parent.GetContext(toSave).WrappedDbContext;
                 if (!parent.EmptyKeys(toSave)) {
                     errors.Add($"Save object {toSave} already has a key");
                 }
@@ -54,7 +52,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             foreach (var updateTuple in detachedObjects.ToUpdate) {
                 var (_, toUpdate) = updateTuple;
-                context = parent.GetContext(toUpdate);
+                context = parent.GetContext(toUpdate).WrappedDbContext;
                 if (parent.EmptyKeys(toUpdate)) {
                     errors.Add($"Update object {toUpdate} has no key");
                 }
@@ -84,13 +82,13 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 return detachedObjects.SavedAndUpdated;
             }
             catch (Exception e) {
-                parent.Logger.LogWarning($"Error in EFCorePersistUpdateDetachedObjectCommand.Execute: {e.Message}");
+                parent.Logger.LogWarning($"Error in {nameof(EFCorePersistUpdateDetachedObjectCommand)}.{nameof(Execute)}: {e.Message}");
                 throw;
             }
         }
 
         private void DeleteObject(object toDelete) {
-            context = parent.GetContext(toDelete);
+            context = parent.GetContext(toDelete).WrappedDbContext;
             context.Remove(toDelete);
         }
 
