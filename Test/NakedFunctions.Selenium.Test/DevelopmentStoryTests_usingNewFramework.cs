@@ -358,7 +358,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             summary.GetProperty("Total Staff").AssertValueIs("290");
         }
 
-        [TestMethod]
+       // [TestMethod]
         public void CreateNewObectWithOnlyValueProperties()
         {
             var dialog = helper.GotoHome().OpenMainMenu("Special Offers")

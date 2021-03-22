@@ -24,8 +24,11 @@ namespace NakedFrameworkClient.TestFramework
 
         public virtual InputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 
-        public virtual InputField AssertNoValidationError() =>
-            AssertHasValidationError(string.Empty);
+        public virtual InputField AssertNoValidationError()
+        {
+            helper.wait.Until(dr => element.FindElement(By.CssSelector(".validation")).Text == "");
+            return this;
+        }
 
         public virtual InputField AssertHasValidationError(string message)
         {
