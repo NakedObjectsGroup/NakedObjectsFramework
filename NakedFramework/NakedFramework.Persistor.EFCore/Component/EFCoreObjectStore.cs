@@ -24,37 +24,45 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Configuration;
 using NakedFramework.Persistor.EFCore.Util;
-using NakedFramework.Persistor.Entity.Util;
+
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreObjectStore : IObjectStore, IDisposable {
-        private readonly DbContext context;
+        private readonly LocalContext context;
         internal readonly ILogger<EFCoreObjectStore> Logger;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
         private readonly IMetamodelManager metamodelManager;
+        private readonly IDomainObjectInjector injector;
 
         public Func<IDictionary<object, object>, bool> FunctionalPostSave = _ => false;
 
         private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
 
-        public EFCoreObjectStore(EFCorePersistorConfiguration config, IOidGenerator oidGenerator, INakedObjectManager nakedObjectManager, ISession session, IMetamodelManager metamodelManager,  ILogger<EFCoreObjectStore> logger) {
+        public EFCoreObjectStore(EFCorePersistorConfiguration config,
+                                 IOidGenerator oidGenerator,
+                                 INakedObjectManager nakedObjectManager,
+                                 ISession session,
+                                 IMetamodelManager metamodelManager,
+                                 IDomainObjectInjector injector,
+                                 ILogger<EFCoreObjectStore> logger) {
             this.oidGenerator = oidGenerator;
             this.nakedObjectManager = nakedObjectManager;
             this.session = session;
             this.metamodelManager = metamodelManager;
+            this.injector = injector;
             Logger = logger;
-            context = config.Context();
+            context = new LocalContext(config, session, this);
             MaximumCommitCycles = config.MaximumCommitCycles;
 
-            context.ChangeTracker.StateChanged += (_, args) => {
+            context.WrappedDbContext.ChangeTracker.StateChanged += (_, args) => {
                 if (args.OldState == EntityState.Added) {
-                    HandleAdded(args.Entry.Entity, context);
+                    HandleAdded(args.Entry.Entity, context.WrappedDbContext);
                 }
             };
 
-            context.ChangeTracker.Tracked += (_, args) => { LoadObjectIntoNakedObjectsFramework(args.Entry.Entity, context); };
+            context.WrappedDbContext.ChangeTracker.Tracked += (_, args) => { LoadObjectIntoNakedObjectsFramework(args.Entry.Entity, context.WrappedDbContext); };
         }
 
         private int MaximumCommitCycles { get; }
@@ -70,37 +78,40 @@ namespace NakedFramework.Persistor.EFCore.Component {
             throw new NotImplementedException();
         }
 
-        public void ExecuteCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter) {
-            throw new NotImplementedException();
-        }
+        public void ExecuteCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
+            Execute(new EFCoreCreateObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
 
-        public void ExecuteDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter) {
-            throw new NotImplementedException();
-        }
+        public void ExecuteDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
+            Execute(new EFCoreDestroyObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-        public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) {
-            throw new NotImplementedException();
-        }
+        public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
+            Execute(new EFCoreSaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-        public void EndTransaction() {
-            try {
+        public void EndTransaction()
+        {
+            try
+            {
                 using var transaction = CreateTransactionScope();
                 RecurseUntilAllChangesApplied(1);
                 transaction.Complete();
             }
-            catch (OptimisticConcurrencyException oce) {
+            catch (OptimisticConcurrencyException oce)
+            {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce);
             }
-            catch (UpdateException ue) {
+            catch (UpdateException ue)
+            {
                 throw new DataUpdateException(ConcatenateMessages(ue), ue);
             }
         }
 
-        public IQueryable<T> GetInstances<T>(bool tracked = true) where T : class => context.Set<T>();
+
+        public IQueryable<T> GetInstances<T>(bool tracked = true) where T : class => context.WrappedDbContext.Set<T>();
 
         public IQueryable GetInstances(Type type) {
-            var mi = context.GetType().GetMethod("Set", Array.Empty<Type>())?.MakeGenericMethod(type);
-            return (IQueryable) mi?.Invoke(context, Array.Empty<object>());
+            var dbContext = context.WrappedDbContext;
+            var mi = dbContext.GetType().GetMethod("Set", Array.Empty<Type>())?.MakeGenericMethod(type);
+            return (IQueryable) mi?.Invoke(dbContext, Array.Empty<object>());
         }
 
         public IQueryable GetInstances(IObjectSpec spec) {
@@ -108,9 +119,49 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return GetInstances(type);
         }
 
-        public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class => throw new NotImplementedException();
+        public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class => (T) CreateInstance(typeof(T));
 
-        public object CreateInstance(Type type) => throw new NotImplementedException();
+        private bool EFCoreKnowsType(Type type) {
+            try {
+                if (!CollectionUtils.IsCollection(type)) {
+                    //return FindContext(type) != null;
+                    return context.WrappedDbContext.HasEntityType(type);
+                }
+            }
+            catch (Exception e) {
+                // ignore all 
+                Logger.LogWarning($"Ignoring exception {e.Message}");
+            }
+
+            return false;
+        }
+
+        
+        public object CreateInstance(Type type) {
+            if (type.IsArray) {
+                return Array.CreateInstance(type.GetElementType(), 0);
+            }
+
+            if (type.IsAbstract) {
+                throw new ModelException(Logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.CannotCreateAbstract, type)));
+            }
+
+            var domainObject = Activator.CreateInstance(type);
+            injector.InjectInto(domainObject);
+
+            if (EFCoreKnowsType(type)) {
+                foreach (var pi in GetContext(domainObject).WrappedDbContext.GetComplexMembers(domainObject.GetType())) {
+                    var complexObject = pi.GetValue(domainObject, null);
+                    if (complexObject == null) {
+                        throw new NakedObjectSystemException("Complex type members should never be null");
+                    }
+
+                    injector.InjectInto(complexObject);
+                }
+            }
+
+            return domainObject;
+        }
 
         public INakedObjectAdapter GetObject(IOid oid, IObjectSpec hint) => throw new NotImplementedException();
 
@@ -132,7 +183,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public void StartTransaction() { }
 
-        public PropertyInfo[] GetKeys(Type type) => context.SafeGetKeys(type);
+        public PropertyInfo[] GetKeys(Type type) => context.WrappedDbContext.SafeGetKeys(type);
 
         public void Refresh(INakedObjectAdapter nakedObjectAdapter) {
             throw new NotImplementedException();
@@ -145,7 +196,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         public INakedObjectAdapter FindByKeys(Type type, object[] keys) {
-            var obj = context.Find(type, keys);
+            var obj = context.WrappedDbContext.Find(type, keys);
 
             var eoid = oidGenerator.CreateOid(type.FullName, keys);
             var adapter = nakedObjectManager.CreateAdapter(obj, eoid, null);
@@ -162,7 +213,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return SetFunctionalProxyMap(ExecuteAttachObjectCommandUpdate(objects));
         }
 
-        public bool HasChanges() => context.ChangeTracker.HasChanges();
+        public bool HasChanges() => context.WrappedDbContext.ChangeTracker.HasChanges();
 
         public T ValidateProxy<T>(T toCheck) where T : class => toCheck;
 
@@ -172,12 +223,12 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private void Save() {
-            context.SaveChanges();
+            context.WrappedDbContext.SaveChanges();
         }
 
         private bool PostSave() {
             FunctionalPostSave(functionalProxyMap);
-            return context.ChangeTracker.HasChanges();
+            return context.HasChanges();
         }
 
         private void RecurseUntilAllChangesApplied(int depth) {
@@ -225,7 +276,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private void LoadObjectIntoNakedObjectsFramework(object domainObject, DbContext context) {
-            var oid = oidGenerator.CreateOid(EntityUtils.GetEntityProxiedTypeName(domainObject), context.GetKeyValues(domainObject));
+            var oid = oidGenerator.CreateOid(EFCoreHelpers.GetEFCoreProxiedTypeName(domainObject), context.GetKeyValues(domainObject));
             var nakedObjectAdapter = nakedObjectManager.CreateAdapter(domainObject, oid, null);
             nakedObjectAdapter.UpdateVersion(session, nakedObjectManager);
 
@@ -252,7 +303,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             if (!nakedObjectAdapter.ResolveState.IsTransient() && FieldIsPersisted(field)) {
                 // check this is an EF collection 
                 try {
-                    return context.Entry(nakedObjectAdapter.Object).Collection(field.Id).Query().Cast<T>().Count();
+                    return context.WrappedDbContext.Entry(nakedObjectAdapter.Object).Collection(field.Id).Query().Cast<T>().Count();
                 }
                 catch (ArgumentException) {
                     // not an EF recognized collection 
@@ -266,8 +317,13 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             return field.GetNakedObject(nakedObjectAdapter).GetAsEnumerable(manager).Count();
         }
-
+        
         public INakedObjectAdapter CreateAdapter(object obj) => nakedObjectManager.CreateAdapter(obj, null, null);
+
+        public void ReplacePoco(INakedObjectAdapter nakedObject, object newDomainObject) => nakedObjectManager.ReplacePoco(nakedObject, newDomainObject);
+        public void RemoveAdapter(INakedObjectAdapter nakedObject) => nakedObjectManager.RemoveAdapter(nakedObject);
+        public INakedObjectAdapter CreateAggregatedAdapter(INakedObjectAdapter parent, PropertyInfo property, object obj) => nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec) parent.Spec).GetProperty(property.Name).Id, obj);
+
 
         private IList<(object original, object updated)> SetFunctionalProxyMap(IList<(object original, object updated)> updatedTuples) {
             functionalProxyMap = updatedTuples.ToDictionary(t => t.original, t => t.updated);
@@ -286,10 +342,26 @@ namespace NakedFramework.Persistor.EFCore.Component {
             }
         }
 
+        private static void Execute(IPersistenceCommand cmd)
+        {
+            try
+            {
+                cmd.Execute();
+            }
+            catch (OptimisticConcurrencyException oce)
+            {
+                throw new ConcurrencyException(ConcatenateMessages(oce), oce) { SourceNakedObjectAdapter = cmd.OnObject() };
+            }
+            catch (UpdateException ue)
+            {
+                throw new DataUpdateException(ConcatenateMessages(ue), ue);
+            }
+        }
+
         public IList<(object original, object updated)> ExecuteAttachObjectCommandUpdate(IDetachedObjects objects) =>
             Execute(new EFCorePersistUpdateDetachedObjectCommand(objects, this));
 
-        public DbContext GetContext(object o) => context;
+        public LocalContext GetContext(object o) => context;
 
         internal static bool EmptyKey(object key) =>
             key switch {
@@ -303,11 +375,12 @@ namespace NakedFramework.Persistor.EFCore.Component {
         public bool EmptyKeys(object obj) => GetKeys(obj.GetType()).Select(k => k.GetValue(obj, null)).All(EmptyKey);
 
         public bool IsNotPersisted(object owner, PropertyInfo pi) {
-            if (metamodelManager.GetSpecification(owner.GetEntityProxiedType()) is IObjectSpec objectSpec) {
+            if (metamodelManager.GetSpecification(owner.GetEFCoreProxiedType()) is IObjectSpec objectSpec) {
                 return objectSpec.Properties.SingleOrDefault(p => p.Id == pi.Name)?.ContainsFacet<INotPersistedFacet>() == true;
             }
 
             return false;
         }
+
     }
 }

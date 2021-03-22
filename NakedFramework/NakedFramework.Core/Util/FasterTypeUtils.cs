@@ -11,6 +11,7 @@ using System.Collections.Generic;
 namespace NakedFramework.Core.Util {
     public static class FasterTypeUtils {
         private const string SystemTypePrefix = "System.";
+        private const string MicrosoftTypePrefix = "Microsoft.";
         private const string NakedObjectsTypePrefix = "NakedObjects.";
         private const string NakedObjectsProxyPrefix = "NakedObjects.Proxy.";
         private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
@@ -28,9 +29,11 @@ namespace NakedFramework.Core.Util {
 
         public static bool IsSystem(string typeName) => typeName.StartsWith(SystemTypePrefix, StringComparison.Ordinal) && !IsEntityProxy(typeName);
 
+        public static bool IsMicrosoft(string typeName) => typeName.StartsWith(MicrosoftTypePrefix, StringComparison.Ordinal);
+
         public static bool IsNakedObjects(string typeName) => typeName.StartsWith(NakedObjectsTypePrefix, StringComparison.Ordinal);
 
-        public static bool IsSystem(Type type) => IsSystem(type.FullName ?? "");
+        public static bool IsSystem(Type type) => IsSystem(type.FullName ?? "") || IsMicrosoft(type.FullName ?? "");
 
         public static bool IsObjectArray(Type type) => type.IsArray && !(type.GetElementType()?.IsValueType == true || type.GetElementType() == typeof(string));
 

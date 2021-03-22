@@ -7,10 +7,12 @@
 
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using NakedObjects;
 
 namespace TestData {
     [ComplexType]
+    [Owned]
     public class Address : TestHelper {
         [Root]
         [NotMapped]

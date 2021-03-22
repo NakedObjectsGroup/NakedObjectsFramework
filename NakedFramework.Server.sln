@@ -91,6 +91,8 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedObjects.Snapshot.Xml.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Snapshot.Xml.Test.Data", "NakedObjects\NakedObjects.Snapshot.Xml.Test.Data\NakedObjects.Snapshot.Xml.Test.Data.csproj", "{94ACA3C7-73D5-4A7C-8107-40E9522C284E}"
 EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Persistor.EFCore.Test", "NakedFramework\NakedFramework.Persistor.EFCore.Test\NakedFramework.Persistor.EFCore.Test.fsproj", "{810C941C-84E5-462A-90C4-6BADA88C8F12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -269,6 +271,10 @@ Global
 		{94ACA3C7-73D5-4A7C-8107-40E9522C284E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94ACA3C7-73D5-4A7C-8107-40E9522C284E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94ACA3C7-73D5-4A7C-8107-40E9522C284E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{810C941C-84E5-462A-90C4-6BADA88C8F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{810C941C-84E5-462A-90C4-6BADA88C8F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{810C941C-84E5-462A-90C4-6BADA88C8F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{810C941C-84E5-462A-90C4-6BADA88C8F12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
