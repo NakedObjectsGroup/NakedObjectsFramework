@@ -13,6 +13,13 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
+        public virtual MenuAction AssertIsDisabled(string message)
+        {
+            element.AssertIsDisabled();
+            AssertHasTooltip(message);
+            return this;
+        }
+
         public virtual MenuAction AssertHasTooltip(string tooltip)
         {
             Assert.AreEqual(tooltip, element.GetAttribute("title"));

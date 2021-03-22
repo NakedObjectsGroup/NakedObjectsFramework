@@ -49,24 +49,25 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             UseOfRandomSeedGenerator();
             ObjectContributedAction();
             InformUserViaIAlertService();
-            //EditAction();
-            //EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
-            //AccessToIClock();
-            //RecordsDoNotHaveEditButton();
-            //EnumProperty();
-            //EnumParam();
-            //DisplayGuidProperty();
-            //ParameterChoicesSimple();
-            //ParameterChoicesDependent();
-            //ParameterDefaultFunction();
-            //ValidateSingleParam();
-            //ValidateMultipleParams();
-            //DisableFunction();
-            //HideFunction();
-            //AutoCompleteFunction();
-            //ViewModel1();
-            //MultiLineActionDialog();
-            //CreateNewObectWithOnlyValueProperties();
+            EditAction();
+            EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
+            AccessToIClock();
+            RecordsDoNotHaveEditButton();
+            EnumProperty();
+            EnumParam();
+            DisplayValueAsProperty();
+            DisplayCollectionAsProperty();
+            DisplayGuidProperty();
+            ParameterChoicesSimple();
+            ParameterChoicesDependent();
+            ParameterDefaultFunction();
+            ValidateSingleParam();
+            ValidateMultipleParams();
+            DisableFunction();
+            HideFunction();
+            AutoCompleteFunction();
+            ViewModel1();
+            CreateNewObectWithOnlyValueProperties();
             //CreateNewObjectWithAReferenceToAnotherExistingObject();
             //CreateNewObjectWithAReferenceToMultipleExistingObjects();
             //CreateAGraphOfTwoNewRelatedObjects();
@@ -88,7 +89,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //QueryContributedActionWithChoicesFunction();
             //QueryContributedActionWithCoValidation();
             //ActionReturingImmutableList();
-            //DisplayAsProperty();
+            //MultiLineActionDialog();
         }
 
         //[TestMethod]
@@ -173,248 +174,207 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void EditAction()
         {
-            //GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities");
-            //var title = WaitForTitle("Road-650 Overstock");
-            //var original = GetPropertyValue("Max Qty");
-            //var newQty = original + "1";
-            //ClearFieldThenType("#maxqty1", newQty);
-            //Click(OKButton());
-            //Thread.Sleep(1000);
-            //Assert.AreEqual(newQty, GetPropertyValue("Max Qty"));
-            //OpenActionDialog("Edit Quantities");
-            //ClearFieldThenType("#maxqty1", original);
-            //Click(OKButton());
-            //Reload();
-            //Assert.AreEqual(original, GetPropertyValue("Max Qty"));
+            var offer = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities")
+                .GetObjectView(Pane.Left).AssertTitleIs("Road-650 Overstock");
+
+            string original = offer.GetProperty("Max Qty").GetValue();
+            string newQty = new Random().Next(1000).ToString();
+
+            var dialog = offer.GetOpenedDialog();
+            dialog.GetTextField("Max Qty").Clear().Enter(newQty);
+            dialog.ClickOKToViewObject().GetProperty("Max Qty").AssertValueIs(newQty);
+
+            dialog = offer.OpenActions().GetActionWithDialog("Edit Quantities").Open();
+            dialog.GetTextField("Max Qty").Clear().Enter(original);
+            dialog.ClickOKToViewObject().GetProperty("Max Qty").AssertValueIs(original);
         }
 
-        ////[TestMethod]
-        //public void EditActionWithDefaultSuppliedAutomaticallyByEditAttribute()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditDescription");
-        //    var title = WaitForTitle("Road-650 Overstock");
-        //    var input = WaitForCss("#description1");
-        //    Assert.AreEqual("Road-650 Overstock", input.GetAttribute("value"));
-        //}
+        //[TestMethod]
+        public void EditActionWithDefaultSuppliedAutomaticallyByEditAttribute()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditDescription")
+              .GetObjectView(Pane.Left).AssertTitleIs("Road-650 Overstock")
+              .GetOpenedDialog().GetTextField("Description").AssertDefaultValueIs("Road-650 Overstock");
 
-        ////[TestMethod] 
-        //public void AccessToIClock()
-        //{
-        //    //Corresponds to #203
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--1&as1=open&d1=EditDates");
-        //    var endDate = WaitForCss("input#enddate1");
-        //    var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
-        //    Assert.AreEqual(oneMonthOn, endDate.GetAttribute("value"));
-        //}
+        }
 
-        ////[TestMethod]
-        //public void RecordsDoNotHaveEditButton()
-        //{
-        //    //Corresponds to #229
-        //    GeminiUrl("object?i1=View&o1=AW.Types.WorkOrder--4717");
-        //    WaitForTitle("Road-650 Red, 58: 10/30/2005 12:00:00 AM");
-        //    WaitForCssNo("nof-action-bar nof-action", 2);
-        //    var edit = WaitForCssNo("nof-action-bar nof-action", 1);
-        //    var title = edit.GetAttribute("value");
-        //    Assert.IsTrue(title is null || title == "");
-        //}
+        //[TestMethod] 
+        public void AccessToIClock()
+        {
+            var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--1&as1=open&d1=EditDates")
+                .GetObjectView().GetOpenedDialog().GetTextField("End Date").AssertDefaultValueIs(oneMonthOn);
+        }
 
-        ////[TestMethod]
-        //public void EnumProperty()
-        //{
-        //    //Coresponds to (part of) #232
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--55864");
-        //    WaitForTitle("SO55864");
-        //    string value = GetPropertyValue("Status");
-        //    Assert.AreEqual("Shipped", value);
-        //}
+        //[TestMethod]
+        public void RecordsDoNotHaveEditButton()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.WorkOrder--4717")
+                .GetObjectView().AssertTitleIs("Road-650 Red, 58: 10/30/2005 12:00:00 AM")
+                .AssertIsNotEditable();
+        }
 
-        ////[TestMethod]
-        //public void EnumParam()
-        //{
-        //    //Coresponds to (part of) #232
-        //    GeminiUrl("home?m1=Order_MenuFunctions&d1=OrdersByStatus");
-        //    WaitForCssNo("#status1 option", 6);
-        //    Assert.AreEqual("Shipped", WaitForCssNo("#status1 option", 6).Text);
-        //    Assert.AreEqual("Rejected", WaitForCssNo("#status1 option", 5).Text);
-        //    Assert.AreEqual("*", WaitForCssNo("#status1 option", 0).Text);
-        //}
+        //[TestMethod]
+        public void EnumProperty()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--55864")
+             .GetObjectView().AssertTitleIs("SO55864")
+             .GetProperty("Status").AssertValueIs("Shipped");
+        }
 
-        ////[TestMethod]
-        //public void DisplayGuidProperty()
-        //{
-        //    //Corresponds to #236
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SalesTaxRate--1");
-        //    WaitForTitle("Sales Tax Rate for Alberta");
-        //    var guid = GetPropertyValue("Rowguid");
-        //    Assert.AreEqual("683de5dd-521a-47d4-a573-06a3cdb1bc5d", guid);
-        //}
+        //[TestMethod]
+        public void EnumParam()
+        {
+            helper.GotoHome().OpenMainMenu("Orders").GetActionWithDialog("Orders By Status").Open()
+                .GetSelectionField("Status")
+                .AssertNoOfOptionsIs(7).AssertOptionIs(0, "*").AssertOptionIs(6, "Shipped");
+        }
 
-        ////[TestMethod]
-        //public void ParameterChoicesSimple()
-        //{
-        //    //Corresponds to #242
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Employee--105");
-        //    WaitForTitle("Kevin Homer");
-        //    var currentStatus = GetPropertyValue("Marital Status");
-        //    Assert.AreEqual("S", currentStatus);
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Employee--105&as1=open&d1=UpdateMaritalStatus");
-        //    var option = "select#maritalstatus1 option";
-        //    Assert.AreEqual("M", WaitForCssNo(option, 1).Text);
-        //    Assert.AreEqual("S", WaitForCssNo(option, 0).Text);
-        //    SelectDropDownOnField("select#maritalstatus1", 1);
-        //    Click(OKButton());
-        //    wait.Until(dr => GetPropertyValue("Marital Status") == "M");
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Employee--105&as1=open&d1=UpdateMaritalStatus");
-        //    SelectDropDownOnField("select#maritalstatus1", 0);
-        //    Click(OKButton());
-        //    wait.Until(dr => GetPropertyValue("Marital Status") == "S");
-        //}
-
-        //// [TestMethod]
-        //public void ParameterChoicesDependent()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Address--22691&as1=open&d1=EditStateProvince");
-        //    WaitForTitle("2107 Cardinal...");
-        //    var field1 = WaitForCss("select#countryregion1");
-        //    var field2 = WaitForCss("select#stateprovince1");
-        //    Assert.AreEqual(239, field1.FindElements(By.CssSelector("option")).Count);
-        //    Assert.AreEqual(0, field2.FindElements(By.CssSelector("option")).Count);
-        //    SelectDropDownOnField("select#countryregion1", 36);
-        //    wait.Until(br => field2.FindElements(By.CssSelector("option")).Count > 0);
-        //    var option = "select#stateprovince1 option";
-        //    var yukon = WaitForCssNo(option, 13);
-        //    Assert.AreEqual("Yukon Territory", yukon.Text);
-        //}
-
-        ////[TestMethod]
-        //public void ParameterDefaultFunction()
-        //{
-        //    GeminiUrl("home?m1=SpecialOffer_MenuFunctions&d1=CreateNewSpecialOffer");
-        //    WaitForTitle("Home");
-        //    var field = WaitForCss("input#enddate1");
-        //    var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
-        //    Assert.AreEqual(oneMonthOn, field.GetAttribute("value"));
-        //}
-
-        ////[TestMethod]
-        //public void ValidateSingleParam()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--3&as1=open&d1=EditQuantities");
-        //    WaitForTitle("Volume Discount 15 to 24");
-        //    ClearFieldThenType("input#minqty1", "0");
-        //    ClearFieldThenType("input#maxqty1", "5");
-        //    Click(OKButton());
-        //    var msg = "Must be > 0";
-        //    wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-parameter .validation")).First().Text == msg);
-        //}
-
-        ////[TestMethod]
-        //public void ValidateMultipleParams()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--3&as1=open&d1=EditQuantities");
-        //    WaitForTitle("Volume Discount 15 to 24");
-        //    ClearFieldThenType("input#minqty1", "10");
-        //    ClearFieldThenType("input#maxqty1", "5");
-        //    Click(OKButton());
-        //    var msg = "Max Qty cannot be < Min Qty";
-        //    wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text == msg);
-        //}
-
-        ////[TestMethod]
-        //public void DisableFunction()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--75084&as1=open");
-        //    WaitForTitle("SO75084");
-        //    var act = WaitForCss("nof-action input[value=\"Add New Detail\"");
-        //    Assert.IsNotNull(act.GetAttribute("disabled"));
-        //    Assert.AreEqual("Can only add to 'In Process' order", act.GetAttribute("title"));
-        //}
-
-        ////[TestMethod]
-        //public void HideFunction()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--75084&as1=open");
-        //    WaitForTitle("SO75084");
-        //    WaitForCssNo("nof-action input", 3); //To ensure all loaded
-        //    var actions = br.FindElements(By.CssSelector("nof-action input"));
-        //    Assert.IsFalse(actions.Any(act => act.GetAttribute("title") == "Approve Order"));
-        //}
-
-        ////[TestMethod]
-        //public void AutoCompleteFunction()
-        //{
-        //    GeminiUrl("home?m1=WorkOrder_MenuFunctions&d1=ListWorkOrders");
-        //    WaitForTitle("Home");
-        //    TypeIntoFieldWithoutClearing("input#product1", "fr");
-        //    Assert.AreEqual("Front Derailleur Linkage", WaitForCssNo("nof-auto-complete .suggestions li", 4).Text);
-        //    Assert.AreEqual("Freewheel", WaitForCssNo("nof-auto-complete .suggestions li", 0).Text);
-        //}
-
-        ////[TestMethod]
-        //public void ViewModel1()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.StaffSummary--84--206");
-        //    WaitForTitle("Staff Summary");
-        //    Assert.AreEqual("84", GetPropertyValue("Female"));
-        //    Assert.AreEqual("206", GetPropertyValue("Male"));
-        //    Assert.AreEqual("290", GetPropertyValue("Total Staff"));
-        //    Reload();
-        //    Thread.Sleep(1000);
-        //    Assert.AreEqual("84", GetPropertyValue("Female"));
-        //    Assert.AreEqual("206", GetPropertyValue("Male"));
-        //    Assert.AreEqual("290", GetPropertyValue("Total Staff"));
-        //}
-
-        ////[TestMethod]
-        //public void MultiLineActionDialog()
-        //{
-        //    GeminiUrl("multiLineDialog?m1=SpecialOffer_MenuFunctions&d1=CreateMultipleSpecialOffers");
-        //    WaitForTitle("Create Multiple Special Offers");
-        //    WaitForCssNo(".lineDialog", 1); //i.e. 2 dialogs
-        //    var ok1 = WaitForCssNo("input.ok", 1);
-        //    var val1 = WaitForCssNo(".co-validation", 1);
-        //    var ok0 = WaitForCssNo("input.ok", 0);
-        //    var val0 = WaitForCssNo(".co-validation", 0);
-        //    TypeIntoFieldWithoutClearing("input#description0", "Manager's Special");
-        //    TypeIntoFieldWithoutClearing("input#discountpct0", "15");
-        //    var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
-        //    TypeIntoFieldWithoutClearing("input#enddate0", endDate);
-        //    wait.Until(d => ok0.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
-        //    Assert.AreEqual("", val0.Text);
-        //    Click(ok0);
-        //    wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).First().Text == "Submitted");
-        //    //Second line
-        //    TypeIntoFieldWithoutClearing("input#description1", "Manager's Special II");
-        //    TypeIntoFieldWithoutClearing("input#discountpct1", "12.5");
-        //    TypeIntoFieldWithoutClearing("input#enddate1", endDate);
-        //    wait.Until(d => ok1.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
-        //    Assert.AreEqual("", val1.Text);
-        //    Click(ok1);
-        //    wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).ElementAt(1).Text == "Submitted");
+        //[TestMethod]
+        public void DisplayValueAsProperty()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--790")
+                .GetObjectView().AssertTitleIs("Road-250 Red, 48")
+                .GetProperty(5).AssertNameIs("Description").GetReference()
+                .AssertTitleIs("Alluminum-alloy frame provides a light, stiff ride, whether you are racing in the velodrome or on a demanding club ride on country roads.");
+        }
 
 
-        //    //Check third line has now appeared
-        //    WaitForCssNo(".lineDialog", 2);
+        //[TestMethod]
+        public void DisplayCollectionAsProperty()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--790")
+                .GetObjectView().AssertTitleIs("Road-250 Red, 48")
+                .GetCollection("Special Offers").AssertDetails("2 Items");
+        }
 
-        //}
+        //[TestMethod]
+        public void DisplayGuidProperty()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesTaxRate--1")
+            .GetObjectView().AssertTitleIs("Sales Tax Rate for Alberta")
+            .GetProperty("Rowguid").AssertValueIs("683de5dd-521a-47d4-a573-06a3cdb1bc5d");
+        }
 
-        ////[TestMethod]
-        //public void CreateNewObectWithOnlyValueProperties()
-        //{
-        //    //Corresponds to #204
-        //    GeminiUrl("home?m1=SpecialOffer_MenuFunctions&d1=CreateNewSpecialOffer");
-        //    TypeIntoFieldWithoutClearing("input#description1", "Manager's Special");
-        //    TypeIntoFieldWithoutClearing("input#discountpct1", "15");
-        //    var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
-        //    TypeIntoFieldWithoutClearing("input#enddate1", endDate);
-        //    wait.Until(d => OKButton().GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
-        //    var now = DateTime.Now.ToString("d MMM yyyy HH:mm:").Substring(0, 16);
-        //    Click(OKButton());
-        //    WaitForView(Pane.Single, PaneType.Object, "Manager's Special");
-        //    var modified = WaitForCssNo("nof-view-property .value", 8).Text;
-        //    Assert.AreEqual(now, modified.Substring(0, 16));
-        //}
+        //[TestMethod]
+        public void ParameterChoicesSimple()
+        {
+            var emp = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Employee--105")
+            .GetObjectView().AssertTitleIs("Kevin Homer");
+            emp.GetProperty("Marital Status").AssertValueIs("S");
+            var dialog = emp.OpenActions().GetActionWithDialog("Update Marital Status").Open();
+
+            dialog.GetSelectionField("Marital Status").AssertOptionsAre("S", "M").Select(1);
+            emp = dialog.ClickOKToViewObject();
+            emp.GetProperty("Marital Status").AssertValueIs("M");
+
+            dialog = emp.OpenActions().GetActionWithDialog("Update Marital Status").Open();
+            dialog.GetSelectionField("Marital Status").AssertOptionsAre("S", "M").Select(0);
+            emp = dialog.ClickOKToViewObject();
+            emp.GetProperty("Marital Status").AssertValueIs("S");
+        }
+
+        //[TestMethod]
+        public void ParameterChoicesDependent()
+        {
+           var dialog = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Address--22691&as1=open&d1=EditStateProvince")
+            .GetObjectView().AssertTitleIs("2107 Cardinal...").GetOpenedDialog();
+            var field1 = dialog.GetSelectionField("Country Region").AssertNoOfOptionsIs(239);
+            dialog.GetSelectionField("State Province").AssertNoOfOptionsIs(0);
+            field1.Select(36);
+            dialog.GetSelectionField("State Province").AssertNoOfOptionsIs(14)
+                .AssertOptionIs(13, "Yukon Territory");
+        }
+
+        //[TestMethod]
+        public void ParameterDefaultFunction()
+        {
+            var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
+            helper.GotoHome().OpenMainMenu("Special Offers")
+                .GetActionWithDialog("Create New Special Offer").Open()
+                .GetTextField("End Date").AssertDefaultValueIs(oneMonthOn);
+        }
+
+        //[TestMethod]
+        public void ValidateSingleParam()
+        {
+            var dialog = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--3&as1=open&d1=EditQuantities")
+                .GetObjectView().AssertTitleIs(("Volume Discount 15 to 24")).GetOpenedDialog();
+
+            var min = dialog.GetTextField("Min Qty").Clear().Enter("0");
+            dialog.GetTextField("Max Qty").Clear().Enter("5");
+            dialog.ClickOKWithNoResultExpected();
+            dialog.AssertHasValidationError("See field validation message(s).");
+            min.AssertHasValidationError("Must be > 0");
+        }
+
+        //[TestMethod]
+        public void ValidateMultipleParams()
+        {
+            var dialog = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--3&as1=open&d1=EditQuantities")
+               .GetObjectView().AssertTitleIs(("Volume Discount 15 to 24")).GetOpenedDialog();
+
+            var min = dialog.GetTextField("Min Qty").Clear().Enter("10");
+            dialog.GetTextField("Max Qty").Clear().Enter("5");
+            dialog.ClickOKWithNoResultExpected();
+
+            dialog.AssertHasValidationError("Max Qty cannot be < Min Qty");
+        }
+
+        //[TestMethod]
+        public void DisableFunction()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--75084")
+                .GetObjectView().AssertTitleIs("SO75084").OpenActions()
+                .GetActionWithDialog("Add New Detail").AssertIsDisabled("Can only add to 'In Process' order");
+        }
+
+        //[TestMethod]
+        public void HideFunction()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--75084")
+              .GetObjectView().AssertTitleIs("SO75084").OpenActions()
+              .AssertHasMember("Remove Detail")
+              .AssertDoesNotHaveMember("Approve Order");
+        }
+
+        //[TestMethod]
+        public void AutoCompleteFunction()
+        {
+            helper.GotoHome().OpenMainMenu("Work Orders").GetActionWithDialog("List Work Orders").Open()
+                .GetReferenceField("Product").AssertSupportsAutoComplete().Enter("fr")
+                .AssertHasAutoCompleteOption(4, "Front Derailleur Linkage")
+                .AssertHasAutoCompleteOption(0, "Freewheel");
+        }
+
+        //[TestMethod]
+        public void ViewModel1()
+        {
+            var summary = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.StaffSummary--84--206")
+                .GetObjectView().AssertTitleIs("Staff Summary");
+
+            summary.GetProperty("Female").AssertValueIs("84");
+            summary.GetProperty("Male").AssertValueIs("206");
+            summary.GetProperty("Total Staff").AssertValueIs("290");
+        }
+
+        [TestMethod]
+        public void CreateNewObectWithOnlyValueProperties()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Special Offers")
+                .GetActionWithDialog("Create New Special Offer").Open();
+
+            dialog.GetTextField("Description").Enter("Manager's Special");
+            dialog.GetTextField("Discount Pct").Enter("15");
+
+            var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
+            dialog.GetTextField("End Date").Clear().Enter(endDate);
+
+            var now = DateTime.Now.ToString("d MMM yyyy HH:mm:").Substring(0, 16);
+            var modified = dialog.AssertOKIsEnabled().ClickOKToViewObject().AssertTitleIs("Manager's Special")
+                .GetProperty("Modified Date").GetValue();
+            Assert.AreEqual(now, modified.Substring(0, 16));
+        }
 
         ////[TestMethod]
         //public void CreateNewObjectWithAReferenceToAnotherExistingObject()
@@ -808,24 +768,35 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //    Assert.AreEqual(@"HL Touring Seat/Saddle", last.Text);
         //}
 
-        ////[TestMethod]
-        //public void DisplayAsProperty()
+        //[TestMethod]
+        //public void MultiLineActionDialog()
         //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Product--790");
-        //    WaitForView(Pane.Single, PaneType.Object, "Road-250 Red, 48");
-        //    var props = br.FindElements(By.CssSelector("nof-view-property .name"));
-        //    Assert.AreEqual(24, props.Count());
-        //    Assert.AreEqual("Product Model:", props[4].Text);
-        //    Assert.AreEqual("Description:", props[5].Text); //DisplayAsProperty
-        //    Assert.AreEqual("List Price:", props[6].Text);
-        //    var desc = WaitForCssNo("nof-view-property", 5).FindElement(By.CssSelector(".reference")).Text;
-        //    Assert.AreEqual("Alluminum-alloy frame provides a light, stiff ride, whether you are racing in the velodrome or on a demanding club ride on country roads.", desc);
-        //    var cols = br.FindElements(By.CssSelector("nof-collection .name"));
-        //    Assert.AreEqual("Product Reviews:", cols[0].Text);
-        //    Assert.AreEqual("Special Offers:", cols[1].Text); //DisplayAsProperty
-        //    Assert.AreEqual("Product Inventory:", cols[2].Text);
-        //    var offers = WaitForCssNo("nof-collection .details", 1).Text;
-        //    Assert.AreEqual("2 Items", offers);
+        //    GeminiUrl("multiLineDialog?m1=SpecialOffer_MenuFunctions&d1=CreateMultipleSpecialOffers");
+        //    WaitForTitle("Create Multiple Special Offers");
+        //    WaitForCssNo(".lineDialog", 1); //i.e. 2 dialogs
+        //    var ok1 = WaitForCssNo("input.ok", 1);
+        //    var val1 = WaitForCssNo(".co-validation", 1);
+        //    var ok0 = WaitForCssNo("input.ok", 0);
+        //    var val0 = WaitForCssNo(".co-validation", 0);
+        //    TypeIntoFieldWithoutClearing("input#description0", "Manager's Special");
+        //    TypeIntoFieldWithoutClearing("input#discountpct0", "15");
+        //    var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
+        //    TypeIntoFieldWithoutClearing("input#enddate0", endDate);
+        //    wait.Until(d => ok0.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
+        //    Assert.AreEqual("", val0.Text);
+        //    Click(ok0);
+        //    wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).First().Text == "Submitted");
+        //    //Second line
+        //    TypeIntoFieldWithoutClearing("input#description1", "Manager's Special II");
+        //    TypeIntoFieldWithoutClearing("input#discountpct1", "12.5");
+        //    TypeIntoFieldWithoutClearing("input#enddate1", endDate);
+        //    wait.Until(d => ok1.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
+        //    Assert.AreEqual("", val1.Text);
+        //    Click(ok1);
+        //    wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).ElementAt(1).Text == "Submitted");
+
+        //    //Check third line has now appeared
+        //    WaitForCssNo(".lineDialog", 2);
         //}
 
     }

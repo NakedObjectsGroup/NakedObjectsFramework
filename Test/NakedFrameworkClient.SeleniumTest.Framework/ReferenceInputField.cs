@@ -1,5 +1,7 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using System;
+using System.Linq;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -21,7 +23,16 @@ namespace NakedFrameworkClient.TestFramework
 
         public override ReferenceInputField Clear()=> throw new NotImplementedException();
 
-        public override ReferenceInputField Enter(string characters) => throw new NotImplementedException();
+        public override ReferenceInputField Enter(string characters)
+        {
+            var input = Input();
+            input.SendKeys(characters);
+            helper.wait.Until(dr => input.GetAttribute("value") == characters);
+            return this;
+        }
+
+        private IWebElement Input() => element.FindElement(By.TagName("input"));
+
 
         //Use this to simulate 'dropping' a reference (previously copied to clipboard).
         public ReferenceInputField PasteReferenceFromClipboard()
@@ -30,5 +41,17 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
+        public ReferenceInputField AssertSupportsAutoComplete()
+        {
+            Assert.IsNotNull(element.FindElement(By.CssSelector("nof-auto-complete")));
+            return this;
+        }
+
+        public ReferenceInputField AssertHasAutoCompleteOption(int index, string optionText)
+        {
+            helper.wait.Until(dr => element.FindElements(By.CssSelector(".suggestions li")).Count > index);
+            Assert.AreEqual(optionText, element.FindElements(By.CssSelector(".suggestions li")).ElementAt(index).Text);
+            return this;
+        }
     }
 }

@@ -37,7 +37,19 @@ namespace NakedFrameworkClient.TestFramework
             return new Property(prop, helper, this);
         }
 
-        public ObjectCollection GetCollection(string collectionName) => throw new NotImplementedException();
+        public Property GetProperty(int number)
+        {
+            helper.WaitForChildElement(element, "nof-properties");
+            var prop = element.FindElements(By.CssSelector("nof-view-property")).ElementAt(number);
+            return new Property(prop, helper, this);
+        }
+        public ObjectCollection GetCollection(string collectionName)
+        {
+            helper.WaitForChildElement(element, "nof-collections");
+            var coll = element.FindElements(By.CssSelector("nof-collection"))
+                .Single(el => el.FindElement(By.CssSelector(".name")).Text == collectionName + ":");
+            return new ObjectCollection(coll, helper, this);
+        }
 
         public ObjectView DragTitleAndDropOnto(ReferenceInputField field)
         {
@@ -47,7 +59,32 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
+        public void AssertIsNotEditable()
+        {
+            helper.WaitForChildElement(element, "nof-action-bar nof-action");
+            helper.wait.Until(dr => element.FindElement(By.CssSelector("nof-action-bar nof-action input")).GetAttribute("value") != "");
+            var buttons = element.FindElements(By.CssSelector("nof-action-bar nof-action input")).Select(el => el.GetAttribute("value"));
+            Assert.IsTrue(buttons.Contains("Actions"));
+            Assert.IsFalse(IsEditable());
+        }
 
+        public void AssertIsEditable()
+        {
+            Assert.IsTrue(IsEditable());
+        }
 
+        private bool IsEditable()
+        {
+            helper.WaitForChildElement(element, "nof-action-bar nof-action");
+            var buttons = element.FindElements(By.CssSelector("nof-action-bar nof-action")).Select(b => b.GetAttribute("value"));
+            return buttons.Contains("Edit");
+        }
+
+        public ObjectView Reload()
+        {
+            helper.Reload(pane);
+            helper.WaitForNewListView(this, MouseClick.MainButton);
+            return this;
+        }
     }
 }

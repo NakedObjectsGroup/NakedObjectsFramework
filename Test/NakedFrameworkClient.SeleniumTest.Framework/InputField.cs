@@ -29,6 +29,7 @@ namespace NakedFrameworkClient.TestFramework
 
         public virtual InputField AssertHasValidationError(string message)
         {
+            helper.wait.Until(dr => element.FindElement(By.CssSelector(".validation")).Text != "");
             Assert.AreEqual(message, element.FindElement(By.CssSelector(".validation")).Text);
             return this;
         }

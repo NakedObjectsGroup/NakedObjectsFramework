@@ -11,6 +11,16 @@ namespace NakedFrameworkClient.TestFramework
 
         public Dialog AssertHasFields(params string[] fieldNames) => throw new NotImplementedException();
 
+        public virtual Dialog AssertNoValidationError() =>
+          AssertHasValidationError(string.Empty);
+
+        public virtual Dialog AssertHasValidationError(string message)
+        {
+            helper.wait.Until(dr => element.FindElement(By.CssSelector(".co-validation")).Text != "");
+            Assert.AreEqual(message, element.FindElement(By.CssSelector(".co-validation")).Text);
+            return this;
+        }
+
         public Dialog AssertOKIsEnabled()
         {
             Assert.IsNull(GetOKButton().GetAttribute("disabled"));

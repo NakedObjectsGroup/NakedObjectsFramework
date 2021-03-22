@@ -1,13 +1,22 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
+using System;
 
 namespace NakedFrameworkClient.TestFramework
 {
 
-    public class ObjectCollection
+    public class ObjectCollection : SubView
     {
+        public ObjectCollection(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
+
         //TODO local collection actions
 
-        ObjectCollection AssertHeaderIs(string header) => throw new NotImplementedException();
+        public ObjectCollection AssertDetails(string expected)
+        {
+            var actual = helper.WaitForChildElement(element, ".summary .details").Text;
+            Assert.AreEqual(expected, actual);
+            return this;
+        }
 
         ObjectCollection AssertNoOfRowsIs(int rows) => throw new NotImplementedException();
 
