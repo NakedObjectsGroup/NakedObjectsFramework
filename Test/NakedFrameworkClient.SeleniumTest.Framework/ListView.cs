@@ -72,5 +72,12 @@ namespace NakedFrameworkClient.TestFramework
             return new Reference(row, helper, this);
         }
 
+        public ListView Reload()
+        {
+            helper.Reload(pane);
+            helper.WaitForNewListView(this, MouseClick.MainButton);
+            return this;
+        }
+
     }
 }

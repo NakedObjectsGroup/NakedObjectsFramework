@@ -860,8 +860,6 @@ namespace NakedFrameworkClient.TestFramework
 
         public ListView GetListView(Pane pane = Pane.Single) => throw new NotImplementedException();
 
-        public HomeView GetHomeView(Pane pane) => throw new NotImplementedException();
-
         public Footer GetFooter()
         {
             var we = WaitForCss(".footer");

@@ -33,7 +33,7 @@ namespace NakedFrameworkClient.TestFramework
 
         {
             SelectElement.SelectByIndex(optionNumber);
-            helper.wait.Until(dr => SelectElement.SelectedOption.Text == SelectElement.AllSelectedOptions[optionNumber].Text);
+            helper.wait.Until(dr => SelectElement.SelectedOption.Text == SelectElement.Options[optionNumber].Text);
             return this;
         }
 
@@ -41,6 +41,7 @@ namespace NakedFrameworkClient.TestFramework
 
         public SelectionInputField AssertNoOfOptionsIs(int number)
         {
+            helper.wait.Until(dr => number == 0 || SelectElement.Options.Count > 0);
             Assert.AreEqual(number, SelectElement.Options.Count);
             return this;
         }

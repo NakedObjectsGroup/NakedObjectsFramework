@@ -29,5 +29,7 @@ namespace NakedFrameworkClient.TestFramework
         public virtual ActionResult ClickReload() => throw new NotImplementedException();
 
         public string GetTitle() => helper.WaitForChildElement(element, ".title").Text;
+
+
     }
 }

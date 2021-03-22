@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using System;
 using System.Linq;
 
@@ -11,7 +12,27 @@ namespace NakedFrameworkClient.TestFramework
         /// <summary>
         /// Members means action names and submenu names, and should be specified in presented order
         /// </summary>
-        public Menu AssertHasMembers(params string[] members) => throw new NotImplementedException();
+        public Menu AssertHasMembers(params string[] memberNames)
+        {
+            CollectionAssert.AreEqual(memberNames, MemberNames());
+            return this;
+        }
+
+        private string[] MemberNames() =>
+            element.FindElements(By.CssSelector("nof-action input")).Select(m => m.GetAttribute("value")).ToArray();
+
+        public Menu AssertHasMember(string memberName)
+        {
+            Assert.IsTrue(MemberNames().Contains(memberName));
+            return this;
+        }
+
+        public Menu AssertDoesNotHaveMember(string memberName)
+        {
+            Assert.IsFalse(MemberNames().Contains(memberName));
+            return this;
+        }
+
 
         public ActionWithDialog GetActionWithDialog(string actionName)
         {

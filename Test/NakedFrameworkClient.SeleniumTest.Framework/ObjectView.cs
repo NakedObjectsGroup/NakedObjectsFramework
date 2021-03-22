@@ -79,5 +79,12 @@ namespace NakedFrameworkClient.TestFramework
             var buttons = element.FindElements(By.CssSelector("nof-action-bar nof-action")).Select(b => b.GetAttribute("value"));
             return buttons.Contains("Edit");
         }
+
+        public ObjectView Reload()
+        {
+            helper.Reload(pane);
+            helper.WaitForNewListView(this, MouseClick.MainButton);
+            return this;
+        }
     }
 }
