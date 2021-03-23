@@ -323,14 +323,18 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private bool PostSave() {
             FunctionalPostSave(functionalProxyMap);
+            context.PostSave();
             return context.HasChanges();
         }
+
+        private void PreSave() => context.PreSave();
 
         private void RecurseUntilAllChangesApplied(int depth) {
             if (depth > MaximumCommitCycles) {
                 throw new NakedObjectDomainException(Logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.EntityCommitError, "")));
             }
 
+            PreSave();
             Save();
             if (PostSave()) {
                 RecurseUntilAllChangesApplied(depth + 1);
@@ -395,7 +399,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         internal void HandleAdded(INakedObjectAdapter nakedObjectAdapter) {
             var oid = (IEntityOid) nakedObjectAdapter.Oid;
-            oid.MakePersistentAndUpdateKey(context.WrappedDbContext.GetKeyValues(nakedObjectAdapter));
+            oid.UpdateKey(context.WrappedDbContext.GetKeyValues(nakedObjectAdapter.Object));
 
             if (nakedObjectAdapter.ResolveState.IsNotPersistent()) {
                 Resolve(nakedObjectAdapter);

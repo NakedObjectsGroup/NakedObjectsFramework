@@ -104,11 +104,17 @@ namespace NakedFramework.Persistor.Entity.Adapter {
 
         public void MakePersistentAndUpdateKey(object[] newKey) {
             ThrowErrorIfNotTransient(newKey);
-            previous = new EntityOid(metamodel, TypeName, Key, logger) {IsTransient = IsTransient};
+            UpdateKey(newKey);
+        }
+
+        public void UpdateKey(object[] newKey)
+        {
+            previous = new EntityOid(metamodel, TypeName, Key, logger) { IsTransient = IsTransient };
             Key = newKey; // after old key is saved ! 
             IsTransient = false;
             CacheState();
         }
+
 
         #endregion
 

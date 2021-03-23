@@ -134,18 +134,19 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         public void PreSave() {
-            //WrappedDbContext.DetectChanges();
-            //added.AddRange(WrappedDbContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Where(ose => !ose.IsRelationship).Select(ose => ose.Entity).ToList());
-            //updatingNakedObjects = ObjectContextUtils.GetChangedObjectsInContext(WrappedDbContext).Select(obj => parent.createAdapter(null, obj)).ToList();
+            WrappedDbContext.ChangeTracker.DetectChanges();
+            added.AddRange(WrappedDbContext.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).Select(ose => ose.Entity).ToList());
+            updatingNakedObjects = WrappedDbContext.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).Select(ose => ose.Entity).Select(obj => parent.CreateAdapter(obj)).ToList();
             updatingNakedObjects.ForEach(no => no.Updating());
 
             // need to do complex type separately as they'll not be updated in the SavingChangesHandler as they're not proxied. 
+            coUpdating = new List<INakedObjectAdapter>();
             //coUpdating = ObjectContextUtils.GetChangedComplexObjectsInContext(this).Select(obj => parent.CreateAdapter(obj)).ToList();
-            coUpdating.ForEach(no => no.Updating());
+            //coUpdating.ForEach(no => no.Updating());
         }
 
         public bool HasChanges() {
-            //WrappedDbContext.DetectChanges();
+            WrappedDbContext.ChangeTracker.DetectChanges();
             //return WrappedDbContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified).Any();
             return WrappedDbContext.ChangeTracker.HasChanges();
         }
@@ -169,7 +170,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         public void PostSaveWrapUp() {
-            added.Select(domainObject => parent.CreateAdapter(domainObject)).ForEach(parent.HandleAdded);
+            // complex types give null adapter
+            added.Select(domainObject => parent.CreateAdapter(domainObject)).Where(a => a?.Oid is IEntityOid).ForEach(parent.HandleAdded);
             LoadedNakedObjects.ToList().ForEach(parent.HandleLoaded);
         }
     }

@@ -87,6 +87,8 @@ namespace NakedFramework.Persistor.EFCore.Util {
         public static bool IdMembersAreIdentity(this DbContext context, Type type) {
             var eType = context.GetEntityType(type);
             if (eType is not null) {
+                var keyProperties = eType.GetKeys().SelectMany(k => k.Properties).Where(p => p.ValueGenerated == ValueGenerated.OnAdd);
+                return keyProperties.Any();
                 //var mp = et.KeyMembers.SelectMany(m => m.MetadataProperties).Where(p => p.Name.Contains("StoreGeneratedPattern")).ToArray();
                 //return mp.Any() && mp.All(p => p.Value.Equals("Identity"));
                 // todo
@@ -94,37 +96,6 @@ namespace NakedFramework.Persistor.EFCore.Util {
 
             return false;
         }
-
-        //private static readonly IDictionary<DbContext, List<INakedObjectAdapter>> PersistedNakedObjectDictionary = new Dictionary<DbContext, List<INakedObjectAdapter>>();
-
-        //public static List<INakedObjectAdapter> PersistedNakedObjects(this DbContext context) {
-        //    lock (PersistedNakedObjectDictionary) {
-        //        if (!PersistedNakedObjectDictionary.ContainsKey(context)) {
-        //            PersistedNakedObjectDictionary.Add(context, new List<INakedObjectAdapter>());
-        //        }
-        //        return PersistedNakedObjectDictionary[context];
-        //    }
-        //}
-
-        //private static readonly IDictionary<DbContext, AdapterHolder> CurrentSaveRootObjectAdapterDictionary = new Dictionary<DbContext, AdapterHolder>();
-
-        //public class AdapterHolder {
-        //    public INakedObjectAdapter Adapter {
-        //        get;
-        //        set;
-        //    }
-        //}
-
-        //public static AdapterHolder CurrentSaveRootObjectAdapter(this DbContext context) {
-        //    lock (CurrentSaveRootObjectAdapterDictionary)
-        //    {
-        //        if (!CurrentSaveRootObjectAdapterDictionary.ContainsKey(context))
-        //        {
-        //            CurrentSaveRootObjectAdapterDictionary.Add(context, new AdapterHolder());
-        //        }
-        //        return CurrentSaveRootObjectAdapterDictionary[context];
-        //    }
-        //}
 
      
 

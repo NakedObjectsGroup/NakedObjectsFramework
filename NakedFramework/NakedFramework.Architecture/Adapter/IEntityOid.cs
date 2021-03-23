@@ -11,5 +11,6 @@ namespace NakedFramework.Architecture.Adapter {
         object[] Key { get; }
         void MakePersistent();
         void MakePersistentAndUpdateKey(object[] newKey);
+        void UpdateKey(object[] newKey);
     }
 }

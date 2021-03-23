@@ -46,7 +46,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 return null;
             }
 
-            if (TypeUtils.IsEntityProxy(originalObject.GetType())) {
+            if (FasterTypeUtils.IsCastleProxy(originalObject.GetType().FullName)) {
                 // object already proxied assume previous save failed - add object to context again 
 
                 var add = true;
@@ -75,7 +75,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private object ProxyObject(object originalObject, INakedObjectAdapter adapterForOriginalObjectAdapter) {
-            //var objectToAdd = context.CreateObject(originalObject.GetType());
+            var objectToAdd = Activator.CreateInstance(originalObject.GetEFCoreProxiedType());
+            //dbContext.Add(objectToAdd);
 
             //var proxied = objectToAdd.GetType() != originalObject.GetType();
             //if (!proxied) {
@@ -83,11 +84,13 @@ namespace NakedFramework.Persistor.EFCore.Component {
             //}
 
             var entry = dbContext.Entry(originalObject);
-            var objectToAdd = entry.Entity;
-            var proxied = entry.State != EntityState.Detached;
-            if (!proxied)
+            var persisting = entry.State == EntityState.Detached;
+            if (!persisting)
             {
                 objectToAdd = originalObject;
+            }
+            else {
+                dbContext.Add(objectToAdd);
             }
 
             objectToProxyScratchPad[originalObject] = objectToAdd;
@@ -101,7 +104,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
             //context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", objectToAdd);
             dbContext.Add(objectToAdd);
 
-            if (proxied) {
+            if (persisting)
+            {
                 ProxyReferencesAndCopyValuesToProxy(originalObject, objectToAdd);
                 context.PersistedNakedObjects.Add(proxyAdapter);
                 // remove temporary adapter for proxy (tidy and also means we will not get problem 
@@ -109,7 +113,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 parent.RemoveAdapter(proxyAdapter);
                 parent.ReplacePoco(adapterForOriginalObjectAdapter, objectToAdd);
             }
-            else {
+            else
+            {
                 ProxyReferences(originalObject);
                 context.PersistedNakedObjects.Add(proxyAdapter);
             }

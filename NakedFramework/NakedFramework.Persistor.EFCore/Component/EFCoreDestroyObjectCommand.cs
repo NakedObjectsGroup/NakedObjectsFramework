@@ -5,21 +5,26 @@
 // // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using Microsoft.EntityFrameworkCore;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreDestroyObjectCommand : IDestroyObjectCommand {
-        public EFCoreDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext getContext) {
-            throw new NotImplementedException();
+        private readonly LocalContext context;
+        private readonly INakedObjectAdapter nakedObjectAdapter;
+
+        public EFCoreDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context) {
+            this.context = context;
+            this.nakedObjectAdapter = nakedObjectAdapter;
         }
 
         public void Execute() {
-            throw new NotImplementedException();
+            context.WrappedDbContext.Remove(nakedObjectAdapter.Object);
+            context.DeletedNakedObjects.Add(nakedObjectAdapter);
         }
 
-        public INakedObjectAdapter OnObject() => throw new NotImplementedException();
+        public INakedObjectAdapter OnObject() => nakedObjectAdapter;
+
+        public override string ToString() => $"DestroyObjectCommand [object={nakedObjectAdapter}]";
     }
 }
