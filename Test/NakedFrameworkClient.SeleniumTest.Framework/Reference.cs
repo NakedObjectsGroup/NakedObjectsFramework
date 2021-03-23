@@ -14,8 +14,13 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public ObjectView Click(MouseClick button = MouseClick.MainButton) => throw new NotImplementedException();
-   
+        public ObjectView Click(MouseClick button = MouseClick.MainButton)
+        {
+            element.Click();
+            return helper.WaitForNewObjectView(enclosingView, MouseClick.MainButton);
+        }
         public Reference DragAndDropOnto(ReferenceInputField field) => throw new NotImplementedException();
+
+        public string GetTitle() => element.Text;
     }
 }

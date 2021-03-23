@@ -68,10 +68,10 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AutoCompleteFunction();
             ViewModel1();
             CreateNewObectWithOnlyValueProperties();
-            //CreateNewObjectWithAReferenceToAnotherExistingObject();
-            //CreateNewObjectWithAReferenceToMultipleExistingObjects();
-            //CreateAGraphOfTwoNewRelatedObjects();
-            //CreateAGraphOfObjectsThreeLevelsDeep();
+            CreateNewObjectWithAReferenceToAnotherExistingObject();
+            CreateNewObjectWithAReferenceToMultipleExistingObjects();
+            CreateAGraphOfTwoNewRelatedObjects();
+            CreateAGraphOfObjectsThreeLevelsDeep();
             //PropertyHiddenViaAHideMethod();
             //SubMenuOnObject();
             //SubMenuOnMainMenu();
@@ -376,69 +376,65 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual(now, modified.Substring(0, 16));
         }
 
-        ////[TestMethod]
-        //public void CreateNewObjectWithAReferenceToAnotherExistingObject()
-        //{
-        //    GeminiUrl("home?m1=Address_MenuFunctions&d1=CreateNewAddress");
-        //    SelectDropDownOnField("select#type1", 2);
-        //    TypeIntoFieldWithoutClearing("#line11", "Dunroamin");
-        //    TypeIntoFieldWithoutClearing("#line21", "Elm St");
-        //    TypeIntoFieldWithoutClearing("#city1", "Concord");
-        //    var zip = (new Random()).Next(10000).ToString();
-        //    TypeIntoFieldWithoutClearing("#postcode1", zip);
-        //    SelectDropDownOnField("select#sp1", 1);
-        //    Click(OKButton());
-        //    WaitForTitle("Dunroamin...");
-        //    Assert.AreEqual("Dunroamin", GetPropertyValue("Address Line1"));
-        //    Assert.AreEqual("Alberta", GetReferenceFromProperty("State Province").Text);
-        //}
+        //[TestMethod]
+        public void CreateNewObjectWithAReferenceToAnotherExistingObject()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Addresses")
+               .GetActionWithDialog("Create New Address").Open();
+            dialog.GetSelectionField("Type").Select(2);
+            dialog.GetTextField("Line1").Enter("Dunroamin");
+            dialog.GetTextField("Line2").Enter("Elm St");
+            dialog.GetTextField("City").Enter("Concord");
+            var zip = (new Random()).Next(10000).ToString();
+            dialog.GetTextField("Post Code").Enter(zip);
+            dialog.GetSelectionField("State / Province").Select(1);
+            var addr = dialog.ClickOKToViewObject().AssertTitleIs("Dunroamin...");
+            addr.GetProperty("Address Line1").AssertValueIs("Dunroamin");
+            addr.GetProperty("State Province").AssertValueIs("Alberta");
+        }
 
-        ////[TestMethod]
-        //public void CreateNewObjectWithAReferenceToMultipleExistingObjects()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Customer--12211&as1=open");
-        //    WaitForTitle("AW00012211 Victor Romero");
-        //    Click(GetObjectAction("Create Another Order"));
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    var num = GetPropertyValue("Sales Order Number");
-        //    Assert.IsTrue(num.StartsWith("SO75"));
-        //    Assert.AreEqual("AW00012211 Victor Romero", GetReferenceFromProperty("Customer").Text);
-        //}
+        //[TestMethod]
+        public void CreateNewObjectWithAReferenceToMultipleExistingObjects()
+        {
+            var order = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Customer--12211&as1=open")
+                .GetObjectView().AssertTitleIs("AW00012211 Victor Romero").OpenActions()
+                .GetActionWithoutDialog("Create Another Order").ClickToViewObject();
 
-        ////[TestMethod]
-        //public void CreateAGraphOfTwoNewRelatedObjects()
-        //{
-        //    GeminiUrl("home?m1=Customer_MenuFunctions&d1=CreateNewStoreCustomer");
-        //    WaitForTitle("Home");
-        //    int rand = (new Random()).Next(1970, 2021);
-        //    var name = $"FooBar Frames {rand} Ltd";
-        //    TypeIntoFieldWithoutClearing("#name1", name);
-        //    Click(OKButton());
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    Assert.IsTrue(WaitForCss(".title").Text.EndsWith(name));
-        //    var store = GetReferenceFromProperty("Store");
-        //    Assert.IsTrue(store.Text.EndsWith(name));
-        //}
+            var num = order.GetProperty("Sales Order Number").GetValue();
+            Assert.IsTrue(num.StartsWith("SO75"));
+            order.GetProperty("Customer").GetReference().AssertTitleIs("AW00012211 Victor Romero");
+        }
 
-        ////[TestMethod]
-        //public void CreateAGraphOfObjectsThreeLevelsDeep()
-        //{
-        //    //This story involves creation of a graph of three new objects (Customer, Person, Password)
-        //    //with two levels of dependency
-        //    GeminiUrl("home?m1=Customer_MenuFunctions&d1=CreateNewIndividualCustomer");
-        //    WaitForTitle("Home");
-        //    TypeIntoFieldWithoutClearing("#firstname1", "Fred");
-        //    TypeIntoFieldWithoutClearing("#lastname1", "Bloggs");
-        //    TypeIntoFieldWithoutClearing("#password1", "foobar");
-        //    Click(OKButton());
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    var title = WaitForCss(".title").Text;
-        //    Assert.IsTrue(title.EndsWith("Fred Bloggs"));
-        //    var p = GetReferenceFromProperty("Person");
-        //    Click(p);
-        //    var pw = GetReferenceFromProperty("Password");
-        //    Assert.AreEqual("Password", pw.Text);
-        //}
+        //[TestMethod]
+        public void CreateAGraphOfTwoNewRelatedObjects()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Customers").OpenSubMenu("Stores")
+                .GetActionWithDialog("Create New Store Customer").Open();
+            int rand = (new Random()).Next(1970, 2021);
+            var name = $"FooBar Frames {rand} Ltd";
+            dialog.GetTextField("Name").Enter(name);
+            var cust = dialog.ClickOKToViewObject();
+            Assert.IsTrue(cust.GetTitle().EndsWith(name));
+            var storeTitle = cust.GetProperty("Store").GetReference().GetTitle();
+            Assert.IsTrue(storeTitle.EndsWith(name));
+        }
+
+        //[TestMethod]
+        public void CreateAGraphOfObjectsThreeLevelsDeep()
+        {
+            //This story involves creation of a graph of three new objects (Customer, Person, Password)
+            //with two levels of dependency
+            var dialog = helper.GotoHome().OpenMainMenu("Customers").OpenSubMenu("Individuals")
+              .GetActionWithDialog("Create New Individual Customer").Open();
+
+            dialog.GetTextField("First Name").Enter("Fred");
+            dialog.GetTextField("Last Name").Enter("Bloggs");
+            dialog.GetTextField("Password").Enter("foobar");
+            var cust = dialog.ClickOKToViewObject();
+           Assert.IsTrue(cust.GetTitle().EndsWith("Fred Bloggs"));
+            var person = cust.GetProperty("Person").GetReference().Click();
+            person.GetProperty("Password").GetReference().AssertTitleIs("Password");
+        }
 
 
         ////[TestMethod]

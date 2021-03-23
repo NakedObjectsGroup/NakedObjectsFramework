@@ -32,5 +32,19 @@ namespace NakedFrameworkClient.TestFramework
             Assert.IsNull(a.GetAttribute("displayed"));
             return a;
         }
+
+        public static bool IsStale(this IWebElement element)
+        {
+            try
+            {
+                element.AssertIsEnabled();
+                return false;
+            }
+            catch (StaleElementReferenceException)
+            {
+                return true;
+            }
+        }
+
     }
 }
