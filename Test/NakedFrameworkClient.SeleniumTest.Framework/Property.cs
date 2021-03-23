@@ -16,10 +16,16 @@ namespace NakedFrameworkClient.TestFramework
 
         public Property AssertValueIs(string expected)
         {
-            Assert.AreEqual(expected, GetValue());
+            if (IsReferenceProperty())
+            {
+                GetReference().AssertTitleIs(expected);
+            }
+            else
+            {
+                Assert.AreEqual(expected, GetValue());
+            }
             return this;
         }
-
 
         public Property AssertIsMultiLine()
         {
@@ -29,8 +35,28 @@ namespace NakedFrameworkClient.TestFramework
 
         public string GetValue() => element.FindElement(By.CssSelector(".value")).Text;
 
+        private bool IsReferenceProperty()
+        {
+            try
+            {
+                element.FindElement(By.CssSelector(".reference"));
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
+            
+
         public Reference GetReference() =>
             new Reference(element.FindElement(By.CssSelector(".reference")), helper, enclosingView);
 
+        public Property AssertIsImage()
+        {
+            var imgSrc = element.FindElement(By.CssSelector("img")).GetAttribute("src");
+            Assert.IsTrue(imgSrc.StartsWith("data:image/gif;"));
+            return this;
+        }
     }
 }

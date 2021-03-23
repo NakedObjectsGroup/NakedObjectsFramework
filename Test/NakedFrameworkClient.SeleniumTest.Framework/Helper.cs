@@ -895,13 +895,17 @@ namespace NakedFrameworkClient.TestFramework
             var css = CssSelectorFor(newPane, PaneType.Object);
             if (enclosingView is not ObjectView)
             {
-                return new ObjectView(WaitForCss(css), this, newPane);
+                return GetObjectView(newPane);
             }
             else
             {
-                var original = PropsAndColls(enclosingView.element);
-                wait.Until(dr => PropsAndColls(dr.FindElement(By.CssSelector(css))) != original);
-                return new ObjectView(WaitForCss(css), this, newPane);
+                if (!enclosingView.element.IsStale())
+                { 
+                    var original = PropsAndColls(enclosingView.element);
+                    wait.Until(dr => PropsAndColls(dr.FindElement(By.CssSelector(css))) != original);
+                }
+
+                return GetObjectView(newPane);
             }
         }
 

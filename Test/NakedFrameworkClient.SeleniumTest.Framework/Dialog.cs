@@ -83,5 +83,12 @@ namespace NakedFrameworkClient.TestFramework
             Assert.IsTrue(field.FindElement(By.TagName("select")) is not null);
             return new SelectionInputField(field, helper, enclosingView);
         }
+
+        public Dialog AssertHasImageField(string fieldName)
+        {
+            var field = element.FindElements(By.CssSelector("nof-edit-parameter")).Single(x => x.FindElement(By.CssSelector(".name")).Text == fieldName);
+            Assert.IsTrue(field.FindElement(By.CssSelector("input[type='file']")) is not null);
+            return this;
+        }
     }
 }

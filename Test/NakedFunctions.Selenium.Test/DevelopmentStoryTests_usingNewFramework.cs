@@ -68,15 +68,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AutoCompleteFunction();
             ViewModel1();
             CreateNewObectWithOnlyValueProperties();
-            //CreateNewObjectWithAReferenceToAnotherExistingObject();
-            //CreateNewObjectWithAReferenceToMultipleExistingObjects();
-            //CreateAGraphOfTwoNewRelatedObjects();
-            //CreateAGraphOfObjectsThreeLevelsDeep();
-            //PropertyHiddenViaAHideMethod();
-            //SubMenuOnObject();
-            //SubMenuOnMainMenu();
-            //ImageProperty();
-            //ImageParameter();
+            CreateNewObjectWithAReferenceToAnotherExistingObject();
+            CreateNewObjectWithAReferenceToMultipleExistingObjects();
+            CreateAGraphOfTwoNewRelatedObjects();
+            CreateAGraphOfObjectsThreeLevelsDeep();
+            PropertyHiddenViaAHideMethod();
+            SubMenuOnObject();
+            SubMenuOnMainMenu();
+            ImageProperty();
+            ImageParameter();
             //QueryContributedActionReturningOnlyAContext();
             //QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
             //LocalCollectionContributedAction();
@@ -334,8 +334,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--75084")
               .GetObjectView().AssertTitleIs("SO75084").OpenActions()
-              .AssertHasMember("Remove Detail")
-              .AssertDoesNotHaveMember("Approve Order");
+              .AssertHasAction("Remove Detail")
+              .AssertDoesNotHaveAction("Approve Order");
         }
 
         //[TestMethod]
@@ -376,160 +376,165 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.AreEqual(now, modified.Substring(0, 16));
         }
 
-        ////[TestMethod]
-        //public void CreateNewObjectWithAReferenceToAnotherExistingObject()
-        //{
-        //    GeminiUrl("home?m1=Address_MenuFunctions&d1=CreateNewAddress");
-        //    SelectDropDownOnField("select#type1", 2);
-        //    TypeIntoFieldWithoutClearing("#line11", "Dunroamin");
-        //    TypeIntoFieldWithoutClearing("#line21", "Elm St");
-        //    TypeIntoFieldWithoutClearing("#city1", "Concord");
-        //    var zip = (new Random()).Next(10000).ToString();
-        //    TypeIntoFieldWithoutClearing("#postcode1", zip);
-        //    SelectDropDownOnField("select#sp1", 1);
-        //    Click(OKButton());
-        //    WaitForTitle("Dunroamin...");
-        //    Assert.AreEqual("Dunroamin", GetPropertyValue("Address Line1"));
-        //    Assert.AreEqual("Alberta", GetReferenceFromProperty("State Province").Text);
-        //}
+        //[TestMethod]
+        public void CreateNewObjectWithAReferenceToAnotherExistingObject()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Addresses")
+               .GetActionWithDialog("Create New Address").Open();
+            dialog.GetSelectionField("Type").Select(2);
+            dialog.GetTextField("Line1").Enter("Dunroamin");
+            dialog.GetTextField("Line2").Enter("Elm St");
+            dialog.GetTextField("City").Enter("Concord");
+            var zip = (new Random()).Next(10000).ToString();
+            dialog.GetTextField("Post Code").Enter(zip);
+            dialog.GetSelectionField("State / Province").Select(1);
+            var addr = dialog.ClickOKToViewObject().AssertTitleIs("Dunroamin...");
+            addr.GetProperty("Address Line1").AssertValueIs("Dunroamin");
+            addr.GetProperty("State Province").AssertValueIs("Alberta");
+        }
 
-        ////[TestMethod]
-        //public void CreateNewObjectWithAReferenceToMultipleExistingObjects()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Customer--12211&as1=open");
-        //    WaitForTitle("AW00012211 Victor Romero");
-        //    Click(GetObjectAction("Create Another Order"));
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    var num = GetPropertyValue("Sales Order Number");
-        //    Assert.IsTrue(num.StartsWith("SO75"));
-        //    Assert.AreEqual("AW00012211 Victor Romero", GetReferenceFromProperty("Customer").Text);
-        //}
+        //[TestMethod]
+        public void CreateNewObjectWithAReferenceToMultipleExistingObjects()
+        {
+            var order = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Customer--12211&as1=open")
+                .GetObjectView().AssertTitleIs("AW00012211 Victor Romero").OpenActions()
+                .GetActionWithoutDialog("Create Another Order").ClickToViewObject();
 
-        ////[TestMethod]
-        //public void CreateAGraphOfTwoNewRelatedObjects()
-        //{
-        //    GeminiUrl("home?m1=Customer_MenuFunctions&d1=CreateNewStoreCustomer");
-        //    WaitForTitle("Home");
-        //    int rand = (new Random()).Next(1970, 2021);
-        //    var name = $"FooBar Frames {rand} Ltd";
-        //    TypeIntoFieldWithoutClearing("#name1", name);
-        //    Click(OKButton());
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    Assert.IsTrue(WaitForCss(".title").Text.EndsWith(name));
-        //    var store = GetReferenceFromProperty("Store");
-        //    Assert.IsTrue(store.Text.EndsWith(name));
-        //}
+            var num = order.GetProperty("Sales Order Number").GetValue();
+            Assert.IsTrue(num.StartsWith("SO75"));
+            order.GetProperty("Customer").GetReference().AssertTitleIs("AW00012211 Victor Romero");
+        }
 
-        ////[TestMethod]
-        //public void CreateAGraphOfObjectsThreeLevelsDeep()
-        //{
-        //    //This story involves creation of a graph of three new objects (Customer, Person, Password)
-        //    //with two levels of dependency
-        //    GeminiUrl("home?m1=Customer_MenuFunctions&d1=CreateNewIndividualCustomer");
-        //    WaitForTitle("Home");
-        //    TypeIntoFieldWithoutClearing("#firstname1", "Fred");
-        //    TypeIntoFieldWithoutClearing("#lastname1", "Bloggs");
-        //    TypeIntoFieldWithoutClearing("#password1", "foobar");
-        //    Click(OKButton());
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    var title = WaitForCss(".title").Text;
-        //    Assert.IsTrue(title.EndsWith("Fred Bloggs"));
-        //    var p = GetReferenceFromProperty("Person");
-        //    Click(p);
-        //    var pw = GetReferenceFromProperty("Password");
-        //    Assert.AreEqual("Password", pw.Text);
-        //}
+        //[TestMethod]
+        public void CreateAGraphOfTwoNewRelatedObjects()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Customers").OpenSubMenu("Stores")
+                .GetActionWithDialog("Create New Store Customer").Open();
+            int rand = (new Random()).Next(1970, 2021);
+            var name = $"FooBar Frames {rand} Ltd";
+            dialog.GetTextField("Name").Enter(name);
+            var cust = dialog.ClickOKToViewObject();
+            Assert.IsTrue(cust.GetTitle().EndsWith(name));
+            var storeTitle = cust.GetProperty("Store").GetReference().GetTitle();
+            Assert.IsTrue(storeTitle.EndsWith(name));
+        }
+
+        //[TestMethod]
+        public void CreateAGraphOfObjectsThreeLevelsDeep()
+        {
+            //This story involves creation of a graph of three new objects (Customer, Person, Password)
+            //with two levels of dependency
+            var dialog = helper.GotoHome().OpenMainMenu("Customers").OpenSubMenu("Individuals")
+              .GetActionWithDialog("Create New Individual Customer").Open();
+
+            dialog.GetTextField("First Name").Enter("Fred");
+            dialog.GetTextField("Last Name").Enter("Bloggs");
+            dialog.GetTextField("Password").Enter("foobar");
+            var cust = dialog.ClickOKToViewObject();
+           Assert.IsTrue(cust.GetTitle().EndsWith("Fred Bloggs"));
+            var person = cust.GetProperty("Person").GetReference().Click();
+            person.GetProperty("Password").GetReference().AssertTitleIs("Password");
+        }
 
 
-        ////[TestMethod]
-        //public void PropertyHiddenViaAHideMethod()
-        //{
-        //    //An Individual Customer should not display a Store property
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Customer--29207");
-        //    WaitForTitle("AW00029207 Katelyn James");
-        //    Assert.AreEqual("Sales Territory:", WaitForCssNo(".property .name", 3).Text);
-        //    Assert.AreEqual("Person:", WaitForCssNo(".property .name", 2).Text);
-        //    Assert.AreEqual("Customer Type:", WaitForCssNo(".property .name", 1).Text);
-        //    Assert.AreEqual("Account Number:", WaitForCssNo(".property .name", 0).Text);
+        //[TestMethod]
+        public void PropertyHiddenViaAHideMethod()
+        {
+            //An Individual Customer should not display a Store property
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Customer--29207")
+                .GetObjectView().AssertTitleIs("AW00029207 Katelyn James")
+                .AssertPropertiesAre("Account Number", "Customer Type", "Person", "Sales Territory");
 
-        //    //An Individual Customer should not display a Store property
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Customer--29553");
-        //    WaitForTitle("AW00029553 Unsurpassed Bikes");
-        //    Assert.AreEqual("Sales Territory:", WaitForCssNo(".property .name", 3).Text);
-        //    Assert.AreEqual("Store:", WaitForCssNo(".property .name", 2).Text);
-        //    Assert.AreEqual("Customer Type:", WaitForCssNo(".property .name", 1).Text);
-        //    Assert.AreEqual("Account Number:", WaitForCssNo(".property .name", 0).Text);
-        //}
+            //A Store Customer should not display a Person property
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Customer--29553")
+                .GetObjectView().AssertTitleIs("AW00029553 Unsurpassed Bikes")
+                .AssertPropertiesAre("Account Number", "Customer Type", "Store", "Sales Territory");
+        }
 
-        ////[TestMethod]
-        //public void SubMenuOnObject()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Vendor--1500&as1=open");
-        //    WaitForTitle("Morgan Bike Accessories");
-        //    Assert.AreEqual("Check Credit", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
-        //    Assert.AreEqual("Show All Products", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
-        //    OpenSubMenu("Purchase Orders");
-        //    WaitForCssNo("nof-action", 4); //i.e. so we are sure menu has opened
-        //    Assert.AreEqual("Create New Purchase Order", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
-        //    Assert.AreEqual("Open Purchase Orders", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
-        //    Assert.AreEqual("List Purchase Orders", WaitForCssNo("nof-action-list input", 2).GetAttribute("value"));
+        //[TestMethod]
+        public void SubMenuOnObject()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Vendor--1500")
+                 .GetObjectView().AssertTitleIs("Morgan Bike Accessories").OpenActions()
+                 .AssertHasActions("Show All Products", "Check Credit")
+                 .OpenSubMenu("Purchase Orders")
+                .AssertHasActions("Create New Purchase Order", "Open Purchase Orders", "List Purchase Orders", "Show All Products", "Check Credit");
+        }
 
-        //}
+        //[TestMethod]
+        public void SubMenuOnMainMenu()
+        {
+            helper.GotoHome().OpenMainMenu("Customers").AssertHasActions(
+                "Find Customer By Account Number", 
+                "List Customers For Sales Territory")
+            .AssertHasSubMenus("Individuals", "Stores")
+            .OpenSubMenu("Individuals").AssertHasActions(
+                "Find Individual Customer By Name",
+                "Create New Individual Customer",
+                "Random Individual",
+                "Recent Individual Customers",
+                "Find Customer By Account Number",
+                "List Customers For Sales Territory")  
+            .OpenSubMenu("Stores").AssertHasActions(
+                "Find Individual Customer By Name",
+                "Create New Individual Customer",
+                "Random Individual",
+                "Recent Individual Customers",
+                  "Find Store By Name",
+                   "Create New Store Customer",
+                   "Random Store",
+                 "Find Customer By Account Number",
+                "List Customers For Sales Territory");
+        }
 
-        ////[TestMethod]
-        //public void SubMenuOnMainMenu()
-        //{
-        //    GeminiUrl("home?m1=Customer_MenuFunctions");
-        //    WaitForTitle("Home");
-        //    WaitForCssNo("nof-action", 1);
-        //    Assert.AreEqual("Find Customer By Account Number", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
-        //    Assert.AreEqual("List Customers For Sales Territory", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
-        //    OpenSubMenu("Individuals");
-        //    OpenSubMenu("Stores");
-        //    WaitForCssNo("nof-action", 7); //i.e. so we are sure menu has opened
-        //    Assert.AreEqual("Find Individual Customer By Name", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
-        //    Assert.AreEqual("Find Store By Name", WaitForCssNo("nof-action-list input", 4).GetAttribute("value"));
-        //}
+        //[TestMethod]
+        public void ImageProperty()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--881")
+                .GetObjectView().AssertTitleIs("Short-Sleeve Classic Jersey, S")
+                .GetProperty("Photo").AssertIsImage();
+        }
 
-        ////[TestMethod]
-        //public void ImageProperty()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Product--881");
-        //    WaitForTitle("Short-Sleeve Classic Jersey, S");
-        //    var photo = GetProperty("Photo");
-        //    var imgSrc = photo.FindElement(By.CssSelector("img")).GetAttribute("src");
-        //    Assert.IsTrue(imgSrc.StartsWith("data:image/gif;"));
-        //}
+        //[TestMethod]
+        public void ImageParameter()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--881")
+                .GetObjectView().AssertTitleIs("Short-Sleeve Classic Jersey, S")
+                .OpenActions().GetActionWithDialog("Add Or Change Photo").Open()
+                .AssertHasImageField("New Image");
+        }
 
-        ////[TestMethod]
-        //public void ImageParameter()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Product--881&as1=open");
-        //    WaitForTitle("Short-Sleeve Classic Jersey, S");
-        //    OpenActionDialog("Add Or Change Photo");
-        //    WaitForCss(".value.input-control input#newimage1");
-        //}
-
-        ////[TestMethod]
+        //[TestMethod]
         //public void QueryContributedActionReturningOnlyAContext()
         //{
-        //    GeminiUrl("list?m1=SpecialOffer_MenuFunctions&a1=AllSpecialOffers&pg1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ExtendOffers");
-        //    WaitForTitle("All Special Offers");
-        //    Reload();
-        //    WaitForCssNo("tbody tr", 10);
+        //    var offers = helper.GotoHome().OpenMainMenu("Special Offers")
+        //         .GetActionWithoutDialog("All Special Offers").ClickToViewList()
+        //         .AssertTitleIs("All Special Offers")
+        //         .ClickTableView();
+
         //    int rand = (new Random()).Next(1000);
         //    var endDate = DateTime.Today.AddDays(rand).ToString("dd MMM yyyy");
         //    endDate = endDate.StartsWith("0") ? endDate.Substring(1) : endDate;
-        //    Assert.IsFalse(br.FindElements(By.CssSelector("tbody tr td")).Any(el => el.Text == endDate));
-        //    TypeIntoFieldWithoutClearing("#todate1", endDate);
-        //    SelectCheckBox("#item1-1");
-        //    SelectCheckBox("#item1-2");
-        //    SelectCheckBox("#item1-3");
-        //    Click(OKButton());
-        //    Thread.Sleep(1000);
-        //    Reload();
-        //    WaitForCssNo("tbody tr", 10);
-        //    wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate) >= 3);
+
+        //    //Assert.IsFalse(br.FindElements(By.CssSelector("tbody tr td")).Any(el => el.Text == endDate));
+
+        //    var dialog = offers.OpenActions().GetActionWithDialog("Extend Offers").Open();
+        //    dialog.GetTextField("To Date").Enter(endDate);
+
+        //    offers.SelectCheckBoxOnRow(1)
+        //    .SelectCheckBoxOnRow(2)
+        //    .SelectCheckBoxOnRow(3);
+
+        //    dialog.ClickOKToViewList();
+        //    //TypeIntoFieldWithoutClearing("#todate1", endDate);
+        //    //SelectCheckBox("#item1-1");
+        //    //SelectCheckBox("#item1-2");
+        //    //SelectCheckBox("#item1-3");
+        //    //Click(OKButton());
+        //    //Thread.Sleep(1000);
+        //    //Reload();
+        //    //WaitForCssNo("tbody tr", 10);
+        //    //wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate) >= 3);
         //}
 
         //// [TestMethod]
