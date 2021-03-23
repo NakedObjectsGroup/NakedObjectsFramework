@@ -33,7 +33,7 @@ namespace NakedFramework.Persistor.EFCore.Util {
 
         public static object[] GetKeyValues(this DbContext context, object obj) {
             var eType = context.GetEntityType(obj.GetType());
-            var keyProperties = eType.GetKeys().SelectMany(k => k.Properties);
+            var keyProperties = eType.GetKeys().SelectMany(k => k.Properties).Where(k => k.PropertyInfo is not null);
             return keyProperties.Select(p => p.PropertyInfo.GetValue(obj, null)).ToArray();
         }
 

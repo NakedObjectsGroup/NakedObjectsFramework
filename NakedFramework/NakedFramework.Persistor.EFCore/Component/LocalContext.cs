@@ -150,7 +150,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return WrappedDbContext.ChangeTracker.HasChanges();
         }
 
-        public void PostSave(EFCoreObjectStore store) {
+        public void PostSave() {
             try {
                 // Take a copy of PersistedNakedObjects and clear original so new ones can be added 
                 // do this before Updated so that any objects added by updated are not immediately
@@ -168,9 +168,9 @@ namespace NakedFramework.Persistor.EFCore.Component {
             }
         }
 
-        public void PostSaveWrapUp(EFCoreObjectStore store) {
-            //added.Select(domainObject => parent.createAdapter(null, domainObject)).ForEach(store.HandleAdded);
-            //LoadedNakedObjects.ToList().ForEach(parent.handleLoaded);
+        public void PostSaveWrapUp() {
+            added.Select(domainObject => parent.CreateAdapter(domainObject)).ForEach(parent.HandleAdded);
+            LoadedNakedObjects.ToList().ForEach(parent.HandleLoaded);
         }
     }
 }
