@@ -52,5 +52,11 @@ namespace NakedFrameworkClient.TestFramework
         public Reference GetReference() =>
             new Reference(element.FindElement(By.CssSelector(".reference")), helper, enclosingView);
 
+        public Property AssertIsImage()
+        {
+            var imgSrc = element.FindElement(By.CssSelector("img")).GetAttribute("src");
+            Assert.IsTrue(imgSrc.StartsWith("data:image/gif;"));
+            return this;
+        }
     }
 }

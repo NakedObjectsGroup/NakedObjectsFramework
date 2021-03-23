@@ -12,24 +12,39 @@ namespace NakedFrameworkClient.TestFramework
         /// <summary>
         /// Members means action names and submenu names, and should be specified in presented order
         /// </summary>
-        public Menu AssertHasMembers(params string[] memberNames)
+        public Menu AssertHasActions(params string[] actionNames)
         {
-            CollectionAssert.AreEqual(memberNames, MemberNames());
+            CollectionAssert.AreEqual(actionNames, ActionNames());
             return this;
         }
 
-        private string[] MemberNames() =>
+        private string[] ActionNames() =>
             element.FindElements(By.CssSelector("nof-action input")).Select(m => m.GetAttribute("value")).ToArray();
 
-        public Menu AssertHasMember(string memberName)
+        public Menu AssertHasSubMenus(params string[] subMenuNames)
         {
-            Assert.IsTrue(MemberNames().Contains(memberName));
+            CollectionAssert.AreEqual(subMenuNames, SubMenuNames());
             return this;
         }
 
-        public Menu AssertDoesNotHaveMember(string memberName)
+        private string[] SubMenuNames() =>
+      element.FindElements(By.CssSelector(".submenu")).Select(m => m.Text).ToArray();
+
+        public Menu AssertHasSubMenu(string subMenuName)
         {
-            Assert.IsFalse(MemberNames().Contains(memberName));
+            Assert.IsTrue(SubMenuNames().Contains(subMenuName));
+            return this;
+        }
+
+        public Menu AssertHasAction(string memberName)
+        {
+            Assert.IsTrue(ActionNames().Contains(memberName));
+            return this;
+        }
+
+        public Menu AssertDoesNotHaveAction(string memberName)
+        {
+            Assert.IsFalse(ActionNames().Contains(memberName));
             return this;
         }
 
@@ -55,7 +70,7 @@ namespace NakedFrameworkClient.TestFramework
             var sub = element.FindElements(By.CssSelector(".submenu")).Single(element => element.Text == subMenuName);
             helper.Click(sub);
             var el = helper.WaitForChildElement(element, ".menuitem.open");
-            return new Menu(el, helper, enclosingView);
+            return this;
         }
   
         public void Close() => throw new NotImplementedException();

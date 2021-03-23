@@ -58,7 +58,15 @@ namespace NakedFrameworkClient.TestFramework
         }
 
         //Row number counts from zero
-        public ListView CheckRow(int rowNumber) => throw new NotImplementedException();
+        public ListView SelectCheckBoxOnRow(int rowNumber)
+        {
+            helper.wait.Until(dr => element.FindElements(By.CssSelector("tbody tr")).Count > rowNumber);
+            var row = element.FindElements(By.CssSelector("tbody tr")).ElementAt(rowNumber);
+            var checkbox = row.FindElement(By.CssSelector("td.checkbox input"));
+            checkbox.Click();
+            helper.wait.Until(dr => checkbox.Selected == true);
+            return this;
+        }
 
         //Row number counts from zero
         public TableRow GetRowFromTable(int rowNumber) => throw new NotImplementedException();
@@ -78,6 +86,5 @@ namespace NakedFrameworkClient.TestFramework
             helper.WaitForNewListView(this, MouseClick.MainButton);
             return this;
         }
-
     }
 }

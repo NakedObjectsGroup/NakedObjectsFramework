@@ -72,11 +72,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CreateNewObjectWithAReferenceToMultipleExistingObjects();
             CreateAGraphOfTwoNewRelatedObjects();
             CreateAGraphOfObjectsThreeLevelsDeep();
-            //PropertyHiddenViaAHideMethod();
-            //SubMenuOnObject();
-            //SubMenuOnMainMenu();
-            //ImageProperty();
-            //ImageParameter();
+            PropertyHiddenViaAHideMethod();
+            SubMenuOnObject();
+            SubMenuOnMainMenu();
+            ImageProperty();
+            ImageParameter();
             //QueryContributedActionReturningOnlyAContext();
             //QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
             //LocalCollectionContributedAction();
@@ -334,8 +334,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--75084")
               .GetObjectView().AssertTitleIs("SO75084").OpenActions()
-              .AssertHasMember("Remove Detail")
-              .AssertDoesNotHaveMember("Approve Order");
+              .AssertHasAction("Remove Detail")
+              .AssertDoesNotHaveAction("Approve Order");
         }
 
         //[TestMethod]
@@ -437,95 +437,104 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
 
-        ////[TestMethod]
-        //public void PropertyHiddenViaAHideMethod()
-        //{
-        //    //An Individual Customer should not display a Store property
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Customer--29207");
-        //    WaitForTitle("AW00029207 Katelyn James");
-        //    Assert.AreEqual("Sales Territory:", WaitForCssNo(".property .name", 3).Text);
-        //    Assert.AreEqual("Person:", WaitForCssNo(".property .name", 2).Text);
-        //    Assert.AreEqual("Customer Type:", WaitForCssNo(".property .name", 1).Text);
-        //    Assert.AreEqual("Account Number:", WaitForCssNo(".property .name", 0).Text);
+        //[TestMethod]
+        public void PropertyHiddenViaAHideMethod()
+        {
+            //An Individual Customer should not display a Store property
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Customer--29207")
+                .GetObjectView().AssertTitleIs("AW00029207 Katelyn James")
+                .AssertPropertiesAre("Account Number", "Customer Type", "Person", "Sales Territory");
 
-        //    //An Individual Customer should not display a Store property
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Customer--29553");
-        //    WaitForTitle("AW00029553 Unsurpassed Bikes");
-        //    Assert.AreEqual("Sales Territory:", WaitForCssNo(".property .name", 3).Text);
-        //    Assert.AreEqual("Store:", WaitForCssNo(".property .name", 2).Text);
-        //    Assert.AreEqual("Customer Type:", WaitForCssNo(".property .name", 1).Text);
-        //    Assert.AreEqual("Account Number:", WaitForCssNo(".property .name", 0).Text);
-        //}
+            //A Store Customer should not display a Person property
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Customer--29553")
+                .GetObjectView().AssertTitleIs("AW00029553 Unsurpassed Bikes")
+                .AssertPropertiesAre("Account Number", "Customer Type", "Store", "Sales Territory");
+        }
 
-        ////[TestMethod]
-        //public void SubMenuOnObject()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Vendor--1500&as1=open");
-        //    WaitForTitle("Morgan Bike Accessories");
-        //    Assert.AreEqual("Check Credit", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
-        //    Assert.AreEqual("Show All Products", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
-        //    OpenSubMenu("Purchase Orders");
-        //    WaitForCssNo("nof-action", 4); //i.e. so we are sure menu has opened
-        //    Assert.AreEqual("Create New Purchase Order", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
-        //    Assert.AreEqual("Open Purchase Orders", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
-        //    Assert.AreEqual("List Purchase Orders", WaitForCssNo("nof-action-list input", 2).GetAttribute("value"));
+        //[TestMethod]
+        public void SubMenuOnObject()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Vendor--1500")
+                 .GetObjectView().AssertTitleIs("Morgan Bike Accessories").OpenActions()
+                 .AssertHasActions("Show All Products", "Check Credit")
+                 .OpenSubMenu("Purchase Orders")
+                .AssertHasActions("Create New Purchase Order", "Open Purchase Orders", "List Purchase Orders", "Show All Products", "Check Credit");
+        }
 
-        //}
+        //[TestMethod]
+        public void SubMenuOnMainMenu()
+        {
+            helper.GotoHome().OpenMainMenu("Customers").AssertHasActions(
+                "Find Customer By Account Number", 
+                "List Customers For Sales Territory")
+            .AssertHasSubMenus("Individuals", "Stores")
+            .OpenSubMenu("Individuals").AssertHasActions(
+                "Find Individual Customer By Name",
+                "Create New Individual Customer",
+                "Random Individual",
+                "Recent Individual Customers",
+                "Find Customer By Account Number",
+                "List Customers For Sales Territory")  
+            .OpenSubMenu("Stores").AssertHasActions(
+                "Find Individual Customer By Name",
+                "Create New Individual Customer",
+                "Random Individual",
+                "Recent Individual Customers",
+                  "Find Store By Name",
+                   "Create New Store Customer",
+                   "Random Store",
+                 "Find Customer By Account Number",
+                "List Customers For Sales Territory");
+        }
 
-        ////[TestMethod]
-        //public void SubMenuOnMainMenu()
-        //{
-        //    GeminiUrl("home?m1=Customer_MenuFunctions");
-        //    WaitForTitle("Home");
-        //    WaitForCssNo("nof-action", 1);
-        //    Assert.AreEqual("Find Customer By Account Number", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
-        //    Assert.AreEqual("List Customers For Sales Territory", WaitForCssNo("nof-action-list input", 1).GetAttribute("value"));
-        //    OpenSubMenu("Individuals");
-        //    OpenSubMenu("Stores");
-        //    WaitForCssNo("nof-action", 7); //i.e. so we are sure menu has opened
-        //    Assert.AreEqual("Find Individual Customer By Name", WaitForCssNo("nof-action-list input", 0).GetAttribute("value"));
-        //    Assert.AreEqual("Find Store By Name", WaitForCssNo("nof-action-list input", 4).GetAttribute("value"));
-        //}
+        //[TestMethod]
+        public void ImageProperty()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--881")
+                .GetObjectView().AssertTitleIs("Short-Sleeve Classic Jersey, S")
+                .GetProperty("Photo").AssertIsImage();
+        }
 
-        ////[TestMethod]
-        //public void ImageProperty()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Product--881");
-        //    WaitForTitle("Short-Sleeve Classic Jersey, S");
-        //    var photo = GetProperty("Photo");
-        //    var imgSrc = photo.FindElement(By.CssSelector("img")).GetAttribute("src");
-        //    Assert.IsTrue(imgSrc.StartsWith("data:image/gif;"));
-        //}
+        //[TestMethod]
+        public void ImageParameter()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--881")
+                .GetObjectView().AssertTitleIs("Short-Sleeve Classic Jersey, S")
+                .OpenActions().GetActionWithDialog("Add Or Change Photo").Open()
+                .AssertHasImageField("New Image");
+        }
 
-        ////[TestMethod]
-        //public void ImageParameter()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Product--881&as1=open");
-        //    WaitForTitle("Short-Sleeve Classic Jersey, S");
-        //    OpenActionDialog("Add Or Change Photo");
-        //    WaitForCss(".value.input-control input#newimage1");
-        //}
-
-        ////[TestMethod]
+        //[TestMethod]
         //public void QueryContributedActionReturningOnlyAContext()
         //{
-        //    GeminiUrl("list?m1=SpecialOffer_MenuFunctions&a1=AllSpecialOffers&pg1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ExtendOffers");
-        //    WaitForTitle("All Special Offers");
-        //    Reload();
-        //    WaitForCssNo("tbody tr", 10);
+        //    var offers = helper.GotoHome().OpenMainMenu("Special Offers")
+        //         .GetActionWithoutDialog("All Special Offers").ClickToViewList()
+        //         .AssertTitleIs("All Special Offers")
+        //         .ClickTableView();
+
         //    int rand = (new Random()).Next(1000);
         //    var endDate = DateTime.Today.AddDays(rand).ToString("dd MMM yyyy");
         //    endDate = endDate.StartsWith("0") ? endDate.Substring(1) : endDate;
-        //    Assert.IsFalse(br.FindElements(By.CssSelector("tbody tr td")).Any(el => el.Text == endDate));
-        //    TypeIntoFieldWithoutClearing("#todate1", endDate);
-        //    SelectCheckBox("#item1-1");
-        //    SelectCheckBox("#item1-2");
-        //    SelectCheckBox("#item1-3");
-        //    Click(OKButton());
-        //    Thread.Sleep(1000);
-        //    Reload();
-        //    WaitForCssNo("tbody tr", 10);
-        //    wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate) >= 3);
+
+        //    //Assert.IsFalse(br.FindElements(By.CssSelector("tbody tr td")).Any(el => el.Text == endDate));
+
+        //    var dialog = offers.OpenActions().GetActionWithDialog("Extend Offers").Open();
+        //    dialog.GetTextField("To Date").Enter(endDate);
+
+        //    offers.SelectCheckBoxOnRow(1)
+        //    .SelectCheckBoxOnRow(2)
+        //    .SelectCheckBoxOnRow(3);
+
+        //    dialog.ClickOKToViewList();
+        //    //TypeIntoFieldWithoutClearing("#todate1", endDate);
+        //    //SelectCheckBox("#item1-1");
+        //    //SelectCheckBox("#item1-2");
+        //    //SelectCheckBox("#item1-3");
+        //    //Click(OKButton());
+        //    //Thread.Sleep(1000);
+        //    //Reload();
+        //    //WaitForCssNo("tbody tr", 10);
+        //    //wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate) >= 3);
         //}
 
         //// [TestMethod]
