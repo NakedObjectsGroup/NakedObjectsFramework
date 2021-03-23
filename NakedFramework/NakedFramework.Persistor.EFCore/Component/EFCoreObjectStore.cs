@@ -87,23 +87,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EFCoreSaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-        //public void EndTransaction()
-        //{
-        //    try
-        //    {
-        //        using var transaction = CreateTransactionScope();
-        //        RecurseUntilAllChangesApplied(1);
-        //        transaction.Complete();
-        //    }
-        //    catch (OptimisticConcurrencyException oce)
-        //    {
-        //        throw new ConcurrencyException(ConcatenateMessages(oce), oce);
-        //    }
-        //    catch (UpdateException ue)
-        //    {
-        //        throw new DataUpdateException(ConcatenateMessages(ue), ue);
-        //    }
-        //}
 
 
         private void PostSaveWrapUp() => context.PostSaveWrapUp();
@@ -268,8 +251,37 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public PropertyInfo[] GetKeys(Type type) => context.WrappedDbContext.SafeGetKeys(type);
 
+        private void CopyTo(object toObj, object fromObj) {
+            var toObjType = toObj.GetEFCoreProxiedType();
+            var fromObjType = fromObj.GetEFCoreProxiedType();
+
+            if (toObjType != fromObjType) {
+                throw new PersistFailedException($"cannot copy different types {toObjType} and {fromObjType}");
+            }
+
+          
+
+            var properties = context.WrappedDbContext.GetCloneableMembers(toObjType);
+
+            properties.ForEach(pi =>  pi.SetValue(toObj, pi.GetValue(fromObj, null)));
+
+        }
+
+
         public void Refresh(INakedObjectAdapter nakedObjectAdapter) {
-            throw new NotImplementedException();
+            if (nakedObjectAdapter.Spec.GetFacet<IComplexTypeFacet>() is null)
+            {
+                nakedObjectAdapter.Updating();
+                var toRefresh = nakedObjectAdapter.Object;
+                var entity = context.WrappedDbContext.Entry(toRefresh);
+                var keys = context.WrappedDbContext.GetKeyValues(toRefresh);
+                entity.State = EntityState.Detached;
+                var refreshed = context.WrappedDbContext.Find(toRefresh.GetEFCoreProxiedType(), keys);
+                var refreshedAdapter = nakedObjectManager.GetAdapterFor(refreshed);
+                RemoveAdapter(refreshedAdapter);
+                CopyTo(toRefresh, refreshed);
+                nakedObjectAdapter.Updated();
+            }
         }
 
         public int CountField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec associationSpec) {

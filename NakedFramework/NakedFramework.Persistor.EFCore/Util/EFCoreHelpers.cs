@@ -59,6 +59,18 @@ namespace NakedFramework.Persistor.EFCore.Util {
             return propertyInfos.Where(p => CollectionUtils.IsCollection(p.PropertyType)).ToArray();
         }
 
+        public static PropertyInfo[] GetCloneableMembers(this DbContext context, Type type) {
+            var eType = context.GetEntityType(type);
+            var keyProperties = eType.GetKeys().SelectMany(k => k.Properties).Select(p => p.PropertyInfo).ToArray();
+            var properties = eType.GetProperties().Select(p => p.PropertyInfo).Where(pi => pi is not null).ToArray();
+            var nonIdProperties = properties.Except(keyProperties);
+            var navigations = eType.GetNavigations().Select(p => p.PropertyInfo).Where(pi => pi is not null);
+            return nonIdProperties.Union(navigations).ToArray();
+        }
+
+       
+
+
         public static void Invoke(this object onObject, string name, params object[] parms) => onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
 
         public static PropertyInfo[] GetComplexMembers(this DbContext context, Type type) {
