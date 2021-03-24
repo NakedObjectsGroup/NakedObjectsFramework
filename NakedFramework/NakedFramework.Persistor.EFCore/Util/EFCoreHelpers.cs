@@ -76,9 +76,8 @@ namespace NakedFramework.Persistor.EFCore.Util {
         public static PropertyInfo[] GetComplexMembers(this DbContext context, Type type) {
             var eType = context.GetEntityType(type);
             if (eType is not null) {
-                //var cm = eType.Members.Where(m => m.TypeUsage.EdmType is ComplexType);
-                //return type.GetProperties().Join(cm, pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray();
-                // todo
+                var navigationTypes = eType.GetNavigations().Where(n => n.ClrType.GetCustomAttribute<OwnedAttribute>() is not null);
+                return type.GetProperties().Join(navigationTypes, pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray();
             }
 
             return Array.Empty<PropertyInfo>();

@@ -345,7 +345,24 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         public void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool isGhost) {
-            // do nothing
+            var proxiedType = adapter.Object.GetEFCoreProxiedType();
+
+            if (context.IsAlwaysUnrecognised(proxiedType)) {
+                return;
+            }
+
+            if (EFCoreKnowsType(proxiedType)) {
+                foreach (var pi in context.WrappedDbContext.GetComplexMembers(proxiedType)) {
+                    var complexObject = pi.GetValue(adapter.Object, null);
+                    if (complexObject == null) {
+                        throw new NakedObjectSystemException("Complex type members should never be null");
+                    }
+
+                    injector.InjectParentIntoChild(adapter.Object, complexObject);
+                    injector.InjectInto(complexObject);
+                    nakedObjectManager.CreateAggregatedAdapter(adapter, ((IObjectSpec) adapter.Spec).GetProperty(pi.Name).Id, complexObject);
+                }
+            }
         }
 
         public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) {
@@ -431,6 +448,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 var oid = oidGenerator.CreateOid(EFCoreHelpers.GetEFCoreProxiedTypeName(domainObject), keys);
                 var nakedObjectAdapter = nakedObjectManager.CreateAdapter(domainObject, oid, null);
                 injector.InjectInto(nakedObjectAdapter.Object);
+                LoadComplexTypesIntoNakedObjectFramework(nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsGhost());
                 nakedObjectAdapter.UpdateVersion(session, nakedObjectManager);
 
                 if (nakedObjectAdapter.ResolveState.IsGhost())

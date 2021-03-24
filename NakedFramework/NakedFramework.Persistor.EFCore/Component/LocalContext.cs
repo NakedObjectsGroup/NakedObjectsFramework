@@ -89,14 +89,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return GetMostBaseType(type.BaseType);
         }
 
-        //public StructuralType GetStructuralType(Type type) {
-        //    if (!typeToStructuralType.ContainsKey(type)) {
-        //        typeToStructuralType[type] = ObjectContextUtils.GetStructuralType(WrappedDbContext, type);
-        //    }
-
-        //    return typeToStructuralType[type];
-        //}
-
         public bool IsAlwaysUnrecognised(Type type) =>
             type == null ||
             type == typeof(object) ||

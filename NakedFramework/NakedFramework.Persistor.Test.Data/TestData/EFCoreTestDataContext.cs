@@ -35,11 +35,13 @@ namespace TestData {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
             int NewPerson(int id, string name, int productId, bool address = false, int? relatedTo = null) {
-                string l1 = address ? "L1" : null;
-                string l2 = address ? "L2" : null;
-
-                modelBuilder.Entity<Person>().HasData(new { PersonId = id, Name = name, FavouriteProductId = productId, PersonId1 = relatedTo, Address_Line1 = l1, Address_Line2 = l2});
                 
+                modelBuilder.Entity<Person>().HasData(new {PersonId = id, Name = name, FavouriteProductId = productId, PersonId1 = relatedTo });
+
+                if (address) {
+                    modelBuilder.Entity<Person>().OwnsOne(e => e.Address).HasData(new {PersonId = id, Line1 = "L1", Line2 = "L2"});
+                }
+
                 return id;
             }
 
