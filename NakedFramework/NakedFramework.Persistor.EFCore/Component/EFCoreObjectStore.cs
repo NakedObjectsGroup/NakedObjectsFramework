@@ -60,6 +60,16 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 if (args.OldState == EntityState.Added) {
                     LoadObjectIntoNakedObjectsFramework(args.Entry.Entity, context.WrappedDbContext);
                 }
+
+                if (args.NewState == EntityState.Modified) {
+                    var changedObject = args.Entry.Entity;
+                    var adaptedObject = nakedObjectManager.CreateAdapter(changedObject, null, null);
+                    if (adaptedObject.ResolveState.IsGhost()) {
+                        ResolveImmediately(adaptedObject);
+                    }
+
+                    ValidateIfRequired(adaptedObject);
+                }
             };
 
             context.WrappedDbContext.ChangeTracker.Tracked += (_, args) => { LoadObjectIntoNakedObjectsFramework(args.Entry.Entity, context.WrappedDbContext); };
@@ -87,7 +97,15 @@ namespace NakedFramework.Persistor.EFCore.Component {
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EFCoreSaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-
+        private void ValidateIfRequired(INakedObjectAdapter adapter) {
+            if (adapter.ResolveState.IsPersistent()) {
+                if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
+                    if (adapter.ValidToPersist() is {} state) {
+                        throw new PersistFailedException(Logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
+                    }
+                }
+            }
+        }
 
         private void PostSaveWrapUp() => context.PostSaveWrapUp();
 

@@ -34,8 +34,12 @@ namespace TestData {
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
-            int NewPerson(int id, string name, int productId) {
-                modelBuilder.Entity<Person>().HasData(new { PersonId = id, Name = name, FavouriteProductId = productId});
+            int NewPerson(int id, string name, int productId, bool address = false, int? relatedTo = null) {
+                string l1 = address ? "L1" : null;
+                string l2 = address ? "L2" : null;
+
+                modelBuilder.Entity<Person>().HasData(new { PersonId = id, Name = name, FavouriteProductId = productId, PersonId1 = relatedTo, Address_Line1 = l1, Address_Line2 = l2});
+                
                 return id;
             }
 
@@ -53,17 +57,17 @@ namespace TestData {
             var product2 = NewProduct(2, "ProductTwo");
             var product3 = NewProduct(3, "ProductThree");
             var product4 = NewProduct(4, "ProductFour");
-            var person1 = NewPerson (1, "PersonOne", product1);
-            var person2 = NewPerson (2, "PersonTwo", product1);
-            var person3 = NewPerson (3, "PersonThree", product2);
-            var person4 = NewPerson (4, "PersonFour", product2);
+            var person1 = NewPerson (1, "PersonOne", product1, true);
+            var person2 = NewPerson (2, "PersonTwo", product1, true, person1);
+            var person3 = NewPerson (3, "PersonThree", product2, true, person1);
+            var person4 = NewPerson (4, "PersonFour", product2, true);
             var person5 = NewPerson (5, "PersonFive", product2);
             var person6 = NewPerson (6, "PersonSix", product2);
-            var person7 = NewPerson (7, "PersonSeven", product2);
-            var person8 = NewPerson (8, "PersonEight", product2);
-            var person9 = NewPerson (9, "PersonNine", product2);
-            var person10 = NewPerson (10, "PersonTen", product2);
-            var person11 = NewPerson (11, "PersonEleven", product2);
+            var person7 = NewPerson (7, "PersonSeven", product2, false, person1);
+            var person8 = NewPerson (8, "PersonEight", product2, false, person1);
+            var person9 = NewPerson (9, "PersonNine", product2, false, person6);
+            var person10 = NewPerson (10, "PersonTen", product2, false, person7);
+            var person11 = NewPerson (11, "PersonEleven", product2, false, person8);
             var person12 = NewPerson (12, "PersonTwelve", product4);
             var person13 = NewPerson (13, "PersonThirteen", product4);
             var person14 = NewPerson (14, "PersonFourteen", product4);

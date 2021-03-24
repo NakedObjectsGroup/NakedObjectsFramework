@@ -136,7 +136,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         public void PreSave() {
             WrappedDbContext.ChangeTracker.DetectChanges();
             added.AddRange(WrappedDbContext.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).Select(ose => ose.Entity).ToList());
-            updatingNakedObjects = WrappedDbContext.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).Select(ose => ose.Entity).Select(obj => parent.CreateAdapter(obj)).ToList();
+            updatingNakedObjects = WrappedDbContext.ChangeTracker.Entries().Where(e => e.Members.Any(m => m.IsModified)).Select(ose => ose.Entity).Select(obj => parent.CreateAdapter(obj)).ToList();
             updatingNakedObjects.ForEach(no => no.Updating());
 
             // need to do complex type separately as they'll not be updated in the SavingChangesHandler as they're not proxied. 
