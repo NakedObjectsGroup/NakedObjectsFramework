@@ -229,7 +229,33 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return domainObject;
         }
 
-        public INakedObjectAdapter GetObject(IOid oid, IObjectSpec hint) => throw new NotImplementedException();
+        private object GetObjectByKey(IEntityOid eoid, Type type) => context.WrappedDbContext.Find(type, eoid.Key);
+
+        private object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
+
+        public INakedObjectAdapter GetObject(IOid oid, IObjectSpec hint)
+        {
+            switch (oid)
+            {
+                case IAggregateOid aggregateOid:
+                {
+                    var parentOid = (IEntityOid)aggregateOid.ParentOid;
+                    var parentType = parentOid.TypeName;
+                    var parentSpec = (IObjectSpec)metamodelManager.GetSpecification(parentType);
+                    var parent = nakedObjectManager.CreateAdapter(GetObjectByKey(parentOid, parentSpec), parentOid, null);
+
+                    return parentSpec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
+                }
+                case IEntityOid eoid:
+                {
+                    var adapter = nakedObjectManager.CreateAdapter(GetObjectByKey(eoid, hint), eoid, null);
+                    adapter.UpdateVersion(session, nakedObjectManager);
+                    return adapter;
+                }
+                default:
+                    throw new NakedObjectSystemException(Logger.LogAndReturn($"Unexpected oid type: {oid.GetType()}"));
+            }
+        }
 
         public void Reload(INakedObjectAdapter nakedObjectAdapter) {
             throw new NotImplementedException();

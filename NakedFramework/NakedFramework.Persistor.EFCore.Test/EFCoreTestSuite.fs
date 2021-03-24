@@ -163,6 +163,7 @@ type EFCoreTestSuite() =
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = 
         //System.Data.Entity.Database.SetInitializer(new TestDataInitializer())
+        (new EFCoreTestDataContext(csTDCO)).Delete()
         AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     
     [<SetUp>]
