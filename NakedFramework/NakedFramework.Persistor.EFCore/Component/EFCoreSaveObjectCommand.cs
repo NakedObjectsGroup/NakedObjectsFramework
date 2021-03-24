@@ -5,21 +5,25 @@
 // // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using Microsoft.EntityFrameworkCore;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreSaveObjectCommand : ISaveObjectCommand {
-        public EFCoreSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext getContext) {
-            throw new NotImplementedException();
+        private readonly LocalContext context;
+        private readonly INakedObjectAdapter nakedObjectAdapter;
+
+        public EFCoreSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context)
+        {
+            this.context = context;
+            this.nakedObjectAdapter = nakedObjectAdapter;
         }
 
-        public void Execute() {
-            throw new NotImplementedException();
-        }
+        public override string ToString() => $"SaveObjectCommand [object={nakedObjectAdapter}]";
 
-        public INakedObjectAdapter OnObject() => throw new NotImplementedException();
+        public void Execute() => context.CurrentUpdateRootObjectAdapter = nakedObjectAdapter;
+
+        public INakedObjectAdapter OnObject() => nakedObjectAdapter;
+
     }
 }

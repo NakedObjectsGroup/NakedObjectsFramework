@@ -9,12 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Configuration;
 using NakedFramework.Persistor.EFCore.Util;
+using NakedFramework.Persistor.Entity.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class LocalContext : IDisposable {
@@ -133,10 +135,52 @@ namespace NakedFramework.Persistor.EFCore.Component {
             DeletedNakedObjects.Clear();
         }
 
+        private IEnumerable<object> CheckForForeignKeys(EntityEntry entry) {
+            IList<object> updatedObjects = new List<object>();
+            int updatedForeignKeys = 0;
+
+            var foreignKeys = WrappedDbContext.Model.FindEntityType(entry.Entity.GetType().GetProxiedType()).GetForeignKeys();
+
+            foreach (var foreignKey in foreignKeys) {
+                var names = foreignKey.Properties.Select(p => p.Name);
+
+                foreach (var name in names) {
+                    var matchingMember = entry.Members.SingleOrDefault(m => m.Metadata.Name == name) as PropertyEntry;
+
+                    if (matchingMember?.IsModified == true) {
+                        var type = foreignKey.PrincipalEntityType.ClrType;
+                        var keys = matchingMember.OriginalValue;
+                        updatedForeignKeys++; 
+
+                        if (keys is not null) {
+                            var otherEnd = WrappedDbContext.Find(type, keys);
+                            updatedObjects.Add(otherEnd);
+                        }
+                    }
+                }
+            }
+
+            // check if anything modified as well as foreign keys
+            if (entry.Members.Count(m => m.IsModified) > updatedForeignKeys) {
+                updatedObjects.Add(entry.Entity);
+            }
+
+            return updatedObjects;
+        }
+
         public void PreSave() {
             WrappedDbContext.ChangeTracker.DetectChanges();
-            added.AddRange(WrappedDbContext.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).Select(ose => ose.Entity).ToList());
-            updatingNakedObjects = WrappedDbContext.ChangeTracker.Entries().Where(e => e.Members.Any(m => m.IsModified)).Select(ose => ose.Entity).Select(obj => parent.CreateAdapter(obj)).ToList();
+            var entries = WrappedDbContext.ChangeTracker.Entries().ToArray();
+
+            entries.ForEach(e => e.DetectChanges());
+
+            added.AddRange(entries.Where(e => e.State == EntityState.Added).Select(ose => ose.Entity).ToList());
+            
+            updatingNakedObjects = entries.Where(e => e.State != EntityState.Added && e.Members.Any(m => m.IsModified)).
+                                           SelectMany(CheckForForeignKeys).
+                                           Distinct().
+                                           Select(o => parent.CreateAdapter(o)).ToList();
+
             updatingNakedObjects.ForEach(no => no.Updating());
 
             // need to do complex type separately as they'll not be updated in the SavingChangesHandler as they're not proxied. 
@@ -159,7 +203,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 var currentPersistedNakedObjectsAdapter = PersistedNakedObjects.ToArray();
                 PersistedNakedObjects.Clear();
                 updatingNakedObjects.ForEach(no => no.Updated());
-                updatingNakedObjects.ForEach(no => no.UpdateVersion(session, Manager));
+                updatingNakedObjects.ForEach(no => EFCoreHelpers.UpdateVersion(no, session, Manager));
                 coUpdating.ForEach(no => no.Updated());
                 currentPersistedNakedObjectsAdapter.ForEach(no => no.Persisted());
             }
