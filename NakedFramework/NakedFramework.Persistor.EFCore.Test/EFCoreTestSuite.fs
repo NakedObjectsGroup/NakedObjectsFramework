@@ -24,6 +24,9 @@ open NakedFramework.Xat.TestCase
 open NakedFramework.DependencyInjection.Extensions
 open NakedFramework.Persistor.EFCore.Extensions
 open Microsoft.EntityFrameworkCore
+open NakedFramework.Architecture.Component
+open Microsoft.Extensions.DependencyInjection
+open NakedFramework.Persistor.EFCore.Component
 
 let assemblyName = "NakedFramework.Persistor.Test.Data"
 
@@ -313,9 +316,11 @@ type EFCoreTestSuite() =
     
     [<Test>]
     member x.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax() = 
-        //EntityObjectStore.MaximumCommitCycles <- 1
+       
+        let os = x.NakedObjectsFramework.ServiceProvider.GetService<IObjectStore>() :?> EFCoreObjectStore
+        os.MaximumCommitCycles <- 1
         x.Tests.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax()
-        //EntityObjectStore.MaximumCommitCycles <- 10
+        os.MaximumCommitCycles <- 10
     
     [<Test>]
     member x.SaveNewObjectTransientCollectionItemCallsPersistingPersisted() = x.Tests.SaveNewObjectTransientCollectionItemCallsPersistingPersisted()

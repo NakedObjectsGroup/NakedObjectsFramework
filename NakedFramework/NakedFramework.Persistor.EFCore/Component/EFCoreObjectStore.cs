@@ -75,7 +75,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
             context.WrappedDbContext.ChangeTracker.Tracked += (_, args) => { LoadObjectIntoNakedObjectsFramework(args.Entry.Entity, context.WrappedDbContext); };
         }
 
-        private int MaximumCommitCycles { get; }
+        // internal for testing
+        public int MaximumCommitCycles { get; set; }
 
         public void Dispose() {
             context.Dispose();
@@ -375,7 +376,9 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private void RecurseUntilAllChangesApplied(int depth) {
             if (depth > MaximumCommitCycles) {
-                throw new NakedObjectDomainException(Logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.EntityCommitError, "")));
+                var typeNames = context.WrappedDbContext.ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified).Select(o => o.Entity.GetEFCoreProxiedType().FullName).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ", ") + t);
+
+                throw new NakedObjectDomainException(Logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.EntityCommitError, typeNames)));
             }
 
             PreSave();
