@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DevelopmentStoryTests.cs" />
     <Compile Remove="TestAttributes.cs" />
     <Compile Remove="TypeRetrievalTests.cs" />
   </ItemGroup>
