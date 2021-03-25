@@ -344,6 +344,19 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return adapter;
         }
 
+        private record ComplexTypeMatcher {
+            public ComplexTypeMatcher(Type type, object key) {
+                Type = type;
+                Key = key;
+            }
+
+            public Type Type { get; }
+            public object Key { get; }
+        }
+
+
+        private Dictionary<ComplexTypeMatcher, (INakedObjectAdapter, PropertyInfo)> adaptersWithComplexChildren = new ();
+
         public void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool isGhost) {
             var proxiedType = adapter.Object.GetEFCoreProxiedType();
 
@@ -354,9 +367,28 @@ namespace NakedFramework.Persistor.EFCore.Component {
             if (EFCoreKnowsType(proxiedType)) {
                 foreach (var pi in context.WrappedDbContext.GetComplexMembers(proxiedType)) {
                     var complexObject = pi.GetValue(adapter.Object, null);
-                    if (complexObject == null) {
+                    if (complexObject == null)
+                    {
                         throw new NakedObjectSystemException("Complex type members should never be null");
                     }
+
+                    adaptersWithComplexChildren[new ComplexTypeMatcher(adapter.Object.GetEFCoreProxiedType(), context.WrappedDbContext.GetKeyValues(adapter.Object).Single())] = (adapter, pi);
+                }
+            }
+        }
+
+        public void LoadComplexTypesIntoNakedObjectFramework(object complexObject) {
+            var entry = context.WrappedDbContext.Entry(complexObject);
+
+            var foreignKey = context.WrappedDbContext.Model.FindEntityType(entry.Entity.GetType().GetProxiedType()).GetForeignKeys().SingleOrDefault();
+
+            if (foreignKey is not null) {
+                var ownerEntityType = foreignKey.PrincipalEntityType;
+                var key = context.WrappedDbContext.GetForeignKeyValues(complexObject, ownerEntityType).Single();
+                var matcher = new ComplexTypeMatcher(ownerEntityType.ClrType, key);
+
+                if (adaptersWithComplexChildren.ContainsKey(matcher)) {
+                    var (adapter, pi) = adaptersWithComplexChildren[matcher];
 
                     injector.InjectParentIntoChild(adapter.Object, complexObject);
                     injector.InjectInto(complexObject);
@@ -458,7 +490,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 }
             }
             else {
-                // complex type ? 
+               LoadComplexTypesIntoNakedObjectFramework(domainObject);
             }
         }
 

@@ -6,17 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Util;
-using NakedFramework.Persistor.EFCore.Component;
 
 namespace NakedFramework.Persistor.EFCore.Util {
     public static class EFCoreHelpers {
@@ -35,6 +34,14 @@ namespace NakedFramework.Persistor.EFCore.Util {
             var eType = context.GetEntityType(obj.GetType());
             var keyProperties = eType.GetKeys().SelectMany(k => k.Properties).Where(k => k.PropertyInfo is not null);
             return keyProperties.Select(p => p.PropertyInfo.GetValue(obj, null)).ToArray();
+        }
+
+        public static object[] GetForeignKeyValues(this DbContext context, object obj, IEntityType ofType) {
+            var eType = context.GetEntityType(obj.GetType());
+            var keyPropertiesName = eType.GetForeignKeys().Where(k => k.PrincipalEntityType == ofType).SelectMany(k => k.Properties).Select(p => p.Name).SingleOrDefault();
+            var matchingMember = context.Entry(obj).Members.SingleOrDefault(m => m.Metadata.Name == keyPropertiesName);
+
+            return new[] {matchingMember?.CurrentValue};
         }
 
         public static PropertyInfo[] GetNonIdMembers(this DbContext context, Type type) {
@@ -68,9 +75,6 @@ namespace NakedFramework.Persistor.EFCore.Util {
             return nonIdProperties.Union(navigations).ToArray();
         }
 
-       
-
-
         public static void Invoke(this object onObject, string name, params object[] parms) => onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
 
         public static PropertyInfo[] GetComplexMembers(this DbContext context, Type type) {
@@ -88,21 +92,14 @@ namespace NakedFramework.Persistor.EFCore.Util {
             if (eType is not null) {
                 var keyProperties = eType.GetKeys().SelectMany(k => k.Properties).Where(p => p.ValueGenerated == ValueGenerated.OnAdd);
                 return keyProperties.Any();
-                //var mp = et.KeyMembers.SelectMany(m => m.MetadataProperties).Where(p => p.Name.Contains("StoreGeneratedPattern")).ToArray();
-                //return mp.Any() && mp.All(p => p.Value.Equals("Identity"));
-                // todo
             }
 
             return false;
         }
 
-     
-
-        public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager)
-        {
+        public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager) {
             var versionObject = nakedObjectAdapter?.GetVersion(manager);
-            if (versionObject != null)
-            {
+            if (versionObject != null) {
                 nakedObjectAdapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
             }
         }
@@ -112,8 +109,7 @@ namespace NakedFramework.Persistor.EFCore.Util {
         public static string GetEFCoreProxiedTypeName(object domainObject) => domainObject.GetEFCoreProxiedType().FullName;
 
         public static Type GetEFCoreProxiedType(this object domainObject) =>
-            domainObject.GetType() switch
-            {
+            domainObject.GetType() switch {
                 { } t when IsEFCoreProxy(t) => t.BaseType,
                 { } t => t
             };
