@@ -1,4 +1,4 @@
-﻿module NakedFramework.CodeSystemTest
+﻿module NakedFramework.ModelSystemTest
 
 open NakedObjects.CodeSystemTest
 open NUnit.Framework
@@ -7,16 +7,17 @@ open NakedFramework.DependencyInjection.Extensions
 open Microsoft.Extensions.Configuration
 open NakedFramework.Persistor.EFCore.Extensions
 open Microsoft.EntityFrameworkCore
-open TestCodeOnly
+open NakedObjects.ModelSystemTest
+open SimpleDatabase
 
 [<TestFixture>]
-type EFCoreCodeSystemTests() = 
-    inherit CodeSystemTests()
+type EFCoreModelSystemTests() = 
+    inherit ModelSystemTests()
 
     override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ())
 
     member x.ContextInstaller = Func<IConfiguration, DbContext> (fun (c) -> 
-                  let context = new EFCoreCodeFirstContext(NakedObjects.TestTypes.csCS)
+                  let context = new EFCoreSimpleDatabaseDbContext(NakedObjects.TestTypes.csMF)
                   context.Create()
                   (context :> DbContext))
         
