@@ -77,7 +77,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             SubMenuOnMainMenu();
             ImageProperty();
             ImageParameter();
-            //QueryContributedActionReturningOnlyAContext();
+            QueryContributedActionReturningOnlyAContext();
             //QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
             //LocalCollectionContributedAction();
             //SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
@@ -98,7 +98,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var dialog = helper.GotoHome().OpenMainMenu("Products").GetActionWithDialog("Find Product By Name")
                 .AssertIsEnabled().Open().AssertOKIsDisabled("Missing mandatory fields: Search String; ");
             dialog.GetTextField("Search String").Clear().Enter("handlebar tube");
-            dialog.AssertOKIsEnabled().ClickOKToViewList().AssertTitleIs("Find Product By Name").GetRowFromList(0).AssertTitleIs("Handlebar Tube");
+            dialog.ClickOKToViewNewList().AssertTitleIs("Find Product By Name").GetRowFromList(0).AssertTitleIs("Handlebar Tube");
         }
 
         //[TestMethod]
@@ -108,10 +108,10 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetObjectView().AssertTitleIs("Volume Discount 41 to 60");
             var dialog = offer.OpenActions().GetActionWithDialog("Edit Description").Open();
             dialog.GetTextField("Description").Clear().Enter("Volume Discount 41+").AssertNoValidationError();
-            offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
+            offer = dialog.ClickOKToViewObject();
             dialog = offer.AssertTitleIs("Volume Discount 41+").OpenActions().GetActionWithDialog("Edit Description").Open();
             dialog.GetTextField("Description").Clear().Enter("Volume Discount 41 to 60");
-            offer = dialog.AssertOKIsEnabled().ClickOKToViewObject();
+            offer = dialog.ClickOKToViewObject();
             offer.AssertTitleIs("Volume Discount 41 to 60");
         }
 
@@ -371,7 +371,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             dialog.GetTextField("End Date").Clear().Enter(endDate);
 
             var now = DateTime.Now.ToString("d MMM yyyy HH:mm:").Substring(0, 16);
-            var modified = dialog.AssertOKIsEnabled().ClickOKToViewObject().AssertTitleIs("Manager's Special")
+            var modified = dialog.ClickOKToViewObject().AssertTitleIs("Manager's Special")
                 .GetProperty("Modified Date").GetValue();
             Assert.AreEqual(now, modified.Substring(0, 16));
         }
@@ -505,37 +505,37 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
-        //public void QueryContributedActionReturningOnlyAContext()
-        //{
-        //    var offers = helper.GotoHome().OpenMainMenu("Special Offers")
-        //         .GetActionWithoutDialog("All Special Offers").ClickToViewList()
-        //         .AssertTitleIs("All Special Offers")
-        //         .ClickTableView();
+        public void QueryContributedActionReturningOnlyAContext()
+        {
+            var offers = helper.GotoHome().OpenMainMenu("Special Offers")
+                 .GetActionWithoutDialog("All Special Offers").ClickToViewList()
+                 .AssertTitleIs("All Special Offers")
+                 .ClickTableView();
 
-        //    int rand = (new Random()).Next(1000);
-        //    var endDate = DateTime.Today.AddDays(rand).ToString("dd MMM yyyy");
-        //    endDate = endDate.StartsWith("0") ? endDate.Substring(1) : endDate;
+            var original3 = offers.GetRowFromTable(3).GetColumnValue(5);
 
-        //    //Assert.IsFalse(br.FindElements(By.CssSelector("tbody tr td")).Any(el => el.Text == endDate));
+            int rand = (new Random()).Next(1000);
+            var endDate = DateTime.Today.AddDays(rand).ToString("dd MMM yyyy");
+            endDate = endDate.StartsWith("0") ? endDate.Substring(1) : endDate;
 
-        //    var dialog = offers.OpenActions().GetActionWithDialog("Extend Offers").Open();
-        //    dialog.GetTextField("To Date").Enter(endDate);
+            //Assert.IsFalse(br.FindElements(By.CssSelector("tbody tr td")).Any(el => el.Text == endDate));
 
-        //    offers.SelectCheckBoxOnRow(1)
-        //    .SelectCheckBoxOnRow(2)
-        //    .SelectCheckBoxOnRow(3);
+            var dialog = offers.OpenActions().GetActionWithDialog("Extend Offers").Open();
+            dialog.GetTextField("To Date").Enter(endDate);
 
-        //    dialog.ClickOKToViewList();
-        //    //TypeIntoFieldWithoutClearing("#todate1", endDate);
-        //    //SelectCheckBox("#item1-1");
-        //    //SelectCheckBox("#item1-2");
-        //    //SelectCheckBox("#item1-3");
-        //    //Click(OKButton());
-        //    //Thread.Sleep(1000);
-        //    //Reload();
-        //    //WaitForCssNo("tbody tr", 10);
-        //    //wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == endDate) >= 3);
-        //}
+            offers.SelectCheckBoxOnRow(0)
+            .SelectCheckBoxOnRow(1)
+            .SelectCheckBoxOnRow(2);
+
+            var updated = dialog.ClickOKToViewUpdatedList();
+
+            updated.GetRowFromTable(0).AssertColumnValueIs(5, endDate);
+            updated.GetRowFromTable(1).AssertColumnValueIs(5, endDate);
+            updated.GetRowFromTable(2).AssertColumnValueIs(5, endDate);
+
+            //Check that row3 was NOT updated:
+            updated.GetRowFromTable(3).AssertColumnValueIs(5, original3);
+        }
 
         //// [TestMethod]
         //public void QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType()
