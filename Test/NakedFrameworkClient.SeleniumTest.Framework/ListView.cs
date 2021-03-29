@@ -69,7 +69,12 @@ namespace NakedFrameworkClient.TestFramework
         }
 
         //Row number counts from zero
-        public TableRow GetRowFromTable(int rowNumber) => throw new NotImplementedException();
+        public TableRow GetRowFromTable(int rowNumber)
+        {
+            helper.wait.Until(dr => element.FindElements(By.CssSelector("tbody tr")).Count > rowNumber);
+            var row = element.FindElements(By.CssSelector("tbody tr"))[rowNumber];
+            return new TableRow(row, helper, this);
+        }
         
         //Row number counts from zero
         public Reference GetRowFromList(int rowNumber)
@@ -82,7 +87,10 @@ namespace NakedFrameworkClient.TestFramework
 
         public ListView Reload()
         {
-            helper.Reload(pane);
+            string css = helper.CssSelectorFor(pane)+ " .list nof-action input";
+            helper.wait.Until(dr => dr.FindElement(By.CssSelector(css)).GetAttribute("value") == "Reload");
+            var reload = element.FindElements(By.CssSelector(css)).Single(el => el.GetAttribute("value") == "Reload");
+            helper.Click(reload, MouseClick.MainButton);
             helper.WaitForNewListView(this, MouseClick.MainButton);
             return this;
         }

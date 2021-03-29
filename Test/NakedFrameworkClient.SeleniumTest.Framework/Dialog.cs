@@ -21,11 +21,6 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public Dialog AssertOKIsEnabled()
-        {
-            Assert.IsNull(GetOKButton().GetAttribute("disabled"));
-            return this;
-        }
 
         public Dialog AssertOKIsDisabled(string withToolTip)
         {
@@ -37,25 +32,38 @@ namespace NakedFrameworkClient.TestFramework
 
         public void ClickOKWithNoResultExpected(MouseClick button = MouseClick.MainButton)
         {
-            var ok = GetOKButton().AssertIsEnabled();
+            var ok = GetEnabledOKButton();
             helper.Click(ok, button);
         }
 
         public ObjectView ClickOKToViewObject(MouseClick button = MouseClick.MainButton)
         {
-            var ok = GetOKButton().AssertIsEnabled();
+            var ok = GetEnabledOKButton();
             helper.Click(ok, button);
             return helper.WaitForNewObjectView(enclosingView, button);
         }
 
-        public ListView ClickOKToViewList(MouseClick button = MouseClick.MainButton)
+        public ListView ClickOKToViewNewList(MouseClick button = MouseClick.MainButton)
         {
-            var ok = GetOKButton().AssertIsEnabled();
+            var ok = GetEnabledOKButton();
             helper.Click(ok, button);
             return helper.WaitForNewListView(enclosingView, button);
         }
 
+        public ListView ClickOKToViewUpdatedList(MouseClick button = MouseClick.MainButton)
+        {
+            var ok = GetEnabledOKButton();
+            helper.Click(ok, button);
+            return helper.WaitForUpdatedListView(enclosingView, button);
+        }
+
         private IWebElement GetOKButton() => element.FindElement(By.CssSelector(".ok"));
+
+        private IWebElement GetEnabledOKButton()
+        {
+            helper.wait.Until(dr => GetOKButton().GetAttribute("disabled") == null);
+            return GetOKButton();
+        }
 
         public TextInputField GetTextField(string fieldName)
         {

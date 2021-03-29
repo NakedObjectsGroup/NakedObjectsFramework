@@ -858,7 +858,12 @@ namespace NakedFrameworkClient.TestFramework
             return new ObjectView(el, this, pane);
         }
 
-        public ListView GetListView(Pane pane = Pane.Single) => throw new NotImplementedException();
+        public ListView GetListView(Pane pane = Pane.Single)
+        {
+            WaitForCss(CssSelectorFor(pane) + " .list table tbody tr");
+            var el = WaitForCss(CssSelectorFor(pane) + " .list");
+            return new ListView(el, this, pane);
+        }
 
         public Footer GetFooter()
         {
@@ -881,18 +886,34 @@ namespace NakedFrameworkClient.TestFramework
             Pane newPane = GetNewPane(enclosingView.pane, button);
             if (enclosingView is not ListView)
             {
-                return new ListView(WaitForCss(CssSelectorFor(newPane, PaneType.List)), this, newPane);
+                return GetListView(newPane);
             } else
             {
-                //wait for list view new pane where contents differ
-                throw new NotImplementedException();
+                 if (!enclosingView.element.IsStale())
+                {
+                    var css = CssSelectorFor(newPane, PaneType.List)+ " table";
+                    var original = enclosingView.element.FindElement(By.CssSelector("table"));
+                    wait.Until(dr => dr.FindElement(By.CssSelector(css)) != original);
+                }
+
+                return GetListView(newPane);
             }
+        }
+
+        //Use this method only if the new list view is an updated version of the previous view
+        //(this means that the list will need updating).
+        internal ListView WaitForUpdatedListView(View enclosingView, MouseClick button)
+        {
+            Pane newPane = GetNewPane(enclosingView.pane, button);
+            var css = CssSelectorFor(newPane, PaneType.List) + " table";
+            wait.Until(dr => dr.FindElements(By.CssSelector(css)).Count() == 0);
+            Reload();
+            return GetListView(newPane);
         }
 
         public ObjectView WaitForNewObjectView(View enclosingView, MouseClick button)
         {
             Pane newPane = GetNewPane(enclosingView.pane, button);
-            var css = CssSelectorFor(newPane, PaneType.Object);
             if (enclosingView is not ObjectView)
             {
                 return GetObjectView(newPane);
@@ -900,7 +921,8 @@ namespace NakedFrameworkClient.TestFramework
             else
             {
                 if (!enclosingView.element.IsStale())
-                { 
+                {
+                    var css = CssSelectorFor(newPane, PaneType.Object);
                     var original = PropsAndColls(enclosingView.element);
                     wait.Until(dr => PropsAndColls(dr.FindElement(By.CssSelector(css))) != original);
                 }
