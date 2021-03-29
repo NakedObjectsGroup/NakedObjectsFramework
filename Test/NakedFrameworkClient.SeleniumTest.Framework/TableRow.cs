@@ -20,7 +20,12 @@ namespace NakedFrameworkClient.TestFramework
 
         public ObjectView Click(MouseClick button = MouseClick.MainButton) => throw new NotImplementedException();
 
-        public TableRow DragAndDropOnto(ReferenceInputField field) => throw new NotImplementedException();
+        public TableRow DragAndDropOnto(ReferenceInputField field)
+        {
+            helper.CopyToClipboard(element);
+            field.PasteReferenceFromClipboard();
+            return this;
+        }
 
         public string GetColumnValue(int col) =>
             element.FindElements(By.CssSelector("td")).ElementAt(col + 1).Text;

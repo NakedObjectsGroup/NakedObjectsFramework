@@ -858,6 +858,15 @@ namespace NakedFrameworkClient.TestFramework
             return new ObjectView(el, this, pane);
         }
 
+        public ListView GetReloadedListView(Pane pane = Pane.Single)
+        {
+            WaitForCss(CssSelectorFor(pane) + " .list");
+            Reload(pane);
+            WaitForCss(CssSelectorFor(pane) + " .list table tbody tr");
+            var el = WaitForCss(CssSelectorFor(pane) + " .list");
+            return new ListView(el, this, pane);
+        }
+
         public ListView GetListView(Pane pane = Pane.Single)
         {
             WaitForCss(CssSelectorFor(pane) + " .list table tbody tr");
@@ -884,7 +893,7 @@ namespace NakedFrameworkClient.TestFramework
        internal ListView WaitForNewListView(View enclosingView, MouseClick button)
         { 
             Pane newPane = GetNewPane(enclosingView.pane, button);
-            if (enclosingView is not ListView)
+            if (enclosingView is not ListView || button == MouseClick.SecondaryButton)
             {
                 return GetListView(newPane);
             } else
@@ -914,7 +923,7 @@ namespace NakedFrameworkClient.TestFramework
         public ObjectView WaitForNewObjectView(View enclosingView, MouseClick button)
         {
             Pane newPane = GetNewPane(enclosingView.pane, button);
-            if (enclosingView is not ObjectView)
+            if (enclosingView is not ObjectView || button == MouseClick.SecondaryButton)
             {
                 return GetObjectView(newPane);
             }

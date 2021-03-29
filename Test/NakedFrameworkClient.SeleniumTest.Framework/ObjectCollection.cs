@@ -40,7 +40,6 @@ namespace NakedFrameworkClient.TestFramework
 
         public ObjectCollection AssertTableHeaderHasColumns(params string[] columns) => throw new NotImplementedException();
 
-
         //Row number counts from zero
         public TableRow GetRowFromTable(int rowNumber)
         {
@@ -49,12 +48,24 @@ namespace NakedFrameworkClient.TestFramework
             return new TableRow(row, helper, enclosingView);
         }
 
+        public TableRow GetLastRowFromTable()
+        {
+            var last = element.FindElements(By.CssSelector("tbody tr")).Count - 1;
+            return GetRowFromTable(last);
+        }
+
         //Row number counts from zero
         public Reference GetRowFromList(int rowNumber)
         {
             helper.wait.Until(dr => element.FindElements(By.CssSelector("tbody tr td.reference")).Count > rowNumber);
             var row = element.FindElements(By.CssSelector("tbody tr td.reference"))[rowNumber];
             return new Reference(row, helper, enclosingView);
+        }
+
+        public Reference GetLastRowFromList()
+        {
+            var last = element.FindElements(By.CssSelector("tbody tr td.reference")).Count - 1;
+            return GetRowFromList(last);
         }
 
         public ActionWithDialog GetActionWithDialog(string actionName)
