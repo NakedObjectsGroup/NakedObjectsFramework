@@ -78,9 +78,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ImageProperty();
             ImageParameter();
             QueryContributedActionReturningOnlyAContext();
-            //QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
-            //LocalCollectionContributedAction();
-            //SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
+            QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
+            LocalCollectionContributedAction();
+            SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
             //UseOfDeferredFunctionIncludingReload();
             //UseOfResolveMethodInADeferredFunction();
             //WithDelete();
@@ -537,57 +537,62 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             updated.GetRowFromTable(3).AssertColumnValueIs(5, original3);
         }
 
-        //// [TestMethod]
-        //public void QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType()
-        //{
-        //    GeminiUrl("list?m1=Order_MenuFunctions&a1=OrdersInProcess&pg1=1&ps1=20&s1_=0&c1=List&as1=open&d1=AppendComment");
-        //    Reload();
-        //    WaitForCss("input#comment1");
+         //[TestMethod]
+        public void QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType()
+        {
+            helper.GotoHome().OpenMainMenu("Orders")
+               .GetActionWithoutDialog("Orders In Process").ClickToViewList()
+                .OpenActions().GetActionWithDialog("Append Comment").Open()
+                .GetTextField("Comment");
 
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--73266&as1=open");
-        //    WaitForView(Pane.Single, PaneType.Object, "SO73266");
-        //    OpenActionDialog("Append Comment");
-        //    WaitForCss("input#commenttoappend1");
-        //}
+           helper.GotoUrlDirectly("object?i1=View&o1=AW.Types.SalesOrderHeader--73266")
+                .GetObjectView().AssertTitleIs("SO73266")
+                .OpenActions().GetActionWithDialog("Append Comment").Open()
+                .GetTextField("Comment To Append");
+        }
 
-        ////[TestMethod]
-        //public void LocalCollectionContributedAction()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=Table&d1=AddCarrierTrackingNumber");
-        //    WaitForTitle("SO53535");
-        //    var rnd = (new Random()).Next(100000).ToString();
-        //    SelectCheckBox("#details1-1");
-        //    SelectCheckBox("#details1-2");
-        //    SelectCheckBox("#details1-3");
-        //    TypeIntoFieldWithoutClearing("#ctn1", rnd);
-        //    Click(OKButton());
-        //    wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rnd) >= 3);
-        //}
+        //[TestMethod]
+        public void LocalCollectionContributedAction()
+        {
+            var details = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=Table")
+            .GetObjectView().AssertTitleIs("SO53535").GetCollection("Details");
+            var originalCtn0 = details.GetRowFromTable(0).GetColumnValue(6);
 
-        //// [TestMethod]
-        //public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
-        //{
-        //    GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
-        //    WaitForTitle("AW00012211 Victor Romero", Pane.Left);
-        //    Click(GetObjectAction("Create Another Order", Pane.Left));
-        //    WaitForView(Pane.Left, PaneType.Object);
-        //    var num = GetPropertyValue("Sales Order Number", Pane.Left);
-        //    Assert.IsTrue(num.StartsWith("SO75"));
-        //    OpenObjectActions(Pane.Left);
-        //    OpenActionDialog("Add New Detail", Pane.Left);
-        //    var product = WaitForCss("#pane2 .title");
-        //    CopyToClipboard(product);
-        //    PasteIntoInputField("#pane1 .parameter .value.droppable");
-        //    Click(OKButton());
-        //    Click(FullIcon());
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    Thread.Sleep(1000);
-        //    var listIcon1 = WaitForCssNo(".collection .icon.list", 0);
-        //    Click(listIcon1);
-        //    wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
-        //}
+            var dialog = details.GetActionWithDialog("Add Carrier Tracking Number").Open();
+            var rnd = (new Random()).Next(100000).ToString();
+            var num = dialog.GetTextField("Ctn").Enter(rnd);
+            details.SelectCheckBoxOnRow(1)
+            .SelectCheckBoxOnRow(2)
+            .SelectCheckBoxOnRow(3);
+            var updated = dialog.ClickOKToViewObject();
+            details = updated.GetCollection("Details");
+            details.GetRowFromTable(1).AssertColumnValueIs(6, rnd);
+                details.GetRowFromTable(2).AssertColumnValueIs(6, rnd);
+            details.GetRowFromTable(3).AssertColumnValueIs(6, rnd);
 
-        ////[TestMethod]
+            //Confirm that row 0 was not changed
+            details.GetRowFromTable(0).AssertColumnValueIs(6, originalCtn0);
+        }
+
+         //[TestMethod]
+        public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
+        {
+            var view = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.Customer--12211&i2=View&o2=AW.Types.Product--707");
+            var cust = view.GetObjectView(Pane.Left).AssertTitleIs("AW00012211 Victor Romero");
+            var prod = view.GetObjectView(Pane.Right).AssertTitleIs("Sport-100 Helmet, Red");
+            var order = cust.OpenActions().GetActionWithoutDialog("Create Another Order").ClickToViewObject();
+
+            Assert.IsTrue(order.GetProperty("Sales Order Number").GetValue().StartsWith("SO75"));
+            var dialog = order.OpenActions().GetActionWithDialog("Add New Detail").Open();
+
+            prod.DragTitleAndDropOnto(dialog.GetReferenceField("Product"));
+            dialog.ClickOKToViewObject().GetCollection("Details")
+                .ClickListView()
+                .GetRowFromList(0)
+                .AssertTitleIs("1 x Sport-100 Helmet, Red");
+        }
+
+        //[TestMethod]
         //public void UseOfDeferredFunctionIncludingReload()
         //{
         //    GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
