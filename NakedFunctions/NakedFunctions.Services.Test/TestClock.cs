@@ -15,7 +15,7 @@ namespace NakedFunctions.Services.Test {
         public void TestNow() {
             var c = new Clock();
             var actual = c.Now();
-            var expected = DateTime.Now;
+            var expected = DateTime.UtcNow;
             Assert.AreEqual(expected.Date, actual.Date);
             Assert.AreEqual(expected.Hour, actual.Hour);
             Assert.AreEqual(expected.Minute, actual.Minute);
