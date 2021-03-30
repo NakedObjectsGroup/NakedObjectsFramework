@@ -64,7 +64,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
         public virtual DbSet<Vendor> Vendors { get; set; }
         public virtual DbSet<VendorAddress> VendorAddresses { get; set; }
         public virtual DbSet<VendorContact> VendorContacts { get; set; }
-        //public virtual DbSet<ContactCreditCard> ContactCreditCards { get; set; }
+        public virtual DbSet<ContactCreditCard> ContactCreditCards { get; set; }
         public virtual DbSet<CountryRegionCurrency> CountryRegionCurrencies { get; set; }
         public virtual DbSet<CreditCard> CreditCards { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
@@ -158,9 +158,9 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
                         .HasMany(e => e.PurchaseOrderHeaders)
                         .WithOne(e => e.Employee);
 
-            //modelBuilder.Entity<Employee>()
-            //    .HasMany(e => e.SalesPerson)
-            //    .WithOne(e => e.Employee);
+            modelBuilder.Entity<Employee>()
+                        .Ignore(e => e.SalesPerson);
+                        //.WithOne(e => e.Employee);
 
             modelBuilder.Entity<EmployeePayHistory>()
                         .Property(e => e.Rate)
