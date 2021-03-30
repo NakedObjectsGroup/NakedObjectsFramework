@@ -70,8 +70,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CreateNewObectWithOnlyValueProperties();
             CreateNewObjectWithAReferenceToAnotherExistingObject();
             CreateNewObjectWithAReferenceToMultipleExistingObjects();
-            CreateAGraphOfTwoNewRelatedObjects();
-            CreateAGraphOfObjectsThreeLevelsDeep();
+            //CreateAGraphOfTwoNewRelatedObjects();
+            //CreateAGraphOfObjectsThreeLevelsDeep();
             PropertyHiddenViaAHideMethod();
             SubMenuOnObject();
             SubMenuOnMainMenu();
@@ -405,7 +405,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             order.GetProperty("Customer").GetReference().AssertTitleIs("AW00012211 Victor Romero");
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void CreateAGraphOfTwoNewRelatedObjects()
         {
             var dialog = helper.GotoHome().OpenMainMenu("Customers").OpenSubMenu("Stores")
@@ -419,7 +419,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.IsTrue(storeTitle.EndsWith(name));
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void CreateAGraphOfObjectsThreeLevelsDeep()
         {
             //This story involves creation of a graph of three new objects (Customer, Person, Password)
