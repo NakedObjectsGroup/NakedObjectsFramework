@@ -45,8 +45,8 @@ namespace AW.Types {
         //public virtual Image Photo { get { return null; } }
 
         [RenderEagerly]
-        [TableView(false, nameof(EmailAddress.EmailAddress1))] 
-        public virtual ICollection<EmailAddress> EmailAddresses { get; init; }
+        [TableView(false, nameof(EmailAddress.EmailAddress1))]
+        public virtual ICollection<EmailAddress> EmailAddresses { get; init; } = new List<EmailAddress>();
 
         [AWNotCounted]
         [TableView(false,

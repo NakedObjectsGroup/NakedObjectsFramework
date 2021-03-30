@@ -29,13 +29,13 @@ let efCoreOverwritePersistor =
     let p = getEFCoreObjectStore c
     setupEFCorePersistorForTesting p
 
-[<TestFixture>]
-type EFCoreDomainTests() = 
-    inherit DomainTests()
+//[<TestFixture>]
+//type EFCoreDomainTests() = 
+//    inherit DomainTests()
 
-    override x.persistor = efCorePersistor :> IObjectStore
+//    override x.persistor = efCorePersistor :> IObjectStore
     
-    override x.overwritePersistor = efCoreOverwritePersistor :> IObjectStore
+//    override x.overwritePersistor = efCoreOverwritePersistor :> IObjectStore
 
     
 
