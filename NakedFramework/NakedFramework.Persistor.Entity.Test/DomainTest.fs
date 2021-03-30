@@ -14,6 +14,8 @@ open System
 open System.Data.Entity.Core.Objects
 open TestCode
 open TestTypes
+open NakedFramework.Architecture.Component
+open NakedFramework.Persistor.Entity.Component
 
 let persistor = 
     EntityObjectStoreConfiguration.NoValidate <- true
@@ -35,6 +37,12 @@ let overwritePersistor =
 [<TestFixture>]
 type DomainTests() = 
     class
+
+        abstract member persistor : IObjectStore
+        default x.persistor = persistor :> IObjectStore
+
+        abstract member overwritePersistor : IObjectStore
+        default x.overwritePersistor = overwritePersistor :> IObjectStore
         
         [<OneTimeSetUp>]
         member x.Setup() = 
@@ -42,160 +50,163 @@ type DomainTests() =
             ()
         
         [<OneTimeTearDown>]
-        member x.TearDown() = persistor.SetupContexts()
+        member x.TearDown() = 
+            match x.persistor with 
+            | :? EntityObjectStore as eos -> eos.SetupContexts()
+            | _ -> ()
         
         [<Test>]
-        member x.TestCreateEntityPersistor() = CanCreateEntityPersistor persistor
+        member x.TestCreateEntityPersistor() = CanCreateEntityPersistor x.persistor
         
         [<Test>]
-        member x.TestGetInstancesGeneric() = CanGetInstancesGeneric persistor
+        member x.TestGetInstancesGeneric() = CanGetInstancesGeneric x.persistor
         
         [<Test>]
-        member x.TestGetInstancesByType() = CanGetInstancesByType persistor
+        member x.TestGetInstancesByType() = CanGetInstancesByType x.persistor
         
         [<Test>]
-        member x.TestGetInstancesIsProxy() = CanGetInstancesIsProxy persistor
+        member x.TestGetInstancesIsProxy() = CanGetInstancesIsProxy x.persistor
         
         [<Test>]
-        member x.TestGetManyToOneReference() = CanGetManyToOneReference persistor
+        member x.TestGetManyToOneReference() = CanGetManyToOneReference x.persistor
         
         [<Test>]
-        member x.TestGetObjectBySingleKey() = CanGetObjectBySingleKey persistor
+        member x.TestGetObjectBySingleKey() = CanGetObjectBySingleKey x.persistor
         
         [<Test>]
-        member x.TestGetObjectByMultiKey() = CanGetObjectByMultiKey persistor
+        member x.TestGetObjectByMultiKey() = CanGetObjectByMultiKey x.persistor
         
         [<Test>]
-        member x.TestGetObjectByStringKey() = CanGetObjectByStringKey persistor
+        member x.TestGetObjectByStringKey() = CanGetObjectByStringKey x.persistor
         
         [<Test>]
-        member x.TestGetObjectByDateKey() = CanGetObjectByDateKey persistor
+        member x.TestGetObjectByDateKey() = CanGetObjectByDateKey x.persistor
         
         [<Test>]
-        member x.TestCreateTransientObject() = DomainTestCode.CanCreateTransientObject persistor
+        member x.TestCreateTransientObject() = DomainTestCode.CanCreateTransientObject x.persistor
         
         [<Test>]
-        member x.TestSaveTransientObjectWithScalarProperties() = CanSaveTransientObjectWithScalarProperties persistor
+        member x.TestSaveTransientObjectWithScalarProperties() = CanSaveTransientObjectWithScalarProperties x.persistor
         
         [<Test>]
-        member x.TestSaveTransientObjectWithPersistentReferenceProperty() = CanSaveTransientObjectWithPersistentReferenceProperty persistor
+        member x.TestSaveTransientObjectWithPersistentReferenceProperty() = CanSaveTransientObjectWithPersistentReferenceProperty x.persistor
         
         [<Test>]
         member x.TestCanSaveTransientObjectWithPersistentReferencePropertyInSeperateTransaction() = 
-            CanSaveTransientObjectWithPersistentReferencePropertyInSeperateTransaction persistor
+            CanSaveTransientObjectWithPersistentReferencePropertyInSeperateTransaction x.persistor
         
         [<Test>]
-        member x.TestSaveTransientObjectWithTransientReferenceProperty() = CanSaveTransientObjectWithTransientReferenceProperty persistor
+        member x.TestSaveTransientObjectWithTransientReferenceProperty() = CanSaveTransientObjectWithTransientReferenceProperty x.persistor
         
         [<Test>]
         member x.TestSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
-            CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies persistor
+            CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies x.persistor
         
         [<Test>]
-        member x.TestUpdatePersistentObjectWithScalarProperties() = CanUpdatePersistentObjectWithScalarProperties persistor
+        member x.TestUpdatePersistentObjectWithScalarProperties() = CanUpdatePersistentObjectWithScalarProperties x.persistor
         
         [<Test>]
-        member x.TestUpdatePersistentObjectWithReferenceProperties() = CanUpdatePersistentObjectWithReferenceProperties persistor
+        member x.TestUpdatePersistentObjectWithReferenceProperties() = CanUpdatePersistentObjectWithReferenceProperties x.persistor
         
         [<Test>]
-        member x.TestUpdatePersistentObjectWithReferencePropertiesDoFixup() = CanUpdatePersistentObjectWithReferencePropertiesDoFixup persistor
+        member x.TestUpdatePersistentObjectWithReferencePropertiesDoFixup() = CanUpdatePersistentObjectWithReferencePropertiesDoFixup x.persistor
         
         [<Test>]
-        member x.TestUpdatePersistentObjectWithCollectionProperties() = CanUpdatePersistentObjectWithCollectionProperties persistor
+        member x.TestUpdatePersistentObjectWithCollectionProperties() = CanUpdatePersistentObjectWithCollectionProperties x.persistor
         
         [<Test>]
-        member x.TestUpdatePersistentObjectWithCollectionPropertiesDoFixup() = CanUpdatePersistentObjectWithCollectionPropertiesDoFixup persistor
+        member x.TestUpdatePersistentObjectWithCollectionPropertiesDoFixup() = CanUpdatePersistentObjectWithCollectionPropertiesDoFixup x.persistor
         
         [<Test>]
-        member x.TestNavigateReferences() = CanNavigateReferences persistor
+        member x.TestNavigateReferences() = CanNavigateReferences x.persistor
         
         [<Test>]
-        member x.TestUpdatePersistentObjectWithScalarPropertiesErrorAndReattempt() = CanUpdatePersistentObjectWithScalarPropertiesErrorAndReattempt persistor
+        member x.TestUpdatePersistentObjectWithScalarPropertiesErrorAndReattempt() = CanUpdatePersistentObjectWithScalarPropertiesErrorAndReattempt x.persistor
         
         [<Test>]
-        member x.TestUpdatePersistentObjectWithScalarPropertiesIgnore() = CanUpdatePersistentObjectWithScalarPropertiesIgnore persistor
+        member x.TestUpdatePersistentObjectWithScalarPropertiesIgnore() = CanUpdatePersistentObjectWithScalarPropertiesIgnore x.persistor
         
         [<Test>]
-        member x.TestSaveTransientObjectWithScalarPropertiesErrorAndReattempt() = CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt persistor
+        member x.TestSaveTransientObjectWithScalarPropertiesErrorAndReattempt() = CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt x.persistor
         
         [<Test>]
-        member x.TestSaveTransientObjectWithScalarPropertiesErrorAndIgnore() = CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore persistor
+        member x.TestSaveTransientObjectWithScalarPropertiesErrorAndIgnore() = CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore x.persistor
         
         [<Test>]
-        member x.TestPersistingPersistedCalledForCreateInstance() = CanPersistingPersistedCalledForCreateInstance persistor
+        member x.TestPersistingPersistedCalledForCreateInstance() = CanPersistingPersistedCalledForCreateInstance x.persistor
         
         [<Test>]
-        member x.TestPersistingPersistedCalledForCreateInstanceWithReference() = CanPersistingPersistedCalledForCreateInstanceWithReference persistor
+        member x.TestPersistingPersistedCalledForCreateInstanceWithReference() = CanPersistingPersistedCalledForCreateInstanceWithReference x.persistor
         
         [<Test>]
-        member x.TestUpdatingUpdatedCalledForChange() = CanUpdatingUpdatedCalledForChange persistor
+        member x.TestUpdatingUpdatedCalledForChange() = CanUpdatingUpdatedCalledForChange x.persistor
         
         [<Test>]
-        member x.TestGetKeyForType() = CanGetKeyForType persistor
+        member x.TestGetKeyForType() = CanGetKeyForType x.persistor
         
         [<Test>]
-        member x.TestGetKeysForType() = CanGetKeysForType persistor
+        member x.TestGetKeysForType() = CanGetKeysForType x.persistor
         
         [<Test>]
-        member x.TestContainerInjectionCalledForNewInstance() = CanContainerInjectionCalledForNewInstance persistor
+        member x.TestContainerInjectionCalledForNewInstance() = CanContainerInjectionCalledForNewInstance x.persistor
         
         [<Test>]
-        member x.TestContainerInjectionCalledForGetInstance() = CanContainerInjectionCalledForGetInstance(resetPersistor persistor)
+        member x.TestContainerInjectionCalledForGetInstance() = CanContainerInjectionCalledForGetInstance(resetPersistor x.persistor)
         
         [<Test>]
-        member x.TestCreateManyToMany() = CanCreateManyToMany persistor
+        member x.TestCreateManyToMany() = CanCreateManyToMany x.persistor
         
         [<Test>]
-        member x.TestCanUpdatePersistentObjectWithScalarPropertiesAbort() = CanUpdatePersistentObjectWithScalarPropertiesAbort persistor
+        member x.TestCanUpdatePersistentObjectWithScalarPropertiesAbort() = CanUpdatePersistentObjectWithScalarPropertiesAbort x.persistor
         
         [<Test>]
-        member x.TestUpdatePersistentObjectWithReferencePropertiesAbort() = CanUpdatePersistentObjectWithReferencePropertiesAbort persistor
+        member x.TestUpdatePersistentObjectWithReferencePropertiesAbort() = CanUpdatePersistentObjectWithReferencePropertiesAbort x.persistor
         
         [<Test>]
-        member x.TestUpdatePersistentObjectWithCollectionPropertiesAbort() = CanUpdatePersistentObjectWithCollectionPropertiesAbort persistor
+        member x.TestUpdatePersistentObjectWithCollectionPropertiesAbort() = CanUpdatePersistentObjectWithCollectionPropertiesAbort x.persistor
         
         [<Test>]
-        member x.TestRemoteResolve() = CanRemoteResolve(resetPersistor persistor)
+        member x.TestRemoteResolve() = CanRemoteResolve(resetPersistor x.persistor)
         
         [<Test>]
-        member x.TestCanGetContextForCollection() = DomainCanGetContextForCollection persistor
+        member x.TestCanGetContextForCollection() = DomainCanGetContextForCollection x.persistor
         
         [<Test>]
-        member x.TestCanGetContextForNonGenericCollection() = DomainCanGetContextForNonGenericCollection persistor
+        member x.TestCanGetContextForNonGenericCollection() = DomainCanGetContextForNonGenericCollection x.persistor
         
         [<Test>]
-        member x.TestCanGetContextForArray() = DomainCanGetContextForArray persistor
+        member x.TestCanGetContextForArray() = DomainCanGetContextForArray x.persistor
         
         [<Test>]
-        member x.TestCanGetContextForType() = DomainCanGetContextForType persistor
+        member x.TestCanGetContextForType() = DomainCanGetContextForType x.persistor
         
         [<Test>]        
-        member x.TestCanDetectConcurrency() = CanDetectConcurrency persistor
+        member x.TestCanDetectConcurrency() = CanDetectConcurrency x.persistor
         
         [<Test>]
-        member x.DataUpdateNoCustomOnPersistingError() = DataUpdateNoCustomOnPersistingError persistor
+        member x.DataUpdateNoCustomOnPersistingError() = DataUpdateNoCustomOnPersistingError x.persistor
         
         [<Test>]
-        member x.DataUpdateNoCustomOnUpdatingError() = DataUpdateNoCustomOnUpdatingError persistor
+        member x.DataUpdateNoCustomOnUpdatingError() = DataUpdateNoCustomOnUpdatingError x.persistor
         
         [<Test>]        
-        member x.ConcurrencyNoCustomOnUpdatingError() = ConcurrencyNoCustomOnUpdatingError persistor
+        member x.ConcurrencyNoCustomOnUpdatingError() = ConcurrencyNoCustomOnUpdatingError x.persistor
         
         [<Test>]       
-        member x.OverWriteChangesOptionRefreshesObject() = OverWriteChangesOptionRefreshesObject overwritePersistor
+        member x.OverWriteChangesOptionRefreshesObject() = OverWriteChangesOptionRefreshesObject x.overwritePersistor
         
         [<Test>]
-        member x.AppendOnlyOptionDoesNotRefreshObject() = AppendOnlyOptionDoesNotRefreshObject persistor
+        member x.AppendOnlyOptionDoesNotRefreshObject() = AppendOnlyOptionDoesNotRefreshObject x.persistor
         
         [<Test>]        
-        member x.OverWriteChangesOptionRefreshesObjectNonGenericGet() = OverWriteChangesOptionRefreshesObjectNonGenericGet overwritePersistor
+        member x.OverWriteChangesOptionRefreshesObjectNonGenericGet() = OverWriteChangesOptionRefreshesObjectNonGenericGet x.overwritePersistor
         
         [<Test>]
-        member x.AppendOnlyOptionDoesNotRefreshObjectNonGenericGet() = AppendOnlyOptionDoesNotRefreshObjectNonGenericGet persistor
+        member x.AppendOnlyOptionDoesNotRefreshObjectNonGenericGet() = AppendOnlyOptionDoesNotRefreshObjectNonGenericGet x.persistor
         
         [<Test>]
-        member x.ExplicitOverwriteChangesRefreshesObject() = ExplicitOverwriteChangesRefreshesObject persistor
+        member x.ExplicitOverwriteChangesRefreshesObject() = ExplicitOverwriteChangesRefreshesObject x.persistor
         
         [<Test>]
-        member x.GetKeysReturnsKey() = GetKeysReturnsKey persistor
+        member x.GetKeysReturnsKey() = GetKeysReturnsKey x.persistor
     end

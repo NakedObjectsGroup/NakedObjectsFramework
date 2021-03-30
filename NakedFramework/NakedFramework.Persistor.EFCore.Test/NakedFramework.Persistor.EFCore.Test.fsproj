@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="DomainTest.fs" />
     <Compile Include="DomainSystemTest.fs" />
     <Compile Include="ModelSystemTest.fs" />
     <Compile Include="CodeSystemTest.fs" />

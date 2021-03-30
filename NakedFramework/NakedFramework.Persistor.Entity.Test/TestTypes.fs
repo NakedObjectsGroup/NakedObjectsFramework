@@ -19,6 +19,7 @@ open System.Reflection
 open Microsoft.Extensions.Logging
 open NakedFramework.Architecture.Component
 open NakedFramework.Architecture.Spec
+open NakedFramework.Persistor.EFCore.Component
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"
@@ -116,4 +117,13 @@ let setupPersistorForTesting (p : EntityObjectStore) =
          Action<INakedObjectAdapter>(handleLoadingTest), EventHandler(savingChangesHandler), Func<Type, IObjectSpec>(loadSpecificationHandler))
     p.SetupContexts()
     p.SetProxyingAndDeferredLoading setProxyingAndDeferredLoading
+    p
+
+let setupEFCorePersistorForTesting (p : EFCoreObjectStore) = 
+    //p.SetupForTesting
+    //    (testInjector, EntityObjectStore.CreateAdapterDelegate(AdapterForTest), EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
+    //     EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
+    //     Action<INakedObjectAdapter>(handleLoadingTest), EventHandler(savingChangesHandler), Func<Type, IObjectSpec>(loadSpecificationHandler))
+    //p.SetupContexts()
+    //p.SetProxyingAndDeferredLoading setProxyingAndDeferredLoading
     p

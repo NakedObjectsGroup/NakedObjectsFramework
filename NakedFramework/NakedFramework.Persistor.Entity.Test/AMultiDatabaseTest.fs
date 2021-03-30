@@ -15,6 +15,7 @@ open NUnit.Framework
 open TestCode
 open TestTypes
 open System
+open NakedFramework.Architecture.Component
 
 let multiDatabasePersistor = 
     EntityObjectStoreConfiguration.NoValidate <- true
@@ -29,6 +30,9 @@ let multiDatabasePersistor =
 [<TestFixture>]
 type AMultiDatabaseTests() = 
     class
+
+        abstract member multiDatabasePersistor : IObjectStore
+        default x.multiDatabasePersistor = multiDatabasePersistor :> IObjectStore
         
         [<OneTimeSetUp>]
         member x.Setup() = MultiDatabaseSetup()

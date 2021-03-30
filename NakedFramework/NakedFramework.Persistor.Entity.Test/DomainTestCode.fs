@@ -23,6 +23,8 @@ open TestTypes
 open Moq
 open Microsoft.Extensions.Logging
 open NakedFramework.Core.Error
+open NakedFramework.Architecture.Component
+open NakedFramework.Persistor.EFCore.Component
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor
@@ -114,7 +116,7 @@ let CanSaveTransientObjectWithPersistentReferenceProperty persistor =
     psc.ProductCategory <- pc
     CreateAndEndTransaction persistor psc
 
-let CanSaveTransientObjectWithPersistentReferencePropertyInSeperateTransaction(persistor : EntityObjectStore) = 
+let CanSaveTransientObjectWithPersistentReferencePropertyInSeperateTransaction(persistor : IObjectStore) = 
     persistor.StartTransaction()
     let psc = CreateProductSubcategory persistor
     let pc = (First<ProductCategory> persistor)
@@ -334,7 +336,7 @@ let CanNavigateReferences persistor =
     let sr1 = wo.ScrapReason
     Assert.AreEqual(sr, sr1)
 
-let CanNavigateReferencesNoProxies(persistor : EntityObjectStore) = 
+let CanNavigateReferencesNoProxies(persistor : IObjectStore) = 
     persistor.StartTransaction()
     let sr = First<ScrapReason> persistor
     Assert.AreEqual(0, sr.WorkOrders.Count)
@@ -392,7 +394,7 @@ let createWithName persistor (sr : ScrapReason) name =
     sr.ModifiedDate <- DateTime.Now
     CreateAndEndTransaction persistor sr
 
-let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt(persistor : EntityObjectStore) = 
+let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt(persistor : IObjectStore) = 
     let sr0 = persistor.CreateInstance<ScrapReason>(null)
     let sr1 = Second<ScrapReason> persistor
     try 
@@ -401,7 +403,7 @@ let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt(persistor : Enti
     with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
     createWithName persistor sr0 (uniqueName())
 
-let CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore(persistor : EntityObjectStore) = 
+let CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore(persistor : IObjectStore) = 
     let sr0 = persistor.CreateInstance<ScrapReason>(null)
     let sr1 = Second<ScrapReason> persistor
     try 
@@ -424,12 +426,12 @@ let CanUpdatingUpdatedCalledForChange persistor =
     Assert.AreEqual(1, updatingCount, "updating")
     Assert.AreEqual(1, updatedCount, "updated")
 
-let CanGetKeyForType(persistor : EntityObjectStore) = 
+let CanGetKeyForType(persistor : IObjectStore) = 
     let keys = persistor.GetKeys(typeof<ScrapReason>)
     Assert.AreEqual(1, keys.Length)
     Assert.AreEqual("ScrapReasonID", keys.[0].Name)
 
-let CanGetKeysForType(persistor : EntityObjectStore) = 
+let CanGetKeysForType(persistor : IObjectStore) = 
     let keys = persistor.GetKeys(typeof<SalesOrderHeaderSalesReason>)
     Assert.AreEqual(2, keys.Length)
     Assert.AreEqual("SalesOrderID", keys.[0].Name)
@@ -445,13 +447,13 @@ let CanContainerInjectionCalledForGetInstance persistor =
     let sr = First<ScrapReason> persistor
     Assert.IsTrue(injectedObjects.Contains(sr))
 
-let noEntryFor (persistor : EntityObjectStore) (p : Product) (so : SpecialOffer) = 
+let noEntryFor (persistor : IObjectStore) (p : Product) (so : SpecialOffer) = 
     let hasEntry = 
         persistor.GetInstances<SpecialOfferProduct>() 
         |> Seq.exists (fun i -> (i.Product <> null && i.Product.ProductID = p.ProductID) && (i.SpecialOffer <> null && i.SpecialOffer.SpecialOfferID = so.SpecialOfferID))
     not (hasEntry)
 
-let CanCreateManyToMany(persistor : EntityObjectStore) = 
+let CanCreateManyToMany(persistor : IObjectStore) = 
     let prs = persistor.GetInstances<Product>()
     let sos = persistor.GetInstances<SpecialOffer>()
     let noEntryFor = noEntryFor persistor
@@ -475,7 +477,7 @@ let CanCreateManyToMany(persistor : EntityObjectStore) =
     CreateAndEndTransaction persistor sop
     Assert.IsFalse(noEntryFor pr so)
 
-let CanCreateManyToManyWithFixup(persistor : EntityObjectStore) = 
+let CanCreateManyToManyWithFixup(persistor : IObjectStore) = 
     let prs = persistor.GetInstances<Product>()
     let sos = persistor.GetInstances<SpecialOffer>()
     let noEntryFor = noEntryFor persistor
@@ -519,7 +521,7 @@ let CanGetObjectByDateKey persistor =
     CanGetObjectByKey<SalesPersonQuotaHistory> persistor [| box 268
                                                             box datetime |]
 
-let CanGetManyToOneReference(persistor : EntityObjectStore) = 
+let CanGetManyToOneReference(persistor : IObjectStore) = 
     let header = persistor.GetInstances<SalesOrderHeader>() |> Seq.head
     let details = persistor.GetInstances<SalesOrderDetail>() |> Seq.filter (fun d -> d.SalesOrderID = header.SalesOrderID)
     let detail1 = details |> Seq.item 0
@@ -529,13 +531,19 @@ let CanGetManyToOneReference(persistor : EntityObjectStore) =
     Assert.AreSame(header, header1)
     Assert.AreSame(header1, header2)
 
-let CanRemoteResolve(persistor : EntityObjectStore) = 
+let getObjectByKey(persistor :IObjectStore) key (typ : Type) = 
+    match persistor with 
+    | :? EntityObjectStore as eos -> eos.GetObjectByKey(key, typ)
+    | :? EFCoreObjectStore as efos -> efos.GetObjectByKey(key, typ) 
+    | _ -> null
+
+let CanRemoteResolve(persistor : IObjectStore) = 
     let keys = 
         [| box 54002
            box 51409 |]
     let testLogger = (new Mock<ILogger<EntityOid>>()).Object;
     let key = new EntityOid(mockMetamodelManager.Object, typeof<SalesOrderDetail>, keys, false, testLogger)
-    let obj = persistor.GetObjectByKey(key, typeof<SalesOrderDetail>)
+    let obj = getObjectByKey persistor key typeof<SalesOrderDetail>
     let nakedObj = GetOrAddAdapterForTest obj key
     if nakedObj.ResolveState.IsResolvable() then persistor.ResolveImmediately(nakedObj)
     let props = typeof<SalesOrderDetail>.GetProperties()
@@ -547,7 +555,7 @@ let DomainCanGetContextForNonGenericCollection persistor = CanGetContextForNonGe
 let DomainCanGetContextForArray persistor = CanGetContextForArray<SalesOrderHeader> persistor
 let DomainCanGetContextForType persistor = CanGetContextForType<SalesOrderHeader> persistor
 
-let CanDetectConcurrency(persistor : EntityObjectStore) = 
+let CanDetectConcurrency(persistor : IObjectStore) = 
     let sr1 = persistor.GetInstances<ScrapReason>() |> Seq.head
     
     let otherPersistor =
@@ -573,7 +581,7 @@ let CanDetectConcurrency(persistor : EntityObjectStore) =
     sr1.Name <- origName
     SaveAndEndTransaction persistor sr1
 
-let DataUpdateNoCustomOnPersistingError(persistor : EntityObjectStore) = 
+let DataUpdateNoCustomOnPersistingError(persistor : IObjectStore) = 
     let setter cr (l : Location) = 
         l.Name <- uniqueName()
         l.CostRate <- cr
@@ -590,7 +598,7 @@ let DataUpdateNoCustomOnPersistingError(persistor : EntityObjectStore) =
     let l = CreateAndSetup persistor (setter 1m)
     CreateAndEndTransaction persistor l
 
-let DataUpdateNoCustomOnUpdatingError(persistor : EntityObjectStore) = 
+let DataUpdateNoCustomOnUpdatingError(persistor : IObjectStore) = 
     let l = First<Location> persistor
     let origCr = l.CostRate
     
@@ -608,7 +616,7 @@ let DataUpdateNoCustomOnUpdatingError(persistor : EntityObjectStore) =
     // put original back 
     setCostRateAndSave origCr
 
-let ConcurrencyNoCustomOnUpdatingError(persistor : EntityObjectStore) = 
+let ConcurrencyNoCustomOnUpdatingError(persistor : IObjectStore) = 
     let l1 = persistor.GetInstances<Location>() |> Seq.head
     
     let otherPersistor = 
@@ -636,14 +644,14 @@ let ConcurrencyNoCustomOnUpdatingError(persistor : EntityObjectStore) =
     l1.Name <- origname
     SaveAndEndTransaction persistor l1
 
-let OverWriteChangesOptionRefreshesObject(persistor : EntityObjectStore) = 
+let OverWriteChangesOptionRefreshesObject(persistor : IObjectStore) = 
     let l1 = First<Location> persistor
     let origName = l1.Name
     l1.Name <- uniqueName()
     let l2 = First<Location> persistor
     Assert.AreEqual(origName, l1.Name)
 
-let AppendOnlyOptionDoesNotRefreshObject(persistor : EntityObjectStore) = 
+let AppendOnlyOptionDoesNotRefreshObject(persistor : IObjectStore) = 
     let l1 = First<Location> persistor
     let origName = l1.Name
     let newName = uniqueName()
@@ -652,18 +660,18 @@ let AppendOnlyOptionDoesNotRefreshObject(persistor : EntityObjectStore) =
     Assert.AreEqual(newName, l1.Name)
     ignore (resetPersistor persistor)
 
-let FirstLocationNonGeneric(persistor : EntityObjectStore) = 
+let FirstLocationNonGeneric(persistor : IObjectStore) = 
     let o = Seq.cast<Location> (persistor.GetInstances(typeof<Location>)) |> Seq.head
     o
 
-let OverWriteChangesOptionRefreshesObjectNonGenericGet(persistor : EntityObjectStore) = 
+let OverWriteChangesOptionRefreshesObjectNonGenericGet(persistor : IObjectStore) = 
     let l1 = FirstLocationNonGeneric persistor
     let origName = l1.Name
     l1.Name <- uniqueName()
     let l2 = FirstLocationNonGeneric persistor
     Assert.AreEqual(origName, l1.Name)
 
-let AppendOnlyOptionDoesNotRefreshObjectNonGenericGet(persistor : EntityObjectStore) = 
+let AppendOnlyOptionDoesNotRefreshObjectNonGenericGet(persistor : IObjectStore) = 
     let l1 = FirstLocationNonGeneric persistor
     let origName = l1.Name
     let newName = uniqueName()
@@ -672,7 +680,7 @@ let AppendOnlyOptionDoesNotRefreshObjectNonGenericGet(persistor : EntityObjectSt
     Assert.AreEqual(newName, l1.Name)
     ignore (resetPersistor persistor)
 
-let ExplicitOverwriteChangesRefreshesObject(persistor : EntityObjectStore) = 
+let ExplicitOverwriteChangesRefreshesObject(persistor : IObjectStore) = 
     let l1 = First<Location> persistor
     let origName = l1.Name
     l1.Name <- uniqueName()
@@ -682,7 +690,7 @@ let ExplicitOverwriteChangesRefreshesObject(persistor : EntityObjectStore) =
     let l2 = q |> Seq.head
     Assert.AreEqual(origName, l1.Name)
 
-let GetKeysReturnsKey(persistor : EntityObjectStore) = 
+let GetKeysReturnsKey(persistor : IObjectStore) = 
     let l = First<Location> persistor
     let keys = persistor.GetKeys(l.GetType())
     Assert.AreEqual(1, keys |> Seq.length)

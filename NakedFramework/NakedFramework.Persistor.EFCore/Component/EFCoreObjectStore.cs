@@ -250,9 +250,9 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return domainObject;
         }
 
-        private object GetObjectByKey(IEntityOid eoid, Type type) => GetContext(type).WrappedDbContext.Find(type, eoid.Key);
+        public object GetObjectByKey(IEntityOid eoid, Type type) => GetContext(type).WrappedDbContext.Find(type, eoid.Key);
 
-        private object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
+        public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
 
         public INakedObjectAdapter GetObject(IOid oid, IObjectSpec hint)
         {

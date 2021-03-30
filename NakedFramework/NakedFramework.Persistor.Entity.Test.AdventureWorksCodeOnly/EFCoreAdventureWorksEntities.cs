@@ -64,7 +64,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
         public virtual DbSet<Vendor> Vendors { get; set; }
         public virtual DbSet<VendorAddress> VendorAddresses { get; set; }
         public virtual DbSet<VendorContact> VendorContacts { get; set; }
-        public virtual DbSet<ContactCreditCard> ContactCreditCards { get; set; }
+        //public virtual DbSet<ContactCreditCard> ContactCreditCards { get; set; }
         public virtual DbSet<CountryRegionCurrency> CountryRegionCurrencies { get; set; }
         public virtual DbSet<CreditCard> CreditCards { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
