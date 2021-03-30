@@ -880,7 +880,7 @@ namespace NakedFrameworkClient.TestFramework
             return new Footer(we, this);
         }
 
-        private Pane GetNewPane(Pane pane, MouseClick button)
+        internal Pane GetNewPane(Pane pane, MouseClick button)
         {
             return pane switch
             {
