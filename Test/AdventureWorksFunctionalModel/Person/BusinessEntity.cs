@@ -19,11 +19,11 @@ namespace AW.Types {
 
         [RenderEagerly]
         [TableView(false, nameof(BusinessEntityAddress.AddressType), nameof(BusinessEntityAddress.Address))]
-        public virtual ICollection<BusinessEntityAddress> Addresses { get; init; }
+        public virtual ICollection<BusinessEntityAddress> Addresses { get; init; } = new List<BusinessEntityAddress>();
 
         [RenderEagerly]
         [TableView(false, nameof(BusinessEntityContact.ContactType), nameof(BusinessEntityContact.Person))]
-        public virtual ICollection<BusinessEntityContact> Contacts { get; init; }
+        public virtual ICollection<BusinessEntityContact> Contacts { get; init; } = new List<BusinessEntityContact>();
 
         public override string ToString() => $"BusinessEntity: {BusinessEntityID}";
 

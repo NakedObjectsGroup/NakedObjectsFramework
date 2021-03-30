@@ -505,12 +505,13 @@ namespace NakedFramework.Persistor.EFCore.Component {
             }
 
             if (nakedObjectAdapter.Spec is IObjectSpec spec) {
+                static INakedObjectAdapter GetCollection(IOneToManyAssociationSpec assoc, INakedObjectAdapter owner) =>
+                    assoc.GetNakedObject(owner) ?? throw new PersistFailedException($"Unexpected null collection {assoc.Name} on {owner.Spec.FullName}");
+
                 // testing check 
-                var adapters = spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted).Select(a => a.GetNakedObject(nakedObjectAdapter));
-                foreach (var adapter in adapters) {
-                    if (adapter.ResolveState.IsGhost()) {
-                        Resolve(adapter);
-                    }
+                var ghostAdapters = spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted).Select(a => GetCollection(a, nakedObjectAdapter)).Where(a => a.ResolveState.IsGhost());
+                foreach (var adapter in ghostAdapters) {
+                    Resolve(adapter);
                 }
             }
 
