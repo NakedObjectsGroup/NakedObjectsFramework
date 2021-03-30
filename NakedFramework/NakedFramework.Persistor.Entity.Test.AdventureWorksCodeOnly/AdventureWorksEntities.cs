@@ -89,6 +89,32 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
         public virtual DbSet<StoreContact> StoreContacts { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+
+            modelBuilder.Entity<ContactCreditCard>().HasKey(k => new {k.ContactID, k.CreditCardID});
+            modelBuilder.Entity<CountryRegionCurrency>().HasKey(k => new { k.CountryRegionCode, k.CurrencyCode });
+            modelBuilder.Entity<CustomerAddress>().HasKey(k => new { k.CustomerID, k.AddressID });
+            modelBuilder.Entity<EmployeeAddress>().HasKey(k => new { k.EmployeeID, k.AddressID });
+            modelBuilder.Entity<EmployeeDepartmentHistory>().HasKey(k => new { k.EmployeeID, k.DepartmentID, k.ShiftID, k.StartDate });
+            modelBuilder.Entity<EmployeePayHistory>().HasKey(k => new { k.EmployeeID, k.RateChangeDate });
+            modelBuilder.Entity<ProductCostHistory>().HasKey(k => new { k.ProductID, k.StartDate });
+            modelBuilder.Entity<ProductDocument>().HasKey(k => new { k.ProductID, k.DocumentID });
+            modelBuilder.Entity<ProductInventory>().HasKey(k => new { k.ProductID, k.LocationID });
+            modelBuilder.Entity<ProductListPriceHistory>().HasKey(k => new { k.ProductID, k.StartDate });
+            modelBuilder.Entity<ProductModelIllustration>().HasKey(k => new { k.ProductModelID, k.IllustrationID });
+            modelBuilder.Entity<ProductModelProductDescriptionCulture>().HasKey(k => new { k.ProductModelID, k.ProductDescriptionID, k.CultureID });
+            modelBuilder.Entity<ProductProductPhoto>().HasKey(k => new { k.ProductID, k.ProductPhotoID });
+            modelBuilder.Entity<ProductVendor>().HasKey(k => new { k.ProductID, k.VendorID });
+            modelBuilder.Entity<PurchaseOrderDetail>().HasKey(k => new { k.PurchaseOrderID, k.PurchaseOrderDetailID });
+            modelBuilder.Entity<SalesOrderDetail>().HasKey(k => new { k.SalesOrderID, k.SalesOrderDetailID });
+            modelBuilder.Entity<SalesOrderHeaderSalesReason>().HasKey(k => new { k.SalesOrderID, k.SalesReasonID });
+            modelBuilder.Entity<SalesPersonQuotaHistory>().HasKey(k => new { k.SalesPersonID, k.QuotaDate });
+            modelBuilder.Entity<SalesTerritoryHistory>().HasKey(k => new { k.SalesPersonID, k.TerritoryID, k.StartDate });
+            modelBuilder.Entity<SpecialOfferProduct>().HasKey(k => new { k.SpecialOfferID, k.ProductID });
+            modelBuilder.Entity<StoreContact>().HasKey(k => new { k.CustomerID, k.ContactID });
+            modelBuilder.Entity<VendorAddress>().HasKey(k => new { k.VendorID, k.AddressID });
+            modelBuilder.Entity<VendorContact>().HasKey(k => new { k.VendorID, k.ContactID });
+            modelBuilder.Entity<WorkOrderRouting>().HasKey(k => new { k.WorkOrderID, k.ProductID, k.OperationSequence });
+
             modelBuilder.Entity<Department>()
                 .HasMany(e => e.EmployeeDepartmentHistories)
                 .WithRequired(e => e.Department)

@@ -15,12 +15,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.SalesOrderHeaderSalesReason")]
     public class SalesOrderHeaderSalesReason {
-        [Key]
+      
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int SalesOrderID { get; set; }
 
-        [Key]
+       
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int SalesReasonID { get; set; }

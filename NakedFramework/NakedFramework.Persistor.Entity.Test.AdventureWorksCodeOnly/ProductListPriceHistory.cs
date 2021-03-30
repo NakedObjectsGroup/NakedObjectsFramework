@@ -15,12 +15,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.ProductListPriceHistory")]
     public class ProductListPriceHistory {
-        [Key]
+        
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ProductID { get; set; }
 
-        [Key]
+       
         [Column(Order = 1)]
         public DateTime StartDate { get; set; }
 

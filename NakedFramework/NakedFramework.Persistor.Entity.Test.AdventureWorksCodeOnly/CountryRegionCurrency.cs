@@ -15,12 +15,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.CountryRegionCurrency")]
     public class CountryRegionCurrency {
-        [Key]
+      
         [Column(Order = 0)]
         [StringLength(3)]
         public string CountryRegionCode { get; set; }
 
-        [Key]
+       
         [Column(Order = 1)]
         [StringLength(3)]
         public string CurrencyCode { get; set; }

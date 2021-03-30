@@ -15,21 +15,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("HumanResources.EmployeeDepartmentHistory")]
     public class EmployeeDepartmentHistory {
-        [Key]
+    
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int EmployeeID { get; set; }
 
-        [Key]
+     
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public short DepartmentID { get; set; }
 
-        [Key]
+     
         [Column(Order = 2)]
         public byte ShiftID { get; set; }
 
-        [Key]
+      
         [Column(Order = 3)]
         public DateTime StartDate { get; set; }
 
