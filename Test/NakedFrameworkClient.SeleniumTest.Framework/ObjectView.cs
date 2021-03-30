@@ -45,11 +45,14 @@ namespace NakedFrameworkClient.TestFramework
         }
         public ObjectCollection GetCollection(string collectionName)
         {
-            helper.WaitForChildElement(element, "nof-collections");
-            var coll = element.FindElements(By.CssSelector("nof-collection"))
-                .Single(el => el.FindElement(By.CssSelector(".name")).Text == collectionName + ":");
+            helper.wait.Until(dr => FindCollection(collectionName) != null);
+            var coll = FindCollection(collectionName);
             return new ObjectCollection(coll, helper, this);
         }
+
+        private IWebElement FindCollection(string name) =>
+            element.FindElements(By.CssSelector("nof-collection"))
+                .Single(el => el.FindElement(By.CssSelector(".name")).Text == name + ":");
 
         public ObjectView DragTitleAndDropOnto(ReferenceInputField field)
         {
@@ -83,8 +86,10 @@ namespace NakedFrameworkClient.TestFramework
         public ObjectView Reload()
         {
             helper.Reload(pane);
-            helper.WaitForNewListView(this, MouseClick.MainButton);
+            helper.WaitForNewObjectView(this, MouseClick.MainButton);
             return this;
         }
+
+        public ObjectView FreshView() => helper.GetObjectView(pane);
     }
 }

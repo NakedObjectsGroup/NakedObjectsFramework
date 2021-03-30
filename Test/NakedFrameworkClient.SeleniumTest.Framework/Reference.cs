@@ -14,10 +14,10 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public ObjectView Click(MouseClick button = MouseClick.SecondaryButton)
+        public ObjectView Click(MouseClick button = MouseClick.MainButton)
         {
             helper.Click(element, button);
-            return helper.WaitForNewObjectView(enclosingView, MouseClick.MainButton);
+            return helper.WaitForNewObjectView(enclosingView, button);
         }
 
         public Reference DragAndDropOnto(ReferenceInputField field)

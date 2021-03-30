@@ -70,8 +70,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CreateNewObectWithOnlyValueProperties();
             CreateNewObjectWithAReferenceToAnotherExistingObject();
             CreateNewObjectWithAReferenceToMultipleExistingObjects();
-            CreateAGraphOfTwoNewRelatedObjects();
-            CreateAGraphOfObjectsThreeLevelsDeep();
+            //CreateAGraphOfTwoNewRelatedObjects();
+            //CreateAGraphOfObjectsThreeLevelsDeep();
             PropertyHiddenViaAHideMethod();
             SubMenuOnObject();
             SubMenuOnMainMenu();
@@ -79,14 +79,14 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ImageParameter();
             QueryContributedActionReturningOnlyAContext();
             QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
-           //LocalCollectionContributedAction();
+            LocalCollectionContributedAction();
             SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
             UseOfDeferredFunctionIncludingReload();
-            //UseOfResolveMethodInADeferredFunction();
+            UseOfResolveMethodInADeferredFunction();
             WithDelete();
             WithMultipleDeletes();
             ObjectActionRenderedWithinCollection();
-            //QueryContributedActionWithChoicesFunction();
+            QueryContributedActionWithChoicesFunction();
             QueryContributedActionWithCoValidation();
             ActionReturingImmutableList();
             //MultiLineActionDialog();
@@ -105,7 +105,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void ObjectActionThatReturnsJustAContext()
         {
             var offer = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--5")
-                .GetObjectView().AssertTitleIs("Volume Discount 41 to 60");
+                .GetObjectView();
             var dialog = offer.OpenActions().GetActionWithDialog("Edit Description").Open();
             dialog.GetTextField("Description").Clear().Enter("Volume Discount 41+").AssertNoValidationError();
             offer = dialog.ClickOKToViewObject();
@@ -358,7 +358,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             summary.GetProperty("Total Staff").AssertValueIs("290");
         }
 
-       // [TestMethod]
+       //[TestMethod]
         public void CreateNewObectWithOnlyValueProperties()
         {
             var dialog = helper.GotoHome().OpenMainMenu("Special Offers")
@@ -405,7 +405,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             order.GetProperty("Customer").GetReference().AssertTitleIs("AW00012211 Victor Romero");
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void CreateAGraphOfTwoNewRelatedObjects()
         {
             var dialog = helper.GotoHome().OpenMainMenu("Customers").OpenSubMenu("Stores")
@@ -419,7 +419,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.IsTrue(storeTitle.EndsWith(name));
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void CreateAGraphOfObjectsThreeLevelsDeep()
         {
             //This story involves creation of a graph of three new objects (Customer, Person, Password)
@@ -564,7 +564,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             details.SelectCheckBoxOnRow(1)
             .SelectCheckBoxOnRow(2)
             .SelectCheckBoxOnRow(3);
-            var updated = dialog.ClickOKToViewObject();
+            var updated = dialog.ClickOKToViewObject().Reload();
             details = updated.GetCollection("Details");
             details.GetRowFromTable(1).AssertColumnValueIs(6, rnd);
                 details.GetRowFromTable(2).AssertColumnValueIs(6, rnd);
@@ -574,7 +574,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             details.GetRowFromTable(0).AssertColumnValueIs(6, originalCtn0);
         }
 
-         //[TestMethod]
+        // [TestMethod]
         public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
         {
             var view = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.Customer--12211&i2=View&o2=AW.Types.Product--707");
@@ -635,9 +635,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
             dialog.GetTextField("New Quantity").Enter("2");
             dialog.ClickOKToViewObject();
-
-            
-            order.GetProperty("Sub Total").AssertValueIs("£59.48");
+            Thread.Sleep(500);
+            order.FreshView().GetProperty("Sub Total").AssertValueIs("£59.48");
         }
 
 
@@ -654,7 +653,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
             prod.DragTitleAndDropOnto(dialog.GetReferenceField("Product"));
             order = dialog.ClickOKToViewObject();
-
             order.GetCollection("Details").ClickListView().SelectCheckBoxOnRow(0)
                 .GetActionWithoutDialog("Remove Details").ClickToViewObject();
             order.GetCollection("Details").AssertDetails("Empty");

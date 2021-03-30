@@ -38,9 +38,15 @@ namespace NakedFrameworkClient.TestFramework
 
         public ObjectView ClickOKToViewObject(MouseClick button = MouseClick.MainButton)
         {
-            var ok = GetEnabledOKButton();
-            helper.Click(ok, button);
-            return helper.WaitForNewObjectView(enclosingView, button);
+            var element = enclosingView.element;
+            var oldText =element.Text;
+            var pane = helper.GetNewPane(enclosingView.pane, button);
+            helper.Click(GetEnabledOKButton());
+            if (enclosingView is ObjectView && button == MouseClick.MainButton)
+            {
+                helper.wait.Until(dr => element.IsStale() || element.Text != oldText);
+            }
+            return helper.GetObjectView(pane);
         }
 
         public ListView ClickOKToViewNewList(MouseClick button = MouseClick.MainButton)
@@ -61,7 +67,14 @@ namespace NakedFrameworkClient.TestFramework
 
         private IWebElement GetEnabledOKButton()
         {
-            helper.wait.Until(dr => GetOKButton().GetAttribute("disabled") == null);
+            try
+            {
+                helper.wait.Until(dr => GetOKButton().GetAttribute("disabled") == null);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("OK button was disabled");
+            }
             return GetOKButton();
         }
 
