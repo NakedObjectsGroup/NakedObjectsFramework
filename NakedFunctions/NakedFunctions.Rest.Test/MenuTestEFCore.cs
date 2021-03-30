@@ -14,14 +14,16 @@ using NakedFunctions.Rest.Test.Data;
 
 namespace NakedFunctions.Rest.Test {
     public class MenuTestEFCore : MenuTestEF6 {
-        protected Func<IConfiguration, DbContext> ContextInstaller => config => {
-            var context = new EFCoreMenuDbContext();
-            context.Create();
-            return context;
+        protected new Func<IConfiguration, DbContext>[] ContextInstallers => new Func<IConfiguration, DbContext>[] {
+            config => {
+                var context = new EFCoreMenuDbContext();
+                context.Create();
+                return context;
+            }
         };
 
         protected virtual Action<EFCorePersistorOptions> EFCorePersistorOptions =>
-            options => { options.ContextInstaller = ContextInstaller; };
+            options => { options.ContextInstallers = ContextInstallers; };
 
         protected override Action<NakedCoreOptions> AddPersistor => builder => { builder.AddEFCorePersistor(EFCorePersistorOptions); };
 

@@ -18,11 +18,11 @@ type EFCoreDomainSystemTests() =
 
     override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ())
 
-    member x.ContextInstaller = Func<IConfiguration, DbContext> (fun (c) -> 
+    member x.ContextInstallers = [|Func<IConfiguration, DbContext> (fun (c) -> 
                   let context = new EFCoreAdventureWorksEntities(NakedObjects.TestTypes.csAWMARS) 
                   context.Create()
-                  (context :> DbContext))
+                  (context :> DbContext))|]
         
-    member x.EFCorePersistorOptions = Action<EFCorePersistorOptions> (fun  (options) -> options.ContextInstaller <- x.ContextInstaller)
+    member x.EFCorePersistorOptions = Action<EFCorePersistorOptions> (fun  (options) -> options.ContextInstallers <- x.ContextInstallers)
 
 

@@ -38,9 +38,9 @@ namespace NakedFramework.Persistor.EFCore.Component {
             notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
         }
 
-        public LocalContext(EFCorePersistorConfiguration config, ISession session, EFCoreObjectStore parent)
+        public LocalContext(Func<DbContext> context, EFCorePersistorConfiguration config, ISession session, EFCoreObjectStore parent)
             : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, parent) {
-            WrappedDbContext = config.Context();
+            WrappedDbContext = context();
             Name = WrappedDbContext.ToString();
         }
 

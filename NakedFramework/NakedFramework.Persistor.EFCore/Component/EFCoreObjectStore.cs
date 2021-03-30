@@ -53,7 +53,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             this.metamodelManager = metamodelManager;
             this.injector = injector;
             Logger = logger;
-            contexts = new[] {new LocalContext(config, session, this)};
+            contexts =  config.Contexts.Select(c => new LocalContext(c, config, session, this)).ToArray();
             MaximumCommitCycles = config.MaximumCommitCycles;
 
             foreach (var context in contexts) {
