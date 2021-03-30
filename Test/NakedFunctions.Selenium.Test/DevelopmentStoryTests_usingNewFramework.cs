@@ -78,17 +78,17 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ImageProperty();
             ImageParameter();
             QueryContributedActionReturningOnlyAContext();
-            //QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
-            //LocalCollectionContributedAction();
-            //SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
-            //UseOfDeferredFunctionIncludingReload();
+            QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
+           //LocalCollectionContributedAction();
+            SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
+            UseOfDeferredFunctionIncludingReload();
             //UseOfResolveMethodInADeferredFunction();
-            //WithDelete();
-            //WithMultipleDeletes();
-            //ObjectActionRenderedWithinCollection();
+            WithDelete();
+            WithMultipleDeletes();
+            ObjectActionRenderedWithinCollection();
             //QueryContributedActionWithChoicesFunction();
-            //QueryContributedActionWithCoValidation();
-            //ActionReturingImmutableList();
+            QueryContributedActionWithCoValidation();
+            ActionReturingImmutableList();
             //MultiLineActionDialog();
         }
 
@@ -537,272 +537,248 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             updated.GetRowFromTable(3).AssertColumnValueIs(5, original3);
         }
 
-        //// [TestMethod]
-        //public void QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType()
-        //{
-        //    GeminiUrl("list?m1=Order_MenuFunctions&a1=OrdersInProcess&pg1=1&ps1=20&s1_=0&c1=List&as1=open&d1=AppendComment");
-        //    Reload();
-        //    WaitForCss("input#comment1");
+         //[TestMethod]
+        public void QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType()
+        {
+            helper.GotoHome().OpenMainMenu("Orders")
+               .GetActionWithoutDialog("Orders In Process").ClickToViewList()
+                .OpenActions().GetActionWithDialog("Append Comment").Open()
+                .GetTextField("Comment");
 
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--73266&as1=open");
-        //    WaitForView(Pane.Single, PaneType.Object, "SO73266");
-        //    OpenActionDialog("Append Comment");
-        //    WaitForCss("input#commenttoappend1");
-        //}
-
-        ////[TestMethod]
-        //public void LocalCollectionContributedAction()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=Table&d1=AddCarrierTrackingNumber");
-        //    WaitForTitle("SO53535");
-        //    var rnd = (new Random()).Next(100000).ToString();
-        //    SelectCheckBox("#details1-1");
-        //    SelectCheckBox("#details1-2");
-        //    SelectCheckBox("#details1-3");
-        //    TypeIntoFieldWithoutClearing("#ctn1", rnd);
-        //    Click(OKButton());
-        //    wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Count(el => el.Text == rnd) >= 3);
-        //}
-
-        //// [TestMethod]
-        //public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
-        //{
-        //    GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
-        //    WaitForTitle("AW00012211 Victor Romero", Pane.Left);
-        //    Click(GetObjectAction("Create Another Order", Pane.Left));
-        //    WaitForView(Pane.Left, PaneType.Object);
-        //    var num = GetPropertyValue("Sales Order Number", Pane.Left);
-        //    Assert.IsTrue(num.StartsWith("SO75"));
-        //    OpenObjectActions(Pane.Left);
-        //    OpenActionDialog("Add New Detail", Pane.Left);
-        //    var product = WaitForCss("#pane2 .title");
-        //    CopyToClipboard(product);
-        //    PasteIntoInputField("#pane1 .parameter .value.droppable");
-        //    Click(OKButton());
-        //    Click(FullIcon());
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    Thread.Sleep(1000);
-        //    var listIcon1 = WaitForCssNo(".collection .icon.list", 0);
-        //    Click(listIcon1);
-        //    wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).Any(el => el.Text == "1 x Sport-100 Helmet, Red"));
-        //}
-
-        ////[TestMethod]
-        //public void UseOfDeferredFunctionIncludingReload()
-        //{
-        //    GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
-        //    WaitForTitle("AW00012211 Victor Romero", Pane.Left);
-        //    Click(GetObjectAction("Create Another Order", Pane.Left));
-        //    WaitForView(Pane.Left, PaneType.Object);
-        //    var num = GetPropertyValue("Sales Order Number", Pane.Left);
-        //    Assert.IsTrue(num.StartsWith("SO75"));
-        //    OpenObjectActions(Pane.Left);
-        //    OpenActionDialog("Add New Detail", Pane.Left);
-        //    ClearFieldThenType("#quantity1", "9");
-        //    var product = WaitForCss("#pane2 .title");
-        //    CopyToClipboard(product);
-        //    PasteIntoInputField("#pane1 .parameter .value.droppable");
-        //    Click(OKButton());
-        //    Click(FullIcon());
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    Assert.AreEqual("£267.67", GetPropertyValue("Sub Total"));
-        //    Assert.AreEqual("£267.67", GetPropertyValue("Total Due"));
-        //}
-
-        ////[TestMethod]
-        //public void UseOfResolveMethodInADeferredFunction()
-        //{
-        //    GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
-        //    WaitForTitle("AW00012211 Victor Romero", Pane.Left);
-        //    Click(GetObjectAction("Create Another Order", Pane.Left));
-        //    WaitForView(Pane.Left, PaneType.Object);
-        //    var num = GetPropertyValue("Sales Order Number", Pane.Left);
-        //    Assert.IsTrue(num.StartsWith("SO75"));
-        //    OpenObjectActions(Pane.Left);
-        //    OpenActionDialog("Add New Detail", Pane.Left);
-        //    var product = WaitForCss("#pane2 .title");
-        //    CopyToClipboard(product);
-        //    PasteIntoInputField("#pane1 .parameter .value.droppable");
-        //    Click(OKButton());
-        //    Click(FullIcon());
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    Thread.Sleep(500);
-        //    var listIcon1 = WaitForCssNo(".collection .icon.list", 0);
-        //    Click(listIcon1);
-        //    //var detail = wait.Until(dr => dr.FindElements(By.CssSelector("tr td")).First(el => el.Text == "1 x Sport-100 Helmet, Red"));
-        //    var detail = WaitForCssNo("tbody tr td", 1);
-        //    Assert.AreEqual("1 x Sport-100 Helmet, Red", detail.Text);
-        //    Assert.AreEqual("£29.74", GetPropertyValue("Sub Total", Pane.Left));
-        //    RightClick(detail);
-        //    WaitForView(Pane.Right, PaneType.Object, "1 x Sport-100 Helmet, Red");
-        //    OpenObjectActions(Pane.Right);
-        //    OpenActionDialog("Change Quantity", Pane.Right);
-        //    TypeIntoFieldWithoutClearing("#newquantity2", "2");
-        //    Click(OKButton());
-        //    Thread.Sleep(500);
-        //    Assert.AreEqual("£59.48", GetPropertyValue("Sub Total", Pane.Left));
-
-        //}
-        ////[TestMethod]
-        //public void WithDelete()
-        //{
-        //    GeminiUrl("object/object?i1=View&o1=AW.Types.Customer--12211&as1=open&i2=View&o2=AW.Types.Product--707");
-        //    WaitForView(Pane.Left, PaneType.Object, "AW00012211 Victor Romero");
-        //    WaitForView(Pane.Right, PaneType.Object, "Sport-100 Helmet, Red");
-        //    Click(GetObjectAction("Create Another Order", Pane.Left));
-        //    GetProperty("Sales Order Number", Pane.Left);
-        //    OpenObjectActions(Pane.Left);
-        //    OpenActionDialog("Add New Detail", Pane.Left);
-        //    var product = WaitForCss("#pane2 .title");
-        //    CopyToClipboard(product);
-        //    PasteIntoInputField("#pane1 .parameter .value.droppable");
-        //    Click(OKButton());
-        //    wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "1 Item");
-        //    OpenActionDialog("Remove Detail", Pane.Left);
-        //    Click(OKButton());
-        //    wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).Count(el => el.Text == "Empty") == 2);
-
-
-        //}
-
-        ////[TestMethod]
-        //public void WithMultipleDeletes()
-        //{
-        //    //Build an order
-        //    GeminiUrl(@"object/list?i1=View&o1=AW.Types.Customer--29861&as1=open&m2=Product_MenuFunctions&a2=ListProductsByCategory&pg2=1&ps2=20&s2_=0&c2=List&pm2_category=%7B""href"":""___0%2Fobjects%2FAW.Types.ProductCategory%2F1""%7D&pm2_subCategory=null");
-        //    WaitForTitle("AW00029861 Hardware Components", Pane.Left);
-        //    WaitForTitle("List Products By Category", Pane.Right);
-        //    Click(GetObjectAction("Create Another Order", Pane.Left));
-        //    GetProperty("Sales Order Number", Pane.Left);
-        //    OpenObjectActions(Pane.Left);
-
-        //    //Add detail 1
-        //    Reload(Pane.Right);
-        //    OpenActionDialog("Add New Detail", Pane.Left);
-        //    var p0 = WaitForCssNo("tr td.reference", 0);
-        //    Assert.AreEqual("Road-150 Red, 62", p0.Text);
-        //    CopyToClipboard(p0);
-        //    PasteIntoInputField("#pane1 .parameter .value.droppable");
-        //    Click(OKButton());
-        //    wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "1 Item");
-
-        //    //Add detail 2
-        //    Reload(Pane.Right);
-        //    OpenActionDialog("Add New Detail", Pane.Left);
-        //    var p1 = WaitForCssNo("tr td.reference", 1);
-        //    Assert.AreEqual("Road-150 Red, 44", p1.Text);
-        //    CopyToClipboard(p1);
-        //    PasteIntoInputField("#pane1 .parameter .value.droppable");
-        //    Click(OKButton());
-        //    wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "2 Items");
-
-        //    //Add detail 3
-        //    Reload(Pane.Right);
-        //    OpenActionDialog("Add New Detail", Pane.Left);
-        //    var p2 = WaitForCssNo("tr td.reference", 2);
-        //    Assert.AreEqual("Road-150 Red, 48", p2.Text);
-        //    CopyToClipboard(p2);
-        //    PasteIntoInputField("#pane1 .parameter .value.droppable");
-        //    Click(OKButton());
-        //    wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "3 Items");
-
-        //    Click(FullIcon());
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    var listIcon1 = WaitForCssNo(".collection .icon.list", 0);
-        //    Click(listIcon1);
-
-        //    SelectCheckBox("#details1-0");
-        //    SelectCheckBox("#details1-2");
-
-        //    var remove = WaitForCssNo("nof-collection nof-action input", 0);
-        //    Assert.AreEqual("Remove Details", remove.GetAttribute("value"));
-        //    Click(remove);
-        //    wait.Until(br => br.FindElements(By.CssSelector(".collection .details")).First().Text == "1 Item");
-        //}
-
-        ////[TestMethod]
-        //public void ObjectActionRenderedWithinCollection()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.SalesOrderHeader--44868&c1_Details=List");
-        //    WaitForView(Pane.Single, PaneType.Object);
-        //    var change = WaitForCssNo("nof-collection nof-action input", 2);
-        //    Assert.AreEqual("Change A Quantity", change.GetAttribute("value"));
-        //}
-
-        ////[TestMethod]
-        //public void QueryContributedActionWithChoicesFunction()
-        //{
-        //    GeminiUrl("list?m1=Product_MenuFunctions&a1=AllProducts&pg1=1&ps1=20&s1_=0&c1=List&as1=open&r1=1&d1=AddAnonReviews");
-        //    WaitForTitle("All Products");
-        //    Reload();
-        //    var option = "select#rating1 option";
-        //    Assert.AreEqual("5", WaitForCssNo(option, 4).Text);
-        //    Assert.AreEqual("1", WaitForCssNo(option, 0).Text);
-        //    SelectDropDownOnField("select#rating1", 4);
-        //    var rand = (new Random()).Next(100000).ToString();
-        //    TypeIntoFieldWithoutClearing("#comments1", rand);
-        //    SelectCheckBox("#item1-1");
-        //    Click(OKButton());
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Product--2&c1_ProductReviews=Table");
-        //    wait.Until(br => br.FindElements(By.CssSelector("tbody tr td")).Any(td => td.Text == rand));
-        //}
-
-        ////[TestMethod]
-        //public void QueryContributedActionWithCoValidation()
-        //{
-        //    GeminiUrl("list?m1=Product_MenuFunctions&a1=AllProducts&pg1=1&ps1=20&s1_=0&c1=List&as1=open&r1=1&d1=AddAnonReviews");
-        //    WaitForTitle("All Products");
-        //    Reload();
-        //    SelectDropDownOnField("select#rating1", 3);
-        //    SelectCheckBox("#item1-1");
-        //    Click(OKButton());
-        //    Thread.Sleep(500);
-        //    var expected = "Must provide comments for rating < 5";
-        //    var actual = WaitForCss(".co-validation").Text;
-        //    Assert.AreEqual(expected, actual);
-        //}
-
-        ////[TestMethod]
-        //public void ActionReturingImmutableList()
-        //{
-        //    GeminiUrl("object?i1=View&o1=AW.Types.Vendor--1696&as1=open");
-        //    WaitForTitle("Chicago City Saddles");
-        //    Click(GetObjectAction("Show All Products"));
-        //    WaitForView(Pane.Single, PaneType.List, "Show All Products");
-        //    var last = WaitForCssNo("tbody tr", 8);
-        //    Assert.AreEqual(@"HL Touring Seat/Saddle", last.Text);
-        //}
+           helper.GotoUrlDirectly("object?i1=View&o1=AW.Types.SalesOrderHeader--73266")
+                .GetObjectView().AssertTitleIs("SO73266")
+                .OpenActions().GetActionWithDialog("Append Comment").Open()
+                .GetTextField("Comment To Append");
+        }
 
         //[TestMethod]
-        //public void MultiLineActionDialog()
-        //{
-        //    GeminiUrl("multiLineDialog?m1=SpecialOffer_MenuFunctions&d1=CreateMultipleSpecialOffers");
-        //    WaitForTitle("Create Multiple Special Offers");
-        //    WaitForCssNo(".lineDialog", 1); //i.e. 2 dialogs
-        //    var ok1 = WaitForCssNo("input.ok", 1);
-        //    var val1 = WaitForCssNo(".co-validation", 1);
-        //    var ok0 = WaitForCssNo("input.ok", 0);
-        //    var val0 = WaitForCssNo(".co-validation", 0);
-        //    TypeIntoFieldWithoutClearing("input#description0", "Manager's Special");
-        //    TypeIntoFieldWithoutClearing("input#discountpct0", "15");
-        //    var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
-        //    TypeIntoFieldWithoutClearing("input#enddate0", endDate);
-        //    wait.Until(d => ok0.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
-        //    Assert.AreEqual("", val0.Text);
-        //    Click(ok0);
-        //    wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).First().Text == "Submitted");
-        //    //Second line
-        //    TypeIntoFieldWithoutClearing("input#description1", "Manager's Special II");
-        //    TypeIntoFieldWithoutClearing("input#discountpct1", "12.5");
-        //    TypeIntoFieldWithoutClearing("input#enddate1", endDate);
-        //    wait.Until(d => ok1.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
-        //    Assert.AreEqual("", val1.Text);
-        //    Click(ok1);
-        //    wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).ElementAt(1).Text == "Submitted");
+        public void LocalCollectionContributedAction()
+        {
+            var details = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=Table")
+            .GetObjectView().AssertTitleIs("SO53535").GetCollection("Details");
+            var originalCtn0 = details.GetRowFromTable(0).GetColumnValue(6);
 
-        //    //Check third line has now appeared
-        //    WaitForCssNo(".lineDialog", 2);
-        //}
+            var dialog = details.GetActionWithDialog("Add Carrier Tracking Number").Open();
+            var rnd = (new Random()).Next(100000).ToString();
+            var num = dialog.GetTextField("Ctn").Enter(rnd);
+            details.SelectCheckBoxOnRow(1)
+            .SelectCheckBoxOnRow(2)
+            .SelectCheckBoxOnRow(3);
+            var updated = dialog.ClickOKToViewObject();
+            details = updated.GetCollection("Details");
+            details.GetRowFromTable(1).AssertColumnValueIs(6, rnd);
+                details.GetRowFromTable(2).AssertColumnValueIs(6, rnd);
+            details.GetRowFromTable(3).AssertColumnValueIs(6, rnd);
+
+            //Confirm that row 0 was not changed
+            details.GetRowFromTable(0).AssertColumnValueIs(6, originalCtn0);
+        }
+
+         //[TestMethod]
+        public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection()
+        {
+            var view = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.Customer--12211&i2=View&o2=AW.Types.Product--707");
+            var cust = view.GetObjectView(Pane.Left).AssertTitleIs("AW00012211 Victor Romero");
+            var prod = view.GetObjectView(Pane.Right).AssertTitleIs("Sport-100 Helmet, Red");
+            var order = cust.OpenActions().GetActionWithoutDialog("Create Another Order").ClickToViewObject();
+
+            Assert.IsTrue(order.GetProperty("Sales Order Number").GetValue().StartsWith("SO75"));
+            var dialog = order.OpenActions().GetActionWithDialog("Add New Detail").Open();
+
+            prod.DragTitleAndDropOnto(dialog.GetReferenceField("Product"));
+            dialog.ClickOKToViewObject().GetCollection("Details")
+                .ClickListView()
+                .GetRowFromList(0)
+                .AssertTitleIs("1 x Sport-100 Helmet, Red");
+        }
+
+        //[TestMethod]
+        public void UseOfDeferredFunctionIncludingReload()
+        {
+            var view = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.Customer--12211&i2=View&o2=AW.Types.Product--707");
+            var cust = view.GetObjectView(Pane.Left).AssertTitleIs("AW00012211 Victor Romero");
+            var prod = view.GetObjectView(Pane.Right).AssertTitleIs("Sport-100 Helmet, Red");
+            var order = cust.OpenActions().GetActionWithoutDialog("Create Another Order").ClickToViewObject();
+
+            Assert.IsTrue(order.GetProperty("Sales Order Number").GetValue().StartsWith("SO75"));
+            var dialog = order.OpenActions().GetActionWithDialog("Add New Detail").Open();
+            prod.DragTitleAndDropOnto(dialog.GetReferenceField("Product"));
+            dialog.GetTextField("Quantity").Clear().Enter("9");
+            var updated = dialog.ClickOKToViewObject();
+            updated.GetProperty("Sub Total").AssertValueIs("£267.67");
+            updated.GetProperty("Total Due").AssertValueIs("£267.67");
+        }
+
+        //[TestMethod]
+        public void UseOfResolveMethodInADeferredFunction()
+        {
+            var view = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.Customer--12211&i2=View&o2=AW.Types.Product--707");
+            var cust = view.GetObjectView(Pane.Left).AssertTitleIs("AW00012211 Victor Romero");
+            var prod = view.GetObjectView(Pane.Right).AssertTitleIs("Sport-100 Helmet, Red");
+            var order = cust.OpenActions().GetActionWithoutDialog("Create Another Order").ClickToViewObject();
+
+            Assert.IsTrue(order.GetProperty("Sales Order Number").GetValue().StartsWith("SO75"));
+            var dialog = order.OpenActions().GetActionWithDialog("Add New Detail").Open();
+
+            prod.DragTitleAndDropOnto(dialog.GetReferenceField("Product"));
+            order = dialog.ClickOKToViewObject();
+
+            var details = order.GetCollection("Details");
+            details.ClickListView()
+                .GetRowFromList(0)
+                .AssertTitleIs("1 x Sport-100 Helmet, Red");
+
+            order.GetProperty("Sub Total").AssertValueIs("£29.74");
+
+            dialog = details.GetRowFromList(0).Click(MouseClick.SecondaryButton)
+                .OpenActions().GetActionWithDialog("Change Quantity").Open();
+
+            dialog.GetTextField("New Quantity").Enter("2");
+            dialog.ClickOKToViewObject();
+
+            
+            order.GetProperty("Sub Total").AssertValueIs("£59.48");
+        }
+
+
+        //[TestMethod]
+        public void WithDelete()
+        {
+            var view = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.Customer--12211&i2=View&o2=AW.Types.Product--707");
+            var cust = view.GetObjectView(Pane.Left).AssertTitleIs("AW00012211 Victor Romero");
+            var prod = view.GetObjectView(Pane.Right).AssertTitleIs("Sport-100 Helmet, Red");
+            var order = cust.OpenActions().GetActionWithoutDialog("Create Another Order").ClickToViewObject();
+
+            Assert.IsTrue(order.GetProperty("Sales Order Number").GetValue().StartsWith("SO75"));
+            var dialog = order.OpenActions().GetActionWithDialog("Add New Detail").Open();
+
+            prod.DragTitleAndDropOnto(dialog.GetReferenceField("Product"));
+            order = dialog.ClickOKToViewObject();
+
+            order.GetCollection("Details").ClickListView().SelectCheckBoxOnRow(0)
+                .GetActionWithoutDialog("Remove Details").ClickToViewObject();
+            order.GetCollection("Details").AssertDetails("Empty");
+        }
+
+        //[TestMethod]
+        public void WithMultipleDeletes()
+        {
+            //Build an order
+            var main = helper.GotoUrlViaHome(@"object/list?i1=View&o1=AW.Types.Customer--29861&m2=Product_MenuFunctions&a2=ListProductsByCategory&pg2=1&ps2=20&s2_=0&c2=List&pm2_category=%7B""href"":""___0%2Fobjects%2FAW.Types.ProductCategory%2F1""%7D&pm2_subCategory=null");
+            var cust = main.GetObjectView(Pane.Left).AssertTitleIs("AW00029861 Hardware Components");
+
+
+            var order = cust.OpenActions().GetActionWithoutDialog("Create Another Order").ClickToViewObject();
+
+            var dialog = order.OpenActions().GetActionWithDialog("Add New Detail").Open();
+            var prodField = dialog.GetReferenceField("Product");
+            var prods = main.GetReloadedListView(Pane.Right).AssertTitleIs("List Products By Category");
+            prods.GetRowFromList(0).AssertTitleIs("Road-150 Red, 62").DragAndDropOnto(prodField);
+            order = dialog.ClickOKToViewObject();
+
+            dialog = order.OpenActions().GetActionWithDialog("Add New Detail").Open();
+            prodField = dialog.GetReferenceField("Product");
+            prods = main.GetReloadedListView(Pane.Right);
+            prods.GetRowFromList(1).AssertTitleIs("Road-150 Red, 44").DragAndDropOnto(prodField);
+            order = dialog.ClickOKToViewObject();
+
+            dialog = order.OpenActions().GetActionWithDialog("Add New Detail").Open();
+            prodField = dialog.GetReferenceField("Product");
+            prods = main.GetReloadedListView(Pane.Right);
+            prods.GetRowFromList(1).AssertTitleIs("Road-150 Red, 44").DragAndDropOnto(prodField);
+            order = dialog.ClickOKToViewObject();
+
+            var details = order.GetCollection("Details").AssertDetails("3 Items");
+             var remove =    details.ClickListView().GetActionWithoutDialog("Remove Details");
+
+            details.SelectCheckBoxOnRow(0).SelectCheckBoxOnRow(2);
+
+            order = remove.ClickToViewObject();
+            order.GetCollection("Details").AssertDetails("1 Item");
+        }
+
+        //[TestMethod]
+        public void ObjectActionRenderedWithinCollection()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--44868&c1_Details=List")
+                .GetObjectView().GetCollection("Details")
+                .GetActionWithDialog("Change A Quantity");
+        }
+
+        //[TestMethod]
+        public void QueryContributedActionWithChoicesFunction()
+        {
+            var list = helper.GotoUrlViaHome("list?m1=Product_MenuFunctions&a1=AllProducts&pg1=1&ps1=20&s1_=0&c1=List&as1=open&r1=1&d1=AddAnonReviews")
+                .GetReloadedListView();
+           var dialog = list.GetOpenedDialog();
+
+            dialog.GetSelectionField("No. of Stars (1-5)").Select(4);
+            var rand = (new Random()).Next(100000).ToString();
+            dialog.GetTextField("Comments").Enter(rand);
+
+            list.SelectCheckBoxOnRow(1);
+            dialog.ClickOKToViewUpdatedList();
+
+
+            helper.GotoUrlDirectly("object?i1=View&o1=AW.Types.Product--2&c1_ProductReviews=Table")
+                .GetObjectView().GetCollection("Product Reviews")
+                .GetLastRowFromTable().AssertColumnValueIs(1, rand);
+            //TODO: column numbers wrong!
+        }
+
+        //[TestMethod]
+        public void QueryContributedActionWithCoValidation()
+        {
+            var list = helper.GotoUrlViaHome("list?m1=Product_MenuFunctions&a1=AllProducts&pg1=1&ps1=20&s1_=0&c1=List&as1=open&r1=1&d1=AddAnonReviews")
+                .GetReloadedListView().AssertTitleIs("All Products");
+
+            var dialog = list.GetOpenedDialog();
+            dialog.GetSelectionField("No. of Stars (1-5)").Select(3);
+            list.SelectCheckBoxOnRow(1);
+            dialog.ClickOKWithNoResultExpected();
+            dialog.AssertHasValidationError("Must provide comments for rating < 5");
+        }
+
+        //[TestMethod]
+        public void ActionReturingImmutableList()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Vendor--1696&as1=open")
+                .GetObjectView().AssertTitleIs("Chicago City Saddles")
+                .OpenActions().GetActionWithoutDialog("Show All Products")
+                .ClickToViewList()
+                .GetLastRowFromList().AssertTitleIs("HL Touring Seat/Saddle");
+        }
+
+       //[TestMethod]
+        public void MultiLineActionDialog()
+        {
+            //GeminiUrl("multiLineDialog?m1=SpecialOffer_MenuFunctions&d1=CreateMultipleSpecialOffers");
+            //WaitForTitle("Create Multiple Special Offers");
+            //WaitForCssNo(".lineDialog", 1); //i.e. 2 dialogs
+            //var ok1 = WaitForCssNo("input.ok", 1);
+            //var val1 = WaitForCssNo(".co-validation", 1);
+            //var ok0 = WaitForCssNo("input.ok", 0);
+            //var val0 = WaitForCssNo(".co-validation", 0);
+            //TypeIntoFieldWithoutClearing("input#description0", "Manager's Special");
+            //TypeIntoFieldWithoutClearing("input#discountpct0", "15");
+            //var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
+            //TypeIntoFieldWithoutClearing("input#enddate0", endDate);
+            //wait.Until(d => ok0.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
+            //Assert.AreEqual("", val0.Text);
+            //Click(ok0);
+            //wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).First().Text == "Submitted");
+            ////Second line
+            //TypeIntoFieldWithoutClearing("input#description1", "Manager's Special II");
+            //TypeIntoFieldWithoutClearing("input#discountpct1", "12.5");
+            //TypeIntoFieldWithoutClearing("input#enddate1", endDate);
+            //wait.Until(d => ok1.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
+            //Assert.AreEqual("", val1.Text);
+            //Click(ok1);
+            //wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).ElementAt(1).Text == "Submitted");
+
+            ////Check third line has now appeared
+            //WaitForCssNo(".lineDialog", 2);
+        }
 
     }
 }

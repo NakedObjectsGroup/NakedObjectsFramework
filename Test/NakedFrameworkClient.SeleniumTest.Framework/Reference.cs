@@ -14,12 +14,18 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public ObjectView Click(MouseClick button = MouseClick.MainButton)
+        public ObjectView Click(MouseClick button = MouseClick.SecondaryButton)
         {
-            element.Click();
+            helper.Click(element, button);
             return helper.WaitForNewObjectView(enclosingView, MouseClick.MainButton);
         }
-        public Reference DragAndDropOnto(ReferenceInputField field) => throw new NotImplementedException();
+
+        public Reference DragAndDropOnto(ReferenceInputField field)
+        {
+            helper.CopyToClipboard(element);
+            field.PasteReferenceFromClipboard();
+            return this;
+        }
 
         public string GetTitle() => element.Text;
     }
