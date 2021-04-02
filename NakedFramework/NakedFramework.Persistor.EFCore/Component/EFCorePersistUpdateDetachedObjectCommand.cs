@@ -113,7 +113,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
             if (persisting) {
-                parent.CreateAdapter(proxy);
+                parent.CreateAdapter(null, proxy);
                 context.Add(proxy);
             }
 

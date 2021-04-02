@@ -171,7 +171,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             updatingNakedObjects = entries.Where(e => e.State != EntityState.Added && e.Members.Any(m => m.IsModified)).
                                            SelectMany(CheckForForeignKeys).
                                            Distinct().
-                                           Select(o => parent.CreateAdapter(o)).ToList();
+                                           Select(o => parent.CreateAdapter(null, o)).ToList();
 
             updatingNakedObjects.ForEach(no => no.Updating());
 
@@ -207,7 +207,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public void PostSaveWrapUp() {
             // complex types give null adapter
-            added.Select(domainObject => parent.CreateAdapter(domainObject)).Where(a => a?.Oid is IEntityOid).ForEach(parent.HandleAdded);
+            added.Select(domainObject => parent.CreateAdapter(null, domainObject)).Where(a => a?.Oid is IEntityOid).ForEach(parent.HandleAdded);
             LoadedNakedObjects.ToList().ForEach(parent.HandleLoaded);
         }
     }

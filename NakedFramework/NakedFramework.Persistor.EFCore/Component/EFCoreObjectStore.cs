@@ -29,16 +29,23 @@ using NakedFramework.Persistor.EFCore.Util;
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreObjectStore : IObjectStore, IDisposable {
         private readonly LocalContext[] contexts;
-        internal readonly ILogger<EFCoreObjectStore> Logger;
+        
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
         private readonly IMetamodelManager metamodelManager;
-        private readonly IDomainObjectInjector injector;
+        private IDomainObjectInjector injector;
 
-        public Func<IDictionary<object, object>, bool> FunctionalPostSave = _ => false;
-
+        private Func<IDictionary<object, object>, bool> functionalPostSave = _ => false;
         private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
+
+        internal readonly ILogger<EFCoreObjectStore> Logger;
+        internal Func<IOid, object, INakedObjectAdapter> CreateAdapter;
+        internal Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> CreateAggregatedAdapter;
+        internal Action<INakedObjectAdapter> HandleLoaded;
+        internal Action<INakedObjectAdapter> RemoveAdapter;
+        internal Action<INakedObjectAdapter, object> ReplacePoco;
+
 
         public EFCoreObjectStore(EFCorePersistorConfiguration config,
                                  IOidGenerator oidGenerator,
@@ -56,6 +63,12 @@ namespace NakedFramework.Persistor.EFCore.Component {
             contexts =  config.Contexts.Select(c => new LocalContext(c, config, session, this)).ToArray();
             MaximumCommitCycles = config.MaximumCommitCycles;
 
+            CreateAdapter = (oid, domainObject) => this.nakedObjectManager.CreateAdapter(domainObject, oid, null);
+            ReplacePoco = (nakedObject, newDomainObject) => this.nakedObjectManager.ReplacePoco(nakedObject, newDomainObject);
+            RemoveAdapter = o => this.nakedObjectManager.RemoveAdapter(o);
+            CreateAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec)parent.Spec).GetProperty(property.Name).Id, obj);
+            HandleLoaded = HandleLoadedDefault;
+
             foreach (var context in contexts) {
                 context.WrappedDbContext.ChangeTracker.StateChanged += (_, args) => {
                     if (args.OldState == EntityState.Added) {
@@ -64,7 +77,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
                     if (args.NewState == EntityState.Modified) {
                         var changedObject = args.Entry.Entity;
-                        var adaptedObject = nakedObjectManager.CreateAdapter(changedObject, null, null);
+                        var adaptedObject = CreateAdapter(null, changedObject);
                         if (adaptedObject.ResolveState.IsGhost()) {
                             ResolveImmediately(adaptedObject);
                         }
@@ -263,13 +276,13 @@ namespace NakedFramework.Persistor.EFCore.Component {
                     var parentOid = (IEntityOid)aggregateOid.ParentOid;
                     var parentType = parentOid.TypeName;
                     var parentSpec = (IObjectSpec)metamodelManager.GetSpecification(parentType);
-                    var parent = nakedObjectManager.CreateAdapter(GetObjectByKey(parentOid, parentSpec), parentOid, null);
+                    var parent = CreateAdapter(parentOid,  GetObjectByKey(parentOid, parentSpec));
 
                     return parentSpec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
                 }
                 case IEntityOid eoid:
                 {
-                    var adapter = nakedObjectManager.CreateAdapter(GetObjectByKey(eoid, hint), eoid, null);
+                    var adapter = CreateAdapter(eoid, GetObjectByKey(eoid, hint));
                     adapter.UpdateVersion(session, nakedObjectManager);
                     return adapter;
                 }
@@ -338,7 +351,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             var obj = GetContext(type).WrappedDbContext.Find(type, keys);
 
             var eoid = oidGenerator.CreateOid(type.FullName, keys);
-            var adapter = nakedObjectManager.CreateAdapter(obj, eoid, null);
+            var adapter = CreateAdapter(eoid, obj);
             adapter.UpdateVersion(session, nakedObjectManager);
             return adapter;
         }
@@ -393,13 +406,13 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
                     injector.InjectParentIntoChild(adapter.Object, complexObject);
                     injector.InjectInto(complexObject);
-                    nakedObjectManager.CreateAggregatedAdapter(adapter, ((IObjectSpec) adapter.Spec).GetProperty(pi.Name).Id, complexObject);
+                    CreateAggregatedAdapter(adapter, pi, complexObject);
                 }
             }
         }
 
         public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) {
-            FunctionalPostSave = objects.PostSaveFunction;
+            functionalPostSave = objects.PostSaveFunction;
             return SetFunctionalProxyMap(ExecuteAttachObjectCommandUpdate(objects));
         }
 
@@ -417,7 +430,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private bool PostSave() {
-            FunctionalPostSave(functionalProxyMap);
+            functionalPostSave(functionalProxyMap);
             contexts.ForEach(c => c.PostSave());
             return contexts.Any(c=> c.HasChanges());
         }
@@ -480,7 +493,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             if (keys.Any())
             {
                 var oid = oidGenerator.CreateOid(EFCoreHelpers.GetEFCoreProxiedTypeName(domainObject), keys);
-                var nakedObjectAdapter = nakedObjectManager.CreateAdapter(domainObject, oid, null);
+                var nakedObjectAdapter = CreateAdapter(oid, domainObject);
                 injector.InjectInto(nakedObjectAdapter.Object);
                 LoadComplexTypesIntoNakedObjectFramework(nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsGhost());
                 nakedObjectAdapter.UpdateVersion(session, nakedObjectManager);
@@ -539,13 +552,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             return field.GetNakedObject(nakedObjectAdapter).GetAsEnumerable(manager).Count();
         }
-        
-        public INakedObjectAdapter CreateAdapter(object obj) => nakedObjectManager.CreateAdapter(obj, null, null);
-
-        public void ReplacePoco(INakedObjectAdapter nakedObject, object newDomainObject) => nakedObjectManager.ReplacePoco(nakedObject, newDomainObject);
-        public void RemoveAdapter(INakedObjectAdapter nakedObject) => nakedObjectManager.RemoveAdapter(nakedObject);
-        public INakedObjectAdapter CreateAggregatedAdapter(INakedObjectAdapter parent, PropertyInfo property, object obj) => nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec) parent.Spec).GetProperty(property.Name).Id, obj);
-
 
         private IList<(object original, object updated)> SetFunctionalProxyMap(IList<(object original, object updated)> updatedTuples) {
             functionalProxyMap = updatedTuples.ToDictionary(t => t.original, t => t.updated);
@@ -606,7 +612,29 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return false;
         }
 
-        internal void HandleLoaded(INakedObjectAdapter nakedObjectAdapter) => EndResolving(nakedObjectAdapter);
+        private static void HandleLoadedDefault(INakedObjectAdapter nakedObjectAdapter) => EndResolving(nakedObjectAdapter);
 
+        public void SetupForTesting(IDomainObjectInjector domainObjectInjector,
+                                    Func<IOid, object, INakedObjectAdapter> createAdapter,
+                                    Action<INakedObjectAdapter, object> replacePoco,
+                                    Action<INakedObjectAdapter> removeAdapter,
+                                    Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> createAggregatedAdapter,
+                                    Action<INakedObjectAdapter> handleLoadedTest
+                                    //Action<object, EventArgs> savingChangesHandler,
+                                    //Func<Type, IObjectSpec> loadSpecificationHandler
+            )
+        {
+            injector = domainObjectInjector;
+            CreateAdapter = createAdapter;
+            ReplacePoco = replacePoco;
+            RemoveAdapter = removeAdapter;
+            CreateAggregatedAdapter = createAggregatedAdapter;
+
+            //this.savingChangesHandler = savingChangesHandler;
+            HandleLoaded = handleLoadedTest;
+            //EnforceProxies = false;
+            //RollBackOnError = true;
+            //loadSpecification = loadSpecificationHandler;
+        }
     }
 }

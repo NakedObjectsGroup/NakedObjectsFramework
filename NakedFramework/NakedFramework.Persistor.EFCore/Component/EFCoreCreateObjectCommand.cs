@@ -67,7 +67,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 return objectToProxyScratchPad[originalObject];
             }
 
-            var adapterForOriginalObjectAdapter = parent.CreateAdapter(originalObject);
+            var adapterForOriginalObjectAdapter = parent.CreateAdapter(null, originalObject);
 
             return adapterForOriginalObjectAdapter.ResolveState.IsPersistent()
                 ? originalObject
@@ -98,7 +98,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
             // if not proxied this should just be the same as adapterForOriginalObjectAdapter
-            var proxyAdapter = parent.CreateAdapter(objectToAdd);
+            var proxyAdapter = parent.CreateAdapter(null, objectToAdd);
 
             SetKeyAsNecessary(originalObject, objectToAdd);
             //context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", objectToAdd);

@@ -41,15 +41,15 @@ namespace NakedFramework.Persistor.Entity.Component {
         private readonly EntityOidGenerator oidGenerator;
         private readonly ISession session;
         private IDictionary<CodeFirstEntityContextConfiguration, LocalContext> contexts = new Dictionary<CodeFirstEntityContextConfiguration, LocalContext>();
-        private IDomainObjectInjector injector;
-        private Func<Type, ITypeSpec> loadSpecification;
-        private Action<object, EventArgs> savingChangesHandler;
         private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
+        private IDomainObjectInjector injector;
+        private Action<object, EventArgs> savingChangesHandler;
+        private Func<Type, ITypeSpec> loadSpecification;
         private Func<IDictionary<object, object>, bool> functionalPostSave = _ => false;
 
+        internal readonly ILogger<EntityObjectStore> Logger;
         internal Func<IOid, object, INakedObjectAdapter> CreateAdapter;
         internal Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> CreateAggregatedAdapter;
-        internal readonly ILogger<EntityObjectStore> Logger;
         internal Action<INakedObjectAdapter> HandleLoaded;
         internal Action<INakedObjectAdapter> RemoveAdapter;
         internal Action<INakedObjectAdapter, object> ReplacePoco;
@@ -67,7 +67,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
             this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
             this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
-            this.Logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
+            Logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
 
             getAdapterFor = domainObject => this.nakedObjectManager.GetAdapterFor(domainObject);
             CreateAdapter = (oid, domainObject) => this.nakedObjectManager.CreateAdapter(domainObject, oid, null);
