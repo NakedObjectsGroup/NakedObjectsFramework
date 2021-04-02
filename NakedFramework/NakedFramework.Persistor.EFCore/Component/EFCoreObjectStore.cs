@@ -35,6 +35,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private readonly ISession session;
         private readonly IMetamodelManager metamodelManager;
         private IDomainObjectInjector injector;
+        private Action<object> savingChanges;
+        private Func<Type, ITypeSpec> loadSpecification;
 
         private Func<IDictionary<object, object>, bool> functionalPostSave = _ => false;
         private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
@@ -45,7 +47,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
         internal Action<INakedObjectAdapter> HandleLoaded;
         internal Action<INakedObjectAdapter> RemoveAdapter;
         internal Action<INakedObjectAdapter, object> ReplacePoco;
-
 
         public EFCoreObjectStore(EFCorePersistorConfiguration config,
                                  IOidGenerator oidGenerator,
@@ -68,6 +69,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
             RemoveAdapter = o => this.nakedObjectManager.RemoveAdapter(o);
             CreateAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec)parent.Spec).GetProperty(property.Name).Id, obj);
             HandleLoaded = HandleLoadedDefault;
+            loadSpecification = metamodelManager.GetSpecification;
+            savingChanges = SavingChangesHandler;
 
             foreach (var context in contexts) {
                 context.WrappedDbContext.ChangeTracker.StateChanged += (_, args) => {
@@ -76,19 +79,23 @@ namespace NakedFramework.Persistor.EFCore.Component {
                     }
 
                     if (args.NewState == EntityState.Modified) {
-                        var changedObject = args.Entry.Entity;
-                        var adaptedObject = CreateAdapter(null, changedObject);
-                        if (adaptedObject.ResolveState.IsGhost()) {
-                            ResolveImmediately(adaptedObject);
-                        }
-
-                        ValidateIfRequired(adaptedObject);
+                        savingChanges(args.Entry.Entity);
                     }
                 };
 
                 context.WrappedDbContext.ChangeTracker.Tracked += (_, args) => { LoadObjectIntoNakedObjectsFramework(args.Entry.Entity, context.WrappedDbContext); };
             }
         }
+
+        private void SavingChangesHandler(object changedObject) {
+            var adaptedObject = CreateAdapter(null, changedObject);
+            if (adaptedObject.ResolveState.IsGhost()) {
+                ResolveImmediately(adaptedObject);
+            }
+
+            ValidateIfRequired(adaptedObject);
+        }
+
 
         // internal for testing
         public int MaximumCommitCycles { get; set; }
@@ -619,22 +626,21 @@ namespace NakedFramework.Persistor.EFCore.Component {
                                     Action<INakedObjectAdapter, object> replacePoco,
                                     Action<INakedObjectAdapter> removeAdapter,
                                     Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> createAggregatedAdapter,
-                                    Action<INakedObjectAdapter> handleLoadedTest
-                                    //Action<object, EventArgs> savingChangesHandler,
-                                    //Func<Type, IObjectSpec> loadSpecificationHandler
-            )
-        {
+                                    Action<INakedObjectAdapter> handleLoadedTest,
+                                    Action<object> savingChangesHandler,
+                                    Func<Type, IObjectSpec> loadSpecificationHandler
+        ) {
             injector = domainObjectInjector;
             CreateAdapter = createAdapter;
             ReplacePoco = replacePoco;
             RemoveAdapter = removeAdapter;
             CreateAggregatedAdapter = createAggregatedAdapter;
 
-            //this.savingChangesHandler = savingChangesHandler;
+            savingChanges = savingChangesHandler;
             HandleLoaded = handleLoadedTest;
             //EnforceProxies = false;
             //RollBackOnError = true;
-            //loadSpecification = loadSpecificationHandler;
+            loadSpecification = loadSpecificationHandler;
         }
     }
 }
