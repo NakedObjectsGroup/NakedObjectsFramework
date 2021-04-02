@@ -68,7 +68,7 @@ namespace NakedFramework.Persistor.Entity.Component {
                 baseTypeMap.Clear();
             }
             catch (Exception e) {
-                parent.logger.LogError(e, $"Exception disposing context: {Name}");
+                parent.Logger.LogError(e, $"Exception disposing context: {Name}");
             }
         }
 
@@ -139,11 +139,11 @@ namespace NakedFramework.Persistor.Entity.Component {
         public void PreSave() {
             WrappedObjectContext.DetectChanges();
             added.AddRange(WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Where(ose => !ose.IsRelationship).Select(ose => ose.Entity).ToList());
-            updatingNakedObjects = ObjectContextUtils.GetChangedObjectsInContext(WrappedObjectContext).Select(obj => parent.createAdapter(null, obj)).ToList();
+            updatingNakedObjects = ObjectContextUtils.GetChangedObjectsInContext(WrappedObjectContext).Select(obj => parent.CreateAdapter(null, obj)).ToList();
             updatingNakedObjects.ForEach(no => no.Updating());
 
             // need to do complex type separately as they'll not be updated in the SavingChangesHandler as they're not proxied. 
-            coUpdating = ObjectContextUtils.GetChangedComplexObjectsInContext(this).Select(obj => parent.createAdapter(null, obj)).ToList();
+            coUpdating = ObjectContextUtils.GetChangedComplexObjectsInContext(this).Select(obj => parent.CreateAdapter(null, obj)).ToList();
             coUpdating.ForEach(no => no.Updating());
         }
 
@@ -171,8 +171,8 @@ namespace NakedFramework.Persistor.Entity.Component {
         }
 
         public void PostSaveWrapUp(EntityObjectStore store) {
-            added.Select(domainObject => parent.createAdapter(null, domainObject)).ForEach(store.HandleAdded);
-            LoadedNakedObjects.ToList().ForEach(parent.handleLoaded);
+            added.Select(domainObject => parent.CreateAdapter(null, domainObject)).ForEach(store.HandleAdded);
+            LoadedNakedObjects.ToList().ForEach(parent.HandleLoaded);
         }
     }
 }

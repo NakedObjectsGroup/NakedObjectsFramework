@@ -64,7 +64,7 @@ namespace NakedFramework.Persistor.Entity.Component {
                 return objectToProxyScratchPad[originalObject];
             }
 
-            var adapterForOriginalObjectAdapter = parent.createAdapter(null, originalObject);
+            var adapterForOriginalObjectAdapter = parent.CreateAdapter(null, originalObject);
 
             return adapterForOriginalObjectAdapter.ResolveState.IsPersistent()
                 ? originalObject
@@ -84,7 +84,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
             // if not proxied this should just be the same as adapterForOriginalObjectAdapter
-            var proxyAdapter = parent.createAdapter(null, objectToAdd);
+            var proxyAdapter = parent.CreateAdapter(null, objectToAdd);
 
             SetKeyAsNecessary(originalObject, objectToAdd);
             context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", objectToAdd);
@@ -94,8 +94,8 @@ namespace NakedFramework.Persistor.Entity.Component {
                 context.PersistedNakedObjects.Add(proxyAdapter);
                 // remove temporary adapter for proxy (tidy and also means we will not get problem 
                 // with already known object in identity map when replacing the poco
-                parent.removeAdapter(proxyAdapter);
-                parent.replacePoco(adapterForOriginalObjectAdapter, objectToAdd);
+                parent.RemoveAdapter(proxyAdapter);
+                parent.ReplacePoco(adapterForOriginalObjectAdapter, objectToAdd);
             }
             else {
                 ProxyReferences(originalObject);
@@ -113,7 +113,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             var complexMembers = context.GetComplexMembers(parentAdapter.Object.GetEntityProxiedType());
             foreach (var pi in complexMembers) {
                 var complexObject = pi.GetValue(parentAdapter.Object, null);
-                var childAdapter = parent.createAggregatedAdapter(nakedObjectAdapter, pi, complexObject);
+                var childAdapter = parent.CreateAggregatedAdapter(nakedObjectAdapter, pi, complexObject);
                 childAdapter.Persisting();
                 context.PersistedNakedObjects.Add(childAdapter);
             }
@@ -165,7 +165,7 @@ namespace NakedFramework.Persistor.Entity.Component {
                 ProxyObjectIfAppropriate(nakedObjectAdapter.Object);
             }
             catch (Exception e) {
-                parent.logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
+                parent.Logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
                 throw;
             }
         }

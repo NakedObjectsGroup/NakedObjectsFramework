@@ -87,13 +87,13 @@ namespace NakedFramework.Persistor.Entity.Component {
                 return detachedObjects.SavedAndUpdated;
             }
             catch (Exception e) {
-                parent.logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
+                parent.Logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
                 throw;
             }
         }
 
         private void DeleteObject(object toDelete) {
-            var adapter = parent.createAdapter(null, toDelete);
+            var adapter = parent.CreateAdapter(null, toDelete);
             context = parent.GetContext(toDelete);
             context.WrappedObjectContext.DeleteObject(toDelete);
             adapter.ResolveState.Handle(Events.DestroyEvent);
@@ -128,7 +128,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
             INakedObjectAdapter proxyAdapter = null;
             if (persisting) {
-                proxyAdapter = parent.createAdapter(null, proxy);
+                proxyAdapter = parent.CreateAdapter(null, proxy);
             }
 
             SetKeyAsNecessary(originalObject, proxy);
@@ -140,7 +140,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             // need to update
             ProxyReferencesAndCopyValuesToProxy(originalObject, proxy);
             if (persisting) {
-                parent.removeAdapter(proxyAdapter);
+                parent.RemoveAdapter(proxyAdapter);
             }
 
             detachedObjects.SavedAndUpdated.Add((originalObject, proxy));

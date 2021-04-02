@@ -51,9 +51,9 @@ let setupPersistorForInjectorTesting (p : EntityObjectStore) =
          Action<INakedObjectAdapter, obj>  ReplacePocoForTest, 
          Action<INakedObjectAdapter>  RemoveAdapterForTest, 
          Func<INakedObjectAdapter, PropertyInfo, obj, INakedObjectAdapter> AggregateAdapterForTest, 
-         Action<INakedObjectAdapter>(handleLoadingTest), 
-         EventHandler(savingChangesHandler), 
-         Func<Type, IObjectSpec>(loadSpecificationHandler))
+         Action<INakedObjectAdapter> handleLoadingTest, 
+         Action<obj, EventArgs> savingChangesHandler, 
+         Func<Type, IObjectSpec> loadSpecificationHandler)
     p.SetupContexts()
     p
 
