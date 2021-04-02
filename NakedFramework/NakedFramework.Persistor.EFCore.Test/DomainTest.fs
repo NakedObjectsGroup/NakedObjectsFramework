@@ -9,29 +9,43 @@ open NakedObjects.TestTypes
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open Microsoft.EntityFrameworkCore
 open System
+open NakedObjects.DomainTestCode
+open NakedFramework.Persistor.EFCore.Component
+open System.Data.Common
 
 let efCorePersistor = 
-    //EntityObjectStoreConfiguration.NoValidate <- true
     let c = new EFCorePersistorConfiguration()
-    let f = Func<DbContext> (fun () -> new EFCoreAdventureWorksEntities(csAWMARS) :> DbContext)
-    //c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
+    c.MaximumCommitCycles <- 10
+    let f = Func<DbContext> (fun () -> 
+        let c = new EFCoreAdventureWorksEntities(csAWMARS)
+        c.Create()
+        c :> DbContext)
     c.Contexts <- [| f |]
     let p = getEFCoreObjectStore c
     setupEFCorePersistorForTesting p
 
 let efCoreOverwritePersistor =
-    //EFCoreObjectStoreConfiguration.NoValidate <- true
     let c = new EFCorePersistorConfiguration()
-    let f = Func<DbContext> (fun () -> new EFCoreAdventureWorksEntities(csAWMARS) :> DbContext)
-    //c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
+    c.MaximumCommitCycles <- 10
+    let f = Func<DbContext> (fun () -> 
+        let c = new EFCoreAdventureWorksEntities(csAWMARS)
+        c.Create()
+        c :> DbContext)
     c.Contexts <- [| f |]
     //c.DefaultMergeOption <- MergeOption.OverwriteChanges
     let p = getEFCoreObjectStore c
     setupEFCorePersistorForTesting p
 
+
 //[<TestFixture>]
 //type EFCoreDomainTests() = 
 //    inherit DomainTests()
+
+//    [<OneTimeTearDown>]
+//    member x.TearDown() = 
+//        match x.persistor with 
+//        | :? EFCoreObjectStore as eos -> eos.SetupContexts()
+//        | _ -> ()
 
 //    override x.persistor = efCorePersistor :> IObjectStore
     

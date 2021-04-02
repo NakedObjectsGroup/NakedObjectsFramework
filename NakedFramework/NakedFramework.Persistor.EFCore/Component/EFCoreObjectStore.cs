@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Transactions;
 using Microsoft.EntityFrameworkCore;
@@ -25,12 +25,15 @@ using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Configuration;
 using NakedFramework.Persistor.EFCore.Util;
 
+[assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
+[assembly: InternalsVisibleTo("NakedFramework.Persistor.EFCore.Test")]
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreObjectStore : IObjectStore, IDisposable {
-        private readonly LocalContext[] contexts;
+        private LocalContext[] contexts;
         
         private readonly INakedObjectManager nakedObjectManager;
+        private readonly EFCorePersistorConfiguration config;
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
         private readonly IMetamodelManager metamodelManager;
@@ -55,23 +58,28 @@ namespace NakedFramework.Persistor.EFCore.Component {
                                  IMetamodelManager metamodelManager,
                                  IDomainObjectInjector injector,
                                  ILogger<EFCoreObjectStore> logger) {
+            this.config = config;
             this.oidGenerator = oidGenerator;
             this.nakedObjectManager = nakedObjectManager;
             this.session = session;
             this.metamodelManager = metamodelManager;
             this.injector = injector;
             Logger = logger;
-            contexts =  config.Contexts.Select(c => new LocalContext(c, config, session, this)).ToArray();
             MaximumCommitCycles = config.MaximumCommitCycles;
 
             CreateAdapter = (oid, domainObject) => this.nakedObjectManager.CreateAdapter(domainObject, oid, null);
             ReplacePoco = (nakedObject, newDomainObject) => this.nakedObjectManager.ReplacePoco(nakedObject, newDomainObject);
             RemoveAdapter = o => this.nakedObjectManager.RemoveAdapter(o);
-            CreateAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec)parent.Spec).GetProperty(property.Name).Id, obj);
+            CreateAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec) parent.Spec).GetProperty(property.Name).Id, obj);
             HandleLoaded = HandleLoadedDefault;
             loadSpecification = metamodelManager.GetSpecification;
             savingChanges = SavingChangesHandler;
 
+            SetupContexts();
+        }
+
+        internal void SetupContexts() {
+            contexts = config.Contexts.Select(c => new LocalContext(c, config, session, this)).ToArray();
             foreach (var context in contexts) {
                 context.WrappedDbContext.ChangeTracker.StateChanged += (_, args) => {
                     if (args.OldState == EntityState.Added) {
@@ -173,7 +181,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             }
         }
 
-        private INakedObjectAdapter GetSourceNakedObject(UpdateException oce)
+        private INakedObjectAdapter GetSourceNakedObject(DbUpdateException oce)
         {
             //var trigger = oce.StateEntries.Where(e => !e.IsRelationship).Select(e => e.Entity).SingleOrDefault();
             //return createAdapter(null, trigger);
@@ -192,11 +200,11 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
                 PostSaveWrapUp();
             }
-            catch (OptimisticConcurrencyException oce)
+            catch (DbUpdateConcurrencyException oce)
             {
                 InvokeErrorFacet(new ConcurrencyException(ConcatenateMessages(oce), oce) { SourceNakedObjectAdapter = GetSourceNakedObject(oce) });
             }
-            catch (UpdateException ue)
+            catch (DbUpdateException ue)
             {
                 InvokeErrorFacet(new DataUpdateException(ConcatenateMessages(ue), ue));
             }
@@ -459,7 +467,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private static string ConcatenateMessages(Exception e) {
-            var isConcurrency = e is OptimisticConcurrencyException;
+            var isConcurrency = e is DbUpdateConcurrencyException;
             var nestLimit = 3;
             var msg = new StringBuilder(string.Format(isConcurrency ? NakedObjects.Resources.NakedObjects.ConcurrencyErrorMessage : NakedObjects.Resources.NakedObjects.UpdateErrorMessage, e.Message));
             while (e.InnerException != null && nestLimit-- > 0) {
@@ -569,10 +577,10 @@ namespace NakedFramework.Persistor.EFCore.Component {
             try {
                 return cmd.Execute();
             }
-            catch (OptimisticConcurrencyException oce) {
+            catch (DbUpdateConcurrencyException oce) {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce);
             }
-            catch (UpdateException ue) {
+            catch (DbUpdateException ue) {
                 throw new DataUpdateException(ConcatenateMessages(ue), ue);
             }
         }
@@ -583,11 +591,11 @@ namespace NakedFramework.Persistor.EFCore.Component {
             {
                 cmd.Execute();
             }
-            catch (OptimisticConcurrencyException oce)
+            catch (DbUpdateConcurrencyException oce)
             {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce) { SourceNakedObjectAdapter = cmd.OnObject() };
             }
-            catch (UpdateException ue)
+            catch (DbUpdateException ue)
             {
                 throw new DataUpdateException(ConcatenateMessages(ue), ue);
             }

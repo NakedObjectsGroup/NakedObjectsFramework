@@ -34,7 +34,8 @@ let resetPersistor (p : IObjectStore) : IObjectStore =
         eos.SetupContexts()
         (setupPersistorForTesting eos) :> IObjectStore
     | :? EFCoreObjectStore as ecos -> 
-        ecos :> IObjectStore
+        ecos.SetupContexts()
+        (setupEFCorePersistorForTesting ecos) :> IObjectStore
     | _ -> p
 
 let getEntityObjectStore (config) = 

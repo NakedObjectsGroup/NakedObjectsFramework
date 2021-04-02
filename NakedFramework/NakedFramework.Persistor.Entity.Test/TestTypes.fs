@@ -102,7 +102,6 @@ let AggregateAdapterForTest (nakedObject : INakedObjectAdapter) (prop : Property
 let NotifyUIForTest(nakedObject : INakedObjectAdapter) = ()
 let loadSpecificationHandler (t : Type) : IObjectSpec = testNakedObjectSpecification
 
-
 let handleLoadingTest (nakedObject : INakedObjectAdapter) = 
     if nakedObject.ResolveState.IsPartResolving() then nakedObject.ResolveState.Handle Events.EndPartResolvingEvent
     else nakedObject.ResolveState.Handle Events.EndResolvingEvent
@@ -125,10 +124,15 @@ let setupPersistorForTesting (p : EntityObjectStore) =
     p
 
 let setupEFCorePersistorForTesting (p : EFCoreObjectStore) = 
-    //p.SetupForTesting
-    //    (testInjector, EntityObjectStore.CreateAdapterDelegate(AdapterForTest), EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
-    //     EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
-    //     Action<INakedObjectAdapter>(handleLoadingTest), EventHandler(savingChangesHandler), Func<Type, IObjectSpec>(loadSpecificationHandler))
-    //p.SetupContexts()
+    p.SetupForTesting
+        (testInjector, 
+         Func<IOid, obj, INakedObjectAdapter> AdapterForTest, 
+         Action<INakedObjectAdapter, obj>  ReplacePocoForTest, 
+         Action<INakedObjectAdapter>  RemoveAdapterForTest, 
+         Func<INakedObjectAdapter, PropertyInfo, obj, INakedObjectAdapter> AggregateAdapterForTest, 
+         Action<INakedObjectAdapter> handleLoadingTest, 
+         Action<obj> (fun (o) -> ()), 
+         Func<Type, IObjectSpec> loadSpecificationHandler)
+    p.SetupContexts()
     //p.SetProxyingAndDeferredLoading setProxyingAndDeferredLoading
     p

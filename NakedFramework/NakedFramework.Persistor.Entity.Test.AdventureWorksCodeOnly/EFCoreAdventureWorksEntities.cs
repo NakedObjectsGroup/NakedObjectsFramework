@@ -104,6 +104,22 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
             //    .WithOne(e => e.Department)
             //    ;
 
+            modelBuilder.Entity<ProductSubcategory>().ToTable("ProductSubcategory", "Production");
+            modelBuilder.Entity<ProductCategory>().ToTable("ProductCategory", "Production");
+            modelBuilder.Entity<WorkOrder>().ToTable("WorkOrder", "Production");
+            modelBuilder.Entity<Product>().ToTable("Product", "Production");
+            modelBuilder.Entity<Location>().ToTable("Location", "Production");
+            modelBuilder.Entity<ScrapReason>().ToTable("ScrapReason", "Production");
+            modelBuilder.Entity<SalesOrderHeader>().ToTable("SalesOrderHeader", "Sales");
+            modelBuilder.Entity<SalesOrderDetail>().ToTable("SalesOrderDetail", "Sales");
+            modelBuilder.Entity<SalesPersonQuotaHistory>().ToTable("SalesPersonQuotaHistory", "Sales");
+            modelBuilder.Entity<SpecialOffer>().ToTable("SpecialOffer", "Sales");
+            modelBuilder.Entity<SpecialOfferProduct>().ToTable("SpecialOfferProduct", "Sales");
+            modelBuilder.Entity<CustomerAddress>().ToTable("CustomerAddress", "Sales");
+
+            modelBuilder.Entity<CountryRegion>().ToTable("CountryRegion", "Person");
+
+
             modelBuilder.Entity<ContactCreditCard>().HasKey(k => new { k.ContactID, k.CreditCardID });
             modelBuilder.Entity<CountryRegionCurrency>().HasKey(k => new { k.CountryRegionCode, k.CurrencyCode });
             modelBuilder.Entity<CustomerAddress>().HasKey(k => new { k.CustomerID, k.AddressID });
@@ -290,7 +306,8 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<Location>()
                         .Property(e => e.CostRate)
-                        .HasPrecision(10, 4);
+                        //.HasPrecision(10, 4)
+                        .HasColumnType("smallmoney");
 
             modelBuilder.Entity<Location>()
                         .Property(e => e.Availability)
@@ -693,7 +710,8 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<SalesPerson>()
                         .Property(e => e.CommissionPct)
-                        .HasPrecision(10, 4);
+                        .HasColumnType("smallmoney");
+                        //.HasPrecision(10, 4);
 
             modelBuilder.Entity<SalesPerson>()
                         .Property(e => e.SalesYTD)
@@ -724,7 +742,8 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<SalesTaxRate>()
                         .Property(e => e.TaxRate)
-                        .HasPrecision(10, 4);
+                        .HasColumnType("smallmoney");
+                        //.HasPrecision(10, 4);
 
             modelBuilder.Entity<SalesTerritory>()
                         .Property(e => e.SalesYTD)
@@ -754,7 +773,8 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<SpecialOffer>()
                         .Property(e => e.DiscountPct)
-                        .HasPrecision(10, 4);
+                        .HasColumnType("smallmoney");
+                        //.HasPrecision(10, 4);
 
             modelBuilder.Entity<SpecialOffer>()
                         .HasMany(e => e.SpecialOfferProducts)
