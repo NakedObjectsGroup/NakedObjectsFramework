@@ -25,6 +25,7 @@ open NakedFramework.Core.Component
 open NakedFramework.Architecture.Framework
 open NakedFramework.Architecture.Spec
 open NakedObjects.Core.Component
+open System.Reflection
 
 let ModelConfig = 
     let pc = new CodeFirstEntityContextConfiguration()
@@ -45,9 +46,13 @@ injector.set_Framework (new Mock<INakedObjectsFramework>()).Object
 
 let setupPersistorForInjectorTesting (p : EntityObjectStore) = 
     p.SetupForTesting
-        (injector, EntityObjectStore.CreateAdapterDelegate(AdapterForTest), EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
-         EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
-         Action<INakedObjectAdapter>(handleLoadingTest), EventHandler(savingChangesHandler), 
+        (injector, 
+         Func<IOid, obj, INakedObjectAdapter> AdapterForTest, 
+         Action<INakedObjectAdapter, obj>  ReplacePocoForTest, 
+         Action<INakedObjectAdapter>  RemoveAdapterForTest, 
+         Func<INakedObjectAdapter, PropertyInfo, obj, INakedObjectAdapter> AggregateAdapterForTest, 
+         Action<INakedObjectAdapter>(handleLoadingTest), 
+         EventHandler(savingChangesHandler), 
          Func<Type, IObjectSpec>(loadSpecificationHandler))
     p.SetupContexts()
     p

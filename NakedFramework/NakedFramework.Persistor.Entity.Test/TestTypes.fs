@@ -112,9 +112,14 @@ let mutable setProxyingAndDeferredLoading = true
 
 let setupPersistorForTesting (p : EntityObjectStore) = 
     p.SetupForTesting
-        (testInjector, EntityObjectStore.CreateAdapterDelegate(AdapterForTest), EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
-         EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
-         Action<INakedObjectAdapter>(handleLoadingTest), EventHandler(savingChangesHandler), Func<Type, IObjectSpec>(loadSpecificationHandler))
+        (testInjector, 
+         Func<IOid, obj, INakedObjectAdapter> AdapterForTest, 
+         Action<INakedObjectAdapter, obj>  ReplacePocoForTest, 
+         Action<INakedObjectAdapter>  RemoveAdapterForTest, 
+         Func<INakedObjectAdapter, PropertyInfo, obj, INakedObjectAdapter> AggregateAdapterForTest, 
+         Action<INakedObjectAdapter>(handleLoadingTest), 
+         EventHandler(savingChangesHandler), 
+         Func<Type, IObjectSpec>(loadSpecificationHandler))
     p.SetupContexts()
     p.SetProxyingAndDeferredLoading setProxyingAndDeferredLoading
     p

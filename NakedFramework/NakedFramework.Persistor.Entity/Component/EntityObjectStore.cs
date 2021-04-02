@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Core;
+using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
@@ -35,15 +36,15 @@ using NakedFramework.Persistor.Entity.Util;
 
 namespace NakedFramework.Persistor.Entity.Component {
     public sealed class EntityObjectStore : IObjectStore, IDisposable {
-        private readonly GetAdapterForDelegate getAdapterFor;
+        private readonly Func<object, INakedObjectAdapter> getAdapterFor;
         internal readonly ILogger<EntityObjectStore> logger;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly EntityOidGenerator oidGenerator;
         private readonly ISession session;
         private IDictionary<CodeFirstEntityContextConfiguration, LocalContext> contexts = new Dictionary<CodeFirstEntityContextConfiguration, LocalContext>();
-        internal CreateAdapterDelegate createAdapter;
-        internal CreateAggregatedAdapterDelegate createAggregatedAdapter;
+        internal Func<IOid, object, INakedObjectAdapter> createAdapter;
+        internal Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> createAggregatedAdapter;
 
         public Func<IDictionary<object, object>, bool> FunctionalPostSave = _ => false;
 
@@ -51,8 +52,8 @@ namespace NakedFramework.Persistor.Entity.Component {
         internal Action<INakedObjectAdapter> handleLoaded;
         private IDomainObjectInjector injector;
         private Func<Type, ITypeSpec> loadSpecification;
-        internal RemoveAdapterDelegate removeAdapter;
-        internal ReplacePocoDelegate replacePoco;
+        internal Action<INakedObjectAdapter> removeAdapter;
+        internal Action<INakedObjectAdapter, object> replacePoco;
         private EventHandler savingChangesHandlerDelegate;
 
         internal EntityObjectStore(IMetamodelManager metamodelManager, ISession session, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EntityObjectStore> logger) {
@@ -495,20 +496,6 @@ namespace NakedFramework.Persistor.Entity.Component {
             return false;
         }
 
-        #region Delegates
-
-        public delegate INakedObjectAdapter CreateAdapterDelegate(IOid oid, object domainObject);
-
-        public delegate INakedObjectAdapter CreateAggregatedAdapterDelegate(INakedObjectAdapter nakedObjectAdapter, PropertyInfo property, object newDomainObject);
-
-        public delegate INakedObjectAdapter GetAdapterForDelegate(object domainObject);
-
-        public delegate void RemoveAdapterDelegate(INakedObjectAdapter nakedObjectAdapter);
-
-        public delegate void ReplacePocoDelegate(INakedObjectAdapter nakedObjectAdapter, object newDomainObject);
-
-        #endregion
-
         #region IObjectStore Members
 
         public void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool parentIsGhost) {
@@ -741,18 +728,18 @@ namespace NakedFramework.Persistor.Entity.Component {
         // ReSharper disable once UnusedMember.Global
         // used in F# code
         public void SetupForTesting(IDomainObjectInjector domainObjectInjector,
-                                    CreateAdapterDelegate createAdapterDelegate,
-                                    ReplacePocoDelegate replacePocoDelegate,
-                                    RemoveAdapterDelegate removeAdapterDelegate,
-                                    CreateAggregatedAdapterDelegate createAggregatedAdapterDelegate,
+                                    Func<IOid, object, INakedObjectAdapter> createAdapter,
+                                    Action<INakedObjectAdapter, object> replacePoco,
+                                    Action<INakedObjectAdapter> removeAdapter,
+                                    Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> createAggregatedAdapter,
                                     Action<INakedObjectAdapter> handleLoadedTest,
                                     EventHandler savingChangeshandler,
                                     Func<Type, IObjectSpec> loadSpecificationHandler) {
             injector = domainObjectInjector;
-            createAdapter = createAdapterDelegate;
-            replacePoco = replacePocoDelegate;
-            removeAdapter = removeAdapterDelegate;
-            createAggregatedAdapter = createAggregatedAdapterDelegate;
+            this.createAdapter = createAdapter;
+            this.replacePoco = replacePoco;
+            this.removeAdapter = removeAdapter;
+            this.createAggregatedAdapter = createAggregatedAdapter;
 
             savingChangesHandlerDelegate = savingChangeshandler;
             handleLoaded = handleLoadedTest;
