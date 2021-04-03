@@ -8,7 +8,9 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     public class EFCoreAdventureWorksEntities : DbContext {
@@ -95,6 +97,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
         {
             optionsBuilder.UseSqlServer(cs);
             optionsBuilder.UseLazyLoadingProxies();
+            //optionsBuilder.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
         }
 
 
@@ -138,6 +141,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
             modelBuilder.Entity<SalesOrderDetail>().HasKey(k => new { k.SalesOrderID, k.SalesOrderDetailID });
             modelBuilder.Entity<SalesOrderHeaderSalesReason>().HasKey(k => new { k.SalesOrderID, k.SalesReasonID });
             modelBuilder.Entity<SalesPersonQuotaHistory>().HasKey(k => new { k.SalesPersonID, k.QuotaDate });
+            modelBuilder.Entity<SalesTerritory>().HasKey(k => new { k.TerritoryID });
             modelBuilder.Entity<SalesTerritoryHistory>().HasKey(k => new { k.SalesPersonID, k.TerritoryID, k.StartDate });
             modelBuilder.Entity<SpecialOfferProduct>().HasKey(k => new { k.SpecialOfferID, k.ProductID });
             modelBuilder.Entity<StoreContact>().HasKey(k => new { k.CustomerID, k.ContactID });

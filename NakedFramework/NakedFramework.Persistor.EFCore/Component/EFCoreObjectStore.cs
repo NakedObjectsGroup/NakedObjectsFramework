@@ -115,9 +115,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         public bool IsInitialized { get; }
         public string Name { get; }
 
-        public void AbortTransaction() {
-            throw new NotImplementedException();
-        }
+        public void AbortTransaction() => RollBackContext();
 
         public void ExecuteCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EFCoreCreateObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
@@ -151,7 +149,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                     var target = context.CurrentSaveRootObjectAdapter;
                     // can be null in tests
                     newMessage = target.Spec.GetFacet<IOnPersistingErrorCallbackFacet>()?.Invoke(target, exception);
-                    //break;
+                    break;
                 }
 
                 if (context.CurrentUpdateRootObjectAdapter?.Spec != null)
@@ -159,12 +157,12 @@ namespace NakedFramework.Persistor.EFCore.Component {
                     var target = context.CurrentUpdateRootObjectAdapter;
                     // can be null in tests 
                     newMessage = target.Spec.GetFacet<IOnUpdatingErrorCallbackFacet>()?.Invoke(target, exception);
-                    //break;
+                    break;
                 }
             }
 
             // Rollback after extracting info from context - rollback clears it all
-            //RollBackContext();
+            RollBackContext();
 
             newMessage ??= exception.Message;
 
@@ -211,7 +209,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             catch (Exception e)
             {
                 Logger.LogError($"Unexpected exception while applying changes {e.Message}");
-                //RollBackContext();
+                RollBackContext();
                 throw;
             }
             finally
@@ -628,6 +626,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private static void HandleLoadedDefault(INakedObjectAdapter nakedObjectAdapter) => EndResolving(nakedObjectAdapter);
+
+        private void RollBackContext() => SetupContexts();
 
         public void SetupForTesting(IDomainObjectInjector domainObjectInjector,
                                     Func<IOid, object, INakedObjectAdapter> createAdapter,

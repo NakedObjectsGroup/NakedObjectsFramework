@@ -27,6 +27,7 @@ open NakedFramework.Core.Component
 open NakedFramework.Architecture.Component
 open NakedObjects.Core.Component
 open NakedFramework.Persistor.EFCore.Component
+open NakedFramework.Persistor.EFCore.Util
 
 let resetPersistor (p : IObjectStore) : IObjectStore =
     match p with 
@@ -64,7 +65,7 @@ let getEFCoreObjectStore (config) =
     let log = (new Mock<ILogger<EFCoreObjectStore>>()).Object;
     new EFCoreObjectStore(config, new EntityOidGenerator(m, mlf.Object), nom,  s, m, i, log)
 
-
+let IsEFCoreOrEF6Proxy (t : Type) =  EntityUtils.IsEntityProxy(t) || EFCoreHelpers.IsEFCoreProxy(t)
 
 let CreateAndSetup<'t when 't : not struct> (p : IObjectStore) setter = 
     let inst = p.CreateInstance<'t>(null)
@@ -96,11 +97,11 @@ let GetInstancesByTypeNotEmpty<'t when 't : not struct>(p : IObjectStore) =
 
 let GetInstancesReturnsProxies<'t when 't : not struct>(p : IObjectStore) = 
     let instances = p.GetInstances<'t>()
-    Assert.IsTrue(instances |> Seq.forall (fun i -> EntityUtils.IsEntityProxy(i.GetType())))
+    Assert.IsTrue(instances |> Seq.forall (fun i -> IsEFCoreOrEF6Proxy(i.GetType())))
 
 let GetInstancesDoesntReturnProxies<'t when 't : not struct>(p : IObjectStore) = 
     let instances = p.GetInstances<'t>()
-    Assert.IsFalse(instances |> Seq.forall (fun i -> EntityUtils.IsEntityProxy(i.GetType())))
+    Assert.IsFalse(instances |> Seq.forall (fun i -> IsEFCoreOrEF6Proxy(i.GetType())))
 
 let CanCreateTransientObject<'t when 't : not struct>(p : IObjectStore) = 
     let transientInstance = p.CreateInstance<'t>(null)

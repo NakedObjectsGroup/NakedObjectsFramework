@@ -140,23 +140,23 @@ let CanSaveTransientObjectWithTransientReferencePropertyWithFixup persistor =
 let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies persistor = 
     let psc = CreateProductSubcategory persistor
     let pc = CreateProductCategory persistor
-    Assert.IsFalse(EntityUtils.IsEntityProxy(psc.GetType()))
-    Assert.IsFalse(EntityUtils.IsEntityProxy(pc.GetType()))
+    Assert.IsFalse(IsEFCoreOrEF6Proxy(psc.GetType()))
+    Assert.IsFalse(IsEFCoreOrEF6Proxy(pc.GetType()))
     psc.ProductCategory <- pc
     CreateAndEndTransaction persistor psc
     let proxiedpsc = 
         persistor.GetInstances<ProductSubcategory>()
         |> Seq.filter (fun i -> i.Name = psc.Name)
         |> Seq.head
-    Assert.IsTrue(EntityUtils.IsEntityProxy(proxiedpsc.GetType()))
+    Assert.IsTrue(IsEFCoreOrEF6Proxy(proxiedpsc.GetType()))
     let proxiedpc = proxiedpsc.ProductCategory
-    Assert.IsTrue(EntityUtils.IsEntityProxy(proxiedpc.GetType()))
+    Assert.IsTrue(IsEFCoreOrEF6Proxy(proxiedpc.GetType()))
 
 let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmNoProxies persistor = 
     let psc = CreateProductSubcategory persistor
     let pc = CreateProductCategory persistor
-    Assert.IsFalse(EntityUtils.IsEntityProxy(psc.GetType()))
-    Assert.IsFalse(EntityUtils.IsEntityProxy(pc.GetType()))
+    Assert.IsFalse(IsEFCoreOrEF6Proxy(psc.GetType()))
+    Assert.IsFalse(IsEFCoreOrEF6Proxy(pc.GetType()))
     psc.ProductCategory <- pc
     pc.ProductSubcategories.Add psc
     CreateAndEndTransaction persistor psc
@@ -164,9 +164,9 @@ let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmNoProxies pers
         persistor.GetInstances<ProductSubcategory>()
         |> Seq.filter (fun i -> i.Name = psc.Name)
         |> Seq.head
-    Assert.IsFalse(EntityUtils.IsEntityProxy(proxiedpsc.GetType()))
+    Assert.IsFalse(IsEFCoreOrEF6Proxy(proxiedpsc.GetType()))
     let proxiedpc = proxiedpsc.ProductCategory
-    Assert.IsFalse(EntityUtils.IsEntityProxy(proxiedpc.GetType()))
+    Assert.IsFalse(IsEFCoreOrEF6Proxy(proxiedpc.GetType()))
 
 let CanUpdatePersistentObjectWithScalarProperties persistor = 
     let sr = First<ScrapReason> persistor

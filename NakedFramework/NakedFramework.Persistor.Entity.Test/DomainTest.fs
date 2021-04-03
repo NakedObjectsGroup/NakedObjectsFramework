@@ -37,12 +37,8 @@ let overwritePersistor =
 [<TestFixture>]
 type DomainTests() = 
     class
-
-        abstract member persistor : IObjectStore
-        default x.persistor = persistor :> IObjectStore
-
-        abstract member overwritePersistor : IObjectStore
-        default x.overwritePersistor = overwritePersistor :> IObjectStore
+        member x.persistor = persistor :> IObjectStore   
+        member x.overwritePersistor = overwritePersistor :> IObjectStore
         
         [<OneTimeSetUp>]
         member x.Setup() = 
