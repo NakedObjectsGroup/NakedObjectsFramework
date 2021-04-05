@@ -19,6 +19,7 @@
     <Compile Include="CodeOnlyTest.fs" />
     <Compile Include="ModelTest.fs" />
     <Compile Include="AMultiDatabaseTest.fs" />
+    <Compile Include="AMultiDomainDatabaseTest.fs" />
     <Compile Include="DomainSystemTest.fs" />
     <Compile Include="ModelSystemTest.fs" />
     <Compile Include="CodeSystemTest.fs" />
