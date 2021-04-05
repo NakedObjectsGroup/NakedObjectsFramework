@@ -31,5 +31,14 @@ namespace SimpleDatabase {
             optionsBuilder.UseSqlServer(cs);
             optionsBuilder.UseLazyLoadingProxies();
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+            modelBuilder.Entity<Person>().Ignore(p => p.Parent);
+            modelBuilder.Entity<Person>().ToTable("People", "dbo");
+
+            //modelBuilder.Entity<NameType>().Ignore(p => p.Parent);
+            //modelBuilder.Entity<ComplexType1>().Ignore(p => p.Parent);
+        }
     }
 }

@@ -19,7 +19,7 @@ let persistor =
     let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
     c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
-    setupPersistorForInjectorTesting p
+    setupEF6PersistorForInjectorTesting p
 
 [<TestFixture>]
 type ModelTests() = 

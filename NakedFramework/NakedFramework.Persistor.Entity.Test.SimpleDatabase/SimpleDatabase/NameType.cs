@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using NakedObjects;
 using NakedObjects.Services;
 
@@ -14,6 +15,7 @@ using NakedObjects.Services;
 
 namespace SimpleDatabase {
     [ComplexType]
+    [Owned]
     public class NameType : AbstractTestCode {
         [Root]
         [NotMapped]

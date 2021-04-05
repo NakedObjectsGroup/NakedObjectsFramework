@@ -523,7 +523,15 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         internal void HandleAdded(INakedObjectAdapter nakedObjectAdapter) {
             var oid = (IEntityOid) nakedObjectAdapter.Oid;
-            oid.UpdateKey(GetContext(nakedObjectAdapter.Object).WrappedDbContext.GetKeyValues(nakedObjectAdapter.Object));
+            var key = GetContext(nakedObjectAdapter.Object).WrappedDbContext.GetKeyValues(nakedObjectAdapter.Object);
+
+            if (key is null || !key.Any()) {
+                // complex type ?
+                return;
+            }
+
+
+            oid.UpdateKey(key);
 
             if (nakedObjectAdapter.ResolveState.IsNotPersistent()) {
                 Resolve(nakedObjectAdapter);

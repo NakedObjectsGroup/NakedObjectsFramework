@@ -26,6 +26,8 @@ open NakedFramework.Architecture.Framework
 open NakedFramework.Architecture.Spec
 open NakedObjects.Core.Component
 open System.Reflection
+open NakedFramework.Architecture.Component
+open NakedFramework.Persistor.EFCore.Component
 
 let ModelConfig = 
     let pc = new CodeFirstEntityContextConfiguration()
@@ -44,7 +46,7 @@ let injector = new DomainObjectContainerInjector(serviceList, mockLoggerFactory.
 
 injector.set_Framework (new Mock<INakedObjectsFramework>()).Object
 
-let setupPersistorForInjectorTesting (p : EntityObjectStore) = 
+let setupEF6PersistorForInjectorTesting (p : EntityObjectStore) = 
     p.SetupForTesting
         (injector, 
          Func<IOid, obj, INakedObjectAdapter> AdapterForTest, 
@@ -57,9 +59,26 @@ let setupPersistorForInjectorTesting (p : EntityObjectStore) =
     p.SetupContexts()
     p
 
-let resetForInjectorPersistor (p : EntityObjectStore) = 
+let setupEFCorePersistorForInjectorTesting (p : EFCoreObjectStore) = 
+    p.SetupForTesting
+        (injector, 
+         Func<IOid, obj, INakedObjectAdapter> AdapterForTest, 
+         Action<INakedObjectAdapter, obj>  ReplacePocoForTest, 
+         Action<INakedObjectAdapter>  RemoveAdapterForTest, 
+         Func<INakedObjectAdapter, PropertyInfo, obj, INakedObjectAdapter> AggregateAdapterForTest, 
+         Action<INakedObjectAdapter> handleLoadingTest, 
+         Action<obj> (fun (o) -> ()), 
+         Func<Type, IObjectSpec> loadSpecificationHandler)
     p.SetupContexts()
-    setupPersistorForInjectorTesting p
+    p
+
+let resetForEF6InjectorPersistor (p : EntityObjectStore) = 
+    p.SetupContexts()
+    setupEF6PersistorForInjectorTesting p
+
+let resetForEFCoreInjectorPersistor (p : EFCoreObjectStore) = 
+    p.SetupContexts()
+    setupEFCorePersistorForInjectorTesting p
 
 let ModelLoadTestAssembly() = 
     let obj = new Person()
@@ -68,18 +87,18 @@ let ModelLoadTestAssembly() =
 //let ModelSetup() = ModelLoadTestAssembly()
 let CanCreateEntityPersistor persistor = Assert.IsNotNull(persistor)
 
-let setter (persistor : EntityObjectStore) (person : Person) = 
+let setter (persistor : IObjectStore) (person : Person) = 
     person.Id <- GetNextID<Person> persistor (fun i -> i.Id)
     person.ComplexProperty.Firstname <- uniqueName()
     person.ComplexProperty.Surname <- uniqueName()
     person.ComplexProperty_1.s1 <- uniqueName()
     person.ComplexProperty_1.s2 <- uniqueName()
 
-let CanGetInstanceWithComplexType(persistor : EntityObjectStore) = 
+let CanGetInstanceWithComplexType(persistor : IObjectStore) = 
     let person = persistor.GetInstances<Person>() |> Seq.head
     Assert.IsNotNull(person)
 
-let CanUpdateInstanceWithComplexType(persistor : EntityObjectStore) = 
+let CanUpdateInstanceWithComplexType(persistor : IObjectStore) = 
     let person = persistor.GetInstances<Person>() |> Seq.head
     let name = person.ComplexProperty
     let (on1, on2) = (name.Firstname, name.Surname)
@@ -98,15 +117,25 @@ let CanUpdateInstanceWithComplexType(persistor : EntityObjectStore) =
     toggleAndCheckNames (un1, un2)
     toggleAndCheckNames (on1, on2)
 
-let CanCreateInstanceWithComplexType(persistor : EntityObjectStore) = CanSaveTransientObject persistor (setter persistor)
+let CanCreateInstanceWithComplexType(persistor : IObjectStore) = CanSaveTransientObject persistor (setter persistor)
 let ModelCanGetContextForCollection persistor = CanGetContextForCollection<Person> persistor
 let ModelCanGetContextForNonGenericCollection persistor = CanGetContextForNonGenericCollection<Person> persistor
 let ModelCanGetContextForArray persistor = CanGetContextForArray<Person> persistor
 let ModelCanGetContextForType persistor = CanGetContextForType<Person> persistor
 
-let ModelCanGetContextForComplexType persistor = 
-    CanGetContextForType<Person>(resetForInjectorPersistor persistor)
+let ModelCanGetEF6ContextForComplexType (persistor : EntityObjectStore) = 
+    CanGetContextForType<Person>(resetForEF6InjectorPersistor persistor)
     CanGetContextForType<NameType> persistor
+
+let ModelCanGetEFCoreContextForComplexType (persistor : EFCoreObjectStore) = 
+    CanGetContextForType<Person>(resetForEFCoreInjectorPersistor persistor)
+    CanGetContextForType<NameType> persistor
+
+let ModelCanGetContextForComplexType (persistor : IObjectStore)  =
+    match persistor with 
+    | :? EntityObjectStore as eos -> ModelCanGetEF6ContextForComplexType eos
+    | :? EFCoreObjectStore as efos -> ModelCanGetEFCoreContextForComplexType efos 
+    | _ -> ()
 
 let CheckContainer(person : Person) = 
     let name = person.ComplexProperty
