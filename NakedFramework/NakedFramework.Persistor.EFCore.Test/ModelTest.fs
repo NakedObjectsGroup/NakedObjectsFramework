@@ -8,7 +8,6 @@ module NakedFramework.ModelTest
 
 open NakedObjects
 open ModelTestCode
-open NakedFramework.Persistor.Entity.Configuration
 open NakedObjects.TestTypes
 open NUnit.Framework
 open SimpleDatabase
@@ -17,13 +16,6 @@ open TestCode
 open NakedFramework.Persistor.EFCore.Configuration
 open Microsoft.EntityFrameworkCore
 open NakedFramework.Architecture.Component
-
-//let persistor = 
-//    let c = new EntityObjectStoreConfiguration()
-//    let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
-//    c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-//    let p = getEntityObjectStore c
-//    setupPersistorForInjectorTesting p
 
 let efCorePersistor = 
     let c = new EFCorePersistorConfiguration()

@@ -6,17 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedFramework.EFCoreTestSuite
 
-open NakedFramework.Core.Authentication
 open NakedObjects.Persistor.TestData
 open NakedObjects.Persistor.TestSuite
-open NakedFramework.Persistor.Entity.Configuration
-open NakedFramework.Persistor.Entity.Component
 open NakedObjects.Services
 open NakedObjects.TestTypes
 open NUnit.Framework
 open System
-open System.Data.Entity.Core.Objects.DataClasses
-open System.Security.Principal
 open TestData
 open Microsoft.Extensions.Configuration
 open NakedFramework.Xat.TestCase
@@ -66,7 +61,6 @@ type EFCoreTestSuite() =
            
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = 
-        //System.Data.Entity.Database.SetInitializer(new TestDataInitializer())
         (new EFCoreTestDataContext(csTDCO)).Delete()
         AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     

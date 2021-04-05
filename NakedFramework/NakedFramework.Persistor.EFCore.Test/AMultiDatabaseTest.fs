@@ -10,7 +10,6 @@ open NakedObjects
 open CodeOnlyTestCode
 open DomainTestCode
 open MultiDatabaseTestCode
-open NakedFramework.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NUnit.Framework
 open TestCode
@@ -20,15 +19,6 @@ open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EFCore.Configuration
 open Microsoft.EntityFrameworkCore
 open TestCodeOnly
-
-//let x.multiDatabasePersistor = 
-//    EntityObjectStoreConfiguration.NoValidate <- true
-//    let c = new EntityObjectStoreConfiguration()
-//    c.UsingContext((CodeFirstConfig csMD).DbContext) |> ignore
-//    let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
-//    c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-//    let p = getEntityObjectStore c
-//    setupPersistorForTesting p
 
 let multiDatabasePersistor = 
     let c = new EFCorePersistorConfiguration()

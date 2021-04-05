@@ -19,20 +19,6 @@ open TestTypes
 open TestCode
 open MultiDatabaseTestCode
 
-//let multiDomainDatabasePersistor = 
-//    EntityObjectStoreConfiguration.NoValidate <- true
-
-//    let c = new EntityObjectStoreConfiguration()
-//    let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
-//    c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-//    c.UsingContext((CodeFirstConfig csMD).DbContext) |> ignore
-
-//    let f1 = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
-//    c.UsingContext(Func<Data.Entity.DbContext>(f1)) |> ignore
-
-//    let p = getEntityObjectStore c
-//    setupPersistorForTesting p
-
 let multiDomainDatabasePersistor = 
     let c = new EFCorePersistorConfiguration()
     c.MaximumCommitCycles <- 10
@@ -51,8 +37,6 @@ let multiDomainDatabasePersistor =
     c.Contexts <- [| f; f1; f2 |]
     let p = getEFCoreObjectStore c
     setupEFCorePersistorForTesting p
-
-
 
 let DomainLoadTestAssembly() = 
     let obj = new Address()
