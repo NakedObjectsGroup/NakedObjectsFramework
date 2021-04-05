@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
@@ -85,12 +86,12 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             var entry = dbContext.Entry(originalObject);
             var persisting = entry.State == EntityState.Detached;
-            if (!persisting)
-            {
-                objectToAdd = originalObject;
+            if (persisting) {
+                SetKeyAsNecessary(originalObject, objectToAdd);
+                dbContext.Add(objectToAdd);
             }
             else {
-                dbContext.Add(objectToAdd);
+                objectToAdd = originalObject;
             }
 
             objectToProxyScratchPad[originalObject] = objectToAdd;
@@ -100,9 +101,11 @@ namespace NakedFramework.Persistor.EFCore.Component {
             // if not proxied this should just be the same as adapterForOriginalObjectAdapter
             var proxyAdapter = parent.CreateAdapter(null, objectToAdd);
 
-            SetKeyAsNecessary(originalObject, objectToAdd);
-            //context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", objectToAdd);
-            dbContext.Add(objectToAdd);
+            if (!persisting) {
+                SetKeyAsNecessary(originalObject, objectToAdd);
+                //context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", objectToAdd);
+                dbContext.Add(objectToAdd);
+            }
 
             if (persisting)
             {
@@ -180,6 +183,10 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 context.CurrentSaveRootObjectAdapter = nakedObjectAdapter;
                 objectToProxyScratchPad.Clear();
                 ProxyObjectIfAppropriate(nakedObjectAdapter.Object);
+            }
+            catch (InvalidOperationException e) {
+                var due = new DataUpdateException(e.Message, e);
+                parent.InvokeErrorFacet(due);
             }
             catch (Exception e) {
                 parent.Logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");

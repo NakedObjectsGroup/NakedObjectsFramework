@@ -18,6 +18,7 @@ open TestCode
 open TestCodeOnly
 open TestTypes
 open NakedFramework.Core.Error
+open NakedFramework.Architecture.Component
 
 let categorySetter codeOnlyPersistor (c : Category) = 
     c.ID <- GetNextID<Category> codeOnlyPersistor (fun i -> i.ID)
@@ -125,7 +126,8 @@ let CanGetInstancesIsProxy codeOnlyPersistor = GetInstancesReturnsProxies<Produc
 let CanCreateTransientObject codeOnlyPersistor = CanCreateTransientObject<Product> codeOnlyPersistor
 let CanSaveTransientObjectWithScalarProperties codeOnlyPersistor = CanSaveTransientObject codeOnlyPersistor (productSetter codeOnlyPersistor)
 
-let CreateCountryCode code name (codeOnlyPersistor : EntityObjectStore) = 
+
+let CreateCountryCode code name (codeOnlyPersistor : IObjectStore) = 
     let createCC() = 
         let setter (cc : CountryCode) = 
             cc.Code <- code
@@ -135,7 +137,7 @@ let CreateCountryCode code name (codeOnlyPersistor : EntityObjectStore) =
     let nocc = createCC()
     CreateAndEndTransaction codeOnlyPersistor nocc
 
-let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt(codeOnlyPersistor : EntityObjectStore) = 
+let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt(codeOnlyPersistor : IObjectStore) = 
     CreateCountryCode "keyCode1" "countryName1" codeOnlyPersistor
     try 
         CreateCountryCode "keyCode1" "countryName2" codeOnlyPersistor
@@ -144,7 +146,7 @@ let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt(codeOnlyPersisto
     CreateCountryCode "keyCode2" "countryName2" codeOnlyPersistor
     ()
 
-let CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore(codeOnlyPersistor : EntityObjectStore) = 
+let CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore(codeOnlyPersistor : IObjectStore) = 
     CreateCountryCode "keyCode3" "countryName1" codeOnlyPersistor
     try 
         CreateCountryCode "keyCode3" "countryName2" codeOnlyPersistor
@@ -202,7 +204,7 @@ let CanUpdatePersistentObjectWithScalarPropertiesAbort codeOnlyPersistor =
     let pr1 = First<Product> codeOnlyPersistor
     Assert.AreEqual(origName, pr1.Name)
 
-let CanUpdatePersistentObjectWithReferenceProperties(codeOnlyPersistor : EntityObjectStore) = 
+let CanUpdatePersistentObjectWithReferenceProperties(codeOnlyPersistor : IObjectStore) = 
     let person = First<Person> codeOnlyPersistor
     let origFav = person.Favourite
     
@@ -219,7 +221,7 @@ let CanUpdatePersistentObjectWithReferenceProperties(codeOnlyPersistor : EntityO
     setFavouriteAndSave replFav
     setFavouriteAndSave origFav
 
-let CanUpdatePersistentObjectWithReferencePropertiesAbort(codeOnlyPersistor : EntityObjectStore) = 
+let CanUpdatePersistentObjectWithReferencePropertiesAbort(codeOnlyPersistor : IObjectStore) = 
     let person = First<Person> codeOnlyPersistor
     let origFav = person.Favourite
     
@@ -247,7 +249,7 @@ let CanUpdatePersistentObjectWithCollectionProperties codeOnlyPersistor =
     swapProducts origPr replPr
     swapProducts replPr origPr
 
-let CanPersistingPersistedCalledForCreateInstance(codeOnlyPersistor : EntityObjectStore) = 
+let CanPersistingPersistedCalledForCreateInstance(codeOnlyPersistor : IObjectStore) = 
     let nextId = GetNextID<Product> codeOnlyPersistor (fun i -> i.ID)
     persistingCount <- 0
     persistedCount <- 0
@@ -275,58 +277,58 @@ let CanUpdatingUpdatedCalledForChange codeOnlyPersistor =
     Assert.AreEqual(1, updatingCount, "updating")
     Assert.AreEqual(1, updatedCount, "updated")
 
-let CanGetKeyForType(codeOnlyPersistor : EntityObjectStore) = 
+let CanGetKeyForType(codeOnlyPersistor : IObjectStore) = 
     let keys = codeOnlyPersistor.GetKeys(typeof<Product>)
     Assert.AreEqual(1, keys.Length)
     Assert.AreEqual("ID", keys.[0].Name)
 
 let GetNextAddressID codeOnlyPersistor = GetNextID<Address> codeOnlyPersistor (fun i -> i.ID)
 
-let CanCreateDomesticSubclass(codeOnlyPersistor : EntityObjectStore) = 
+let CanCreateDomesticSubclass(codeOnlyPersistor : IObjectStore) = 
     let address = codeOnlyPersistor.CreateInstance<DomesticAddress>(null)
     address.ID <- GetNextAddressID codeOnlyPersistor
     address.Lines <- uniqueName()
     address.Postcode <- uniqueName()
     CreateAndEndTransaction codeOnlyPersistor address
 
-let CanCreateInternationalSubclass(codeOnlyPersistor : EntityObjectStore) = 
+let CanCreateInternationalSubclass(codeOnlyPersistor : IObjectStore) = 
     let address = codeOnlyPersistor.CreateInstance<InternationalAddress>(null)
     address.ID <- GetNextAddressID codeOnlyPersistor
     address.Lines <- uniqueName()
     address.Country <- uniqueName()
     CreateAndEndTransaction codeOnlyPersistor address
 
-let CanCreateBaseClass(codeOnlyPersistor : EntityObjectStore) = 
+let CanCreateBaseClass(codeOnlyPersistor : IObjectStore) = 
     let address = codeOnlyPersistor.CreateInstance<Address>(null)
     address.ID <- GetNextAddressID codeOnlyPersistor
     address.Lines <- uniqueName()
     CreateAndEndTransaction codeOnlyPersistor address
 
-let CanGetBaseClassGeneric(codeOnlyPersistor : EntityObjectStore) = 
+let CanGetBaseClassGeneric(codeOnlyPersistor : IObjectStore) = 
     let baseClasses = codeOnlyPersistor.GetInstances<Address>()
     checkCountAndType baseClasses typeof<Address>
 
-let CanGetBaseClassByType(codeOnlyPersistor : EntityObjectStore) = 
+let CanGetBaseClassByType(codeOnlyPersistor : IObjectStore) = 
     let baseClasses = codeOnlyPersistor.GetInstances(typeof<Address>) |> Seq.cast<Address>
     checkCountAndType baseClasses typeof<Address>
 
-let CanGetDomesticSubclassClassGeneric(codeOnlyPersistor : EntityObjectStore) = 
+let CanGetDomesticSubclassClassGeneric(codeOnlyPersistor : IObjectStore) = 
     let subClasses = codeOnlyPersistor.GetInstances<DomesticAddress>()
     checkCountAndType subClasses typeof<DomesticAddress>
 
-let CanGetInternationalSubclassClassGeneric(codeOnlyPersistor : EntityObjectStore) = 
+let CanGetInternationalSubclassClassGeneric(codeOnlyPersistor : IObjectStore) = 
     let subClasses = codeOnlyPersistor.GetInstances<InternationalAddress>()
     checkCountAndType subClasses typeof<InternationalAddress>
 
-let CanGetDomesticSubclassClassByType(codeOnlyPersistor : EntityObjectStore) = 
+let CanGetDomesticSubclassClassByType(codeOnlyPersistor : IObjectStore) = 
     let subClasses = codeOnlyPersistor.GetInstances(typeof<DomesticAddress>) |> Seq.cast<DomesticAddress>
     checkCountAndType subClasses typeof<DomesticAddress>
 
-let CanGetInternationalSubclassClassByType(codeOnlyPersistor : EntityObjectStore) = 
+let CanGetInternationalSubclassClassByType(codeOnlyPersistor : IObjectStore) = 
     let subClasses = codeOnlyPersistor.GetInstances(typeof<InternationalAddress>) |> Seq.cast<InternationalAddress>
     checkCountAndType subClasses typeof<InternationalAddress>
 
-let CanNavigateToSubclass(codeOnlyPersistor : EntityObjectStore) = 
+let CanNavigateToSubclass(codeOnlyPersistor : IObjectStore) = 
     let getPersonWithName name = 
         codeOnlyPersistor.GetInstances<Person>()
         |> Seq.filter (fun i -> i.Name = name)
@@ -414,7 +416,7 @@ let CodeOnlyCanGetContextForNonGenericCollection persistor = CanGetContextForNon
 let CodeOnlyCanGetContextForArray persistor = CanGetContextForArray<Product> persistor
 let CodeOnlyCanGetContextForType persistor = CanGetContextForType<Product> persistor
 
-let GetKeysReturnsKey(persistor : EntityObjectStore) = 
+let GetKeysReturnsKey(persistor : IObjectStore) = 
     let l = First<Person> persistor
     let keys = persistor.GetKeys(l.GetType())
     Assert.AreEqual(1, keys |> Seq.length)

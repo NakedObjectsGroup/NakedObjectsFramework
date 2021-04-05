@@ -138,7 +138,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private void PostSaveWrapUp() => contexts.ForEach(c =>c.PostSaveWrapUp());
 
-        private void InvokeErrorFacet(Exception exception)
+        internal void InvokeErrorFacet(Exception exception)
         {
             var newMessage = exception.Message;
 
@@ -181,9 +181,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private INakedObjectAdapter GetSourceNakedObject(DbUpdateException oce)
         {
-            //var trigger = oce.StateEntries.Where(e => !e.IsRelationship).Select(e => e.Entity).SingleOrDefault();
-            //return createAdapter(null, trigger);
-            throw new NotImplementedException();
+            var trigger = oce.Entries.Select(e => e.Entity).FirstOrDefault();
+            return CreateAdapter(null, trigger);
         }
 
         public void EndTransaction()
