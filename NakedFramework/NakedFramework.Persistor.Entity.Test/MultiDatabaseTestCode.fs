@@ -16,6 +16,7 @@ open TestCode
 open TestCodeOnly
 open TestTypes
 open NakedFramework.Core.Error
+open NakedFramework.Architecture.Component
 
 let CanCreateEntityPersistor multiDatabasePersistor = Assert.IsNotNull(multiDatabasePersistor)
 
@@ -29,7 +30,7 @@ let MultiDatabaseSetup() =
     System.Data.Entity.Database.SetInitializer(new CodeOnlyTestCode.CodeFirstInitializer())
     ()
 
-let CanQueryEachConnection<'t, 'u when 't : not struct and 'u : not struct>(multiDatabasePersistor : EntityObjectStore) = 
+let CanQueryEachConnection<'t, 'u when 't : not struct and 'u : not struct>(multiDatabasePersistor : IObjectStore) = 
     let p1 = multiDatabasePersistor.GetInstances<'t>() |> Seq.head
     let p1 = multiDatabasePersistor.GetInstances<'t>() |> Seq.head
     let p2 = multiDatabasePersistor.GetInstances<'u>() |> Seq.head
@@ -41,7 +42,7 @@ let CanQueryEachConnection<'t, 'u when 't : not struct and 'u : not struct>(mult
 let CanQueryEachConnectionMulti multiDatabasePersistor = CanQueryEachConnection<TestCodeOnly.Product, NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
 let CanQueryEachDomainConnection multiDatabasePersistor = CanQueryEachConnection<SimpleDatabase.Person, NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
 
-let CanCreateEachConnection(multiDatabasePersistor : EntityObjectStore) = 
+let CanCreateEachConnection(multiDatabasePersistor : IObjectStore) = 
     let productSetter (pr : TestCodeOnly.Product) = 
         pr.ID <- 1
         pr.Name <- uniqueName()
@@ -63,7 +64,7 @@ let CanCreateEachConnectionMultiTimes multiDatabasePersistor =
     CanCreateEachConnection multiDatabasePersistor
     CanCreateEachConnection multiDatabasePersistor
 
-let CrossContextTransactionOK(multiDatabasePersistor : EntityObjectStore) = 
+let CrossContextTransactionOK(multiDatabasePersistor : IObjectStore) = 
     let pr = multiDatabasePersistor.GetInstances<TestCodeOnly.Product>() |> Seq.head
     let sr = multiDatabasePersistor.GetInstances<ScrapReason>() |> Seq.head
     let origPrName = pr.Name
@@ -83,7 +84,7 @@ let CrossContextTransactionOK(multiDatabasePersistor : EntityObjectStore) =
     Assert.AreEqual(origPrName, pr.Name)
     Assert.AreEqual(origSrName, sr.Name)
 
-let CrossContextTransactionRollback(multiDatabasePersistor : EntityObjectStore) = 
+let CrossContextTransactionRollback(multiDatabasePersistor : IObjectStore) = 
     let pr = multiDatabasePersistor.GetInstances<TestCodeOnly.Product>() |> Seq.head
     let sr = multiDatabasePersistor.GetInstances<ScrapReason>() |> Seq.head
     let sr1 = multiDatabasePersistor.GetInstances<ScrapReason>() |> Seq.item 1

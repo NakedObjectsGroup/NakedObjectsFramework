@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -609,9 +610,48 @@ namespace NakedFramework.Persistor.EFCore.Component {
         public IList<(object original, object updated)> ExecuteAttachObjectCommandUpdate(IDetachedObjects objects) =>
             Execute(new EFCorePersistUpdateDetachedObjectCommand(objects, this));
 
-        public LocalContext GetContext(object o) => contexts.First();
+        private LocalContext FindContext(Type type) =>
+            contexts.SingleOrDefault(c => c.GetIsOwned(type)) ??
+            contexts.Single(c => c.GetIsKnown(type));
 
-        private LocalContext GetContext(Type t) => contexts.First();
+        private LocalContext GetContext(Type type)
+        {
+            try
+            {
+                return contexts.Length == 1 ? contexts.Single() : FindContext(type);
+            }
+            catch (Exception e)
+            {
+                throw new NakedObjectDomainException(Logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.EntityContextError, type.FullName)), e);
+            }
+        }
+
+        internal LocalContext GetContext(object domainObject) => GetContext(GetTypeToUse(domainObject));
+
+        private Type GetTypeToUse(object domainObject)
+        {
+            if (domainObject == null)
+            {
+                throw new NakedObjectSystemException(Logger.LogAndReturn("Could not find Entity Framework context for null object"));
+            }
+
+            var objectType = domainObject.GetType();
+            if (CollectionUtils.IsGenericEnumerableOfRefType(objectType))
+            {
+                return objectType.GetGenericArguments().First();
+            }
+
+            if (objectType.HasElementType)
+            {
+                return objectType.GetElementType();
+            }
+
+            return CollectionUtils.IsCollection(objectType)
+                ? GetTypeToUse(((IEnumerable)domainObject).Cast<object>().FirstOrDefault())
+                : objectType;
+        }
+
+        private LocalContext GetContext(INakedObjectAdapter nakedObjectAdapter) => GetContext(nakedObjectAdapter.Object);
 
         internal static bool EmptyKey(object key) =>
             key switch {
