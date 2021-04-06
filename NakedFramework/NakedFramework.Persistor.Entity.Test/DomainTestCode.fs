@@ -260,8 +260,8 @@ let CanUpdatePersistentObjectWithCollectionProperties persistor =
     let (psc, origPc, replPc) = GetOrigAndReplProductCategories persistor
     
     let swapSubcatsForCollection (oldPc : ProductCategory) (newPc : ProductCategory) = 
-        oldPc.ProductSubcategories.Remove(psc)  |> ignore
         newPc.ProductSubcategories.Add(psc)
+        //oldPc.ProductSubcategories.Remove(psc)  |> ignore
         SaveAndEndTransaction persistor origPc
         SaveAndEndTransaction persistor newPc
         Assert.AreEqual(newPc, psc.ProductCategory)

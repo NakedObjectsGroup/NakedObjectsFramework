@@ -8,6 +8,7 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
+using System;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -97,7 +98,9 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
         {
             optionsBuilder.UseSqlServer(cs);
             optionsBuilder.UseLazyLoadingProxies();
-            //optionsBuilder.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
+            //optionsBuilder.EnableDetailedErrors();
+            //optionsBuilder.EnableSensitiveDataLogging();
+            //optionsBuilder.LogTo(m => Console.WriteLine(m), LogLevel.Trace);
         }
 
 

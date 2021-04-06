@@ -104,7 +104,6 @@ type EFCoreDomainTests() =
         member x.TestUpdatePersistentObjectWithReferencePropertiesDoFixup() = CanUpdatePersistentObjectWithReferencePropertiesDoFixup x.persistor
   
         [<Test>]
-        [<Ignore("")>]
         member x.TestUpdatePersistentObjectWithCollectionProperties() = CanUpdatePersistentObjectWithCollectionProperties x.persistor
   
         [<Test>]
