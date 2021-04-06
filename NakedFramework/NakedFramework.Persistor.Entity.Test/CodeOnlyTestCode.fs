@@ -234,7 +234,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesAbort(codeOnlyPersistor : IO
     codeOnlyPersistor.AbortTransaction()
     codeOnlyPersistor.EndTransaction()
     let person1 = First<Person> codeOnlyPersistor
-    Assert.AreEqual(origFav, person1.Favourite)
+    Assert.AreEqual(origFav.Name, person1.Favourite.Name)
 
 let CanUpdatePersistentObjectWithCollectionProperties codeOnlyPersistor = 
     let c = First<Category> codeOnlyPersistor
@@ -352,7 +352,11 @@ let CanGetNonPersistedClass codeOnlyPersistor =
     try 
         let abstractPerson = First<AbstractPerson> codeOnlyPersistor
         Assert.Fail()
-    with expected -> Assert.IsInstanceOf(typeof<NakedObjectApplicationException>, expected)
+    with expected -> 
+        match expected with 
+        | :? NakedObjectApplicationException -> ()
+        | :? InvalidOperationException -> ()
+        | _ -> Assert.Fail("Wrong exception type")
 
 let CanContainerInjectionCalledForNewInstance codeOnlyPersistor = 
     injectedObjects.Clear()
@@ -391,7 +395,7 @@ let CanUpdatePersistentSubclassWithScalarProperties codeOnlyPersistor =
     setNameAndSave replLines
     setNameAndSave origLines
 
-let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies codeOnlyPersistor = 
+let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies (codeOnlyPersistor : IObjectStore) = 
     let c = CreateAndSetup<Category> codeOnlyPersistor (categorySetter codeOnlyPersistor)
     let pr = CreateAndSetup codeOnlyPersistor (productSetter codeOnlyPersistor)
     Assert.IsFalse(EntityUtils.IsEntityProxy(c.GetType()))
@@ -403,9 +407,9 @@ let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies codeOn
         codeOnlyPersistor.GetInstances<Category>()
         |> Seq.filter (fun i -> i.Name = c.Name)
         |> Seq.head
-    Assert.IsTrue(EntityUtils.IsEntityProxy(proxiedc.GetType()))
+    Assert.IsTrue(IsEFCoreOrEF6Proxy(proxiedc.GetType()))
     let proxiedpr = proxiedc.Products |> Seq.head
-    Assert.IsTrue(EntityUtils.IsEntityProxy(proxiedpr.GetType()))
+    Assert.IsTrue(IsEFCoreOrEF6Proxy(proxiedpr.GetType()))
 
 let CanGetObjectBySingleKey codeOnlyPersistor = 
     let key = GetMaxID<Product> codeOnlyPersistor (fun k -> k.ID)

@@ -209,7 +209,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesAbort persistor =
     persistor.AbortTransaction()
     persistor.EndTransaction()
     let psc1 = First<ProductSubcategory> persistor
-    Assert.AreEqual(origPc, psc1.ProductCategory)
+    Assert.AreEqual(origPc.Name, psc1.ProductCategory.Name)
 
 let CanUpdatePersistentObjectWithReferencePropertiesAbortWithResolve persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategoriesWithResolve persistor

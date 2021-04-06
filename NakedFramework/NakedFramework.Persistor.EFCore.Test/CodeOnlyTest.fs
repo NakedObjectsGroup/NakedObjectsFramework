@@ -84,7 +84,7 @@ type CodeOnlyTests() =
         member x.TestUpdatePersistentObjectWithReferenceProperties() = CanUpdatePersistentObjectWithReferenceProperties codeOnlyPersistor
         
         [<Test>]
-        [<Ignore("FIX")>]
+        [<Ignore("")>]
         member x.TestUpdatePersistentObjectWithCollectionProperties() = CanUpdatePersistentObjectWithCollectionProperties codeOnlyPersistor
         
         [<Test>]
@@ -133,7 +133,6 @@ type CodeOnlyTests() =
         member x.TestGetClassWithNonPersistedBase() = CanGetClassWithNonPersistedBase codeOnlyPersistor
         
         [<Test>]
-        [<Ignore("FIX")>]
         member x.TestGetNonPersistedClass() = CanGetNonPersistedClass codeOnlyPersistor
         
         [<Test>]
@@ -152,7 +151,6 @@ type CodeOnlyTests() =
         member x.TestUpdatePersistentSubclassWithScalarProperties() = CanUpdatePersistentSubclassWithScalarProperties codeOnlyPersistor
         
         [<Test>]
-        [<Ignore("FIX")>]
         member x.TestSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
             CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies codeOnlyPersistor
         
@@ -160,11 +158,9 @@ type CodeOnlyTests() =
         member x.TestSaveTransientObjectWithTransientCollection() = CanSaveTransientObjectWithTransientCollection codeOnlyPersistor
         
         [<Test>]
-        [<Ignore("FIX")>]
         member x.TestUpdatePersistentObjectWithScalarPropertiesAbort() = CanUpdatePersistentObjectWithScalarPropertiesAbort codeOnlyPersistor
         
         [<Test>]
-         [<Ignore("FIX")>]
         member x.TestUpdatePersistentObjectWithReferencePropertiesAbort() = CanUpdatePersistentObjectWithReferencePropertiesAbort codeOnlyPersistor
         
         [<Test>]

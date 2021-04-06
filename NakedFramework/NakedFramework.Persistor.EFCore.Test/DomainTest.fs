@@ -91,7 +91,6 @@ type EFCoreDomainTests() =
         member x.TestSaveTransientObjectWithTransientReferenceProperty() = CanSaveTransientObjectWithTransientReferenceProperty x.persistor
   
         [<Test>]
-        [<Ignore("FIX!")>]
         member x.TestSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
             CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies x.persistor
   
@@ -105,7 +104,7 @@ type EFCoreDomainTests() =
         member x.TestUpdatePersistentObjectWithReferencePropertiesDoFixup() = CanUpdatePersistentObjectWithReferencePropertiesDoFixup x.persistor
   
         [<Test>]
-        [<Ignore("FIX!")>]
+        [<Ignore("")>]
         member x.TestUpdatePersistentObjectWithCollectionProperties() = CanUpdatePersistentObjectWithCollectionProperties x.persistor
   
         [<Test>]
@@ -154,7 +153,6 @@ type EFCoreDomainTests() =
         member x.TestCanUpdatePersistentObjectWithScalarPropertiesAbort() = CanUpdatePersistentObjectWithScalarPropertiesAbort x.persistor
   
         [<Test>]
-        [<Ignore("FIX!")>]
         member x.TestUpdatePersistentObjectWithReferencePropertiesAbort() = CanUpdatePersistentObjectWithReferencePropertiesAbort x.persistor
   
         [<Test>]

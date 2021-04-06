@@ -115,7 +115,6 @@ type AMultiDatabaseTests() =
             DomainTestCode.CanSaveTransientObjectWithTransientReferenceProperty x.multiDatabasePersistor
         
         [<Test>] 
-        [<Ignore("FIX")>]
         member x.TestSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
             DomainTestCode.CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies x.multiDatabasePersistor
         
@@ -130,7 +129,7 @@ type AMultiDatabaseTests() =
             DomainTestCode.CanUpdatePersistentObjectWithReferencePropertiesDoFixup x.multiDatabasePersistor
         
         [<Test>]
-        [<Ignore("FIX")>]
+        [<Ignore("")>]
         member x.TestUpdatePersistentObjectWithCollectionProperties() = DomainTestCode.CanUpdatePersistentObjectWithCollectionProperties x.multiDatabasePersistor
         
         [<Test>]
@@ -186,7 +185,6 @@ type AMultiDatabaseTests() =
             DomainTestCode.CanUpdatePersistentObjectWithScalarPropertiesAbort x.multiDatabasePersistor
         
         [<Test>]
-        [<Ignore("FIX")>]
         member x.TestUpdatePersistentObjectWithReferencePropertiesAbort() = 
             DomainTestCode.CanUpdatePersistentObjectWithReferencePropertiesAbort x.multiDatabasePersistor
         
@@ -259,7 +257,7 @@ type AMultiDatabaseTests() =
             CodeOnlyTestCode.CanUpdatePersistentObjectWithReferenceProperties x.multiDatabasePersistor
         
         [<Test>]
-        [<Ignore("FIX")>]
+        [<Ignore("")>]
         member x.TestCodeOnlyUpdatePersistentObjectWithCollectionProperties() = 
             CodeOnlyTestCode.CanUpdatePersistentObjectWithCollectionProperties x.multiDatabasePersistor
         
@@ -332,7 +330,6 @@ type AMultiDatabaseTests() =
             CodeOnlyTestCode.CanUpdatePersistentSubclassWithScalarProperties x.multiDatabasePersistor
         
         [<Test>]
-        [<Ignore("FIX")>]
         member x.TestCodeOnlySaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
             CodeOnlyTestCode.CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies x.multiDatabasePersistor
         
@@ -345,7 +342,6 @@ type AMultiDatabaseTests() =
             CodeOnlyTestCode.CanUpdatePersistentObjectWithScalarPropertiesAbort x.multiDatabasePersistor
         
         [<Test>]
-        [<Ignore("FIX")>]
         member x.TestCodeOnlyUpdatePersistentObjectWithReferencePropertiesAbort() = 
             CodeOnlyTestCode.CanUpdatePersistentObjectWithReferencePropertiesAbort x.multiDatabasePersistor
         
