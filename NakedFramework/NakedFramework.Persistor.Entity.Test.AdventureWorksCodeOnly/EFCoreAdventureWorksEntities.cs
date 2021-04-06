@@ -119,9 +119,9 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
             modelBuilder.Entity<SpecialOffer>().ToTable("SpecialOffer", "Sales");
             modelBuilder.Entity<SpecialOfferProduct>().ToTable("SpecialOfferProduct", "Sales");
             modelBuilder.Entity<CustomerAddress>().ToTable("CustomerAddress", "Sales");
-
             modelBuilder.Entity<CountryRegion>().ToTable("CountryRegion", "Person");
-
+            modelBuilder.Entity<ProductInventory>().ToTable("ProductInventory", "Production");
+            modelBuilder.Entity<WorkOrderRouting>().ToTable("WorkOrderRouting", "Production");
 
             modelBuilder.Entity<ContactCreditCard>().HasKey(k => new { k.ContactID, k.CreditCardID });
             modelBuilder.Entity<CountryRegionCurrency>().HasKey(k => new { k.CountryRegionCode, k.CurrencyCode });

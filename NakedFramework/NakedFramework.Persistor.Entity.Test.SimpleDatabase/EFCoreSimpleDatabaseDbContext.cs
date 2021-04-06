@@ -8,6 +8,8 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
+using System;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace SimpleDatabase {
@@ -39,6 +41,11 @@ namespace SimpleDatabase {
 
             //modelBuilder.Entity<NameType>().Ignore(p => p.Parent);
             //modelBuilder.Entity<ComplexType1>().Ignore(p => p.Parent);
+
+            //modelBuilder.Entity<Food>().Ignore(f => f.Person);
+
+            modelBuilder.Entity<Person>().HasMany(p => p.Food).WithOne(f => f.Person).HasForeignKey("Person_Id");
+     
         }
     }
 }

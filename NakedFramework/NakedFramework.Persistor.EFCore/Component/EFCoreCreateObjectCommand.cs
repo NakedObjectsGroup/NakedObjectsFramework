@@ -76,7 +76,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private object ProxyObject(object originalObject, INakedObjectAdapter adapterForOriginalObjectAdapter) {
-            var objectToAdd = Activator.CreateInstance(originalObject.GetEFCoreProxiedType());
+            var objectToAdd = context.WrappedDbContext.CreateProxy(originalObject.GetEFCoreProxiedType());
             //dbContext.Add(objectToAdd);
 
             //var proxied = objectToAdd.GetType() != originalObject.GetType();
