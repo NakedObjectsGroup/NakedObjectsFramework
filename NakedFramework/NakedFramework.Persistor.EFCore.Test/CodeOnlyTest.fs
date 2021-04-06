@@ -84,7 +84,6 @@ type CodeOnlyTests() =
         member x.TestUpdatePersistentObjectWithReferenceProperties() = CanUpdatePersistentObjectWithReferenceProperties codeOnlyPersistor
         
         [<Test>]
-        [<Ignore("")>]
         member x.TestUpdatePersistentObjectWithCollectionProperties() = CanUpdatePersistentObjectWithCollectionProperties codeOnlyPersistor
         
         [<Test>]

@@ -9,10 +9,10 @@ module NakedObjects.SystemTestCode
 
 open NakedFramework.Architecture.Adapter
 open NakedFramework.Core.Resolve
-open NakedFramework.Persistor.Entity.Adapter
 open NUnit.Framework
 open NakedFramework.Architecture.Framework
 open NakedFramework.Architecture.Spec
+open NakedFramework.Core.Persist
 
 let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
     match obj with

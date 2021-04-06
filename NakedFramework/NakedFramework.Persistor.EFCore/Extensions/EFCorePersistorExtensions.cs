@@ -13,10 +13,10 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Core.Persist;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Component;
 using NakedFramework.Persistor.EFCore.Configuration;
-using NakedFramework.Persistor.Entity.Component;
 
 namespace NakedFramework.Persistor.EFCore.Extensions {
     public static class EFCorePersistorExtensions {

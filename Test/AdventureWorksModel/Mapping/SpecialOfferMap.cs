@@ -1,4 +1,6 @@
 using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AdventureWorksModel
 {
@@ -35,6 +37,41 @@ namespace AdventureWorksModel
             Property(t => t.MaxQty).HasColumnName("MaxQty");
             Property(t => t.rowguid).HasColumnName("rowguid");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<SpecialOffer> builder)
+        {
+            builder.HasKey(t => t.SpecialOfferID);
+
+            // Properties
+            builder.Property(t => t.Description)
+                   .IsRequired()
+                   .HasMaxLength(255);
+
+            builder.Property(t => t.Type)
+                   .IsRequired()
+                   .HasMaxLength(50);
+
+            builder.Property(t => t.Category)
+                   .IsRequired()
+                   .HasMaxLength(50);
+
+            // Table & Column Mappings
+            builder.ToTable("SpecialOffer", "Sales");
+            builder.Property(t => t.SpecialOfferID).HasColumnName("SpecialOfferID");
+            builder.Property(t => t.Description).HasColumnName("Description");
+            builder.Property(t => t.DiscountPct).HasColumnName("DiscountPct");
+            builder.Property(t => t.Type).HasColumnName("Type");
+            builder.Property(t => t.Category).HasColumnName("Category");
+            builder.Property(t => t.StartDate).HasColumnName("StartDate");
+            builder.Property(t => t.EndDate).HasColumnName("EndDate");
+            builder.Property(t => t.MinQty).HasColumnName("MinQty");
+            builder.Property(t => t.MaxQty).HasColumnName("MaxQty");
+            builder.Property(t => t.rowguid).HasColumnName("rowguid");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
         }
     }
 }

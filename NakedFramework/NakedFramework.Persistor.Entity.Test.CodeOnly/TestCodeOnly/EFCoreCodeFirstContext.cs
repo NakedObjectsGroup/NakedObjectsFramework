@@ -9,7 +9,10 @@
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
+
+using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace TestCodeOnly {
     public class EFCoreCodeFirstContext : DbContext {
@@ -34,6 +37,9 @@ namespace TestCodeOnly {
         {
             optionsBuilder.UseSqlServer(cs);
             optionsBuilder.UseLazyLoadingProxies();
+            //optionsBuilder.EnableDetailedErrors();
+            //optionsBuilder.EnableSensitiveDataLogging();
+            //optionsBuilder.LogTo(m => Console.WriteLine(m), LogLevel.Trace);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {

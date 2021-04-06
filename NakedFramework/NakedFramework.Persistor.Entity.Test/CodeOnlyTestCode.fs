@@ -25,7 +25,7 @@ let categorySetter codeOnlyPersistor (c : Category) =
     c.Name <- uniqueName()
 
 let productSetter codeOnlyPersistor (pr : Product) = 
-    pr.ID <- GetNextID<Product> codeOnlyPersistor (fun i -> i.ID)
+    //pr.ID <- GetNextID<Product> codeOnlyPersistor (fun i -> i.ID)
     pr.Name <- uniqueName()
 
 let createProductWithID (pr : Product) id codeOnlyPersistor = 

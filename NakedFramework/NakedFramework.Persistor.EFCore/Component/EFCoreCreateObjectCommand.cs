@@ -17,7 +17,6 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
-using NakedFramework.Persistor.Entity.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreCreateObjectCommand : ICreateObjectCommand {
@@ -130,7 +129,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private void CallPersistingPersistedForComplexObjects(INakedObjectAdapter parentAdapter) {
-            var complexMembers = dbContext.GetComplexMembers(parentAdapter.Object.GetEntityProxiedType());
+            var complexMembers = dbContext.GetComplexMembers(parentAdapter.Object.GetEFCoreProxiedType());
             foreach (var pi in complexMembers) {
                 var complexObject = pi.GetValue(parentAdapter.Object, null);
                 var childAdapter = parent.CreateAggregatedAdapter(nakedObjectAdapter, pi, complexObject);

@@ -129,7 +129,6 @@ type AMultiDatabaseTests() =
             DomainTestCode.CanUpdatePersistentObjectWithReferencePropertiesDoFixup x.multiDatabasePersistor
         
         [<Test>]
-        [<Ignore("")>]
         member x.TestUpdatePersistentObjectWithCollectionProperties() = DomainTestCode.CanUpdatePersistentObjectWithCollectionProperties x.multiDatabasePersistor
         
         [<Test>]
@@ -257,7 +256,6 @@ type AMultiDatabaseTests() =
             CodeOnlyTestCode.CanUpdatePersistentObjectWithReferenceProperties x.multiDatabasePersistor
         
         [<Test>]
-        [<Ignore("")>]
         member x.TestCodeOnlyUpdatePersistentObjectWithCollectionProperties() = 
             CodeOnlyTestCode.CanUpdatePersistentObjectWithCollectionProperties x.multiDatabasePersistor
         

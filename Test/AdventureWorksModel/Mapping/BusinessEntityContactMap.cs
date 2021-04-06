@@ -1,4 +1,6 @@
 using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AdventureWorksModel {
     public class BusinessEntityContactMap : EntityTypeConfiguration<BusinessEntityContact>
@@ -10,6 +12,17 @@ namespace AdventureWorksModel {
 
             // Table & Column Mappings
             ToTable("BusinessEntityContact", "Person");
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<BusinessEntityContact> builder)
+        {
+            builder.HasKey(t => new { t.BusinessEntityID, t.PersonID, t.ContactTypeID });
+
+            // Table & Column Mappings
+            builder.ToTable("BusinessEntityContact", "Person");
         }
     }
 }
