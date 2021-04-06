@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -41,10 +42,11 @@ namespace NakedFrameworkClient.TestFramework
             var element = enclosingView.element;
             var oldText =element.Text;
             var pane = helper.GetNewPane(enclosingView.pane, button);
-            helper.Click(GetEnabledOKButton());
+            helper.Click(GetEnabledOKButton());          
             if (enclosingView is ObjectView && button == MouseClick.MainButton)
             {
-                helper.wait.Until(dr => element.IsStale() || element.Text != oldText);
+                Thread.Sleep(1000);
+                helper.wait.Until(dr => element.Text != oldText);
             }
             return helper.GetObjectView(pane);
         }
@@ -53,6 +55,7 @@ namespace NakedFrameworkClient.TestFramework
         {
             var ok = GetEnabledOKButton();
             helper.Click(ok, button);
+            Thread.Sleep(100);
             return helper.WaitForNewListView(enclosingView, button);
         }
 
@@ -60,6 +63,7 @@ namespace NakedFrameworkClient.TestFramework
         {
             var ok = GetEnabledOKButton();
             helper.Click(ok, button);
+            Thread.Sleep(100);
             return helper.WaitForUpdatedListView(enclosingView, button);
         }
 

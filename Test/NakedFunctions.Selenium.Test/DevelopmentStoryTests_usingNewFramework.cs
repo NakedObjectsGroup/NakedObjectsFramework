@@ -101,7 +101,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             dialog.ClickOKToViewNewList().AssertTitleIs("Find Product By Name").GetRowFromList(0).AssertTitleIs("Handlebar Tube");
         }
 
-        //[TestMethod]
+       // [TestMethod]
         public void ObjectActionThatReturnsJustAContext()
         {
             var offer = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--5")
@@ -256,7 +256,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             .GetProperty("Rowguid").AssertValueIs("683de5dd-521a-47d4-a573-06a3cdb1bc5d");
         }
 
-        [TestMethod]
+       // [TestMethod]
         public void ParameterChoicesSimple()
         {
             var emp = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Employee--105")

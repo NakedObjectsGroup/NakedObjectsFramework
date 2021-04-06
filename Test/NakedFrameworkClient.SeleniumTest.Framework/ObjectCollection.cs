@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -30,6 +31,7 @@ namespace NakedFrameworkClient.TestFramework
         public ObjectCollection ClickListView()
         {
             element.FindElement(By.CssSelector(".icon.list")).Click();
+            Thread.Sleep(500);
             helper.WaitForChildElement(element, "tbody tr");
             return this;
         }
