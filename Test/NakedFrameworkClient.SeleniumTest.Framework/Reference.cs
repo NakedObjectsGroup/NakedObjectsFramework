@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
+using System.Threading;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -17,6 +18,7 @@ namespace NakedFrameworkClient.TestFramework
         public ObjectView Click(MouseClick button = MouseClick.MainButton)
         {
             helper.Click(element, button);
+            Thread.Sleep(100);
             return helper.WaitForNewObjectView(enclosingView, button);
         }
 

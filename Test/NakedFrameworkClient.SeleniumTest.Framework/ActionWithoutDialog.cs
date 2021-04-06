@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using System.Threading;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -16,6 +17,7 @@ namespace NakedFrameworkClient.TestFramework
         {
             element.AssertIsEnabled();
             helper.Click(element, button);
+            Thread.Sleep(100);
             return helper.WaitForNewObjectView(enclosingView, button);
         }
 
@@ -23,6 +25,7 @@ namespace NakedFrameworkClient.TestFramework
         {
             element.AssertIsEnabled();
             helper.Click(element, button);
+            Thread.Sleep(100);
             return helper.WaitForNewListView(enclosingView, button);
         }
     }
