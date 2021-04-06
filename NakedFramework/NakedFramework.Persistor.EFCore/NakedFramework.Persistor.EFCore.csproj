@@ -22,6 +22,5 @@
     <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedFramework.Core\NakedFramework.Core.csproj" />
     <ProjectReference Include="..\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
-    <ProjectReference Include="..\NakedFramework.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
   </ItemGroup>
 </Project>

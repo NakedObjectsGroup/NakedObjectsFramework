@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity.Core;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
@@ -16,14 +15,13 @@ using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Persistor.Entity.Adapter {
+namespace NakedFramework.Core.Persist {
     public sealed class EntityOid : IEncodedToStrings, IEntityOid {
         private readonly ILogger<EntityOid> logger;
         private readonly IMetamodelManager metamodel;
         private int cachedHashCode;
         private string cachedToString;
         private EntityOid previous;
-        public EntityKey EntityKey { get; set; }
 
         private void CacheState() {
             cachedHashCode = HashCodeUtils.Seed;
@@ -51,7 +49,6 @@ namespace NakedFramework.Persistor.Entity.Adapter {
             helper.Add(TypeName);
             helper.Add(Key);
             helper.Add(IsTransient);
-            helper.AddSerializable(EntityKey);
             helper.Add(HasPrevious);
             if (HasPrevious) {
                 helper.Add(previous);
@@ -66,7 +63,6 @@ namespace NakedFramework.Persistor.Entity.Adapter {
             helper.Add(TypeName);
             helper.Add(Key);
             helper.Add(IsTransient);
-            helper.AddSerializable(EntityKey);
 
             return helper.ToArray();
         }
@@ -82,7 +78,6 @@ namespace NakedFramework.Persistor.Entity.Adapter {
             var from = oid as EntityOid ?? throw new NakedObjectSystemException("Copy from Oid must be Entity Oid");
             Key = from.Key;
             TypeName = from.TypeName;
-            EntityKey = from.EntityKey;
             IsTransient = from.IsTransient;
             CacheState();
         }
@@ -143,7 +138,6 @@ namespace NakedFramework.Persistor.Entity.Adapter {
             TypeName = helper.GetNextString();
             Key = helper.GetNextObjectArray();
             IsTransient = helper.GetNextBool();
-            EntityKey = (EntityKey) helper.GetNextSerializable();
 
             if (helper.HasNext) {
                 var hasPrevious = helper.GetNextBool();

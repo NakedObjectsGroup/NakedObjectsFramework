@@ -26,6 +26,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Persist;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.Entity.Configuration;

@@ -11,10 +11,8 @@ open NUnit.Framework
 open Moq
 open NakedFramework.Architecture.Component
 open NakedFramework.Core.Component
-open NakedFramework.Core.Configuration
 open NakedFramework.Core.Authentication
 open NakedFramework.Persistor.Entity.Util
-open NakedFramework.Persistor.Entity.Adapter
 open NakedFramework.Persistor.Entity.Component
 open System
 open System.Collections.Generic
@@ -23,11 +21,10 @@ open System.Security.Principal
 open TestTypes
 open Microsoft.Extensions.Logging
 open NakedObjects.Reflector.Configuration
-open NakedFramework.Core.Component
-open NakedFramework.Architecture.Component
 open NakedObjects.Core.Component
 open NakedFramework.Persistor.EFCore.Component
 open NakedFramework.Persistor.EFCore.Util
+open NakedFramework.Core.Persist
 
 let resetPersistor (p : IObjectStore) : IObjectStore =
     match p with 

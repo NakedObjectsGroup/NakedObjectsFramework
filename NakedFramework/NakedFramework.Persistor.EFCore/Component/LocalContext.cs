@@ -16,7 +16,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Configuration;
 using NakedFramework.Persistor.EFCore.Util;
-using NakedFramework.Persistor.Entity.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class LocalContext : IDisposable {

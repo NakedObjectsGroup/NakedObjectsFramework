@@ -11,15 +11,13 @@ open NakedFramework.Architecture.Adapter
 open NakedFramework.Architecture.Component
 open NakedFramework.Architecture.Spec
 open NakedFramework.Core.Resolve
-open NakedFramework.Persistor.Entity.Adapter
 open NakedFramework.Persistor.Entity.Component
 open System
 open System.Collections.Generic
 open System.Reflection
 open Microsoft.Extensions.Logging
-open NakedFramework.Architecture.Component
-open NakedFramework.Architecture.Spec
 open NakedFramework.Persistor.EFCore.Component
+open NakedFramework.Core.Persist
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"

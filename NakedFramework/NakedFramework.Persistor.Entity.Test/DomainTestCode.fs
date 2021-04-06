@@ -6,10 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.DomainTestCode
 
-open NakedFramework.Core
 open NakedFramework.Persistor.Entity.Configuration
-open NakedFramework.Persistor.Entity.Util
-open NakedFramework.Persistor.Entity.Adapter
 open NakedFramework.Persistor.Entity.Component
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedFramework.Core.Resolve
@@ -25,6 +22,7 @@ open Microsoft.Extensions.Logging
 open NakedFramework.Core.Error
 open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EFCore.Component
+open NakedFramework.Core.Persist
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor
