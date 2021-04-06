@@ -25,7 +25,7 @@ namespace AdventureWorksModel {
         public virtual DateTime StartDate { get; set; }
         public virtual DateTime? EndDate { get; set; }
         public virtual decimal ListPrice { get; set; }
-        public Product Product { get; set; }
+        public virtual Product Product { get; set; }
 
         #region ModifiedDate
 

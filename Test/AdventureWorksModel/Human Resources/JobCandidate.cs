@@ -31,7 +31,7 @@ namespace AdventureWorksModel {
         #region Employee
         [NakedObjectsIgnore]
         public virtual int? EmployeeID { get; set; }
-        public Employee Employee { get; set; }
+        public virtual Employee Employee { get; set; }
         #endregion
 
         [MemberOrder(99)]

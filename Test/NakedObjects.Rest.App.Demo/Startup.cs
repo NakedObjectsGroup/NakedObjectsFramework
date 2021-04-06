@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.Component;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.ParallelReflector.FacetFactory;
+using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Persistor.Entity.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
@@ -36,9 +37,8 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = NakedObjectsRunSettings.MainMenus;
-                builder.AddEF6Persistor(options => {
-                    options.ContextInstallers = new[] { NakedObjectsRunSettings.DbContextInstaller };
-                });
+                builder.AddEF6Persistor(options => { options.ContextInstallers = new[] {NakedObjectsRunSettings.DbContextInstaller}; });
+                //builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { NakedObjectsRunSettings.EFDbContextInstaller }; });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;

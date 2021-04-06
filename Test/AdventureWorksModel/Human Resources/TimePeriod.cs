@@ -7,11 +7,13 @@
 
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using NakedObjects;
 
 namespace AdventureWorksModel {
 
     [ComplexType]
+    [Owned]
     public class TimePeriod {
 
         #region Injected Services

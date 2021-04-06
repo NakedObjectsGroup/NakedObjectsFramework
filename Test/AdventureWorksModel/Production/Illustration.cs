@@ -23,14 +23,10 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        private ICollection<ProductModelIllustration> _ProductModelIllustration = new List<ProductModelIllustration>();
         public virtual int IllustrationID { get; set; }
         public virtual string Diagram { get; set; }
 
-        public ICollection<ProductModelIllustration> ProductModelIllustration {
-            get { return _ProductModelIllustration; }
-            set { _ProductModelIllustration = value; }
-        }
+        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; set; } = new List<ProductModelIllustration>();
 
         #region ModifiedDate
 

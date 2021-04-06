@@ -71,15 +71,10 @@ namespace AdventureWorksModel {
         [MemberOrder(4)]
         public virtual short ExpYear { get; set; }
 
-        private ICollection<PersonCreditCard> _links = new List<PersonCreditCard>();
-
         [DisplayName("Persons")]
         [MemberOrder(5)]
         //[TableOrder(True, "Contact")]
-        public virtual ICollection<PersonCreditCard> PersonLinks {
-            get { return _links; }
-            set { _links = value; }
-        }
+        public virtual ICollection<PersonCreditCard> PersonLinks { get; set; } = new List<PersonCreditCard>();
 
         #region ModifiedDate
 

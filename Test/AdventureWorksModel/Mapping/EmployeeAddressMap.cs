@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AdventureWorksModel
 {
@@ -30,6 +32,18 @@ namespace AdventureWorksModel
                 //.HasForeignKey(d => d.EmployeeID);
             HasRequired(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<EmployeeAddress> builder)
+        {
+            builder.HasKey(t => new { t.EmployeeID, t.AddressID });
+
+            // Table & Column Mappings
+            builder.ToTable("EmployeeAddress", "HumanResources");
+           // builder.Property(t => t.Address).HasColumnName("Address");
         }
     }
 }

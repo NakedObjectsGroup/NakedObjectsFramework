@@ -23,7 +23,6 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        private ICollection<ProductDocument> _ProductDocument = new List<ProductDocument>();
         public virtual int DocumentID { get; set; }
         public virtual string Title { get; set; }
         public virtual string FileName { get; set; }
@@ -34,10 +33,7 @@ namespace AdventureWorksModel {
         public virtual string DocumentSummary { get; set; }
         public byte[] Document1 { get; set; }
 
-        public ICollection<ProductDocument> ProductDocument {
-            get { return _ProductDocument; }
-            set { _ProductDocument = value; }
-        }
+        public virtual ICollection<ProductDocument> ProductDocument { get; set; } = new List<ProductDocument>();
 
         #region ModifiedDate
 

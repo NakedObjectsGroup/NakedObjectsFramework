@@ -1,4 +1,5 @@
 using System.Data.Entity.ModelConfiguration;
+using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -93,6 +94,10 @@ namespace AdventureWorksModel
         public static void Map(this EntityTypeBuilder<Product> builder)
         {
             builder.HasKey(t => t.ProductID);
+
+            builder.Ignore(t => t.ProductCategory);
+            builder.Ignore(t => t.SpecialOffers);
+
 
             // Properties
             builder.Property(t => t.Name)

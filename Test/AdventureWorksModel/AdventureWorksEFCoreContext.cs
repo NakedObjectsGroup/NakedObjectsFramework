@@ -93,7 +93,7 @@ namespace AdventureWorksModel
         {
             modelBuilder.Entity<Department>().Map();
             modelBuilder.Entity<Employee>().Map();
-            //modelBuilder.Entity<EmployeeAddress>().Map();
+            modelBuilder.Entity<EmployeeAddress>().Map();
             modelBuilder.Entity<EmployeeDepartmentHistory>().Map();
             modelBuilder.Entity<EmployeePayHistory>().Map();
             modelBuilder.Entity<JobCandidate>().Map();
@@ -121,7 +121,7 @@ namespace AdventureWorksModel
             modelBuilder.Entity<ProductCategory>().Map();
             modelBuilder.Entity<ProductCostHistory>().Map();
             modelBuilder.Entity<ProductDescription>().Map();
-            //modelBuilder.Entity<ProductDocument>().Map();
+            modelBuilder.Entity<ProductDocument>().Map();
             modelBuilder.Entity<ProductInventory>().Map();
             modelBuilder.Entity<ProductListPriceHistory>().Map();
             modelBuilder.Entity<ProductModel>().Map();

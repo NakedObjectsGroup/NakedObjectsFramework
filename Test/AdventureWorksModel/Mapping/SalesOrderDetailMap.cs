@@ -56,6 +56,7 @@ namespace AdventureWorksModel
 
             //Ignores
             builder.Ignore(t => t.Product);
+            builder.Ignore(t => t.SpecialOffer);
 
             // Properties
             builder.Property(t => t.SalesOrderID)

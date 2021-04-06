@@ -42,8 +42,15 @@ namespace AdventureWorksModel
             builder.ToTable("Shift", "HumanResources");
             builder.Property(t => t.ShiftID).HasColumnName("ShiftID").ValueGeneratedOnAdd();
             builder.Property(t => t.Name).HasColumnName("Name");
-            builder.Property(t => t.StartTime).HasColumnName("StartTime");
-            builder.Property(t => t.EndTime).HasColumnName("EndTime");
+
+            builder.OwnsOne(t => t.Times, tp => {
+                tp.Property(a => a.StartTime).HasColumnName("StartTime");
+                tp.Property(a => a.EndTime).HasColumnName("EndTime");
+
+            });
+
+            //builder.Property(t => t.Times.StartTime).HasColumnName("StartTime");
+            //builder.Property(t => t.Times.EndTime).HasColumnName("EndTime");
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
         }
     }

@@ -1,11 +1,9 @@
 using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdventureWorksModel
-{
-    public class DocumentMap : EntityTypeConfiguration<Document>
-    {
-        public DocumentMap()
-        {
+namespace AdventureWorksModel {
+    public class DocumentMap : EntityTypeConfiguration<Document> {
+        public DocumentMap() {
             // Primary Key
             HasKey(t => t.DocumentID);
 
@@ -39,6 +37,13 @@ namespace AdventureWorksModel
             Property(t => t.DocumentSummary).HasColumnName("DocumentSummary");
             Property(t => t.Document1).HasColumnName("Document");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+        }
+    }
+
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<Document> builder) {
+            // Primary Key
+            builder.HasKey(t => t.DocumentID);
         }
     }
 }

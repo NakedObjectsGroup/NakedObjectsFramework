@@ -48,6 +48,8 @@ namespace AdventureWorksModel
         {
             builder.HasKey(t => t.CustomerID);
 
+            builder.Ignore(t => t.CustomerType);
+
             // Properties
             builder.Property(t => t.AccountNumber)
                    .IsRequired()

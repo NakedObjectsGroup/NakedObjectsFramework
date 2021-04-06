@@ -92,7 +92,11 @@ namespace AdventureWorksModel
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
-            builder.Ignore(t => t.PhoneNumbers);
+            builder.Ignore(t => t.InitialPassword);
+            builder.Ignore(t => t.ContactType);
+            builder.Ignore(t => t.ForEntity);
+            //TODO: Temp ignored
+            builder.Ignore(t => t.Password);
 
             builder.HasOne(t => t.Employee).WithOne(t => t.PersonDetails).HasForeignKey<Employee>(p => p.BusinessEntityID);
             //builder.HasOne(t => t.Password).WithOne(pw => pw.Person).HasForeignKey<Password>(pw => pw.BusinessEntityID);

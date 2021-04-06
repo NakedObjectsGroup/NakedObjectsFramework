@@ -68,7 +68,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(2)]
         [NotPersisted][Hidden(WhenTo.OncePersisted)]
-        public ContactType ContactType { get; set; }
+        public virtual ContactType ContactType { get; set; }
 
         public void Persisted() {
                 var relationship = Container.NewTransientInstance<BusinessEntityContact>();

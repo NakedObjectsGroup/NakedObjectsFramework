@@ -148,16 +148,11 @@ namespace AdventureWorksModel {
 
         #region WorkOrderRoutings
 
-        private ICollection<WorkOrderRouting> _WorkOrderRouting = new List<WorkOrderRouting>();
-
         [Disabled]
         [Hidden(WhenTo.UntilPersisted)]
         [Eagerly(Do.Rendering)]
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
-        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings {
-            get { return _WorkOrderRouting; }
-            set { _WorkOrderRouting = value; }
-        }
+        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; } = new List<WorkOrderRouting>();
 
         #region AddNewRouting (Action)
 

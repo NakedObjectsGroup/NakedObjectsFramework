@@ -1,4 +1,5 @@
 using System.Data.Entity.ModelConfiguration;
+using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -45,6 +46,9 @@ namespace AdventureWorksModel
             builder.HasKey(t => t.CreditCardID);
 
             //Ignores
+            builder.Ignore(t => t.Creator);
+            builder.Ignore(t => t.ForContact);
+            builder.Ignore(t => t.ObfuscatedNumber);
 
             // Properties
             builder.Property(t => t.CardType)

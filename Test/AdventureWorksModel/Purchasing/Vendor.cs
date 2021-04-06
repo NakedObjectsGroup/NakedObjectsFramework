@@ -57,15 +57,10 @@ namespace AdventureWorksModel {
             return from p in matchingNames.AsQueryable() select p.Trim();
         }
 
-        private ICollection<ProductVendor> _ProductVendor = new List<ProductVendor>();
-
         [DisplayName("Product - Order Info")]
         [TableView(true)] //  Not obvious which of many possible fields should be shown here
         [AWNotCounted] //To test this capability
-        public virtual ICollection<ProductVendor> Products {
-            get { return _ProductVendor; }
-            set { _ProductVendor = value; }
-        }
+        public virtual ICollection<ProductVendor> Products { get; set; } = new List<ProductVendor>();
 
         //private ICollection<VendorAddress> _VendorAddress = new List<VendorAddress>();
 

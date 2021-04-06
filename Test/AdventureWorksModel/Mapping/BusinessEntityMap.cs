@@ -30,7 +30,8 @@ namespace AdventureWorksModel {
             builder.Property(t => t.BusinessEntityRowguid).HasColumnName("rowguid");
             builder.Property(t => t.BusinessEntityModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
-            builder.HasMany(t => t.Addresses).WithOne(t => t.BusinessEntity);
+            builder.HasMany(t => t.Addresses).WithOne(t => t.BusinessEntity).HasForeignKey(t => t.BusinessEntityID);
+            builder.HasMany(t => t.Contacts).WithOne(t => t.BusinessEntity).HasForeignKey(t => t.BusinessEntityID);
         }
     }
 }

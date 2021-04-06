@@ -55,6 +55,12 @@ namespace AdventureWorksModel
         {
             builder.HasKey(t => t.AddressID);
 
+            builder.Ignore(t => t.AddressType);
+            builder.Ignore(t => t.AddressFor);
+            builder.Ignore(t => t.CountryRegion);
+
+
+
             builder.Property(t => t.AddressLine1)
                    .IsRequired()
                    .HasMaxLength(60);
