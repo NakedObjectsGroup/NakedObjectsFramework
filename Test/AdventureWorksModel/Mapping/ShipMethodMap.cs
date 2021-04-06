@@ -1,4 +1,6 @@
 using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AdventureWorksModel
 {
@@ -22,6 +24,28 @@ namespace AdventureWorksModel
             Property(t => t.ShipRate).HasColumnName("ShipRate");
             Property(t => t.rowguid).HasColumnName("rowguid");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<ShipMethod> builder)
+        {
+            builder.HasKey(t => t.ShipMethodID);
+
+            // Properties
+            builder.Property(t => t.Name)
+                   .IsRequired()
+                   .HasMaxLength(50);
+
+            // Table & Column Mappings
+            builder.ToTable("ShipMethod", "Purchasing");
+            builder.Property(t => t.ShipMethodID).HasColumnName("ShipMethodID");
+            builder.Property(t => t.Name).HasColumnName("Name");
+            builder.Property(t => t.ShipBase).HasColumnName("ShipBase");
+            builder.Property(t => t.ShipRate).HasColumnName("ShipRate");
+            builder.Property(t => t.rowguid).HasColumnName("rowguid");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
         }
     }
 }

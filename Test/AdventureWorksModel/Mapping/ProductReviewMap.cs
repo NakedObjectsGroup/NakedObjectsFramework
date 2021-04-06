@@ -1,4 +1,6 @@
 using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AdventureWorksModel
 {
@@ -37,6 +39,42 @@ namespace AdventureWorksModel
                 .WithMany(t => t.ProductReviews)
                 .HasForeignKey(d => d.ProductID);
 
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static void Map(this EntityTypeBuilder<ProductReview> builder)
+        {
+            builder.HasKey(t => t.ProductReviewID);
+
+            // Properties
+            builder.Property(t => t.ReviewerName)
+                   .IsRequired()
+                   .HasMaxLength(50);
+
+            builder.Property(t => t.EmailAddress)
+                   .IsRequired()
+                   .HasMaxLength(50);
+
+            builder.Property(t => t.Comments)
+                   .HasMaxLength(3850);
+
+            // Table & Column Mappings
+            builder.ToTable("ProductReview", "Production");
+            builder.Property(t => t.ProductReviewID).HasColumnName("ProductReviewID");
+            builder.Property(t => t.ProductID).HasColumnName("ProductID");
+            builder.Property(t => t.ReviewerName).HasColumnName("ReviewerName");
+            builder.Property(t => t.ReviewDate).HasColumnName("ReviewDate");
+            builder.Property(t => t.EmailAddress).HasColumnName("EmailAddress");
+            builder.Property(t => t.Rating).HasColumnName("Rating");
+            builder.Property(t => t.Comments).HasColumnName("Comments");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+
+            // Relationships
+            builder.HasOne(t => t.Product)
+                   .WithMany(t => t.ProductReviews)
+                   .HasForeignKey(d => d.ProductID);
         }
     }
 }
