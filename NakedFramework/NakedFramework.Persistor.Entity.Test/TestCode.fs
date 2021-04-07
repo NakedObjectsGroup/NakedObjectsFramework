@@ -47,7 +47,7 @@ let getEntityObjectStore (config) =
     let m = mockMetamodelManager.Object
     let nom = (new Mock<INakedObjectManager>()).Object
     let log = (new Mock<ILogger<EntityObjectStore>>()).Object;
-    new EntityObjectStore(s, config, new EntityOidGenerator(m, mlf.Object), m, i, nom, log)
+    new EntityObjectStore(s, config, new DatabaseOidGenerator(m, mlf.Object), m, i, nom, log)
 
 let getEFCoreObjectStore (config) = 
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
@@ -60,7 +60,7 @@ let getEFCoreObjectStore (config) =
     let m = mockMetamodelManager.Object
     let nom = (new Mock<INakedObjectManager>()).Object
     let log = (new Mock<ILogger<EFCoreObjectStore>>()).Object;
-    new EFCoreObjectStore(config, new EntityOidGenerator(m, mlf.Object), nom,  s, m, i, log)
+    new EFCoreObjectStore(config, new DatabaseOidGenerator(m, mlf.Object), nom,  s, m, i, log)
 
 let IsEFCoreOrEF6Proxy (t : Type) =  EntityUtils.IsEntityProxy(t) || EFCoreHelpers.IsEFCoreProxy(t)
 

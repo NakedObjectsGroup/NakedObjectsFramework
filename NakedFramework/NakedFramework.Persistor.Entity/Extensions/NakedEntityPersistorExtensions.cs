@@ -7,6 +7,8 @@
 
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +40,7 @@ namespace NakedFramework.Persistor.Entity.Extensions {
         public static void AddEF6Persistor(this NakedCoreOptions coreOptions, Action<EntityPersistorOptions> setupAction) {
             var options = new EntityPersistorOptions();
             setupAction(options);
+            coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Append(typeof(ObjectQuery<>)).Append(typeof(EntityCollection<>)).ToArray();
 
             var unpersistedTypes = options.NotPersistedTypes();
             options.NotPersistedTypes = () => unpersistedTypes.Union(coreOptions.AdditionalUnpersistedTypes).ToArray();
