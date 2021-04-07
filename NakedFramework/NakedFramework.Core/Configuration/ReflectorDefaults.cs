@@ -8,6 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Drawing;
 using System.Linq;
 using NakedFramework.Value;
@@ -58,6 +60,7 @@ namespace NakedFramework.Core.Configuration {
             typeof(object),
             typeof(void),
             typeof(List<>),
+            typeof(ObjectQuery<>),
             typeof(EnumerableQuery<>),
             typeof(ISet<>),
             typeof(IList<>),
@@ -67,6 +70,7 @@ namespace NakedFramework.Core.Configuration {
             typeof(IImmutableList<>),
             typeof(ImmutableList<>),
             typeof(HashSet<>),
+            typeof(EntityCollection<>),
             // WhereEnumerableIterator
             new List<int>().Where(i => true).GetType().GetGenericTypeDefinition(),
             // WhereSelectEnumerableIterator
