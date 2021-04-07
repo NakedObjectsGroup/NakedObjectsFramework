@@ -43,8 +43,8 @@ namespace NakedFramework.Persistor.Entity.Extensions {
             options.NotPersistedTypes = () => unpersistedTypes.Union(coreOptions.AdditionalUnpersistedTypes).ToArray();
 
             coreOptions.Services.AddSingleton<IEntityObjectStoreConfiguration>(p => EntityObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
-            coreOptions.Services.AddScoped<EntityOidGenerator, EntityOidGenerator>();
-            coreOptions.Services.AddScoped<IOidGenerator, EntityOidGenerator>();
+            coreOptions.Services.AddScoped<DatabaseOidGenerator, DatabaseOidGenerator>();
+            coreOptions.Services.AddScoped<IOidGenerator, DatabaseOidGenerator>();
             coreOptions.Services.AddScoped<IObjectStore, EntityObjectStore>();
         }
     }

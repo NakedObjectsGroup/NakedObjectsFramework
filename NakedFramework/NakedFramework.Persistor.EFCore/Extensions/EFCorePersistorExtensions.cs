@@ -38,7 +38,7 @@ namespace NakedFramework.Persistor.EFCore.Extensions {
 #pragma warning restore EF1001 // Internal EF Core API usage.
 
             coreOptions.Services.AddSingleton(p => EntityObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
-            coreOptions.Services.AddScoped<IOidGenerator, EntityOidGenerator>();
+            coreOptions.Services.AddScoped<IOidGenerator, DatabaseOidGenerator>();
             coreOptions.Services.AddScoped<IObjectStore, EFCoreObjectStore>();
         }
     }

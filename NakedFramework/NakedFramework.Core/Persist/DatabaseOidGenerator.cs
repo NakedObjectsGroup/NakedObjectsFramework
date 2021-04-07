@@ -11,17 +11,17 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Core.Persist {
-    public sealed class EntityOidGenerator : IOidGenerator {
+    public sealed class DatabaseOidGenerator : IOidGenerator {
         private static long transientId;
         private readonly ILoggerFactory loggerFactory;
         private readonly IMetamodelManager metamodel;
 
-        public EntityOidGenerator(IMetamodelManager metamodel, ILoggerFactory loggerFactory) {
+        public DatabaseOidGenerator(IMetamodelManager metamodel, ILoggerFactory loggerFactory) {
             this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
         }
 
-        public static string Name => "Entity Oids";
+        public static string Name => "Database Oids";
 
         private ILogger<DatabaseOid> Logger() => loggerFactory.CreateLogger<DatabaseOid>();
 

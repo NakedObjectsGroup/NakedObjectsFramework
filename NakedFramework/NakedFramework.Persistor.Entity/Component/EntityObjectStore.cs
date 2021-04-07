@@ -39,7 +39,7 @@ namespace NakedFramework.Persistor.Entity.Component {
         private readonly Func<object, INakedObjectAdapter> getAdapterFor;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
-        private readonly EntityOidGenerator oidGenerator;
+        private readonly DatabaseOidGenerator oidGenerator;
         private readonly ISession session;
         private IDictionary<CodeFirstEntityContextConfiguration, LocalContext> contexts = new Dictionary<CodeFirstEntityContextConfiguration, LocalContext>();
         private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
@@ -81,7 +81,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             loadSpecification = metamodelManager.GetSpecification;
         }
 
-        public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EntityObjectStore> logger)
+        public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, DatabaseOidGenerator oidGenerator, IMetamodelManager metamodel, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EntityObjectStore> logger)
             : this(metamodel, session, injector, nakedObjectManager, logger) {
             config.Validate();
             this.oidGenerator = oidGenerator;
