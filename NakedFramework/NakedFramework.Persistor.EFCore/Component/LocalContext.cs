@@ -206,7 +206,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public void PostSaveWrapUp() {
             // complex types give null adapter
-            added.Select(domainObject => parent.CreateAdapter(null, domainObject)).Where(a => a?.Oid is IEntityOid).ForEach(parent.HandleAdded);
+            added.Select(domainObject => parent.CreateAdapter(null, domainObject)).Where(a => a?.Oid is IDatabaseOid).ForEach(parent.HandleAdded);
             LoadedNakedObjects.ToList().ForEach(parent.HandleLoaded);
         }
     }

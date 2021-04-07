@@ -27,7 +27,7 @@ let IsPersistentObject obj ctx =
 let IsPersistentOid obj ctx = 
     let oid = (getNo obj ctx).Oid
     Assert.IsNotNull(oid)
-    Assert.IsInstanceOf(typeof<EntityOid>, oid)
+    Assert.IsInstanceOf(typeof<DatabaseOid>, oid)
     Assert.IsFalse(oid.IsTransient)
 
 let IsTransientObject obj ctx = 
@@ -38,7 +38,7 @@ let IsTransientObject obj ctx =
 let IsTransientOid obj ctx = 
     let oid = (getNo obj ctx).Oid
     Assert.IsNotNull(oid)
-    Assert.IsInstanceOf(typeof<EntityOid>, oid)
+    Assert.IsInstanceOf(typeof<DatabaseOid>, oid)
     Assert.IsTrue(oid.IsTransient)
 
 let IsPersistentAggregateOid obj ctx = 

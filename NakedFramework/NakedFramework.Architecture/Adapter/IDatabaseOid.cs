@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedFramework.Architecture.Adapter {
-    public interface IEntityOid : IOid {
+    public interface IDatabaseOid : IOid {
         string TypeName { get; }
         object[] Key { get; }
         void MakePersistent();

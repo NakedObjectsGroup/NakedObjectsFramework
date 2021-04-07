@@ -539,8 +539,8 @@ let CanRemoteResolve(persistor : IObjectStore) =
     let keys = 
         [| box 54002
            box 51409 |]
-    let testLogger = (new Mock<ILogger<EntityOid>>()).Object;
-    let key = new EntityOid(mockMetamodelManager.Object, typeof<SalesOrderDetail>, keys, false, testLogger)
+    let testLogger = (new Mock<ILogger<DatabaseOid>>()).Object;
+    let key = new DatabaseOid(mockMetamodelManager.Object, typeof<SalesOrderDetail>, keys, false, testLogger)
     let obj = getObjectByKey persistor key typeof<SalesOrderDetail>
     let nakedObj = GetOrAddAdapterForTest obj key
     if nakedObj.ResolveState.IsResolvable() then persistor.ResolveImmediately(nakedObj)

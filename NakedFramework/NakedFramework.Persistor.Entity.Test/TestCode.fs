@@ -131,8 +131,8 @@ let getObjectByKey(persistor :IObjectStore) key (typ : Type) =
     | _ -> null
 
 let CanGetObjectByKey<'t when 't : not struct> (p : IObjectStore) keys =
-    let testLogger = (new Mock<ILogger<EntityOid>>()).Object;
-    let key = new EntityOid(mockMetamodelManager.Object, typeof<'t>, keys, false, testLogger)
+    let testLogger = (new Mock<ILogger<DatabaseOid>>()).Object;
+    let key = new DatabaseOid(mockMetamodelManager.Object, typeof<'t>, keys, false, testLogger)
     let obj = getObjectByKey p key typeof<'t>
     Assert.IsNotNull(obj)
 

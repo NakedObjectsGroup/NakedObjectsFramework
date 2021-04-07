@@ -302,7 +302,7 @@ namespace NakedFramework.Persistor.Entity.Component {
         }
 
         internal void HandleAdded(INakedObjectAdapter nakedObjectAdapter) {
-            var oid = (IEntityOid) nakedObjectAdapter.Oid;
+            var oid = (IDatabaseOid) nakedObjectAdapter.Oid;
             var context = GetContext(nakedObjectAdapter);
             oid.MakePersistentAndUpdateKey(context.GetKey(nakedObjectAdapter));
 
@@ -325,7 +325,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         private void MarkAsLoaded(INakedObjectAdapter nakedObjectAdapter) => GetContext(nakedObjectAdapter).LoadedNakedObjects.Add(nakedObjectAdapter);
 
-        public object GetObjectByKey(IEntityOid eoid, Type type) {
+        public object GetObjectByKey(IDatabaseOid eoid, Type type) {
             var context = GetContext(type);
             var memberValueMap = GetMemberValueMap(type, eoid, out var entitySetName);
             var oq = context.CreateQuery(type, entitySetName);
@@ -339,7 +339,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             return ObjectContextUtils.First(oq.Invoke<IEnumerable>("Execute", context.DefaultMergeOption));
         }
 
-        private IDictionary<string, object> GetMemberValueMap(Type type, IEntityOid eoid, out string entitySetName) {
+        private IDictionary<string, object> GetMemberValueMap(Type type, IDatabaseOid eoid, out string entitySetName) {
             var context = GetContext(type);
             var set = context.GetObjectSet(type).GetProperty<EntitySet>("EntitySet");
             entitySetName = $"{set.EntityContainer.Name}.{set.Name}";
@@ -348,7 +348,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             return ObjectContextUtils.MemberValueMap(idmembers, keyValues);
         }
 
-        public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
+        public object GetObjectByKey(IDatabaseOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
 
         public bool EntityFrameworkKnowsType(Type type) {
             try {
@@ -566,14 +566,14 @@ namespace NakedFramework.Persistor.Entity.Component {
         public INakedObjectAdapter GetObject(IOid oid, IObjectSpec hint) {
             switch (oid) {
                 case IAggregateOid aggregateOid: {
-                    var parentOid = (IEntityOid) aggregateOid.ParentOid;
+                    var parentOid = (IDatabaseOid) aggregateOid.ParentOid;
                     var parentType = parentOid.TypeName;
                     var parentSpec = (IObjectSpec) metamodelManager.GetSpecification(parentType);
                     var parent = CreateAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
                     return parentSpec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
                 }
-                case IEntityOid eoid: {
+                case IDatabaseOid eoid: {
                     var adapter = CreateAdapter(eoid, GetObjectByKey(eoid, hint));
                     adapter.UpdateVersion(session, nakedObjectManager);
                     return adapter;
@@ -619,7 +619,7 @@ namespace NakedFramework.Persistor.Entity.Component {
                 }
 
                 var idmembers = currentContext.GetIdMembers(entityType);
-                var keyValues = ((IEntityOid) nakedObjectAdapter.Oid).Key;
+                var keyValues = ((IDatabaseOid) nakedObjectAdapter.Oid).Key;
 
                 if (idmembers.Length != keyValues.Length) {
                     throw new NakedObjectSystemException("Member and value counts must match");

@@ -23,17 +23,17 @@ namespace NakedFramework.Core.Persist {
 
         public static string Name => "Entity Oids";
 
-        private ILogger<EntityOid> Logger() => loggerFactory.CreateLogger<EntityOid>();
+        private ILogger<DatabaseOid> Logger() => loggerFactory.CreateLogger<DatabaseOid>();
 
         #region IOidGenerator Members
 
-        public void ConvertTransientToPersistentOid(IOid oid) => (oid as IEntityOid)?.MakePersistent();
+        public void ConvertTransientToPersistentOid(IOid oid) => (oid as IDatabaseOid)?.MakePersistent();
 
-        public IOid CreateTransientOid(object obj) => new EntityOid(metamodel, obj.GetType(), new object[] {++transientId}, true, Logger());
+        public IOid CreateTransientOid(object obj) => new DatabaseOid(metamodel, obj.GetType(), new object[] {++transientId}, true, Logger());
 
-        public IOid RestoreOid(string[] encodedData) => new EntityOid(metamodel, loggerFactory, encodedData);
+        public IOid RestoreOid(string[] encodedData) => new DatabaseOid(metamodel, loggerFactory, encodedData);
 
-        public IOid CreateOid(string typeName, object[] keys) => new EntityOid(metamodel, typeName, keys, Logger());
+        public IOid CreateOid(string typeName, object[] keys) => new DatabaseOid(metamodel, typeName, keys, Logger());
 
         #endregion
     }

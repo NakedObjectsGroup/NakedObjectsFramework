@@ -276,9 +276,9 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return domainObject;
         }
 
-        public object GetObjectByKey(IEntityOid eoid, Type type) => GetContext(type).WrappedDbContext.Find(type, eoid.Key);
+        public object GetObjectByKey(IDatabaseOid eoid, Type type) => GetContext(type).WrappedDbContext.Find(type, eoid.Key);
 
-        public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
+        public object GetObjectByKey(IDatabaseOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
 
         public INakedObjectAdapter GetObject(IOid oid, IObjectSpec hint)
         {
@@ -286,14 +286,14 @@ namespace NakedFramework.Persistor.EFCore.Component {
             {
                 case IAggregateOid aggregateOid:
                 {
-                    var parentOid = (IEntityOid)aggregateOid.ParentOid;
+                    var parentOid = (IDatabaseOid)aggregateOid.ParentOid;
                     var parentType = parentOid.TypeName;
                     var parentSpec = (IObjectSpec)metamodelManager.GetSpecification(parentType);
                     var parent = CreateAdapter(parentOid,  GetObjectByKey(parentOid, parentSpec));
 
                     return parentSpec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
                 }
-                case IEntityOid eoid:
+                case IDatabaseOid eoid:
                 {
                     var adapter = CreateAdapter(eoid, GetObjectByKey(eoid, hint));
                     adapter.UpdateVersion(session, nakedObjectManager);
@@ -523,7 +523,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         internal void HandleAdded(INakedObjectAdapter nakedObjectAdapter) {
-            var oid = (IEntityOid) nakedObjectAdapter.Oid;
+            var oid = (IDatabaseOid) nakedObjectAdapter.Oid;
             var key = GetContext(nakedObjectAdapter.Object).WrappedDbContext.GetKeyValues(nakedObjectAdapter.Object);
 
             if (key is null || !key.Any()) {

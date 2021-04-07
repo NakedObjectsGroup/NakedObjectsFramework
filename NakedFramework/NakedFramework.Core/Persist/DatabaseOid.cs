@@ -16,12 +16,12 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Persist {
-    public sealed class EntityOid : IEncodedToStrings, IEntityOid {
-        private readonly ILogger<EntityOid> logger;
+    public sealed class DatabaseOid : IEncodedToStrings, IDatabaseOid {
+        private readonly ILogger<DatabaseOid> logger;
         private readonly IMetamodelManager metamodel;
         private int cachedHashCode;
         private string cachedToString;
-        private EntityOid previous;
+        private DatabaseOid previous;
 
         private void CacheState() {
             cachedHashCode = HashCodeUtils.Seed;
@@ -69,13 +69,13 @@ namespace NakedFramework.Core.Persist {
 
         #endregion
 
-        #region IEntityOid Members
+        #region IDatabaseOid Members
 
         public string TypeName { get; private set; }
         public object[] Key { get; private set; }
 
         public void CopyFrom(IOid oid) {
-            var from = oid as EntityOid ?? throw new NakedObjectSystemException("Copy from Oid must be Entity Oid");
+            var from = oid as DatabaseOid ?? throw new NakedObjectSystemException("Copy from Oid must be Entity Oid");
             Key = from.Key;
             TypeName = from.TypeName;
             IsTransient = from.IsTransient;
@@ -92,7 +92,7 @@ namespace NakedFramework.Core.Persist {
 
         public void MakePersistent() {
             ThrowErrorIfNotTransient();
-            previous = new EntityOid(metamodel, TypeName, Key, logger) {IsTransient = IsTransient};
+            previous = new DatabaseOid(metamodel, TypeName, Key, logger) {IsTransient = IsTransient};
             IsTransient = false;
             CacheState();
         }
@@ -104,7 +104,7 @@ namespace NakedFramework.Core.Persist {
 
         public void UpdateKey(object[] newKey)
         {
-            previous = new EntityOid(metamodel, TypeName, Key, logger) { IsTransient = IsTransient };
+            previous = new DatabaseOid(metamodel, TypeName, Key, logger) { IsTransient = IsTransient };
             Key = newKey; // after old key is saved ! 
             IsTransient = false;
             CacheState();
@@ -115,13 +115,13 @@ namespace NakedFramework.Core.Persist {
 
         #region Constructors
 
-        public EntityOid(IMetamodelManager metamodel, Type type, object[] key, bool isTransient, ILogger<EntityOid> logger)
+        public DatabaseOid(IMetamodelManager metamodel, Type type, object[] key, bool isTransient, ILogger<DatabaseOid> logger)
             : this(metamodel, type.FullName, key, logger) {
             IsTransient = isTransient;
             CacheState();
         }
 
-        public EntityOid(IMetamodelManager metamodel, string typeName, object[] key, ILogger<EntityOid> logger) {
+        public DatabaseOid(IMetamodelManager metamodel, string typeName, object[] key, ILogger<DatabaseOid> logger) {
             this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             TypeName = TypeNameUtils.EncodeTypeName(typeName);
@@ -130,9 +130,9 @@ namespace NakedFramework.Core.Persist {
             CacheState();
         }
 
-        public EntityOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
+        public DatabaseOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
             this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
-            logger = loggerFactory.CreateLogger<EntityOid>();
+            logger = loggerFactory.CreateLogger<DatabaseOid>();
             var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
 
             TypeName = helper.GetNextString();
@@ -142,7 +142,7 @@ namespace NakedFramework.Core.Persist {
             if (helper.HasNext) {
                 var hasPrevious = helper.GetNextBool();
                 if (hasPrevious) {
-                    previous = (EntityOid) helper.GetNextEncodedToStrings();
+                    previous = (DatabaseOid) helper.GetNextEncodedToStrings();
                 }
             }
 
@@ -155,7 +155,7 @@ namespace NakedFramework.Core.Persist {
 
         public override bool Equals(object obj) =>
             obj == this ||
-            obj is EntityOid oid &&
+            obj is DatabaseOid oid &&
             TypeName.Equals(oid.TypeName) &&
             Key.SequenceEqual(oid.Key);
 
