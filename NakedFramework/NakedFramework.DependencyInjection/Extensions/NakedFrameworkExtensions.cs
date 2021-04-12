@@ -34,10 +34,9 @@ namespace NakedFramework.DependencyInjection.Extensions {
         public static CoreConfiguration CoreConfig(NakedCoreOptions options) {
             var config = new CoreConfiguration(options.MainMenus);
 
-            if (options.SupportedSystemTypes is not null) {
-                config.SupportedSystemTypes = options.SupportedSystemTypes(config.SupportedSystemTypes.ToArray()).Union(options.AdditionalSystemTypes).ToList();
-            }
-
+            options.SupportedSystemTypes ??= t => t;
+            config.SupportedSystemTypes = options.SupportedSystemTypes(config.SupportedSystemTypes.ToArray()).Union(options.AdditionalSystemTypes).ToList();
+            
             config.HashMapCapacity = options.HashMapCapacity;
             return config;
         }
