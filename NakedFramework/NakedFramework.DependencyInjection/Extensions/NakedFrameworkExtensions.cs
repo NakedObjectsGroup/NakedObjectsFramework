@@ -7,8 +7,6 @@
 
 using System;
 using System.Linq;
-using System.Security.Principal;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
@@ -74,10 +72,6 @@ namespace NakedFramework.DependencyInjection.Extensions {
             services.AddDefaultTransient<IOidStrategy, EntityOidStrategy>();
             services.AddDefaultTransient<IStringHasher, InvariantStringHasher>();
             services.AddDefaultTransient<IFrameworkFacade, FrameworkFacade>();
-
-            //Externals
-            // todo move to rest ? 
-            services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
         }
 
         public static void AddNakedFramework(this IServiceCollection services, Action<NakedCoreOptions> setupAction) {

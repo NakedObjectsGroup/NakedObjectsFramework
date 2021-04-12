@@ -13,22 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Model\AbstractModelBinder.cs" />
-    <Compile Remove="Model\ArgumentMapUrlBinder.cs" />
-    <Compile Remove="Model\PostedFileAdapter.cs" />
-    <Compile Remove="Model\ReservedArgumentsBinder.cs" />
-    <Compile Remove="Model\SingleValueArgumentUrlBinder.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
     <ProjectReference Include="..\NakedFramework.Facade\NakedFramework.Facade.csproj" />
     <ProjectReference Include="..\NakedFramework.Rest.Snapshot\NakedFramework.Rest.Snapshot.csproj" />
