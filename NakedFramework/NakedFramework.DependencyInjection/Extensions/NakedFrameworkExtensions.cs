@@ -76,6 +76,7 @@ namespace NakedFramework.DependencyInjection.Extensions {
             services.AddDefaultTransient<IFrameworkFacade, FrameworkFacade>();
 
             //Externals
+            // todo move to rest ? 
             services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
         }
 
