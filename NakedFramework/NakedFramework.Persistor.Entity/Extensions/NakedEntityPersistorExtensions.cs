@@ -40,7 +40,7 @@ namespace NakedFramework.Persistor.Entity.Extensions {
         public static void AddEF6Persistor(this NakedCoreOptions coreOptions, Action<EntityPersistorOptions> setupAction) {
             var options = new EntityPersistorOptions();
             setupAction(options);
-            //coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Append(typeof(ObjectQuery<>)).Append(typeof(EntityCollection<>)).ToArray();
+            coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Append(typeof(ObjectQuery<>)).Append(typeof(EntityCollection<>)).ToArray();
 
             var unpersistedTypes = options.NotPersistedTypes();
             options.NotPersistedTypes = () => unpersistedTypes.Union(coreOptions.AdditionalUnpersistedTypes).ToArray();
