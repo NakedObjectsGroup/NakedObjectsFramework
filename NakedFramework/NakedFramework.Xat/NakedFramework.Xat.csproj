@@ -22,7 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedFramework.Metamodel\NakedFramework.Metamodel.csproj" />
-    <ProjectReference Include="..\NakedFramework.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
+    <ProjectReference Include="..\NakedFramework.Persistor.EF6\NakedFramework.Persistor.EF6.csproj" />
     <ProjectReference Include="..\..\NakedFunctions\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj" />
     <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
     <ProjectReference Include="..\NakedFramework.Rest\NakedFramework.Rest.csproj" />

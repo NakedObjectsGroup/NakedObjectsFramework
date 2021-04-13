@@ -26,7 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedFramework.Core\NakedFramework.Core.csproj" />
-    <ProjectReference Include="..\NakedFramework.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
+    <ProjectReference Include="..\NakedFramework.Persistor.EF6\NakedFramework.Persistor.EF6.csproj" />
     <ProjectReference Include="..\NakedFramework.Xat\NakedFramework.Xat.csproj" />
   </ItemGroup>
 

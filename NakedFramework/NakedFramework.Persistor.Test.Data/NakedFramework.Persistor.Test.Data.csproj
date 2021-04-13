@@ -19,7 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NakedFramework.Core\NakedFramework.Core.csproj" />
     <ProjectReference Include="..\NakedFramework.Persistor.EFCore\NakedFramework.Persistor.EFCore.csproj" />
-    <ProjectReference Include="..\NakedFramework.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
+    <ProjectReference Include="..\NakedFramework.Persistor.EF6\NakedFramework.Persistor.EF6.csproj" />
   </ItemGroup>
 
 </Project>

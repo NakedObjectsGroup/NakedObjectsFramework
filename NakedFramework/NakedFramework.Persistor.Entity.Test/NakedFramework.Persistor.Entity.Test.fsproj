@@ -51,7 +51,7 @@
     <ProjectReference Include="..\NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj" />
     <ProjectReference Include="..\NakedFramework.Persistor.Entity.Test.CodeOnly\NakedFramework.Persistor.Entity.Test.CodeOnly.csproj" />
     <ProjectReference Include="..\NakedFramework.Persistor.Entity.Test.SimpleDatabase\NakedFramework.Persistor.Entity.Test.SimpleDatabase.csproj" />
-    <ProjectReference Include="..\NakedFramework.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
+    <ProjectReference Include="..\NakedFramework.Persistor.EF6\NakedFramework.Persistor.EF6.csproj" />
     <ProjectReference Include="..\NakedFramework.Persistor.Test.Data\NakedFramework.Persistor.Test.Data.csproj" />
     <ProjectReference Include="..\NakedFramework.Persistor.Test\NakedFramework.Persistor.Test.csproj" />
     <ProjectReference Include="..\NakedFramework.Xat\NakedFramework.Xat.csproj" />

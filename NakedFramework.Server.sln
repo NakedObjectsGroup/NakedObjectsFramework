@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Metamodel", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.ParallelReflector", "NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj", "{19419F9F-A6E0-4CB0-B939-A86998B0543A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Persistor.Entity", "NakedFramework\NakedFramework.Persistor.Entity\NakedFramework.Persistor.Entity.csproj", "{F8DDF8DB-BC84-4C84-9613-FD69CD10D673}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.DependencyInjection", "NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj", "{09C0881A-4843-4A10-8B68-445D6F22DB83}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Core.Test", "NakedFramework\NakedFramework.Core.Test\NakedFramework.Core.Test.csproj", "{D20B527C-5DA4-46DB-BA62-53307AB3457B}"
@@ -93,6 +91,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Snapshot.Xml.T
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Persistor.EFCore.Test", "NakedFramework\NakedFramework.Persistor.EFCore.Test\NakedFramework.Persistor.EFCore.Test.fsproj", "{810C941C-84E5-462A-90C4-6BADA88C8F12}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Persistor.EF6", "NakedFramework\NakedFramework.Persistor.EF6\NakedFramework.Persistor.EF6.csproj", "{74F13BFA-A2C4-4E99-98A4-80CB79E78C45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,10 +119,6 @@ Global
 		{19419F9F-A6E0-4CB0-B939-A86998B0543A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19419F9F-A6E0-4CB0-B939-A86998B0543A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19419F9F-A6E0-4CB0-B939-A86998B0543A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8DDF8DB-BC84-4C84-9613-FD69CD10D673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8DDF8DB-BC84-4C84-9613-FD69CD10D673}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8DDF8DB-BC84-4C84-9613-FD69CD10D673}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8DDF8DB-BC84-4C84-9613-FD69CD10D673}.Release|Any CPU.Build.0 = Release|Any CPU
 		{09C0881A-4843-4A10-8B68-445D6F22DB83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{09C0881A-4843-4A10-8B68-445D6F22DB83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09C0881A-4843-4A10-8B68-445D6F22DB83}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -275,6 +271,10 @@ Global
 		{810C941C-84E5-462A-90C4-6BADA88C8F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{810C941C-84E5-462A-90C4-6BADA88C8F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{810C941C-84E5-462A-90C4-6BADA88C8F12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74F13BFA-A2C4-4E99-98A4-80CB79E78C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74F13BFA-A2C4-4E99-98A4-80CB79E78C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74F13BFA-A2C4-4E99-98A4-80CB79E78C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74F13BFA-A2C4-4E99-98A4-80CB79E78C45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
