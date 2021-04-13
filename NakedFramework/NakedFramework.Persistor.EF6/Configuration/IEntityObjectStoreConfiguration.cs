@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 
-namespace NakedFramework.Persistor.Entity.Configuration {
+namespace NakedFramework.Persistor.EF6.Configuration {
     public interface IEntityObjectStoreConfiguration {
         IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration { get; }
         IList<(Func<DbContext> getContexts, Func<Type[]> getTypes)> DbContextConstructors { get; set; }

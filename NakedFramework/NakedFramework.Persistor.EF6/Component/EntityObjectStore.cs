@@ -29,12 +29,12 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Persist;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
-using NakedFramework.Persistor.Entity.Configuration;
-using NakedFramework.Persistor.Entity.Util;
+using NakedFramework.Persistor.EF6.Configuration;
+using NakedFramework.Persistor.EF6.Util;
 
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
 
-namespace NakedFramework.Persistor.Entity.Component {
+namespace NakedFramework.Persistor.EF6.Component {
     public sealed class EntityObjectStore : IObjectStore, IDisposable {
         private readonly Func<object, INakedObjectAdapter> getAdapterFor;
         private readonly IMetamodelManager metamodelManager;

@@ -9,8 +9,8 @@ module NakedObjects.EntityTestSuite
 open NakedFramework.Core.Authentication
 open NakedObjects.Persistor.TestData
 open NakedObjects.Persistor.TestSuite
-open NakedFramework.Persistor.Entity.Configuration
-open NakedFramework.Persistor.Entity.Component
+open NakedFramework.Persistor.EF6.Configuration
+open NakedFramework.Persistor.EF6.Component
 open NakedObjects.Services
 open NakedObjects.TestTypes
 open NUnit.Framework

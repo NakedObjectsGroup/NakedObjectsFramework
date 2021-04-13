@@ -16,10 +16,10 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Persist;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Persistor.Entity.Component;
-using NakedFramework.Persistor.Entity.Configuration;
+using NakedFramework.Persistor.EF6.Component;
+using NakedFramework.Persistor.EF6.Configuration;
 
-namespace NakedFramework.Persistor.Entity.Extensions {
+namespace NakedFramework.Persistor.EF6.Extensions {
     public static class NakedEntityPersistorExtensions {
         private static EntityObjectStoreConfiguration EntityObjectStoreConfiguration(IConfiguration configuration, EntityPersistorOptions options) {
             var config = new EntityObjectStoreConfiguration {

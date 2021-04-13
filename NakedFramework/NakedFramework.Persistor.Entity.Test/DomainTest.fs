@@ -8,14 +8,14 @@ module NakedObjects.DomainTest
 
 open DomainTestCode
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
-open NakedFramework.Persistor.Entity.Configuration
+open NakedFramework.Persistor.EF6.Configuration
 open NUnit.Framework
 open System
 open System.Data.Entity.Core.Objects
 open TestCode
 open TestTypes
 open NakedFramework.Architecture.Component
-open NakedFramework.Persistor.Entity.Component
+open NakedFramework.Persistor.EF6.Component
 
 let persistor = 
     EntityObjectStoreConfiguration.NoValidate <- true

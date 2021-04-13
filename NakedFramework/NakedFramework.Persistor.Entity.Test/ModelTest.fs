@@ -7,7 +7,7 @@
 module NakedObjects.ModelTest
 
 open ModelTestCode
-open NakedFramework.Persistor.Entity.Configuration
+open NakedFramework.Persistor.EF6.Configuration
 open NakedObjects.TestTypes
 open NUnit.Framework
 open SimpleDatabase

@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.DomainTestCode
 
-open NakedFramework.Persistor.Entity.Configuration
-open NakedFramework.Persistor.Entity.Component
+open NakedFramework.Persistor.EF6.Configuration
+open NakedFramework.Persistor.EF6.Component
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedFramework.Core.Resolve
 open NUnit.Framework

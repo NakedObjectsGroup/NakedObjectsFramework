@@ -31,7 +31,7 @@ using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Profile;
 using NakedFramework.Metamodel.SpecImmutable;
-using NakedFramework.Persistor.Entity.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestObjects;

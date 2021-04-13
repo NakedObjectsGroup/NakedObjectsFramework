@@ -9,7 +9,7 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 
-namespace NakedFramework.Persistor.Entity.Configuration {
+namespace NakedFramework.Persistor.EF6.Configuration {
     public abstract class EntityContextConfiguration {
         internal bool Validated { get; set; }
         public MergeOption DefaultMergeOption { get; set; }

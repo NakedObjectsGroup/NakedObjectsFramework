@@ -12,8 +12,8 @@ open Moq
 open NakedFramework.Architecture.Component
 open NakedFramework.Core.Component
 open NakedFramework.Core.Authentication
-open NakedFramework.Persistor.Entity.Util
-open NakedFramework.Persistor.Entity.Component
+open NakedFramework.Persistor.EF6.Util
+open NakedFramework.Persistor.EF6.Component
 open System
 open System.Collections.Generic
 open System.Collections

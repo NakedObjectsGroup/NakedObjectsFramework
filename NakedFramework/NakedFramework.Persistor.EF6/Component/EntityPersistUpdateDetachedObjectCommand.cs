@@ -9,17 +9,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
-using NakedFramework.Persistor.Entity.Util;
-using NakedObjects;
+using NakedFramework.Persistor.EF6.Util;
 
-namespace NakedFramework.Persistor.Entity.Component {
+namespace NakedFramework.Persistor.EF6.Component {
     public class EntityPersistUpdateDetachedObjectCommand {
         private readonly IDetachedObjects detachedObjects;
         private readonly EntityObjectStore parent;

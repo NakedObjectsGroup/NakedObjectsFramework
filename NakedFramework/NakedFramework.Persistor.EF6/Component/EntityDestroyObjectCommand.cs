@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
-namespace NakedFramework.Persistor.Entity.Component {
+namespace NakedFramework.Persistor.EF6.Component {
     public class EntityDestroyObjectCommand : IDestroyObjectCommand {
         private readonly LocalContext context;
         private readonly INakedObjectAdapter nakedObjectAdapter;

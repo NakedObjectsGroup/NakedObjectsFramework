@@ -16,10 +16,10 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
-using NakedFramework.Persistor.Entity.Configuration;
-using NakedFramework.Persistor.Entity.Util;
+using NakedFramework.Persistor.EF6.Configuration;
+using NakedFramework.Persistor.EF6.Util;
 
-namespace NakedFramework.Persistor.Entity.Component {
+namespace NakedFramework.Persistor.EF6.Component {
     public class LocalContext : IDisposable {
         private readonly List<object> added = new();
         private readonly IDictionary<Type, Type> baseTypeMap = new Dictionary<Type, Type>();

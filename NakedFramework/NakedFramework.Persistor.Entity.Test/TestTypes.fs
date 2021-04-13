@@ -11,7 +11,7 @@ open NakedFramework.Architecture.Adapter
 open NakedFramework.Architecture.Component
 open NakedFramework.Architecture.Spec
 open NakedFramework.Core.Resolve
-open NakedFramework.Persistor.Entity.Component
+open NakedFramework.Persistor.EF6.Component
 open System
 open System.Collections.Generic
 open System.Reflection
