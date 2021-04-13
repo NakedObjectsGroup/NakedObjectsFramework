@@ -29,7 +29,8 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             }
             stopWatch.Stop();
             var time = stopWatch.ElapsedMilliseconds;
-            Assert.IsTrue(time < 150000, $"Elapsed time was {time} milliseconds");
+            var limit = 150000;
+            Assert.IsTrue(time < limit, $"Elapsed time was {time} milliseconds limit {limit}");
         }
     }
 
