@@ -29,7 +29,7 @@ namespace AdventureWorksModel {
     {
         public static void Map(this EntityTypeBuilder<BusinessEntityAddress> builder)
         {
-            builder.HasKey(t => new { t.BusinessEntityID, t.AddressTypeID, t.AddressID });
+            builder.HasKey(t => new { t.BusinessEntityID, t.AddressID, t.AddressTypeID });
 
             // Table & Column Mappings
             builder.ToTable("BusinessEntityAddress", "Person");
