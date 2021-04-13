@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Persistor.Entity.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
