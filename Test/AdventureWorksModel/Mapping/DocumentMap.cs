@@ -1,4 +1,5 @@
 using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AdventureWorksModel {
@@ -44,6 +45,7 @@ namespace AdventureWorksModel {
         public static void Map(this EntityTypeBuilder<Document> builder) {
             // Primary Key
             builder.HasKey(t => t.DocumentID);
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

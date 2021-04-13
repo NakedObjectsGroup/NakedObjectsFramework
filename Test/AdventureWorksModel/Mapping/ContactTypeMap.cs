@@ -39,7 +39,7 @@ namespace AdventureWorksModel
             builder.ToTable("ContactType", "Person");
             builder.Property(t => t.ContactTypeID).HasColumnName("ContactTypeID");
             builder.Property(t => t.Name).HasColumnName("Name");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

@@ -75,7 +75,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.ActualResourceHrs).HasColumnName("ActualResourceHrs");
             builder.Property(t => t.PlannedCost).HasColumnName("PlannedCost");
             builder.Property(t => t.ActualCost).HasColumnName("ActualCost");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Location).WithMany().HasForeignKey(t => t.LocationID);

@@ -33,7 +33,7 @@ namespace AdventureWorksModel
             Property(t => t.PersonID).HasColumnName("PersonID");
             Property(t => t.AccountNumber).HasColumnName("AccountNumber");
             Property(t => t.CustomerRowguid).HasColumnName("rowguid");
-          Property(t => t.CustomerModifiedDate).HasColumnName("ModifiedDate");
+          Property(t => t.CustomerModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
           // Relationships
           HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
@@ -68,7 +68,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.PersonID).HasColumnName("PersonID");
             builder.Property(t => t.AccountNumber).HasColumnName("AccountNumber");
             builder.Property(t => t.CustomerRowguid).HasColumnName("rowguid");
-            builder.Property(t => t.CustomerModifiedDate).HasColumnName("ModifiedDate");
+            builder.Property(t => t.CustomerModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);

@@ -48,7 +48,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.QuotaDate).HasColumnName("QuotaDate");
             builder.Property(t => t.SalesQuota).HasColumnName("SalesQuota");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false); 
 
             // Relationships
             builder.HasOne(t => t.SalesPerson)

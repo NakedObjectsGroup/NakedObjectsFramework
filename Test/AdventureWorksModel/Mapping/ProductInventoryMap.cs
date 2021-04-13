@@ -67,7 +67,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.Bin).HasColumnName("Bin");
             builder.Property(t => t.Quantity).HasColumnName("Quantity");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Location).WithMany().HasForeignKey(t => t.LocationID);

@@ -80,7 +80,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.UnitPriceDiscount).HasColumnName("UnitPriceDiscount");
             builder.Property(t => t.LineTotal).HasColumnName("LineTotal").ValueGeneratedOnAddOrUpdate();
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false); 
 
             // Relationships
             builder.HasOne(t => t.SalesOrderHeader)

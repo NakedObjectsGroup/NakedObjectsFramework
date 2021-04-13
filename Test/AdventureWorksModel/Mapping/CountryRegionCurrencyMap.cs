@@ -55,7 +55,7 @@ namespace AdventureWorksModel
             builder.ToTable("CountryRegionCurrency", "Sales");
             builder.Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
             builder.Property(t => t.CurrencyCode).HasColumnName("CurrencyCode");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);

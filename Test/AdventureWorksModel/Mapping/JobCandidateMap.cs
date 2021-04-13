@@ -36,7 +36,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.JobCandidateID).HasColumnName("JobCandidateID");
             builder.Property(t => t.EmployeeID).HasColumnName("BusinessEntityID");
             builder.Property(t => t.Resume).HasColumnName("Resume");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Employee).WithMany().HasForeignKey(t => t.EmployeeID);

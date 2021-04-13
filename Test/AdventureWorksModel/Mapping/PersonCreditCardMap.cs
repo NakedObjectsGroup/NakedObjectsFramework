@@ -49,7 +49,7 @@ namespace AdventureWorksModel
             builder.ToTable("PersonCreditCard", "Sales");
             builder.Property(t => t.PersonID).HasColumnName("BusinessEntityID");
             builder.Property(t => t.CreditCardID).HasColumnName("CreditCardID");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Person).WithMany().HasForeignKey(t => t.PersonID);

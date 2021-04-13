@@ -29,7 +29,7 @@ namespace AdventureWorksModel {
             builder.Property(t => t.ContactTypeID).HasColumnName("ContactTypeID");
             builder.Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
 
             builder.HasOne(t => t.Person).WithMany().HasForeignKey(t => t.PersonID);

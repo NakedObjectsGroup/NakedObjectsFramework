@@ -49,7 +49,7 @@ namespace AdventureWorksModel
             builder.ToTable("Culture", "Production");
             builder.Property(t => t.CultureID).HasColumnName("CultureID");
             builder.Property(t => t.Name).HasColumnName("Name");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

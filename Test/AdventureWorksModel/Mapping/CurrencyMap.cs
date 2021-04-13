@@ -49,7 +49,7 @@ namespace AdventureWorksModel
             builder.ToTable("Currency", "Sales");
             builder.Property(t => t.CurrencyCode).HasColumnName("CurrencyCode");
             builder.Property(t => t.Name).HasColumnName("Name");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

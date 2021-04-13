@@ -53,7 +53,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.SpecialOfferID).HasColumnName("SpecialOfferID");
             builder.Property(t => t.ProductID).HasColumnName("ProductID");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Product)

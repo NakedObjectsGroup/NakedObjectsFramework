@@ -64,7 +64,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.ToCurrencyCode).HasColumnName("ToCurrencyCode");
             builder.Property(t => t.AverageRate).HasColumnName("AverageRate");
             builder.Property(t => t.EndOfDayRate).HasColumnName("EndOfDayRate");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);

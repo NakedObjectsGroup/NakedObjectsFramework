@@ -57,7 +57,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.TaxAmt).HasColumnName("TaxAmt");
             builder.Property(t => t.Freight).HasColumnName("Freight");
             builder.Property(t => t.TotalDue).HasColumnName("TotalDue").ValueGeneratedOnAddOrUpdate();
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.OrderPlacedBy).WithMany().HasForeignKey(t => t.OrderPlacedByID);

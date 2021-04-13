@@ -39,7 +39,7 @@ namespace AdventureWorksModel
             builder.ToTable("ScrapReason", "Production");
             builder.Property(t => t.ScrapReasonID).HasColumnName("ScrapReasonID");
             builder.Property(t => t.Name).HasColumnName("Name");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

@@ -59,7 +59,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
             builder.Property(t => t.BOMLevel).HasColumnName("BOMLevel");
             builder.Property(t => t.PerAssemblyQty).HasColumnName("PerAssemblyQty");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Product).WithMany().HasForeignKey(t => t.ProductAssemblyID);

@@ -63,7 +63,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.PreferredVendorStatus).HasColumnName("PreferredVendorStatus");
             builder.Property(t => t.ActiveFlag).HasColumnName("ActiveFlag");
             builder.Property(t => t.PurchasingWebServiceURL).HasColumnName("PurchasingWebServiceURL");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

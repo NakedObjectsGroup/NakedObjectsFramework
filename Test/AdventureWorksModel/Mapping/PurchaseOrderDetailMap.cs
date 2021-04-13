@@ -67,7 +67,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.ReceivedQty).HasColumnName("ReceivedQty");
             builder.Property(t => t.RejectedQty).HasColumnName("RejectedQty");
             builder.Property(t => t.StockedQty).HasColumnName("StockedQty").ValueGeneratedOnAddOrUpdate();
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);

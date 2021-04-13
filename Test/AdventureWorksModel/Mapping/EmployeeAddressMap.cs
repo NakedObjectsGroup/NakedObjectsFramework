@@ -43,7 +43,8 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             builder.ToTable("EmployeeAddress", "HumanResources");
-           // builder.Property(t => t.Address).HasColumnName("Address");
+            // builder.Property(t => t.Address).HasColumnName("Address");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

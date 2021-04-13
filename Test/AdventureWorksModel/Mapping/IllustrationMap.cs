@@ -31,7 +31,7 @@ namespace AdventureWorksModel
             builder.ToTable("Illustration", "Production");
             builder.Property(t => t.IllustrationID).HasColumnName("IllustrationID");
             builder.Property(t => t.Diagram).HasColumnName("Diagram");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

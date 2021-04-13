@@ -51,7 +51,7 @@ namespace AdventureWorksModel
 
             //builder.Property(t => t.Times.StartTime).HasColumnName("StartTime");
             //builder.Property(t => t.Times.EndTime).HasColumnName("EndTime");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

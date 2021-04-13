@@ -105,10 +105,13 @@ namespace AdventureWorksModel
             builder.Property(t => t.SickLeaveHours).HasColumnName("SickLeaveHours");
             builder.Property(t => t.Current).HasColumnName("CurrentFlag");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+
+            builder.Ignore(t => t.ManagerID);//.HasColumnName("ManagerID");
 
             // Relationships
             builder.Ignore(t => t.Manager);
+
             //.WithMany(t => t.DirectReports)
             //.HasForeignKey(d => d.ManagerID);
             //builder.HasOne(t => t.SalesPerson).WithOne(t => t.EmployeeDetails);

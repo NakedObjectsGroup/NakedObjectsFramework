@@ -71,7 +71,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.MinQty).HasColumnName("MinQty");
             builder.Property(t => t.MaxQty).HasColumnName("MaxQty");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

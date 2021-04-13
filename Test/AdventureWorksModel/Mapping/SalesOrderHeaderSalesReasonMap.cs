@@ -51,7 +51,7 @@ namespace AdventureWorksModel
             builder.ToTable("SalesOrderHeaderSalesReason", "Sales");
             builder.Property(t => t.SalesOrderID).HasColumnName("SalesOrderID");
             builder.Property(t => t.SalesReasonID).HasColumnName("SalesReasonID");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.SalesOrderHeader)

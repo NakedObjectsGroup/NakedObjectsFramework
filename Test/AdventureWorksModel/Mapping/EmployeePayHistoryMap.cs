@@ -48,7 +48,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.RateChangeDate).HasColumnName("RateChangeDate");
             builder.Property(t => t.Rate).HasColumnName("Rate");
             builder.Property(t => t.PayFrequency).HasColumnName("PayFrequency");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false); 
 
             // Relationships
             builder.HasOne(t => t.Employee)

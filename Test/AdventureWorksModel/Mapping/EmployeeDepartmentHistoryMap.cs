@@ -58,7 +58,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.ShiftID).HasColumnName("ShiftID");
             builder.Property(t => t.StartDate).HasColumnName("StartDate");
             builder.Property(t => t.EndDate).HasColumnName("EndDate");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Department).WithMany().HasForeignKey(t => t.DepartmentID);

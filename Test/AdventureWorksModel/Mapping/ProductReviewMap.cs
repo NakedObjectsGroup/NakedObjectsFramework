@@ -69,7 +69,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.EmailAddress).HasColumnName("EmailAddress");
             builder.Property(t => t.Rating).HasColumnName("Rating");
             builder.Property(t => t.Comments).HasColumnName("Comments");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Product)

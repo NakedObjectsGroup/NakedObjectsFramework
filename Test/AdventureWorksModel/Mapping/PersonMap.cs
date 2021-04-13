@@ -90,7 +90,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.EmailPromotion).HasColumnName("EmailPromotion");
             builder.Property(t => t.AdditionalContactInfo).HasColumnName("AdditionalContactInfo");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             builder.Ignore(t => t.InitialPassword);
             builder.Ignore(t => t.ContactType);
@@ -100,6 +100,7 @@ namespace AdventureWorksModel
 
             builder.HasOne(t => t.Employee).WithOne(t => t.PersonDetails).HasForeignKey<Employee>(p => p.BusinessEntityID);
             //builder.HasOne(t => t.Password).WithOne(pw => pw.Person).HasForeignKey<Password>(pw => pw.BusinessEntityID);
+            builder.HasMany(t => t.PhoneNumbers).WithOne(t => t.Person).HasForeignKey(t => t.BusinessEntityID);
         }
     }
 }

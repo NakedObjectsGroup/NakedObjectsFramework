@@ -84,7 +84,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.StateProvinceID).HasColumnName("StateProvinceID");
             builder.Property(t => t.PostalCode).HasColumnName("PostalCode");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false); 
 
             // Relationships
             builder.HasOne(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);

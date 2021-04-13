@@ -57,7 +57,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.EndDate).HasColumnName("EndDate");
             builder.Property(t => t.DueDate).HasColumnName("DueDate");
             builder.Property(t => t.ScrapReasonID).HasColumnName("ScrapReasonID");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);

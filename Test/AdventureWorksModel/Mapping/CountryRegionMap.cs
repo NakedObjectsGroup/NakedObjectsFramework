@@ -47,7 +47,7 @@ namespace AdventureWorksModel
             builder.ToTable("CountryRegion", "Person");
             builder.Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
             builder.Property(t => t.Name).HasColumnName("Name");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

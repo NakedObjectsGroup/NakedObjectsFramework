@@ -160,7 +160,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.SellEndDate).HasColumnName("SellEndDate");
             builder.Property(t => t.DiscontinuedDate).HasColumnName("DiscontinuedDate");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.ProductModel)

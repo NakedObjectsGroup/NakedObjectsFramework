@@ -69,7 +69,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.CostYTD).HasColumnName("CostYTD");
             builder.Property(t => t.CostLastYear).HasColumnName("CostLastYear");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

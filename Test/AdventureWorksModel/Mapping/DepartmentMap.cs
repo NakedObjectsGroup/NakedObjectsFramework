@@ -50,7 +50,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.DepartmentID).HasColumnName("DepartmentID");
             builder.Property(t => t.Name).HasColumnName("Name");
             builder.Property(t => t.GroupName).HasColumnName("GroupName");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false); 
         }
     }
 

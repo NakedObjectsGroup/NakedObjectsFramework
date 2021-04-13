@@ -128,7 +128,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.TotalDue).HasColumnName("TotalDue").ValueGeneratedOnAddOrUpdate();
             builder.Property(t => t.Comment).HasColumnName("Comment");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             builder.HasOne(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);
