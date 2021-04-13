@@ -25,11 +25,11 @@ namespace AdventureWorksModel {
         }
 
         public void PopulateUsingKeys(string[] instanceId) {
-            int[] ids = instanceId == null ? new int[] {} : instanceId.Select(int.Parse).ToArray();
+            var ids = instanceId == null ? new int[] {} : instanceId.Select(int.Parse).ToArray();
 
             Customers = (from c in Container.Instances<Customer>()
-                from id in ids
-                where c.CustomerID == id
+                //from id in ids
+                where ids.Contains(c.CustomerID)
                 select c).ToList();
         }
 

@@ -262,23 +262,15 @@ namespace AdventureWorksModel {
         #endregion
 
         #region PhoneNumbers (collection)
-        private ICollection<PersonPhone> _PhoneNumbers = new List<PersonPhone>();
 
         [AWNotCounted]
         [TableView(false, 
             nameof(PersonPhone.PhoneNumberType),
             nameof(PersonPhone.PhoneNumber))] 
-        public virtual ICollection<PersonPhone> PhoneNumbers {
-            get {
-                return _PhoneNumbers;
-            }
-            set {
-                _PhoneNumbers = value;
-            }
-        }
+        public virtual ICollection<PersonPhone> PhoneNumbers { get; set; } = new List<PersonPhone>();
 
         public void CreateNewPhoneNumber(PhoneNumberType type, 
-            [RegularExpression(@"[0-9][0-9\s-]+")]string phoneNumber)
+                                         [RegularExpression(@"[0-9][0-9\s-]+")]string phoneNumber)
         {
             var pp = Container.NewTransientInstance<PersonPhone>();
             pp.BusinessEntityID = this.BusinessEntityID;

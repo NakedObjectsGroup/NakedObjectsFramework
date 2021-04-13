@@ -18,12 +18,13 @@ namespace AdventureWorksModel {
         #region CurrentSpecialOffers
 
         [MemberOrder(1)]
-        [TableView(false, "Description", "XNoMatchingColumn", "Category", "DiscountPct")] 
+        [TableView(false, "Description", "XNoMatchingColumn", "Category", "DiscountPct")]
         public IQueryable<SpecialOffer> CurrentSpecialOffers() {
+            var endDate = new DateTime(2004, 6, 1);
             return from obj in Instances<SpecialOffer>()
-                where obj.StartDate <= DateTime.Now &&
-                      obj.EndDate >= new DateTime(2004, 6, 1)
-                select obj;
+                   where obj.StartDate <= DateTime.Now &&
+                         obj.EndDate >= endDate
+                   select obj;
         }
 
         #endregion

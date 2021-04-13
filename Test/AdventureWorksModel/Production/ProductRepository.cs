@@ -172,10 +172,10 @@ namespace AdventureWorksModel {
         }
 
         private IQueryable<Product> QueryableOfProductsBySubcat(IEnumerable<ProductSubcategory> subCategories) {
-            IEnumerable<int> subCatIds = subCategories.Select(x => x.ProductSubcategoryID);
+            var subCatIds = subCategories.Select(x => x.ProductSubcategoryID).ToArray();
             IQueryable<Product> q = from p in Instances<Product>()
-                from sc in subCatIds
-                where p.ProductSubcategory.ProductSubcategoryID == sc
+                //from sc in subCatIds
+                where subCatIds.Contains(p.ProductSubcategory.ProductSubcategoryID)
                 orderby p.Name
                 select p;
             return q;
@@ -203,11 +203,11 @@ namespace AdventureWorksModel {
 
         public IQueryable<ProductSubcategory> Choices1FindProductsByCategory(IEnumerable<ProductCategory> categories) {
             if (categories != null) {
-                IEnumerable<int> catIds = categories.Select(c => c.ProductCategoryID);
+                var catIds = categories.Select(c => c.ProductCategoryID).ToArray();
 
                 return from psc in Instances<ProductSubcategory>()
-                    from cid in catIds
-                    where psc.ProductCategory.ProductCategoryID == cid
+                    //from cid in catIds
+                    where catIds.Contains(psc.ProductCategory.ProductCategoryID)
                     select psc;
             }
             return new ProductSubcategory[] {}.AsQueryable();
@@ -221,11 +221,11 @@ namespace AdventureWorksModel {
             IList<ProductCategory> pcs = Default0FindProductsByCategory();
 
             if (pcs != null) {
-                IEnumerable<int> ids = pcs.Select(c => c.ProductCategoryID);
+               var ids = pcs.Select(c => c.ProductCategoryID).ToArray();
 
                 return (from psc in Instances<ProductSubcategory>()
-                    from cid in ids
-                    where psc.ProductCategory.ProductCategoryID == cid
+                    //from cid in ids
+                    where ids.Contains(psc.ProductCategory.ProductCategoryID)
                     select psc).OrderBy(psc => psc.ProductSubcategoryID).Take(2).ToList();
             }
             return new List<ProductSubcategory>();

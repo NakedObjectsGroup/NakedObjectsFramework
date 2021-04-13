@@ -421,10 +421,11 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual SpecialOfferProduct BestSpecialOfferProduct(short quantity) {
             //reason for testing end date against 1/6/2004 is that in AW database, all offers terminate by 30/6/04
+            var endDate = new DateTime(2004, 6, 1);
             var query = from obj in Container.Instances<SpecialOfferProduct>()
                 where obj.Product.ProductID == ProductID &&
                       obj.SpecialOffer.StartDate <= DateTime.Now &&
-                      obj.SpecialOffer.EndDate >= new DateTime(2004, 6, 1) &&
+                      obj.SpecialOffer.EndDate >= endDate &&
                       obj.SpecialOffer.MinQty < quantity
                 orderby obj.SpecialOffer.DiscountPct descending
                 select obj;
