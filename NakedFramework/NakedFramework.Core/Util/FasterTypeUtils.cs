@@ -17,28 +17,44 @@ namespace NakedFramework.Core.Util {
         private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
         private const string CastleProxyPrefix = "Castle.Proxies.";
 
-        public static bool IsNakedObjectsProxy(string typeName) => typeName.StartsWith(NakedObjectsProxyPrefix, StringComparison.Ordinal);
+        private static bool IsNakedObjectsProxy(string typeName) => typeName.StartsWith(NakedObjectsProxyPrefix, StringComparison.Ordinal);
 
-        public static bool IsCastleProxy(string typeName) => typeName.StartsWith(CastleProxyPrefix, StringComparison.Ordinal);
+        private static bool IsCastleProxy(string typeName) => typeName.StartsWith(CastleProxyPrefix, StringComparison.Ordinal);
 
-        public static bool IsEntityProxy(string typeName) => typeName.StartsWith(EntityProxyPrefix, StringComparison.Ordinal);
+        private static bool IsAnyProxy(string typeName) => IsEFCoreProxy(typeName) || IsEF6Proxy(typeName) || IsNakedObjectsProxy(typeName);
 
-        public static bool IsProxy(Type type) => IsProxy(type.FullName ?? "");
+        private static bool IsEF6Proxy(string typeName) => typeName.StartsWith(EntityProxyPrefix, StringComparison.Ordinal);
 
-        public static bool IsProxy(string typeName) => IsEntityProxy(typeName) || IsNakedObjectsProxy(typeName) || IsCastleProxy(typeName);
+        public static bool IsEF6OrCoreProxy(Type type) => IsEFCoreProxy(type) || IsEF6Proxy(type);
 
-        public static bool IsSystem(string typeName) => typeName.StartsWith(SystemTypePrefix, StringComparison.Ordinal) && !IsEntityProxy(typeName);
+        public static bool IsAnyProxy(Type type) => IsAnyProxy(type?.FullName ?? "");
 
-        public static bool IsMicrosoft(string typeName) => typeName.StartsWith(MicrosoftTypePrefix, StringComparison.Ordinal);
+        public static bool IsSystem(string typeName) => typeName.StartsWith(SystemTypePrefix, StringComparison.Ordinal) && !IsEF6Proxy(typeName);
+
+        private static bool IsMicrosoft(string typeName) => typeName.StartsWith(MicrosoftTypePrefix, StringComparison.Ordinal);
+
+        public static bool IsMicrosoft(Type type) => IsMicrosoft(type?.FullName ?? "");
 
         public static bool IsNakedObjects(string typeName) => typeName.StartsWith(NakedObjectsTypePrefix, StringComparison.Ordinal);
 
-        public static bool IsSystem(Type type) => IsSystem(type.FullName ?? "") || IsMicrosoft(type.FullName ?? "");
+        public static bool IsNakedObjects(Type type) => IsNakedObjects(type?.FullName ?? "");
+
+        public static bool IsSystem(Type type) => IsSystem(type?.FullName ?? "") || IsMicrosoft(type?.FullName ?? "");
+
+        public static bool IsEFCoreProxy(Type type) => IsCastleProxy(type?.FullName ?? "");
+
+        public static bool IsEFCoreProxy(string typeName) => IsCastleProxy(typeName ?? "");
+
+        public static bool IsEF6Proxy(Type type) => IsEF6Proxy(type?.FullName ?? "");
 
         public static bool IsObjectArray(Type type) => type.IsArray && !(type.GetElementType()?.IsValueType == true || type.GetElementType() == typeof(string));
 
         public static bool IsGenericCollection(Type type) =>
             CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
             CollectionUtils.IsGenericType(type, typeof(ISet<>));
+
+        public static string GetProxiedTypeFullName(Type type) => !IsAnyProxy(type) ? type?.FullName : type.BaseType?.FullName;
+
+        public static Type GetProxiedType(Type type) => !IsAnyProxy(type) ? type : type.BaseType;
     }
 }

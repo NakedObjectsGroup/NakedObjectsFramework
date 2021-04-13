@@ -19,6 +19,7 @@ open TestCodeOnly
 open TestTypes
 open NakedFramework.Core.Error
 open NakedFramework.Architecture.Component
+open NakedFramework.Core.Util
 
 let categorySetter codeOnlyPersistor (c : Category) = 
     c.ID <- GetNextID<Category> codeOnlyPersistor (fun i -> i.ID)
@@ -398,8 +399,8 @@ let CanUpdatePersistentSubclassWithScalarProperties codeOnlyPersistor =
 let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies (codeOnlyPersistor : IObjectStore) = 
     let c = CreateAndSetup<Category> codeOnlyPersistor (categorySetter codeOnlyPersistor)
     let pr = CreateAndSetup codeOnlyPersistor (productSetter codeOnlyPersistor)
-    Assert.IsFalse(EntityUtils.IsEntityProxy(c.GetType()))
-    Assert.IsFalse(EntityUtils.IsEntityProxy(pr.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6Proxy(c.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6Proxy(pr.GetType()))
     c.Products.Add(pr)
     pr.Owningcategory <- c
     CreateAndEndTransaction codeOnlyPersistor c
@@ -407,9 +408,9 @@ let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies (codeO
         codeOnlyPersistor.GetInstances<Category>()
         |> Seq.filter (fun i -> i.Name = c.Name)
         |> Seq.head
-    Assert.IsTrue(IsEFCoreOrEF6Proxy(proxiedc.GetType()))
+    Assert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedc.GetType()))
     let proxiedpr = proxiedc.Products |> Seq.head
-    Assert.IsTrue(IsEFCoreOrEF6Proxy(proxiedpr.GetType()))
+    Assert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpr.GetType()))
 
 let CanGetObjectBySingleKey codeOnlyPersistor = 
     let key = GetMaxID<Product> codeOnlyPersistor (fun k -> k.ID)

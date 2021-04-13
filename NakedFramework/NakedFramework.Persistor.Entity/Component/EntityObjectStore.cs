@@ -379,7 +379,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         internal void CheckProxies(object objectToCheck) {
             var objectType = objectToCheck.GetType();
-            if (!EnforceProxies || TypeUtils.IsSystem(objectType) || TypeUtils.IsMicrosoft(objectType)) {
+            if (!EnforceProxies || FasterTypeUtils.IsSystem(objectType) || FasterTypeUtils.IsMicrosoft(objectType)) {
                 // may be using types provided by System or Microsoft (eg Authentication User). 
                 // No point enforcing proxying on them. 
                 return;
@@ -390,7 +390,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             var explanation = isTransientObject ? NakedObjects.Resources.NakedObjects.ProxyExplanationTransient : NakedObjects.Resources.NakedObjects.ProxyExplanation;
             var msg = "";
 
-            if (!TypeUtils.IsEntityProxy(objectToCheck.GetType())) {
+            if (!FasterTypeUtils.IsEF6Proxy(objectToCheck.GetType())) {
                 msg = string.Format(NakedObjects.Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), explanation);
             }
 
@@ -430,7 +430,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         private void SavingChangesHandler(object sender, EventArgs e) {
             var changedObjects = ObjectContextUtils.GetChangedObjectsInContext((ObjectContext) sender);
-            var adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => nakedObjectManager.CreateAdapter(domainObject, null, null)).ToArray();
+            var adaptedObjects = changedObjects.Where(o => FasterTypeUtils.IsEF6Proxy(o.GetType())).Select(domainObject => nakedObjectManager.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
         }
@@ -607,7 +607,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             // only if not proxied
             var entityType = nakedObjectAdapter.Object.GetType();
 
-            if (!TypeUtils.IsEntityProxy(entityType)) {
+            if (!FasterTypeUtils.IsEF6Proxy(entityType)) {
                 var currentContext = GetContext(entityType);
 
                 var propertynames = currentContext.GetNavigationMembers(entityType).Select(x => x.Name);
@@ -709,7 +709,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         public T ValidateProxy<T>(T toCheck) where T : class {
             var toCheckType = toCheck.GetType();
-            if (!TypeUtils.IsEntityProxy(toCheckType)) {
+            if (!FasterTypeUtils.IsEF6Proxy(toCheckType)) {
                 var context = GetContext(toCheck);
                 if (context is null || context.GetReferenceMembers(toCheckType).Any() || context.GetCollectionMembers(toCheckType).Any()) {
                     throw new PersistFailedException($"{toCheck}  type {toCheckType} is not proxy but has reference members or is unknown to EF");

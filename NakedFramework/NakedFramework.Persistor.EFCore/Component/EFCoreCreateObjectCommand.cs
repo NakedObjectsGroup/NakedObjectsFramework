@@ -46,7 +46,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 return null;
             }
 
-            if (FasterTypeUtils.IsCastleProxy(originalObject.GetType().FullName)) {
+            if (FasterTypeUtils.IsEFCoreProxy(originalObject.GetType().FullName)) {
                 // object already proxied assume previous save failed - add object to context again 
 
                 var add = true;

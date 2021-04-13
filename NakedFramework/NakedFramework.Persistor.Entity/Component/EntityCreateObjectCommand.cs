@@ -44,7 +44,7 @@ namespace NakedFramework.Persistor.Entity.Component {
                 return null;
             }
 
-            if (TypeUtils.IsEntityProxy(originalObject.GetType())) {
+            if (FasterTypeUtils.IsEF6Proxy(originalObject.GetType())) {
                 // object already proxied assume previous save failed - add object to context again 
 
                 var add = true;

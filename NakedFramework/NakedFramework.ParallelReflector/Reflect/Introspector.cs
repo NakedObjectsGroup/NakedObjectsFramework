@@ -55,7 +55,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
         /// </summary>
         public string ClassName => IntrospectedType.Name;
 
-        public string FullName => TypeUtils.GetProxiedTypeFullName(SpecificationType);
+        public string FullName => FasterTypeUtils.GetProxiedTypeFullName(SpecificationType);
 
         public string ShortName => TypeNameUtils.GetShortName(SpecificationType.Name);
 

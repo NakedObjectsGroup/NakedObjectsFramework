@@ -104,13 +104,11 @@ namespace NakedFramework.Persistor.EFCore.Util {
             }
         }
 
-        public static bool IsEFCoreProxy(Type type) => FasterTypeUtils.IsCastleProxy(type.FullName ?? "");
-
         public static string GetEFCoreProxiedTypeName(object domainObject) => domainObject.GetEFCoreProxiedType().FullName;
 
         public static Type GetEFCoreProxiedType(this object domainObject) =>
             domainObject.GetType() switch {
-                { } t when IsEFCoreProxy(t) => t.BaseType,
+                { } t when FasterTypeUtils.IsEFCoreProxy(t) => t.BaseType,
                 { } t => t
             };
     }

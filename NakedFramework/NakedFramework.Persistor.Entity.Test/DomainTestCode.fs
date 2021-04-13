@@ -23,6 +23,7 @@ open NakedFramework.Core.Error
 open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EFCore.Component
 open NakedFramework.Core.Persist
+open NakedFramework.Core.Util
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor
@@ -138,23 +139,23 @@ let CanSaveTransientObjectWithTransientReferencePropertyWithFixup persistor =
 let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies persistor = 
     let psc = CreateProductSubcategory persistor
     let pc = CreateProductCategory persistor
-    Assert.IsFalse(IsEFCoreOrEF6Proxy(psc.GetType()))
-    Assert.IsFalse(IsEFCoreOrEF6Proxy(pc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(psc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(pc.GetType()))
     psc.ProductCategory <- pc
     CreateAndEndTransaction persistor psc
     let proxiedpsc = 
         persistor.GetInstances<ProductSubcategory>()
         |> Seq.filter (fun i -> i.Name = psc.Name)
         |> Seq.head
-    Assert.IsTrue(IsEFCoreOrEF6Proxy(proxiedpsc.GetType()))
+    Assert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpsc.GetType()))
     let proxiedpc = proxiedpsc.ProductCategory
-    Assert.IsTrue(IsEFCoreOrEF6Proxy(proxiedpc.GetType()))
+    Assert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpc.GetType()))
 
 let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmNoProxies persistor = 
     let psc = CreateProductSubcategory persistor
     let pc = CreateProductCategory persistor
-    Assert.IsFalse(IsEFCoreOrEF6Proxy(psc.GetType()))
-    Assert.IsFalse(IsEFCoreOrEF6Proxy(pc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(psc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(pc.GetType()))
     psc.ProductCategory <- pc
     pc.ProductSubcategories.Add psc
     CreateAndEndTransaction persistor psc
@@ -162,9 +163,9 @@ let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmNoProxies pers
         persistor.GetInstances<ProductSubcategory>()
         |> Seq.filter (fun i -> i.Name = psc.Name)
         |> Seq.head
-    Assert.IsFalse(IsEFCoreOrEF6Proxy(proxiedpsc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpsc.GetType()))
     let proxiedpc = proxiedpsc.ProductCategory
-    Assert.IsFalse(IsEFCoreOrEF6Proxy(proxiedpc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpc.GetType()))
 
 let CanUpdatePersistentObjectWithScalarProperties persistor = 
     let sr = First<ScrapReason> persistor

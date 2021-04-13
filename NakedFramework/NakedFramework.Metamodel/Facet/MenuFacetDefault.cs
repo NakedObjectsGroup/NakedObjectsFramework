@@ -10,6 +10,7 @@ using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Menu;
 
 namespace NakedFramework.Metamodel.Facet {
@@ -21,7 +22,7 @@ namespace NakedFramework.Metamodel.Facet {
         //Creates a menu based on the object's actions and their specified ordering
         //For backwards compatibility of UI only, it gives the menu an Id of the type name
         public override void CreateMenu(IMetamodelBuilder metamodel) {
-            if (TypeUtils.IsSystem(Spec.Type)) {
+            if (FasterTypeUtils.IsSystem(Spec.Type)) {
                 return; //Menu not relevant, and could cause error below
             }
 

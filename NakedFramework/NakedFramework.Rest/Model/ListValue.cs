@@ -9,16 +9,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NakedFramework.Core.Util;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
 namespace NakedFramework.Rest.Model {
     public class ListValue : IValue {
-        // this is cloned from TypeUtils 
-        private const string NakedObjectsProxyPrefix = "NakedObjects.Proxy.";
-        private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
-        private const string CastleProxyPrefix = "Castle.Proxies.";
         private readonly IValue[] internalValue;
 
         public ListValue(IValue[] value) => internalValue = value;
@@ -44,17 +41,7 @@ namespace NakedFramework.Rest.Model {
 
         #endregion
 
-        private static bool IsNakedObjectsProxy(string typeName) => typeName.StartsWith(NakedObjectsProxyPrefix);
-
-        private static bool IsCastleProxy(string typeName) => typeName.StartsWith(CastleProxyPrefix);
-
-        private static bool IsEntityProxy(string typeName) => typeName.StartsWith(EntityProxyPrefix);
-
-        private static bool IsProxy(Type type) => IsProxy(type.FullName ?? "");
-
-        private static bool IsProxy(string typeName) => IsEntityProxy(typeName) || IsNakedObjectsProxy(typeName) || IsCastleProxy(typeName);
-
-        public static Type GetProxiedType(Type type) => IsProxy(type) ? type.BaseType : type;
+        private static Type GetProxiedType(Type type) => FasterTypeUtils.IsAnyProxy(type) ? type.BaseType : type;
 
         // end clone 
 
