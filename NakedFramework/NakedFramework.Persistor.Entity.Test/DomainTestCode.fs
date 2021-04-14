@@ -532,7 +532,7 @@ let CanGetManyToOneReference(persistor : IObjectStore) =
 
 let getObjectByKey(persistor :IObjectStore) key (typ : Type) = 
     match persistor with 
-    | :? EntityObjectStore as eos -> eos.GetObjectByKey(key, typ)
+    | :? EF6ObjectStore as eos -> eos.GetObjectByKey(key, typ)
     | :? EFCoreObjectStore as efos -> efos.GetObjectByKey(key, typ) 
     | _ -> null
 
@@ -558,8 +558,8 @@ let CanDetectConcurrency(persistor : IObjectStore) =
     let sr1 = persistor.GetInstances<ScrapReason>() |> Seq.head
     
     let otherPersistor =
-        EntityObjectStoreConfiguration.NoValidate <- true
-        let c = new EntityObjectStoreConfiguration()
+        EF6ObjectStoreConfiguration.NoValidate <- true
+        let c = new EF6ObjectStoreConfiguration()
         let f = fun () -> new AdventureWorksEntities(csAW) :> Data.Entity.DbContext   
         c.UsingContext(Func<Data.Entity.DbContext>f) |> ignore
         c.DefaultMergeOption <- MergeOption.AppendOnly
@@ -619,8 +619,8 @@ let ConcurrencyNoCustomOnUpdatingError(persistor : IObjectStore) =
     let l1 = persistor.GetInstances<Location>() |> Seq.head
     
     let otherPersistor = 
-        EntityObjectStoreConfiguration.NoValidate <- true
-        let c = new EntityObjectStoreConfiguration()
+        EF6ObjectStoreConfiguration.NoValidate <- true
+        let c = new EF6ObjectStoreConfiguration()
         let f = fun () -> new AdventureWorksEntities(csAW) :> Data.Entity.DbContext   
         c.UsingContext(Func<Data.Entity.DbContext>f) |> ignore
         c.DefaultMergeOption <- MergeOption.AppendOnly

@@ -30,13 +30,13 @@ let LoadTestAssembly() =
     ()
 
 let Config = 
-    let c = new CodeFirstEntityContextConfiguration()
+    let c = new EF6ContextConfiguration()
     c.DbContext <- fun () -> upcast new TestDataContext(csTDCO)
     c
 
 let db =
-    EntityObjectStoreConfiguration.NoValidate <- true
-    let c = new EntityObjectStoreConfiguration()
+    EF6ObjectStoreConfiguration.NoValidate <- true
+    let c = new EF6ObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     //c.ContextConfiguration <- [| Config  |]
     let p = getEntityObjectStore c
@@ -298,9 +298,9 @@ type EntityTestSuite() =
     
     [<Test>]
     member x.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax() = 
-        EntityObjectStore.MaximumCommitCycles <- 1
+        EF6ObjectStore.MaximumCommitCycles <- 1
         x.Tests.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax()
-        EntityObjectStore.MaximumCommitCycles <- 10
+        EF6ObjectStore.MaximumCommitCycles <- 10
     
     [<Test>]
     member x.SaveNewObjectTransientCollectionItemCallsPersistingPersisted() = x.Tests.SaveNewObjectTransientCollectionItemCallsPersistingPersisted()

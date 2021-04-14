@@ -13,8 +13,8 @@ open TestCode
 open TestTypes
 
 let codeOnlyPersistor = 
-    EntityObjectStoreConfiguration.NoValidate <- true
-    let c = new EntityObjectStoreConfiguration()
+    EF6ObjectStoreConfiguration.NoValidate <- true
+    let c = new EF6ObjectStoreConfiguration()
     c.UsingContext((CodeFirstConfig csCO).DbContext) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForTesting p

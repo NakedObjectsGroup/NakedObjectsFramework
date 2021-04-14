@@ -108,7 +108,7 @@ namespace NakedFramework.Xat.TestCase {
 
         protected virtual bool EnforceProxies => true;
 
-        protected virtual Action<EntityPersistorOptions> PersistorOptions =>
+        protected virtual Action<EF6PersistorOptions> PersistorOptions =>
             options => {
                 options.ContextInstallers = ContextInstallers;
                 options.EnforceProxies = EnforceProxies;

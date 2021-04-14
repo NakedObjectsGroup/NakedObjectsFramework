@@ -20,18 +20,18 @@ using NakedFramework.Persistor.EF6.Configuration;
 using NakedFramework.Persistor.EF6.Util;
 
 namespace NakedFramework.Persistor.EF6.Component {
-    public class LocalContext : IDisposable {
+    public class EF6LocalContext : IDisposable {
         private readonly List<object> added = new();
         private readonly IDictionary<Type, Type> baseTypeMap = new Dictionary<Type, Type>();
         private readonly ISet<Type> notPersistedTypes = new HashSet<Type>();
         private readonly ISet<Type> ownedTypes = new HashSet<Type>();
-        private readonly EntityObjectStore parent;
+        private readonly EF6ObjectStore parent;
         private readonly ISession session;
         private readonly IDictionary<Type, StructuralType> typeToStructuralType = new Dictionary<Type, StructuralType>();
         private List<INakedObjectAdapter> coUpdating;
         private List<INakedObjectAdapter> updatingNakedObjects;
 
-        private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, EntityObjectStore parent) {
+        private EF6LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, EF6ObjectStore parent) {
             this.session = session;
             this.parent = parent;
 
@@ -39,7 +39,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
         }
 
-        public LocalContext(CodeFirstEntityContextConfiguration config, ISession session, EntityObjectStore parent)
+        public EF6LocalContext(EF6ContextConfiguration config, ISession session, EF6ObjectStore parent)
             : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, parent) {
             WrappedObjectContext = ((IObjectContextAdapter) config.DbContext()).ObjectContext;
             Name = WrappedObjectContext.DefaultContainerName;
@@ -92,7 +92,7 @@ namespace NakedFramework.Persistor.EF6.Component {
 
         public StructuralType GetStructuralType(Type type) {
             if (!typeToStructuralType.ContainsKey(type)) {
-                typeToStructuralType[type] = ObjectContextUtils.GetStructuralType(WrappedObjectContext, type);
+                typeToStructuralType[type] = EF6Helpers.GetStructuralType(WrappedObjectContext, type);
             }
 
             return typeToStructuralType[type];
@@ -139,11 +139,11 @@ namespace NakedFramework.Persistor.EF6.Component {
         public void PreSave() {
             WrappedObjectContext.DetectChanges();
             added.AddRange(WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Where(ose => !ose.IsRelationship).Select(ose => ose.Entity).ToList());
-            updatingNakedObjects = ObjectContextUtils.GetChangedObjectsInContext(WrappedObjectContext).Select(obj => parent.CreateAdapter(null, obj)).ToList();
+            updatingNakedObjects = EF6Helpers.GetChangedObjectsInContext(WrappedObjectContext).Select(obj => parent.CreateAdapter(null, obj)).ToList();
             updatingNakedObjects.ForEach(no => no.Updating());
 
             // need to do complex type separately as they'll not be updated in the SavingChangesHandler as they're not proxied. 
-            coUpdating = ObjectContextUtils.GetChangedComplexObjectsInContext(this).Select(obj => parent.CreateAdapter(null, obj)).ToList();
+            coUpdating = EF6Helpers.GetChangedComplexObjectsInContext(this).Select(obj => parent.CreateAdapter(null, obj)).ToList();
             coUpdating.ForEach(no => no.Updating());
         }
 
@@ -152,7 +152,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             return WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified).Any();
         }
 
-        public void PostSave(EntityObjectStore store) {
+        public void PostSave(EF6ObjectStore store) {
             try {
                 // Take a copy of PersistedNakedObjects and clear original so new ones can be added 
                 // do this before Updated so that any objects added by updated are not immediately
@@ -170,7 +170,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             }
         }
 
-        public void PostSaveWrapUp(EntityObjectStore store) {
+        public void PostSaveWrapUp(EF6ObjectStore store) {
             added.Select(domainObject => parent.CreateAdapter(null, domainObject)).ForEach(store.HandleAdded);
             LoadedNakedObjects.ToList().ForEach(parent.HandleLoaded);
         }

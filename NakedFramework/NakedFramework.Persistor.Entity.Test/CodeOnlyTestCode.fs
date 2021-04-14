@@ -103,12 +103,12 @@ type CodeFirstInitializer() =
     override x.Seed(context : CodeFirstContext) = seedCodeFirstDatabase context
 
 let CodeFirstConfig(name) = 
-    let c = new CodeFirstEntityContextConfiguration()
+    let c = new EF6ContextConfiguration()
     c.DbContext <- fun () -> upcast new CodeFirstContext(name)
     c
 
 let CodeFirstCeConfig(name) = 
-    let c = new CodeFirstEntityContextConfiguration()
+    let c = new EF6ContextConfiguration()
     c.DbContext <- fun () -> upcast new CodeFirstContext(name)
     c
 

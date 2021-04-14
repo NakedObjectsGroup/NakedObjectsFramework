@@ -18,13 +18,13 @@ using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EF6.Util;
 
 namespace NakedFramework.Persistor.EF6.Component {
-    public class EntityCreateObjectCommand : ICreateObjectCommand {
-        private readonly LocalContext context;
+    public class EF6CreateObjectCommand : ICreateObjectCommand {
+        private readonly EF6LocalContext context;
         private readonly INakedObjectAdapter nakedObjectAdapter;
         private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
-        private readonly EntityObjectStore parent;
+        private readonly EF6ObjectStore parent;
 
-        public EntityCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context, EntityObjectStore parent) {
+        public EF6CreateObjectCommand(INakedObjectAdapter nakedObjectAdapter, EF6LocalContext context, EF6ObjectStore parent) {
             this.context = context;
             this.parent = parent;
             this.nakedObjectAdapter = nakedObjectAdapter;
@@ -163,7 +163,7 @@ namespace NakedFramework.Persistor.EF6.Component {
                 ProxyObjectIfAppropriate(nakedObjectAdapter.Object);
             }
             catch (Exception e) {
-                parent.Logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
+                parent.Logger.LogWarning($"Error in EF6CreateObjectCommand.Execute: {e.Message}");
                 throw;
             }
         }

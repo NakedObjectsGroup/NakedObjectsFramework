@@ -9,11 +9,11 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
 namespace NakedFramework.Persistor.EF6.Component {
-    public class EntityDestroyObjectCommand : IDestroyObjectCommand {
-        private readonly LocalContext context;
+    public class EF6DestroyObjectCommand : IDestroyObjectCommand {
+        private readonly EF6LocalContext context;
         private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public EntityDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context) {
+        public EF6DestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, EF6LocalContext context) {
             this.context = context;
             this.nakedObjectAdapter = nakedObjectAdapter;
         }

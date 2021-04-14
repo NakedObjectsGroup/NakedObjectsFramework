@@ -108,7 +108,7 @@ let handleLoadingTest (nakedObject : INakedObjectAdapter) =
 let savingChangesHandler (sender : Object) (e : EventArgs) = ()
 let mutable setProxyingAndDeferredLoading = true
 
-let setupPersistorForTesting (p : EntityObjectStore) = 
+let setupPersistorForTesting (p : EF6ObjectStore) = 
     p.SetupForTesting
         (testInjector, 
          Func<IOid, obj, INakedObjectAdapter> AdapterForTest, 

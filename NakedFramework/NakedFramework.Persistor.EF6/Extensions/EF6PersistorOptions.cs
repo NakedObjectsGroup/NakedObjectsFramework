@@ -11,7 +11,7 @@ using System.Data.Entity.Core.Objects;
 using Microsoft.Extensions.Configuration;
 
 namespace NakedFramework.Persistor.EF6.Extensions {
-    public class EntityPersistorOptions {
+    public class EF6PersistorOptions {
         public MergeOption DefaultMergeOption { get; set; } = MergeOption.AppendOnly;
         public bool EnforceProxies { get; set; } = true;
         public Func<bool> IsInitializedCheck { get; set; } = () => true;

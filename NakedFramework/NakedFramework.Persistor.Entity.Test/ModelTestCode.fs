@@ -30,7 +30,7 @@ open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EFCore.Component
 
 let ModelConfig = 
-    let pc = new CodeFirstEntityContextConfiguration()
+    let pc = new EF6ContextConfiguration()
     let f = (fun () -> new SimpleDatabaseDbContext("Model1Container") :> Data.Entity.DbContext)
     pc.DbContext <-  Func<Data.Entity.DbContext>(f)
     pc.DefaultMergeOption <- MergeOption.AppendOnly
@@ -46,7 +46,7 @@ let injector = new DomainObjectContainerInjector(serviceList, mockLoggerFactory.
 
 injector.set_Framework (new Mock<INakedObjectsFramework>()).Object
 
-let setupEF6PersistorForInjectorTesting (p : EntityObjectStore) = 
+let setupEF6PersistorForInjectorTesting (p : EF6ObjectStore) = 
     p.SetupForTesting
         (injector, 
          Func<IOid, obj, INakedObjectAdapter> AdapterForTest, 
@@ -72,7 +72,7 @@ let setupEFCorePersistorForInjectorTesting (p : EFCoreObjectStore) =
     p.SetupContexts()
     p
 
-let resetForEF6InjectorPersistor (p : EntityObjectStore) = 
+let resetForEF6InjectorPersistor (p : EF6ObjectStore) = 
     p.SetupContexts()
     setupEF6PersistorForInjectorTesting p
 
@@ -123,7 +123,7 @@ let ModelCanGetContextForNonGenericCollection persistor = CanGetContextForNonGen
 let ModelCanGetContextForArray persistor = CanGetContextForArray<Person> persistor
 let ModelCanGetContextForType persistor = CanGetContextForType<Person> persistor
 
-let ModelCanGetEF6ContextForComplexType (persistor : EntityObjectStore) = 
+let ModelCanGetEF6ContextForComplexType (persistor : EF6ObjectStore) = 
     CanGetContextForType<Person>(resetForEF6InjectorPersistor persistor)
     CanGetContextForType<NameType> persistor
 
@@ -133,7 +133,7 @@ let ModelCanGetEFCoreContextForComplexType (persistor : EFCoreObjectStore) =
 
 let ModelCanGetContextForComplexType (persistor : IObjectStore)  =
     match persistor with 
-    | :? EntityObjectStore as eos -> ModelCanGetEF6ContextForComplexType eos
+    | :? EF6ObjectStore as eos -> ModelCanGetEF6ContextForComplexType eos
     | :? EFCoreObjectStore as efos -> ModelCanGetEFCoreContextForComplexType efos 
     | _ -> ()
 

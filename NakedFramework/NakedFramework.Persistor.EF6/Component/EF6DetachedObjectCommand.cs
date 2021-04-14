@@ -18,12 +18,12 @@ using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EF6.Util;
 
 namespace NakedFramework.Persistor.EF6.Component {
-    public class EntityPersistUpdateDetachedObjectCommand {
+    public class EF6DetachedObjectCommand {
         private readonly IDetachedObjects detachedObjects;
-        private readonly EntityObjectStore parent;
-        private LocalContext context;
+        private readonly EF6ObjectStore parent;
+        private EF6LocalContext context;
 
-        public EntityPersistUpdateDetachedObjectCommand(IDetachedObjects detachedObjects, EntityObjectStore parent) {
+        public EF6DetachedObjectCommand(IDetachedObjects detachedObjects, EF6ObjectStore parent) {
             this.detachedObjects = detachedObjects;
             this.parent = parent;
         }
@@ -48,7 +48,7 @@ namespace NakedFramework.Persistor.EF6.Component {
 
             foreach (var toSave in detachedObjects.ToSave) {
                 context = parent.GetContext(toSave);
-                if (!context.GetKey(toSave).All(EntityObjectStore.EmptyKey)) {
+                if (!context.GetKey(toSave).All(EF6ObjectStore.EmptyKey)) {
                     errors.Add($"Save object {toSave} already has a key");
                 }
             }
@@ -56,7 +56,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             foreach (var updateTuple in detachedObjects.ToUpdate) {
                 var (_, toUpdate) = updateTuple;
                 context = parent.GetContext(toUpdate);
-                if (context.GetKey(toUpdate).All(EntityObjectStore.EmptyKey)) {
+                if (context.GetKey(toUpdate).All(EF6ObjectStore.EmptyKey)) {
                     errors.Add($"Update object {toUpdate} has no key");
                 }
             }
@@ -85,7 +85,7 @@ namespace NakedFramework.Persistor.EF6.Component {
                 return detachedObjects.SavedAndUpdated;
             }
             catch (Exception e) {
-                parent.Logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
+                parent.Logger.LogWarning($"Error in EF6CreateObjectCommand.Execute: {e.Message}");
                 throw;
             }
         }
@@ -104,7 +104,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             }
         }
 
-        private static object GetOrCreateProxiedObject(object originalObject, LocalContext context, object potentialProxy) {
+        private static object GetOrCreateProxiedObject(object originalObject, EF6LocalContext context, object potentialProxy) {
             var proxy = potentialProxy ?? context.CreateObject(originalObject.GetType());
 
             if (proxy is null) {
@@ -194,7 +194,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             }
 
             var keys = context.GetKey(originalObject);
-            var persisting = keys.All(EntityObjectStore.EmptyKey);
+            var persisting = keys.All(EF6ObjectStore.EmptyKey);
 
             return persisting ? ProxyObject(originalObject) : originalObject;
         }

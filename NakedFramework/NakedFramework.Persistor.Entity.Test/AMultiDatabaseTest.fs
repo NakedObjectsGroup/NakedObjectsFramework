@@ -18,8 +18,8 @@ open System
 open NakedFramework.Architecture.Component
 
 let multiDatabasePersistor = 
-    EntityObjectStoreConfiguration.NoValidate <- true
-    let c = new EntityObjectStoreConfiguration()
+    EF6ObjectStoreConfiguration.NoValidate <- true
+    let c = new EF6ObjectStoreConfiguration()
     c.UsingContext((CodeFirstConfig csMD).DbContext) |> ignore
     let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
     c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore

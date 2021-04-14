@@ -13,10 +13,10 @@ using System.Linq;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Persistor.EF6.Configuration {
-    public class EntityObjectStoreConfiguration : IEntityObjectStoreConfiguration {
+    public class EF6ObjectStoreConfiguration : IEF6ObjectStoreConfiguration {
         private bool isContextSet;
 
-        public EntityObjectStoreConfiguration() {
+        public EF6ObjectStoreConfiguration() {
             EnforceProxies = true;
             RollBackOnError = false;
             DefaultMergeOption = MergeOption.AppendOnly;
@@ -35,14 +35,14 @@ namespace NakedFramework.Persistor.EF6.Configuration {
 
         public class EntityContextConfigurator {
             private readonly int contextIndex;
-            private readonly EntityObjectStoreConfiguration entityObjectStoreConfiguration;
+            private readonly EF6ObjectStoreConfiguration ef6ObjectStoreConfiguration;
 
-            private EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration) => this.entityObjectStoreConfiguration = entityObjectStoreConfiguration;
+            private EntityContextConfigurator(EF6ObjectStoreConfiguration ef6ObjectStoreConfiguration) => this.ef6ObjectStoreConfiguration = ef6ObjectStoreConfiguration;
 
-            public EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration, Func<DbContext> f)
-                : this(entityObjectStoreConfiguration) {
-                entityObjectStoreConfiguration.DbContextConstructors.Add((f, () => Array.Empty<Type>()));
-                contextIndex = entityObjectStoreConfiguration.DbContextConstructors.Count - 1;
+            public EntityContextConfigurator(EF6ObjectStoreConfiguration ef6ObjectStoreConfiguration, Func<DbContext> f)
+                : this(ef6ObjectStoreConfiguration) {
+                ef6ObjectStoreConfiguration.DbContextConstructors.Add((f, () => Array.Empty<Type>()));
+                contextIndex = ef6ObjectStoreConfiguration.DbContextConstructors.Count - 1;
             }
 
             /// <summary>
@@ -53,24 +53,24 @@ namespace NakedFramework.Persistor.EF6.Configuration {
             /// <param name="types">A lambda or delegate that returns an array of Types</param>
             /// <returns>The ContextInstaller on which it was called, allowing further configuration.</returns>
             public EntityContextConfigurator AssociateTypes(Func<Type[]> types) {
-                var (getContexts, _) = entityObjectStoreConfiguration.DbContextConstructors[contextIndex];
-                entityObjectStoreConfiguration.DbContextConstructors[contextIndex] = (getContexts, types);
+                var (getContexts, _) = ef6ObjectStoreConfiguration.DbContextConstructors[contextIndex];
+                ef6ObjectStoreConfiguration.DbContextConstructors[contextIndex] = (getContexts, types);
 
                 return this;
             }
 
             public EntityContextConfigurator SetCustomConfiguration(Action<ObjectContext> customConfig) {
-                entityObjectStoreConfiguration.CustomConfig = customConfig;
+                ef6ObjectStoreConfiguration.CustomConfig = customConfig;
                 return this;
             }
         }
 
         #endregion
 
-        #region IEntityObjectStoreConfiguration Members
+        #region IEF6ObjectStoreConfiguration Members
 
-        public IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration =>
-            DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {
+        public IEnumerable<EF6ContextConfiguration> ContextConfiguration =>
+            DbContextConstructors.Select(f => new EF6ContextConfiguration {
                 DbContext = f.getContexts,
                 PreCachedTypes = f.getTypes,
                 NotPersistedTypes = NotPersistedTypes,
@@ -144,7 +144,7 @@ namespace NakedFramework.Persistor.EF6.Configuration {
 
         public void Validate() {
             if (!NoValidate && !isContextSet) {
-                throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call ""UsingContext""");
+                throw new InitialisationException(@"No context set on EF6ObjectStoreConfiguration, must call ""UsingContext""");
             }
         }
 

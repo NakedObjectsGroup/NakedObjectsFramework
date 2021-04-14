@@ -15,7 +15,7 @@ open System
 open TestCode
 
 let persistor = 
-    let c = new EntityObjectStoreConfiguration()
+    let c = new EF6ObjectStoreConfiguration()
     let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
     c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
