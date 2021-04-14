@@ -18,7 +18,7 @@ using NakedFramework.Persistor.EFCore.Configuration;
 using NakedFramework.Persistor.EFCore.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
-    public class LocalContext : IDisposable {
+    public class EFCoreLocalContext : IDisposable {
         private readonly List<object> added = new();
         private readonly IDictionary<Type, Type> baseTypeMap = new Dictionary<Type, Type>();
         private readonly ISet<Type> notPersistedTypes = new HashSet<Type>();
@@ -29,7 +29,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private List<INakedObjectAdapter> coUpdating;
         private List<INakedObjectAdapter> updatingNakedObjects;
 
-        private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, EFCoreObjectStore parent) {
+        private EFCoreLocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, EFCoreObjectStore parent) {
             this.session = session;
             this.parent = parent;
 
@@ -37,7 +37,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
         }
 
-        public LocalContext(Func<DbContext> context, EFCorePersistorConfiguration config, ISession session, EFCoreObjectStore parent)
+        public EFCoreLocalContext(Func<DbContext> context, EFCorePersistorConfiguration config, ISession session, EFCoreObjectStore parent)
             : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, parent) {
             WrappedDbContext = context();
             Name = WrappedDbContext.ToString();

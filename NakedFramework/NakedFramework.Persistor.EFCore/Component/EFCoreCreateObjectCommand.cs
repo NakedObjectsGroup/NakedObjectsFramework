@@ -22,12 +22,12 @@ namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreCreateObjectCommand : ICreateObjectCommand {
        
         private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
-        private readonly LocalContext context;
+        private readonly EFCoreLocalContext context;
         private readonly DbContext dbContext;
         private readonly EFCoreObjectStore parent;
         private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public EFCoreCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context, EFCoreObjectStore parent) {
+        public EFCoreCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter, EFCoreLocalContext context, EFCoreObjectStore parent) {
             this.context = context;
             this.dbContext = context.WrappedDbContext;
             this.parent = parent;

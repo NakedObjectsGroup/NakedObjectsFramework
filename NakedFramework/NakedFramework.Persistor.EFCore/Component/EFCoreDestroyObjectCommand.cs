@@ -10,10 +10,10 @@ using NakedFramework.Architecture.Persist;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreDestroyObjectCommand : IDestroyObjectCommand {
-        private readonly LocalContext context;
+        private readonly EFCoreLocalContext context;
         private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public EFCoreDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context) {
+        public EFCoreDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, EFCoreLocalContext context) {
             this.context = context;
             this.nakedObjectAdapter = nakedObjectAdapter;
         }

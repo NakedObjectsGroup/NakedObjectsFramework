@@ -10,10 +10,10 @@ using NakedFramework.Architecture.Persist;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreSaveObjectCommand : ISaveObjectCommand {
-        private readonly LocalContext context;
+        private readonly EFCoreLocalContext context;
         private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public EFCoreSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context)
+        public EFCoreSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, EFCoreLocalContext context)
         {
             this.context = context;
             this.nakedObjectAdapter = nakedObjectAdapter;

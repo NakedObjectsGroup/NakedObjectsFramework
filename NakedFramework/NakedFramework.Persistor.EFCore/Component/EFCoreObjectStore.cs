@@ -31,7 +31,7 @@ using NakedFramework.Persistor.EFCore.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreObjectStore : IObjectStore, IDisposable {
-        private LocalContext[] contexts;
+        private EFCoreLocalContext[] contexts;
         
         private readonly INakedObjectManager nakedObjectManager;
         private readonly EFCorePersistorConfiguration config;
@@ -80,7 +80,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         internal void SetupContexts() {
-            contexts = config.Contexts.Select(c => new LocalContext(c, config, session, this)).ToArray();
+            contexts = config.Contexts.Select(c => new EFCoreLocalContext(c, config, session, this)).ToArray();
             foreach (var context in contexts) {
                 context.WrappedDbContext.ChangeTracker.StateChanged += (_, args) => {
                     if (args.OldState == EntityState.Added) {
@@ -579,7 +579,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return updatedTuples;
         }
 
-        private static IList<(object original, object updated)> Execute(EFCorePersistUpdateDetachedObjectCommand cmd) {
+        private static IList<(object original, object updated)> Execute(EFCoreDetachedObjectCommand cmd) {
             try {
                 return cmd.Execute();
             }
@@ -608,13 +608,13 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         public IList<(object original, object updated)> ExecuteAttachObjectCommandUpdate(IDetachedObjects objects) =>
-            Execute(new EFCorePersistUpdateDetachedObjectCommand(objects, this));
+            Execute(new EFCoreDetachedObjectCommand(objects, this));
 
-        private LocalContext FindContext(Type type) =>
+        private EFCoreLocalContext FindContext(Type type) =>
             contexts.SingleOrDefault(c => c.GetIsOwned(type)) ??
             contexts.Single(c => c.GetIsKnown(type));
 
-        private LocalContext GetContext(Type type)
+        private EFCoreLocalContext GetContext(Type type)
         {
             try
             {
@@ -626,7 +626,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             }
         }
 
-        internal LocalContext GetContext(object domainObject) => GetContext(GetTypeToUse(domainObject));
+        internal EFCoreLocalContext GetContext(object domainObject) => GetContext(GetTypeToUse(domainObject));
 
         private Type GetTypeToUse(object domainObject)
         {
@@ -651,7 +651,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 : objectType;
         }
 
-        private LocalContext GetContext(INakedObjectAdapter nakedObjectAdapter) => GetContext(nakedObjectAdapter.Object);
+        private EFCoreLocalContext GetContext(INakedObjectAdapter nakedObjectAdapter) => GetContext(nakedObjectAdapter.Object);
 
         internal static bool EmptyKey(object key) =>
             key switch {

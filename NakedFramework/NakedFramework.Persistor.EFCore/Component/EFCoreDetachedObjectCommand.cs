@@ -17,12 +17,12 @@ using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
-    public class EFCorePersistUpdateDetachedObjectCommand {
+    public class EFCoreDetachedObjectCommand {
         private readonly IDetachedObjects detachedObjects;
         private readonly EFCoreObjectStore parent;
         private DbContext context;
 
-        public EFCorePersistUpdateDetachedObjectCommand(IDetachedObjects detachedObjects, EFCoreObjectStore parent) {
+        public EFCoreDetachedObjectCommand(IDetachedObjects detachedObjects, EFCoreObjectStore parent) {
             this.detachedObjects = detachedObjects;
             this.parent = parent;
         }
@@ -82,7 +82,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 return detachedObjects.SavedAndUpdated;
             }
             catch (Exception e) {
-                parent.Logger.LogWarning($"Error in {nameof(EFCorePersistUpdateDetachedObjectCommand)}.{nameof(Execute)}: {e.Message}");
+                parent.Logger.LogWarning($"Error in {nameof(EFCoreDetachedObjectCommand)}.{nameof(Execute)}: {e.Message}");
                 throw;
             }
         }
