@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -127,26 +126,26 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private void ProxyReferencesAndCopyValuesToProxy(object originalObject, object proxy) {
             var nonIdMembers = context.GetNonIdMembers(originalObject.GetType());
-            nonIdMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
+            nonIdMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
 
             var refMembers = context.GetReferenceMembers(originalObject.GetType());
-            refMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, ProxyReferenceIfAppropriate(pi.GetValue(originalObject, null)), null));
+            refMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, ProxyReferenceIfAppropriate(pi.GetValue(originalObject, null)), null));
 
-            var colmembers = context.GetCollectionMembers(originalObject.GetType());
-            foreach (var pi in colmembers) {
-                var toCol = proxy.GetType().GetProperty(pi.Name).GetValue(proxy, null);
+            var collectionMembers = context.GetCollectionMembers(originalObject.GetType());
+            foreach (var pi in collectionMembers) {
+                var toCol = proxy.GetProperty(pi.Name).GetValue(proxy, null);
                 var fromCol = pi.GetValue(originalObject, null);
 
                 if (!ReferenceEquals(toCol, fromCol) && fromCol is not null) {
                     toCol.Invoke("Clear");
-                    foreach (var item in (IEnumerable) fromCol) {
+                    foreach (var item in fromCol.AsEnumerable()) {
                         toCol.Invoke("Add", ProxyReferenceIfAppropriate(item));
                     }
                 }
             }
 
             var notPersistedMembers = originalObject.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && parent.IsNotPersisted(originalObject, p)).ToArray();
-            notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
+            notPersistedMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
         }
 
         public override string ToString() => "CreateObjectCommand";

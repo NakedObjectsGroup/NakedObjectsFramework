@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Persistor.EFCore.Util {
@@ -109,5 +111,11 @@ namespace NakedFramework.Persistor.EFCore.Util {
                 { } t when FasterTypeUtils.IsEFCoreProxy(t) => t.BaseType,
                 { } t => t
             };
+
+        public static IEnumerable AsEnumerable(this object enumerableObject) => enumerableObject as IEnumerable ?? throw new PersistFailedException($"Expected object: {enumerableObject} to be  IEnumerable");
+
+        private static PropertyInfo UnexpectedNullProperty(Type type, string name) => throw new PersistFailedException($"Unexpected null property name: {name} on: {type}");
+
+        public static PropertyInfo GetProperty(this object proxy, string name) => proxy.GetType().GetProperty(name) ?? UnexpectedNullProperty(proxy.GetType(), name);
     }
 }

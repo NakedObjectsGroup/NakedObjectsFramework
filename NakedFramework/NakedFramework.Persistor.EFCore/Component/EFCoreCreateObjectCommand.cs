@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -37,9 +36,11 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private void SetKeyAsNecessary(object objectToProxy, object proxy) {
             if (!dbContext.IdMembersAreIdentity(objectToProxy.GetType())) {
                 var idMembers = dbContext.SafeGetKeys(objectToProxy.GetType());
-                idMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
+                idMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
             }
         }
+
+        private INakedObjectAdapter CreateAdapter(object obj) => parent.CreateAdapter(null, obj);
 
         private object ProxyObjectIfAppropriate(object originalObject) {
             if (originalObject == null) {
@@ -48,15 +49,10 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             if (FasterTypeUtils.IsEFCoreProxy(originalObject.GetType().FullName)) {
                 // object already proxied assume previous save failed - add object to context again 
-
-                var add = true;
                 var entry = dbContext.Entry(originalObject);
-                if (entry is not null) {
-                    // EF knows object so check if detached 
-                    add = entry.State == EntityState.Detached;
-                }
 
-                if (add) {
+                // if EF knows object check if detached 
+                if (entry is null || entry.State == EntityState.Detached) {
                     dbContext.Add(originalObject);
                 }
 
@@ -67,7 +63,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 return objectToProxyScratchPad[originalObject];
             }
 
-            var adapterForOriginalObjectAdapter = parent.CreateAdapter(null, originalObject);
+            var adapterForOriginalObjectAdapter = CreateAdapter(originalObject);
 
             return adapterForOriginalObjectAdapter.ResolveState.IsPersistent()
                 ? originalObject
@@ -91,12 +87,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
             // if not proxied this should just be the same as adapterForOriginalObjectAdapter
-            var proxyAdapter = parent.CreateAdapter(null, objectToAdd);
-
-            if (!persisting) {
-                SetKeyAsNecessary(originalObject, objectToAdd);
-                dbContext.Add(objectToAdd);
-            }
+            var proxyAdapter = CreateAdapter(objectToAdd);
 
             if (persisting) {
                 ProxyReferencesAndCopyValuesToProxy(originalObject, objectToAdd);
@@ -107,6 +98,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 parent.ReplacePoco(adapterForOriginalObjectAdapter, objectToAdd);
             }
             else {
+                SetKeyAsNecessary(originalObject, objectToAdd);
+                dbContext.Add(objectToAdd);
                 ProxyReferences(originalObject);
                 context.PersistedNakedObjects.Add(proxyAdapter);
             }
@@ -132,9 +125,9 @@ namespace NakedFramework.Persistor.EFCore.Component {
             var refMembers = dbContext.GetReferenceMembers(objectToProxy.GetType());
             refMembers.ForEach(pi => ProxyObjectIfAppropriate(pi.GetValue(objectToProxy, null)));
 
-            var colmembers = dbContext.GetCollectionMembers(objectToProxy.GetType());
-            foreach (var pi in colmembers) {
-                foreach (var item in (IEnumerable) pi.GetValue(objectToProxy, null)) {
+            var collectionMembers = dbContext.GetCollectionMembers(objectToProxy.GetType());
+            foreach (var pi in collectionMembers) {
+                foreach (var item in pi.GetValue(objectToProxy, null).AsEnumerable()) {
                     ProxyObjectIfAppropriate(item);
                 }
             }
@@ -142,22 +135,22 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private void ProxyReferencesAndCopyValuesToProxy(object objectToProxy, object proxy) {
             var nonIdMembers = dbContext.GetNonIdMembers(objectToProxy.GetType());
-            nonIdMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
+            nonIdMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
 
             var refMembers = dbContext.GetReferenceMembers(objectToProxy.GetType());
-            refMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, ProxyObjectIfAppropriate(pi.GetValue(objectToProxy, null)), null));
+            refMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, ProxyObjectIfAppropriate(pi.GetValue(objectToProxy, null)), null));
 
-            var colmembers = dbContext.GetCollectionMembers(objectToProxy.GetType());
-            foreach (var pi in colmembers) {
-                var toCol = proxy.GetType().GetProperty(pi.Name).GetValue(proxy, null);
-                var fromCol = (IEnumerable) pi.GetValue(objectToProxy, null);
+            var collectionMembers = dbContext.GetCollectionMembers(objectToProxy.GetType());
+            foreach (var pi in collectionMembers) {
+                var toCol = proxy.GetProperty(pi.Name).GetValue(proxy, null);
+                var fromCol = pi.GetValue(objectToProxy, null).AsEnumerable();
                 foreach (var item in fromCol) {
                     toCol.Invoke("Add", ProxyObjectIfAppropriate(item));
                 }
             }
 
             var notPersistedMembers = objectToProxy.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && parent.IsNotPersisted(objectToProxy, p)).ToArray();
-            notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
+            notPersistedMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
         }
 
         public override string ToString() => $"CreateObjectCommand [object={nakedObjectAdapter}]";
