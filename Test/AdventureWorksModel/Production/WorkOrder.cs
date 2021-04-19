@@ -14,7 +14,7 @@ using NakedFramework;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("gear.png")]
+
     public class WorkOrder  {
         #region Injected Servives
         public IDomainObjectContainer Container { set; protected get; }

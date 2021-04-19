@@ -10,9 +10,8 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("globe.png")]
-    [Bounded]
-    [Immutable]
+
+    [Bounded, Immutable]
     public class CountryRegion {
         #region Life Cycle Methods
         public virtual void Persisting() {

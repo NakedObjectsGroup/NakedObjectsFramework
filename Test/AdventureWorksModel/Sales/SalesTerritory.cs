@@ -12,9 +12,8 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("globe.png")]
-    [Bounded]
-    [Immutable]
+
+    [Bounded, Immutable]
     public class SalesTerritory {
 
         #region Life Cycle Methods

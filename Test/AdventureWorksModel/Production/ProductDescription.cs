@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("information")]
+
     public class ProductDescription {
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -25,10 +25,7 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual int ProductDescriptionID { get; set; }
 
-        [Title]
-        [MultiLine(NumberOfLines = 10)]
-        [TypicalLength(100)]
-        [MemberOrder(2)]
+        [Title, MemberOrder(2), MultiLine(NumberOfLines = 10)]
         public virtual string Description { get; set; }
 
         #region Row Guid and Modified Date

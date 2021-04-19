@@ -19,7 +19,6 @@ using NakedFramework.Value;
 
 namespace AdventureWorksModel {
 
-    [IconName("cellphone.png")]
     public class Person : BusinessEntity {
 
         #region Life Cycle Methods

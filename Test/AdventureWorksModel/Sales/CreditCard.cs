@@ -13,7 +13,7 @@ using NakedFramework;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [Immutable(WhenTo.OncePersisted), IconName("id_card.png")]
+    [Immutable(WhenTo.OncePersisted)]
     public class CreditCard {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

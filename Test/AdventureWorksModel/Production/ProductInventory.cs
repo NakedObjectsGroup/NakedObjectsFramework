@@ -11,7 +11,7 @@ using NakedFramework;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("cartons.png")]
+
     public class ProductInventory  {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

@@ -13,7 +13,7 @@ using System.Linq;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("skyscraper.png")]
+
     public class Store : BusinessEntity, IBusinessEntityWithContacts {
         #region Injected Servives
         public SalesRepository SalesRepository { set; protected get; }
@@ -52,7 +52,7 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual string Demographics { get; set; }
 
-        [DisplayName("Demographics"), MemberOrder(30), MultiLine(NumberOfLines = 10), TypicalLength(500)]
+        [DisplayName("Demographics"), MemberOrder(30), MultiLine(NumberOfLines = 10)]
         public virtual string FormattedDemographics {
             get { return Utilities.FormatXML(Demographics); }
         }

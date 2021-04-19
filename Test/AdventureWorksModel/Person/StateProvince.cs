@@ -10,9 +10,8 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("lookup.png")]
-    [Immutable]
-    [Bounded]
+
+    [Bounded,Immutable]
     public class StateProvince {
         #region Life Cycle Methods
         public virtual void Persisting() {

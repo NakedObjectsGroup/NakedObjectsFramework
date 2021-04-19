@@ -15,7 +15,7 @@ using NakedFramework.Value;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("carton.png")]
+
     public class Product { //: IRedirected {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

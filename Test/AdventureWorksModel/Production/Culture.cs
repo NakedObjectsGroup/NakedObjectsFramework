@@ -10,9 +10,8 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [Bounded]
-    [IconName("lookup.png")]
-    [Immutable]
+
+    [Bounded, Immutable]
     public class Culture  {
 
         #region Life Cycle Methods

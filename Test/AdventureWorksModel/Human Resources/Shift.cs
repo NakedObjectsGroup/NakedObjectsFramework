@@ -11,8 +11,8 @@ using NakedObjects;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdventureWorksModel {
+
     [Bounded]
-    [IconName("clock.png")]
     public class Shift  {
 
         #region Life Cycle Methods
@@ -34,10 +34,7 @@ namespace AdventureWorksModel {
 
         #region Name
 
-        [Title]
-        [MemberOrder(1)]
-        [StringLength(50)]
-        [TypicalLength(10)]
+        [Title, MemberOrder(1), StringLength(50)]
         public virtual string Name { get; set; }
 
         #endregion

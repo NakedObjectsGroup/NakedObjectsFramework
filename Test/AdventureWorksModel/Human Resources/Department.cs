@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("org_chart.png")]
+
     [Bounded]
     [Immutable]
     public class Department  {

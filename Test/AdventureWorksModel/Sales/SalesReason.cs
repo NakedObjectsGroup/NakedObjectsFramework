@@ -10,9 +10,8 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("speech.png")]
-    [Bounded]
-    [Immutable]
+
+    [Bounded, Immutable]
     public class SalesReason {
 
         #region Life Cycle Methods

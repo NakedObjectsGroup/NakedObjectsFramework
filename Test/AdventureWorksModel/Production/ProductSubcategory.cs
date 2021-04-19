@@ -10,9 +10,8 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("lookup.png")]
-    [Bounded]
-    [Immutable]
+
+    [Bounded, Immutable]
     public class ProductSubcategory {
 
         #region Life Cycle Methods

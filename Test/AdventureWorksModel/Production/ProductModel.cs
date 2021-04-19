@@ -16,7 +16,7 @@ using System.Xml.Linq;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("information.png")]
+
     public class ProductModel  {
 
         #region Life Cycle Methods
@@ -47,7 +47,6 @@ namespace AdventureWorksModel {
         [DisplayName("CatalogDescription")]
         [MemberOrder(20)]
         [MultiLine(NumberOfLines = 10)]
-        [TypicalLength(500)]
         public virtual string FormattedCatalogDescription {
             get {
                 var output = new StringBuilder();

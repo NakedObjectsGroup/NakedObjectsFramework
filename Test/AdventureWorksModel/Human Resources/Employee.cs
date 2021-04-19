@@ -15,7 +15,7 @@ using NakedObjects;
 namespace AdventureWorksModel {
 
     public interface IEmployee : IBusinessEntity { } //Interface is for testing purposes
-    [IconName("person.png")]
+
     public class Employee : IEmployee {
         #region Injected Services
         public EmployeeRepository EmployeeRepository { set; protected get; }
@@ -113,7 +113,6 @@ namespace AdventureWorksModel {
         [MemberOrder(11)]
         public virtual string LoginID { get; set; }
 
-        [Executed(Where.Remotely)]
         public virtual bool HideLoginID() {
             if (Container.IsPersistent(this)) {
                 Employee userAsEmployee = EmployeeRepository.CurrentUserAsEmployee();
