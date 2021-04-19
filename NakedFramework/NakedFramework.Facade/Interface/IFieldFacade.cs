@@ -28,7 +28,6 @@ namespace NakedFramework.Facade.Interface {
         int? MaxLength { get; }
         string Pattern { get; }
         string Mask { get; }
-        bool IsAjax { get; }
         bool IsNullable { get; }
         bool IsPassword { get; }
         bool IsDateOnly { get; }

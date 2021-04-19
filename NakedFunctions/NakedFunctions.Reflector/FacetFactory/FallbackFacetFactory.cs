@@ -58,7 +58,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
 
             if (holder is IActionSpecImmutable) {
-                facets.Add(new ExecutedFacetDefault(holder));
                 facets.Add(new ActionDefaultsFacetNone(holder));
                 facets.Add(new ActionChoicesFacetNone(holder));
                 facets.Add(new PageSizeFacetDefault(holder));

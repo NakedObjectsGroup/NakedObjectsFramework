@@ -13,15 +13,6 @@ namespace NakedFramework.Architecture.Spec {
     ///     The specification for an action method on a domain object (or service).
     /// </summary>
     public interface IActionSpec : IMemberSpec {
-        /// <summary>
-        ///     Returns where the action should be executed: explicitly locally on the client; explicitly remotely on
-        ///     the server; or where it normally should be executed. By default instance methods should execute on the
-        ///     server, static methods should execute on the client.
-        /// </summary>
-        /// <seealso cref="Where.Locally" />
-        /// <seealso cref="Where.Remotely" />
-        /// <seealso cref="Where.Default" />
-        Where ExecutedWhere { get; }
 
         /// <summary>
         ///     Returns the specification for the type of object that this action can be invoked upon

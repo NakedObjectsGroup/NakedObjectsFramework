@@ -292,8 +292,6 @@ namespace NakedFramework.Core.Spec {
             return parser?.InvariantString(nakedObjectAdapter);
         }
 
-        public string GetIconName(INakedObjectAdapter forObjectAdapter) => InnerSpec.GetIconName(forObjectAdapter, Framework.MetamodelManager.Metamodel);
-
         #endregion
     }
 }

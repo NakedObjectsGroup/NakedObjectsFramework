@@ -88,11 +88,6 @@ namespace NakedFramework.Architecture.Spec {
         #endregion
 
         /// <summary>
-        ///     Returns the name of an icon to use for the specified object
-        /// </summary>
-        string GetIconName(INakedObjectAdapter forObjectAdapter);
-
-        /// <summary>
         ///     Returns the title string for the specified object
         /// </summary>
         string GetTitle(INakedObjectAdapter nakedObjectAdapter);

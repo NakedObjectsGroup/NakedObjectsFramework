@@ -15,9 +15,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
 #pragma warning disable 612
@@ -48,7 +46,6 @@ namespace NakedObjects.Reflector.Utils {
             var method = MethodHelpers.FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
             if (method != null) {
                 facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
-                AddOrAddToExecutedWhereFacet(method, specification);
             }
         }
 
@@ -57,35 +54,6 @@ namespace NakedObjects.Reflector.Utils {
             if (method != null) {
                 methodRemover?.RemoveMethod(method);
                 facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
-                AddOrAddToExecutedWhereFacet(method, specification);
-            }
-        }
-
-
-        public static void AddOrAddToExecutedWhereFacet(MethodInfo method, ISpecification holder) {
-            var attribute = method.GetCustomAttribute<ExecutedAttribute>();
-            if (attribute != null && !attribute.IsAjax) {
-                var executedFacet = holder.GetFacet<IExecutedControlMethodFacet>();
-                if (executedFacet == null) {
-                    FacetUtils.AddFacet(new ExecutedControlMethodFacet(method, attribute.Value, holder));
-                }
-                else {
-                    executedFacet.AddMethodExecutedWhere(method, attribute.Value);
-                }
-            }
-        }
-
-        public static void AddAjaxFacet(MethodInfo method, ISpecification holder) {
-            if (method == null) {
-                FacetUtils.AddFacet(new AjaxFacet(holder));
-            }
-            else {
-                var attribute = method.GetCustomAttribute<ExecutedAttribute>();
-                if (attribute != null && attribute.IsAjax) {
-                    if (attribute.AjaxValue == Ajax.Disabled) {
-                        FacetUtils.AddFacet(new AjaxFacet(holder));
-                    }
-                }
             }
         }
     }

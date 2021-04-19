@@ -116,8 +116,6 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public bool IsImmutable(IObjectFacade objectFacade) => WrappedValue.IsAlwaysImmutable() || WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient;
 
-        public string GetIconName(IObjectFacade objectFacade) => WrappedValue.GetIconName(((ObjectFacade) objectFacade)?.WrappedNakedObject);
-
         public IActionFacade[] GetActionLeafNodes() {
             var actionsAndUid = FacadeUtils.GetActionsandUidFromSpec(WrappedValue);
             return actionsAndUid.Select(a => new ActionFacade(a.spec, FrameworkFacade, framework, a.uid ?? "")).Cast<IActionFacade>().ToArray();

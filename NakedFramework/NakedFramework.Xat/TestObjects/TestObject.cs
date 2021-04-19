@@ -48,13 +48,6 @@ namespace NakedFramework.Xat.TestObjects {
 
         public object GetDomainObject() => NakedObject.GetDomainObject();
 
-        public string IconName {
-            get {
-                Assert.IsNotNull(NakedObject, "Cannot get icon for null object");
-                return NakedObject.IconName();
-            }
-        }
-
         public override string Title {
             get {
                 Assert.IsNotNull(NakedObject, "Cannot get title for null object");

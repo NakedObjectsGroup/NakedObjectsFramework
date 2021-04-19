@@ -50,14 +50,6 @@ namespace NakedFramework.Architecture.Adapter {
         IVersion OptimisticLock { set; }
 
         /// <summary>
-        ///     Returns a list in priority order of names of icons to use if this object is to be displayed graphically
-        /// </summary>
-        /// <para>
-        ///     Should always return at least one item
-        /// </para>
-        string IconName();
-
-        /// <summary>
         ///     Returns the title to display this object with, which is usually got from the
         ///     wrapped <see cref="Object" /> domain object
         /// </summary>

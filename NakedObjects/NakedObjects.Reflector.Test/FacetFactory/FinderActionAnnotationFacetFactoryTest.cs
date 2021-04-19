@@ -31,8 +31,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             var actionMethod = FindMethod(typeof(Customer), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IExecutedFacet));
-            Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
         }

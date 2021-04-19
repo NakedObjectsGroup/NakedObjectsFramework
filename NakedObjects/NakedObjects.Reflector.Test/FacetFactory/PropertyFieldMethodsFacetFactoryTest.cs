@@ -93,7 +93,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer10r {
             public string FirstName => null;
 
-            [Executed(Where.Remotely)]
             public string[] ChoicesFirstName()
             {
                 return null;
@@ -103,7 +102,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer10l {
             public string FirstName => null;
 
-            [Executed(Where.Locally)]
             public string[] ChoicesFirstName()
             {
                 return null;
@@ -122,7 +120,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer11r {
             public string FirstName => null;
 
-            [Executed(Where.Remotely)]
             public string DefaultFirstName()
             {
                 return null;
@@ -132,7 +129,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer11l {
             public string FirstName => null;
 
-            [Executed(Where.Locally)]
             public string DefaultFirstName()
             {
                 return null;
@@ -241,7 +237,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer19 {
             public string FirstName => null;
 
-            [Executed(Ajax.Disabled)]
             public string ValidateFirstName(string firstName)
             {
                 return null;
@@ -251,7 +246,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer20 {
             public string FirstName => null;
 
-            [Executed(Ajax.Enabled)]
             public string ValidateFirstName(string firstName)
             {
                 return null;
@@ -416,58 +410,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestAjaxFacetAddedIfNoValidate() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer2), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IAjaxFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AjaxFacet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestAjaxFacetFoundAndMethodRemovedDisabled() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer19), "FirstName");
-            var propertyValidateMethod = FindMethod(typeof(Customer19), "ValidateFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IAjaxFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AjaxFacet);
-            AssertMethodRemoved(propertyValidateMethod);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestAjaxFacetFoundAndMethodRemovedEnabled() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer20), "FirstName");
-            var propertyValidateMethod = FindMethod(typeof(Customer20), "ValidateFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IAjaxFacet));
-            Assert.IsNull(facet);
-            AssertMethodRemoved(propertyValidateMethod);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestAjaxFacetNotAddedByDefault() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer12), "FirstName");
-            var propertyValidateMethod = FindMethod(typeof(Customer12), "ValidateFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IAjaxFacet));
-            Assert.IsNull(facet);
-            AssertMethodRemoved(propertyValidateMethod);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
         public void TestAutoCompleteFacetAttributes() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
@@ -570,8 +512,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var propertyChoicesFacet = (PropertyChoicesFacet) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
             AssertMethodRemoved(propertyChoicesMethod);
-            var facetExecuted = Specification.GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted);
             Assert.IsNotNull(metamodel);
         }
 
@@ -590,8 +530,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.AreEqual(propertyChoicesMethod1, propertyChoicesFacet.GetMethod());
             AssertMethodRemoved(propertyChoicesMethod1);
             AssertMethodNotRemoved(propertyChoicesMethod2);
-            var facetExecuted = Specification.GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted);
             Assert.IsNotNull(metamodel);
         }
 
@@ -608,9 +546,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var propertyChoicesFacet = (PropertyChoicesFacet) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
             AssertMethodRemoved(propertyChoicesMethod);
-            var facetExecuted = Specification.GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted);
-            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Where.Locally);
             Assert.IsNotNull(metamodel);
         }
 
@@ -627,9 +562,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var propertyChoicesFacet = (PropertyChoicesFacet) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
             AssertMethodRemoved(propertyChoicesMethod);
-            var facetExecuted = Specification.GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted);
-            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Where.Remotely);
             Assert.IsNotNull(metamodel);
         }
 
@@ -644,8 +576,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacet);
             AssertMethodRemoved(propertyChoicesMethod);
-            var facetExecuted = Specification.GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted);
             Assert.IsNotNull(metamodel);
         }
 
@@ -662,8 +592,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
             Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
             AssertMethodRemoved(propertyDefaultMethod);
-            var facetExecuted = Specification.GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted);
             Assert.IsNotNull(metamodel);
         }
 
@@ -680,9 +608,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
             Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
             AssertMethodRemoved(propertyDefaultMethod);
-            var facetExecuted = Specification.GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted);
-            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyDefaultMethod), Where.Locally);
             Assert.IsNotNull(metamodel);
         }
 
@@ -699,9 +624,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
             Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
             AssertMethodRemoved(propertyDefaultMethod);
-            var facetExecuted = Specification.GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted);
-            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyDefaultMethod), Where.Remotely);
             Assert.IsNotNull(metamodel);
         }
 

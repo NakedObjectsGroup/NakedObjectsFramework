@@ -38,7 +38,6 @@ namespace NakedFramework.Facade.Interface {
         bool IsEnum { get; }
         ITypeFacade GetElementType(IObjectFacade objectFacade);
         bool IsImmutable(IObjectFacade objectFacade);
-        string GetIconName(IObjectFacade objectFacade);
         IActionFacade[] GetActionLeafNodes();
         bool IsOfType(ITypeFacade otherSpec);
         Type GetUnderlyingType();

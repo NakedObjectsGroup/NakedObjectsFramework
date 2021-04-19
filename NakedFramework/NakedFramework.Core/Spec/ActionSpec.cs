@@ -29,7 +29,6 @@ namespace NakedFramework.Core.Spec {
         private readonly ILoggerFactory loggerFactory;
 
         private IObjectSpec elementSpec;
-        private Where? executedWhere;
         private bool? hasReturn;
         private bool? isFinderMethod;
 
@@ -105,14 +104,6 @@ namespace NakedFramework.Core.Spec {
         public override IIdentifier Identifier => actionSpecImmutable.Identifier;
 
         public int ParameterCount => actionSpecImmutable.Parameters.Length;
-
-        public Where ExecutedWhere {
-            get {
-                executedWhere ??= GetFacet<IExecutedFacet>().ExecutedWhere();
-
-                return executedWhere.Value;
-            }
-        }
 
         public bool IsContributedMethod => actionSpecImmutable.IsContributedMethod;
 

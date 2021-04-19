@@ -132,7 +132,6 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                     // add facets directly to parameters, not to actions
                     FacetUtils.AddFacet(new ActionDefaultsFacetViaMethod(methodToUse, parameters[i], Logger<ActionDefaultsFacetViaMethod>()));
-                    ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
             }
         }
@@ -194,7 +193,6 @@ namespace NakedObjects.Reflector.FacetFactory {
                     }
 
                     FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], Logger<ActionChoicesFacetViaMethod>(), isMultiple));
-                    ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
             }
 
@@ -228,7 +226,6 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                         // add facets directly to parameters, not to actions
                         FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, parameters[i], Logger<AutoCompleteFacet>()));
-                        ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(method, parameters[i]);
                     }
                 }
             }
@@ -271,11 +268,6 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                     // add facets directly to parameters, not to actions
                     FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, parameters[i], Logger<ActionParameterValidation>()));
-                    ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
-                    ObjectMethodHelpers.AddAjaxFacet(methodToUse, parameters[i]);
-                }
-                else {
-                    ObjectMethodHelpers.AddAjaxFacet(null, parameters[i]);
                 }
             }
         }

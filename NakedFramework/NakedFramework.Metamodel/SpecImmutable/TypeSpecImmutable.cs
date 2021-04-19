@@ -181,19 +181,6 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             return false;
         }
 
-        public string GetIconName(INakedObjectAdapter forObjectAdapter, IMetamodel metamodel) {
-            var iconFacet = GetFacet<IIconFacet>();
-            string iconName = null;
-            if (iconFacet != null) {
-                iconName = forObjectAdapter == null ? iconFacet.GetIconName() : iconFacet.GetIconName(forObjectAdapter);
-            }
-            else if (IsCollection && !IsParseable) {
-                iconName = GetFacet<ITypeOfFacet>().GetValueSpec(forObjectAdapter, metamodel).GetIconName(null, metamodel);
-            }
-
-            return string.IsNullOrEmpty(iconName) ? "Default" : iconName;
-        }
-
         #endregion
 
         #region ISerializable

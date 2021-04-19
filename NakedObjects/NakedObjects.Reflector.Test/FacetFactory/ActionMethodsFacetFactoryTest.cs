@@ -14,7 +14,6 @@ using System.Reflection;
 using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
@@ -38,7 +37,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             get {
                 return new[] {
                     typeof(INamedFacet),
-                    typeof(IExecutedFacet),
                     typeof(IActionValidationFacet),
                     typeof(IActionParameterValidationFacet),
                     typeof(IActionInvocationFacet),
@@ -221,65 +219,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestAjaxFacetAddedIfNoValidate() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethodIgnoreParms(typeof(Customer25), "SomeAction");
-            var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, method, MethodRemover, facetHolderWithParms, metamodel);
-            var facet = facetHolderWithParms.Parameters[0].GetFacet(typeof(IAjaxFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AjaxFacet);
-            Assert.AreEqual(0, metamodel.Count);
-        }
-
-        [TestMethod]
-        public void TestAjaxFacetFoundAndMethodRemovedDisabled() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethodIgnoreParms(typeof(Customer24), "SomeAction");
-            var propertyValidateMethod = FindMethod(typeof(Customer24), "ValidateSomeAction", new[] {typeof(int)});
-            var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, method, MethodRemover, facetHolderWithParms, metamodel);
-            var facet = facetHolderWithParms.Parameters[0].GetFacet(typeof(IAjaxFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AjaxFacet);
-
-            AssertMethodRemoved(propertyValidateMethod);
-            Assert.AreEqual(0, metamodel.Count);
-        }
-
-        [TestMethod]
-        public void TestAjaxFacetFoundAndMethodRemovedEnabled() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethodIgnoreParms(typeof(Customer23), "SomeAction");
-            var propertyValidateMethod = FindMethod(typeof(Customer23), "ValidateSomeAction", new[] {typeof(int)});
-            var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, method, MethodRemover, facetHolderWithParms, metamodel);
-            var facet = facetHolderWithParms.Parameters[0].GetFacet(typeof(IAjaxFacet));
-            Assert.IsNull(facet);
-
-            AssertMethodRemoved(propertyValidateMethod);
-            Assert.AreEqual(0, metamodel.Count);
-        }
-
-        [TestMethod]
-        public void TestAjaxFacetNotAddedByDefault() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethodIgnoreParms(typeof(Customer20), "SomeAction");
-            var propertyValidateMethod = FindMethod(typeof(Customer20), "ValidateSomeAction", new[] {typeof(int)});
-            var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, method, MethodRemover, facetHolderWithParms, metamodel);
-            var facet = facetHolderWithParms.Parameters[0].GetFacet(typeof(IAjaxFacet));
-            Assert.IsNull(facet);
-
-            AssertMethodRemoved(propertyValidateMethod);
-            Assert.AreEqual(0, metamodel.Count);
-        }
-
-        [TestMethod]
         public void TestDoesntAddNullableFacetToParm() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
@@ -407,24 +346,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
-
-            var facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted0);
-
             CheckChoicesFacet(choices1Method, facetHolderWithParms.Parameters[1]);
-
-            var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted1);
-
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices1Method), Where.Remotely);
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices0Method), Where.Default);
-
             CheckChoicesFacet(choices2Method, facetHolderWithParms.Parameters[2]);
-
-            var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted2);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices2Method), Where.Locally);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Where.Default);
             Assert.AreEqual(0, metamodel.Count);
         }
 
@@ -441,10 +364,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method1, facetHolderWithParms.Parameters[0]);
-
-            var facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted0);
-
             AssertMethodNotRemoved(choices0Method2);
             AssertMethodNotRemoved(choices0Method3);
             Assert.AreEqual(0, metamodel.Count);
@@ -463,24 +382,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
-
-            var facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted0);
-
             CheckChoicesFacet(choices1Method, facetHolderWithParms.Parameters[1]);
-
-            var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted1);
-
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices1Method), Where.Remotely);
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices0Method), Where.Default);
-
             CheckChoicesFacet(choices2Method, facetHolderWithParms.Parameters[2]);
-
-            var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted2);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices2Method), Where.Locally);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Where.Default);
             Assert.AreEqual(0, metamodel.Count);
         }
 
@@ -497,24 +400,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
-
-            var facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted0);
-
             CheckChoicesFacet(choices1Method, facetHolderWithParms.Parameters[1]);
-
-            var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted1);
-
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices1Method), Where.Remotely);
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices0Method), Where.Default);
-
             CheckChoicesFacet(choices2Method, facetHolderWithParms.Parameters[2]);
-
-            var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted2);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices2Method), Where.Locally);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Where.Default);
             Assert.AreEqual(0, metamodel.Count);
         }
 
@@ -532,24 +419,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckDefaultFacet(default0Method, facetHolderWithParms.Parameters[0]);
-
-            var facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted0);
-
             CheckDefaultFacet(default1Method, facetHolderWithParms.Parameters[1]);
-
-            var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted1);
-
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(default1Method), Where.Remotely);
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(default0Method), Where.Default);
-
             CheckDefaultFacet(default2Method, facetHolderWithParms.Parameters[2]);
-
-            var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted2);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(default2Method), Where.Locally);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(default0Method), Where.Default);
             Assert.AreEqual(0, metamodel.Count);
         }
 
@@ -567,24 +438,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckDefaultFacet(default0Method, facetHolderWithParms.Parameters[0]);
-
-            var facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted0);
-
             CheckDefaultFacet(default1Method, facetHolderWithParms.Parameters[1]);
-
-            var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted1);
-
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(default1Method), Where.Remotely);
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(default0Method), Where.Default);
-
             CheckDefaultFacet(default2Method, facetHolderWithParms.Parameters[2]);
-
-            var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNotNull(facetExecuted2);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(default2Method), Where.Locally);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(default0Method), Where.Default);
             Assert.AreEqual(0, metamodel.Count);
         }
 
@@ -601,14 +456,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckValidateParameterFacet(validateParameter0Method, facetHolderWithParms.Parameters[0]);
-
-            var facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted0);
-
             CheckValidateParameterFacet(validateParameter1Method, facetHolderWithParms.Parameters[1]);
-
-            var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNull(facetExecuted1);
             Assert.AreEqual(0, metamodel.Count);
         }
 
@@ -625,14 +473,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckValidateParameterFacet(validateParameter0Method, facetHolderWithParms.Parameters[0]);
-
-            var facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted0);
-
             CheckValidateParameterFacet(validateParameter1Method, facetHolderWithParms.Parameters[1]);
-
-            var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
-            Assert.IsNull(facetExecuted1);
             Assert.AreEqual(0, metamodel.Count);
         }
 
@@ -872,13 +713,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
                 return 0;
             }
 
-            [Executed(Where.Remotely)]
             public long Default1SomeAction()
             {
                 return 0;
             }
 
-            [Executed(Where.Locally)]
             public long Default2SomeAction()
             {
                 return 0;
@@ -893,13 +732,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
                 return 0;
             }
 
-            [Executed(Where.Remotely)]
             public long DefaultSomeAction(long y)
             {
                 return 0;
             }
 
-            [Executed(Where.Locally)]
             public long Default2SomeAction()
             {
                 return 0;
@@ -914,13 +751,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
                 return Array.Empty<int>();
             }
 
-            [Executed(Where.Remotely)]
             public long[] Choices1SomeAction()
             {
                 return Array.Empty<long>();
             }
 
-            [Executed(Where.Locally)]
             public long[] Choices2SomeAction()
             {
                 return Array.Empty<long>();
@@ -989,13 +824,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
                 return Array.Empty<int>();
             }
 
-            [Executed(Where.Remotely)]
             public long[] Choices1SomeAction(long z)
             {
                 return Array.Empty<long>();
             }
 
-            [Executed(Where.Locally)]
             public long[] Choices2SomeAction()
             {
                 return Array.Empty<long>();
@@ -1010,13 +843,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
                 return Array.Empty<int>();
             }
 
-            [Executed(Where.Remotely)]
             public long[] ChoicesSomeAction(long y)
             {
                 return Array.Empty<long>();
             }
 
-            [Executed(Where.Locally)]
             public long[] Choices2SomeAction()
             {
                 return Array.Empty<long>();
@@ -1198,7 +1029,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer23 {
             public void SomeAction(int x, long y, long z) { }
 
-            [Executed(Ajax.Enabled)]
             public string ValidateSomeAction(int x)
             {
                 return "failed";
@@ -1213,7 +1043,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer24 {
             public void SomeAction(int x, long y, long z) { }
 
-            [Executed(Ajax.Disabled)]
             public string ValidateSomeAction(int x)
             {
                 return "failed";

@@ -1264,7 +1264,6 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual string Prop1 { get; set; }
     }
 
-    [IconName("Foo")]
     public class Iconname2 {
         public virtual int Id { get; set; }
 
@@ -1279,7 +1278,6 @@ namespace NakedObjects.SystemTest.Attributes {
         public string IconName() => "Bar";
     }
 
-    [IconName("Foo")]
     public class Iconname4 {
         public virtual int Id { get; set; }
 

@@ -41,7 +41,6 @@ namespace NakedFramework.Architecture.SpecImmutable {
 
         //Will return true if this is a sub-type of the passed-in spec
         bool IsOfType(ITypeSpecImmutable otherSpecification);
-        string GetIconName(INakedObjectAdapter forObjectAdapter, IMetamodel metamodel);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

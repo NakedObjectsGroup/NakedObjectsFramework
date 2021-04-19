@@ -185,8 +185,6 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public (IConvertible, IConvertible, bool)? Range => WrappedSpec.GetRange();
 
-        public bool IsAjax => !WrappedSpec.ContainsFacet<IAjaxFacet>();
-
         public bool DoNotCount => WrappedSpec.ContainsFacet<INotCountedFacet>();
 
         public int Width => WrappedSpec.GetWidth();

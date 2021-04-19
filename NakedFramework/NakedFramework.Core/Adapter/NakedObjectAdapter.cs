@@ -113,11 +113,6 @@ namespace NakedFramework.Core.Adapter {
 
         public object Object { get; private set; }
 
-        /// <summary>
-        ///     Returns the name of the icon to use to represent this object
-        /// </summary>
-        public string IconName() => Spec.GetIconName(this);
-
         public IResolveStateMachine ResolveState { get; }
 
         public ITypeSpec Spec => spec ?? SetSpec();

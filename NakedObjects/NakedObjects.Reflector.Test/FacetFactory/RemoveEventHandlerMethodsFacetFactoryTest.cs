@@ -36,7 +36,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         protected override Type[] SupportedTypes =>
             new[] {
                 typeof(INamedFacet),
-                typeof(IExecutedFacet),
                 typeof(IActionValidationFacet),
                 typeof(IActionInvocationFacet),
                 typeof(IActionDefaultsFacet),

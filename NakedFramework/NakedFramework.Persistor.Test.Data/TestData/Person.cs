@@ -66,7 +66,7 @@ namespace TestData {
                 where r.Name == newName
                 select r).AsQueryable();
 
-        [Executed(Where.Remotely)]
+        //[Executed(Where.Remotely)]
         public string DisableFindRelativesByName(IQueryable<Person> persons, string newName) => "disabled";
 
         public IEnumerable<Person> FindRelativesById(IQueryable<Person> persons, int id) =>
@@ -74,7 +74,7 @@ namespace TestData {
             where r.PersonId == id
             select r;
 
-        [Executed(Where.Remotely)]
+        //[Executed(Where.Remotely)]
         public bool HideFindRelativesById() => true;
 
         public void UpdateInPersisting() {

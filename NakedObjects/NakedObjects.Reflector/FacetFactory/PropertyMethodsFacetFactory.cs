@@ -112,10 +112,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             methodRemover.SafeRemoveMethod(method);
             if (method is not null) {
                 propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger<PropertyValidateFacetViaMethod>()));
-                ObjectMethodHelpers.AddAjaxFacet(method, property);
-            }
-            else {
-                ObjectMethodHelpers.AddAjaxFacet(null, property);
             }
         }
 
@@ -130,7 +126,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             methodRemover.SafeRemoveMethod(method);
             if (method is not null) {
                 propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property, Logger<PropertyDefaultFacetViaMethod>()));
-                ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
             }
         }
 
@@ -165,7 +160,6 @@ namespace NakedObjects.Reflector.FacetFactory {
                 }
 
                 propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), property, Logger<PropertyChoicesFacet>()));
-                ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
             }
 
             return metamodel;
@@ -202,7 +196,6 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                     methodRemover.SafeRemoveMethod(method);
                     propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
-                    ObjectMethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
                 }
             }
         }

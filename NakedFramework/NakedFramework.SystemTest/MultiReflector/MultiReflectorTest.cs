@@ -56,7 +56,7 @@ namespace NakedObjects.SystemTest.MultiReflector {
         [Test]
         public virtual void AllSpecs() {
             var allSpecs = NakedObjectsFramework.MetamodelManager.AllSpecs;
-            Assert.AreEqual(9, allSpecs.Length);
+            Assert.AreEqual(10, allSpecs.Length);
         }
     }
 

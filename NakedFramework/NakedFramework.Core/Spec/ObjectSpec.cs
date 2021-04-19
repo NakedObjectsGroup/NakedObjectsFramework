@@ -38,9 +38,7 @@ namespace NakedFramework.Core.Spec {
         protected override PersistableType GetPersistable() =>
             InnerSpec.ContainsFacet<INotPersistedFacet>()
                 ? PersistableType.Transient
-                : InnerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()
-                    ? PersistableType.ProgramPersistable
-                    : PersistableType.UserPersistable;
+                : PersistableType.UserPersistable;
 
         #region IObjectSpec Members
 
