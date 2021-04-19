@@ -99,7 +99,7 @@ namespace NakedFramework.Persistor.EFCore.Util {
 
         public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager) {
             var versionObject = nakedObjectAdapter?.GetVersion(manager);
-            if (versionObject != null) {
+            if (versionObject is not null) {
                 nakedObjectAdapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
             }
         }

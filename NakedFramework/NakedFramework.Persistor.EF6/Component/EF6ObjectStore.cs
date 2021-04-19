@@ -585,7 +585,7 @@ namespace NakedFramework.Persistor.EF6.Component {
 
         public bool IsInitialized => IsInitializedCheck();
 
-        public string Name => "Entity Object Store";
+        public string Name => "EF6 Object Store";
 
         public void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field) => field.GetNakedObject(nakedObjectAdapter);
 
@@ -643,10 +643,9 @@ namespace NakedFramework.Persistor.EF6.Component {
 
         private static IQueryable<T> EagerLoad<T>(EF6LocalContext context, Type entityType, IQueryable queryable) => (IQueryable<T>) queryable.AsNoTracking();
 
-        public IQueryable<T> GetInstances<T>(bool tracked = true) where T : class {
+        public IQueryable<T> GetInstances<T>() where T : class {
             var context = GetContext(typeof(T));
-            var queryable = (IQueryable<T>) context.GetQueryableOfDerivedType<T>();
-            return tracked ? queryable : EagerLoad<T>(context, typeof(T), queryable);
+            return (IQueryable<T>) context.GetQueryableOfDerivedType<T>();
         }
 
         public IQueryable GetInstances(Type type) => (IQueryable) GetContext(type).GetQueryableOfDerivedType(type);

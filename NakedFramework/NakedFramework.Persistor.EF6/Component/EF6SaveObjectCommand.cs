@@ -18,7 +18,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             this.nakedObjectAdapter = nakedObjectAdapter;
         }
 
-        public override string ToString() => $"SaveObjectCommand [object={nakedObjectAdapter}]";
+        public override string ToString() => $"EF6 SaveObjectCommand [object={nakedObjectAdapter}]";
 
         #region ISaveObjectCommand Members
 

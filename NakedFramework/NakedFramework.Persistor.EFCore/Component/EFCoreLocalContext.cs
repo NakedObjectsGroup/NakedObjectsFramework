@@ -26,6 +26,9 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private readonly EFCoreObjectStore parent;
         private readonly ISession session;
         private List<INakedObjectAdapter> updatingNakedObjects;
+        private INakedObjectManager Manager { get; }
+
+        private string Name { get; }
 
         private EFCoreLocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, EFCoreObjectStore parent) {
             this.session = session;
@@ -41,9 +44,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             Name = WrappedDbContext.ToString();
         }
 
-        public INakedObjectManager Manager { protected get; set; }
         public DbContext WrappedDbContext { get; private set; }
-        public string Name { get; }
         public ISet<INakedObjectAdapter> LoadedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
         public ISet<INakedObjectAdapter> PersistedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
         public ISet<INakedObjectAdapter> DeletedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
@@ -65,7 +66,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         #endregion
 
-        public Type GetMostBaseType(Type type) {
+        private Type GetMostBaseType(Type type) {
             if (!baseTypeMap.ContainsKey(type)) {
                 baseTypeMap[type] = MostBaseType(type);
             }
@@ -119,9 +120,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
         }
 
         private IEnumerable<object> CheckForForeignKeys(EntityEntry entry) {
-            IList<object> updatedObjects = new List<object>();
+            var updatedObjects = new List<object>();
             var updatedForeignKeys = 0;
-
             var foreignKeys = WrappedDbContext.Model.FindEntityType(entry.Entity.GetType().GetProxiedType()).GetForeignKeys();
 
             foreach (var foreignKey in foreignKeys) {
@@ -166,7 +166,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public bool HasChanges() {
             WrappedDbContext.ChangeTracker.DetectChanges();
-            //return WrappedDbContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified).Any();
             return WrappedDbContext.ChangeTracker.HasChanges();
         }
 

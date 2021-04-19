@@ -152,7 +152,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
         }
 
-        public override string ToString() => $"CreateObjectCommand [object={nakedObjectAdapter}]";
+        public override string ToString() => $"EF6 CreateObjectCommand [object={nakedObjectAdapter}]";
 
         #region ICreateObjectCommand Members
 

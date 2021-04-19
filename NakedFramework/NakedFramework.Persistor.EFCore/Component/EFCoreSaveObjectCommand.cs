@@ -22,6 +22,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public INakedObjectAdapter OnObject() => nakedObjectAdapter;
 
-        public override string ToString() => $"SaveObjectCommand [object={nakedObjectAdapter}]";
+        public override string ToString() => $"EFCoreSaveObjectCommand [object={nakedObjectAdapter}]";
     }
 }

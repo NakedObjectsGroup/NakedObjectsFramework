@@ -93,12 +93,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private static object GetOrCreateProxiedObject(object originalObject, DbContext context, object potentialProxy) {
             var proxy = potentialProxy ?? context.Add(Activator.CreateInstance(originalObject.GetType())).Entity;
-
-            if (proxy is null) {
-                throw new PersistFailedException($"unexpected null proxy for {originalObject} type {originalObject.GetType()}");
-            }
-
-            return proxy;
+            return proxy ?? throw new PersistFailedException($"unexpected null proxy for {originalObject} type {originalObject.GetType()}");
         }
 
         private object ProxyObject(object originalObject, object potentialProxy = null) {
@@ -148,7 +143,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             notPersistedMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
         }
 
-        public override string ToString() => "CreateObjectCommand";
+        public override string ToString() => "EFCoreDetachedObjectCommand";
 
         private void ProxyObjectIfAppropriate(object originalObject, object existingProxy) {
             if (originalObject is not null) {

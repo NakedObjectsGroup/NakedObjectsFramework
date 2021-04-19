@@ -39,7 +39,7 @@ namespace NakedFramework.Core.Component {
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
-        private IQueryable<T> GetInstances<T>(bool tracked = true) where T : class => objectStore.GetInstances<T>(tracked);
+        private IQueryable<T> GetInstances<T>() where T : class => objectStore.GetInstances<T>();
 
         private IQueryable GetInstances(Type type) => objectStore.GetInstances(type);
 

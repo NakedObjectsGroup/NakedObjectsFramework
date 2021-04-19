@@ -22,7 +22,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private readonly EFCoreLocalContext context;
         private readonly DbContext dbContext;
         private readonly INakedObjectAdapter nakedObjectAdapter;
-
         private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
         private readonly EFCoreObjectStore parent;
 
@@ -43,7 +42,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private INakedObjectAdapter CreateAdapter(object obj) => parent.CreateAdapter(null, obj);
 
         private object ProxyObjectIfAppropriate(object originalObject) {
-            if (originalObject == null) {
+            if (originalObject is null) {
                 return null;
             }
 
@@ -153,7 +152,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             notPersistedMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
         }
 
-        public override string ToString() => $"CreateObjectCommand [object={nakedObjectAdapter}]";
+        public override string ToString() => $"EFCoreCreateObjectCommand [object={nakedObjectAdapter}]";
 
         #region ICreateObjectCommand Members
 

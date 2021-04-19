@@ -170,7 +170,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
         }
 
-        public override string ToString() => "CreateObjectCommand";
+        public override string ToString() => "EF6 DetachedObjectCommand";
 
         private void ProxyObjectIfAppropriate(object originalObject, object existingProxy) {
             if (originalObject is not null) {

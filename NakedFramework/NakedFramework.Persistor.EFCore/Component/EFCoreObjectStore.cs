@@ -32,27 +32,28 @@ using NakedFramework.Persistor.EFCore.Util;
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreObjectStore : IObjectStore, IDisposable {
         private readonly EFCorePersistorConfiguration config;
-
-        internal readonly ILogger<EFCoreObjectStore> Logger;
-        private readonly IMetamodelManager metamodelManager;
-
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
-
+        private readonly IMetamodelManager metamodelManager;
         private readonly Dictionary<ComplexTypeMatcher, (INakedObjectAdapter, PropertyInfo)> adaptersWithComplexChildren = new();
         private EFCoreLocalContext[] contexts;
-        internal Func<IOid, object, INakedObjectAdapter> CreateAdapter;
-        internal Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> CreateAggregatedAdapter;
-
         private Func<IDictionary<object, object>, bool> functionalPostSave = _ => false;
         private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
-        internal Action<INakedObjectAdapter> HandleLoaded;
         private IDomainObjectInjector injector;
-        private Func<Type, ITypeSpec> loadSpecification;
+        private Action<object> savingChanges;
+
+        // internal and settable for testing
+        internal int MaximumCommitCycles { get; set; }
+        internal readonly ILogger<EFCoreObjectStore> Logger;
+        internal Func<IOid, object, INakedObjectAdapter> CreateAdapter;
+        internal Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> CreateAggregatedAdapter;
+        internal Action<INakedObjectAdapter> HandleLoaded;
         internal Action<INakedObjectAdapter> RemoveAdapter;
         internal Action<INakedObjectAdapter, object> ReplacePoco;
-        private Action<object> savingChanges;
+
+        public bool IsInitialized => true;
+        public string Name => "EF Core Object Store";
 
         public EFCoreObjectStore(EFCorePersistorConfiguration config,
                                  IOidGenerator oidGenerator,
@@ -75,21 +76,12 @@ namespace NakedFramework.Persistor.EFCore.Component {
             RemoveAdapter = o => this.nakedObjectManager.RemoveAdapter(o);
             CreateAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec) parent.Spec).GetProperty(property.Name).Id, obj);
             HandleLoaded = HandleLoadedDefault;
-            loadSpecification = metamodelManager.GetSpecification;
             savingChanges = SavingChangesHandler;
 
             SetupContexts();
         }
 
-        // internal for testing
-        public int MaximumCommitCycles { get; set; }
-
-        public void Dispose() {
-            contexts.ForEach(c => c.Dispose());
-        }
-
-        public bool IsInitialized { get; }
-        public string Name { get; }
+        public void Dispose() => contexts.ForEach(c => c.Dispose());
 
         public void AbortTransaction() => RollBackContext();
 
@@ -127,7 +119,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             }
         }
 
-        public IQueryable<T> GetInstances<T>(bool tracked = true) where T : class => GetContext(typeof(T)).WrappedDbContext.Set<T>();
+        public IQueryable<T> GetInstances<T>() where T : class => GetContext(typeof(T)).WrappedDbContext.Set<T>();
 
         public IQueryable GetInstances(Type type) {
             var dbContext = GetContext(type).WrappedDbContext;
@@ -178,8 +170,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
                     return parentSpec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
                 }
-                case IDatabaseOid eoid: {
-                    var adapter = CreateAdapter(eoid, GetObjectByKey(eoid, hint));
+                case IDatabaseOid databaseOid: {
+                    var adapter = CreateAdapter(databaseOid, GetObjectByKey(databaseOid, hint));
                     adapter.UpdateVersion(session, nakedObjectManager);
                     return adapter;
                 }
@@ -232,9 +224,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public INakedObjectAdapter FindByKeys(Type type, object[] keys) {
             var obj = GetContext(type).WrappedDbContext.Find(type, keys);
-
-            var eoid = oidGenerator.CreateOid(type.FullName, keys);
-            var adapter = CreateAdapter(eoid, obj);
+            var oid = oidGenerator.CreateOid(type.FullName, keys);
+            var adapter = CreateAdapter(oid, obj);
             adapter.UpdateVersion(session, nakedObjectManager);
             return adapter;
         }
@@ -261,7 +252,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) {
             functionalPostSave = objects.PostSaveFunction;
-            return SetFunctionalProxyMap(ExecuteAttachObjectCommandUpdate(objects));
+            return SetFunctionalProxyMap(ExecuteDetachedObjectCommand(objects));
         }
 
         public bool HasChanges() => contexts.Any(c => c.WrappedDbContext.ChangeTracker.HasChanges());
@@ -350,7 +341,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private bool EFCoreKnowsType(Type type) {
             try {
                 if (!CollectionUtils.IsCollection(type)) {
-                    //return FindContext(type) != null;
                     return contexts.Any(c => c.WrappedDbContext.HasEntityType(type));
                 }
             }
@@ -362,9 +352,10 @@ namespace NakedFramework.Persistor.EFCore.Component {
             return false;
         }
 
-        public object GetObjectByKey(IDatabaseOid eoid, Type type) => GetContext(type).WrappedDbContext.Find(type, eoid.Key);
+        // internal for testing
+        internal object GetObjectByKey(IDatabaseOid eoid, Type type) => GetContext(type).WrappedDbContext.Find(type, eoid.Key);
 
-        public object GetObjectByKey(IDatabaseOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
+        private object GetObjectByKey(IDatabaseOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
 
         private void CopyTo(object toObj, object fromObj) {
             var toObjType = toObj.GetEFCoreProxiedType();
@@ -379,7 +370,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             properties.ForEach(pi => pi.SetValue(toObj, pi.GetValue(fromObj, null)));
         }
 
-        public void LoadComplexTypesIntoNakedObjectFramework(object complexObject) {
+        private void LoadComplexTypesIntoNakedObjectFramework(object complexObject) {
             var dbContext = GetContext(complexObject).WrappedDbContext;
             var entry = dbContext.Entry(complexObject);
 
@@ -435,7 +426,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             var isConcurrency = e is DbUpdateConcurrencyException;
             var nestLimit = 3;
             var msg = new StringBuilder(string.Format(isConcurrency ? NakedObjects.Resources.NakedObjects.ConcurrencyErrorMessage : NakedObjects.Resources.NakedObjects.UpdateErrorMessage, e.Message));
-            while (e.InnerException != null && nestLimit-- > 0) {
+            while (e.InnerException is not null && nestLimit-- > 0) {
                 msg.AppendLine().AppendLine(isConcurrency ? NakedObjects.Resources.NakedObjects.ConcurrencyException : NakedObjects.Resources.NakedObjects.DataUpdateException).Append(e.InnerException.Message);
                 e = e.InnerException;
             }
@@ -445,13 +436,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private static void StartResolving(INakedObjectAdapter nakedObjectAdapter) {
             var resolveEvent = Events.StartResolvingEvent;
-            nakedObjectAdapter.ResolveState.Handle(resolveEvent);
-        }
-
-        private static void StartResolving(INakedObjectAdapter nakedObjectAdapter, DbContext context) {
-            var resolveEvent = !nakedObjectAdapter.ResolveState.IsTransient()
-                ? Events.StartPartResolvingEvent
-                : Events.StartResolvingEvent;
             nakedObjectAdapter.ResolveState.Handle(resolveEvent);
         }
 
@@ -564,7 +548,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             }
         }
 
-        public IList<(object original, object updated)> ExecuteAttachObjectCommandUpdate(IDetachedObjects objects) =>
+        private IList<(object original, object updated)> ExecuteDetachedObjectCommand(IDetachedObjects objects) =>
             Execute(new EFCoreDetachedObjectCommand(objects, this));
 
         private EFCoreLocalContext FindContext(Type type) =>
@@ -603,16 +587,30 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private EFCoreLocalContext GetContext(INakedObjectAdapter nakedObjectAdapter) => GetContext(nakedObjectAdapter.Object);
 
-        internal static bool EmptyKey(object key) =>
+        private static bool EmptyKey(object key) =>
             key switch {
                 // todo for all null keys
+                int i => i == default,
                 string s => string.IsNullOrEmpty(s),
-                int i => i == 0,
+                byte i => i == default,
+                sbyte i => i == default,
+                char i => i == default,
+                decimal i => i == default,
+                double i => i == default,
+                float i => i == default,
+                uint i => i == default,
+                long i => i == default,
+                ulong i => i == default,
+                short i => i == default,
+                ushort i => i == default,
+                Guid g => g == default,
+                DateTime d => d == default,
+                Array a => a.Length == 0,
                 null => true,
                 _ => false
             };
 
-        public bool EmptyKeys(object obj) => GetKeys(obj.GetType()).Select(k => k.GetValue(obj, null)).All(EmptyKey);
+        internal bool EmptyKeys(object obj) => GetKeys(obj.GetType()).Select(k => k.GetValue(obj, null)).All(EmptyKey);
 
         public bool IsNotPersisted(object owner, PropertyInfo pi) {
             if (metamodelManager.GetSpecification(owner.GetEFCoreProxiedType()) is IObjectSpec objectSpec) {
@@ -643,17 +641,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             savingChanges = savingChangesHandler;
             HandleLoaded = handleLoadedTest;
-            loadSpecification = loadSpecificationHandler;
         }
 
-        private record ComplexTypeMatcher {
-            public ComplexTypeMatcher(Type type, object key) {
-                Type = type;
-                Key = key;
-            }
-
-            public Type Type { get; }
-            public object Key { get; }
-        }
+        private record ComplexTypeMatcher(Type Type, object Key);
     }
 }
