@@ -20,16 +20,16 @@ using NakedFramework.Persistor.EFCore.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreCreateObjectCommand : ICreateObjectCommand {
-       
-        private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
         private readonly EFCoreLocalContext context;
         private readonly DbContext dbContext;
-        private readonly EFCoreObjectStore parent;
         private readonly INakedObjectAdapter nakedObjectAdapter;
+
+        private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
+        private readonly EFCoreObjectStore parent;
 
         public EFCoreCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter, EFCoreLocalContext context, EFCoreObjectStore parent) {
             this.context = context;
-            this.dbContext = context.WrappedDbContext;
+            dbContext = context.WrappedDbContext;
             this.parent = parent;
             this.nakedObjectAdapter = nakedObjectAdapter;
         }
@@ -76,13 +76,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private object ProxyObject(object originalObject, INakedObjectAdapter adapterForOriginalObjectAdapter) {
             var objectToAdd = context.WrappedDbContext.CreateProxy(originalObject.GetEFCoreProxiedType());
-            //dbContext.Add(objectToAdd);
-
-            //var proxied = objectToAdd.GetType() != originalObject.GetType();
-            //if (!proxied) {
-            //    objectToAdd = originalObject;
-            //}
-
             var entry = dbContext.Entry(originalObject);
             var persisting = entry.State == EntityState.Detached;
             if (persisting) {
@@ -102,12 +95,10 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
             if (!persisting) {
                 SetKeyAsNecessary(originalObject, objectToAdd);
-                //context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", objectToAdd);
                 dbContext.Add(objectToAdd);
             }
 
-            if (persisting)
-            {
+            if (persisting) {
                 ProxyReferencesAndCopyValuesToProxy(originalObject, objectToAdd);
                 context.PersistedNakedObjects.Add(proxyAdapter);
                 // remove temporary adapter for proxy (tidy and also means we will not get problem 
@@ -115,15 +106,12 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 parent.RemoveAdapter(proxyAdapter);
                 parent.ReplacePoco(adapterForOriginalObjectAdapter, objectToAdd);
             }
-            else
-            {
+            else {
                 ProxyReferences(originalObject);
                 context.PersistedNakedObjects.Add(proxyAdapter);
             }
 
             CallPersistingPersistedForComplexObjects(proxyAdapter);
-
-            //parent.CheckProxies(objectToAdd);
 
             return objectToAdd;
         }
@@ -151,7 +139,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 }
             }
         }
-
 
         private void ProxyReferencesAndCopyValuesToProxy(object objectToProxy, object proxy) {
             var nonIdMembers = dbContext.GetNonIdMembers(objectToProxy.GetType());

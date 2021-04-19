@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace NakedFramework.Persistor.EFCore.Extensions {
     public class EFCorePersistorOptions {
-        public int MaximumCommitCycles { get; set; } = 10;
+        public int MaximumCommitCycles { get; } = 10;
         public Func<IConfiguration, DbContext>[] ContextInstallers { get; set; }
     }
 }

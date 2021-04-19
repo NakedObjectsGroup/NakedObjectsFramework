@@ -25,7 +25,7 @@ namespace NakedFramework.Persistor.EFCore.Extensions {
                 MaximumCommitCycles = options.MaximumCommitCycles
             };
 
-            var contexts = options.ContextInstallers.Select(ci => (Func<DbContext>)(() => ci(configuration))).ToArray();
+            var contexts = options.ContextInstallers.Select(ci => (Func<DbContext>) (() => ci(configuration))).ToArray();
             config.Contexts = contexts;
             return config;
         }

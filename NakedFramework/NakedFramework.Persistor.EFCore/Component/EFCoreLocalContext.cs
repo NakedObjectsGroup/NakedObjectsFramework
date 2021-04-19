@@ -25,8 +25,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private readonly ISet<Type> ownedTypes = new HashSet<Type>();
         private readonly EFCoreObjectStore parent;
         private readonly ISession session;
-        //private readonly IDictionary<Type, StructuralType> typeToStructuralType = new Dictionary<Type, StructuralType>();
-        private List<INakedObjectAdapter> coUpdating;
         private List<INakedObjectAdapter> updatingNakedObjects;
 
         private EFCoreLocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, EFCoreObjectStore parent) {
@@ -46,14 +44,9 @@ namespace NakedFramework.Persistor.EFCore.Component {
         public INakedObjectManager Manager { protected get; set; }
         public DbContext WrappedDbContext { get; private set; }
         public string Name { get; }
-
         public ISet<INakedObjectAdapter> LoadedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
-
         public ISet<INakedObjectAdapter> PersistedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
-
         public ISet<INakedObjectAdapter> DeletedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
-
-        //public MergeOption DefaultMergeOption { get; set; }
         public INakedObjectAdapter CurrentSaveRootObjectAdapter { get; set; }
         public INakedObjectAdapter CurrentUpdateRootObjectAdapter { get; set; }
 
@@ -120,7 +113,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
             CurrentUpdateRootObjectAdapter = null;
             added.Clear();
             updatingNakedObjects = null;
-            coUpdating = null;
             LoadedNakedObjects.Clear();
             PersistedNakedObjects.Clear();
             DeletedNakedObjects.Clear();
@@ -128,7 +120,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private IEnumerable<object> CheckForForeignKeys(EntityEntry entry) {
             IList<object> updatedObjects = new List<object>();
-            int updatedForeignKeys = 0;
+            var updatedForeignKeys = 0;
 
             var foreignKeys = WrappedDbContext.Model.FindEntityType(entry.Entity.GetType().GetProxiedType()).GetForeignKeys();
 
@@ -141,7 +133,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                     if (matchingMember?.IsModified == true) {
                         var type = foreignKey.PrincipalEntityType.ClrType;
                         var keys = matchingMember.OriginalValue;
-                        updatedForeignKeys++; 
+                        updatedForeignKeys++;
 
                         if (keys is not null) {
                             var otherEnd = WrappedDbContext.Find(type, keys);
@@ -166,18 +158,10 @@ namespace NakedFramework.Persistor.EFCore.Component {
             entries.ForEach(e => e.DetectChanges());
 
             added.AddRange(entries.Where(e => e.State == EntityState.Added).Select(ose => ose.Entity).ToList());
-            
-            updatingNakedObjects = entries.Where(e => e.State != EntityState.Added && e.Members.Any(m => m.IsModified)).
-                                           SelectMany(CheckForForeignKeys).
-                                           Distinct().
-                                           Select(o => parent.CreateAdapter(null, o)).ToList();
+
+            updatingNakedObjects = entries.Where(e => e.State != EntityState.Added && e.Members.Any(m => m.IsModified)).SelectMany(CheckForForeignKeys).Distinct().Select(o => parent.CreateAdapter(null, o)).ToList();
 
             updatingNakedObjects.ForEach(no => no.Updating());
-
-            // need to do complex type separately as they'll not be updated in the SavingChangesHandler as they're not proxied. 
-            coUpdating = new List<INakedObjectAdapter>();
-            //coUpdating = ObjectContextUtils.GetChangedComplexObjectsInContext(this).Select(obj => parent.CreateAdapter(obj)).ToList();
-            //coUpdating.ForEach(no => no.Updating());
         }
 
         public bool HasChanges() {
@@ -194,13 +178,11 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 var currentPersistedNakedObjectsAdapter = PersistedNakedObjects.ToArray();
                 PersistedNakedObjects.Clear();
                 updatingNakedObjects.ForEach(no => no.Updated());
-                updatingNakedObjects.ForEach(no => EFCoreHelpers.UpdateVersion(no, session, Manager));
-                coUpdating.ForEach(no => no.Updated());
+                updatingNakedObjects.ForEach(no => no.UpdateVersion(session, Manager));
                 currentPersistedNakedObjectsAdapter.ForEach(no => no.Persisted());
             }
             finally {
                 updatingNakedObjects.Clear();
-                coUpdating.Clear();
             }
         }
 

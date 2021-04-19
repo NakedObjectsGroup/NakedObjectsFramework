@@ -13,17 +13,15 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private readonly EFCoreLocalContext context;
         private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public EFCoreSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, EFCoreLocalContext context)
-        {
+        public EFCoreSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, EFCoreLocalContext context) {
             this.context = context;
             this.nakedObjectAdapter = nakedObjectAdapter;
         }
-
-        public override string ToString() => $"SaveObjectCommand [object={nakedObjectAdapter}]";
 
         public void Execute() => context.CurrentUpdateRootObjectAdapter = nakedObjectAdapter;
 
         public INakedObjectAdapter OnObject() => nakedObjectAdapter;
 
+        public override string ToString() => $"SaveObjectCommand [object={nakedObjectAdapter}]";
     }
 }
