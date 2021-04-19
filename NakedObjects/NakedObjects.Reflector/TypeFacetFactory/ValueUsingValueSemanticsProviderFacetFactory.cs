@@ -40,7 +40,6 @@ namespace NakedObjects.Reflector.TypeFacetFactory {
                 FacetUtils.AddFacet(new EncodeableFacetUsingEncoderDecoder<T>(semanticsProvider, holder));
                 FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));
                 FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
-                FacetUtils.AddFacet(new TypicalLengthFacetUsingParser<T>(semanticsProvider, holder));
 
                 if (semanticsProvider is IFromStream fromStream) {
                     FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));

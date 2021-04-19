@@ -171,8 +171,6 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public bool IsPassword => WrappedSpec.ContainsFacet<IPasswordFacet>();
 
-        public int TypicalLength => WrappedSpec.GetTypicalLength();
-
         public bool IsNullable => WrappedSpec.ContainsFacet<INullableFacet>();
 
         public int Width => WrappedSpec.GetWidth();

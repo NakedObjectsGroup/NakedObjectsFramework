@@ -61,7 +61,6 @@ namespace NakedFramework.ParallelReflector.TypeFacetFactory {
 
             if (holder is IOneToOneAssociationSpecImmutable immutable) {
                 facets.Add(new MaxLengthFacetZero(holder));
-                DefaultTypicalLength(facets, immutable.ReturnSpec, immutable);
                 facets.Add(new MultiLineFacetNone(holder));
             }
 
@@ -94,24 +93,10 @@ namespace NakedFramework.ParallelReflector.TypeFacetFactory {
                 facets.Add(new DescribedAsFacetNone(holder));
                 facets.Add(new MultiLineFacetNone(holder));
                 facets.Add(new MaxLengthFacetZero(holder));
-                facets.Add(new TypicalLengthFacetZero(holder));
-                DefaultTypicalLength(facets, param.Specification, param);
             }
 
             FacetUtils.AddFacets(facets);
             return metamodel;
-        }
-
-        private static void DefaultTypicalLength(ICollection<IFacet> facets, ISpecification specification, ISpecification holder) {
-            var typicalLengthFacet = specification.GetFacet<ITypicalLengthFacet>();
-            if (typicalLengthFacet is null) {
-                typicalLengthFacet = new TypicalLengthFacetZero(holder);
-            }
-            else {
-                typicalLengthFacet = new TypicalLengthFacetInferred(typicalLengthFacet.Value, holder);
-            }
-
-            facets.Add(typicalLengthFacet);
         }
     }
 

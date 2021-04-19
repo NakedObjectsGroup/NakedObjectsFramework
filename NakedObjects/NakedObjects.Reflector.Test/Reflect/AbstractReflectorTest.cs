@@ -105,7 +105,6 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 NewFacetFactory<RegExAnnotationFacetFactory>(),
                 NewFacetFactory<TypeOfAnnotationFacetFactory>(),
                 NewFacetFactory<TableViewAnnotationFacetFactory>(),
-                NewFacetFactory<TypicalLengthDerivedFromTypeFacetFactory>(),
                 NewFacetFactory<EagerlyAnnotationFacetFactory>(),
                 NewFacetFactory<PresentationHintAnnotationFacetFactory>(),
                 NewFacetFactory<BooleanValueTypeFacetFactory>(),

@@ -80,11 +80,6 @@ namespace NakedFramework.Facade.Impl.Utility {
             return multiline?.NumberOfLines;
         }
 
-        public static int GetTypicalLength(this ISpecification spec) {
-            var typicalLength = spec.GetFacet<ITypicalLengthFacet>();
-            return typicalLength?.Value ?? 0;
-        }
-
         public static int GetWidth(this ISpecification spec) {
             var multiline = spec.GetFacet<IMultiLineFacet>();
             return multiline?.Width ?? 0;

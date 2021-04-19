@@ -15,7 +15,6 @@ namespace NakedFramework.Core.Spec {
         // cached values 
         private int? maximumLength;
         private int? noLines;
-        private int? typicalLineLength;
 
         public ActionParseableParameterSpec(int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectsFramework framework)
             : base(index, actionSpec, actionParameterSpecImmutable, framework) { }
@@ -33,13 +32,6 @@ namespace NakedFramework.Core.Spec {
             get {
                 maximumLength ??= GetFacet<IMaxLengthFacet>().Value;
                 return maximumLength.Value;
-            }
-        }
-
-        public int TypicalLineLength {
-            get {
-                typicalLineLength ??= GetFacet<ITypicalLengthFacet>().Value;
-                return typicalLineLength.Value;
             }
         }
 

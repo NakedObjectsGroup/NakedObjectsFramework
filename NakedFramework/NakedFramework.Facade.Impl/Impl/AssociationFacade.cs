@@ -198,8 +198,6 @@ namespace NakedFramework.Facade.Impl.Impl {
             return WrappedSpec.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
         }
 
-        public int TypicalLength => WrappedSpec.GetTypicalLength();
-
         public int NumberOfLines => WrappedSpec.GetNumberOfLinesWithDefault();
 
         public (bool, string[])? TableViewData => WrappedSpec.GetTableViewData();

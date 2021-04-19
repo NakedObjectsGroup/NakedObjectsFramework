@@ -63,7 +63,6 @@ namespace NakedFunctions.Reflector.Reflect {
                 // if takes precedence over mask.
                 typeof(TypeOfAnnotationFacetFactory),
                 typeof(TableViewAnnotationFacetFactory),
-                typeof(TypicalLengthDerivedFromTypeFacetFactory),
                 typeof(PresentationHintAnnotationFacetFactory),
                 typeof(EditAnnotationFacetFactory)
             };

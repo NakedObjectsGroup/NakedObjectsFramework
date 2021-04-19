@@ -12,6 +12,5 @@ namespace NakedFramework.Architecture.Spec {
     public interface IActionParseableParameterSpec : IOneToOneActionParameterSpec {
         int NoLines { get; }
         int MaximumLength { get; }
-        int TypicalLineLength { get; }
     }
 }

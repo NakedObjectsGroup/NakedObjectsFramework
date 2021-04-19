@@ -21,7 +21,6 @@ namespace NakedFramework.Facade.Interface {
         (IConvertible min, IConvertible max, bool isDateRange)? Range { get; }
         int NumberOfLines { get; }
         int Width { get; }
-        int TypicalLength { get; }
         string Name { get; }
         string Description { get; }
         bool IsMandatory { get; }
