@@ -29,26 +29,26 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Persist;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
-using NakedFramework.Persistor.Entity.Configuration;
-using NakedFramework.Persistor.Entity.Util;
+using NakedFramework.Persistor.EF6.Configuration;
+using NakedFramework.Persistor.EF6.Util;
 
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
 
-namespace NakedFramework.Persistor.Entity.Component {
-    public sealed class EntityObjectStore : IObjectStore, IDisposable {
+namespace NakedFramework.Persistor.EF6.Component {
+    public sealed class EF6ObjectStore : IObjectStore, IDisposable {
         private readonly Func<object, INakedObjectAdapter> getAdapterFor;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly DatabaseOidGenerator oidGenerator;
         private readonly ISession session;
-        private IDictionary<CodeFirstEntityContextConfiguration, LocalContext> contexts = new Dictionary<CodeFirstEntityContextConfiguration, LocalContext>();
+        private IDictionary<EF6ContextConfiguration, EF6LocalContext> contexts = new Dictionary<EF6ContextConfiguration, EF6LocalContext>();
         private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
         private IDomainObjectInjector injector;
         private Action<object, EventArgs> savingChangesHandler;
         private Func<Type, ITypeSpec> loadSpecification;
         private Func<IDictionary<object, object>, bool> functionalPostSave = _ => false;
 
-        internal readonly ILogger<EntityObjectStore> Logger;
+        internal readonly ILogger<EF6ObjectStore> Logger;
         internal Func<IOid, object, INakedObjectAdapter> CreateAdapter;
         internal Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> CreateAggregatedAdapter;
         internal Action<INakedObjectAdapter> HandleLoaded;
@@ -63,7 +63,7 @@ namespace NakedFramework.Persistor.Entity.Component {
         internal static int MaximumCommitCycles { get; set; }
         internal static bool RequireExplicitAssociationOfTypes { get; private set; }
 
-        internal EntityObjectStore(IMetamodelManager metamodelManager, ISession session, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EntityObjectStore> logger) {
+        internal EF6ObjectStore(IMetamodelManager metamodelManager, ISession session, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EF6ObjectStore> logger) {
             this.metamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
             this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
             this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
@@ -81,11 +81,11 @@ namespace NakedFramework.Persistor.Entity.Component {
             loadSpecification = metamodelManager.GetSpecification;
         }
 
-        public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, DatabaseOidGenerator oidGenerator, IMetamodelManager metamodel, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EntityObjectStore> logger)
+        public EF6ObjectStore(ISession session, IEF6ObjectStoreConfiguration config, DatabaseOidGenerator oidGenerator, IMetamodelManager metamodel, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EF6ObjectStore> logger)
             : this(metamodel, session, injector, nakedObjectManager, logger) {
             config.Validate();
             this.oidGenerator = oidGenerator;
-            contexts = config.ContextConfiguration.ToDictionary<CodeFirstEntityContextConfiguration, CodeFirstEntityContextConfiguration, LocalContext>(c => c, c => null);
+            contexts = config.ContextConfiguration.ToDictionary<EF6ContextConfiguration, EF6ContextConfiguration, EF6LocalContext>(c => c, c => null);
 
             EnforceProxies = config.EnforceProxies;
             RequireExplicitAssociationOfTypes = config.RequireExplicitAssociationOfTypes;
@@ -116,7 +116,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             }
         }
 
-        private static IList<(object original, object updated)> Execute(EntityPersistUpdateDetachedObjectCommand cmd) {
+        private static IList<(object original, object updated)> Execute(EF6DetachedObjectCommand cmd) {
             try {
                 return cmd.Execute();
             }
@@ -128,11 +128,11 @@ namespace NakedFramework.Persistor.Entity.Component {
             }
         }
 
-        private LocalContext FindContext(Type type) =>
+        private EF6LocalContext FindContext(Type type) =>
             contexts.Values.SingleOrDefault(c => c.GetIsOwned(type)) ??
             contexts.Values.Single(c => c.GetIsKnown(type));
 
-        private LocalContext GetContext(Type type) {
+        private EF6LocalContext GetContext(Type type) {
             try {
                 return contexts.Count == 1 ? contexts.Values.Single() : FindContext(type);
             }
@@ -141,7 +141,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             }
         }
 
-        internal LocalContext GetContext(object domainObject) => GetContext(GetTypeToUse(domainObject));
+        internal EF6LocalContext GetContext(object domainObject) => GetContext(GetTypeToUse(domainObject));
 
         private Type GetTypeToUse(object domainObject) {
             if (domainObject == null) {
@@ -162,13 +162,13 @@ namespace NakedFramework.Persistor.Entity.Component {
                 : objectType;
         }
 
-        private LocalContext GetContext(INakedObjectAdapter nakedObjectAdapter) => GetContext(nakedObjectAdapter.Object);
+        private EF6LocalContext GetContext(INakedObjectAdapter nakedObjectAdapter) => GetContext(nakedObjectAdapter.Object);
 
-        private LocalContext PrepareContextForNewTransaction(KeyValuePair<CodeFirstEntityContextConfiguration, LocalContext> kvp) {
-            var codeFirstEntityContextConfiguration = kvp.Key;
+        private EF6LocalContext PrepareContextForNewTransaction(KeyValuePair<EF6ContextConfiguration, EF6LocalContext> kvp) {
+            var entityContextConfiguration = kvp.Key;
 
-            var context = CreateCodeOnlyContext(codeFirstEntityContextConfiguration);
-            context.DefaultMergeOption = codeFirstEntityContextConfiguration.DefaultMergeOption;
+            var context = CreateCodeOnlyContext(entityContextConfiguration);
+            context.DefaultMergeOption = entityContextConfiguration.DefaultMergeOption;
             context.WrappedObjectContext.ContextOptions.LazyLoadingEnabled = true;
             context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled = true;
             context.WrappedObjectContext.SavingChanges += (o, e) => savingChangesHandler(o,e);
@@ -178,7 +178,7 @@ namespace NakedFramework.Persistor.Entity.Component {
                 }
             };
 
-            codeFirstEntityContextConfiguration.CustomConfig(context.WrappedObjectContext);
+            entityContextConfiguration.CustomConfig(context.WrappedObjectContext);
 
             context.Manager = nakedObjectManager;
             return context;
@@ -196,7 +196,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             }
         }
 
-        private void RollBackContext(LocalContext context) {
+        private void RollBackContext(EF6LocalContext context) {
             if (RollBackOnError) {
                 var wContext = context.WrappedObjectContext;
                 wContext.DetectChanges();
@@ -209,7 +209,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         private void RollBackContext() => contexts.Values.ForEach(RollBackContext);
 
-        private static void StartResolving(INakedObjectAdapter nakedObjectAdapter, LocalContext context) {
+        private static void StartResolving(INakedObjectAdapter nakedObjectAdapter, EF6LocalContext context) {
             var resolveEvent = !nakedObjectAdapter.ResolveState.IsTransient() &&
                                !context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled
                 ? Events.StartPartResolvingEvent
@@ -219,7 +219,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         private static void EndResolving(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.ResolveState.Handle(nakedObjectAdapter.ResolveState.IsPartResolving() ? Events.EndPartResolvingEvent : Events.EndResolvingEvent);
 
-        private static void Resolve(INakedObjectAdapter nakedObjectAdapter, LocalContext context) {
+        private static void Resolve(INakedObjectAdapter nakedObjectAdapter, EF6LocalContext context) {
             StartResolving(nakedObjectAdapter, context);
             EndResolving(nakedObjectAdapter);
         }
@@ -262,7 +262,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             }
         }
 
-        private static void SaveChanges(LocalContext context) => context.WrappedObjectContext.SaveChanges(SaveOptions.DetectChangesBeforeSave);
+        private static void SaveChanges(EF6LocalContext context) => context.WrappedObjectContext.SaveChanges(SaveOptions.DetectChangesBeforeSave);
 
         private void Save() {
             contexts.Values.ForEach(SaveChanges);
@@ -291,9 +291,9 @@ namespace NakedFramework.Persistor.Entity.Component {
             return CreateAdapter(null, trigger);
         }
 
-        private LocalContext CreateCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
+        private EF6LocalContext CreateCodeOnlyContext(EF6ContextConfiguration codeOnlyConfig) {
             try {
-                return new LocalContext(codeOnlyConfig, session, this);
+                return new EF6LocalContext(codeOnlyConfig, session, this);
             }
             catch (Exception e) {
                 var originalMsg = e.Message;
@@ -336,7 +336,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             }
 
             context.GetNavigationMembers(type).Where(m => !CollectionUtils.IsCollection(m.PropertyType)).ForEach(pi => oq = oq.Invoke<object>("Include", pi.Name));
-            return ObjectContextUtils.First(oq.Invoke<IEnumerable>("Execute", context.DefaultMergeOption));
+            return EF6Helpers.First(oq.Invoke<IEnumerable>("Execute", context.DefaultMergeOption));
         }
 
         private IDictionary<string, object> GetMemberValueMap(Type type, IDatabaseOid eoid, out string entitySetName) {
@@ -345,7 +345,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             entitySetName = $"{set.EntityContainer.Name}.{set.Name}";
             var idmembers = context.GetIdMembers(type);
             var keyValues = eoid.Key;
-            return ObjectContextUtils.MemberValueMap(idmembers, keyValues);
+            return EF6Helpers.MemberValueMap(idmembers, keyValues);
         }
 
         public object GetObjectByKey(IDatabaseOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
@@ -403,9 +403,9 @@ namespace NakedFramework.Persistor.Entity.Component {
             }
         }
 
-        private void LoadObjectIntoNakedObjectsFramework(object domainObject, LocalContext context) {
+        private void LoadObjectIntoNakedObjectsFramework(object domainObject, EF6LocalContext context) {
             CheckProxies(domainObject);
-            var oid = oidGenerator.CreateOid(EntityUtils.GetEntityProxiedTypeName(domainObject), context.GetKey(domainObject));
+            var oid = oidGenerator.CreateOid(EF6Helpers.GetEntityProxiedTypeName(domainObject), context.GetKey(domainObject));
             var nakedObjectAdapter = CreateAdapter(oid, domainObject);
             injector.InjectInto(nakedObjectAdapter.Object);
             LoadComplexTypesIntoNakedObjectFramework(nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsGhost());
@@ -429,7 +429,7 @@ namespace NakedFramework.Persistor.Entity.Component {
         }
 
         private void SavingChangesHandler(object sender, EventArgs e) {
-            var changedObjects = ObjectContextUtils.GetChangedObjectsInContext((ObjectContext) sender);
+            var changedObjects = EF6Helpers.GetChangedObjectsInContext((ObjectContext) sender);
             var adaptedObjects = changedObjects.Where(o => FasterTypeUtils.IsEF6Proxy(o.GetType())).Select(domainObject => nakedObjectManager.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
@@ -520,16 +520,16 @@ namespace NakedFramework.Persistor.Entity.Component {
         public void AbortTransaction() => RollBackContext();
 
         public void ExecuteCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
-            Execute(new EntityCreateObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
+            Execute(new EF6CreateObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
 
         public void ExecuteDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
-            Execute(new EntityDestroyObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
+            Execute(new EF6DestroyObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
-            Execute(new EntitySaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
+            Execute(new EF6SaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
         public IList<(object original, object updated)> ExecuteAttachObjectCommandUpdate(IDetachedObjects objects) =>
-            Execute(new EntityPersistUpdateDetachedObjectCommand(objects, this));
+            Execute(new EF6DetachedObjectCommand(objects, this));
 
         public void EndTransaction() {
             try {
@@ -625,12 +625,12 @@ namespace NakedFramework.Persistor.Entity.Component {
                     throw new NakedObjectSystemException("Member and value counts must match");
                 }
 
-                var memberValueMap = ObjectContextUtils.MemberValueMap(idmembers, keyValues);
+                var memberValueMap = EF6Helpers.MemberValueMap(idmembers, keyValues);
 
                 var query = memberValueMap.Aggregate(string.Empty, (s, kvp) => string.Format("{0}it.{1}=@{1}", s.Length == 0 ? s : $"{s} and ", kvp.Key));
                 var parms = memberValueMap.Select(kvp => new ObjectParameter(kvp.Key, kvp.Value)).ToArray();
 
-                ObjectContextUtils.First(objectSet.Invoke<IQueryable>("Where", query, parms));
+                EF6Helpers.First(objectSet.Invoke<IQueryable>("Where", query, parms));
             }
 
             EndResolving(nakedObjectAdapter);
@@ -641,7 +641,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             // do nothing 
         }
 
-        private static IQueryable<T> EagerLoad<T>(LocalContext context, Type entityType, IQueryable queryable) => (IQueryable<T>) queryable.AsNoTracking();
+        private static IQueryable<T> EagerLoad<T>(EF6LocalContext context, Type entityType, IQueryable queryable) => (IQueryable<T>) queryable.AsNoTracking();
 
         public IQueryable<T> GetInstances<T>(bool tracked = true) where T : class {
             var context = GetContext(typeof(T));
@@ -746,7 +746,7 @@ namespace NakedFramework.Persistor.Entity.Component {
             loadSpecification = loadSpecificationHandler;
         }
 
-        public static void SetProxyingAndDeferredLoading(LocalContext context, bool newValue) {
+        public static void SetProxyingAndDeferredLoading(EF6LocalContext context, bool newValue) {
             context.WrappedObjectContext.ContextOptions.LazyLoadingEnabled = newValue;
             context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled = newValue;
         }

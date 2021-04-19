@@ -7,7 +7,7 @@
 module NakedObjects.ModelTest
 
 open ModelTestCode
-open NakedFramework.Persistor.Entity.Configuration
+open NakedFramework.Persistor.EF6.Configuration
 open NakedObjects.TestTypes
 open NUnit.Framework
 open SimpleDatabase
@@ -15,7 +15,7 @@ open System
 open TestCode
 
 let persistor = 
-    let c = new EntityObjectStoreConfiguration()
+    let c = new EF6ObjectStoreConfiguration()
     let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
     c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c

@@ -9,23 +9,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
-using NakedFramework.Persistor.EFCore.Util;
+using NakedFramework.Persistor.EF6.Util;
 
-namespace NakedFramework.Persistor.EFCore.Component {
-    public class EFCorePersistUpdateDetachedObjectCommand {
+namespace NakedFramework.Persistor.EF6.Component {
+    public class EF6DetachedObjectCommand {
         private readonly IDetachedObjects detachedObjects;
-        private readonly EFCoreObjectStore parent;
-        private DbContext context;
+        private readonly EF6ObjectStore parent;
+        private EF6LocalContext context;
 
-        public EFCorePersistUpdateDetachedObjectCommand(IDetachedObjects detachedObjects, EFCoreObjectStore parent) {
+        public EF6DetachedObjectCommand(IDetachedObjects detachedObjects, EF6ObjectStore parent) {
             this.detachedObjects = detachedObjects;
             this.parent = parent;
         }
+
+        public INakedObjectAdapter OnObject() => context.CurrentSaveRootObjectAdapter;
 
         private bool IsSavedOrUpdated(object obj) => detachedObjects.SavedAndUpdated.Any(t => t.original == obj);
 
@@ -35,7 +38,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             var (proxy, updated) = updateTuple;
 
             if (!IsSavedOrUpdated(updated)) {
-                context = parent.GetContext(updated).WrappedDbContext;
+                context = parent.GetContext(updated);
                 ProxyObjectIfAppropriate(updated, proxy);
             }
         }
@@ -44,16 +47,16 @@ namespace NakedFramework.Persistor.EFCore.Component {
             var errors = new List<string>();
 
             foreach (var toSave in detachedObjects.ToSave) {
-                context = parent.GetContext(toSave).WrappedDbContext;
-                if (!parent.EmptyKeys(toSave)) {
+                context = parent.GetContext(toSave);
+                if (!context.GetKey(toSave).All(EF6ObjectStore.EmptyKey)) {
                     errors.Add($"Save object {toSave} already has a key");
                 }
             }
 
             foreach (var updateTuple in detachedObjects.ToUpdate) {
                 var (_, toUpdate) = updateTuple;
-                context = parent.GetContext(toUpdate).WrappedDbContext;
-                if (parent.EmptyKeys(toUpdate)) {
+                context = parent.GetContext(toUpdate);
+                if (context.GetKey(toUpdate).All(EF6ObjectStore.EmptyKey)) {
                     errors.Add($"Update object {toUpdate} has no key");
                 }
             }
@@ -82,18 +85,27 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 return detachedObjects.SavedAndUpdated;
             }
             catch (Exception e) {
-                parent.Logger.LogWarning($"Error in {nameof(EFCorePersistUpdateDetachedObjectCommand)}.{nameof(Execute)}: {e.Message}");
+                parent.Logger.LogWarning($"Error in EF6CreateObjectCommand.Execute: {e.Message}");
                 throw;
             }
         }
 
         private void DeleteObject(object toDelete) {
-            context = parent.GetContext(toDelete).WrappedDbContext;
-            context.Remove(toDelete);
+            var adapter = parent.CreateAdapter(null, toDelete);
+            context = parent.GetContext(toDelete);
+            context.WrappedObjectContext.DeleteObject(toDelete);
+            adapter.ResolveState.Handle(Events.DestroyEvent);
         }
 
-        private static object GetOrCreateProxiedObject(object originalObject, DbContext context, object potentialProxy) {
-            var proxy = potentialProxy ?? context.Add(Activator.CreateInstance(originalObject.GetType())).Entity;
+        private void SetKeyAsNecessary(object objectToProxy, object proxy) {
+            if (!context.IdMembersAreIdentity(objectToProxy.GetType())) {
+                var idMembers = context.GetIdMembers(objectToProxy.GetType());
+                idMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
+            }
+        }
+
+        private static object GetOrCreateProxiedObject(object originalObject, EF6LocalContext context, object potentialProxy) {
+            var proxy = potentialProxy ?? context.CreateObject(originalObject.GetType());
 
             if (proxy is null) {
                 throw new PersistFailedException($"unexpected null proxy for {originalObject} type {originalObject.GetType()}");
@@ -112,13 +124,22 @@ namespace NakedFramework.Persistor.EFCore.Component {
             var proxy = GetOrCreateProxiedObject(originalObject, context, potentialProxy);
 
             // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
+            INakedObjectAdapter proxyAdapter = null;
             if (persisting) {
-                parent.CreateAdapter(null, proxy);
-                context.Add(proxy);
+                proxyAdapter = parent.CreateAdapter(null, proxy);
+            }
+
+            SetKeyAsNecessary(originalObject, proxy);
+
+            if (persisting) {
+                context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", proxy);
             }
 
             // need to update
             ProxyReferencesAndCopyValuesToProxy(originalObject, proxy);
+            if (persisting) {
+                parent.RemoveAdapter(proxyAdapter);
+            }
 
             detachedObjects.SavedAndUpdated.Add((originalObject, proxy));
 
@@ -172,7 +193,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 return ProxyObject(originalObject, proxy);
             }
 
-            var persisting = parent.EmptyKeys(originalObject);
+            var keys = context.GetKey(originalObject);
+            var persisting = keys.All(EF6ObjectStore.EmptyKey);
 
             return persisting ? ProxyObject(originalObject) : originalObject;
         }

@@ -12,8 +12,8 @@ open Moq
 open NakedFramework.Architecture.Component
 open NakedFramework.Core.Component
 open NakedFramework.Core.Authentication
-open NakedFramework.Persistor.Entity.Util
-open NakedFramework.Persistor.Entity.Component
+open NakedFramework.Persistor.EF6.Util
+open NakedFramework.Persistor.EF6.Component
 open System
 open System.Collections.Generic
 open System.Collections
@@ -29,7 +29,7 @@ open NakedFramework.Core.Util
 
 let resetPersistor (p : IObjectStore) : IObjectStore =
     match p with 
-    | :? EntityObjectStore as eos -> 
+    | :? EF6ObjectStore as eos -> 
         eos.SetupContexts()
         (setupPersistorForTesting eos) :> IObjectStore
     | :? EFCoreObjectStore as ecos -> 
@@ -47,8 +47,8 @@ let getEntityObjectStore (config) =
     let i = new DomainObjectContainerInjector(serviceList, mlf.Object, ml.Object)
     let m = mockMetamodelManager.Object
     let nom = (new Mock<INakedObjectManager>()).Object
-    let log = (new Mock<ILogger<EntityObjectStore>>()).Object;
-    new EntityObjectStore(s, config, new DatabaseOidGenerator(m, mlf.Object), m, i, nom, log)
+    let log = (new Mock<ILogger<EF6ObjectStore>>()).Object;
+    new EF6ObjectStore(s, config, new DatabaseOidGenerator(m, mlf.Object), m, i, nom, log)
 
 let getEFCoreObjectStore (config) = 
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
@@ -125,7 +125,7 @@ let GetNextID<'t when 't : not struct> (p : IObjectStore) fGetID = (GetMaxID<'t>
 
 let getObjectByKey(persistor :IObjectStore) key (typ : Type) = 
     match persistor with 
-    | :? EntityObjectStore as eos -> eos.GetObjectByKey(key, typ)
+    | :? EF6ObjectStore as eos -> eos.GetObjectByKey(key, typ)
     | :? EFCoreObjectStore as efos -> efos.GetObjectByKey(key, typ) 
     | _ -> null
 

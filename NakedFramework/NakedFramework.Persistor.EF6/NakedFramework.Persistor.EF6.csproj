@@ -21,8 +21,4 @@
     <ProjectReference Include="..\NakedFramework.Core\NakedFramework.Core.csproj" />
     <ProjectReference Include="..\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Adapter\" />
-  </ItemGroup>
 </Project>

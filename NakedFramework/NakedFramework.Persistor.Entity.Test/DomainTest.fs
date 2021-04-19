@@ -8,26 +8,26 @@ module NakedObjects.DomainTest
 
 open DomainTestCode
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
-open NakedFramework.Persistor.Entity.Configuration
+open NakedFramework.Persistor.EF6.Configuration
 open NUnit.Framework
 open System
 open System.Data.Entity.Core.Objects
 open TestCode
 open TestTypes
 open NakedFramework.Architecture.Component
-open NakedFramework.Persistor.Entity.Component
+open NakedFramework.Persistor.EF6.Component
 
 let persistor = 
-    EntityObjectStoreConfiguration.NoValidate <- true
-    let c = new EntityObjectStoreConfiguration()
+    EF6ObjectStoreConfiguration.NoValidate <- true
+    let c = new EF6ObjectStoreConfiguration()
     let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
     c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForTesting p
 
 let overwritePersistor =
-    EntityObjectStoreConfiguration.NoValidate <- true
-    let c = new EntityObjectStoreConfiguration()
+    EF6ObjectStoreConfiguration.NoValidate <- true
+    let c = new EF6ObjectStoreConfiguration()
     let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
     c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
     c.DefaultMergeOption <- MergeOption.OverwriteChanges
@@ -48,7 +48,7 @@ type DomainTests() =
         [<OneTimeTearDown>]
         member x.TearDown() = 
             match x.persistor with 
-            | :? EntityObjectStore as eos -> eos.SetupContexts()
+            | :? EF6ObjectStore as eos -> eos.SetupContexts()
             | _ -> ()
         
         [<Test>]

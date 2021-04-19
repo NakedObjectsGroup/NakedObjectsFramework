@@ -8,7 +8,7 @@ module NakedObjects.AMultiDomainDatabaseTest
 
 open CodeOnlyTestCode
 open MultiDatabaseTestCode
-open NakedFramework.Persistor.Entity.Configuration
+open NakedFramework.Persistor.EF6.Configuration
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
 open NUnit.Framework
 open SimpleDatabase
@@ -18,9 +18,9 @@ open TestCodeOnly
 open TestTypes
 
 let multiDomainDatabasePersistor = 
-    EntityObjectStoreConfiguration.NoValidate <- true
+    EF6ObjectStoreConfiguration.NoValidate <- true
 
-    let c = new EntityObjectStoreConfiguration()
+    let c = new EF6ObjectStoreConfiguration()
     let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
     c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
     c.UsingContext((CodeFirstConfig csMD).DbContext) |> ignore

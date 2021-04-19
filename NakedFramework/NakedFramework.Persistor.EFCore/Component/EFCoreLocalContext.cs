@@ -7,31 +7,29 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
-using NakedFramework.Persistor.Entity.Configuration;
-using NakedFramework.Persistor.Entity.Util;
+using NakedFramework.Persistor.EFCore.Configuration;
+using NakedFramework.Persistor.EFCore.Util;
 
-namespace NakedFramework.Persistor.Entity.Component {
-    public class LocalContext : IDisposable {
+namespace NakedFramework.Persistor.EFCore.Component {
+    public class EFCoreLocalContext : IDisposable {
         private readonly List<object> added = new();
         private readonly IDictionary<Type, Type> baseTypeMap = new Dictionary<Type, Type>();
         private readonly ISet<Type> notPersistedTypes = new HashSet<Type>();
         private readonly ISet<Type> ownedTypes = new HashSet<Type>();
-        private readonly EntityObjectStore parent;
+        private readonly EFCoreObjectStore parent;
         private readonly ISession session;
-        private readonly IDictionary<Type, StructuralType> typeToStructuralType = new Dictionary<Type, StructuralType>();
+        //private readonly IDictionary<Type, StructuralType> typeToStructuralType = new Dictionary<Type, StructuralType>();
         private List<INakedObjectAdapter> coUpdating;
         private List<INakedObjectAdapter> updatingNakedObjects;
 
-        private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, EntityObjectStore parent) {
+        private EFCoreLocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, EFCoreObjectStore parent) {
             this.session = session;
             this.parent = parent;
 
@@ -39,14 +37,14 @@ namespace NakedFramework.Persistor.Entity.Component {
             notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
         }
 
-        public LocalContext(CodeFirstEntityContextConfiguration config, ISession session, EntityObjectStore parent)
+        public EFCoreLocalContext(Func<DbContext> context, EFCorePersistorConfiguration config, ISession session, EFCoreObjectStore parent)
             : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, parent) {
-            WrappedObjectContext = ((IObjectContextAdapter) config.DbContext()).ObjectContext;
-            Name = WrappedObjectContext.DefaultContainerName;
+            WrappedDbContext = context();
+            Name = WrappedDbContext.ToString();
         }
 
         public INakedObjectManager Manager { protected get; set; }
-        public ObjectContext WrappedObjectContext { get; private set; }
+        public DbContext WrappedDbContext { get; private set; }
         public string Name { get; }
 
         public ISet<INakedObjectAdapter> LoadedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
@@ -55,7 +53,7 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         public ISet<INakedObjectAdapter> DeletedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
 
-        public MergeOption DefaultMergeOption { get; set; }
+        //public MergeOption DefaultMergeOption { get; set; }
         public INakedObjectAdapter CurrentSaveRootObjectAdapter { get; set; }
         public INakedObjectAdapter CurrentUpdateRootObjectAdapter { get; set; }
 
@@ -63,8 +61,8 @@ namespace NakedFramework.Persistor.Entity.Component {
 
         public void Dispose() {
             try {
-                WrappedObjectContext.Dispose();
-                WrappedObjectContext = null;
+                WrappedDbContext.Dispose();
+                WrappedDbContext = null;
                 baseTypeMap.Clear();
             }
             catch (Exception e) {
@@ -90,14 +88,6 @@ namespace NakedFramework.Persistor.Entity.Component {
             return GetMostBaseType(type.BaseType);
         }
 
-        public StructuralType GetStructuralType(Type type) {
-            if (!typeToStructuralType.ContainsKey(type)) {
-                typeToStructuralType[type] = ObjectContextUtils.GetStructuralType(WrappedObjectContext, type);
-            }
-
-            return typeToStructuralType[type];
-        }
-
         public bool IsAlwaysUnrecognised(Type type) =>
             type == null ||
             type == typeof(object) ||
@@ -113,7 +103,7 @@ namespace NakedFramework.Persistor.Entity.Component {
                 return false;
             }
 
-            if (this.ContextKnowsType(type)) {
+            if (WrappedDbContext.HasEntityType(type)) {
                 ownedTypes.Add(type);
                 return true;
             }
@@ -136,23 +126,67 @@ namespace NakedFramework.Persistor.Entity.Component {
             DeletedNakedObjects.Clear();
         }
 
+        private IEnumerable<object> CheckForForeignKeys(EntityEntry entry) {
+            IList<object> updatedObjects = new List<object>();
+            int updatedForeignKeys = 0;
+
+            var foreignKeys = WrappedDbContext.Model.FindEntityType(entry.Entity.GetType().GetProxiedType()).GetForeignKeys();
+
+            foreach (var foreignKey in foreignKeys) {
+                var names = foreignKey.Properties.Select(p => p.Name);
+
+                foreach (var name in names) {
+                    var matchingMember = entry.Members.SingleOrDefault(m => m.Metadata.Name == name) as PropertyEntry;
+
+                    if (matchingMember?.IsModified == true) {
+                        var type = foreignKey.PrincipalEntityType.ClrType;
+                        var keys = matchingMember.OriginalValue;
+                        updatedForeignKeys++; 
+
+                        if (keys is not null) {
+                            var otherEnd = WrappedDbContext.Find(type, keys);
+                            updatedObjects.Add(otherEnd);
+                        }
+                    }
+                }
+            }
+
+            // check if anything modified as well as foreign keys
+            if (entry.Members.Count(m => m.IsModified) > updatedForeignKeys) {
+                updatedObjects.Add(entry.Entity);
+            }
+
+            return updatedObjects;
+        }
+
         public void PreSave() {
-            WrappedObjectContext.DetectChanges();
-            added.AddRange(WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Where(ose => !ose.IsRelationship).Select(ose => ose.Entity).ToList());
-            updatingNakedObjects = ObjectContextUtils.GetChangedObjectsInContext(WrappedObjectContext).Select(obj => parent.CreateAdapter(null, obj)).ToList();
+            WrappedDbContext.ChangeTracker.DetectChanges();
+            var entries = WrappedDbContext.ChangeTracker.Entries().ToArray();
+
+            entries.ForEach(e => e.DetectChanges());
+
+            added.AddRange(entries.Where(e => e.State == EntityState.Added).Select(ose => ose.Entity).ToList());
+            
+            updatingNakedObjects = entries.Where(e => e.State != EntityState.Added && e.Members.Any(m => m.IsModified)).
+                                           SelectMany(CheckForForeignKeys).
+                                           Distinct().
+                                           Select(o => parent.CreateAdapter(null, o)).ToList();
+
             updatingNakedObjects.ForEach(no => no.Updating());
 
             // need to do complex type separately as they'll not be updated in the SavingChangesHandler as they're not proxied. 
-            coUpdating = ObjectContextUtils.GetChangedComplexObjectsInContext(this).Select(obj => parent.CreateAdapter(null, obj)).ToList();
-            coUpdating.ForEach(no => no.Updating());
+            coUpdating = new List<INakedObjectAdapter>();
+            //coUpdating = ObjectContextUtils.GetChangedComplexObjectsInContext(this).Select(obj => parent.CreateAdapter(obj)).ToList();
+            //coUpdating.ForEach(no => no.Updating());
         }
 
         public bool HasChanges() {
-            WrappedObjectContext.DetectChanges();
-            return WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified).Any();
+            WrappedDbContext.ChangeTracker.DetectChanges();
+            //return WrappedDbContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified).Any();
+            return WrappedDbContext.ChangeTracker.HasChanges();
         }
 
-        public void PostSave(EntityObjectStore store) {
+        public void PostSave() {
             try {
                 // Take a copy of PersistedNakedObjects and clear original so new ones can be added 
                 // do this before Updated so that any objects added by updated are not immediately
@@ -160,7 +194,7 @@ namespace NakedFramework.Persistor.Entity.Component {
                 var currentPersistedNakedObjectsAdapter = PersistedNakedObjects.ToArray();
                 PersistedNakedObjects.Clear();
                 updatingNakedObjects.ForEach(no => no.Updated());
-                updatingNakedObjects.ForEach(no => no.UpdateVersion(session, Manager));
+                updatingNakedObjects.ForEach(no => EFCoreHelpers.UpdateVersion(no, session, Manager));
                 coUpdating.ForEach(no => no.Updated());
                 currentPersistedNakedObjectsAdapter.ForEach(no => no.Persisted());
             }
@@ -170,8 +204,9 @@ namespace NakedFramework.Persistor.Entity.Component {
             }
         }
 
-        public void PostSaveWrapUp(EntityObjectStore store) {
-            added.Select(domainObject => parent.CreateAdapter(null, domainObject)).ForEach(store.HandleAdded);
+        public void PostSaveWrapUp() {
+            // complex types give null adapter
+            added.Select(domainObject => parent.CreateAdapter(null, domainObject)).Where(a => a?.Oid is IDatabaseOid).ForEach(parent.HandleAdded);
             LoadedNakedObjects.ToList().ForEach(parent.HandleLoaded);
         }
     }

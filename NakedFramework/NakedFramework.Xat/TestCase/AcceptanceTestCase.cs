@@ -31,7 +31,7 @@ using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Profile;
 using NakedFramework.Metamodel.SpecImmutable;
-using NakedFramework.Persistor.Entity.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedFramework.Xat.Interface;
 using NakedFramework.Xat.TestObjects;
@@ -108,7 +108,7 @@ namespace NakedFramework.Xat.TestCase {
 
         protected virtual bool EnforceProxies => true;
 
-        protected virtual Action<EntityPersistorOptions> PersistorOptions =>
+        protected virtual Action<EF6PersistorOptions> PersistorOptions =>
             options => {
                 options.ContextInstallers = ContextInstallers;
                 options.EnforceProxies = EnforceProxies;

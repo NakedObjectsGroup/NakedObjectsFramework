@@ -16,7 +16,7 @@ using NakedFramework.DependencyInjection.Component;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.Persistor.EFCore.Extensions;
-using NakedFramework.Persistor.Entity.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Rest.App.Demo.AWCustom;

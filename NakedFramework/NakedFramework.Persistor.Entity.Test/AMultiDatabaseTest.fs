@@ -9,7 +9,7 @@ module NakedObjects.AMultiDatabaseTest
 open CodeOnlyTestCode
 open DomainTestCode
 open MultiDatabaseTestCode
-open NakedFramework.Persistor.Entity.Configuration
+open NakedFramework.Persistor.EF6.Configuration
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NUnit.Framework
 open TestCode
@@ -18,8 +18,8 @@ open System
 open NakedFramework.Architecture.Component
 
 let multiDatabasePersistor = 
-    EntityObjectStoreConfiguration.NoValidate <- true
-    let c = new EntityObjectStoreConfiguration()
+    EF6ObjectStoreConfiguration.NoValidate <- true
+    let c = new EF6ObjectStoreConfiguration()
     c.UsingContext((CodeFirstConfig csMD).DbContext) |> ignore
     let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
     c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore

@@ -8,21 +8,24 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
-namespace NakedFramework.Persistor.Entity.Component {
-    public class EntitySaveObjectCommand : ISaveObjectCommand {
-        private readonly LocalContext context;
+namespace NakedFramework.Persistor.EF6.Component {
+    public class EF6DestroyObjectCommand : IDestroyObjectCommand {
+        private readonly EF6LocalContext context;
         private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public EntitySaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context) {
+        public EF6DestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, EF6LocalContext context) {
             this.context = context;
             this.nakedObjectAdapter = nakedObjectAdapter;
         }
 
-        public override string ToString() => $"SaveObjectCommand [object={nakedObjectAdapter}]";
+        public override string ToString() => $"DestroyObjectCommand [object={nakedObjectAdapter}]";
 
-        #region ISaveObjectCommand Members
+        #region IDestroyObjectCommand Members
 
-        public void Execute() => context.CurrentUpdateRootObjectAdapter = nakedObjectAdapter;
+        public void Execute() {
+            context.WrappedObjectContext.DeleteObject(nakedObjectAdapter.Object);
+            context.DeletedNakedObjects.Add(nakedObjectAdapter);
+        }
 
         public INakedObjectAdapter OnObject() => nakedObjectAdapter;
 

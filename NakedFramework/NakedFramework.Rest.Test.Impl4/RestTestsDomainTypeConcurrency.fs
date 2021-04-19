@@ -15,7 +15,7 @@ open NakedFramework.Facade.Impl
 open NakedFramework.Facade.Impl.Utility
 open NakedObjects.Rest.Test.Helpers
 open NakedObjects.Rest.Test.Functions
-open NakedFramework.Persistor.Entity.Configuration
+open NakedFramework.Persistor.EF6.Configuration
 open NakedFramework.Facade
 open NakedFramework.Facade.Translation
 open NakedFramework.Facade.Impl
