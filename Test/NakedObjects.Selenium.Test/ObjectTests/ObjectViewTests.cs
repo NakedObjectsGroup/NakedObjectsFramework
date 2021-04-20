@@ -469,7 +469,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             WaitForView(Pane.Single, PaneType.Object, "SO72079");
             // clear any existing comments to make test more robust
 
-            if (!string.IsNullOrWhiteSpace(br.FindElements(By.CssSelector(".property"))[20].Text)) {
+            if (!br.FindElements(By.CssSelector(".property"))[20].Text.StartsWith("Sales")) {
                 var rn = br.FindElements(By.CssSelector(".property"))[19].Text;
 
                 Click(GetObjectEnabledAction("Clear Comment"));
