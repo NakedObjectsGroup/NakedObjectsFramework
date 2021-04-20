@@ -77,13 +77,6 @@ namespace AdventureWorksModel {
             return t.ToString();
         }
 
-        public virtual string IconName() {
-            if (Type == "No Discount") {
-                return "default.png";
-            }
-            return "scissors.png";
-        }
-
         #endregion
 
         #region ModifiedDate and rowguid
