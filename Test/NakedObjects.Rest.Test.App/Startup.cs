@@ -33,12 +33,13 @@ namespace NakedObjects.Rest.Test.App {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = null;
-                //builder.AddEF6Persistor(options => {
-                //    options.ContextInstallers = new[] { NakedObjectsRunSettings.EF6DbContextInstaller };
-                //});
-                builder.AddEFCorePersistor(options => {
-                    options.ContextInstallers = new[] { NakedObjectsRunSettings.EFCoreDbContextInstaller };
+                builder.AddEF6Persistor(options =>
+                {
+                    options.ContextInstallers = new[] { NakedObjectsRunSettings.EF6DbContextInstaller };
                 });
+                //builder.AddEFCorePersistor(options => {
+                //    options.ContextInstallers = new[] { NakedObjectsRunSettings.EFCoreDbContextInstaller };
+                //});
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;

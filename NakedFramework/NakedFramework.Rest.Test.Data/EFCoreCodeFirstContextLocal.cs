@@ -50,6 +50,14 @@ namespace RestfulObjects.Test.Data {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+            modelBuilder.Entity<WithScalars>().Ignore(o => o.SByte);
+            modelBuilder.Entity<WithScalars>().Ignore(o => o.SByteArray);
+            modelBuilder.Entity<WithScalars>().Ignore(o => o.CharArray);
+            modelBuilder.Entity<WithGetError>().Ignore(o => o.AnErrorReference);
+            modelBuilder.Entity<WithGetError>().Ignore(o => o.AnErrorValue);
+            modelBuilder.Entity<WithError>().Ignore(o => o.AnErrorValue);
+
             int NewMostSimple(int id) {
                 modelBuilder.Entity<MostSimple>().HasData(new MostSimple {Id = id});
                 return id;
@@ -107,9 +115,35 @@ namespace RestfulObjects.Test.Data {
                 UShort = 16
             });
 
-            var wa = modelBuilder.Entity<WithAction>().HasData(new WithActionObject { Id = 1 });
+            var wa = modelBuilder.Entity<WithActionObject>().HasData(new WithActionObject {Id = 1});
 
+            var wc1 = modelBuilder.Entity<WithCollection>().HasData(new WithCollection {Id = 1});
 
+            var we1 = modelBuilder.Entity<WithError>().HasData(new {Id = 1});
+
+            var we2 = modelBuilder.Entity<WithError>().HasData(new {Id = 2});
+
+            var we3 = modelBuilder.Entity<WithError>().HasData(new {Id = 3});
+
+            var we4 = modelBuilder.Entity<WithError>().HasData(new {Id = 4});
+
+            var wge1 = modelBuilder.Entity<WithGetError>().HasData(new {Id = 1});
+
+            var i1 = modelBuilder.Entity<Immutable>().HasData(new {Id = 1, AValue = 0});
+
+            var vs1 = modelBuilder.Entity<VerySimple>().HasData(new {Id = 1});
+
+            var vs2 = modelBuilder.Entity<VerySimple>().HasData(new {Id = 2});
+
+            var vse1 = modelBuilder.Entity<VerySimpleEager>().HasData(new {Id = 1});
+
+            var dt1 = modelBuilder.Entity<WithDateTimeKey>().HasData(new {Id = new DateTime(634835232000000000L).Date});
+
+            var rdo1 = modelBuilder.Entity<RedirectedObject>().HasData(new {Id = 1, ServerName = "RedirectedToServer", Oid = "RedirectedToOid"});
+
+            var wat1 = modelBuilder.Entity<WithAttachments>().HasData(new {Id = 1});
+
+            var g1 = modelBuilder.Entity<WithGuidKey>().HasData(new {Id = new Guid("CA761232-ED42-11CE-BACD-00AA0057B223")});
 
         }
 
@@ -120,125 +154,125 @@ namespace RestfulObjects.Test.Data {
         //        var ms3 = new MostSimple {Id = 4};
         //        context.MostSimples.Add(ms1);
 
-            //        context.MostSimples.Add(ms2);
+        //        context.MostSimples.Add(ms2);
 
-            //        context.MostSimples.Add(ms3);
+        //        context.MostSimples.Add(ms3);
 
-            //        var wr1 = new WithReference {Id = 1, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
-            //        var wr2 = new WithReference {Id = 2, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
-            //        var wr3 = new WithReference {Id = 3, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
+        //        var wr1 = new WithReference {Id = 1, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
+        //        var wr2 = new WithReference {Id = 2, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
+        //        var wr3 = new WithReference {Id = 3, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
 
-            //        context.WithReferences.Add(wr1);
+        //        context.WithReferences.Add(wr1);
 
-            //        context.WithReferences.Add(wr2);
+        //        context.WithReferences.Add(wr2);
 
-            //        context.WithReferences.Add(wr3);
+        //        context.WithReferences.Add(wr3);
 
-            //        var wv1 = new WithValue {Id = 1, AValue = 100, ADisabledValue = 200, AStringValue = ""};
-            //        context.WithValues.Add(wv1);
+        //        var wv1 = new WithValue {Id = 1, AValue = 100, ADisabledValue = 200, AStringValue = ""};
+        //        context.WithValues.Add(wv1);
 
-            //        var wv2 = new WithValue {Id = 2, AValue = 100, ADisabledValue = 200, AStringValue = ""};
-            //        context.WithValues.Add(wv2);
+        //        var wv2 = new WithValue {Id = 2, AValue = 100, ADisabledValue = 200, AStringValue = ""};
+        //        context.WithValues.Add(wv2);
 
-            //        var ws1 = new WithScalars {
-            //            Id = 1,
-            //            Bool = true,
-            //            Byte = 1,
-            //            ByteArray = new[] {
-            //                (byte) 2
-            //            },
-            //            Char = '3',
-            //            CharArray = new[] {
-            //                (char) 4
-            //            },
-            //            DateTime = new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc).ToUniversalTime(),
-            //            Decimal = 5.1M,
-            //            Double = 6.2,
-            //            Float = 7.3F,
-            //            Int = 8,
-            //            Long = 9L,
-            //            SByte = 10,
-            //            SByteArray = new[] {
-            //                (sbyte) 11
-            //            },
-            //            Short = 12,
-            //            String = "13",
-            //            UInt = 14,
-            //            ULong = 15,
-            //            UShort = 16
-            //        };
+        //        var ws1 = new WithScalars {
+        //            Id = 1,
+        //            Bool = true,
+        //            Byte = 1,
+        //            ByteArray = new[] {
+        //                (byte) 2
+        //            },
+        //            Char = '3',
+        //            CharArray = new[] {
+        //                (char) 4
+        //            },
+        //            DateTime = new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc).ToUniversalTime(),
+        //            Decimal = 5.1M,
+        //            Double = 6.2,
+        //            Float = 7.3F,
+        //            Int = 8,
+        //            Long = 9L,
+        //            SByte = 10,
+        //            SByteArray = new[] {
+        //                (sbyte) 11
+        //            },
+        //            Short = 12,
+        //            String = "13",
+        //            UInt = 14,
+        //            ULong = 15,
+        //            UShort = 16
+        //        };
 
-            //        context.WithScalarses.Add(ws1);
+        //        context.WithScalarses.Add(ws1);
 
-            //        var wa1 = new WithActionObject {Id = 1};
-            //        context.WithActionObjects.Add(wa1);
+        //        var wa1 = new WithActionObject {Id = 1};
+        //        context.WithActionObjects.Add(wa1);
 
-            //        var wc1 = new WithCollection {Id = 1};
-            //        wc1.ACollection.Add(ms1);
-            //        wc1.ACollection.Add(ms2);
-            //        wc1.ACollection.Add(ms3);
+        //        var wc1 = new WithCollection {Id = 1};
+        //        wc1.ACollection.Add(ms1);
+        //        wc1.ACollection.Add(ms2);
+        //        wc1.ACollection.Add(ms3);
 
-            //        wc1.ASet.Add(ms1);
+        //        wc1.ASet.Add(ms1);
 
-            //        wc1.ASet.Add(ms2);
+        //        wc1.ASet.Add(ms2);
 
-            //        wc1.ADisabledCollection.Add(ms1);
-            //        wc1.ADisabledCollection.Add(ms2);
-            //        wc1.AHiddenCollection.Add(ms1);
-            //        wc1.AHiddenCollection.Add(ms2);
-            //        wc1.AnEagerCollection.Add(ms1);
-            //        wc1.AnEagerCollection.Add(ms2);
-            //        context.WithCollections.Add(wc1);
+        //        wc1.ADisabledCollection.Add(ms1);
+        //        wc1.ADisabledCollection.Add(ms2);
+        //        wc1.AHiddenCollection.Add(ms1);
+        //        wc1.AHiddenCollection.Add(ms2);
+        //        wc1.AnEagerCollection.Add(ms1);
+        //        wc1.AnEagerCollection.Add(ms2);
+        //        context.WithCollections.Add(wc1);
 
-            //        var we1 = new WithError {Id = 1};
-            //        context.WithErrors.Add(we1);
+        //        var we1 = new WithError {Id = 1};
+        //        context.WithErrors.Add(we1);
 
-            //        var we2 = new WithError {Id = 2};
-            //        context.WithErrors.Add(we2);
+        //        var we2 = new WithError {Id = 2};
+        //        context.WithErrors.Add(we2);
 
-            //        var we3 = new WithError {Id = 3};
-            //        context.WithErrors.Add(we3);
+        //        var we3 = new WithError {Id = 3};
+        //        context.WithErrors.Add(we3);
 
-            //        var we4 = new WithError {Id = 4};
-            //        context.WithErrors.Add(we4);
+        //        var we4 = new WithError {Id = 4};
+        //        context.WithErrors.Add(we4);
 
-            //        var wge1 = new WithGetError {Id = 1};
-            //        context.WithGetErrors.Add(wge1);
+        //        var wge1 = new WithGetError {Id = 1};
+        //        context.WithGetErrors.Add(wge1);
 
-            //        var i1 = new Immutable {Id = 1};
-            //        context.Immutables.Add(i1);
+        //        var i1 = new Immutable {Id = 1};
+        //        context.Immutables.Add(i1);
 
-            //        var vs1 = new VerySimple {Id = 1};
-            //        context.VerySimples.Add(vs1);
+        //        var vs1 = new VerySimple {Id = 1};
+        //        context.VerySimples.Add(vs1);
 
-            //        var vs2 = new VerySimple {Id = 2};
-            //        context.VerySimples.Add(vs2);
+        //        var vs2 = new VerySimple {Id = 2};
+        //        context.VerySimples.Add(vs2);
 
-            //        var vse1 = new VerySimpleEager {Id = 1};
-            //        context.VerySimpleEagers.Add(vse1);
+        //        var vse1 = new VerySimpleEager {Id = 1};
+        //        context.VerySimpleEagers.Add(vse1);
 
-            //        var dt1 = new WithDateTimeKey {Id = new DateTime(634835232000000000L).Date};
-            //        context.WithDateTimeKeys.Add(dt1);
+        //        var dt1 = new WithDateTimeKey {Id = new DateTime(634835232000000000L).Date};
+        //        context.WithDateTimeKeys.Add(dt1);
 
-            //        var rdo1 = new RedirectedObject {Id = 1, ServerName = "RedirectedToServer", Oid = "RedirectedToOid"};
-            //        context.RedirectedObjects.Add(rdo1);
+        //        var rdo1 = new RedirectedObject {Id = 1, ServerName = "RedirectedToServer", Oid = "RedirectedToOid"};
+        //        context.RedirectedObjects.Add(rdo1);
 
-            //        var wat1 = new WithAttachments {Id = 1};
-            //        context.WithAttachments.Add(wat1);
+        //        var wat1 = new WithAttachments {Id = 1};
+        //        context.WithAttachments.Add(wat1);
 
-            //        var g1 = new WithGuidKey {Id = new Guid("CA761232-ED42-11CE-BACD-00AA0057B223")};
-            //        context.WithGuidKeys.Add(g1);
+        //        var g1 = new WithGuidKey {Id = new Guid("CA761232-ED42-11CE-BACD-00AA0057B223")};
+        //        context.WithGuidKeys.Add(g1);
 
-            //        context.SaveChanges();
+        //        context.SaveChanges();
 
-            //        wc1.ACollection.Remove(ms3);
+        //        wc1.ACollection.Remove(ms3);
 
-            //        context.SaveChanges();
-            //    }
+        //        context.SaveChanges();
+        //    }
 
-            //    protected override void Seed(CodeFirstContextLocal context) {
-            //        base.Seed(context);
-            //        SeedCodeFirstDatabase(context);
-            //    }
-        }
+        //    protected override void Seed(CodeFirstContextLocal context) {
+        //        base.Seed(context);
+        //        SeedCodeFirstDatabase(context);
+        //    }
+    }
 }

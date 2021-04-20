@@ -19,7 +19,7 @@ namespace RestfulObjects.Test.Data {
     public class WithError {
         private IList<MostSimple> aCollection = new List<MostSimple>();
 
-        private MostSimple aReference;
+        private MostSimple anErrorReference;
         public IDomainObjectContainer Container { set; protected get; }
 
         public static bool ThrowErrors { get; set; }
@@ -41,14 +41,14 @@ namespace RestfulObjects.Test.Data {
         }
 
         public virtual MostSimple AnErrorReference {
-            get => aReference;
+            get => anErrorReference;
             set {
                 if (Container != null && ThrowErrors) {
                     // initialized 
                     throw new DomainException("An error exception");
                 }
 
-                aReference = value;
+                anErrorReference = value;
             }
         }
 

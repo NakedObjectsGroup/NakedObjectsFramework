@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RestfulObjects.Test.Data;
 
@@ -38,9 +39,22 @@ namespace NakedObjects.Rest.Test.App {
             return cs.Contains("(localdb)") ? new CodeFirstContextLocal(cs) : new CodeFirstContext(cs);
         };
 
-        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextInstaller => c => {
+        public static Func<IConfiguration, DbContext> EFCoreDbContextInstaller => c => {
             var cs = c.GetConnectionString("RestTest");
-            return cs.Contains("(localdb)") ? new EFCoreCodeFirstContextLocal(cs) : new EFCoreCodeFirstContext(cs);
+
+            DbContext CreateLocal() {
+                var db = new EFCoreCodeFirstContextLocal(cs);
+                db.Create();
+                return db;
+            }
+
+            DbContext CreateAV() {
+                var db = new EFCoreCodeFirstContext(cs);
+                db.Create();
+                return db;
+            }
+
+            return cs.Contains("(localdb)") ? CreateLocal() : CreateAV();
         };
 
     }
