@@ -116,12 +116,12 @@ namespace NakedFramework.Persistor.EF6.Component {
             }
         }
 
-        private static IList<(object original, object updated)> Execute(EF6DetachedObjectCommand cmd) {
+        private static IList<(object original, object updated)> Execute(IDetachedObjectCommand cmd) {
             try {
                 return cmd.Execute();
             }
             catch (OptimisticConcurrencyException oce) {
-                throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObjectAdapter = cmd.OnObject()};
+                throw new ConcurrencyException(ConcatenateMessages(oce), oce);
             }
             catch (UpdateException ue) {
                 throw new DataUpdateException(ConcatenateMessages(ue), ue);
@@ -528,7 +528,7 @@ namespace NakedFramework.Persistor.EF6.Component {
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EF6SaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
 
-        public IList<(object original, object updated)> ExecuteAttachObjectCommandUpdate(IDetachedObjects objects) =>
+        private IList<(object original, object updated)> ExecuteDetachedObjectCommand(IDetachedObjects objects) =>
             Execute(new EF6DetachedObjectCommand(objects, this));
 
         public void EndTransaction() {
@@ -701,7 +701,7 @@ namespace NakedFramework.Persistor.EF6.Component {
 
         public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) {
             functionalPostSave = objects.PostSaveFunction;
-            return SetFunctionalProxyMap(ExecuteAttachObjectCommandUpdate(objects));
+            return SetFunctionalProxyMap(ExecuteDetachedObjectCommand(objects));
         }
 
         public bool HasChanges() => contexts.Values.Any(c => c.HasChanges());

@@ -18,7 +18,6 @@ namespace NakedFunctions.Reflector.Reflect {
                 typeof(InjectedParameterFacetFactory),
                 typeof(InjectedAnnotationFacetFactory),
                 typeof(TitleToStringMethodFacetFactory),
-                typeof(LifeCycleFunctionsFacetFactory),
                 typeof(DisableFunctionFacetFactory),
                 typeof(ActionValidateViaFunctionFacetFactory),
                 typeof(HideFunctionFacetFactory),

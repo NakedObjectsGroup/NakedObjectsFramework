@@ -24,11 +24,6 @@ namespace NakedFramework.Metamodel.Facet {
 
         public abstract void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
 
-        public virtual object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
-            Invoke(nakedObjectAdapter, framework);
-            return null;
-        }
-
         #endregion
     }
 

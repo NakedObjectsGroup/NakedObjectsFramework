@@ -107,8 +107,6 @@ namespace NakedFramework.Core.Adapter {
         // todo - better to handle null facet or bind in noop facet ? 
         private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>()?.Invoke(this, framework);
 
-        private object CallCallbackAndReturn<T>() where T : ICallbackFacet => Spec.GetFacet<T>()?.InvokeAndReturn(this, framework);
-
         #region INakedObjectAdapter Members
 
         public object Object { get; private set; }
@@ -229,14 +227,6 @@ namespace NakedFramework.Core.Adapter {
         public void Updating() => CallCallback<IUpdatingCallbackFacet>();
 
         public void Updated() => CallCallback<IUpdatedCallbackFacet>();
-
-        public object PersistingAndReturn() => CallCallbackAndReturn<IPersistingCallbackFacet>();
-
-        public object PersistedAndReturn() => CallCallbackAndReturn<IPersistedCallbackFacet>();
-
-        public object UpdatingAndReturn() => CallCallbackAndReturn<IUpdatingCallbackFacet>();
-
-        public object UpdatedAndReturn() => CallCallbackAndReturn<IUpdatedCallbackFacet>();
 
         #endregion
     }

@@ -18,7 +18,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EF6.Util;
 
 namespace NakedFramework.Persistor.EF6.Component {
-    public class EF6DetachedObjectCommand {
+    public class EF6DetachedObjectCommand : IDetachedObjectCommand {
         private readonly IDetachedObjects detachedObjects;
         private readonly EF6ObjectStore parent;
         private EF6LocalContext context;

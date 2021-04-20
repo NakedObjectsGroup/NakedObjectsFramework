@@ -5,10 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Transaction {
-    public interface ITransaction {
-        void Abort();
-        void Commit();
+using System.Collections.Generic;
+
+namespace NakedFramework.Architecture.Persist {
+    public interface IDetachedObjectCommand  {
+        IList<(object original, object updated)> Execute();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

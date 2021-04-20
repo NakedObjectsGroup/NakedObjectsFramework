@@ -14,8 +14,6 @@ namespace NakedFramework.Architecture.Facet {
     /// </summary>
     public interface ICallbackFacet : IFacet {
         void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
-
-        object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

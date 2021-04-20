@@ -942,34 +942,6 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
         }
 
-        [TestMethod]
-        public void ReflectLifeCycleFunctions() {
-            static void Setup(NakedCoreOptions coreOptions) {
-                coreOptions.AddNakedObjects(EmptyObjectSetup);
-                coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(LifeCycleFunctions)};
-                    }
-                );
-            }
-
-            var (container, host) = GetContainer(Setup);
-
-            using (host) {
-                container.GetService<IModelBuilder>()?.Build();
-                var specs = AllObjectSpecImmutables(container);
-                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
-
-                IFacet facet = spec.GetFacet<IPersistingCallbackFacet>();
-                Assert.IsNotNull(facet);
-                facet = spec.GetFacet<IPersistedCallbackFacet>();
-                Assert.IsNotNull(facet);
-                facet = spec.GetFacet<IUpdatingCallbackFacet>();
-                Assert.IsNotNull(facet);
-                facet = spec.GetFacet<IUpdatedCallbackFacet>();
-                Assert.IsNotNull(facet);
-            }
-        }
 
         [TestMethod]
         public void ReflectViewModelFunctions() {
