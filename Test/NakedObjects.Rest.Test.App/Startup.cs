@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
@@ -32,8 +33,11 @@ namespace NakedObjects.Rest.Test.App {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = null;
-                builder.AddEF6Persistor(options => {
-                    options.ContextInstallers = new[] { NakedObjectsRunSettings.DbContextInstaller };
+                //builder.AddEF6Persistor(options => {
+                //    options.ContextInstallers = new[] { NakedObjectsRunSettings.EF6DbContextInstaller };
+                //});
+                builder.AddEFCorePersistor(options => {
+                    options.ContextInstallers = new[] { NakedObjectsRunSettings.EFCoreDbContextInstaller };
                 });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;

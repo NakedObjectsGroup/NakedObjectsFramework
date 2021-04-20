@@ -82,29 +82,7 @@ namespace TestData {
             var person21 = NewPerson (21, "PersonTwentyOne", product4);
             var person22 = NewPerson (22, "PersonTwentyTwo", product4);
             var pet1 = NewPet(1, "PetOne", person1);
-            //let products = [| product1; product2 |]
-            //let persons = [| person1; person2; person3; person4; person5; person6; person7; person8; person9; person10; person11 |]
-            //person1.Relatives.Add(person2)
-            //person1.Relatives.Add(person3)
-            //person1.Relatives.Add(person7)
-            //person1.Relatives.Add(person8)
-            //person6.Relatives.Add(person9)
-            //person7.Relatives.Add(person10)
-            //person8.Relatives.Add(person11)
-            //person1.Address.Line1 < -"L1"
-            //person1.Address.Line2 < -"L2"
-            //person2.Address.Line1 < -"L1"
-            //person2.Address.Line2 < -"L2"
-            //person3.Address.Line1 < -"L1"
-            //person3.Address.Line2 < -"L2"
-            //person4.Address.Line1 < -"L1"
-            //person4.Address.Line2 < -"L2"
-            //products |> Seq.iter(fun x->x.ResetEvents())
-            //persons |> Seq.iter(fun x->x.ResetEvents())
-            //persons |> Seq.iter(fun x->x.Address.ResetEvents())
-
-
-
+            
         }
     }
 }

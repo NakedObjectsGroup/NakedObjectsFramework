@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
@@ -34,9 +33,15 @@ namespace NakedObjects.Rest.Test.App {
             }
         }
 
-        public static Func<IConfiguration, DbContext> DbContextInstaller => c => {
+        public static Func<IConfiguration, System.Data.Entity.DbContext> EF6DbContextInstaller => c => {
             var cs = c.GetConnectionString("RestTest");
-            return cs.Contains("(localdb)") ? (DbContext) new CodeFirstContextLocal(cs) : new CodeFirstContext(cs);
+            return cs.Contains("(localdb)") ? new CodeFirstContextLocal(cs) : new CodeFirstContext(cs);
         };
+
+        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextInstaller => c => {
+            var cs = c.GetConnectionString("RestTest");
+            return cs.Contains("(localdb)") ? new EFCoreCodeFirstContextLocal(cs) : new EFCoreCodeFirstContext(cs);
+        };
+
     }
 }
