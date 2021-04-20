@@ -273,7 +273,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
 
             // set product line 
 
-            SelectDropDownOnField("#productline1", "S "); //Seems to need the space
+            SelectDropDownOnField("#productline1", "S"); //Seems to need the space
 
             ClearFieldThenType("#daystomanufacture1", "1");
             SaveObject();
