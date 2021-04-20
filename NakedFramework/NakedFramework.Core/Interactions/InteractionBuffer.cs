@@ -19,15 +19,13 @@ namespace NakedFramework.Core.Interactions {
         public bool IsEmpty => buf.Length == 0;
 
         public void Append(string reason) {
-            if (reason == null) {
-                return;
-            }
+            if (reason is not null) {
+                if (IsNotEmpty) {
+                    buf.Append("; ");
+                }
 
-            if (IsNotEmpty) {
-                buf.Append("; ");
+                buf.Append(reason);
             }
-
-            buf.Append(reason);
         }
 
         public override string ToString() => buf.ToString();

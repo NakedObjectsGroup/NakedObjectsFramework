@@ -17,12 +17,12 @@ namespace NakedFramework.Core.Util {
         public static object InvokeStatic(MethodInfo method, object[] parameters) => Invoke(method, null, parameters);
 
         public static object InvokeStatic(MethodInfo method, INakedObjectAdapter[] parameters) {
-            var parameterPocos = parameters == null ? Array.Empty<object>() : Enumerable.ToArray(parameters.Select(p => p?.Object));
+            var parameterPocos = parameters is null ? Array.Empty<object>() : Enumerable.ToArray(parameters.Select(p => p?.Object));
             return Invoke(method, null, parameterPocos);
         }
 
         public static object Invoke(MethodInfo method, INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters) {
-            var parameterPocos = parameters == null ? Array.Empty<object>() : Enumerable.ToArray(parameters.Select(p => p?.Object));
+            var parameterPocos = parameters is null ? Array.Empty<object>() : Enumerable.ToArray(parameters.Select(p => p?.Object));
             return Invoke(method, nakedObjectAdapter.Object, parameterPocos);
         }
 

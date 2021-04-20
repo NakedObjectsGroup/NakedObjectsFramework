@@ -16,7 +16,7 @@ namespace NakedFramework.Core.Component {
         private readonly int capacity;
         private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
 
-        public NakedObjectAdapterHashMap() => domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
+        private NakedObjectAdapterHashMap() => domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
 
         // used by DI
         // ReSharper disable once UnusedMember.Global

@@ -122,7 +122,7 @@ namespace NakedFramework.Core.Spec {
             var target = RealTarget(nakedObjectAdapter);
             var result = ActionInvocationFacet.Invoke(target, parms, Framework);
 
-            if (result != null && result.Oid == null) {
+            if (result is {Oid: null}) {
                 result.SetATransientOid(new CollectionMemento(Framework, loggerFactory.CreateLogger<CollectionMemento>(), nakedObjectAdapter, this, parameterSet));
             }
 
@@ -151,7 +151,7 @@ namespace NakedFramework.Core.Spec {
         /// </summary>
         public bool HasReturn {
             get {
-                hasReturn ??= ReturnSpec != null;
+                hasReturn ??= ReturnSpec is not null;
 
                 return hasReturn.Value;
             }
@@ -163,7 +163,7 @@ namespace NakedFramework.Core.Spec {
         public IConsent IsParameterSetValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet) {
             IInteractionContext ic;
             var buf = new InteractionBuffer();
-            if (parameterSet != null) {
+            if (parameterSet is not null) {
                 var parms = RealParameters(nakedObjectAdapter, parameterSet);
                 for (var i = 0; i < parms.Length; i++) {
                     ic = InteractionContext.ModifyingPropParam(Framework, false, RealTarget(nakedObjectAdapter), Identifier, parameterSet[i]);
@@ -192,7 +192,7 @@ namespace NakedFramework.Core.Spec {
 
         public bool IsLocallyContributedTo(ITypeSpec typeSpec, string id) {
             var spec = Framework.MetamodelManager.Metamodel.GetSpecification(typeSpec.FullName) as IObjectSpecImmutable;
-            return spec != null && actionSpecImmutable.IsContributedToLocalCollectionOf(spec, id);
+            return spec is not null && actionSpecImmutable.IsContributedToLocalCollectionOf(spec, id);
         }
 
         #endregion

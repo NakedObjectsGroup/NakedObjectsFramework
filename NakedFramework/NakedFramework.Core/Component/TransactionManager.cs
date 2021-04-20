@@ -31,7 +31,7 @@ namespace NakedFramework.Core.Component {
         #region ITransactionManager Members
 
         public void StartTransaction() {
-            if (transaction == null) {
+            if (transaction is null) {
                 transaction = new NestedTransaction(objectStore, loggerFactory.CreateLogger<NestedTransaction>());
                 TransactionLevel = 0;
                 userAborted = false;
@@ -42,7 +42,7 @@ namespace NakedFramework.Core.Component {
         }
 
         public void AbortTransaction() {
-            if (transaction != null) {
+            if (transaction is not null) {
                 transaction.Abort();
                 transaction = null;
                 TransactionLevel = 0;

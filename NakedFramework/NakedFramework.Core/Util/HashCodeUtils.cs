@@ -90,7 +90,7 @@ namespace NakedFramework.Core.Util {
         /// </para>
         public static int Hash(int aSeed, object aObject) {
             var result = aSeed;
-            if (aObject == null) {
+            if (aObject is null) {
                 result = Hash(result, 0);
             }
             else if (!IsArray(aObject)) {

@@ -31,9 +31,9 @@ namespace NakedFramework.Core.Spec {
 
         public abstract IObjectSpec ElementSpec { get; }
 
-        public override string ToString() => "id=" + Id + ",name='" + Name + "'";
+        public override string ToString() => $"id={Id},name='{Name}'";
 
-        protected internal virtual IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
+        protected virtual IConsent GetConsent(string message) => message is null ? Allow.Default : new Veto(message);
 
         #region IMemberSpec Members
 
@@ -83,8 +83,7 @@ namespace NakedFramework.Core.Spec {
         ///     returns <c>true</c> only if none disables the member.
         /// </summary>
         public virtual IConsent IsUsable(INakedObjectAdapter target) {
-            IInteractionContext ic = InteractionContext
-                .AccessMember(Framework, false, target, Identifier);
+            IInteractionContext ic = InteractionContext.AccessMember(Framework, false, target, Identifier);
             return InteractionUtils.IsUsable(this, ic);
         }
 

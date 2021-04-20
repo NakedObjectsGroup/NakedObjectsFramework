@@ -51,7 +51,7 @@ namespace NakedFramework.Core.Component {
         private INakedObjectAdapter AdapterForNoIdentityObject(object domainObject) {
             var adapter = adapterCache.GetAdapter(domainObject);
 
-            if (adapter == null) {
+            if (adapter is null) {
                 adapter = NewAdapterForKnownObject(domainObject, null);
                 NewTransientsResolvedState(adapter);
                 adapterCache.AddAdapter(adapter);
@@ -99,7 +99,7 @@ namespace NakedFramework.Core.Component {
             var adapter = NewAdapterForKnownObject(viewModel, oid);
 
             var versionObject = adapter.GetVersion(this);
-            if (versionObject != null) {
+            if (versionObject is not null) {
                 adapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
             }
 
@@ -130,7 +130,7 @@ namespace NakedFramework.Core.Component {
         public void RemoveAdapter(INakedObjectAdapter objectAdapterToDispose) => identityMap.Unloaded(objectAdapterToDispose);
 
         public INakedObjectAdapter GetAdapterFor(object obj) {
-            if (obj == null) {
+            if (obj is null) {
                 throw new AdapterException(logger.LogAndReturn("must have a domain object"));
             }
 
@@ -143,7 +143,7 @@ namespace NakedFramework.Core.Component {
         }
 
         public INakedObjectAdapter GetAdapterFor(IOid oid) {
-            if (oid == null) {
+            if (oid is null) {
                 throw new AdapterException(logger.LogAndReturn("must have an OID"));
             }
 
@@ -151,11 +151,11 @@ namespace NakedFramework.Core.Component {
         }
 
         public INakedObjectAdapter CreateAdapter(object domainObject, IOid oid, IVersion version) {
-            if (domainObject == null) {
+            if (domainObject is null) {
                 return null;
             }
 
-            if (oid == null) {
+            if (oid is null) {
                 var objectSpec = metamodel.GetSpecification(domainObject.GetType());
                 if (objectSpec.ContainsFacet(typeof(IComplexTypeFacet))) {
                     return GetAdapterFor(domainObject);
@@ -187,8 +187,8 @@ namespace NakedFramework.Core.Component {
 
             IOid oid = new AggregateOid(metamodel, parent.Oid, fieldId, obj.GetType().FullName);
             var adapterFor = GetAdapterFor(oid);
-            if (adapterFor == null || adapterFor.Object != obj) {
-                if (adapterFor != null) {
+            if (adapterFor is null || adapterFor.Object != obj) {
+                if (adapterFor is not null) {
                     RemoveAdapter(adapterFor);
                 }
 

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -25,11 +26,11 @@ namespace NakedFramework.Core.Spec {
 
         public override bool IsAutoCompleteEnabled => false;
 
-        public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => System.Array.Empty<INakedObjectAdapter>();
+        public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => Array.Empty<INakedObjectAdapter>();
 
         private INakedObjectAdapter GetCollection(INakedObjectAdapter inObjectAdapter) {
             var collection = GetFacet<IPropertyAccessorFacet>().GetProperty(inObjectAdapter, Framework);
-            if (collection == null) {
+            if (collection is null) {
                 return null;
             }
 

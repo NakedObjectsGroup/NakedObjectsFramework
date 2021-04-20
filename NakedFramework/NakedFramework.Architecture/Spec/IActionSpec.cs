@@ -13,7 +13,6 @@ namespace NakedFramework.Architecture.Spec {
     ///     The specification for an action method on a domain object (or service).
     /// </summary>
     public interface IActionSpec : IMemberSpec {
-
         /// <summary>
         ///     Returns the specification for the type of object that this action can be invoked upon
         /// </summary>

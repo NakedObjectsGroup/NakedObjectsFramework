@@ -42,9 +42,7 @@ namespace NakedFramework.Core.Spec {
 
         #region IObjectSpec Members
 
-        private IAssociationSpec[] ObjectFields {
-            get { return objectFields ??= InnerSpec.Fields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray(); }
-        }
+        private IAssociationSpec[] ObjectFields => objectFields ??= InnerSpec.Fields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray();
 
         public IAssociationSpec[] Properties => ObjectFields;
 
@@ -58,7 +56,7 @@ namespace NakedFramework.Core.Spec {
         }
 
         public override IActionSpec[] GetActions() {
-            if (combinedActions == null) {
+            if (combinedActions is null) {
                 var ca = new List<IActionSpec>();
                 ca.AddRange(ObjectActions);
                 ca.AddRange(ContributedActions);

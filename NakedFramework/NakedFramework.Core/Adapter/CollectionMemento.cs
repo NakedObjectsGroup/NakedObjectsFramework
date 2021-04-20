@@ -20,24 +20,13 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Adapter {
     public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {
-        #region ParameterType enum
-
-        public enum ParameterType {
-            Value,
-            Object,
-            ValueCollection,
-            ObjectCollection
-        }
-
-        #endregion
-
         private readonly INakedObjectsFramework framework;
 
         private readonly ILifecycleManager lifecycleManager;
         private readonly ILogger<CollectionMemento> logger;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
-        private object[] selectedObjects;
+        private readonly object[] selectedObjects;
 
         private CollectionMemento(INakedObjectsFramework framework, ILogger<CollectionMemento> logger) {
             lifecycleManager = framework.LifecycleManager ?? throw new InitialisationException($"{nameof(framework.LifecycleManager)} is null");
@@ -115,9 +104,20 @@ namespace NakedFramework.Core.Adapter {
         private INakedObjectAdapter RestoreObject(IOid oid) =>
             oid switch {
                 _ when oid.IsTransient => lifecycleManager.RecreateInstance(oid, oid.Spec),
-                IViewModelOid _ => lifecycleManager.GetViewModel(oid, framework),
+                IViewModelOid => lifecycleManager.GetViewModel(oid, framework),
                 _ => lifecycleManager.LoadObject(oid, oid.Spec)
             };
+
+        #region ParameterType enum
+
+        private enum ParameterType {
+            Value,
+            Object,
+            ValueCollection,
+            ObjectCollection
+        }
+
+        #endregion
 
         #region ICollectionMemento Members
 
@@ -129,8 +129,8 @@ namespace NakedFramework.Core.Adapter {
         public bool IsNotQueryable { get; set; }
 
         public object[] SelectedObjects {
-            get { return selectedObjects ?? Array.Empty<object>(); }
-            private set => selectedObjects = value;
+            get => selectedObjects ?? Array.Empty<object>();
+            private init => selectedObjects = value;
         }
 
         public IOid Previous => null;
@@ -150,7 +150,7 @@ namespace NakedFramework.Core.Adapter {
         public INakedObjectAdapter RecoverCollection() {
             var nakedObjectAdapter = Action.Execute(Target, Parameters);
 
-            if (selectedObjects != null) {
+            if (selectedObjects is not null) {
                 var selected = nakedObjectAdapter.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));
                 var newResult = CollectionUtils.CloneCollectionAndPopulate(nakedObjectAdapter.Object, selected);
                 nakedObjectAdapter = nakedObjectManager.CreateAdapter(newResult, null, null);
@@ -171,7 +171,7 @@ namespace NakedFramework.Core.Adapter {
             helper.Add(Target.Oid as IEncodedToStrings);
 
             foreach (var parameter in Parameters) {
-                if (parameter == null) {
+                if (parameter is null) {
                     helper.Add(ParameterType.Value);
                     helper.Add((object) null);
                 }

@@ -33,14 +33,7 @@ namespace NakedFramework.Core.Adapter {
             }
         }
 
-        public override bool Equals(object obj) {
-            if (obj == this) {
-                return true;
-            }
-
-            var otherOid = obj as AggregateOid;
-            return otherOid != null && Equals(otherOid);
-        }
+        public override bool Equals(object obj) => obj == this || obj is AggregateOid otherOid && Equals(otherOid);
 
         private bool Equals(AggregateOid otherOid) =>
             otherOid.ParentOid.Equals(ParentOid) &&
@@ -54,7 +47,7 @@ namespace NakedFramework.Core.Adapter {
             return hashCode;
         }
 
-        public override string ToString() => "AOID[" + ParentOid + "," + FieldName + "]";
+        public override string ToString() => $"AOID[{ParentOid},{FieldName}]";
 
         #region IAggregateOid Members
 

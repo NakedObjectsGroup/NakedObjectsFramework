@@ -129,11 +129,11 @@ namespace NakedFramework.Core.Component {
         #region ILifecycleManager Members
 
         public INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec) {
-            if (oid == null) {
+            if (oid is null) {
                 throw new NakedObjectSystemException("needs an OID");
             }
 
-            if (spec == null) {
+            if (spec is null) {
                 throw new NakedObjectSystemException("needs a specification");
             }
 
@@ -165,7 +165,7 @@ namespace NakedFramework.Core.Component {
 
         public INakedObjectAdapter RecreateInstance(IOid oid, ITypeSpec spec) {
             var adapter = nakedObjectManager.GetAdapterFor(oid);
-            if (adapter != null) {
+            if (adapter is not null) {
                 if (!adapter.Spec.Equals(spec)) {
                     throw new AdapterException(logger.LogAndReturn($"Mapped adapter is for a different type of object: {spec.FullName}; {adapter}"));
                 }

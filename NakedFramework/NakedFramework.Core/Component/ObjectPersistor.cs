@@ -62,11 +62,11 @@ namespace NakedFramework.Core.Component {
         public IQueryable Instances(IObjectSpec spec) => GetInstances(spec);
 
         public INakedObjectAdapter LoadObject(IOid oid, IObjectSpec spec) {
-            if (oid == null) {
+            if (oid is null) {
                 throw new NakedObjectSystemException(logger.LogAndReturn("needs an OID"));
             }
 
-            if (spec == null) {
+            if (spec is null) {
                 throw new NakedObjectSystemException(logger.LogAndReturn("needs a specification"));
             }
 
@@ -87,16 +87,11 @@ namespace NakedFramework.Core.Component {
             }
 
             var reference = field.GetNakedObject(nakedObjectAdapter);
-            if (reference == null || reference.ResolveState.IsResolved()) {
-                return;
-            }
-
-            if (!reference.ResolveState.IsPersistent()) {
-                return;
+            if (reference is not null && !reference.ResolveState.IsResolved() && reference.ResolveState.IsPersistent()) {
+                objectStore.ResolveField(nakedObjectAdapter, field);
             }
 
             // don't log object - its ToString() may use the unresolved field or unresolved collection              
-            objectStore.ResolveField(nakedObjectAdapter, field);
         }
 
         public void LoadField(INakedObjectAdapter nakedObjectAdapter, string field) {
@@ -133,13 +128,11 @@ namespace NakedFramework.Core.Component {
                     throw new NakedObjectSystemException("only resolve object that is persistent");
                 }
 
-                if (nakedObjectAdapter.Oid is AggregateOid) {
-                    return;
+                if (nakedObjectAdapter.Oid is not AggregateOid) {
+                    objectStore.ResolveImmediately(nakedObjectAdapter);
                 }
 
                 // don't log object - it's ToString() may use the unresolved field, or unresolved collection
-
-                objectStore.ResolveImmediately(nakedObjectAdapter);
             }
         }
 

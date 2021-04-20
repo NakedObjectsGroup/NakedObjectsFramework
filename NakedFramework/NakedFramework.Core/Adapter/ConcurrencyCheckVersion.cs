@@ -30,10 +30,7 @@ namespace NakedFramework.Core.Adapter {
             version = helper.GetNextObject();
         }
 
-        public override bool Equals(object obj) {
-            var entityVersion = obj as ConcurrencyCheckVersion;
-            return Equals(entityVersion);
-        }
+        public override bool Equals(object obj) => Equals(obj as ConcurrencyCheckVersion);
 
         public override int GetHashCode() => version.GetHashCode();
 
@@ -61,7 +58,7 @@ namespace NakedFramework.Core.Adapter {
 
         public DateTime? Time => time;
 
-        public string Digest => version != null ? IdentifierUtils.ComputeMD5HashAsString(version.ToString()) : null;
+        public string Digest => version is not null ? IdentifierUtils.ComputeMD5HashAsString(version.ToString()) : null;
 
         public bool IsDifferent(IVersion otherVersion) => !Equals(otherVersion);
 
@@ -69,10 +66,7 @@ namespace NakedFramework.Core.Adapter {
 
         public string AsSequence() => version.ToString();
 
-        public bool Equals(IVersion other) {
-            var entityVersion = other as ConcurrencyCheckVersion;
-            return entityVersion != null && version.Equals(entityVersion.version);
-        }
+        public bool Equals(IVersion other) => other is ConcurrencyCheckVersion entityVersion && version.Equals(entityVersion.version);
 
         #endregion
     }

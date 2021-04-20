@@ -23,6 +23,5 @@
     <ProjectReference Include="..\NakedFramework.FWResources\NakedFramework.FWResources.csproj" />
   </ItemGroup>
 
- 
 
 </Project>

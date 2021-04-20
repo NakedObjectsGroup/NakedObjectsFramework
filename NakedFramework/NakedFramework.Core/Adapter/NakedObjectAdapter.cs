@@ -23,7 +23,7 @@ namespace NakedFramework.Core.Adapter {
         private readonly ILogger<NakedObjectAdapter> logger;
         private ITypeSpec spec;
 
-        public NakedObjectAdapter(object poco,
+        public NakedObjectAdapter(object domainObject,
                                   IOid oid,
                                   INakedObjectsFramework framework,
                                   ILoggerFactory loggerFactory,
@@ -31,11 +31,11 @@ namespace NakedFramework.Core.Adapter {
             this.framework = framework;
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
 
-            if (poco is INakedObjectAdapter) {
-                throw new AdapterException(logger.LogAndReturn($"Adapter can't be used to adapt an adapter: {poco}"));
+            if (domainObject is INakedObjectAdapter) {
+                throw new AdapterException(logger.LogAndReturn($"Adapter can't be used to adapt an adapter: {domainObject}"));
             }
 
-            Object = poco;
+            Object = domainObject;
             Oid = oid;
             ResolveState = new ResolveStateMachine(this, framework.Session);
             Version = new NullVersion(loggerFactory.CreateLogger<NullVersion>());
@@ -68,7 +68,7 @@ namespace NakedFramework.Core.Adapter {
                 str.Append("title", TitleString());
             }
 
-            str.AppendAsHex("poco-hash", Object.GetHashCode());
+            str.AppendAsHex("domainObject-hash", Object.GetHashCode());
             return str.ToString();
         }
 
@@ -77,7 +77,7 @@ namespace NakedFramework.Core.Adapter {
         private void ToString(AsString str) {
             str.Append(ResolveState.CurrentState.Code);
 
-            if (Oid != null) {
+            if (Oid is not null) {
                 str.Append(":");
                 str.Append(Oid.ToString());
             }
@@ -86,7 +86,7 @@ namespace NakedFramework.Core.Adapter {
             }
 
             str.AddComma();
-            if (spec == null) {
+            if (spec is null) {
                 str.Append("class", Object.GetType().FullName);
             }
             else {
@@ -94,7 +94,7 @@ namespace NakedFramework.Core.Adapter {
                 str.Append("Type", spec.FullName);
             }
 
-            if (Object != null && FasterTypeUtils.IsAnyProxy(Object.GetType())) {
+            if (Object is not null && FasterTypeUtils.IsAnyProxy(Object.GetType())) {
                 str.Append("proxy", Object.GetType().FullName);
             }
             else {
@@ -172,9 +172,9 @@ namespace NakedFramework.Core.Adapter {
                 }
 
                 if (property is IOneToOneAssociationSpec) {
-                    if (referencedObjectAdapter != null && referencedObjectAdapter.ResolveState.IsTransient()) {
+                    if (referencedObjectAdapter is not null && referencedObjectAdapter.ResolveState.IsTransient()) {
                         var referencedObjectMessage = referencedObjectAdapter.ValidToPersist();
-                        if (referencedObjectMessage != null) {
+                        if (referencedObjectMessage is not null) {
                             return referencedObjectMessage;
                         }
                     }
@@ -193,7 +193,7 @@ namespace NakedFramework.Core.Adapter {
         }
 
         public void CheckLock(IVersion otherVersion) {
-            if (Version != null && Version.IsDifferent(otherVersion)) {
+            if (Version is not null && Version.IsDifferent(otherVersion)) {
                 throw new ConcurrencyException(this);
             }
         }

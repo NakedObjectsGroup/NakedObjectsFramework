@@ -83,14 +83,13 @@ namespace NakedFramework.Core.Spec {
             return (Framework.NakedObjectManager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
         }
 
-        private static IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
+        private static IConsent GetConsent(string message) => message is null ? Allow.Default : new Veto(message);
 
         #region IActionParameterSpec Members
 
         public bool IsAutoCompleteEnabled {
             get {
                 isAutoCompleteEnabled ??= ContainsFacet<IAutoCompleteFacet>();
-
                 return isAutoCompleteEnabled.Value;
             }
         }
@@ -133,7 +132,7 @@ namespace NakedFramework.Core.Spec {
 
         public virtual bool IsInjected {
             get {
-                isInjected ??= GetFacet<IInjectedFacet>() != null;
+                isInjected ??= GetFacet<IInjectedFacet>() is not null;
                 return isInjected.Value;
             }
         }
@@ -153,7 +152,7 @@ namespace NakedFramework.Core.Spec {
         public virtual IEnumerable<IFacet> GetFacets() => actionParameterSpecImmutable.GetFacets();
 
         public IConsent IsValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue) {
-            if (proposedValue != null && !proposedValue.Spec.IsOfType(Spec)) {
+            if (proposedValue is not null && !proposedValue.Spec.IsOfType(Spec)) {
                 var msg = string.Format(NakedObjects.Resources.NakedObjects.TypeMismatchError, Spec.SingularName);
                 return GetConsent(msg);
             }
@@ -174,9 +173,9 @@ namespace NakedFramework.Core.Spec {
         }
 
         public (string, IObjectSpec)[] GetChoicesParameters() {
-            if (choicesParameters == null) {
+            if (choicesParameters is null) {
                 var choicesFacet = GetFacet<IActionChoicesFacet>();
-                choicesParameters = choicesFacet == null
+                choicesParameters = choicesFacet is null
                     ? Array.Empty<(string, IObjectSpec)>()
                     : choicesFacet.ParameterNamesAndTypes.Select(t => {
                         var (pName, pSpec) = t;
@@ -193,16 +192,16 @@ namespace NakedFramework.Core.Spec {
             var manager = Framework.NakedObjectManager;
             var persistor = Framework.Persistor;
 
-            if (choicesFacet != null) {
+            if (choicesFacet is not null) {
                 var options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), parameterNameValues, Framework);
-                if (enumFacet == null) {
+                if (enumFacet is null) {
                     return manager.GetCollectionOfAdaptedObjects(options).ToArray();
                 }
 
                 return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), options)).ToArray();
             }
 
-            if (enumFacet != null) {
+            if (enumFacet is not null) {
                 return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter))).ToArray();
             }
 
@@ -221,7 +220,7 @@ namespace NakedFramework.Core.Spec {
 
         public INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) {
             var autoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return autoCompleteFacet == null ? null : Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObjectAdapter), autoCompleteParm, Framework)).ToArray();
+            return autoCompleteFacet is null ? null : Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObjectAdapter), autoCompleteParm, Framework)).ToArray();
         }
 
         public INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) => GetDefaultValueAndType(nakedObjectAdapter).value;

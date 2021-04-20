@@ -158,7 +158,7 @@ namespace NakedFramework.Core.Spec {
 
         public virtual ITypeSpec Superclass {
             get {
-                if (superclass == null && InnerSpec.Superclass != null) {
+                if (superclass is null && InnerSpec.Superclass is not null) {
                     superclass = Framework.MetamodelManager.GetSpecification(InnerSpec.Superclass);
                 }
 
@@ -174,7 +174,7 @@ namespace NakedFramework.Core.Spec {
             get {
                 if (!isASet.HasValue) {
                     var collectionFacet = InnerSpec.GetFacet<ICollectionFacet>();
-                    isASet = collectionFacet != null && collectionFacet.IsASet;
+                    isASet = collectionFacet is {IsASet: true};
                 }
 
                 return isASet.Value;
@@ -215,7 +215,7 @@ namespace NakedFramework.Core.Spec {
 
         public string ShortName {
             get {
-                if (shortName == null) {
+                if (shortName is null) {
                     var postfix = "";
                     if (Type.IsGenericType && !IsCollection) {
                         postfix = Type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + "-" + Framework.MetamodelManager.GetSpecification(y).ShortName);

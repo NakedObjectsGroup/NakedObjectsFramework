@@ -102,14 +102,12 @@ namespace NakedFramework.Core.Persist {
             UpdateKey(newKey);
         }
 
-        public void UpdateKey(object[] newKey)
-        {
-            previous = new DatabaseOid(metamodel, TypeName, Key, logger) { IsTransient = IsTransient };
+        public void UpdateKey(object[] newKey) {
+            previous = new DatabaseOid(metamodel, TypeName, Key, logger) {IsTransient = IsTransient};
             Key = newKey; // after old key is saved ! 
             IsTransient = false;
             CacheState();
         }
-
 
         #endregion
 

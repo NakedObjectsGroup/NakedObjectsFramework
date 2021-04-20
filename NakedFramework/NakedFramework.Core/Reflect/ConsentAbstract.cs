@@ -30,15 +30,15 @@ namespace NakedFramework.Core.Reflect {
         /// <summary>
         ///     Returns an Allow (Allow.Default) object if true; Veto (Veto.Default) if false
         /// </summary>
-        public static IConsent GetAllow(bool allow) => allow ? (IConsent) Allow.Default : Veto.Default;
+        public static IConsent GetAllow(bool allow) => allow ? Allow.Default : Veto.Default;
 
         /// <summary>
         ///     Returns a new Allow object if <c>allow</c> is <c>true</c>; a new Veto if <c>false</c>. The respective reason
         ///     is passed to the newly created object.
         /// </summary>
-        public static IConsent Create(bool allow, string reasonAllowed, string reasonVeteod) => allow ? (IConsent) new Allow(reasonAllowed) : new Veto(reasonVeteod);
+        public static IConsent Create(bool allow, string reasonAllowed, string reasonVeteod) => allow ? new Allow(reasonAllowed) : new Veto(reasonVeteod);
 
-        public static IConsent Create(string vetoReason) => vetoReason == null ? (IConsent) Allow.Default : new Veto(vetoReason);
+        public static IConsent Create(string vetoReason) => vetoReason == null ? Allow.Default : new Veto(vetoReason);
 
         public override string ToString() => "Permission [type=" + (IsVetoed ? "VETOED" : "ALLOWED") + ", reason=" + reason + "]";
 

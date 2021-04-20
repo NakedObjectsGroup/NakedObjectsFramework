@@ -15,7 +15,7 @@ namespace NakedFramework.Core.Authentication {
         public SimpleSession(IPrincipal principal)
             : this(principal, string.Empty) { }
 
-        public string ValidationCode { get; }
+        private string ValidationCode { get; }
 
         public override string ToString() {
             var str = new AsString(this);

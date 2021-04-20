@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
@@ -29,7 +30,7 @@ namespace NakedFramework.Core.Spec {
 
         private INakedObjectAdapter GetAssociation(INakedObjectAdapter fromObjectAdapter) {
             var obj = GetFacet<IPropertyAccessorFacet>().GetProperty(fromObjectAdapter, Framework);
-            if (obj == null) {
+            if (obj is null) {
                 return null;
             }
 
@@ -66,17 +67,11 @@ namespace NakedFramework.Core.Spec {
 
         public bool IsChoicesEnabled => ReturnSpec.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>();
 
-        public override bool IsMandatory {
-            get {
-                var mandatoryFacet = GetFacet<IMandatoryFacet>();
-                return mandatoryFacet.IsMandatory;
-            }
-        }
+        public override bool IsMandatory => GetFacet<IMandatoryFacet>().IsMandatory;
 
         public bool IsFindMenuEnabled {
             get {
                 isFindMenuEnabled ??= ContainsFacet<IFindMenuFacet>();
-
                 return isFindMenuEnabled.Value;
             }
         }
@@ -85,8 +80,8 @@ namespace NakedFramework.Core.Spec {
 
         public (string, IObjectSpec)[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
-            return propertyChoicesFacet == null
-                ? System.Array.Empty<(string, IObjectSpec)>()
+            return propertyChoicesFacet is null
+                ? Array.Empty<(string, IObjectSpec)>()
                 : propertyChoicesFacet.ParameterNamesAndTypes.Select(t => {
                     var (pName, pSpec) = t;
                     return (pName, Framework.MetamodelManager.GetSpecification(pSpec));
@@ -98,8 +93,8 @@ namespace NakedFramework.Core.Spec {
             var enumFacet = GetFacet<IEnumFacet>();
 
             var objectOptions = propertyChoicesFacet?.GetChoices(target, parameterNameValues);
-            if (objectOptions != null) {
-                if (enumFacet == null) {
+            if (objectOptions is not null) {
+                if (enumFacet is null) {
                     return Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
                 }
 
@@ -107,7 +102,7 @@ namespace NakedFramework.Core.Spec {
             }
 
             objectOptions = enumFacet?.GetChoices(target);
-            if (objectOptions != null) {
+            if (objectOptions is not null) {
                 return Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
             }
 
@@ -120,7 +115,7 @@ namespace NakedFramework.Core.Spec {
 
         public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter target, string autoCompleteParm) {
             var propertyAutoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return propertyAutoCompleteFacet == null ? null : Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm, Framework)).ToArray();
+            return propertyAutoCompleteFacet is null ? null : Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm, Framework)).ToArray();
         }
 
         public void InitAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate) {
@@ -129,12 +124,12 @@ namespace NakedFramework.Core.Spec {
         }
 
         public IConsent IsAssociationValid(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter reference) {
-            if (reference != null && !reference.Spec.IsOfType(ReturnSpec)) {
+            if (reference?.Spec.IsOfType(ReturnSpec) == false) {
                 return GetConsent(string.Format(NakedObjects.Resources.NakedObjects.TypeMismatchError, ReturnSpec.SingularName));
             }
 
             if (!inObjectAdapter.ResolveState.IsNotPersistent()) {
-                if (reference != null && !reference.Spec.IsParseable && reference.ResolveState.IsNotPersistent()) {
+                if (reference?.Spec.IsParseable == false && reference.ResolveState.IsNotPersistent()) {
                     return GetConsent(NakedObjects.Resources.NakedObjects.TransientFieldMessage);
                 }
             }
@@ -145,7 +140,7 @@ namespace NakedFramework.Core.Spec {
             return InteractionUtils.IsValid(buf);
         }
 
-        public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) => GetAssociation(inObjectAdapter) == null;
+        public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) => GetAssociation(inObjectAdapter) is null;
 
         public override bool IsInline => ReturnSpec.ContainsFacet(typeof(IComplexTypeFacet));
 
@@ -155,7 +150,7 @@ namespace NakedFramework.Core.Spec {
 
         public override void ToDefault(INakedObjectAdapter inObjectAdapter) {
             var defaultValue = GetDefault(inObjectAdapter);
-            if (defaultValue != null) {
+            if (defaultValue is not null) {
                 InitAssociation(inObjectAdapter, defaultValue);
             }
         }
@@ -164,7 +159,7 @@ namespace NakedFramework.Core.Spec {
             var currentValue = GetAssociation(inObjectAdapter);
             if (currentValue != associate) {
                 var setterFacet = GetFacet<IPropertySetterFacet>();
-                if (setterFacet != null) {
+                if (setterFacet is not null) {
                     inObjectAdapter.ResolveState.CheckCanAssociate(associate);
                     setterFacet.SetProperty(inObjectAdapter, associate, Framework);
                 }

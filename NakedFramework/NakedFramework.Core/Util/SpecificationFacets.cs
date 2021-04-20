@@ -15,20 +15,12 @@ namespace NakedFramework.Core.Util {
 
         public static bool IsAlwaysImmutable(this ITypeSpec spec) {
             var immutableFacet = spec.GetFacet<IImmutableFacet>();
-            if (immutableFacet == null) {
-                return false;
-            }
-
-            return immutableFacet.Value == WhenTo.Always;
+            return immutableFacet is {Value: WhenTo.Always};
         }
 
         public static bool IsImmutableOncePersisted(this ITypeSpec spec) {
             var immutableFacet = spec.GetFacet<IImmutableFacet>();
-            if (immutableFacet == null) {
-                return false;
-            }
-
-            return immutableFacet.Value == WhenTo.OncePersisted;
+            return immutableFacet is {Value: WhenTo.OncePersisted};
         }
 
         public static bool IsBoundedSet(this ITypeSpec spec) => spec.ContainsFacet<IBoundedFacet>() || spec.ContainsFacet<IEnumValueFacet>();
@@ -41,11 +33,7 @@ namespace NakedFramework.Core.Util {
 
         public static IFacet GetOpFacet<T>(this ISpecification s) where T : class, IFacet {
             var facet = s.GetFacet<T>();
-            return facet == null
-                ? null
-                : facet.IsNoOp
-                    ? null
-                    : facet;
+            return facet is {IsNoOp: false} ? facet : null;
         }
     }
 

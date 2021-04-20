@@ -84,7 +84,7 @@ namespace NakedFramework.Core.Util {
         }
 
         public static string CollectionTitleString(IObjectSpec elementSpec, int size) {
-            if (elementSpec == null || elementSpec.FullName.Equals(typeof(object).FullName)) {
+            if (elementSpec is null || elementSpec.FullName.Equals(typeof(object).FullName)) {
                 return CollectionTitleStringUnknownType(size);
             }
 

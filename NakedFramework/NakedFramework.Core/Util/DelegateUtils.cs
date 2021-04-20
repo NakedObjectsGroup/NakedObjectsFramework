@@ -35,7 +35,7 @@ namespace NakedFramework.Core.Util {
                     return (null, CreationFailed("ContainsGenericParameters", method));
                 }
 
-                if (method.DeclaringType != null && !method.DeclaringType.IsClass) {
+                if (method.DeclaringType is not null && !method.DeclaringType.IsClass) {
                     // don't seem to be able to bind delegates to these just return null
                     return (null, CreationFailed("non class", method));
                 }
@@ -73,7 +73,7 @@ namespace NakedFramework.Core.Util {
         }
 
         private static Type GetTypeAuthorizerType(Type type) {
-            if (type == null) {
+            if (type is null) {
                 return null;
             }
 

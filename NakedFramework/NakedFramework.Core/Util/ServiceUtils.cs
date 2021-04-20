@@ -11,7 +11,7 @@ namespace NakedFramework.Core.Util {
     public static class ServiceUtils {
         public static string GetId(object obj) {
             var type = obj.GetType();
-            return type.IsGenericType ? type.GenericTypeArguments.Aggregate(TypeNameUtils.GetShortName(type.Name), (s, t) => s + "-" + t.Name) : type.Name;
+            return type.IsGenericType ? type.GenericTypeArguments.Aggregate(TypeNameUtils.GetShortName(type.Name), (s, t) => $"{s}-{t.Name}") : type.Name;
         }
     }
 

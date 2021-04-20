@@ -14,9 +14,9 @@ using NakedFramework.Architecture.Configuration;
 namespace NakedFramework.Core.Component {
     public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {
         private readonly IDictionary<IOid, INakedObjectAdapter> adapters;
-        private readonly int capacity = 10;
+        private readonly int capacity;
 
-        public IdentityAdapterHashMap() => adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
+        private IdentityAdapterHashMap() => adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
 
         // used by DI
         // ReSharper disable once UnusedMember.Global

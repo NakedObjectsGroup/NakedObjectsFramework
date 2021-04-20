@@ -84,7 +84,7 @@ namespace NakedFramework.Core.Util {
         public static object GetVersion(this INakedObjectAdapter nakedObjectAdapter, INakedObjectManager manager) {
             var versionProperty = nakedObjectAdapter.GetVersionProperty();
 
-            if (versionProperty != null) {
+            if (versionProperty is not null) {
                 var version = versionProperty.GetNakedObject(nakedObjectAdapter).GetDomainObject();
 
                 if (version is DateTime dtv) {

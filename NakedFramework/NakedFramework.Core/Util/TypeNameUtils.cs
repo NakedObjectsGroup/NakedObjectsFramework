@@ -13,7 +13,7 @@ namespace NakedFramework.Core.Util {
     public static class TypeNameUtils {
         public static string DecodeTypeName(string typeName, string separator = "-") {
             if (typeName.Contains("-")) {
-                var rootType = typeName.Substring(0, typeName.IndexOf('`') + 2);
+                var rootType = typeName[..(typeName.IndexOf('`') + 2)];
                 var args = typeName[(typeName.IndexOf('`') + 3)..].Split('-');
 
                 var genericType = TypeUtils.GetType(rootType);
@@ -48,7 +48,7 @@ namespace NakedFramework.Core.Util {
         public static string GetShortName(string name) {
             name = name[(name.LastIndexOf('.') + 1)..];
             if (name.LastIndexOf('`') > 0) {
-                name = name.Substring(0, name.LastIndexOf('`'));
+                name = name[..name.LastIndexOf('`')];
             }
 
             return name;

@@ -54,8 +54,7 @@ namespace NakedFramework.Core.Util {
         }
 
         private static bool IsOrderExpression(Expression expr) {
-            var expression = expr as MethodCallExpression;
-            if (expression != null) {
+            if (expr is MethodCallExpression expression) {
                 var method = expression.Method;
                 return !method.Name.StartsWith("Distinct") && (method.Name.StartsWith("OrderBy") || method.Name.StartsWith("ThenBy") || expression.Arguments.Any(IsOrderExpression));
             }

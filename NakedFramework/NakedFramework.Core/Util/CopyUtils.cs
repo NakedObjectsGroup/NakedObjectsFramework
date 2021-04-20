@@ -60,17 +60,11 @@ namespace NakedFramework.Core.Util {
             return clone;
         }
 
-        private static void CopyCollectionProperties(object fromObject, object toObject) {
-            fromObject.GetType().GetProperties().Where(p => CollectionUtils.IsCollection(p.PropertyType)).ForEach(p => ShallowCopyCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
-        }
+        private static void CopyCollectionProperties(object fromObject, object toObject) => fromObject.GetType().GetProperties().Where(p => CollectionUtils.IsCollection(p.PropertyType)).ForEach(p => ShallowCopyCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
 
-        private static void UpdateCollectionProperties(object fromObject, object toObject) {
-            fromObject.GetType().GetProperties().Where(p => CollectionUtils.IsCollection(p.PropertyType)).ForEach(p => ShallowUpdateCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
-        }
+        private static void UpdateCollectionProperties(object fromObject, object toObject) => fromObject.GetType().GetProperties().Where(p => CollectionUtils.IsCollection(p.PropertyType)).ForEach(p => ShallowUpdateCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
 
-        private static void CopyScalarProperties(object fromObject, object toObject) {
-            fromObject.GetType().GetProperties().Where(p => !CollectionUtils.IsCollection(p.PropertyType)).Where(p => p.CanRead && p.CanWrite).ForEach(p => p.SetValue(toObject, p.GetValue(fromObject, null), null));
-        }
+        private static void CopyScalarProperties(object fromObject, object toObject) => fromObject.GetType().GetProperties().Where(p => !CollectionUtils.IsCollection(p.PropertyType)).Where(p => p.CanRead && p.CanWrite).ForEach(p => p.SetValue(toObject, p.GetValue(fromObject, null), null));
 
         public static void UpdateFromClone(object originalObject, object clonedObject) {
             CopyScalarProperties(clonedObject, originalObject);

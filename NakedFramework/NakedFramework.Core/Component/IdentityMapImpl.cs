@@ -38,7 +38,7 @@ namespace NakedFramework.Core.Component {
                 throw new NakedObjectSystemException("Adapter's poco should exist in poco map and return the adapter");
             }
 
-            if (identityAdapterMap.GetAdapter(oid) != null) {
+            if (identityAdapterMap.GetAdapter(oid) is not null) {
                 throw new NakedObjectSystemException($"Changed OID should not already map to a known adapter {oid}");
             }
 
@@ -54,7 +54,7 @@ namespace NakedFramework.Core.Component {
             if (updatedOid.HasPrevious) {
                 var previousOid = updatedOid.Previous;
                 var nakedObjectAdapter = identityAdapterMap.GetAdapter(previousOid);
-                if (nakedObjectAdapter != null) {
+                if (nakedObjectAdapter is not null) {
                     identityAdapterMap.Remove(previousOid);
                     var oidFromObject = nakedObjectAdapter.Oid;
                     oidFromObject.CopyFrom(updatedOid);
@@ -74,7 +74,7 @@ namespace NakedFramework.Core.Component {
         }
 
         public void AddAdapter(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter == null) {
+            if (nakedObjectAdapter is null) {
                 throw new NakedObjectSystemException("Cannot add null adapter to IdentityAdapterMap");
             }
 
@@ -132,7 +132,7 @@ namespace NakedFramework.Core.Component {
             // transient and will no longer be usable as a persistent object
 
             var oid = nakedObjectAdapter.Oid;
-            if (oid != null) {
+            if (oid is not null) {
                 identityAdapterMap.Remove(oid);
             }
 
@@ -140,7 +140,7 @@ namespace NakedFramework.Core.Component {
         }
 
         public INakedObjectAdapter GetAdapterFor(object domainObject) {
-            if (domainObject == null) {
+            if (domainObject is null) {
                 throw new NakedObjectSystemException("can't get an adapter for null");
             }
 
@@ -148,7 +148,7 @@ namespace NakedFramework.Core.Component {
         }
 
         public INakedObjectAdapter GetAdapterFor(IOid oid) {
-            if (oid == null) {
+            if (oid is null) {
                 throw new NakedObjectSystemException("OID should not be null");
             }
 
@@ -157,7 +157,7 @@ namespace NakedFramework.Core.Component {
         }
 
         public bool IsIdentityKnown(IOid oid) {
-            if (oid == null) {
+            if (oid is null) {
                 throw new NakedObjectSystemException("OID should not be null");
             }
 

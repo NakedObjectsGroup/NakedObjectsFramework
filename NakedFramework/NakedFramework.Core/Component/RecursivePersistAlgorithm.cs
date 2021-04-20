@@ -47,7 +47,7 @@ namespace NakedFramework.Core.Component {
 
                         if (field is IOneToManyAssociationSpec) {
                             var collection = field.GetNakedObject(nakedObjectAdapter);
-                            if (collection == null) {
+                            if (collection is null) {
                                 throw new NotPersistableException(logger.LogAndReturn($"Collection {field.Name} does not exist in {nakedObjectAdapter.Spec.FullName}"));
                             }
 
@@ -55,7 +55,7 @@ namespace NakedFramework.Core.Component {
                         }
                         else {
                             var fieldValue = field.GetNakedObject(nakedObjectAdapter);
-                            if (fieldValue == null) {
+                            if (fieldValue is null) {
                                 continue;
                             }
 

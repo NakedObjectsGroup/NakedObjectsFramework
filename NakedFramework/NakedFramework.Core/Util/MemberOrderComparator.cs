@@ -27,15 +27,15 @@ namespace NakedFramework.Core.Util {
             var m1 = GetMemberOrder(o1);
             var m2 = GetMemberOrder(o2);
 
-            if (m1 == null && m2 == null) {
+            if (m1 is null && m2 is null) {
                 return fallbackComparator.Compare(o1, o2);
             }
 
-            if (m1 == null) {
+            if (m1 is null) {
                 return +1; // annotated before non-annotated
             }
 
-            if (m2 == null) {
+            if (m2 is null) {
                 return -1; // annotated before non-annotated
             }
 

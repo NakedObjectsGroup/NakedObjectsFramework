@@ -101,13 +101,7 @@ namespace NakedFramework.Core.Adapter {
 
         #region Object Overrides
 
-        public override bool Equals(object obj) {
-            if (obj == this) {
-                return true;
-            }
-
-            return obj is ViewModelOid oid && TypeName.Equals(oid.TypeName) && Keys.SequenceEqual(oid.Keys);
-        }
+        public override bool Equals(object obj) => obj == this || obj is ViewModelOid oid && TypeName.Equals(oid.TypeName) && Keys.SequenceEqual(oid.Keys);
 
         // ReSharper disable once NonReadonlyFieldInGetHashCode
         // investigate making Oid immutable

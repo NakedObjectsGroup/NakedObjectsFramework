@@ -25,22 +25,13 @@ namespace NakedFramework.Core.Spec {
 
         public abstract INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
 
-        private IConsent IsUsableDeclaratively(bool isPersistent) {
-            var facet = GetFacet<IDisabledFacet>();
-            if (facet != null) {
-                var isProtected = facet.Value;
-                switch (isProtected) {
-                    case WhenTo.Always:
-                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditable);
-                    case WhenTo.OncePersisted when isPersistent:
-                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditableNow);
-                    case WhenTo.UntilPersisted when !isPersistent:
-                        return new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditableUntil);
-                }
-            }
-
-            return null;
-        }
+        private IConsent IsUsableDeclaratively(bool isPersistent) =>
+            GetFacet<IDisabledFacet>()?.Value switch {
+                WhenTo.Always => new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditable),
+                WhenTo.OncePersisted when isPersistent => new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditableNow),
+                WhenTo.UntilPersisted when !isPersistent => new Veto(NakedObjects.Resources.NakedObjects.FieldNotEditableUntil),
+                _ => null
+            };
 
         #region IAssociationSpec Members
 

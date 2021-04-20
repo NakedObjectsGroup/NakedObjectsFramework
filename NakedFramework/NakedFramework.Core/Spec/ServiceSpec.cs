@@ -18,7 +18,7 @@ namespace NakedFramework.Core.Spec {
         public ServiceSpec(SpecFactory memberFactory, IServiceSpecImmutable innerSpec, INakedObjectsFramework framework) :
             base(memberFactory, innerSpec, framework) { }
 
-        private IActionSpec[] ContributedActions => contributedActions ?? (contributedActions = MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions));
+        private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions);
 
         #region IServiceSpec Members
 
