@@ -33,7 +33,7 @@ namespace NakedFunctions.Reflector.Facet {
         public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod,
                                             int pageSize,
                                             int minLength,
-                                            ISpecification holder, 
+                                            ISpecification holder,
                                             ILogger<AutoCompleteViaFunctionFacet> logger)
             : this(holder) {
             method = autoCompleteMethod;
@@ -57,7 +57,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedObjectsFramework framework) {
             try {
-                var autoComplete = methodDelegate(null, method.GetParameterValues(inObjectAdapter, autoCompleteParm, framework));
+                var autoComplete = methodDelegate.Invoke<object>(method, method.GetParameterValues(inObjectAdapter, autoCompleteParm, framework));
 
                 switch (autoComplete) {
                     //returning an IQueryable

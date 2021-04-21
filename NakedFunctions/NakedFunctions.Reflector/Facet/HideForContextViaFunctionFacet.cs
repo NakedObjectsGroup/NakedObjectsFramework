@@ -42,7 +42,7 @@ namespace NakedFunctions.Reflector.Facet {
         public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
         public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
-            var isHidden = (bool) methodDelegate(null, method.GetParameterValues(nakedObjectAdapter, framework));
+            var isHidden = methodDelegate.Invoke<bool>(method, method.GetParameterValues(nakedObjectAdapter, framework));
             return isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
         }
 

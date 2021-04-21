@@ -23,14 +23,15 @@ using NakedFramework.Core.Persist;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Component;
+using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
         private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
+        private readonly Func<object, object[], object> methodDelegate;
 
         private readonly int paramCount;
-        private readonly Func<object, object[], object> methodDelegate;
 
         public ActionInvocationFacetViaStaticMethod(MethodInfo method,
                                                     ITypeSpecImmutable onType,
@@ -139,7 +140,7 @@ namespace NakedFunctions.Reflector.Facet {
 
             var rawParms = parameters.Select(p => p?.Object).ToArray();
 
-            return HandleInvokeResult(framework, methodDelegate(null, rawParms));
+            return HandleInvokeResult(framework, methodDelegate.Invoke<object>(ActionMethod, rawParms));
         }
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,

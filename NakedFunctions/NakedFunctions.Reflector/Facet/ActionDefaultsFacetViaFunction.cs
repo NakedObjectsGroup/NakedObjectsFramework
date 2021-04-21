@@ -32,7 +32,7 @@ namespace NakedFunctions.Reflector.Facet {
         public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
-            var defaultValue = methodDelegate(null, method.GetParameterValues(nakedObjectAdapter, framework));
+            var defaultValue = methodDelegate.Invoke<object>(method, method.GetParameterValues(nakedObjectAdapter, framework));
             return (defaultValue, TypeOfDefaultValue.Explicit);
         }
 

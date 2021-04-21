@@ -52,11 +52,7 @@ namespace NakedFunctions.Reflector.Facet {
                                             INakedObjectsFramework framework) {
             try {
                 var parms = choicesMethod.GetParameterValues(nakedObjectAdapter, parameterNameValues, framework);
-                if (choicesDelegate(null, parms) is IEnumerable options) {
-                    return options.Cast<object>().ToArray();
-                }
-
-                throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {choicesMethod.Name}");
+                return choicesDelegate.Invoke<IEnumerable>(choicesMethod, parms).Cast<object>().ToArray();
             }
             catch (ArgumentException ae) {
                 throw new InvokeException($"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types", ae);

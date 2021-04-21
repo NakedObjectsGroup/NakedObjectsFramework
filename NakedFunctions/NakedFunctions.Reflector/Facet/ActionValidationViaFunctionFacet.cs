@@ -25,7 +25,7 @@ namespace NakedFunctions.Reflector.Facet {
         private readonly MethodInfo method;
         private readonly Func<object, object[], object> methodDelegate;
 
-        public ActionValidationViaFunctionFacet(MethodInfo method, 
+        public ActionValidationViaFunctionFacet(MethodInfo method,
                                                 ISpecification holder,
                                                 ILogger<ActionValidationViaFunctionFacet> logger)
             : base(typeof(IActionValidationFacet), holder) {
@@ -45,7 +45,7 @@ namespace NakedFunctions.Reflector.Facet {
         public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
         public string InvalidReason(INakedObjectAdapter target, INakedObjectsFramework framework, INakedObjectAdapter[] proposedArguments) =>
-            (string) methodDelegate(method, method.GetParameterValues(target, proposedArguments, framework));
+            methodDelegate.Invoke<string>(method, method.GetParameterValues(target, proposedArguments, framework));
 
         #endregion
 

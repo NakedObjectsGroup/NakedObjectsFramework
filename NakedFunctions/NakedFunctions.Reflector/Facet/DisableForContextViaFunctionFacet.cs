@@ -42,7 +42,7 @@ namespace NakedFunctions.Reflector.Facet {
         public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
         public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) =>
-            (string) methodDelegate(null, method.GetParameterValues(nakedObjectAdapter, framework));
+            methodDelegate.Invoke<string>(method, method.GetParameterValues(nakedObjectAdapter, framework));
 
         #endregion
 

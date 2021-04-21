@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
 
@@ -51,7 +52,13 @@ namespace NakedFunctions.Reflector.Utils {
             }
         }
 
-        public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) =>
-            methodDelegate is not null ? (T) methodDelegate(null, parms) : (T) method.Invoke(null, parms);
+        public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) {
+            try {
+                return methodDelegate is not null ? (T) methodDelegate(null, parms) : (T) method.Invoke(null, parms);
+            }
+            catch (InvalidCastException) {
+                throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.Name}");
+            }
+        }
     }
 }

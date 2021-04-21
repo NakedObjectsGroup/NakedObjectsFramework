@@ -28,7 +28,7 @@ namespace NakedFunctions.Reflector.Facet {
         }
 
         public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) =>
-            methodDelegate(null, method.GetParameterValues(nakedObjectAdapter, framework)) as string;
+            methodDelegate.Invoke<string>(method, method.GetParameterValues(nakedObjectAdapter, framework));
 
         #region IImperativeFacet Members
 

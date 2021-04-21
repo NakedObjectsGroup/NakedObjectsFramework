@@ -19,8 +19,8 @@ using NakedFramework.Metamodel.Facet;
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract, IImperativeFacet {
-        private readonly PropertyInfo property;
         private readonly Func<object, object[], object> methodDelegate;
+        private readonly PropertyInfo property;
 
         public ActionDefaultsFacetViaProperty(PropertyInfo property, ISpecification holder, ILogger<ActionDefaultsFacetViaProperty> logger)
             : base(holder) {
