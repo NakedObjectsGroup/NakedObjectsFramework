@@ -13,26 +13,27 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
-    public sealed class UpdatingCallbackFacetViaMethod : UpdatingCallbackFacetAbstract, IImperativeFacet {
+    public sealed class PersistingCallbackFacetViaMethod : PersistingCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        [field: NonSerialized] private Action<object> updatingDelegate;
+        [field: NonSerialized] private Action<object> persistingDelegate;
 
-        public UpdatingCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
+        public PersistingCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
-            updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
+            persistingDelegate = DelegateUtils.CreateCallbackDelegate(method);
         }
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => updatingDelegate(nakedObjectAdapter.GetDomainObject());
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => persistingDelegate(nakedObjectAdapter.GetDomainObject());
 
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
+        private void OnDeserialized(StreamingContext context) => persistingDelegate = DelegateUtils.CreateCallbackDelegate(method);
 
         #region IImperativeFacet Members
 
@@ -40,7 +41,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public Func<object, object[], object> GetMethodDelegate() =>
             (tgt, p) => {
-                updatingDelegate(tgt);
+                persistingDelegate(tgt);
                 return null;
             };
 

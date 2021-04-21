@@ -13,26 +13,27 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
-    public sealed class PersistedCallbackFacetViaMethod : PersistedCallbackFacetAbstract, IImperativeFacet {
+    public sealed class DeletedCallbackFacetViaMethod : DeletedCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        [field: NonSerialized] private Action<object> persistedDelegate;
+        [field: NonSerialized] private Action<object> deletedDelegate;
 
-        public PersistedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
+        public DeletedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
-            persistedDelegate = DelegateUtils.CreateCallbackDelegate(method);
+            deletedDelegate = DelegateUtils.CreateCallbackDelegate(method);
         }
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => persistedDelegate(nakedObjectAdapter.GetDomainObject());
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => deletedDelegate(nakedObjectAdapter.GetDomainObject());
 
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => persistedDelegate = DelegateUtils.CreateCallbackDelegate(method);
+        private void OnDeserialized(StreamingContext context) => deletedDelegate = DelegateUtils.CreateCallbackDelegate(method);
 
         #region IImperativeFacet Members
 
@@ -40,7 +41,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public Func<object, object[], object> GetMethodDelegate() =>
             (tgt, p) => {
-                persistedDelegate(tgt);
+                deletedDelegate(tgt);
                 return null;
             };
 

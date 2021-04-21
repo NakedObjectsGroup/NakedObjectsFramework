@@ -24,6 +24,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
+using NakedObjects.Reflector.Facet;
 using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
@@ -306,8 +307,8 @@ namespace NakedObjects.Reflector.FacetFactory {
             MethodHelpers.AddDisableForSessionFacetNone(facets, action);
             ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, type, methodType, "ActionDefault", action, LoggerFactory);
             ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, type, methodType, capitalizedName, action, LoggerFactory, methodRemover);
-            MethodHelpers.FindDefaultDisableMethod(reflector, facets, type, methodType, "ActionDefault", action, LoggerFactory);
-            MethodHelpers.FindAndRemoveDisableMethod(reflector, facets, type, methodType, capitalizedName, action, LoggerFactory, methodRemover);
+            ObjectMethodHelpers.FindDefaultDisableMethod(reflector, facets, type, methodType, "ActionDefault", action, LoggerFactory);
+            ObjectMethodHelpers.FindAndRemoveDisableMethod(reflector, facets, type, methodType, capitalizedName, action, LoggerFactory, methodRemover);
 
             if (action is IActionSpecImmutable actionSpecImmutable) {
                 // Process the action's parameters names, descriptions and optional

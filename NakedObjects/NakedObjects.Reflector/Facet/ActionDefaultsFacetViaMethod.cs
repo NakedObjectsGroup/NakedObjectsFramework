@@ -15,11 +15,12 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
 [assembly: InternalsVisibleTo("NakedFramework.ParallelReflector.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
     public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly ILogger<ActionDefaultsFacetViaMethod> logger;

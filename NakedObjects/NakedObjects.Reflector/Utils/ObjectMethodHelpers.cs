@@ -17,6 +17,7 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
+using NakedObjects.Reflector.Facet;
 
 #pragma warning disable 612
 
@@ -54,6 +55,21 @@ namespace NakedObjects.Reflector.Utils {
             if (method != null) {
                 methodRemover?.RemoveMethod(method);
                 facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
+            }
+        }
+
+        public static void FindDefaultDisableMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory) {
+            var method = MethodHelpers.FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
+            if (method != null) {
+                facets.Add(new DisableForContextFacet(method, specification, loggerFactory.CreateLogger<DisableForContextFacet>()));
+            }
+        }
+
+        public static void FindAndRemoveDisableMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory, IMethodRemover methodRemover = null) {
+            var method = MethodHelpers.FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
+            if (method != null) {
+                methodRemover?.RemoveMethod(method);
+                facets.Add(new DisableForContextFacet(method, specification, loggerFactory.CreateLogger<DisableForContextFacet>()));
             }
         }
     }

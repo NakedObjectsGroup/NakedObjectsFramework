@@ -16,8 +16,9 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
     public sealed class ActionParameterValidation : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
         private readonly ILogger<ActionParameterValidation> logger;

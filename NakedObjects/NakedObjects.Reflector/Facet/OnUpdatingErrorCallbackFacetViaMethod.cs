@@ -13,16 +13,17 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
-    public sealed class OnPersistingErrorCallbackFacetViaMethod : OnPersistingErrorCallbackFacetAbstract, IImperativeFacet {
-        private readonly ILogger<OnPersistingErrorCallbackFacetViaMethod> logger;
+    public sealed class OnUpdatingErrorCallbackFacetViaMethod : OnUpdatingErrorCallbackFacetAbstract, IImperativeFacet {
+        private readonly ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger;
         private readonly MethodInfo method;
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public OnPersistingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<OnPersistingErrorCallbackFacetViaMethod> logger)
+        public OnUpdatingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger)
             : base(holder) {
             this.method = method;
             this.logger = logger;

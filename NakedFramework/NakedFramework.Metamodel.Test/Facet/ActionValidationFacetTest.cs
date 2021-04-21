@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
+using NakedObjects.Reflector.Facet;
 
 namespace NakedObjects.Metamodel.Test.Facet {
     [TestClass]

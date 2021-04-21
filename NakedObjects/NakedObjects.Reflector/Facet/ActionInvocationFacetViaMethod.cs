@@ -17,10 +17,11 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
     public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
         private readonly ILogger<ActionInvocationFacetViaMethod> logger;

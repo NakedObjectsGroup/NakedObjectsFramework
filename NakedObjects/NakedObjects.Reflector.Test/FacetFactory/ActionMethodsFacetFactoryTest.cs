@@ -21,6 +21,7 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SpecImmutable;
+using NakedObjects.Reflector.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
 #pragma warning disable 612

@@ -11,30 +11,27 @@ using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
-    public sealed class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstract, IImperativeFacet {
-        private readonly ILogger<PropertyValidateFacetViaMethod> logger;
+    public sealed class TitleFacetViaTitleMethod : TitleFacetAbstract, IImperativeFacet {
+        private readonly ILogger<TitleFacetViaTitleMethod> logger;
         private readonly MethodInfo method;
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public PropertyValidateFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<PropertyValidateFacetViaMethod> logger)
+        public TitleFacetViaTitleMethod(MethodInfo method, ISpecification holder, ILogger<TitleFacetViaTitleMethod> logger)
             : base(holder) {
             this.method = method;
             this.logger = logger;
             methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
-        public override string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) =>
-            proposedValue != null
-                ? (string) methodDelegate(target.GetDomainObject(), new[] {proposedValue.GetDomainObject()})
-                : null;
-
-        protected override string ToStringValues() => $"method={method}";
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>()) as string;
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

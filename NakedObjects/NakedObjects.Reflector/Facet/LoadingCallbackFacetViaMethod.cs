@@ -13,26 +13,27 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
-    public sealed class UpdatedCallbackFacetViaMethod : UpdatedCallbackFacetAbstract, IImperativeFacet {
+    public sealed class LoadingCallbackFacetViaMethod : LoadingCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        [field: NonSerialized] private Action<object> updatedDelegate;
+        [field: NonSerialized] private Action<object> loadingDelegate;
 
-        public UpdatedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
+        public LoadingCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
-            updatedDelegate = DelegateUtils.CreateCallbackDelegate(method);
+            loadingDelegate = DelegateUtils.CreateCallbackDelegate(method);
         }
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => updatedDelegate(nakedObjectAdapter.GetDomainObject());
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => loadingDelegate(nakedObjectAdapter.GetDomainObject());
 
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => updatedDelegate = DelegateUtils.CreateCallbackDelegate(method);
+        private void OnDeserialized(StreamingContext context) => loadingDelegate = DelegateUtils.CreateCallbackDelegate(method);
 
         #region IImperativeFacet Members
 
@@ -40,7 +41,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public Func<object, object[], object> GetMethodDelegate() =>
             (tgt, p) => {
-                updatedDelegate(tgt);
+                loadingDelegate(tgt);
                 return null;
             };
 

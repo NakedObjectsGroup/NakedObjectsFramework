@@ -13,12 +13,15 @@ using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.Audit {
     [Serializable]
-    public sealed class AuditPersistedFacet : PersistedCallbackFacetAbstract {
+    public sealed class AuditPersistedFacet : CallbackFacetAbstract, IPersistedCallbackFacet
+    {
         private readonly IAuditManager manager;
         private readonly IPersistedCallbackFacet underlyingFacet;
 
+        public static Type Type => typeof(IPersistedCallbackFacet);
+
         public AuditPersistedFacet(IPersistedCallbackFacet underlyingFacet, IAuditManager auditManager)
-            : base(underlyingFacet.Specification) {
+            : base(Type, underlyingFacet.Specification) {
             this.underlyingFacet = underlyingFacet;
             manager = auditManager;
         }

@@ -13,26 +13,27 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
-    public sealed class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstract, IImperativeFacet {
+    public sealed class UpdatedCallbackFacetViaMethod : UpdatedCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        [field: NonSerialized] private Action<object> deletingDelegate;
+        [field: NonSerialized] private Action<object> updatedDelegate;
 
-        public DeletingCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
+        public UpdatedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
-            deletingDelegate = DelegateUtils.CreateCallbackDelegate(method);
+            updatedDelegate = DelegateUtils.CreateCallbackDelegate(method);
         }
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => deletingDelegate(nakedObjectAdapter.GetDomainObject());
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => updatedDelegate(nakedObjectAdapter.GetDomainObject());
 
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => deletingDelegate = DelegateUtils.CreateCallbackDelegate(method);
+        private void OnDeserialized(StreamingContext context) => updatedDelegate = DelegateUtils.CreateCallbackDelegate(method);
 
         #region IImperativeFacet Members
 
@@ -40,7 +41,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public Func<object, object[], object> GetMethodDelegate() =>
             (tgt, p) => {
-                deletingDelegate(tgt);
+                updatedDelegate(tgt);
                 return null;
             };
 

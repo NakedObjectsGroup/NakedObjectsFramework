@@ -11,48 +11,34 @@ using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
-    public sealed class HideForContextFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
-        private readonly ILogger<HideForContextFacet> logger;
+    public sealed class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstract, IImperativeFacet {
+        private readonly ILogger<PropertyValidateFacetViaMethod> logger;
         private readonly MethodInfo method;
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public HideForContextFacet(MethodInfo method, ISpecification holder, ILogger<HideForContextFacet> logger)
-            : base(typeof(IHideForContextFacet), holder) {
+        public PropertyValidateFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<PropertyValidateFacetViaMethod> logger)
+            : base(holder) {
             this.method = method;
             this.logger = logger;
             methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
+        public override string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) =>
+            proposedValue != null
+                ? (string) methodDelegate(target.GetDomainObject(), new[] {proposedValue.GetDomainObject()})
+                : null;
+
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-
-        #region IHideForContextFacet Members
-
-        public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
-
-        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
-
-        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
-            if (nakedObjectAdapter == null) {
-                return null;
-            }
-
-            var isHidden = (bool) methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
-            return isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
-        }
-
-        #endregion
 
         #region IImperativeFacet Members
 

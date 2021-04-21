@@ -45,13 +45,6 @@ namespace NakedFunctions.Reflector.Utils {
             return complementaryMethod;
         }
 
-        public static void FindHideMethodAndAddFacet(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory) {
-            var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{RecognisedMethodsAndPrefixes.HidePrefix}{capitalizedName}", typeof(bool), Type.EmptyTypes);
-            if (method is not null) {
-                facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
-            }
-        }
-
         public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) {
             try {
                 return methodDelegate is not null ? (T) methodDelegate(null, parms) : (T) method.Invoke(null, parms);

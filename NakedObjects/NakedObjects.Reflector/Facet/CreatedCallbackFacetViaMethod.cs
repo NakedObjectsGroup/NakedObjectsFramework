@@ -8,43 +8,42 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
-    public sealed class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbstract, IImperativeFacet {
-        private readonly ILogger<PropertySetterFacetViaModifyMethod> logger;
+    public sealed class CreatedCallbackFacetViaMethod : CreatedCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
+        [field: NonSerialized] private Action<object> createdDelegate;
 
-        public PropertySetterFacetViaModifyMethod(MethodInfo method, string name, ISpecification holder, ILogger<PropertySetterFacetViaModifyMethod> logger)
+        public CreatedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
-            this.logger = logger;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-            PropertyName = name;
+            createdDelegate = DelegateUtils.CreateCallbackDelegate(method);
         }
 
-        public override string PropertyName { get; protected set; }
-
-        public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, INakedObjectsFramework framework) => methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => createdDelegate(nakedObjectAdapter.GetDomainObject());
 
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        private void OnDeserialized(StreamingContext context) => createdDelegate = DelegateUtils.CreateCallbackDelegate(method);
 
         #region IImperativeFacet Members
 
         public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+        public Func<object, object[], object> GetMethodDelegate() =>
+            (tgt, p) => {
+                createdDelegate(tgt);
+                return null;
+            };
 
         #endregion
     }

@@ -57,7 +57,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             MethodHelpers.AddHideForSessionFacetNone(facets, collection);
             MethodHelpers.AddDisableFacetAlways(facets, collection);
-            FactoryUtils.FindHideMethodAndAddFacet(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
             FacetUtils.AddFacets(facets);
             return metamodel;
         }
