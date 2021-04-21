@@ -18,7 +18,7 @@ namespace NakedFramework.ParallelReflector.TypeFacetFactory {
         protected ValueUsingValueSemanticsProviderFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
             : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
+        protected static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
             FacetUtils.AddFacet(semanticsProvider as IFacet);
 
             // value implies aggregated

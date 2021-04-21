@@ -25,30 +25,30 @@ namespace NakedFramework.ParallelReflector.Reflect {
     public abstract class Introspector : IIntrospector {
         private readonly ILogger logger;
 
-        public Introspector(IReflector reflector, ILogger logger) {
+        protected Introspector(IReflector reflector, ILogger logger) {
             Reflector = reflector;
             ClassStrategy = reflector.ClassStrategy;
             this.logger = logger;
             FacetFactorySet = reflector.FacetFactorySet;
         }
 
-        protected IList<IAssociationSpecImmutable> OrderedFields { get; set; }
-        protected IList<IActionSpecImmutable> OrderedObjectActions { get; set; }
-        protected PropertyInfo[] Properties { get; set; }
-        protected IReflector Reflector { get; set; }
-        protected MethodInfo[] Methods { get; set; }
+        private IList<IAssociationSpecImmutable> OrderedFields { get; set; }
+        private IList<IActionSpecImmutable> OrderedObjectActions { get; set; }
+        private PropertyInfo[] Properties { get; set; }
+        protected IReflector Reflector { get; }
+        protected MethodInfo[] Methods { get; private set; }
 
-        protected IClassStrategy ClassStrategy { get; init; }
+        private IClassStrategy ClassStrategy { get; }
 
-        protected IFacetFactorySet FacetFactorySet { get; init; }
+        protected IFacetFactorySet FacetFactorySet { get; }
 
-        protected Type[] InterfacesTypes => IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray();
+        private Type[] InterfacesTypes => IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray();
 
-        protected Type SuperclassType => IntrospectedType.BaseType;
+        private Type SuperclassType => IntrospectedType.BaseType;
 
-        public Type IntrospectedType { get; protected set; }
+        public Type IntrospectedType { get; private set; }
 
-        public Type SpecificationType { get; protected set; }
+        public Type SpecificationType { get; private set; }
 
         /// <summary>
         ///     As per <see cref="MemberInfo.Name" />
@@ -59,7 +59,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
         public string ShortName => TypeNameUtils.GetShortName(SpecificationType.Name);
 
-        public IIdentifier Identifier { get; protected set; }
+        public IIdentifier Identifier { get; private set; }
 
         public IList<IAssociationSpecImmutable> Fields => OrderedFields.ToArray();
 
@@ -121,13 +121,13 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
         protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessParameter(MethodInfo actionMethod, int i, IActionParameterSpecImmutable param, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
-        protected void AddAsSubclass(ITypeSpecImmutable spec) => Superclass?.AddSubclass(spec);
+        private void AddAsSubclass(ITypeSpecImmutable spec) => Superclass?.AddSubclass(spec);
 
         private static IList<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable => members.OrderBy(m => m, new MemberOrderComparator<T>()).ToArray();
 
         protected bool IsUnsupportedSystemType(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => FasterTypeUtils.IsSystem(type) && !Reflector.FindSpecification(type, metamodel);
 
-        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (spec is IObjectSpecImmutable objectSpec) {
                 IAssociationSpecImmutable[] fields;
                 (fields, metamodel) = FindAndCreateFieldSpecs(objectSpec, metamodel);
@@ -140,7 +140,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             return metamodel;
         }
 
-        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectActions(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectActions(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // find the actions ...
             IActionSpecImmutable[] findObjectActionMethods;
             (findObjectActionMethods, metamodel) = FindActionMethods(spec, metamodel);
@@ -148,7 +148,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             return metamodel;
         }
 
-        protected MethodInfo[] GetNonPropertyMethods() {
+        private MethodInfo[] GetNonPropertyMethods() {
             // no better way to do this (ie no flag that indicates getter/setter)
             var allMethods = new List<MethodInfo>(IntrospectedType.GetMethods());
             foreach (var pInfo in Properties) {
@@ -159,7 +159,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             return allMethods.OrderBy(m => m, new SortActionsFirst(FacetFactorySet)).ToArray();
         }
 
-        protected (IAssociationSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindAndCreateFieldSpecs(IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private (IAssociationSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindAndCreateFieldSpecs(IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // now create fieldSpecs for value properties, for collections and for reference properties
             var collectionProperties = FacetFactorySet.FindCollectionProperties(Properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
             IEnumerable<IAssociationSpecImmutable> collectionSpecs;
@@ -175,7 +175,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             return (collectionSpecs.Union(refSpecs).ToArray(), metamodel);
         }
 
-        protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (var property in collectionProperties) {
@@ -205,14 +205,14 @@ namespace NakedFramework.ParallelReflector.Reflect {
             return (specs, metamodel);
         }
 
-        protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (var property in foundProperties) {
                 var propertyType = property.PropertyType;
 
                 if (IsUnsupportedSystemType(propertyType, metamodel)) {
-                    // logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {propertyType}");
+                    logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {propertyType}");
                 }
                 else {
                     // create a reference property spec
@@ -248,7 +248,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             return types.Any(t => IsUnsupportedSystemType(t, metamodel));
         }
 
-        protected (IActionSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindActionMethods(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private (IActionSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindActionMethods(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var actionSpecs = new List<IActionSpecImmutable>();
             var actions = FacetFactorySet.FindActions(Methods.Where(m => m != null).ToArray(), ClassStrategy).Where(a => !FacetFactorySet.Filters(a, ClassStrategy)).ToArray();
             Methods = Methods.Except(actions).ToArray();
@@ -261,7 +261,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
                 // actions are potentially being nulled within this loop
                 if (actionMethod != null) {
                     if (ReturnOrParameterTypesUnsupported(actionMethod, metamodel)) {
-                        //logger.LogInformation($"Ignoring action: {actionMethod} on type: {actionMethod.DeclaringType}");
+                        logger.LogInformation($"Ignoring action: {actionMethod} on type: {actionMethod.DeclaringType}");
                     }
                     else {
                         var fullMethodName = actionMethod.Name;
@@ -315,7 +315,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             public void RemoveMethod(MethodInfo methodToRemove) {
                 for (var i = 0; i < methods.Length; i++) {
                     if (methods[i] != null) {
-                        if (TypeUtils.MemberInfoEquals(methods[i], methodToRemove)) {
+                        if (methods[i].MemberInfoEquals(methodToRemove)) {
                             methods[i] = null;
                         }
                     }
@@ -325,7 +325,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             public void RemoveMethods(IList<MethodInfo> methodList) {
                 for (var i = 0; i < methods.Length; i++) {
                     if (methods[i] != null) {
-                        if (methodList.Any(methodToRemove => TypeUtils.MemberInfoEquals(methods[i], methodToRemove))) {
+                        if (methodList.Any(methodToRemove => methods[i].MemberInfoEquals(methodToRemove))) {
                             methods[i] = null;
                         }
                     }
@@ -341,7 +341,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
         #region Nested type: SortActionsFirst
 
-        protected class SortActionsFirst : IComparer<MethodInfo> {
+        private class SortActionsFirst : IComparer<MethodInfo> {
             private readonly IFacetFactorySet factories;
 
             public SortActionsFirst(IFacetFactorySet factories) => this.factories = factories;

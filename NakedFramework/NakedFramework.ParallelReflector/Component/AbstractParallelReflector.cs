@@ -63,7 +63,7 @@ namespace NakedFramework.ParallelReflector.Component {
                 : specDictionary;
         }
 
-        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var ph = specDictionary.Where(i => i.Value.IsPlaceHolder).Select(i => i.Value.Type).ToArray();
             return IntrospectTypes(ph, specDictionary);
         }

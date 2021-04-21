@@ -48,7 +48,7 @@ using UShortValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.USho
 
 namespace NakedObjects.Reflector.Test.Reflect {
     public abstract class AbstractReflectorTest {
-        private static readonly ILoggerFactory MockLoggerFactory = new Mock<ILoggerFactory>().Object;
+        private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
         protected IClassStrategy ClassStrategy;
         protected IImmutableDictionary<string, ITypeSpecBuilder> Metamodel;
         protected IObjectSpecImmutable Specification;
@@ -133,7 +133,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory
         {
-            return (T)Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), MockLoggerFactory);
+            return (T)Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), LoggerFactory);
         }
 
         protected static void AssertIsInstanceOfType<T>(object o)
@@ -155,12 +155,9 @@ namespace NakedObjects.Reflector.Test.Reflect {
             var cache = new ImmutableInMemorySpecCache();
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var mockLogger = new Mock<ILogger<MetamodelHolder>>().Object;
-
-            var metamodel = new MetamodelHolder(cache, mockLogger);
-            var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
-
-            var reflector = Reflector(metamodel, mockLoggerFactory);
+            var metamodel = new MetamodelHolder(cache, LoggerFactory.CreateLogger<MetamodelHolder>());
+        
+            var reflector = Reflector(metamodel, LoggerFactory);
 
             ITypeSpecBuilder spec;
             (spec, Metamodel) = LoadSpecification(reflector);

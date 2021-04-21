@@ -27,7 +27,7 @@ namespace NakedFramework.ParallelReflector.TypeFacetFactory {
             var semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
             var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
             var semanticsProvider = Activator.CreateInstance(semanticsProviderType, oSpec, specification);
-            var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
+            var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.NonPublic).MakeGenericMethod(type);
             method.Invoke(null, new[] {semanticsProvider, specification});
             return mm;
         }

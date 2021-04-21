@@ -113,54 +113,11 @@ namespace NakedFramework.ParallelReflector.Utils {
             }
         }
 
-        //public static void FindDefaultHideMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory) {
-        //    var method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
-        //    if (method != null) {
-        //        facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
-        //        AddOrAddToExecutedWhereFacet(method, specification);
-        //    }
-        //}
-
-        //public static void FindAndRemoveHideMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory, IMethodRemover methodRemover = null) {
-        //    var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
-        //    if (method != null) {
-        //        methodRemover?.RemoveMethod(method);
-        //        facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
-        //        AddOrAddToExecutedWhereFacet(method, specification);
-        //    }
-        //}
-
         public static void AddHideForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new HideForSessionFacetNone(specification));
 
         public static void AddDisableForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisableForSessionFacetNone(specification));
 
         public static void AddDisableFacetAlways(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisabledFacetAlways(specification));
 
-        //public static void AddOrAddToExecutedWhereFacet(MethodInfo method, ISpecification holder) {
-        //    var attribute = method.GetCustomAttribute<ExecutedAttribute>();
-        //    if (attribute != null && !attribute.IsAjax) {
-        //        var executedFacet = holder.GetFacet<IExecutedControlMethodFacet>();
-        //        if (executedFacet == null) {
-        //            FacetUtils.AddFacet(new ExecutedControlMethodFacet(method, attribute.Value, holder));
-        //        }
-        //        else {
-        //            executedFacet.AddMethodExecutedWhere(method, attribute.Value);
-        //        }
-        //    }
-        //}
-
-        //public static void AddAjaxFacet(MethodInfo method, ISpecification holder) {
-        //    if (method == null) {
-        //        FacetUtils.AddFacet(new AjaxFacet(holder));
-        //    }
-        //    else {
-        //        var attribute = method.GetCustomAttribute<ExecutedAttribute>();
-        //        if (attribute != null && attribute.IsAjax) {
-        //            if (attribute.AjaxValue == Ajax.Disabled) {
-        //                FacetUtils.AddFacet(new AjaxFacet(holder));
-        //            }
-        //        }
-        //    }
-        //}
     }
 }
