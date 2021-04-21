@@ -12,13 +12,13 @@ using System.Data.Entity.Core.Objects;
 namespace NakedFramework.Persistor.EF6.Configuration {
     public class EF6ContextConfiguration {
         internal bool Validated { get; set; }
-        public MergeOption DefaultMergeOption { get; set; }
-        public Action<ObjectContext> CustomConfig { get; set; }
+        public MergeOption DefaultMergeOption { get; init; }
+        public Action<ObjectContext> CustomConfig { get; init; }
 
-        public Func<DbContext> DbContext { get; set; }
+        public Func<DbContext> DbContext { get; init; }
 
-        public Func<Type[]> PreCachedTypes { get; set; } = () => Array.Empty<Type>();
+        public Func<Type[]> PreCachedTypes { get; init; } = () => Array.Empty<Type>();
 
-        public Func<Type[]> NotPersistedTypes { get; set; } = () => Array.Empty<Type>();
+        public Func<Type[]> NotPersistedTypes { get; init; } = () => Array.Empty<Type>();
     }
 }

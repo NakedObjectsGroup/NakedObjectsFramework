@@ -40,19 +40,19 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         protected RestControlFlags() { }
         public static int ConfiguredPageSize { get; set; }
 
-        public int Page { get; private set; }
-        public int PageSize { get; private set; }
-        public bool ValidateOnly { get; private set; }
-        public bool FollowLinks { get; private set; }
-        public bool SortBy { get; private set; }
-        public bool BlobsClobs { get; private set; }
-        public bool InlineDetailsInActionMemberRepresentations { get; set; }
-        public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
-        public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
-        public bool InlineCollectionItems { get; set; }
-        public bool AllowMutatingActionsOnImmutableObject { get; set; }
-        public bool AcceptHeaderStrict { get; set; }
-        public bool DebugWarnings { get; set; }
+        public int Page { get; private init; }
+        public int PageSize { get; private init; }
+        public bool ValidateOnly { get; private init; }
+        public bool FollowLinks { get; private init; }
+        public bool SortBy { get; private init; }
+        public bool BlobsClobs { get; private init; }
+        public bool InlineDetailsInActionMemberRepresentations { get; init; }
+        public bool InlineDetailsInCollectionMemberRepresentations { get; init; }
+        public bool InlineDetailsInPropertyMemberRepresentations { get; init; }
+        public bool InlineCollectionItems { get; init; }
+        public bool AllowMutatingActionsOnImmutableObject { get; init; }
+        public bool AcceptHeaderStrict { get; init; }
+        public bool DebugWarnings { get; init; }
 
         private static bool GetBool(object value) =>
             value switch {

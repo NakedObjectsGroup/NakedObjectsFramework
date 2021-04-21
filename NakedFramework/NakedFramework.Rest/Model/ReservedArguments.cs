@@ -10,7 +10,7 @@ namespace NakedFramework.Rest.Model {
         public virtual bool? InlinePropertyDetails { get; set; }
         public virtual bool ValidateOnly { get; set; }
         public virtual string DomainModel { get; set; }
-        public string SearchTerm { get; set; }
+        public string SearchTerm { get; init; }
         public int Page { get; set; }
         public int PageSize { get; set; }
         public virtual bool? InlineCollectionItems { get; set; }

@@ -1096,7 +1096,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             var objectSpec = nakedObject.Spec as IObjectSpec;
             var properties = objectSpec?.Properties.Where(p => IsVisible(p, nakedObject, isPersisted)).ToArray() ?? Array.Empty<IAssociationSpec>();
 
-            ActionContext[] ccaContexts = Array.Empty<ActionContext>();
+            var ccaContexts = Array.Empty<ActionContext>();
 
             if (nakedObject.Spec.IsQueryable) {
                 var typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();

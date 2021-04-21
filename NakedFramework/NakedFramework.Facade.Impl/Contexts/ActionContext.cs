@@ -34,10 +34,10 @@ namespace NakedFramework.Facade.Impl.Contexts {
             set => properties = value;
         }
 
-        public string MenuPath { get; set; }
+        public string MenuPath { get; init; }
 
-        public string OverloadedUniqueId { get; set; }
-        public string MenuId { get; set; }
+        public string OverloadedUniqueId { get; init; }
+        public string MenuId { get; init; }
 
         public ActionContextFacade ToActionContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var ac = new ActionContextFacade {

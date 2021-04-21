@@ -39,7 +39,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private static ModuleBuilder ModuleBuilder { get; set; }
 
-        protected RelType SelfRelType { get; set; }
+        protected RelType SelfRelType { get; init; }
 
         protected void SetEtag(string digest) {
             if (digest != null) {

@@ -29,7 +29,7 @@ namespace NakedFramework.Rest.Snapshot.RelTypes {
         }
 
         public virtual string Name { get; }
-        public RelMethod Method { get; set; }
+        public RelMethod Method { get; init; }
         protected bool HasRelParameter { get; }
 
         public abstract Uri GetUri();

@@ -22,7 +22,7 @@ namespace NakedFramework.Core.Error {
             : base(message, cause) { }
 
         public IOid SourceOid { get; }
-        public INakedObjectAdapter SourceNakedObjectAdapter { get; set; }
+        public INakedObjectAdapter SourceNakedObjectAdapter { get; init; }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

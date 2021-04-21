@@ -22,7 +22,7 @@ namespace NakedFramework.Core.Adapter {
     /// <seealso cref="StringDecoderHelper" />
     public class StringEncoderHelper {
         private readonly List<string> strings = new();
-        public bool Encode { get; set; }
+        public bool Encode { get; init; }
 
         /// <summary>
         ///     Use where type is known at compile time

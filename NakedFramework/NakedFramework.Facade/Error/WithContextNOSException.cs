@@ -33,7 +33,7 @@ namespace NakedFramework.Facade.Error {
 
                 return contexts;
             }
-            private set => contexts = value;
+            private init => contexts = value;
         }
 
         public ContextFacade ContextFacade { get; }
