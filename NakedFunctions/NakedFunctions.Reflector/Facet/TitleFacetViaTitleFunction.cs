@@ -7,10 +7,12 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
@@ -18,17 +20,21 @@ namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class TitleFacetViaTitleFunction : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;
 
-        public TitleFacetViaTitleFunction(MethodInfo method, ISpecification holder) : base(holder) => this.method = method;
+        public TitleFacetViaTitleFunction(MethodInfo method, ISpecification holder, ILogger<TitleFacetViaTitleFunction> logger) : base(holder) {
+            this.method = method;
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        }
 
         public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) =>
-            method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, framework)) as string;
+            methodDelegate(null, method.GetParameterValues(nakedObjectAdapter, framework)) as string;
 
         #region IImperativeFacet Members
 
         public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() => null;
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
     }

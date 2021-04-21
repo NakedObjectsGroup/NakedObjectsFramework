@@ -53,7 +53,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, Type targetType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var methodToUse = MethodToUse(declaringType, targetType, name);
             if (methodToUse is not null) {
-                FacetUtils.AddFacet(new HideForContextViaFunctionFacet(methodToUse, action));
+                FacetUtils.AddFacet(new HideForContextViaFunctionFacet(methodToUse, action, LoggerFactory.CreateLogger<HideForContextViaFunctionFacet>()));
             }
 
             return metamodel;
@@ -68,7 +68,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return FindAndAddFacet(declaringType, targetType, name, action, metamodel);
         }
 
-        private static Action<IMetamodelBuilder> GetAddAction(MethodInfo recognizedMethod) {
+        private Action<IMetamodelBuilder> GetAddAction(MethodInfo recognizedMethod) {
             Action<IMetamodelBuilder> action = m => { };
 
             var onType = recognizedMethod.ContributedToType();
@@ -79,7 +79,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     var property = spec.Fields.SingleOrDefault(f => f.Name == NameUtils.NaturalName(propertyName));
 
                     if (property is not null) {
-                        var facet = new HideForContextViaFunctionFacet(recognizedMethod, property);
+                        var facet = new HideForContextViaFunctionFacet(recognizedMethod, property, LoggerFactory.CreateLogger<HideForContextViaFunctionFacet>());
                         FacetUtils.AddFacet(facet);
                     }
                 };

@@ -55,7 +55,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                         var minLength = minLengthAttr?.Value ?? 0;
 
                         // add facets directly to parameters, not to actions
-                        FacetUtils.AddFacet(new AutoCompleteViaFunctionFacet(method, pageSize, minLength, parameters[i]));
+                        FacetUtils.AddFacet(new AutoCompleteViaFunctionFacet(method, pageSize, minLength, parameters[i], LoggerFactory.CreateLogger<AutoCompleteViaFunctionFacet>()));
                     }
                 }
             }

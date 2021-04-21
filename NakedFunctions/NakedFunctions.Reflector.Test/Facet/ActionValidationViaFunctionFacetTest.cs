@@ -18,7 +18,7 @@ namespace NakedFunctions.Reflector.Test.Facet {
         [TestMethod]
         public void TestValidate() {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Validate));
-            var testFacet = new ActionValidationViaFunctionFacet(method, null);
+            var testFacet = new ActionValidationViaFunctionFacet(method, null, null);
 
             var result = testFacet.InvalidReason(null, null, Array.Empty<INakedObjectAdapter>());
 

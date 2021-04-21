@@ -16,7 +16,7 @@ namespace NakedFunctions.Reflector.Test.Facet {
         [TestMethod]
         public void TestDisabled() {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Disables));
-            var testFacet = new DisableForContextViaFunctionFacet(method, null);
+            var testFacet = new DisableForContextViaFunctionFacet(method, null, null);
 
             var result = testFacet.DisabledReason(null, null);
 

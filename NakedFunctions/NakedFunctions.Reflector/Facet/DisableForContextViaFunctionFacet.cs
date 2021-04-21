@@ -8,12 +8,14 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
@@ -21,8 +23,12 @@ namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class DisableForContextViaFunctionFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;
 
-        public DisableForContextViaFunctionFacet(MethodInfo method, ISpecification holder) : base(typeof(IDisableForContextFacet), holder) => this.method = method;
+        public DisableForContextViaFunctionFacet(MethodInfo method, ISpecification holder, ILogger<DisableForContextViaFunctionFacet> logger) : base(typeof(IDisableForContextFacet), holder) {
+            this.method = method;
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        }
 
         protected override string ToStringValues() => $"method={method}";
 
@@ -36,7 +42,7 @@ namespace NakedFunctions.Reflector.Facet {
         public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
         public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) =>
-            (string) method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, framework));
+            (string) methodDelegate(null, method.GetParameterValues(nakedObjectAdapter, framework));
 
         #endregion
 
@@ -44,7 +50,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() => null;
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
     }

@@ -16,7 +16,7 @@ namespace NakedFunctions.Reflector.Test.Facet {
         [TestMethod]
         public void TestGetCompletions() {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Completions));
-            var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null);
+            var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null, null);
 
             var result = testFacet.GetCompletions(null, null, null);
 

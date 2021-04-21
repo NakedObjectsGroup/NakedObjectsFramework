@@ -46,7 +46,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, targetType);
             var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
             if (methodToUse is not null) {
-                FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(methodToUse, action));
+                FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(methodToUse, action, LoggerFactory.CreateLogger<DisableForContextViaFunctionFacet>()));
             }
 
             return metamodel;

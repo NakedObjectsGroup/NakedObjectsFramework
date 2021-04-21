@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
@@ -24,6 +25,7 @@ namespace NakedFunctions.Reflector.Facet {
     public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
         private const int DefaultPageSize = 50;
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;
 
         private AutoCompleteViaFunctionFacet(ISpecification holder)
             : base(Type, holder) { }
@@ -31,11 +33,13 @@ namespace NakedFunctions.Reflector.Facet {
         public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod,
                                             int pageSize,
                                             int minLength,
-                                            ISpecification holder)
+                                            ISpecification holder, 
+                                            ILogger<AutoCompleteViaFunctionFacet> logger)
             : this(holder) {
             method = autoCompleteMethod;
             PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
             MinLength = minLength;
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         public static Type Type => typeof(IAutoCompleteFacet);
@@ -53,7 +57,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedObjectsFramework framework) {
             try {
-                var autoComplete = method.Invoke(null, method.GetParameterValues(inObjectAdapter, autoCompleteParm, framework));
+                var autoComplete = methodDelegate(null, method.GetParameterValues(inObjectAdapter, autoCompleteParm, framework));
 
                 switch (autoComplete) {
                     //returning an IQueryable
@@ -83,7 +87,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() => null;
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
     }

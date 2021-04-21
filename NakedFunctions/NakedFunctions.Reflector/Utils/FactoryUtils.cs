@@ -50,5 +50,8 @@ namespace NakedFunctions.Reflector.Utils {
                 facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
             }
         }
+
+        public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) =>
+            methodDelegate is not null ? (T) methodDelegate(null, parms) : (T) method.Invoke(null, parms);
     }
 }

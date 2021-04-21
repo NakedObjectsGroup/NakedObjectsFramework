@@ -67,7 +67,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
             if (methodToUse is not null) {
-                FacetUtils.AddFacet(new ActionValidationViaFunctionFacet(methodToUse, action));
+                FacetUtils.AddFacet(new ActionValidationViaFunctionFacet(methodToUse, action, LoggerFactory.CreateLogger<ActionValidationViaFunctionFacet>()));
             }
 
             return metamodel;
