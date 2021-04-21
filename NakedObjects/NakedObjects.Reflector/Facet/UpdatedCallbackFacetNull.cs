@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
     public sealed class UpdatedCallbackFacetNull : UpdatedCallbackFacetAbstract {
         public UpdatedCallbackFacetNull(ISpecification holder)

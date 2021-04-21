@@ -8,8 +8,9 @@
 using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
     public abstract class LoadedCallbackFacetAbstract : CallbackFacetAbstract, ILoadedCallbackFacet {
         protected LoadedCallbackFacetAbstract(ISpecification holder)
