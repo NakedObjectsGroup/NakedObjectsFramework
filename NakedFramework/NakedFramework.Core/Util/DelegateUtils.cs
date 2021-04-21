@@ -97,9 +97,11 @@ namespace NakedFramework.Core.Util {
         }
 
         private static MethodInfo MakeDelegateHelper(Type targetType, MethodInfo method) {
-            var helperName = method.ReturnType == typeof(void) ? "ActionHelper" : "FuncHelper";
+            var prefix = method.IsStatic ? "Static" : "";
+            var name = method.ReturnType == typeof(void) ? "ActionHelper" : "FuncHelper";
+            var postfix = method.GetParameters().Length;
 
-            helperName += method.GetParameters().Length;
+            var helperName = $"{prefix}{name}{postfix}";
 
             // First fetch the generic form
             var genericHelper = typeof(DelegateUtils).GetMethod(helperName, BindingFlags.Static | BindingFlags.NonPublic);
@@ -239,6 +241,51 @@ namespace NakedFramework.Core.Util {
             var func = (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>) Delegate.CreateDelegate(typeof(Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>), method);
             return WrapException((target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3]), Cast<TParam4>(param[4]), Cast<TParam5>(param[5])));
         }
+
+        private static Func<object, object[], object> StaticFuncHelper0<TTarget, TReturn>(MethodInfo method) where TTarget : class
+        {
+            var func = (Func<TReturn>)Delegate.CreateDelegate(typeof(Func<TReturn>), method);
+            return WrapException((target, param) => func());
+        }
+
+        private static Func<object, object[], object> StaticFuncHelper1<TTarget, TParam0, TReturn>(MethodInfo method) where TTarget : class
+        {
+            var func = (Func<TParam0, TReturn>)Delegate.CreateDelegate(typeof(Func<TParam0, TReturn>), method);
+            return WrapException((target, param) => func(Cast<TParam0>(param[0])));
+        }
+
+        private static Func<object, object[], object> StaticFuncHelper2<TTarget, TParam0, TParam1, TReturn>(MethodInfo method) where TTarget : class
+        {
+            var func = (Func<TParam0, TParam1, TReturn>)Delegate.CreateDelegate(typeof(Func<TParam0, TParam1, TReturn>), method);
+            return WrapException((target, param) => func(Cast<TParam0>(param[0]), Cast<TParam1>(param[1])));
+        }
+
+        private static Func<object, object[], object> StaticFuncHelper3<TTarget, TParam0, TParam1, TParam2, TReturn>(MethodInfo method) where TTarget : class
+        {
+            var func = (Func<TParam0, TParam1, TParam2, TReturn>)Delegate.CreateDelegate(typeof(Func<TParam0, TParam1, TParam2, TReturn>), method);
+            return WrapException((target, param) => func(Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2])));
+        }
+
+        private static Func<object, object[], object> StaticFuncHelper4<TTarget, TParam0, TParam1, TParam2, TParam3, TReturn>(MethodInfo method) where TTarget : class
+        {
+            var func = (Func<TParam0, TParam1, TParam2, TParam3, TReturn>)Delegate.CreateDelegate(typeof(Func<TParam0, TParam1, TParam2, TParam3, TReturn>), method);
+            return WrapException((target, param) => func(Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3])));
+        }
+
+        private static Func<object, object[], object> StaticFuncHelper5<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TReturn>(MethodInfo method) where TTarget : class
+        {
+            var func = (Func<TParam0, TParam1, TParam2, TParam3, TParam4, TReturn>)Delegate.CreateDelegate(typeof(Func<TParam0, TParam1, TParam2, TParam3, TParam4, TReturn>), method);
+            return WrapException((target, param) => func(Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3]), Cast<TParam4>(param[4])));
+        }
+
+        private static Func<object, object[], object> StaticFuncHelper6<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>(MethodInfo method) where TTarget : class
+        {
+            var func = (Func<TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>)Delegate.CreateDelegate(typeof(Func<TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>), method);
+            return WrapException((target, param) => func(Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3]), Cast<TParam4>(param[4]), Cast<TParam5>(param[5])));
+        }
+
+
+
 
         // ReSharper restore UnusedMember.Local
     }

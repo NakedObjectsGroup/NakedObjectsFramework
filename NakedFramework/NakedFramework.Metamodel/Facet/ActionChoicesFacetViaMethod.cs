@@ -50,8 +50,7 @@ namespace NakedFramework.Metamodel.Facet {
             var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
 
             try {
-                var options = choicesDelegate(nakedObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray()) as IEnumerable;
-                if (options != null) {
+                if (choicesDelegate(nakedObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray()) is IEnumerable options) {
                     return options.Cast<object>().ToArray();
                 }
 

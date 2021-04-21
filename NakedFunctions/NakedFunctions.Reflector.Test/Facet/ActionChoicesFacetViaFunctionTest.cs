@@ -18,7 +18,7 @@ namespace NakedFunctions.Reflector.Test.Facet {
         [TestMethod]
         public void TestGetChoices() {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Choices));
-            var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, IObjectSpecImmutable)>(), typeof(string), null);
+            var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, IObjectSpecImmutable)>(), typeof(string), null, null);
 
             var result = testFacet.GetChoices(null, null, null);
 

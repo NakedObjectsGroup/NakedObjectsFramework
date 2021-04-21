@@ -11,33 +11,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, IImperativeFacet {
+        private readonly Func<object, object[], object> choicesDelegate;
         private readonly MethodInfo choicesMethod;
         private readonly Type choicesType;
-        private readonly string[] parameterNames;
 
         public ActionChoicesFacetViaFunction(MethodInfo choicesMethod,
                                              (string, IObjectSpecImmutable)[] parameterNamesAndTypes,
                                              Type choicesType,
                                              ISpecification holder,
+                                             ILogger<ActionChoicesFacetViaFunction> logger,
                                              bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;
             this.choicesType = choicesType;
             IsMultiple = isMultiple;
             ParameterNamesAndTypes = parameterNamesAndTypes;
-            parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
+            choicesDelegate = LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
         }
 
         public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
@@ -47,18 +50,17 @@ namespace NakedFunctions.Reflector.Facet {
         public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter,
                                             IDictionary<string, INakedObjectAdapter> parameterNameValues,
                                             INakedObjectsFramework framework) {
+            var parms = choicesMethod.GetParameterValues(nakedObjectAdapter, parameterNameValues, framework);
+
             try {
-                if (choicesMethod.Invoke(null, choicesMethod.GetParameterValues(nakedObjectAdapter,
-                                                                                parameterNameValues,
-                                                                                framework)) is IEnumerable options) {
+                if (choicesDelegate(null, parms) is IEnumerable options) {
                     return options.Cast<object>().ToArray();
                 }
 
                 throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {choicesMethod.Name}");
             }
             catch (ArgumentException ae) {
-                throw new InvokeException($"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types",
-                                          ae);
+                throw new InvokeException($"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types", ae);
             }
         }
 
@@ -71,7 +73,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         public MethodInfo GetMethod() => choicesMethod;
 
-        public Func<object, object[], object> GetMethodDelegate() => null;
+        public Func<object, object[], object> GetMethodDelegate() => choicesDelegate;
 
         #endregion
     }
