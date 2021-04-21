@@ -8,10 +8,12 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
@@ -19,20 +21,18 @@ namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ActionDefaultsFacetViaFunction : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;
 
-        public ActionDefaultsFacetViaFunction(MethodInfo method, ISpecification holder)
-            : base(holder) =>
+        public ActionDefaultsFacetViaFunction(MethodInfo method, ISpecification holder, ILogger<ActionDefaultsFacetViaFunction> logger)
+            : base(holder) {
             this.method = method;
-
-        // for testing only 
-        internal static Func<object, object[], object> MethodDelegate => null;
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        }
 
         public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
-
-            var defaultValue = method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, framework));
-
+            var defaultValue = methodDelegate(null, method.GetParameterValues(nakedObjectAdapter, framework));
             return (defaultValue, TypeOfDefaultValue.Explicit);
         }
 
@@ -45,7 +45,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() => null;
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
     }

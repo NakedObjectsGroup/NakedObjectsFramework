@@ -88,7 +88,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                         logger.LogWarning($"Edit default not added to {thisParameter} on {method} as has explicit default method");
                     }
                     else {
-                        FacetUtils.AddFacet(new ActionDefaultsFacetViaProperty(property, specification));
+                        FacetUtils.AddFacet(new ActionDefaultsFacetViaProperty(property, specification, LoggerFactory.CreateLogger<ActionDefaultsFacetViaProperty>()));
                     }
                 }
             }

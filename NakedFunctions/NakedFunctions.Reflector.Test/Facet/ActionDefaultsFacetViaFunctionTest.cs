@@ -17,7 +17,7 @@ namespace NakedFunctions.Reflector.Test.Facet {
         [TestMethod]
         public void TestGetDefault() {
             var method = typeof(TestClass).GetMethod(nameof(TestClass.GetDefault));
-            var testFacet = new ActionDefaultsFacetViaFunction(method, null);
+            var testFacet = new ActionDefaultsFacetViaFunction(method, null, null);
 
             var (result, defaultType) = testFacet.GetDefault(null, null);
 

@@ -50,9 +50,8 @@ namespace NakedFunctions.Reflector.Facet {
         public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter,
                                             IDictionary<string, INakedObjectAdapter> parameterNameValues,
                                             INakedObjectsFramework framework) {
-            var parms = choicesMethod.GetParameterValues(nakedObjectAdapter, parameterNameValues, framework);
-
             try {
+                var parms = choicesMethod.GetParameterValues(nakedObjectAdapter, parameterNameValues, framework);
                 if (choicesDelegate(null, parms) is IEnumerable options) {
                     return options.Cast<object>().ToArray();
                 }

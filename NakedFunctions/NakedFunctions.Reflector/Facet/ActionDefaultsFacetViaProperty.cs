@@ -8,30 +8,30 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFunctions.Reflector.Facet {
     [Serializable]
     public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly PropertyInfo property;
+        private readonly Func<object, object[], object> methodDelegate;
 
-        public ActionDefaultsFacetViaProperty(PropertyInfo property, ISpecification holder)
-            : base(holder) =>
+        public ActionDefaultsFacetViaProperty(PropertyInfo property, ISpecification holder, ILogger<ActionDefaultsFacetViaProperty> logger)
+            : base(holder) {
             this.property = property;
-
-        // for testing only 
-        internal static Func<object, object[], object> MethodDelegate => null;
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(property.GetGetMethod()), logger);
+        }
 
         public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
-
-            var defaultValue = property.GetValue(nakedObjectAdapter.Object, null);
-
+            var defaultValue = methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
             return (defaultValue, TypeOfDefaultValue.Explicit);
         }
 
@@ -42,9 +42,9 @@ namespace NakedFunctions.Reflector.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() => null;
+        public MethodInfo GetMethod() => property.GetGetMethod();
 
-        public Func<object, object[], object> GetMethodDelegate() => null;
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
     }

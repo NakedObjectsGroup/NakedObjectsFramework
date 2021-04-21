@@ -30,6 +30,7 @@ namespace NakedFunctions.Reflector.Facet {
         private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
 
         private readonly int paramCount;
+        private readonly Func<object, object[], object> methodDelegate;
 
         public ActionInvocationFacetViaStaticMethod(MethodInfo method,
                                                     ITypeSpecImmutable onType,
@@ -46,6 +47,7 @@ namespace NakedFunctions.Reflector.Facet {
             ReturnType = returnType;
             ElementType = elementType;
             IsQueryOnly = isQueryOnly;
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         [field: NonSerialized] public override MethodInfo ActionMethod { get; }
@@ -88,9 +90,9 @@ namespace NakedFunctions.Reflector.Facet {
             var (toReturn, context) = tuple;
             var allPersisted = HandleContext(context, framework);
 
-            foreach (var valueTuple in allPersisted) {
-                if (ReferenceEquals(valueTuple.original, toReturn)) {
-                    return valueTuple.updated;
+            foreach (var (original, updated) in allPersisted) {
+                if (ReferenceEquals(original, toReturn)) {
+                    return updated;
                 }
             }
 
@@ -135,7 +137,9 @@ namespace NakedFunctions.Reflector.Facet {
                 logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
             }
 
-            return HandleInvokeResult(framework, InvokeUtils.InvokeStatic(ActionMethod, parameters));
+            var rawParms = parameters.Select(p => p?.Object).ToArray();
+
+            return HandleInvokeResult(framework, methodDelegate(null, rawParms));
         }
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
@@ -156,7 +160,7 @@ namespace NakedFunctions.Reflector.Facet {
         /// </summary>
         public MethodInfo GetMethod() => ActionMethod;
 
-        public Func<object, object[], object> GetMethodDelegate() => null;
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
     }

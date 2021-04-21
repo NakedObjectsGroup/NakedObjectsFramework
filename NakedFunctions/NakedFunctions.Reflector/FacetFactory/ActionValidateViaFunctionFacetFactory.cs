@@ -20,7 +20,6 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
-using NakedObjects;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class ActionValidateViaFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {
@@ -57,7 +56,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             if (methodToUse is not null) {
                 // add facets directly to parameters, not to actions
-                FacetUtils.AddFacet(new ActionParameterValidationViaFunctionFacet(methodToUse, parameter));
+                FacetUtils.AddFacet(new ActionParameterValidationViaFunctionFacet(methodToUse, parameter, LoggerFactory.CreateLogger<ActionParameterValidationViaFunctionFacet>()));
             }
 
             return metamodel;

@@ -47,7 +47,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
                 if (methodToUse is not null) {
                     // add facets directly to parameters, not to actions
-                    FacetUtils.AddFacet(new ActionDefaultsFacetViaFunction(methodToUse, parameters[i]));
+                    FacetUtils.AddFacet(new ActionDefaultsFacetViaFunction(methodToUse, parameters[i], LoggerFactory.CreateLogger<ActionDefaultsFacetViaFunction>()));
                 }
             }
 
