@@ -25,7 +25,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
 
         public bool HasResult => !IsVoid() && hasResult;
 
-        public ActionContext ActionContext { get; set; }
+        public ActionContext ActionContext { get; init; }
 
         public override string Id => ActionContext.Action.Id;
 
@@ -43,7 +43,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
                 TransientSecurityHash = TransientSecurityHash
             };
 
-            if (Reason == null) {
+            if (Reason is null) {
                 Reason = ActionContext.Reason;
                 ErrorCause = ActionContext.ErrorCause;
             }

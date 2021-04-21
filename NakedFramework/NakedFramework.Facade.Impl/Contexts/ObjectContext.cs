@@ -26,7 +26,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
         public override ITypeSpec Specification => Target.Spec;
 
         public PropertyContext[] VisibleProperties { get; set; }
-        public ActionContext[] VisibleActions { get; set; }
+        public ActionContext[] VisibleActions { get; init; }
 
         public ObjectContextFacade ToObjectContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var oc = new ObjectContextFacade {

@@ -13,8 +13,8 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Contexts {
     public class PropertyContext : Context {
-        public IAssociationSpec Property { get; set; }
-        public ListContext Completions { get; set; }
+        public IAssociationSpec Property { get; init; }
+        public ListContext Completions { get; init; }
 
         public bool Mutated { get; set; }
 

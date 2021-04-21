@@ -10,11 +10,11 @@ using System.Collections.Generic;
 namespace NakedFramework.Facade.Contexts {
     public class ArgumentsContextFacade {
         public IDictionary<string, object> Values { get; set; }
-        public bool ValidateOnly { get; set; }
-        public string Digest { get; set; }
-        public string SearchTerm { get; set; }
-        public int Page { get; set; }
-        public int PageSize { get; set; }
-        public MethodType ExpectedActionType { get; set; }
+        public bool ValidateOnly { get; init; }
+        public string Digest { get; init; }
+        public string SearchTerm { get; init; }
+        public int Page { get; init; }
+        public int PageSize { get; init; }
+        public MethodType ExpectedActionType { get; init; }
     }
 }

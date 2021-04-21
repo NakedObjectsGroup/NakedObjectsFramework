@@ -17,13 +17,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public override bool Equals(object obj) => obj is ConsentFacade cf && Equals(cf);
 
-        public bool Equals(ConsentFacade other) {
-            if (ReferenceEquals(null, other)) {
-                return false;
-            }
-
-            return ReferenceEquals(this, other) || Equals(other.consent, consent);
-        }
+        private bool Equals(ConsentFacade other) => other is not null && (ReferenceEquals(this, other) || Equals(other.consent, consent));
 
         public override int GetHashCode() => consent != null ? consent.GetHashCode() : 0;
 

@@ -15,8 +15,8 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Contexts {
     public class MenuContext {
-        public IMenuImmutable[] List { get; set; }
-        public IObjectSpec ElementType { get; set; }
+        public IMenuImmutable[] List { get; init; }
+        public IObjectSpec ElementType { get; init; }
 
         public MenuContextFacade ToMenuContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             return new() {

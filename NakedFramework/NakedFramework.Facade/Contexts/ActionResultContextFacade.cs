@@ -9,19 +9,19 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Contexts {
     public class ActionResultContextFacade : ContextFacade {
-        public ObjectContextFacade Result { get; set; }
-        public bool HasResult { get; set; }
+        public ObjectContextFacade Result { get; init; }
+        public bool HasResult { get; init; }
 
-        public string TransientSecurityHash { get; set; }
+        public string TransientSecurityHash { get; init; }
 
-        public ActionContextFacade ActionContext { get; set; }
+        public ActionContextFacade ActionContext { get; init; }
 
         public override IObjectFacade Target => ActionContext.Target;
 
         public override string Id => ActionContext.Action.Id;
 
-        public override ITypeFacade Specification => Result == null ? ActionContext.Specification : Result.Specification;
+        public override ITypeFacade Specification => Result is null ? ActionContext.Specification : Result.Specification;
 
-        public override ITypeFacade ElementSpecification => Result == null ? ActionContext.ElementSpecification : Result.ElementSpecification;
+        public override ITypeFacade ElementSpecification => Result is null ? ActionContext.ElementSpecification : Result.ElementSpecification;
     }
 }

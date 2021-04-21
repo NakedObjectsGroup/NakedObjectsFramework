@@ -21,7 +21,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
 
         public override ITypeSpec Specification => Parameter.Spec;
 
-        public string OverloadedUniqueId { get; set; }
+        public string OverloadedUniqueId { get; init; }
 
         public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework, string menuId) {
             var pc = new ParameterContextFacade {

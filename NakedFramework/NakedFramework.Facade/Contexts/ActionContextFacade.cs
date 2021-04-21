@@ -9,7 +9,7 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Contexts {
     public class ActionContextFacade : ContextFacade {
-        public IActionFacade Action { get; set; }
+        public IActionFacade Action { get; init; }
 
         public override string Id => Action.Id;
 
@@ -17,9 +17,9 @@ namespace NakedFramework.Facade.Contexts {
 
         public override ITypeFacade ElementSpecification => Action.ElementType;
 
-        public ParameterContextFacade[] VisibleParameters { get; set; }
-        public PropertyContextFacade[] VisibleProperties { get; set; }
-        public string MenuPath { get; set; }
+        public ParameterContextFacade[] VisibleParameters { get; init; }
+        public PropertyContextFacade[] VisibleProperties { get; init; }
+        public string MenuPath { get; init; }
         public string MenuId { get; set; }
     }
 }

@@ -9,8 +9,8 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Contexts {
     public class ListContextFacade {
-        public ITypeFacade ElementType { get; set; }
-        public IObjectFacade[] List { get; set; }
-        public bool IsListOfServices { get; set; }
+        public ITypeFacade ElementType { get; init; }
+        public IObjectFacade[] List { get; init; }
+        public bool IsListOfServices { get; init; }
     }
 }

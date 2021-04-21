@@ -10,7 +10,6 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Translation {
     public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {
-
         // when using this ctor be aware of encoded values that might include a "/"
         public OidTranslationSlashSeparatedTypeAndIds(string id) {
             var split = id.Split('/');
@@ -23,7 +22,7 @@ namespace NakedFramework.Facade.Translation {
             InstanceId = instanceId;
         }
 
-        public override string ToString() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "-" + InstanceId);
+        public override string ToString() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : $"-{InstanceId}");
 
         #region IOidTranslation Members
 
@@ -34,7 +33,7 @@ namespace NakedFramework.Facade.Translation {
 
         public IOidFacade GetSid(IOidStrategy oidStrategy) => oidStrategy.RestoreSid(this);
 
-        public string Encode() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
+        public string Encode() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : $"/{InstanceId}");
 
         #endregion
     }

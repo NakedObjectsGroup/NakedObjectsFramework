@@ -9,9 +9,9 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Contexts {
     public class ObjectContextFacade : ContextFacade {
-        public bool Mutated { get; set; }
+        public bool Mutated { get; init; }
 
-        public (string serverName, string oid)? Redirected { get; set; }
+        public (string serverName, string oid)? Redirected { get; init; }
 
         public override string Id => Target.Oid.ToString();
 
@@ -19,7 +19,7 @@ namespace NakedFramework.Facade.Contexts {
 
         public override ITypeFacade ElementSpecification => Target.ElementSpecification;
 
-        public PropertyContextFacade[] VisibleProperties { get; set; }
-        public ActionContextFacade[] VisibleActions { get; set; }
+        public PropertyContextFacade[] VisibleProperties { get; init; }
+        public ActionContextFacade[] VisibleActions { get; init; }
     }
 }

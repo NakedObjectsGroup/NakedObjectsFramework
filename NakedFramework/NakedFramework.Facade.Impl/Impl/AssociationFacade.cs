@@ -65,12 +65,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public int MemberOrder => WrappedSpec.GetMemberOrder();
 
-        public bool IsASet {
-            get {
-                var collection = WrappedSpec as IOneToManyAssociationSpec;
-                return collection != null && collection.IsASet;
-            }
-        }
+        public bool IsASet => WrappedSpec is IOneToManyAssociationSpec {IsASet: true};
 
         public bool IsInline => WrappedSpec.IsInline;
 
@@ -90,19 +85,9 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public string Id => WrappedSpec.Id;
 
-        public Choices IsChoicesEnabled {
-            get {
-                var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;
-                return oneToOneFeature != null && oneToOneFeature.IsChoicesEnabled ? Choices.Single : Choices.NotEnabled;
-            }
-        }
+        public Choices IsChoicesEnabled => WrappedSpec is IOneToOneFeatureSpec {IsChoicesEnabled: true} ? Choices.Single : Choices.NotEnabled;
 
-        public bool IsAutoCompleteEnabled {
-            get {
-                var single = WrappedSpec as IOneToOneFeatureSpec;
-                return single != null && single.IsAutoCompleteEnabled;
-            }
-        }
+        public bool IsAutoCompleteEnabled => WrappedSpec is IOneToOneFeatureSpec {IsAutoCompleteEnabled: true};
 
         public IConsentFacade IsUsable(IObjectFacade target) {
             var consent = WrappedSpec.IsUsable(((ObjectFacade) target).WrappedNakedObject);
@@ -179,7 +164,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public bool IsEnum => WrappedSpec.ContainsFacet<IEnumFacet>();
 
-        public bool IsFindMenuEnabled => WrappedSpec is IOneToOneAssociationSpec ws && ws.IsFindMenuEnabled;
+        public bool IsFindMenuEnabled => WrappedSpec is IOneToOneAssociationSpec {IsFindMenuEnabled: true};
 
         public (Regex, string)? RegEx => WrappedSpec.GetRegEx();
 

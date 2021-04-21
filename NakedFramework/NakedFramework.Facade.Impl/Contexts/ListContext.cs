@@ -15,9 +15,9 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Contexts {
     public class ListContext {
-        public INakedObjectAdapter[] List { get; set; }
-        public IObjectSpec ElementType { get; set; }
-        public bool IsListOfServices { get; set; }
+        public INakedObjectAdapter[] List { get; init; }
+        public IObjectSpec ElementType { get; init; }
+        public bool IsListOfServices { get; init; }
 
         public ListContextFacade ToListContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             return new() {

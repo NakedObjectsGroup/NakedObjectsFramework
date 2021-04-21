@@ -15,7 +15,7 @@ using NakedFramework.Facade.Interface;
 namespace NakedFramework.Facade.Impl.Contexts {
     public abstract class Context {
         public abstract string Id { get; }
-        public INakedObjectAdapter Target { get; set; }
+        public INakedObjectAdapter Target { get; init; }
         public string Reason { get; set; }
         public Cause ErrorCause { get; set; }
         public INakedObjectAdapter ProposedNakedObject { get; set; }

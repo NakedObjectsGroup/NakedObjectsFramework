@@ -18,7 +18,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
 
         private PropertyContext[] properties;
 
-        public IActionSpec Action { get; set; }
+        public IActionSpec Action { get; init; }
 
         public override string Id => Action.Id;
 

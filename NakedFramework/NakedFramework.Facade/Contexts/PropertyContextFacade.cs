@@ -9,8 +9,8 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Contexts {
     public class PropertyContextFacade : ContextFacade {
-        public IAssociationFacade Property { get; set; }
-        public bool Mutated { get; set; }
+        public IAssociationFacade Property { get; init; }
+        public bool Mutated { get; init; }
 
         public override string Id => Property.Id;
 
@@ -18,6 +18,6 @@ namespace NakedFramework.Facade.Contexts {
 
         public override ITypeFacade ElementSpecification => Property.ElementSpecification;
 
-        public ListContextFacade Completions { get; set; }
+        public ListContextFacade Completions { get; init; }
     }
 }

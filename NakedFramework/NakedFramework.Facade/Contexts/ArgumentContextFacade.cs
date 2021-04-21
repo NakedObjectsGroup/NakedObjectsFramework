@@ -7,8 +7,8 @@
 
 namespace NakedFramework.Facade.Contexts {
     public class ArgumentContextFacade {
-        public object Value { get; set; }
-        public bool ValidateOnly { get; set; }
-        public string Digest { get; set; }
+        public object Value { get; init; }
+        public bool ValidateOnly { get; init; }
+        public string Digest { get; init; }
     }
 }

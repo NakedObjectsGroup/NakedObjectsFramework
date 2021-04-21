@@ -31,13 +31,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public override bool Equals(object obj) => obj is ActionFacade af && Equals(af);
 
-        public bool Equals(ActionFacade other) {
-            if (ReferenceEquals(null, other)) {
-                return false;
-            }
-
-            return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
-        }
+        private bool Equals(ActionFacade other) => other is not null && (ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec));
 
         public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
 
@@ -72,7 +66,7 @@ namespace NakedFramework.Facade.Impl.Impl {
         public ITypeFacade ElementType {
             get {
                 var elementSpec = WrappedSpec.ElementSpec;
-                return elementSpec == null ? null : new TypeFacade(elementSpec, FrameworkFacade, framework);
+                return elementSpec is null ? null : new TypeFacade(elementSpec, FrameworkFacade, framework);
             }
         }
 

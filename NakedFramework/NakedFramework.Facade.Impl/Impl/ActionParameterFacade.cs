@@ -42,7 +42,7 @@ namespace NakedFramework.Facade.Impl.Impl {
         }
 
         private INakedObjectAdapter GetValue(IActionParameterFacade parm, object rawValue) {
-            if (rawValue == null || rawValue is string s && string.IsNullOrEmpty(s)) {
+            if (rawValue is null || rawValue is string s && string.IsNullOrEmpty(s)) {
                 return null;
             }
 
@@ -53,14 +53,13 @@ namespace NakedFramework.Facade.Impl.Impl {
             var collectionParm = parm.WrappedSpec() as IOneToManyActionParameterSpec;
 
             if (collectionParm != null && collectionParm.ElementSpec.IsParseable) {
-                var stringArray = rawValue as string[];
-                if (stringArray == null || !stringArray.Any()) {
+                if (rawValue is not string[] stringArray || !stringArray.Any()) {
                     return null;
                 }
 
                 var eSpec = collectionParm.ElementSpec;
 
-                var objectArray = stringArray.Select(i => i == null ? null : eSpec.GetFacet<IParseableFacet>().ParseTextEntry(i, framework.NakedObjectManager).Object).Where(o => o != null).ToArray();
+                var objectArray = stringArray.Select(i => i is null ? null : eSpec.GetFacet<IParseableFacet>().ParseTextEntry(i, framework.NakedObjectManager).Object).Where(o => o is not null).ToArray();
 
                 if (!objectArray.Any()) {
                     return null;
@@ -80,13 +79,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public override bool Equals(object obj) => obj is ActionParameterFacade apf && Equals(apf);
 
-        public bool Equals(ActionParameterFacade other) {
-            if (ReferenceEquals(null, other)) {
-                return false;
-            }
-
-            return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
-        }
+        private bool Equals(ActionParameterFacade other) => other is not null && (ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec));
 
         public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
 
