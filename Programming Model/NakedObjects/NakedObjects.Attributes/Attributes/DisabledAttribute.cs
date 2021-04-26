@@ -23,7 +23,7 @@ namespace NakedObjects {
     ///         </para>
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
     public class DisabledAttribute : Attribute {
         public DisabledAttribute() => Value = WhenTo.Always;
 

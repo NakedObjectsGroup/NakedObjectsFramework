@@ -5,18 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework;
 using System;
 
-namespace NakedObjects.Services {
+namespace NakedFunctions {
     /// <summary>
-    ///     Defines a service that can convert between a key and a string code
-    ///     Possible uses include:
-    ///     - key encryption
-    ///     - custom key separators
+    ///     Specifies that the value in a parameter is not editable by the user
     /// </summary>
-    public interface IKeyCodeMapper {
-        string[] KeyFromCode(string code, Type type);
-
-        string CodeFromKey(string[] key, Type type);
-    }
+    [AttributeUsage(AttributeTargets.Parameter)]
+    public class DisabledAttribute : AbstractDisabledAttribute { }
 }
