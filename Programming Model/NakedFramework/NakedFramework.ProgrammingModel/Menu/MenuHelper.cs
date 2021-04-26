@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NakedFramework
+namespace NakedFramework.Menu
 {
     public static class MenuHelper
     {

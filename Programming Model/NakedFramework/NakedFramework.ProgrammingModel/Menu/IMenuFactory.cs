@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework {
+namespace NakedFramework.Menu {
     public interface IMenuFactory {
         /// <summary>
         ///     Method is included for backwards compatibility with previous versions.
