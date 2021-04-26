@@ -46,6 +46,7 @@
     <ProjectReference Include="..\NakedFramework.Rest.Snapshot\NakedFramework.Rest.Snapshot.csproj" />
     <ProjectReference Include="..\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj" />
     <ProjectReference Include="..\NakedFramework.Rest\NakedFramework.Rest.csproj" />
+    <ProjectReference Include="..\NakedFramework.Test\NakedFramework.Test.csproj" />
   </ItemGroup>
 
 

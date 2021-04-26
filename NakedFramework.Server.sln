@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.DependencyIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Core.Test", "NakedFramework\NakedFramework.Core.Test\NakedFramework.Core.Test.csproj", "{D20B527C-5DA4-46DB-BA62-53307AB3457B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Xat", "NakedFramework\NakedFramework.Xat\NakedFramework.Xat.csproj", "{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Metamodel.Test", "NakedFramework\NakedFramework.Metamodel.Test\NakedFramework.Metamodel.Test.csproj", "{5C607273-C219-496A-9698-CCF65EFA3BCB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly", "NakedFramework\NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj", "{D0FBC51F-070B-4184-B1EE-D13B82159311}"
@@ -93,6 +91,8 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Persistor.EF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Persistor.EF6", "NakedFramework\NakedFramework.Persistor.EF6\NakedFramework.Persistor.EF6.csproj", "{74F13BFA-A2C4-4E99-98A4-80CB79E78C45}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Test", "NakedFramework\NakedFramework.Test\NakedFramework.Test.csproj", "{63E3FCCF-F5C0-47F8-A5C1-59708F8517C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,10 +127,6 @@ Global
 		{D20B527C-5DA4-46DB-BA62-53307AB3457B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D20B527C-5DA4-46DB-BA62-53307AB3457B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D20B527C-5DA4-46DB-BA62-53307AB3457B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5C607273-C219-496A-9698-CCF65EFA3BCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5C607273-C219-496A-9698-CCF65EFA3BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C607273-C219-496A-9698-CCF65EFA3BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -275,6 +271,10 @@ Global
 		{74F13BFA-A2C4-4E99-98A4-80CB79E78C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74F13BFA-A2C4-4E99-98A4-80CB79E78C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74F13BFA-A2C4-4E99-98A4-80CB79E78C45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63E3FCCF-F5C0-47F8-A5C1-59708F8517C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63E3FCCF-F5C0-47F8-A5C1-59708F8517C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63E3FCCF-F5C0-47F8-A5C1-59708F8517C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63E3FCCF-F5C0-47F8-A5C1-59708F8517C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
