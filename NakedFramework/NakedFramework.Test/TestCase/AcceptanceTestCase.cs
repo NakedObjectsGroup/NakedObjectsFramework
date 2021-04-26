@@ -27,6 +27,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Menu;
 using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Profile;

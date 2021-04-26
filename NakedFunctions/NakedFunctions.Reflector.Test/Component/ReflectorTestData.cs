@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedFramework;
+using NakedFramework.Menu;
 
 namespace NakedFunctions.Reflector.Test.Component {
     public class NullMenuFactory : IMenuFactory {

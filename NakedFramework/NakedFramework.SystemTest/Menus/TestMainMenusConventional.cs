@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using NakedFramework;
+using NakedFramework.Menu;
 using NUnit.Framework;
 using TestObjectMenu;
 

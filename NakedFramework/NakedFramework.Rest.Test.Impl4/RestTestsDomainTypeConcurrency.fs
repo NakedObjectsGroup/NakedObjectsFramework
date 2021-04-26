@@ -29,6 +29,7 @@ open NakedFramework.Xat.TestCase
 open NakedFramework.Facade.Utility
 open NakedFramework.Architecture.Component
 open NakedFramework.DependencyInjection.Extensions
+open NakedFramework.Menu
 
 type NullStringHasher() = 
     interface IStringHasher with

@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
-using NakedFramework;
+using NakedFramework.Menu;
 using NakedObjects;
 using NakedObjects.Services;
 using NakedObjects.SystemTest;

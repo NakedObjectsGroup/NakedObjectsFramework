@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
+using NakedFramework.Menu;
 using NakedFramework.Metamodel.SpecImmutable;
 
 namespace NakedFramework.ModelBuilding.Component {

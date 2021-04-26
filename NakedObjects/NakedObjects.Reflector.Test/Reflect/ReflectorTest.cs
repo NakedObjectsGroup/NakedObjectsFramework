@@ -25,6 +25,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
+using NakedFramework.Menu;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedObjects.Reflector.Extensions;

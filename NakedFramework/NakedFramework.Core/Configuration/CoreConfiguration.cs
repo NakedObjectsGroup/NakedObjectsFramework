@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Configuration;
+using NakedFramework.Menu;
 
 namespace NakedFramework.Core.Configuration {
     public class CoreConfiguration : ICoreConfiguration {

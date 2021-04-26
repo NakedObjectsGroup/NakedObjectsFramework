@@ -16,6 +16,7 @@ using NakedFramework.Core.Spec;
 using NakedFramework.DependencyInjection.Component;
 using NakedFramework.DependencyInjection.FacetFactory;
 using NakedFramework.DependencyInjection.Utils;
+using NakedFramework.Menu;
 using NakedFramework.Metamodel.Component;
 using NakedFramework.Metamodel.Menu;
 using NakedFramework.ModelBuilding.Component;

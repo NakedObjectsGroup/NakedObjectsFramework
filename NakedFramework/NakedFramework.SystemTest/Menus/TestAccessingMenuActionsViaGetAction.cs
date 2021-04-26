@@ -8,7 +8,7 @@
 using System;
 using System.Data.Entity;
 using SystemTest.ContributedActions;
-using NakedFramework;
+using NakedFramework.Menu;
 using NakedObjects;
 using NakedObjects.Services;
 using NakedObjects.SystemTest;

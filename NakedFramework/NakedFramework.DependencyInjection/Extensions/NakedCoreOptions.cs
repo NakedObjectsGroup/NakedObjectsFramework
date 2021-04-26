@@ -8,6 +8,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Menu;
 using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Profile;
