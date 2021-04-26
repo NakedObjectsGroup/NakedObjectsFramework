@@ -23,7 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Persistor.EFCore\NakedFramework.Persistor.EFCore.csproj" />
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Rest\NakedFramework.Rest.csproj" />
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Xat\NakedFramework.Test.csproj" />
     <ProjectReference Include="..\NakedFunctions.Rest.Test.Data\NakedFunctions.Rest.Test.Data.csproj" />
     <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Test\NakedFramework.Test.csproj" />
