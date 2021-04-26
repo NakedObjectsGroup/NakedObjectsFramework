@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using NakedFramework;
 using NakedFramework.Error;
+using NakedFramework.Menu;
 
 namespace AdventureWorksModel {
     [DisplayName("Customers")]

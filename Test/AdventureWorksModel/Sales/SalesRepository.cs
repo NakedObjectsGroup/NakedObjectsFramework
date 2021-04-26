@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFramework;
+using NakedFramework.Menu;
 using NakedObjects;
 using NakedObjects.Services;
 

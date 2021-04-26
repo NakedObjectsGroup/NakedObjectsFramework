@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFramework;
+using NakedFramework.Menu;
 using NakedObjects;
 
 namespace AdventureWorksModel {
