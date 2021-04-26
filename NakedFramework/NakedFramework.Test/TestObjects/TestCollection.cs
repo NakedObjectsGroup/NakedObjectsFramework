@@ -11,7 +11,6 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Xat.Interface;
 
@@ -30,16 +29,6 @@ namespace NakedFramework.Xat.TestObjects {
 
         public INakedObjectAdapter NakedObject { get; }
 
-        public ITestCollection AssertIsEmpty() {
-            Assert.AreEqual(0, this.Count(), "Collection is not empty");
-            return this;
-        }
-
-        public ITestCollection AssertIsNotEmpty() {
-            Assert.IsTrue(this.Any(), "Collection is empty");
-            return this;
-        }
-
         public ITestCollection AssertCountIs(int count) {
             Assert.IsTrue(this.Count() == count, $"Collection Size is: {this.Count()} expected: {count}");
             return this;
@@ -48,16 +37,6 @@ namespace NakedFramework.Xat.TestObjects {
         public IEnumerator<ITestObject> GetEnumerator() => wrappedCollection.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        public ITestCollection AssertIsTransient() {
-            Assert.IsTrue(NakedObject.ResolveState.IsTransient(), "Collection is not transient");
-            return this;
-        }
-
-        public ITestCollection AssertIsPersistent() {
-            Assert.IsTrue(NakedObject.ResolveState.IsPersistent(), "Collection is not persistent");
-            return this;
-        }
 
         #endregion
     }

@@ -31,10 +31,7 @@ namespace NakedFramework.Xat.TestObjects {
             NakedObject = nakedObjectAdapter;
         }
 
-        public override bool Equals(object obj) {
-            var testObject = obj as TestObject;
-            return testObject != null && testObject.NakedObject == NakedObject;
-        }
+        public override bool Equals(object obj) => obj is TestObject testObject && testObject.NakedObject == NakedObject;
 
         public override string ToString() => NakedObject == null ? "" : NakedObject.ToString();
 

@@ -11,9 +11,6 @@ namespace NakedFramework.Xat.Interface {
         ITestNaked[] GetChoices();
         ITestNaked[] GetCompletions(string autoCompleteParm);
         ITestNaked GetDefault();
-        ITestParameter AssertIsOptional();
-        ITestParameter AssertIsMandatory();
         ITestParameter AssertIsDescribedAs(string description);
-        ITestParameter AssertIsNamed(string name);
     }
 }

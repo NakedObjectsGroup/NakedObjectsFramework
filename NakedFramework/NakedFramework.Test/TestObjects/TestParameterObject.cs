@@ -7,7 +7,6 @@
 
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Core.Error;
 using NakedFramework.Xat.Interface;
 
 namespace NakedFramework.Xat.TestObjects {
@@ -26,7 +25,6 @@ namespace NakedFramework.Xat.TestObjects {
 
         public INakedObjectAdapter NakedObject {
             get => manager.CreateAdapter(domainObject, null, null);
-            set => throw new UnexpectedCallException();
         }
 
         #endregion

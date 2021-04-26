@@ -11,13 +11,11 @@ namespace NakedFramework.Xat.Interface {
     public interface ITestAction {
         string Name { get; }
         string SubMenu { get; }
-        string LastMessage { get; }
         ITestParameter[] Parameters { get; }
         bool MatchParameters(Type[] typestoMatch);
         ITestObject InvokeReturnObject(params object[] parameters);
         ITestCollection InvokeReturnCollection(params object[] parameters);
         void Invoke(params object[] parameters);
-        ITestCollection InvokeReturnPagedCollection(int page, params object[] parameters);
         ITestAction AssertIsDisabled();
         ITestAction AssertIsEnabled();
         ITestAction AssertIsInvalidWithParms(params object[] parameters);
@@ -26,7 +24,6 @@ namespace NakedFramework.Xat.Interface {
         ITestAction AssertIsInvisible();
         ITestAction AssertIsDescribedAs(string expected);
         ITestAction AssertLastMessageIs(string message);
-        ITestAction AssertLastMessageContains(string message);
 
         /// <summary>
         ///     Test how the action will be rendered to the user.

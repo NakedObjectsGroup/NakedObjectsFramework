@@ -12,7 +12,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Resolve;
 using NakedFramework.Xat.Interface;
 
 namespace NakedFramework.Xat.TestObjects {
@@ -49,22 +48,8 @@ namespace NakedFramework.Xat.TestObjects {
             return (ITestObject) this;
         }
 
-        public ITestObject AssertIsImmutable() {
-            var spec = NakedObject.Spec;
-            var facet = spec.GetFacet<IImmutableFacet>();
-
-            var immutable = facet.Value == WhenTo.Always || facet.Value == WhenTo.OncePersisted && NakedObject.ResolveState.IsPersistent();
-
-            Assert.IsTrue(immutable, "Not immutable");
-            return (ITestObject) this;
-        }
-
         public override string ToString() {
-            if (NakedObject == null) {
-                return $"{base.ToString()} null";
-            }
-
-            return $"{base.ToString()} {NakedObject.Spec.ShortName}/{NakedObject}";
+            return NakedObject is null ? $"{base.ToString()} null" : $"{base.ToString()} {NakedObject.Spec.ShortName}/{NakedObject}";
         }
 
         private static string AppendActions(IActionSpec[] actionsSpec) {
@@ -81,7 +66,7 @@ namespace NakedFramework.Xat.TestObjects {
 
         #region ITestHasActions Members
 
-        public INakedObjectAdapter NakedObject { get; set; }
+        public INakedObjectAdapter NakedObject { get; protected init; }
 
         public ITestAction[] Actions {
             get { return NakedObject.Spec.GetActions().Select(x => Factory.CreateTestAction(x, this)).ToArray(); }
@@ -131,7 +116,7 @@ namespace NakedFramework.Xat.TestObjects {
             return action;
         }
 
-        public virtual string GetObjectActionOrder() {
+        protected virtual string GetObjectActionOrder() {
             var spec = NakedObject.Spec;
             var actionsSpec = spec.GetActions();
             var order = new StringBuilder();

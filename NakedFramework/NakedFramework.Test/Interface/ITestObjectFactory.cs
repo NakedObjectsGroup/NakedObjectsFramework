@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
@@ -17,7 +16,6 @@ namespace NakedFramework.Xat.Interface {
     ///     This interface is not used by XAT2.
     /// </summary>
     public interface ITestObjectFactory {
-        ISession Session { get; set; }
         ITestService CreateTestService(object service);
         ITestMenu CreateTestMenuMain(IMenuImmutable menu);
         ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestHasActions owningObject);
@@ -29,7 +27,6 @@ namespace NakedFramework.Xat.Interface {
         ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestHasActions owningObject);
         ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject);
         ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject);
-        ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject);
         ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject);
     }
 

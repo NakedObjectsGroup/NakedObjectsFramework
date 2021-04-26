@@ -8,7 +8,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
@@ -21,13 +20,11 @@ namespace NakedFramework.Xat.TestObjects {
 
         public TestObjectFactory(INakedObjectsFramework framework) => this.framework = framework;
 
-        public ITestService CreateTestService(INakedObjectAdapter service) => new TestService(service, this);
+        private ITestService CreateTestService(INakedObjectAdapter service) => new TestService(service, this);
 
         private static ITestValue CreateTestValue(INakedObjectAdapter nakedObjectAdapter) => new TestValue(nakedObjectAdapter);
 
         #region ITestObjectFactory Members
-
-        public ISession Session { get; set; }
 
         public ITestService CreateTestService(object service) {
             var no = framework.NakedObjectManager.GetServiceAdapter(service);
@@ -46,7 +43,7 @@ namespace NakedFramework.Xat.TestObjects {
         public ITestObject CreateTestObject(INakedObjectAdapter nakedObjectAdapter) => new TestObject(framework.LifecycleManager, framework.Persistor, nakedObjectAdapter, this, framework.TransactionManager);
 
         public ITestNaked CreateTestNaked(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter == null) {
+            if (nakedObjectAdapter is null) {
                 return null;
             }
 
@@ -58,11 +55,7 @@ namespace NakedFramework.Xat.TestObjects {
                 return CreateTestObject(nakedObjectAdapter);
             }
 
-            if (nakedObjectAdapter.Spec.IsCollection) {
-                return CreateTestCollection(nakedObjectAdapter);
-            }
-
-            return null;
+            return nakedObjectAdapter.Spec.IsCollection ? CreateTestCollection(nakedObjectAdapter) : null;
         }
 
         public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(framework, actionSpec, owningObject, this);
@@ -75,7 +68,7 @@ namespace NakedFramework.Xat.TestObjects {
         public ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm) {
             var objectIm = actionSpecImm.OwnerSpec; //This is the spec for the service
 
-            if (!(objectIm is IServiceSpecImmutable)) {
+            if (objectIm is not IServiceSpecImmutable) {
                 throw new Exception("Action is not on a known service");
             }
 
@@ -84,8 +77,6 @@ namespace NakedFramework.Xat.TestObjects {
             var testService = CreateTestService(service);
             return CreateTestAction(actionSpecImm, testService);
         }
-
-        public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(framework, contributor, actionSpec, owningObject, this);
 
         public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) => new TestProperty(field, owningObject, this, framework);
 

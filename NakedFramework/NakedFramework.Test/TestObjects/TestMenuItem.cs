@@ -36,11 +36,7 @@ namespace NakedFramework.Xat.TestObjects {
         public ITestAction AsAction() {
             AssertIsAction();
             var actionSpecIm = ((IMenuActionImmutable) item).Action;
-            if (owningObject == null) {
-                return factory.CreateTestActionOnService(actionSpecIm);
-            }
-
-            return factory.CreateTestAction(actionSpecIm, owningObject);
+            return owningObject is null ? factory.CreateTestActionOnService(actionSpecIm) : factory.CreateTestAction(actionSpecIm, owningObject);
         }
 
         public ITestMenuItem AssertIsSubMenu() {

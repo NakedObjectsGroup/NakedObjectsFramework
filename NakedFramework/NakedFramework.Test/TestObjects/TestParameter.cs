@@ -51,23 +51,8 @@ namespace NakedFramework.Xat.TestObjects {
             return factory.CreateTestNaked(defaultValue);
         }
 
-        public ITestParameter AssertIsOptional() {
-            Assert.IsTrue(!parameterSpec.IsMandatory, $"Parameter: {Name} is mandatory");
-            return this;
-        }
-
-        public ITestParameter AssertIsMandatory() {
-            Assert.IsTrue(parameterSpec.IsMandatory, $"Parameter: {Name} is optional");
-            return this;
-        }
-
         public ITestParameter AssertIsDescribedAs(string description) {
             Assert.IsTrue(parameterSpec.Description == description, $"Parameter: {Name} description: {parameterSpec.Description} expected: {description}");
-            return this;
-        }
-
-        public ITestParameter AssertIsNamed(string name) {
-            Assert.IsTrue(Name == name, $"Parameter name : {Name} expected {name}");
             return this;
         }
 

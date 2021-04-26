@@ -55,8 +55,6 @@ namespace NakedFramework.Xat.Interface {
         /// </summary>
         ITestAction GetActionById(string methodName, string subMenu, params Type[] parameterTypes);
 
-        string GetObjectActionOrder();
-
         /// <summary>
         ///     Test action order against string of form: "Action1, Action2"
         ///     or "Action1, (SubMenu1:Action1, Action2)"

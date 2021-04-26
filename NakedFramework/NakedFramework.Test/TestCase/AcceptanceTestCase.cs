@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
@@ -21,9 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
@@ -42,34 +39,30 @@ using NakedObjects.Reflector.Extensions;
 namespace NakedFramework.Xat.TestCase {
     public abstract class AcceptanceTestCase {
         private static IHost host;
-        private FixtureServices fixtureServices;
 
-        protected IServiceProvider RootServiceProvider;
+        private IServiceProvider RootServiceProvider;
         private IServiceProvider scopeServiceProvider;
         private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
         private ITestObjectFactory testObjectFactory;
         private IPrincipal testPrincipal;
 
-        protected AcceptanceTestCase(string name) {
-            Name = name;
+        private AcceptanceTestCase(string name) {
             DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
         }
 
         protected AcceptanceTestCase() : this("Unnamed") { }
 
         protected virtual IServiceScope ServiceScope { set; get; }
-        protected string Name { set; get; }
 
         protected virtual ITestObjectFactory TestObjectFactoryClass => testObjectFactory ??= new TestObjectFactory(NakedObjectsFramework);
 
         protected virtual IPrincipal TestPrincipal {
             get { return testPrincipal ??= CreatePrincipal("Test", Array.Empty<string>()); }
-            set => testPrincipal = value;
         }
 
-        protected INakedObjectsFramework NakedObjectsFramework { get; set; }
+        protected INakedObjectsFramework NakedObjectsFramework { get; private set; }
 
-        protected ILoggerFactory LoggerFactory { get; set; }
+        protected ILoggerFactory LoggerFactory { get; private set; }
 
         protected virtual object[] Fixtures {
             get { return Array.Empty<object>(); }
@@ -161,9 +154,8 @@ namespace NakedFramework.Xat.TestCase {
                 })
                 .ConfigureServices((hostContext, services) => { RegisterTypes(services); });
 
-        /// <summary>
-        ///     Gets the configured service provider
-        /// </summary>
+        // used from F# test code do not delete
+        // ReSharper disable once UnusedMember.Global
         protected virtual IServiceProvider GetConfiguredContainer() => scopeServiceProvider;
 
         protected virtual IMenu[] MainMenus(IMenuFactory factory) => null; //Allows tests not to define menus if not needed.
@@ -201,10 +193,6 @@ namespace NakedFramework.Xat.TestCase {
             }
         }
 
-        protected virtual void PreInstallFixtures(ITransactionManager transactionManager) {
-            fixtureServices = new FixtureServices();
-        }
-
         private static MethodInfo GetInstallMethod(object fixture) =>
             fixture.GetType().GetMethod("Install", Array.Empty<Type>()) ??
             fixture.GetType().GetMethod("install", Array.Empty<Type>());
@@ -216,7 +204,7 @@ namespace NakedFramework.Xat.TestCase {
 
         protected virtual void InstallFixture(object fixture) {
             var property = fixture.GetType().GetProperty("Service");
-            SetValue(property, fixture, fixtureServices);
+            SetValue(property, fixture, null);
 
             var installMethod = GetInstallMethod(fixture);
             try {
@@ -319,28 +307,6 @@ namespace NakedFramework.Xat.TestCase {
         protected virtual void AssertMainMenuCountIs(int expected) {
             var actual = NakedObjectsFramework.MetamodelManager.MainMenus().Length;
             Assert.AreEqual(expected, actual);
-        }
-
-        protected virtual ITestObject GetBoundedInstance<T>(string title) => GetBoundedInstance(typeof(T), title);
-
-        protected virtual ITestObject GetBoundedInstance(Type type, string title) {
-            var spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(type);
-            return GetBoundedInstance(title, spec);
-        }
-
-        protected virtual ITestObject GetBoundedInstance(string classname, string title) {
-            var spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(classname);
-            return GetBoundedInstance(title, spec);
-        }
-
-        private ITestObject GetBoundedInstance(string title, IObjectSpec spec) {
-            if (spec.GetFacet<IBoundedFacet>() == null) {
-                Assert.Fail(spec.SingularName + " is not a Bounded type");
-            }
-
-            IEnumerable allInstances = NakedObjectsFramework.Persistor.Instances(spec);
-            var inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null).TitleString() == title);
-            return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.NakedObjectManager.CreateAdapter(inst, null, null));
         }
 
         private IPrincipal CreatePrincipal(string name, string[] roles) {

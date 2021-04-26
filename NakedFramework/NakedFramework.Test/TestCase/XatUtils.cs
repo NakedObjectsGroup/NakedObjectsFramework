@@ -15,10 +15,6 @@ namespace NakedFramework.Xat.TestCase {
     public static class XatUtils {
         private static ITestNaked AsTestNaked(this object parameter, INakedObjectManager manager) => parameter is ITestNaked testNaked ? testNaked : new TestParameterObject(manager, parameter);
 
-        public static ITestNaked[] AsTestNakedArray(this object parameter, INakedObjectManager manager) {
-            return new[] {AsTestNaked(parameter, manager)};
-        }
-
         public static ITestNaked[] AsTestNakedArray(this IEnumerable<object> parameters, INakedObjectManager manager) {
             // this is because passing null to a 'params' parameter  = null 
             // while passing nothing = object[0] 

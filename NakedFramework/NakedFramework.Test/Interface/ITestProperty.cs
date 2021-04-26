@@ -13,12 +13,10 @@ namespace NakedFramework.Xat.Interface {
         ITestNaked Content { get; }
         ITestObject ContentAsObject { get; }
         ITestCollection ContentAsCollection { get; }
-        string LastMessage { get; }
         ITestNaked GetDefault();
         ITestNaked[] GetChoices();
         ITestNaked[] GetCompletions(string autoCompleteParm);
         ITestProperty SetObject(ITestObject testObject);
-        ITestProperty RemoveFromCollection(ITestObject testObject);
 
         /// <summary>
         ///     Removes an existing object reference from the specified field. Mirrors the 'Remove Reference' menu
@@ -28,9 +26,6 @@ namespace NakedFramework.Xat.Interface {
 
         ITestProperty SetValue(string textEntry);
         ITestProperty ClearValue();
-        ITestProperty TestField(string setValue, string expected);
-        ITestProperty TestField(ITestObject expected);
-        ITestProperty AssertCannotParse(string text);
         ITestProperty AssertFieldEntryInvalid(string text);
         ITestProperty AssertFieldEntryIsValid(string text);
         ITestProperty AssertSetObjectInvalid(ITestObject testObject);
@@ -38,7 +33,6 @@ namespace NakedFramework.Xat.Interface {
         ITestProperty AssertIsInvisible();
         ITestProperty AssertIsVisible();
         ITestProperty AssertIsMandatory();
-        ITestProperty AssertIsOptional();
         ITestProperty AssertIsDescribedAs(string expected);
         ITestProperty AssertIsModifiable();
         ITestProperty AssertIsUnmodifiable();
@@ -49,11 +43,5 @@ namespace NakedFramework.Xat.Interface {
         ITestProperty AssertObjectIsEqual(ITestNaked expected);
         ITestProperty AssertIsValidToSave();
         ITestProperty AssertLastMessageIs(string message);
-        ITestProperty AssertLastMessageContains(string message);
-
-        /// <summary>
-        ///     Test the name of the property as would be presented to the user.
-        /// </summary>
-        ITestProperty AssertHasFriendlyName(string friendlyName);
     }
 }

@@ -10,7 +10,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Reflect;
@@ -95,7 +94,7 @@ namespace NakedFramework.Xat.TestObjects {
 
             var valid = field switch {
                 IOneToOneAssociationSpec associationSpec => associationSpec.IsAssociationValid(nakedObjectAdapter, testNakedObjectAdapter),
-                IOneToManyAssociationSpec _ => new Veto("Always disabled"),
+                IOneToManyAssociationSpec => new Veto("Always disabled"),
                 _ => throw new UnknownTypeException(field)
             };
 
@@ -108,31 +107,7 @@ namespace NakedFramework.Xat.TestObjects {
             return this;
         }
 
-        public ITestProperty RemoveFromCollection(ITestObject testObject) {
-            AssertIsVisible();
-            AssertIsModifiable();
-            ResetLastMessage();
-
-            Assert.IsTrue(field is IOneToManyAssociationSpec, "Cannot remove from non collection");
-
-            var testNakedObjectAdapter = testObject.NakedObject;
-
-            Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec),
-                          $"Can't clear a {testObject.NakedObject.Spec.ShortName} from the {Name} field (which accepts {field.ReturnSpec})");
-
-            var nakedObjectAdapter = owningObject.NakedObject;
-
-            if (!(field is IOneToManyAssociationSpec)) {
-                throw new UnknownTypeException(field);
-            }
-
-            IConsent valid = new Veto("Always disabled");
-
-            Assert.IsFalse(valid.IsVetoed, $"Can't remove {testNakedObjectAdapter} from the field {field} within {nakedObjectAdapter}: {valid.Reason}");
-            return this;
-        }
-
-        public string LastMessage { get; private set; }
+        private string LastMessage { get; set; }
 
         /// <summary>
         ///     Removes an existing object reference from the specified field. Mirrors the 'Remove Reference' menu
@@ -147,8 +122,7 @@ namespace NakedFramework.Xat.TestObjects {
 
             var nakedObjectAdapter = field.GetNakedObject(owningObject.NakedObject);
             if (nakedObjectAdapter != null) {
-                var spec = field as IOneToOneAssociationSpec;
-                if (spec != null) {
+                if (field is IOneToOneAssociationSpec spec) {
                     spec.SetAssociation(owningObject.NakedObject, null);
                 }
                 else {
@@ -205,40 +179,9 @@ namespace NakedFramework.Xat.TestObjects {
             return this;
         }
 
-        public ITestProperty TestField(string setValue, string expected) {
-            SetValue(setValue);
-            Assert.AreEqual("Field '" + Name + "' contains unexpected value", expected, Content.Title);
-            return this;
-        }
-
-        public ITestProperty TestField(ITestObject expected) {
-            SetObject(expected);
-            Assert.AreEqual(expected.NakedObject, Content.NakedObject);
-            return this;
-        }
-
         #endregion
 
         #region Asserts
-
-        public ITestProperty AssertCannotParse(string text) {
-            AssertIsVisible();
-            AssertIsModifiable();
-
-            var valueObjectAdapter = field.GetNakedObject(owningObject.NakedObject);
-
-            Assert.IsNotNull(valueObjectAdapter, "Field '" + Name + "' contains null, but should contain an INakedObjectAdapter object");
-            try {
-                var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
-                parseableFacet.ParseTextEntry(text, manager);
-                Assert.Fail("Content was unexpectedly parsed");
-            }
-            catch (InvalidEntryException /*expected*/) {
-                // expected
-            }
-
-            return this;
-        }
 
         public ITestProperty AssertFieldEntryInvalid(string text) => IsNotParseable() ? AssertNotParseable() : AssertParseableFieldEntryInvalid(text);
 
@@ -268,7 +211,7 @@ namespace NakedFramework.Xat.TestObjects {
             var nakedObjectAdapter = owningObject.NakedObject;
             var valid = field switch {
                 IOneToOneAssociationSpec spec => spec.IsAssociationValid(nakedObjectAdapter, testNakedObjectAdapter),
-                IOneToManyAssociationSpec _ => new Veto("Always disabled"),
+                IOneToManyAssociationSpec => new Veto("Always disabled"),
                 _ => throw new UnknownTypeException(field)
             };
 
@@ -292,11 +235,6 @@ namespace NakedFramework.Xat.TestObjects {
 
         public ITestProperty AssertIsMandatory() {
             Assert.IsTrue(field.IsMandatory, "Field '" + field.Id + "' is optional");
-            return this;
-        }
-
-        public ITestProperty AssertIsOptional() {
-            Assert.IsTrue(!field.IsMandatory, "Field '" + field.Id + "' is mandatory");
             return this;
         }
 
@@ -376,12 +314,7 @@ namespace NakedFramework.Xat.TestObjects {
             return this;
         }
 
-        public ITestProperty AssertLastMessageContains(string message) {
-            Assert.IsTrue(LastMessage.Contains(message), "Last message expected to contain: '" + message + "' actual: '" + LastMessage + "'");
-            return this;
-        }
-
-        public ITestProperty AssertParseableFieldEntryInvalid(string text) {
+        private ITestProperty AssertParseableFieldEntryInvalid(string text) {
             AssertIsVisible();
             AssertIsModifiable();
             ResetLastMessage();
@@ -402,7 +335,7 @@ namespace NakedFramework.Xat.TestObjects {
             return this;
         }
 
-        public ITestProperty AssertParseableFieldEntryIsValid(string text) {
+        private ITestProperty AssertParseableFieldEntryIsValid(string text) {
             AssertIsVisible();
             AssertIsModifiable();
             ResetLastMessage();
@@ -419,11 +352,6 @@ namespace NakedFramework.Xat.TestObjects {
 
         private ITestProperty AssertNotParseable() {
             Assert.Fail("Not a parseable field");
-            return this;
-        }
-
-        public ITestProperty AssertHasFriendlyName(string friendlyName) {
-            Assert.AreEqual(friendlyName, Name);
             return this;
         }
 

@@ -9,7 +9,6 @@ using System;
 
 namespace NakedFramework.Xat.Interface {
     public interface ITestObject : ITestHasActions, ITestHasProperties {
-        ITestObject AssertIsImmutable();
         ITestObject AssertIsDescribedAs(string expectedDescription);
         ITestObject AssertIsType(Type expectedType);
         ITestObject AssertTitleEquals(string expectedTitle);

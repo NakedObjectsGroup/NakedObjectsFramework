@@ -26,32 +26,12 @@ namespace NakedFramework.Xat.TestObjects {
         public TestAction(INakedObjectsFramework framework, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory)
             : this(framework, string.Empty, actionSpec, owningObject, factory) { }
 
-        public TestAction(INakedObjectsFramework framework, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory) {
+        private TestAction(INakedObjectsFramework framework, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory) {
             SubMenu = contributor;
             this.framework = framework;
             this.owningObject = owningObject;
             this.factory = factory;
             this.actionSpec = actionSpec;
-        }
-
-        private ITestNaked DoInvoke(int page, params object[] parameters) {
-            ResetLastMessage();
-            AssertIsValidWithParms(parameters);
-            var parameterObjectsAdapter = parameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x.NakedObject).ToArray();
-
-            var parms = actionSpec.RealParameters(owningObject.NakedObject, parameterObjectsAdapter);
-            var target = actionSpec.RealTarget(owningObject.NakedObject);
-            var result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, framework);
-
-            if (result == null) {
-                return null;
-            }
-
-            if (result.Spec.IsCollection) {
-                return factory.CreateTestCollection(result);
-            }
-
-            return factory.CreateTestObject(result);
         }
 
         private ITestNaked DoInvoke(params object[] parameters) {
@@ -89,7 +69,7 @@ namespace NakedFramework.Xat.TestObjects {
         public string Name => actionSpec.Name;
 
         public string SubMenu { get; }
-        public string LastMessage { get; private set; }
+        private string LastMessage { get; set; }
 
         public ITestParameter[] Parameters {
             get { return actionSpec.Parameters.Select(x => factory.CreateTestParameter(actionSpec, x, owningObject)).ToArray(); }
@@ -128,16 +108,6 @@ namespace NakedFramework.Xat.TestObjects {
             try {
                 framework.TransactionManager.StartTransaction();
                 DoInvoke(ParsedParameters(parameters));
-            }
-            finally {
-                framework.TransactionManager.EndTransaction();
-            }
-        }
-
-        public ITestCollection InvokeReturnPagedCollection(int page, params object[] parameters) {
-            try {
-                framework.TransactionManager.StartTransaction();
-                return (ITestCollection) DoInvoke(page, ParsedParameters(parameters));
             }
             finally {
                 framework.TransactionManager.EndTransaction();
@@ -222,11 +192,6 @@ namespace NakedFramework.Xat.TestObjects {
             return this;
         }
 
-        public ITestAction AssertLastMessageContains(string message) {
-            Assert.IsTrue(LastMessage.Contains(message), "Last message expected to contain: '" + message + "' actual: '" + LastMessage + "'");
-            return this;
-        }
-
         private object[] ParsedParameters(params object[] parameters) {
             var parsedParameters = new List<object>();
 
@@ -236,8 +201,7 @@ namespace NakedFramework.Xat.TestObjects {
             foreach (var parm in actionSpec.Parameters) {
                 var value = parameters[i++];
 
-                var valueAsString = value as string;
-                if (valueAsString != null && parm.Spec.IsParseable) {
+                if (value is string valueAsString && parm.Spec.IsParseable) {
                     parsedParameters.Add(parm.Spec.GetFacet<IParseableFacet>().ParseTextEntry(valueAsString, framework.NakedObjectManager).Object);
                 }
                 else {

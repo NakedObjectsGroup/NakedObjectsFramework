@@ -12,34 +12,10 @@ namespace NakedFramework.Xat.TestCase {
     public class FixtureServices {
         public FixtureServices() => Clock = FixtureClock.Initialize();
 
-        protected FixtureClock Clock { get; set; }
-
-        public void EarlierDate(int years, int months, int days) {
-            Clock.AddDate(-years, -months, -days);
-        }
-
-        public void EarlierTime(int hours, int minutes) {
-            Clock.AddTime(-hours, -minutes);
-        }
-
-        public void LaterDate(int years, int months, int days) {
-            Clock.AddDate(years, months, days);
-        }
-
-        public void LaterTime(int hours, int minutes) {
-            Clock.AddTime(hours, minutes);
-        }
+        protected FixtureClock Clock { get; }
 
         public void ResetClock() {
             Clock.Reset();
-        }
-
-        public void SetDate(int year, int month, int day) {
-            Clock.SetDate(year, month, day);
-        }
-
-        public void SetTime(int hour, int minute) {
-            Clock.SetTime(hour, minute);
         }
 
         #region Nested type: FixtureClock
@@ -47,48 +23,10 @@ namespace NakedFramework.Xat.TestCase {
         protected class FixtureClock {
             private DateTime time;
 
-            protected long Ticks => time.Ticks;
-
             /// <summary>
             ///     Create a return new FixtureClock
             /// </summary>
             public static FixtureClock Initialize() => new();
-
-            /// <summary>
-            ///     Set time - leaving date unchanged
-            /// </summary>
-            public void SetTime(int hour, int min) {
-                time = new DateTime(time.Year,
-                                    time.Month,
-                                    time.Day,
-                                    hour,
-                                    min,
-                                    0);
-            }
-
-            /// <summary>
-            ///     Set date
-            /// </summary>
-            public void SetDate(int year, int month, int day) {
-                time = new DateTime(year, month, day);
-            }
-
-            /// <summary>
-            ///     Add time to current datetime
-            /// </summary>
-            public void AddTime(int hours, int minutes) {
-                time = time.AddHours(hours);
-                time = time.AddMinutes(minutes);
-            }
-
-            /// <summary>
-            ///     Add years/month/days to current time
-            /// </summary>
-            public void AddDate(int years, int months, int days) {
-                time = time.AddYears(years);
-                time = time.AddMonths(months);
-                time = time.AddDays(days);
-            }
 
             /// <summary>
             ///     SetupContexts time to now
