@@ -6,23 +6,25 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedObjects;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedObjects.Reflector.Facet {
     [Serializable]
-    public sealed class ViewModelFacetConvention : ViewModelFacetAbstract {
-        public ViewModelFacetConvention(ISpecification holder)
-            : base(Type, holder) { }
+    public sealed class ViewModelEditFacetConvention : ViewModelFacetAbstract {
+        public ViewModelEditFacetConvention(ISpecification holder) : base(Type, holder) { }
 
         private static Type Type => typeof(IViewModelFacet);
 
         public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 
         public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
+
+        public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => true;
     }
 }
