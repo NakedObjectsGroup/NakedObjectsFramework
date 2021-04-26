@@ -10,8 +10,8 @@ using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     Specifies that a public property, class, or action is never displayed to the user
+    ///     Specifies that the value in a parameter is not editable by the user
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method)]
-    public class HiddenAttribute : AbstractHiddenAttribute { }
+    [AttributeUsage(AttributeTargets.Parameter)]
+    public class DisabledAttribute : AbstractDisabledAttribute { }
 }
