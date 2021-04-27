@@ -10,7 +10,6 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Representation;
@@ -42,7 +41,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
         protected UriMtHelper GetHelper() => new(OidStrategy, Req, PropertyContext);
 
-        protected static string GetAttachmentFileName(PropertyContextFacade context) {
+        private static string GetAttachmentFileName(PropertyContextFacade context) {
             var no = context.Property.GetValue(context.Target);
             return no != null ? no.GetAttachment().FileName : "UnknownFile";
         }

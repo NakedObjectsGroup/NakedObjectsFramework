@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
@@ -33,7 +34,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetScalars(ObjectContextFacade objectContext) => Value = RestUtils.ObjectToPredefinedType(objectContext.Target.Object, false);
 
-        private void SetLinks(HttpRequest req, ObjectContextFacade objectContext) => Links = System.Array.Empty<LinkRepresentation>();
+        private void SetLinks(HttpRequest req, ObjectContextFacade objectContext) => Links = Array.Empty<LinkRepresentation>();
 
         private void SetExtensions() => Extensions = MapRepresentation.Create();
 

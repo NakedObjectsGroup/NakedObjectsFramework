@@ -176,7 +176,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         public IRepresentation Representation { get; private set; }
 
-        public Uri Location { get; set; }
+        public Uri Location { get; private set; }
 
         public WarningHeaderValue[] WarningHeaders => warningHeaders.ToArray();
 
@@ -184,7 +184,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         public HttpStatusCode HttpStatusCode { get; private set; } = HttpStatusCode.OK;
 
-        public EntityTagHeaderValue Etag { get; set; }
+        public EntityTagHeaderValue Etag { get; private set; }
 
         private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequest req) {
             var ocs = context as ObjectContextFacade;
@@ -216,7 +216,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             }
         }
 
-        public bool RequestingAttachment() {
+        private bool RequestingAttachment() {
             var headers = new RequestHeaders(requestMessage.Headers);
 
             var incomingMediaTypes = headers.Accept;
@@ -225,7 +225,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                    !incomingMediaTypes.Any(mt => RestUtils.IsJsonMediaType(mt.MediaType.ToString()));
         }
 
-        public void ValidateIncomingMediaTypeAsJson() {
+        private void ValidateIncomingMediaTypeAsJson() {
             if (flags.AcceptHeaderStrict) {
                 var headers = new RequestHeaders(requestMessage.Headers);
                 var incomingMediaTypes = headers.Accept;

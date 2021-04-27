@@ -5,11 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
@@ -21,7 +21,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
         public override bool ShowChoices() => false;
 
-        public override LinkRepresentation[] GetLinks() => System.Array.Empty<LinkRepresentation>();
+        public override LinkRepresentation[] GetLinks() => Array.Empty<LinkRepresentation>();
 
         protected override bool AddChoices() =>
             PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&

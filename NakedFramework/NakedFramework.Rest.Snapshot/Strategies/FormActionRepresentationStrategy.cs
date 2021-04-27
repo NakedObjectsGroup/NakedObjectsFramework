@@ -31,7 +31,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
                 CreateActionLink()
             }.ToArray();
 
-        protected ParameterRepresentation GetParameter(IAssociationFacade assoc) {
+        private ParameterRepresentation GetParameter(IAssociationFacade assoc) {
             var objectFacade = ActionContext.Target;
             return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, assoc, ActionContext, Flags);
         }

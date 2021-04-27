@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -69,7 +70,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetLinks(HttpRequest req) => Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, req)), Flags)};
 
-        private void SetLinks(HttpRequest req, ITypeFacade spec) => Links = System.Array.Empty<LinkRepresentation>();
+        private void SetLinks(HttpRequest req, ITypeFacade spec) => Links = Array.Empty<LinkRepresentation>();
 
         private void SetLinks(HttpRequest req, ActionContextFacade actionContext) => SetLinks(req, actionContext.ElementSpecification);
 

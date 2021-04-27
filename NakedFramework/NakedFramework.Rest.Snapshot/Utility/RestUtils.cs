@@ -157,7 +157,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             }
         }
 
-        public static object GetChoiceValue(IOidStrategy oidStrategy, IObjectFacade item, Func<ChoiceRelType> relType, RestControlFlags flags) {
+        private static object GetChoiceValue(IOidStrategy oidStrategy, IObjectFacade item, Func<ChoiceRelType> relType, RestControlFlags flags) {
             var title = SafeGetTitle(item);
             var value = ObjectToPredefinedType(item.Object, false);
             return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType(), flags, new OptionalProperty(JsonPropertyNames.Title, title));
@@ -215,7 +215,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             return null;
         }
 
-        public static PredefinedFormatType? TypeToPredefinedFormatType(Type toMapType, bool isParseable, bool useDateOverDateTime) {
+        private static PredefinedFormatType? TypeToPredefinedFormatType(Type toMapType, bool isParseable, bool useDateOverDateTime) {
             if (SimpleFormatMap.ContainsKey(toMapType)) {
                 return SimpleFormatMap[toMapType];
             }
@@ -240,7 +240,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             return null;
         }
 
-        public static (PredefinedJsonType, PredefinedFormatType?)? TypeToPredefinedTypes(Type toMapType, bool isParseable, bool useDateOverDateTime) {
+        private static (PredefinedJsonType, PredefinedFormatType?)? TypeToPredefinedTypes(Type toMapType, bool isParseable, bool useDateOverDateTime) {
             var pst = TypeToPredefinedJsonType(toMapType, isParseable);
 
             if (pst.HasValue) {
@@ -259,9 +259,9 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             return false;
         }
 
-        public static string ToDateFormatString(DateTime date) => date.Date.ToString("yyyy-MM-dd");
+        private static string ToDateFormatString(DateTime date) => date.Date.ToString("yyyy-MM-dd");
 
-        public static string ToTimeFormatString(TimeSpan time) => time.ToString(@"hh\:mm\:ss");
+        private static string ToTimeFormatString(TimeSpan time) => time.ToString(@"hh\:mm\:ss");
 
         public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime) {
             static object ToUniversalTime(DateTime dt) => dt.Kind == DateTimeKind.Unspecified
@@ -277,7 +277,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             };
         }
 
-        public static (PredefinedJsonType pdt, PredefinedFormatType? pft)? SpecToPredefinedTypes(ITypeFacade spec, bool useDateOverDateTime) {
+        private static (PredefinedJsonType pdt, PredefinedFormatType? pft)? SpecToPredefinedTypes(ITypeFacade spec, bool useDateOverDateTime) {
             if (spec.IsFileAttachment || spec.IsImage) {
                 return (PredefinedJsonType.String, PredefinedFormatType.Blob);
             }
@@ -332,10 +332,9 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             mediaType == "application/*" ||
             mediaType == "application/json";
 
-        public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequest req, (string name, ITypeFacade type) pnt, RestControlFlags flags) {
-            return new(pnt.name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)),
-                                                          new OptionalProperty(JsonPropertyNames.Links, Array.Empty<LinkRepresentation>())));
-        }
+        public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequest req, (string name, ITypeFacade type) pnt, RestControlFlags flags) =>
+            new(pnt.name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)),
+                                                   new OptionalProperty(JsonPropertyNames.Links, Array.Empty<LinkRepresentation>())));
 
         public static string DefaultMimeType(this AttachmentContextFacade attachment) {
             //attempt an intelligent default

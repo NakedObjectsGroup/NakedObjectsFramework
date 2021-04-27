@@ -12,7 +12,6 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Representation;
@@ -24,11 +23,10 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
         private readonly IFrameworkFacade frameworkFacade;
 
         protected AbstractPropertyRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(frameworkFacade, req, propertyContext, flags) {
+            base(frameworkFacade, req, propertyContext, flags) =>
             this.frameworkFacade = frameworkFacade;
-        }
 
-        protected IDictionary<string, object> CustomExtensions { get; set; }
+        private IDictionary<string, object> CustomExtensions { get; set; }
 
         protected void AddPrompt(List<LinkRepresentation> links, Func<LinkRepresentation> createPrompt) {
             if (PropertyContext.Property.IsAutoCompleteEnabled || PropertyContext.Property.GetChoicesParameters().Any()) {
@@ -190,7 +188,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
         protected abstract bool AddChoices();
 
-        protected void AddChoicesCustomExtension() {
+        private void AddChoicesCustomExtension() {
             if (AddChoices()) {
                 CustomExtensions ??= new Dictionary<string, object>();
 

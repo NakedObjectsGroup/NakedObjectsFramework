@@ -11,7 +11,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Representation;
@@ -23,9 +22,8 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
         private IObjectFacade collection;
 
         protected AbstractCollectionRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(frameworkFacade, req, propertyContext, flags) {
+            : base(frameworkFacade, req, propertyContext, flags) =>
             this.frameworkFacade = frameworkFacade;
-        }
 
         protected IObjectFacade Collection => collection ??= PropertyContext.Property.GetValue(PropertyContext.Target);
 

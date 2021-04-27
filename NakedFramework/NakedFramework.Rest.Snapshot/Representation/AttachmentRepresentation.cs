@@ -17,7 +17,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
     public class AttachmentRepresentation : Representation {
         private MediaTypeHeaderValue contentType;
 
-        public AttachmentRepresentation(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
+        protected AttachmentRepresentation(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetContentType(propertyContext);
             SetContentDisposition(propertyContext);
@@ -25,9 +25,9 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             SetHeader(propertyContext.Target);
         }
 
-        public ContentDispositionHeaderValue ContentDisposition { get; set; }
+        public ContentDispositionHeaderValue ContentDisposition { get; private set; }
 
-        public Stream AsStream { get; set; }
+        public Stream AsStream { get; private set; }
 
         public override MediaTypeHeaderValue GetContentType() => contentType;
 

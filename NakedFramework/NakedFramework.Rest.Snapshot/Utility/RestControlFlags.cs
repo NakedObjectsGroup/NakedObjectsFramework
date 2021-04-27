@@ -37,22 +37,19 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         public const string InlinePropertyDetailsReserved = ReservedPrefix + "inline-property-details";
         public const string InlineCollectionItemsReserved = ReservedPrefix + "inline-collection-items";
 
-        protected RestControlFlags() { }
+        private RestControlFlags() { }
         public static int ConfiguredPageSize { get; set; }
 
         public int Page { get; private init; }
         public int PageSize { get; private init; }
         public bool ValidateOnly { get; private init; }
-        public bool FollowLinks { get; private init; }
-        public bool SortBy { get; private init; }
         public bool BlobsClobs { get; private init; }
-        public bool InlineDetailsInActionMemberRepresentations { get; init; }
-        public bool InlineDetailsInCollectionMemberRepresentations { get; init; }
-        public bool InlineDetailsInPropertyMemberRepresentations { get; init; }
-        public bool InlineCollectionItems { get; init; }
-        public bool AllowMutatingActionsOnImmutableObject { get; init; }
-        public bool AcceptHeaderStrict { get; init; }
-        public bool DebugWarnings { get; init; }
+        public bool InlineDetailsInActionMemberRepresentations { get; private init; }
+        public bool InlineDetailsInCollectionMemberRepresentations { get; private init; }
+        public bool InlineDetailsInPropertyMemberRepresentations { get; private init; }
+        public bool InlineCollectionItems { get; private init; }
+        public bool AllowMutatingActionsOnImmutableObject { get; private init; }
+        public bool AcceptHeaderStrict { get; private init; }
 
         private static bool GetBool(object value) =>
             value switch {
@@ -81,8 +78,6 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         private static RestControlFlags GetFlags(Func<string, object> getValue) {
             var controlFlags = new RestControlFlags {
                 ValidateOnly = GetBool(getValue(ValidateOnlyReserved)),
-                FollowLinks = GetBool(getValue(FollowLinksReserved)),
-                SortBy = GetBool(getValue(SortByReserved)),
                 BlobsClobs = false,
                 Page = GetPage(getValue(PageReserved)),
                 PageSize = GetPageSize(getValue(PageSizeReserved))
@@ -97,7 +92,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                                                           int page,
                                                           int pageSize,
                                                           string domainModel,
-                                                          bool blobsClobs, 
+                                                          bool blobsClobs,
                                                           bool inlineDetailsInActionMemberRepresentations,
                                                           bool inlineDetailsInCollectionMemberRepresentations,
                                                           bool inlineDetailsInPropertyMemberRepresentations,
@@ -107,8 +102,6 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                                                           bool debugWarnings) =>
             new() {
                 ValidateOnly = validateOnly,
-                FollowLinks = false,
-                SortBy = false,
                 BlobsClobs = blobsClobs,
                 PageSize = DefaultPageSize(pageSize),
                 Page = DefaultPage(page),
@@ -117,8 +110,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                 InlineDetailsInPropertyMemberRepresentations = inlineDetailsInPropertyMemberRepresentations,
                 InlineCollectionItems = inlineCollectionItems,
                 AllowMutatingActionsOnImmutableObject = allowMutatingActionsOnImmutableObjects,
-                AcceptHeaderStrict = acceptHeaderStrict,
-                DebugWarnings = debugWarnings
+                AcceptHeaderStrict = acceptHeaderStrict
             };
     }
 }

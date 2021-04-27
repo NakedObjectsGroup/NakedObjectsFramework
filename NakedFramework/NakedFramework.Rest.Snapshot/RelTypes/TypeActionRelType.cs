@@ -16,7 +16,7 @@ namespace NakedFramework.Rest.Snapshot.RelTypes {
 
         public TypeActionRelType(UriMtHelper helper, string action) : this(RelValues.Invoke, helper, action) { }
 
-        public TypeActionRelType(string name, UriMtHelper helper, string action) : base(name, helper) => this.action = action;
+        private TypeActionRelType(string name, UriMtHelper helper, string action) : base(name, helper) => this.action = action;
 
         public override string Name => $"{base.Name}{UriMtHelper.GetRelParametersFor(action)}";
 

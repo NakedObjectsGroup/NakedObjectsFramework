@@ -27,7 +27,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             SetHeader(objectFacade);
         }
 
-        internal string Name { get; set; }
+        internal string Name { get; private set; }
 
         [DataMember(Name = JsonPropertyNames.Links)]
         public LinkRepresentation[] Links { get; set; }

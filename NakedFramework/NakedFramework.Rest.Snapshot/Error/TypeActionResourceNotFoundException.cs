@@ -10,7 +10,7 @@ using NakedFramework.Facade.Error;
 namespace NakedFramework.Rest.Snapshot.Error {
     public class TypeActionResourceNotFoundException : ResourceNotFoundNOSException {
         public TypeActionResourceNotFoundException(string resourceId, string domainId) : base(resourceId) => DomainId = domainId;
-        public string DomainId { get; }
+        private string DomainId { get; }
         public override string Message => $"No such domain type action {ResourceId} in domain type {DomainId}";
     }
 }

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Utility;
@@ -14,7 +15,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
         private MediaTypeHeaderValue mediaType;
         public MapRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }
 
-        public static MapRepresentation Create(params OptionalProperty[] properties) => properties.Any() ? CreateWithOptionals<MapRepresentation>(System.Array.Empty<object>(), properties) : new MapRepresentation();
+        public static MapRepresentation Create(params OptionalProperty[] properties) => properties.Any() ? CreateWithOptionals<MapRepresentation>(Array.Empty<object>(), properties) : new MapRepresentation();
 
         public void SetContentType(MediaTypeHeaderValue mt) => mediaType = mt;
 

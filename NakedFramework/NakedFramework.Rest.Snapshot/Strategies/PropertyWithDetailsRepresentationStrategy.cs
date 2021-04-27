@@ -5,14 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
@@ -34,7 +32,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
                 AddMutatorLinks(links);
             }
 
-            AddPrompt(links, PropertyContext.Target.IsTransient ? (Func<LinkRepresentation>) CreatePersistPromptLink : CreatePromptLink);
+            AddPrompt(links, PropertyContext.Target.IsTransient ? CreatePersistPromptLink : CreatePromptLink);
 
             return links.ToArray();
         }

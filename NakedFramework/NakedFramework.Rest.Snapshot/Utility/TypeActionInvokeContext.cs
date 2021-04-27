@@ -13,7 +13,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
     public class TypeActionInvokeContext {
         #region ActionType enum
 
-        public enum ActionType {
+        private enum ActionType {
             IsSubtypeOf,
             IsSupertypeOf
         }
@@ -31,7 +31,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             };
         }
 
-        public string TypeName { get; }
+        private string TypeName { get; }
 
         public string Id => aType == ActionType.IsSubtypeOf ? WellKnownIds.IsSubtypeOf : WellKnownIds.IsSupertypeOf;
 

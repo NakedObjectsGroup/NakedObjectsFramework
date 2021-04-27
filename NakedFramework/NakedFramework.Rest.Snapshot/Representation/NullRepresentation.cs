@@ -11,7 +11,7 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class NullRepresentation : Representation {
-        public NullRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }
+        protected NullRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }
 
         public static Representation Create() => new NullRepresentation();
     }

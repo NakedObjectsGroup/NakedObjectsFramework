@@ -46,7 +46,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
         public virtual string GetId() => ActionContext.Action.Id;
 
-        protected ParameterRepresentation GetParameter(ParameterContextFacade parameterContext) {
+        private ParameterRepresentation GetParameter(ParameterContextFacade parameterContext) {
             var objectFacade = ActionContext.Target;
             return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, parameterContext, Flags);
         }
@@ -102,7 +102,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
                 OidStrategy,
                 false);
 
-        protected IDictionary<string, object> GetCustomActionExtensions() {
+        private IDictionary<string, object> GetCustomActionExtensions() {
             var ext = GetTableViewCustomExtensions(ActionContext.Action.TableViewData);
 
             if (!string.IsNullOrEmpty(ActionContext.MenuPath)) {
@@ -148,7 +148,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
                                              new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
         }
 
-        protected RelMethod GetRelMethod() {
+        private RelMethod GetRelMethod() {
             if (ActionContext.Action.IsQueryOnly) {
                 return RelMethod.Get;
             }

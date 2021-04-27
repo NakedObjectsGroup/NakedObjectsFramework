@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -81,7 +82,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             Links = tempLinks.ToArray();
         }
 
-        private void SetMembers(IFrameworkFacade frameworkFacade,  ObjectContextFacade objectContext, HttpRequest req, List<LinkRepresentation> tempLinks) {
+        private void SetMembers(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, List<LinkRepresentation> tempLinks) {
             var visiblePropertiesAndCollections = objectContext.VisibleProperties;
 
             if (!Flags.BlobsClobs) {
@@ -124,7 +125,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             ActionContextFacade[] visibleActions;
 
             if (IsProtoPersistent(objectContext.Target)) {
-                visibleActions = System.Array.Empty<ActionContextFacade>();
+                visibleActions = Array.Empty<ActionContextFacade>();
             }
             else if (IsForm(objectContext.Target)) {
                 visibleActions = objectContext.VisibleActions.Where(af => af.Action.ParameterCount == 0).ToArray();

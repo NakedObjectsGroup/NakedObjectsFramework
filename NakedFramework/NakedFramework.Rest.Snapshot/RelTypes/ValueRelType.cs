@@ -12,7 +12,7 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.RelTypes {
     public class ValueRelType : ObjectRelType {
         private readonly IMemberFacade member;
-        public ValueRelType(UriMtHelper helper) : base(RelValues.Value, helper) { }
+        private ValueRelType(UriMtHelper helper) : base(RelValues.Value, helper) { }
 
         public ValueRelType(IAssociationFacade property, UriMtHelper helper) : this(helper) => member = property;
 

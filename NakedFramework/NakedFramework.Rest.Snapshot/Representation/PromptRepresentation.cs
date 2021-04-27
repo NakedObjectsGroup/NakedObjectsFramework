@@ -54,9 +54,9 @@ namespace NakedFramework.Rest.Snapshot.Representation {
         private static RelType GetParentRelType(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequest req) =>
             parmContext.Target is null
                 ? new MenuRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, new MenuIdHolder(parmContext.MenuId)))
-                : (RelType) (parmContext.Target.Specification.IsService
+                : parmContext.Target.Specification.IsService
                     ? new ServiceRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, parmContext))
-                    : new ObjectRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, parmContext)));
+                    : new ObjectRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, parmContext));
 
         private static UriMtHelper GetSelfHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req) => new(oidStrategy, req, propertyContext);
 

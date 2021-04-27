@@ -12,7 +12,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
@@ -20,7 +19,7 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class VersionRepresentation : Representation {
-        private VersionRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)
+        protected VersionRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)
             : base(frameworkFacade.OidStrategy, flags) {
             SelfRelType = new VersionRelType(RelValues.Self, new UriMtHelper(frameworkFacade.OidStrategy, req));
             SetScalars(frameworkFacade);

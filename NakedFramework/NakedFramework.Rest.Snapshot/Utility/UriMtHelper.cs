@@ -215,28 +215,28 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         public Uri GetDomainTypeUri() => BuildDomainTypeUri(CachedType);
 
-        public Uri GetObjectParamUri() {
+        private Uri GetObjectParamUri() {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(action.Id, "action id");
             CheckArgumentNotNull(param.Id, "param id");
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
-        public Uri GetServiceParamUri() {
+        private Uri GetServiceParamUri() {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(action.Id, "action id");
             CheckArgumentNotNull(param.Id, "param id");
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
-        public Uri GetMenuParamUri() {
+        private Uri GetMenuParamUri() {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(action.Id, "action id");
             CheckArgumentNotNull(param.Id, "param id");
             return new Uri($"{prefix}{SegmentValues.Menus}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
-        public Uri GetParamUri() =>
+        private Uri GetParamUri() =>
             spec.IsService
                 ? GetServiceParamUri()
                 : spec.IsStatic
@@ -455,7 +455,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             }
         }
 
-        public static string FormatParameter(string resource, string name) => $";{resource}=\"{name}\"";
+        private static string FormatParameter(string resource, string name) => $";{resource}=\"{name}\"";
 
         public string GetRelParameters() => GetRelParametersFor((IMemberFacade) action ?? assoc);
 

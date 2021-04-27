@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +68,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
         }
 
         private void SetLinks(HttpRequest req, ActionResultContextFacade actionResult) {
-            Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : System.Array.Empty<LinkRepresentation>();
+            Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : Array.Empty<LinkRepresentation>();
         }
 
         private void SetResultType(ActionResultContextFacade actionResult) {
@@ -99,7 +100,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                             ? visibleParamContext.ProposedValue
                             : visibleParamContext.ProposedObjectFacade?.Object) as IEnumerable;
 
-                        var proposedCollection = proposedEnumerable == null ? System.Array.Empty<object>() : proposedEnumerable.Cast<object>();
+                        var proposedCollection = proposedEnumerable == null ? Array.Empty<object>() : proposedEnumerable.Cast<object>();
 
                         var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(i, false)).ToArray();
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));

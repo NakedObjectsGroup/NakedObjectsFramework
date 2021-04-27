@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +17,7 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class UserRepresentation : Representation {
-        private UserRepresentation(IOidStrategy oidStrategy, HttpRequest req, IPrincipal user, RestControlFlags flags)
+        protected UserRepresentation(IOidStrategy oidStrategy, HttpRequest req, IPrincipal user, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SelfRelType = new UserRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
             SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(oidStrategy, req)));
@@ -39,7 +40,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetScalars(IPrincipal user) {
             UserName = user.Identity?.Name ?? "";
-            Roles = System.Array.Empty<string>();
+            Roles = Array.Empty<string>();
         }
 
         private void SetHeader() => Caching = CacheType.UserInfo;

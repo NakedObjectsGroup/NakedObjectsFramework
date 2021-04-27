@@ -12,7 +12,6 @@ using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Facade.Translation;
 
 namespace NakedFramework.Rest.Snapshot.Utility {
     public static class SnapshotFactory {
