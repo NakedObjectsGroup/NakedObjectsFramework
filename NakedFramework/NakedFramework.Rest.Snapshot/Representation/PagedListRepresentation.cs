@@ -19,10 +19,10 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class PagedListRepresentation : ListRepresentation {
-        protected PagedListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags, ActionContextFacade actionContext)
-            : base(oidStrategy, Page(objectContext, flags, actionContext), req, flags, actionContext) {
+        protected PagedListRepresentation(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags, ActionContextFacade actionContext)
+            : base(frameworkFacade, Page(objectContext, flags, actionContext), req, flags, actionContext) {
             SetPagination(objectContext.Target, flags, actionContext);
-            SetActions(oidStrategy, objectContext, req, flags);
+            SetActions(frameworkFacade.OidStrategy, objectContext, req, flags);
         }
 
         [DataMember(Name = JsonPropertyNames.Pagination)]
@@ -60,10 +60,10 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequest req, RestControlFlags flags) => new PagedListRepresentation(oidStrategy, actionResultContext.Result, req, flags, actionResultContext.ActionContext);
+        public static ListRepresentation Create(IFrameworkFacade frameworkFacade, ActionResultContextFacade actionResultContext, HttpRequest req, RestControlFlags flags) => new PagedListRepresentation(frameworkFacade, actionResultContext.Result, req, flags, actionResultContext.ActionContext);
 
-        private LinkRepresentation CreateTableRowValueLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext) => RestUtils.CreateTableRowValueLink(no, actionContext, OidStrategy, req, Flags);
+        private LinkRepresentation CreateTableRowValueLink(IFrameworkFacade frameworkFacade, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext) => RestUtils.CreateTableRowValueLink(no, actionContext, frameworkFacade, req, Flags);
 
-        protected override LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext = null) => !Flags.InlineCollectionItems ? base.CreateObjectLink(oidStrategy, req, no, actionContext) : CreateTableRowValueLink(oidStrategy, req, no, actionContext);
+        protected override LinkRepresentation CreateObjectLink(IFrameworkFacade frameworkFacade, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext = null) => !Flags.InlineCollectionItems ? base.CreateObjectLink(frameworkFacade, req, no, actionContext) : CreateTableRowValueLink(frameworkFacade, req, no, actionContext);
     }
 }

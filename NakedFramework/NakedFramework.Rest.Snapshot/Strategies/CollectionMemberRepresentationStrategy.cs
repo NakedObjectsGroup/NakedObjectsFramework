@@ -7,14 +7,15 @@
 
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
 namespace NakedFramework.Rest.Snapshot.Strategies {
     public class CollectionMemberRepresentationStrategy : AbstractCollectionRepresentationStrategy {
-        public CollectionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(oidStrategy, req, propertyContext, flags) { }
+        public CollectionMemberRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
+            : base(frameworkFacade, req, propertyContext, flags) { }
 
         public override LinkRepresentation[] GetValue() => null;
 

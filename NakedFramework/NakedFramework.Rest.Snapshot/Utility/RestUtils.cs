@@ -388,7 +388,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         private static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
                                                                   string[] columns,
                                                                   RelType rt,
-                                                                  IOidStrategy oidStrategy,
+                                                                  IFrameworkFacade frameworkFacade,
                                                                   HttpRequest req,
                                                                   RestControlFlags flags) {
             var optionals = new List<OptionalProperty> {new(JsonPropertyNames.Title, SafeGetTitle(no))};
@@ -397,12 +397,12 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
             var properties = columns.Select(c => no.Specification.Properties.SingleOrDefault(p => p.Id == c)).Where(p => p != null && p.IsVisible(no)).Select(p => new PropertyContextFacade {Property = p, Target = no});
 
-            var propertyReps = properties.Select(p => InlineMemberAbstractRepresentation.Create(oidStrategy, req, p, flags, true)).ToArray();
+            var propertyReps = properties.Select(p => InlineMemberAbstractRepresentation.Create(frameworkFacade, req, p, flags, true)).ToArray();
             var members = CreateMap(propertyReps.ToDictionary(m => m.Id, m => (object) m));
 
             optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
 
-            return LinkRepresentation.Create(oidStrategy,
+            return LinkRepresentation.Create(frameworkFacade.OidStrategy,
                                              rt,
                                              flags,
                                              optionals.ToArray());
@@ -410,23 +410,23 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         public static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
                                                                  PropertyContextFacade propertyContext,
-                                                                 IOidStrategy oidStrategy,
+                                                                 IFrameworkFacade frameworkFacade,
                                                                  HttpRequest req,
                                                                  RestControlFlags flags) {
             var columns = propertyContext.Property.TableViewData?.columns;
-            var rt = new ValueRelType(propertyContext.Property, new UriMtHelper(oidStrategy, req, no));
-            return CreateTableRowValueLink(no, columns, rt, oidStrategy, req, flags);
+            var rt = new ValueRelType(propertyContext.Property, new UriMtHelper(frameworkFacade.OidStrategy, req, no));
+            return CreateTableRowValueLink(no, columns, rt, frameworkFacade, req, flags);
         }
 
         public static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
                                                                  ActionContextFacade actionContext,
-                                                                 IOidStrategy oidStrategy,
+                                                                 IFrameworkFacade frameworkFacade,
                                                                  HttpRequest req,
                                                                  RestControlFlags flags) {
             var columns = actionContext?.Action?.TableViewData?.columns;
-            var helper = new UriMtHelper(oidStrategy, req, no);
+            var helper = new UriMtHelper(frameworkFacade.OidStrategy, req, no);
             var rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
-            return CreateTableRowValueLink(no, columns, rt, oidStrategy, req, flags);
+            return CreateTableRowValueLink(no, columns, rt, frameworkFacade, req, flags);
         }
 
         private static string CleanWarning(string warning) => warning.Replace('"', ' ').Replace('\r', ' ').Replace('\n', ' ');

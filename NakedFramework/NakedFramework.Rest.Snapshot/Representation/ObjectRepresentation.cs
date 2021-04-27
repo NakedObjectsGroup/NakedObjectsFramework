@@ -19,12 +19,12 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class ObjectRepresentation : Representation {
-        protected ObjectRepresentation(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext, RestControlFlags flags)
-            : base(oidStrategy, flags) {
-            var objectUri = GetHelper(oidStrategy, req, objectContext);
+        protected ObjectRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, ObjectContextFacade objectContext, RestControlFlags flags)
+            : base(frameworkFacade.OidStrategy, flags) {
+            var objectUri = GetHelper(frameworkFacade.OidStrategy, req, objectContext);
             SetScalars(objectContext);
             SelfRelType = objectContext.Specification.IsService ? new ServiceRelType(RelValues.Self, objectUri) : new ObjectRelType(RelValues.Self, objectUri);
-            SetLinksAndMembers(req, objectContext);
+            SetLinksAndMembers(frameworkFacade, req, objectContext);
             SetExtensions(objectContext.Target);
             SetHeader(objectContext);
         }
@@ -67,7 +67,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             };
         }
 
-        private void SetLinksAndMembers(HttpRequest req, ObjectContextFacade objectContext) {
+        private void SetLinksAndMembers(IFrameworkFacade frameworkFacade, HttpRequest req, ObjectContextFacade objectContext) {
             var tempLinks = new List<LinkRepresentation>();
             if (!objectContext.Mutated && !IsProtoPersistent(objectContext.Target)) {
                 tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
@@ -77,11 +77,11 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
             tempLinks.AddRange(CreateIsOfTypeLinks(req, objectContext));
 
-            SetMembers(objectContext, req, tempLinks);
+            SetMembers(frameworkFacade, objectContext, req, tempLinks);
             Links = tempLinks.ToArray();
         }
 
-        private void SetMembers(ObjectContextFacade objectContext, HttpRequest req, List<LinkRepresentation> tempLinks) {
+        private void SetMembers(IFrameworkFacade frameworkFacade,  ObjectContextFacade objectContext, HttpRequest req, List<LinkRepresentation> tempLinks) {
             var visiblePropertiesAndCollections = objectContext.VisibleProperties;
 
             if (!Flags.BlobsClobs) {
@@ -106,7 +106,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             if (IsProtoPersistent(objectContext.Target)) {
                 var ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => {
                     var useDate = p.IsDateOnly;
-                    return GetPropertyValue(OidStrategy, req, p, objectContext.Target, Flags, true, useDate);
+                    return GetPropertyValue(frameworkFacade, req, p, objectContext.Target, Flags, true, useDate);
                 }).ToArray();
                 var props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
@@ -119,7 +119,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                 tempLinks.Add(persistLink);
             }
 
-            var properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(OidStrategy, req, p, Flags, false)).ToArray();
+            var properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(frameworkFacade, req, p, Flags, false)).ToArray();
 
             ActionContextFacade[] visibleActions;
 
@@ -188,21 +188,21 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                 OidStrategy,
                 false);
 
-        public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequest req, RestControlFlags flags) {
-            var oc = target.FrameworkFacade.GetObject(target);
-            return Create(oidStrategy, oc, req, flags);
+        public static ObjectRepresentation Create(IFrameworkFacade frameworkFacade, IObjectFacade target, HttpRequest req, RestControlFlags flags) {
+            var oc = frameworkFacade.GetObject(target);
+            return Create(frameworkFacade, oc, req, flags);
         }
 
-        public static ObjectRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
+        public static ObjectRepresentation Create(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
             if (objectContext.Target != null && (objectContext.Specification.IsService || !IsProtoPersistent(objectContext.Target))) {
-                return CreateObjectWithOptionals(oidStrategy, objectContext, req, flags);
+                return CreateObjectWithOptionals(frameworkFacade, objectContext, req, flags);
             }
 
-            return new ObjectRepresentation(oidStrategy, req, objectContext, flags);
+            return new ObjectRepresentation(frameworkFacade, req, objectContext, flags);
         }
 
-        private static ObjectRepresentation CreateObjectWithOptionals(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
-            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectContext.Target);
+        private static ObjectRepresentation CreateObjectWithOptionals(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
+            var oid = frameworkFacade.OidStrategy.OidTranslator.GetOidTranslation(objectContext.Target);
 
             var props = new List<OptionalProperty>();
             if (objectContext.Specification.IsService) {
@@ -213,7 +213,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                 props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));
             }
 
-            return CreateWithOptionals<ObjectRepresentation>(new object[] {oidStrategy, req, objectContext, flags}, props);
+            return CreateWithOptionals<ObjectRepresentation>(new object[] {frameworkFacade, req, objectContext, flags}, props);
         }
     }
 }

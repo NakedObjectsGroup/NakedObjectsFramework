@@ -21,8 +21,12 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Strategies {
     [DataContract]
     public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentationStrategy {
-        protected AbstractPropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(oidStrategy, req, propertyContext, flags) { }
+        private readonly IFrameworkFacade frameworkFacade;
+
+        protected AbstractPropertyRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
+            base(frameworkFacade, req, propertyContext, flags) {
+            this.frameworkFacade = frameworkFacade;
+        }
 
         protected IDictionary<string, object> CustomExtensions { get; set; }
 
@@ -55,7 +59,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
         protected LinkRepresentation CreatePersistPromptLink() {
             var opts = new List<OptionalProperty>();
 
-            var ids = PropertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => GetPropertyValue(OidStrategy, Req, p, PropertyContext.Target, Flags, true, UseDateOverDateTime())).ToArray();
+            var ids = PropertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => GetPropertyValue(frameworkFacade, Req, p, PropertyContext.Target, Flags, true, UseDateOverDateTime())).ToArray();
             var props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
             var objectMembers = new OptionalProperty(JsonPropertyNames.PromptMembers, MapRepresentation.Create(props));
@@ -170,16 +174,16 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
             propertyContext.Target.IsViewModelEditView ||
             propertyContext.Target.IsTransient;
 
-        public static AbstractPropertyRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+        public static AbstractPropertyRepresentationStrategy GetStrategy(bool inline, IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
             if (flags.InlineCollectionItems) {
-                return new PropertyTableRowRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+                return new PropertyTableRowRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
             }
 
             if (inline && !InlineDetails(propertyContext, flags)) {
-                return new PropertyMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+                return new PropertyMemberRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
             }
 
-            return new PropertyWithDetailsRepresentationStrategy(inline, oidStrategy, req, propertyContext, flags);
+            return new PropertyWithDetailsRepresentationStrategy(inline, frameworkFacade, req, propertyContext, flags);
         }
 
         public abstract LinkRepresentation[] GetLinks();
@@ -199,6 +203,6 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
             }
         }
 
-        public virtual object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) => Representation.Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
+        public virtual object GetPropertyValue(IFrameworkFacade frameworkFacade, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) => Representation.Representation.GetPropertyValue(frameworkFacade, req, property, target, flags, valueOnly, useDateOverDateTime);
     }
 }

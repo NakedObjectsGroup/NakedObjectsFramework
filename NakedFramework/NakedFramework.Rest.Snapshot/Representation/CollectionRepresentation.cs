@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
@@ -18,10 +19,10 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class CollectionRepresentation : MemberAbstractRepresentation {
-        protected CollectionRepresentation(IOidStrategy oidStrategy, AbstractCollectionRepresentationStrategy strategy) : base(oidStrategy, strategy) => Extensions = strategy.GetExtensions();
+        protected CollectionRepresentation(IFrameworkFacade frameworkFacade, AbstractCollectionRepresentationStrategy strategy) : base(frameworkFacade, strategy) => Extensions = strategy.GetExtensions();
 
-        public static CollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, false, oidStrategy, req, propertyContext, flags);
+        public static CollectionRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, false, frameworkFacade, req, propertyContext, flags);
 
             var value = collectionRepresentationStrategy.GetValue();
 
@@ -37,8 +38,8 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             }
 
             return optionals.Any()
-                ? CreateWithOptionals<CollectionRepresentation>(new object[] {oidStrategy, collectionRepresentationStrategy}, optionals)
-                : new CollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
+                ? CreateWithOptionals<CollectionRepresentation>(new object[] {frameworkFacade, collectionRepresentationStrategy}, optionals)
+                : new CollectionRepresentation(frameworkFacade, collectionRepresentationStrategy);
         }
     }
 }

@@ -16,8 +16,8 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Strategies {
     [DataContract]
     public class PropertyTableRowRepresentationStrategy : AbstractPropertyRepresentationStrategy {
-        public PropertyTableRowRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(oidStrategy, req, propertyContext, flags) { }
+        public PropertyTableRowRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
+            base(frameworkFacade, req, propertyContext, flags) { }
 
         public override bool ShowChoices() => false;
 
@@ -28,6 +28,6 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
             (PropertyContext.Property.Specification.IsEnum ||
              PropertyContext.Property.Specification.IsParseable);
 
-        public override object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) => Representation.Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
+        public override object GetPropertyValue(IFrameworkFacade frameworkFacade, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) => Representation.Representation.GetPropertyValue(frameworkFacade, req, property, target, flags, valueOnly, useDateOverDateTime);
     }
 }

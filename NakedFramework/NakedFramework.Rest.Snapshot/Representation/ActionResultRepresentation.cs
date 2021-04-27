@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
@@ -125,19 +126,19 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             return MapRepresentation.Create(optionalProperties.ToArray());
         }
 
-        public static ActionResultRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionResultContextFacade actionResult, RestControlFlags flags) {
+        public static ActionResultRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, ActionResultContextFacade actionResult, RestControlFlags flags) {
             if (!actionResult.HasResult) {
-                return new ActionResultRepresentation(oidStrategy, req, actionResult, flags);
+                return new ActionResultRepresentation(frameworkFacade.OidStrategy, req, actionResult, flags);
             }
 
             IRepresentation result = actionResult switch {
                 _ when actionResult.Result == null => null,
-                _ when actionResult.Specification.IsParseable => ScalarRepresentation.Create(oidStrategy, actionResult.Result, req, flags),
-                _ when actionResult.Specification.IsObject => ObjectRepresentation.Create(oidStrategy, actionResult.Result, req, flags),
-                _ => PagedListRepresentation.Create(oidStrategy, actionResult, req, flags)
+                _ when actionResult.Specification.IsParseable => ScalarRepresentation.Create(frameworkFacade.OidStrategy, actionResult.Result, req, flags),
+                _ when actionResult.Specification.IsObject => ObjectRepresentation.Create(frameworkFacade, actionResult.Result, req, flags),
+                _ => PagedListRepresentation.Create(frameworkFacade, actionResult, req, flags)
             };
 
-            return CreateWithOptionals<ActionResultRepresentation>(new object[] {oidStrategy, req, actionResult, flags}, new[] {new OptionalProperty(JsonPropertyNames.Result, result)});
+            return CreateWithOptionals<ActionResultRepresentation>(new object[] {frameworkFacade.OidStrategy, req, actionResult, flags}, new[] {new OptionalProperty(JsonPropertyNames.Result, result)});
         }
     }
 }

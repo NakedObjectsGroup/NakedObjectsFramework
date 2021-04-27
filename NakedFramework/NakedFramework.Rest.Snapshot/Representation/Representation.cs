@@ -163,7 +163,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             }
         }
 
-        public static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
+        public static object GetPropertyValue(IFrameworkFacade frameworkFacade, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
             var valueNakedObject = property.GetValue(target);
 
             if (valueNakedObject == null) {
@@ -179,18 +179,18 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             }
 
             if (valueOnly) {
-                return RefValueRepresentation.Create(oidStrategy, new ValueRelType(property, new UriMtHelper(oidStrategy, req, valueNakedObject)), flags);
+                return RefValueRepresentation.Create(frameworkFacade.OidStrategy, new ValueRelType(property, new UriMtHelper(frameworkFacade.OidStrategy, req, valueNakedObject)), flags);
             }
 
             var title = RestUtils.SafeGetTitle(property, valueNakedObject);
-            var helper = new UriMtHelper(oidStrategy, req, property.IsInline ? target : valueNakedObject);
+            var helper = new UriMtHelper(frameworkFacade.OidStrategy, req, property.IsInline ? target : valueNakedObject);
             var optionals = new List<OptionalProperty> {new(JsonPropertyNames.Title, title)};
 
             if (property.IsEager(target)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, ObjectRepresentation.Create(oidStrategy, valueNakedObject, req, flags)));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, ObjectRepresentation.Create(frameworkFacade, valueNakedObject, req, flags)));
             }
 
-            return LinkRepresentation.Create(oidStrategy, new ValueRelType(property, helper), flags, optionals.ToArray());
+            return LinkRepresentation.Create(frameworkFacade.OidStrategy, new ValueRelType(property, helper), flags, optionals.ToArray());
         }
 
         #region IRepresentation Members

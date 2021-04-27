@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
@@ -18,8 +19,8 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class InlineCollectionRepresentation : InlineMemberAbstractRepresentation {
-        protected InlineCollectionRepresentation(IOidStrategy oidStrategy, AbstractCollectionRepresentationStrategy strategy)
-            : base(oidStrategy, strategy.GetFlags()) {
+        protected InlineCollectionRepresentation(IFrameworkFacade frameworkFacade, AbstractCollectionRepresentationStrategy strategy)
+            : base(frameworkFacade.OidStrategy, strategy.GetFlags()) {
             MemberType = MemberTypes.Collection;
             Id = strategy.GetId();
             Links = strategy.GetLinks(true);
@@ -27,8 +28,8 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             SetHeader(strategy.GetTarget());
         }
 
-        public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags, bool asTableColumn) {
-            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(asTableColumn, true, oidStrategy, req, propertyContext, flags);
+        public static InlineCollectionRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags, bool asTableColumn) {
+            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(asTableColumn, true, frameworkFacade, req, propertyContext, flags);
 
             var size = collectionRepresentationStrategy.GetSize();
 
@@ -50,8 +51,8 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             }
 
             return optionals.Any()
-                ? CreateWithOptionals<InlineCollectionRepresentation>(new object[] {oidStrategy, collectionRepresentationStrategy}, optionals)
-                : new InlineCollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
+                ? CreateWithOptionals<InlineCollectionRepresentation>(new object[] {frameworkFacade, collectionRepresentationStrategy}, optionals)
+                : new InlineCollectionRepresentation(frameworkFacade, collectionRepresentationStrategy);
         }
     }
 }

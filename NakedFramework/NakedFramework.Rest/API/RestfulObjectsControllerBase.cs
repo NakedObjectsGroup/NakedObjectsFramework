@@ -121,33 +121,33 @@ namespace NakedFramework.Rest.API {
         [FromQuery(Name = RestControlFlags.InlineCollectionItemsReserved)]
         public bool? InlineCollectionItems { get; set; }
 
-        public virtual ActionResult GetHome() => InitAndHandleErrors(SnapshotFactory.HomeSnapshot(OidStrategy, Request, GetFlags(this)));
+        public virtual ActionResult GetHome() => InitAndHandleErrors(SnapshotFactory.HomeSnapshot(FrameworkFacade, Request, GetFlags(this)));
 
-        public virtual ActionResult GetUser() => InitAndHandleErrors(SnapshotFactory.UserSnapshot(OidStrategy, FrameworkFacade.GetUser, Request, GetFlags(this)));
+        public virtual ActionResult GetUser() => InitAndHandleErrors(SnapshotFactory.UserSnapshot(FrameworkFacade, FrameworkFacade.GetUser, Request, GetFlags(this)));
 
-        public virtual ActionResult GetServices() => InitAndHandleErrors(SnapshotFactory.ServicesSnapshot(OidStrategy, FrameworkFacade.GetServices, Request, GetFlags(this)));
+        public virtual ActionResult GetServices() => InitAndHandleErrors(SnapshotFactory.ServicesSnapshot(FrameworkFacade, FrameworkFacade.GetServices, Request, GetFlags(this)));
 
-        public virtual ActionResult GetMenus() => InitAndHandleErrors(SnapshotFactory.MenusSnapshot(OidStrategy, FrameworkFacade.GetMainMenus, Request, GetFlags(this)));
+        public virtual ActionResult GetMenus() => InitAndHandleErrors(SnapshotFactory.MenusSnapshot(FrameworkFacade, FrameworkFacade.GetMainMenus, Request, GetFlags(this)));
 
-        public virtual ActionResult GetVersion() => InitAndHandleErrors(SnapshotFactory.VersionSnapshot(OidStrategy, GetOptionalCapabilities(), Request, GetFlags(this)));
+        public virtual ActionResult GetVersion() => InitAndHandleErrors(SnapshotFactory.VersionSnapshot(FrameworkFacade, GetOptionalCapabilities(), Request, GetFlags(this)));
 
-        public virtual ActionResult GetService(string serviceName) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetServiceByName(serviceName), Request, GetFlags(this)));
+        public virtual ActionResult GetService(string serviceName) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(FrameworkFacade, () => FrameworkFacade.GetServiceByName(serviceName), Request, GetFlags(this)));
 
-        public virtual ActionResult GetMenu(string menuName) => InitAndHandleErrors(SnapshotFactory.MenuSnapshot(OidStrategy, FrameworkFacade, () => FrameworkFacade.GetMenuByName(menuName), Request, GetFlags(this)));
+        public virtual ActionResult GetMenu(string menuName) => InitAndHandleErrors(SnapshotFactory.MenuSnapshot(FrameworkFacade, () => FrameworkFacade.GetMenuByName(menuName), Request, GetFlags(this)));
 
-        public virtual ActionResult GetServiceAction(string serviceName, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetServiceActionByName(serviceName, actionName), Request, GetFlags(this)));
+        public virtual ActionResult GetServiceAction(string serviceName, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(FrameworkFacade, () => FrameworkFacade.GetServiceActionByName(serviceName, actionName), Request, GetFlags(this)));
 
-        public virtual ActionResult GetMenuAction(string menuName, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetMenuActionByName(menuName, actionName), Request, GetFlags(this)));
+        public virtual ActionResult GetMenuAction(string menuName, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(FrameworkFacade, () => FrameworkFacade.GetMenuActionByName(menuName, actionName), Request, GetFlags(this)));
 
-        public virtual ActionResult GetImage(string imageId) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetImage(imageId), Request, GetFlags(this)));
+        public virtual ActionResult GetImage(string imageId) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(FrameworkFacade, () => FrameworkFacade.GetImage(imageId), Request, GetFlags(this)));
 
-        public virtual ActionResult GetObject(string domainType, string instanceId) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetObjectByName(domainType, instanceId), Request, GetFlags(this)));
+        public virtual ActionResult GetObject(string domainType, string instanceId) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(FrameworkFacade, () => FrameworkFacade.GetObjectByName(domainType, instanceId), Request, GetFlags(this)));
 
         public virtual ActionResult GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
             Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 PropertyContextFacade PropertyContext() => FrameworkFacade.GetPropertyByName(domainType, instanceId, propertyName, argsContext);
-                return SnapshotFactory.PromptSnaphot(OidStrategy, PropertyContext, Request, flags);
+                return SnapshotFactory.PromptSnaphot(FrameworkFacade, PropertyContext, Request, flags);
             }
 
             return InitAndHandleErrors(PromptSnapshot());
@@ -158,7 +158,7 @@ namespace NakedFramework.Rest.API {
                 var persistArgs = ProcessPromptArguments(promptArguments);
                 var (promptArgs, flags) = ProcessArgumentMap(promptArguments, false, false);
                 PropertyContextFacade PropertyContext() => FrameworkFacade.GetTransientPropertyByName(domainType, propertyName, persistArgs, promptArgs);
-                return SnapshotFactory.PromptSnaphot(OidStrategy, PropertyContext, Request, flags);
+                return SnapshotFactory.PromptSnaphot(FrameworkFacade, PropertyContext, Request, flags);
             }
 
             return InitAndHandleErrors(PromptSnapshot());
@@ -168,7 +168,7 @@ namespace NakedFramework.Rest.API {
             Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 ParameterContextFacade ParameterContext() => FrameworkFacade.GetObjectParameterByName(domainType, instanceId, actionName, parmName, argsContext);
-                return SnapshotFactory.PromptSnaphot(OidStrategy, ParameterContext, Request, flags);
+                return SnapshotFactory.PromptSnaphot(FrameworkFacade, ParameterContext, Request, flags);
             }
 
             return InitAndHandleErrors(PromptSnapshot());
@@ -178,7 +178,7 @@ namespace NakedFramework.Rest.API {
             Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 ParameterContextFacade ParameterContext() => FrameworkFacade.GetServiceParameterByName(serviceName, actionName, parmName, argsContext);
-                return SnapshotFactory.PromptSnaphot(OidStrategy, ParameterContext, Request, flags);
+                return SnapshotFactory.PromptSnaphot(FrameworkFacade, ParameterContext, Request, flags);
             }
 
             return InitAndHandleErrors(PromptSnapshot());
@@ -188,7 +188,7 @@ namespace NakedFramework.Rest.API {
             Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 ParameterContextFacade ParameterContext() => FrameworkFacade.GetMenuParameterByName(menuName, actionName, parmName, argsContext);
-                return SnapshotFactory.PromptSnaphot(OidStrategy, ParameterContext, Request, flags);
+                return SnapshotFactory.PromptSnaphot(FrameworkFacade, ParameterContext, Request, flags);
             }
 
             return InitAndHandleErrors(PromptSnapshot());
@@ -200,7 +200,7 @@ namespace NakedFramework.Rest.API {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, true, false);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.PutObjectAndValidate(domainType, instanceId, argsContext);
-                return (SnapshotFactory.ObjectSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+                return (SnapshotFactory.ObjectSnapshot(FrameworkFacade, () => context, Request, flags), flags.ValidateOnly);
             }
 
             return InitAndHandleErrors(() => SnapshotOrNoContent(PutObject()));
@@ -212,19 +212,19 @@ namespace NakedFramework.Rest.API {
                 var (argsContext, flags) = ProcessPersistArguments(arguments);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.PersistObjectAndValidate(domainType, argsContext, flags);
-                return (SnapshotFactory.ObjectSnapshot(OidStrategy, () => context, Request, flags, HttpStatusCode.Created), flags.ValidateOnly);
+                return (SnapshotFactory.ObjectSnapshot(FrameworkFacade, () => context, Request, flags, HttpStatusCode.Created), flags.ValidateOnly);
             }
 
             return InitAndHandleErrors(() => SnapshotOrNoContent(PersistObject()));
         }
 
-        public virtual ActionResult GetProperty(string domainType, string instanceId, string propertyName) => InitAndHandleErrors(SnapshotFactory.PropertySnapshot(OidStrategy, () => FrameworkFacade.GetPropertyByName(domainType, instanceId, propertyName), Request, GetFlags(this)));
+        public virtual ActionResult GetProperty(string domainType, string instanceId, string propertyName) => InitAndHandleErrors(SnapshotFactory.PropertySnapshot(FrameworkFacade, () => FrameworkFacade.GetPropertyByName(domainType, instanceId, propertyName), Request, GetFlags(this)));
 
-        public virtual ActionResult GetCollection(string domainType, string instanceId, string propertyName) => InitAndHandleErrors(SnapshotFactory.PropertySnapshot(OidStrategy, () => FrameworkFacade.GetCollectionPropertyByName(domainType, instanceId, propertyName), Request, GetFlags(this)));
+        public virtual ActionResult GetCollection(string domainType, string instanceId, string propertyName) => InitAndHandleErrors(SnapshotFactory.PropertySnapshot(FrameworkFacade, () => FrameworkFacade.GetCollectionPropertyByName(domainType, instanceId, propertyName), Request, GetFlags(this)));
 
-        public virtual ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName) => InitAndHandleErrors(SnapshotFactory.CollectionValueSnapshot(OidStrategy, () => FrameworkFacade.GetCollectionPropertyByName(domainType, instanceId, propertyName), Request, GetFlags(this)));
+        public virtual ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName) => InitAndHandleErrors(SnapshotFactory.CollectionValueSnapshot(FrameworkFacade, () => FrameworkFacade.GetCollectionPropertyByName(domainType, instanceId, propertyName), Request, GetFlags(this)));
 
-        public virtual ActionResult GetAction(string domainType, string instanceId, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetObjectActionByName(domainType, instanceId, actionName), Request, GetFlags(this)));
+        public virtual ActionResult GetAction(string domainType, string instanceId, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(FrameworkFacade, () => FrameworkFacade.GetObjectActionByName(domainType, instanceId, actionName), Request, GetFlags(this)));
 
         public virtual ActionResult PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
             (Func<RestSnapshot>, bool) PutProperty() {
@@ -232,7 +232,7 @@ namespace NakedFramework.Rest.API {
                 var (argContext, flags) = ProcessArgument(argument);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.PutPropertyAndValidate(domainType, instanceId, propertyName, argContext);
-                return (SnapshotFactory.PropertySnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+                return (SnapshotFactory.PropertySnapshot(FrameworkFacade, () => context, Request, flags), flags.ValidateOnly);
             }
 
             return InitAndHandleErrors(() => SnapshotOrNoContent(PutProperty()));
@@ -244,7 +244,7 @@ namespace NakedFramework.Rest.API {
                 var (argContext, flags) = ProcessDeleteArgument();
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.DeletePropertyAndValidate(domainType, instanceId, propertyName, argContext);
-                return (SnapshotFactory.PropertySnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+                return (SnapshotFactory.PropertySnapshot(FrameworkFacade, () => context, Request, flags), flags.ValidateOnly);
             }
 
             return InitAndHandleErrors(() => SnapshotOrNoContent(DeleteProperty()));
@@ -263,7 +263,7 @@ namespace NakedFramework.Rest.API {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, queryOnly);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.ExecuteActionAndValidate(domainType, instanceId, actionName, argsContext);
-                return (SnapshotFactory.ActionResultSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+                return (SnapshotFactory.ActionResultSnapshot(FrameworkFacade, () => context, Request, flags), flags.ValidateOnly);
             }
 
             return InitAndHandleErrors(() => SnapshotOrNoContent(Execute()));
@@ -285,7 +285,7 @@ namespace NakedFramework.Rest.API {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.ExecuteServiceActionAndValidate(serviceName, actionName, argsContext);
-                return (SnapshotFactory.ActionResultSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+                return (SnapshotFactory.ActionResultSnapshot(FrameworkFacade, () => context, Request, flags), flags.ValidateOnly);
             }
 
             return InitAndHandleErrors(() => SnapshotOrNoContent(Execute()));
@@ -301,7 +301,7 @@ namespace NakedFramework.Rest.API {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
                 var context = FrameworkFacade.ExecuteMenuActionAndValidate(menuName, actionName, argsContext);
-                return (SnapshotFactory.ActionResultSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+                return (SnapshotFactory.ActionResultSnapshot(FrameworkFacade, () => context, Request, flags), flags.ValidateOnly);
             }
 
             return InitAndHandleErrors(() => SnapshotOrNoContent(Execute()));
@@ -320,7 +320,7 @@ namespace NakedFramework.Rest.API {
         public virtual ActionResult PostInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, false);
 
         public virtual ActionResult GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
-            Func<RestSnapshot> GetTypeAction() => SnapshotFactory.TypeActionSnapshot(OidStrategy, () => GetIsTypeOf(actionName, typeName, arguments), Request, GetFlags(this));
+            Func<RestSnapshot> GetTypeAction() => SnapshotFactory.TypeActionSnapshot(FrameworkFacade, () => GetIsTypeOf(actionName, typeName, arguments), Request, GetFlags(this));
             Func<RestSnapshot> NoSuchTypeAction() => () => throw new TypeActionResourceNotFoundException(actionName, typeName);
 
             Func<RestSnapshot> TypeAction() =>
@@ -479,7 +479,7 @@ namespace NakedFramework.Rest.API {
             };
         }
 
-        private ActionResult ErrorResult(Exception e) => RepresentationResult(SnapshotFactory.ErrorSnapshot(OidStrategy, FrameworkFacade, e, Request, GetFlags(this))());
+        private ActionResult ErrorResult(Exception e) => RepresentationResult(SnapshotFactory.ErrorSnapshot(FrameworkFacade, e, Request, GetFlags(this))());
 
         private ResponseHeaders GetResponseHeaders() => ControllerContext.HttpContext.Response.GetTypedHeaders();
 

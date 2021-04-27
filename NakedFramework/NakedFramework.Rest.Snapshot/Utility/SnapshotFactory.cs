@@ -16,49 +16,49 @@ using NakedFramework.Facade.Translation;
 
 namespace NakedFramework.Rest.Snapshot.Utility {
     public static class SnapshotFactory {
-        public static Func<RestSnapshot> ServicesSnapshot(IOidStrategy oidStrategy, Func<ListContextFacade> listContext, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, listContext(), req, flags);
+        public static Func<RestSnapshot> ServicesSnapshot(IFrameworkFacade frameworkFacade, Func<ListContextFacade> listContext, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade, listContext(), req, flags);
 
-        public static Func<RestSnapshot> HomeSnapshot(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, req, flags);
+        public static Func<RestSnapshot> HomeSnapshot(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade, req, flags);
 
-        public static Func<RestSnapshot> UserSnapshot(IOidStrategy oidStrategy, Func<IPrincipal> user, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, user(), req, flags);
+        public static Func<RestSnapshot> UserSnapshot(IFrameworkFacade frameworkFacade, Func<IPrincipal> user, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade.OidStrategy, user(), req, flags);
 
-        public static Func<RestSnapshot> ObjectSnapshot(IOidStrategy oidStrategy, Func<ObjectContextFacade> objectContext, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
-            => () => new RestSnapshot(oidStrategy, objectContext(), req, flags, httpStatusCode);
+        public static Func<RestSnapshot> ObjectSnapshot(IFrameworkFacade frameworkFacade, Func<ObjectContextFacade> objectContext, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+            => () => new RestSnapshot(frameworkFacade, objectContext(), req, flags, httpStatusCode);
 
-        public static Func<RestSnapshot> MenuSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, Func<IMenuFacade> menu, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
-            => () => new RestSnapshot(oidStrategy, frameworkFacade, menu(), req, flags, httpStatusCode);
+        public static Func<RestSnapshot> MenuSnapshot(IFrameworkFacade frameworkFacade, Func<IMenuFacade> menu, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+            => () => new RestSnapshot(frameworkFacade, menu(), req, flags, httpStatusCode);
 
-        public static Func<RestSnapshot> MenusSnapshot(IOidStrategy oidStrategy, Func<MenuContextFacade> menus, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, menus(), req, flags);
+        public static Func<RestSnapshot> MenusSnapshot(IFrameworkFacade frameworkFacade, Func<MenuContextFacade> menus, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade.OidStrategy, menus(), req, flags);
 
-        public static Func<RestSnapshot> VersionSnapshot(IOidStrategy oidStrategy, Func<IDictionary<string, string>> capabilities, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, capabilities(), req, flags);
+        public static Func<RestSnapshot> VersionSnapshot(IFrameworkFacade frameworkFacade, Func<IDictionary<string, string>> capabilities, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade, capabilities(), req, flags);
 
-        public static Func<RestSnapshot> ActionSnapshot(IOidStrategy oidStrategy, Func<ActionContextFacade> actionContext, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, actionContext(), req, flags);
+        public static Func<RestSnapshot> ActionSnapshot(IFrameworkFacade frameworkFacade, Func<ActionContextFacade> actionContext, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade.OidStrategy, actionContext(), req, flags);
 
-        public static Func<RestSnapshot> PromptSnaphot(IOidStrategy oidStrategy, Func<PropertyContextFacade> propertyContext, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, propertyContext(), req, flags);
+        public static Func<RestSnapshot> PromptSnaphot(IFrameworkFacade frameworkFacade, Func<PropertyContextFacade> propertyContext, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade.OidStrategy, propertyContext(), req, flags);
 
-        public static Func<RestSnapshot> PromptSnaphot(IOidStrategy oidStrategy, Func<ParameterContextFacade> parameterContext, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, parameterContext(), req, flags);
+        public static Func<RestSnapshot> PromptSnaphot(IFrameworkFacade frameworkFacade, Func<ParameterContextFacade> parameterContext, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade.OidStrategy, parameterContext(), req, flags);
 
-        public static Func<RestSnapshot> PropertySnapshot(IOidStrategy oidStrategy, Func<PropertyContextFacade> propertyContext, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, propertyContext(), req, flags, false);
+        public static Func<RestSnapshot> PropertySnapshot(IFrameworkFacade frameworkFacade, Func<PropertyContextFacade> propertyContext, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade, propertyContext(), req, flags, false);
 
-        public static Func<RestSnapshot> CollectionValueSnapshot(IOidStrategy oidStrategy, Func<PropertyContextFacade> propertyContext, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, propertyContext(), req, flags, true);
+        public static Func<RestSnapshot> CollectionValueSnapshot(IFrameworkFacade frameworkFacade, Func<PropertyContextFacade> propertyContext, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade, propertyContext(), req, flags, true);
 
-        public static Func<RestSnapshot> ActionResultSnapshot(IOidStrategy oidStrategy, Func<ActionResultContextFacade> actionResultContext, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, actionResultContext(), req, flags);
+        public static Func<RestSnapshot> ActionResultSnapshot(IFrameworkFacade frameworkFacade, Func<ActionResultContextFacade> actionResultContext, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade, actionResultContext(), req, flags);
 
-        public static Func<RestSnapshot> TypeActionSnapshot(IOidStrategy oidStrategy, Func<TypeActionInvokeContext> typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, typeActionInvokeContext(), req, flags);
+        public static Func<RestSnapshot> TypeActionSnapshot(IFrameworkFacade frameworkFacade, Func<TypeActionInvokeContext> typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade.OidStrategy, typeActionInvokeContext(), req, flags);
 
-        public static Func<RestSnapshot> ErrorSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, Exception ex, HttpRequest req, RestControlFlags flags)
-            => () => new RestSnapshot(oidStrategy, frameworkFacade, ex, req, flags);
+        public static Func<RestSnapshot> ErrorSnapshot(IFrameworkFacade frameworkFacade, Exception ex, HttpRequest req, RestControlFlags flags)
+            => () => new RestSnapshot(frameworkFacade.OidStrategy, frameworkFacade, ex, req, flags);
     }
 }

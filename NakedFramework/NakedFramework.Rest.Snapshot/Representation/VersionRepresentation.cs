@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
@@ -19,11 +20,11 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class VersionRepresentation : Representation {
-        private VersionRepresentation(IOidStrategy oidStrategy, HttpRequest req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)
-            : base(oidStrategy, flags) {
-            SelfRelType = new VersionRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
-            SetScalars(oidStrategy);
-            SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(oidStrategy, req)));
+        private VersionRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)
+            : base(frameworkFacade.OidStrategy, flags) {
+            SelfRelType = new VersionRelType(RelValues.Self, new UriMtHelper(frameworkFacade.OidStrategy, req));
+            SetScalars(frameworkFacade);
+            SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(frameworkFacade.OidStrategy, req)));
             SetOptionalCapabilities(capabilitiesMap);
             SetExtensions();
             SetHeader();
@@ -59,8 +60,8 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             return string.IsNullOrWhiteSpace(version) ? $"Failed to read {resource}" : version;
         }
 
-        private void SetScalars(IOidStrategy oidStrategy) {
-            var serverTypes = oidStrategy.FrameworkFacade.ServerTypes;
+        private void SetScalars(IFrameworkFacade frameworkFacade) {
+            var serverTypes = frameworkFacade.ServerTypes;
             var assembly = Assembly.GetExecutingAssembly();
             SpecVersion = GetVersion(assembly, "specversion");
             var versions = GetVersion(assembly, "implversion").Split(",");
@@ -79,6 +80,6 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetLinks(HomePageRelType homePageRelType) => Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
 
-        public static VersionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IDictionary<string, string> capabilities, RestControlFlags flags) => new(oidStrategy, req, capabilities, flags);
+        public static VersionRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, IDictionary<string, string> capabilities, RestControlFlags flags) => new(frameworkFacade, req, capabilities, flags);
     }
 }

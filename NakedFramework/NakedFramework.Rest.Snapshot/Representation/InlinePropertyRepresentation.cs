@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
@@ -27,21 +28,21 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             SetHeader(strategy.GetTarget());
         }
 
-        public static InlinePropertyRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var strategy = AbstractPropertyRepresentationStrategy.GetStrategy(true, oidStrategy, req, propertyContext, flags);
+        public static InlinePropertyRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+            var strategy = AbstractPropertyRepresentationStrategy.GetStrategy(true, frameworkFacade, req, propertyContext, flags);
 
             if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, strategy.GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags, false, strategy.UseDateOverDateTime())));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, strategy.GetPropertyValue(frameworkFacade, req, propertyContext.Property, propertyContext.Target, flags, false, strategy.UseDateOverDateTime())));
             }
 
             if (strategy.ShowChoices()) {
-                RestUtils.AddChoices(oidStrategy, req, propertyContext, optionals, flags);
+                RestUtils.AddChoices(frameworkFacade.OidStrategy, req, propertyContext, optionals, flags);
                 optionals.Add(new OptionalProperty(JsonPropertyNames.HasChoices, strategy.GetHasChoices()));
             }
 
             return optionals.Any()
-                ? CreateWithOptionals<InlinePropertyRepresentation>(new object[] {oidStrategy, strategy}, optionals)
-                : new InlinePropertyRepresentation(oidStrategy, strategy);
+                ? CreateWithOptionals<InlinePropertyRepresentation>(new object[] {frameworkFacade.OidStrategy, strategy}, optionals)
+                : new InlinePropertyRepresentation(frameworkFacade.OidStrategy, strategy);
         }
     }
 }

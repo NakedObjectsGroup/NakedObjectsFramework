@@ -33,7 +33,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         protected void SetHeader(IObjectFacade target) => SetEtag(target);
 
-        public static InlineMemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags, bool asTableColumn) {
+        public static InlineMemberAbstractRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags, bool asTableColumn) {
             var consent = propertyContext.Property.IsUsable(propertyContext.Target);
             var optionals = new List<OptionalProperty>();
             if (consent.IsVetoed) {
@@ -41,10 +41,10 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             }
 
             if (propertyContext.Property.IsCollection) {
-                return InlineCollectionRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags, asTableColumn);
+                return InlineCollectionRepresentation.Create(frameworkFacade, req, propertyContext, optionals, flags, asTableColumn);
             }
 
-            return InlinePropertyRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
+            return InlinePropertyRepresentation.Create(frameworkFacade, req, propertyContext, optionals, flags);
         }
     }
 }

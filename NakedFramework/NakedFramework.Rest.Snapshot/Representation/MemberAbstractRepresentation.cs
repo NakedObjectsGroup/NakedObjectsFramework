@@ -18,8 +18,8 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public abstract class MemberAbstractRepresentation : Representation {
-        protected MemberAbstractRepresentation(IOidStrategy oidStrategy, MemberRepresentationStrategy strategy)
-            : base(oidStrategy, strategy.GetFlags()) {
+        protected MemberAbstractRepresentation(IFrameworkFacade frameworkFacade, MemberRepresentationStrategy strategy)
+            : base(frameworkFacade.OidStrategy, strategy.GetFlags()) {
             SelfRelType = strategy.GetSelf();
             Id = strategy.GetId();
             Links = strategy.GetLinks(false);
@@ -41,7 +41,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             SetEtag(target);
         }
 
-        public static MemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+        public static MemberAbstractRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
             var consent = propertyContext.Property.IsUsable(propertyContext.Target);
             var optionals = new List<OptionalProperty>();
 
@@ -50,10 +50,10 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             }
 
             if (propertyContext.Property.IsCollection) {
-                return CollectionRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
+                return CollectionRepresentation.Create(frameworkFacade, req, propertyContext, optionals, flags);
             }
 
-            return PropertyRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
+            return PropertyRepresentation.Create(frameworkFacade, req, propertyContext, optionals, flags);
         }
     }
 }

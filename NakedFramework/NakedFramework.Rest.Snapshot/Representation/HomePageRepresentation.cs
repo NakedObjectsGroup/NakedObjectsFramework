@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
@@ -17,10 +18,10 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class HomePageRepresentation : Representation {
-        protected HomePageRepresentation(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags)
-            : base(oidStrategy, flags) {
-            SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
-            SetLinks(req);
+        protected HomePageRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags)
+            : base(frameworkFacade.OidStrategy, flags) {
+            SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(frameworkFacade.OidStrategy, req));
+            SetLinks(frameworkFacade, req);
             SetExtensions();
             SetHeader();
         }
@@ -35,13 +36,13 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private void SetExtensions() => Extensions = new MapRepresentation();
 
-        private void SetLinks(HttpRequest req) {
+        private void SetLinks(IFrameworkFacade frameworkFacade, HttpRequest req) {
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(OidStrategy, SelfRelType, Flags),
                 LinkRepresentation.Create(OidStrategy, new UserRelType(new UriMtHelper(OidStrategy, req)), Flags)
             };
 
-            if (OidStrategy.FrameworkFacade.GetServices().List.Any()) {
+            if (frameworkFacade.GetServices().List.Any()) {
                 tempLinks.Add(LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Services, SegmentValues.Services, new UriMtHelper(OidStrategy, req)), Flags));
             }
 
@@ -51,6 +52,6 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             Links = tempLinks.ToArray();
         }
 
-        public static HomePageRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags) => new(oidStrategy, req, flags);
+        public static HomePageRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags) => new(frameworkFacade, req, flags);
     }
 }

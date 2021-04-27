@@ -19,15 +19,17 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Strategies {
     [DataContract]
     public abstract class MemberRepresentationStrategy : AbstractStrategy {
+        private readonly IFrameworkFacade frameworkFacade;
         private readonly UriMtHelper objectUri;
         private readonly RelType self;
 
-        protected MemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(oidStrategy, flags) {
+        protected MemberRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
+            : base(frameworkFacade.OidStrategy, flags) {
+            this.frameworkFacade = frameworkFacade;
             Req = req;
             PropertyContext = propertyContext;
-            objectUri = new UriMtHelper(oidStrategy, req, propertyContext);
-            self = new MemberRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, propertyContext));
+            objectUri = new UriMtHelper(frameworkFacade.OidStrategy, req, propertyContext);
+            self = new MemberRelType(RelValues.Self, new UriMtHelper(frameworkFacade.OidStrategy, req, propertyContext));
         }
 
         protected HttpRequest Req { get; }
@@ -80,7 +82,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
             var opts = new List<OptionalProperty>();
 
             if (PropertyContext.Property.IsEager(PropertyContext.Target)) {
-                opts.Add(new OptionalProperty(JsonPropertyNames.Value, MemberAbstractRepresentation.Create(OidStrategy, Req, PropertyContext, Flags)));
+                opts.Add(new OptionalProperty(JsonPropertyNames.Value, MemberAbstractRepresentation.Create(frameworkFacade, Req, PropertyContext, Flags)));
             }
 
             return LinkRepresentation.Create(OidStrategy, new MemberRelType(GetHelper()), Flags, opts.ToArray());

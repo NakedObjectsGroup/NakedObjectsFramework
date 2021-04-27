@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
@@ -20,8 +21,8 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
     public class PropertyWithDetailsRepresentationStrategy : AbstractPropertyRepresentationStrategy {
         private readonly bool inline;
 
-        public PropertyWithDetailsRepresentationStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(oidStrategy, req, propertyContext, flags) =>
+        public PropertyWithDetailsRepresentationStrategy(bool inline, IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
+            base(frameworkFacade, req, propertyContext, flags) =>
             this.inline = inline;
 
         public override bool ShowChoices() => true;

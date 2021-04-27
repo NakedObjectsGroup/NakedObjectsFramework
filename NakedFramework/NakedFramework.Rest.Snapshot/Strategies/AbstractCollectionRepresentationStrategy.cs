@@ -19,10 +19,13 @@ using NakedFramework.Rest.Snapshot.Utility;
 
 namespace NakedFramework.Rest.Snapshot.Strategies {
     public abstract class AbstractCollectionRepresentationStrategy : MemberRepresentationStrategy {
+        private readonly IFrameworkFacade frameworkFacade;
         private IObjectFacade collection;
 
-        protected AbstractCollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(oidStrategy, req, propertyContext, flags) { }
+        protected AbstractCollectionRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
+            : base(frameworkFacade, req, propertyContext, flags) {
+            this.frameworkFacade = frameworkFacade;
+        }
 
         protected IObjectFacade Collection => collection ??= PropertyContext.Property.GetValue(PropertyContext.Target);
 
@@ -63,7 +66,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
             LinkRepresentation.Create(OidStrategy, new ValueRelType(PropertyContext.Property, new UriMtHelper(OidStrategy, Req, no)), Flags,
                                       new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
 
-        protected LinkRepresentation CreateTableRowValueLink(IObjectFacade no) => RestUtils.CreateTableRowValueLink(no, PropertyContext, OidStrategy, Req, Flags);
+        protected LinkRepresentation CreateTableRowValueLink(IObjectFacade no) => RestUtils.CreateTableRowValueLink(no, PropertyContext, frameworkFacade, Req, Flags);
 
         public abstract int? GetSize();
 
@@ -71,24 +74,24 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
         private static bool DoNotCountAndNotEager(PropertyContextFacade propertyContext) => propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
 
-        public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn, bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+        public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn, bool inline, IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
             if (asTableColumn) {
                 if (propertyContext.Property.DoNotCount) {
-                    return new CollectionMemberNotCountedRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+                    return new CollectionMemberNotCountedRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
                 }
 
-                return new CollectionMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+                return new CollectionMemberRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
             }
 
             if (inline && DoNotCountAndNotEager(propertyContext)) {
-                return new CollectionMemberNotCountedRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+                return new CollectionMemberNotCountedRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
             }
 
             if (inline && !InlineDetails(propertyContext, flags)) {
-                return new CollectionMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+                return new CollectionMemberRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
             }
 
-            return new CollectionWithDetailsRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            return new CollectionWithDetailsRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
         }
 
         private static ActionContextFacade ActionContext(IActionFacade actionFacade, IObjectFacade target) =>
@@ -101,7 +104,7 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
 
         public virtual InlineActionRepresentation[] GetActions() {
             return !PropertyContext.Target.IsTransient
-                ? OidStrategy.FrameworkFacade.GetLocallyContributedActions(PropertyContext).Select(a => InlineActionRepresentation.Create(OidStrategy, Req, a, Flags)).ToArray()
+                ? frameworkFacade.GetLocallyContributedActions(PropertyContext).Select(a => InlineActionRepresentation.Create(OidStrategy, Req, a, Flags)).ToArray()
                 : Array.Empty<InlineActionRepresentation>();
         }
     }
