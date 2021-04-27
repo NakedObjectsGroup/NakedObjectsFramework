@@ -143,6 +143,7 @@ namespace NakedFramework.ParallelReflector.Component {
 
         public abstract bool ConcurrencyChecking { get; }
         public abstract string Name { get; }
+        public abstract ReflectorType ReflectorType { get; }
         public int Order { get; }
         public abstract bool IgnoreCase { get; }
 

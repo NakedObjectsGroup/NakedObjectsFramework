@@ -37,6 +37,7 @@ namespace NakedFunctions.Reflector.Component {
 
         public override bool ConcurrencyChecking => functionalReflectorConfiguration.ConcurrencyChecking;
         public override string Name => "Naked Functions";
+        public override ReflectorType ReflectorType => ReflectorType.Functional;
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectFunctionalTypes(Type[] records, Type[] functions, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var allFunctionalTypes = records.Union(functions).ToArray();

@@ -27,14 +27,9 @@ namespace NakedFramework.ModelBuilding.Component {
 
         public void Build() {
             IImmutableDictionary<string, ITypeSpecBuilder> specDictionary = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            // todo make unordered 
-
             specDictionary = reflectors.OrderBy(r => r.Order).Aggregate(specDictionary, (current, reflector) => reflector.Reflect(current));
             Validate(specDictionary);
-
             specDictionary.ForEach(i => initialMetamodel.Add(i.Value.Type, i.Value));
-
             integrator.Integrate();
         }
 

@@ -76,6 +76,27 @@ namespace NakedFramework.Core.Framework {
 
         public string[] ServerTypes => Reflectors.Select(r => r.Name).ToArray();
 
+        private ReflectorType? reflectorType; 
+
+        public ReflectorType ReflectorType {
+            get {
+                reflectorType ??= GetReflectorType();
+                return reflectorType.Value;
+            }
+        }
+
+        private ReflectorType GetReflectorType() {
+            var types = Reflectors.Select(r => r.ReflectorType).ToArray();
+            var isObject = types.Contains(ReflectorType.Object);
+            var isFunction = types.Contains(ReflectorType.Functional);
+
+            return isObject && isFunction
+                ? ReflectorType.Hybrid
+                : isFunction
+                    ? ReflectorType.Functional
+                    : ReflectorType.Object;
+        }
+
         #endregion
     }
 }

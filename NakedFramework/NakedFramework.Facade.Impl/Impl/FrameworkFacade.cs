@@ -939,12 +939,14 @@ namespace NakedFramework.Facade.Impl.Impl {
         private static bool IsContributedToCollection(IActionSpec actionSpec) => actionSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
 
         private ActionContext GetActionOnService(IOidTranslation serviceName, string actionName, ArgumentsContextFacade argumentsContextFacade) {
-            // use services to determine if NO or NF. 
-            // todo hybrid systems ! 
-            if (GetServices().List.Any()) {
-                return GetAction(actionName, GetServiceAsNakedObject(serviceName));
-            }
+            return Framework.ReflectorType switch {
+                ReflectorType.Object => GetAction(actionName, GetServiceAsNakedObject(serviceName)),
+                ReflectorType.Functional => GetCollectionContributedActionOnType(serviceName, actionName, argumentsContextFacade),
+                _ => throw new NotImplementedException("Hybrid system not yet supported")
+            };
+        }
 
+        private ActionContext GetCollectionContributedActionOnType(IOidTranslation serviceName, string actionName, ArgumentsContextFacade argumentsContextFacade) {
             try {
                 var typeSpec = Framework.MetamodelManager.GetSpecification(serviceName.DomainType);
                 var actionSpec = typeSpec?.GetActions().Where(IsContributedToCollection).SingleOrDefault(a => a.Id == actionName);

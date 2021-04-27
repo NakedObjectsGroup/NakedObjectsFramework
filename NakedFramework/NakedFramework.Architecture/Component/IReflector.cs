@@ -11,6 +11,15 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Component {
+
+    public enum ReflectorType {
+        System,
+        Object,
+        Functional, 
+        Hybrid
+    }
+
+
     /// <summary>
     ///     The Reflector is responsible for parsing the code of the domain model and creating the
     ///     MetamodelManager (consisting of Specifications) from this. The Reflector is only run when the
@@ -20,6 +29,8 @@ namespace NakedFramework.Architecture.Component {
     /// </summary>
     public interface IReflector {
         string Name { get; }
+
+        ReflectorType ReflectorType { get; }
 
         int Order { get; }
 

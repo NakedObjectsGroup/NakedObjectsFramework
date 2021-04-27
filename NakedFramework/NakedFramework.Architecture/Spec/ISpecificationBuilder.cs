@@ -18,5 +18,7 @@ namespace NakedFramework.Architecture.Spec {
         ///     or if the existing <see cref="IFacet" /> is an <see cref="IFacet.IsNoOp" />
         /// </para>
         void AddFacet(IFacet facet);
+
+        void RemoveFacet(IFacet facet);
     }
 }

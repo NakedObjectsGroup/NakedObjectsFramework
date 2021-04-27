@@ -45,8 +45,7 @@ namespace NakedFramework.ModelBuilding.Component {
             var integrationFacets = metamodelBuilder.AllSpecifications.Select(s => s.GetFacet<IIntegrationFacet>()).Where(f => f is not null).ToArray();
 
             integrationFacets.ForEach(f => f.Execute(metamodelBuilder));
-            // todo should we remove after use to reduce size of metamodel ?
-            // integrationFacets.ForEach(f => f.Remove());
+            integrationFacets.ForEach(f => f.Remove());
 
             var services = serviceList.Services;
             PopulateAssociatedActions(services, metamodelBuilder);

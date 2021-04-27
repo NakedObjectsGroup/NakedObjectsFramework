@@ -35,6 +35,7 @@ namespace NakedObjects.Reflector.Component {
 
         public override bool ConcurrencyChecking => objectReflectorConfiguration.ConcurrencyChecking;
         public override string Name => "Naked Objects";
+        public override ReflectorType ReflectorType => ReflectorType.Object;
         public override bool IgnoreCase => objectReflectorConfiguration.IgnoreCase;
 
         protected override IIntrospector GetNewIntrospector() => new ObjectIntrospector(this, LoggerFactory.CreateLogger<ObjectIntrospector>());

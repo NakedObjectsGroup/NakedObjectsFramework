@@ -14,9 +14,15 @@ namespace NakedFramework.Metamodel.Facet {
     public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
         protected AbstractIntegrationFacet(ISpecification holder) : base(Type, holder) { }
 
-        public static Type Type => typeof(IIntegrationFacet);
+        private static Type Type => typeof(IIntegrationFacet);
 
         public abstract void Execute(IMetamodelBuilder metamodelBuilder);
         public abstract void AddAction(Action<IMetamodelBuilder> action);
+
+        public void Remove() {
+            if (Specification is ISpecificationBuilder builder) {
+                builder.RemoveFacet(this);
+            }
+        }
     }
 }

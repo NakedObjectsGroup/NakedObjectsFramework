@@ -34,7 +34,9 @@ namespace NakedFramework.ParallelReflector.Component {
 
         public override bool ConcurrencyChecking => false;
         public override string Name => "Naked Framework";
+        public override ReflectorType ReflectorType => ReflectorType.System;
         public override bool IgnoreCase => false;
+
 
         protected override IIntrospector GetNewIntrospector() => new SystemTypeIntrospector(this, LoggerFactory.CreateLogger<SystemTypeIntrospector>());
 

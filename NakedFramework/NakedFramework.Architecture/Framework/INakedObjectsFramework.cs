@@ -29,5 +29,6 @@ namespace NakedFramework.Architecture.Framework {
         IFrameworkResolver FrameworkResolver { get; }
         IServiceProvider ServiceProvider { get; }
         string[] ServerTypes { get; }
+        ReflectorType ReflectorType { get; }
     }
 }
