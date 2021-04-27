@@ -23,12 +23,11 @@ namespace NakedObjects.Reflector.Component {
 
         public ObjectReflector(ObjectFacetFactorySet objectFacetFactorySet,
                                ObjectClassStrategy objectClassStrategy,
-                               IMetamodelBuilder metamodel,
                                IObjectReflectorConfiguration objectReflectorConfiguration,
                                IEnumerable<IFacetDecorator> facetDecorators,
                                IReflectorOrder<ObjectReflector> reflectorOrder,
                                ILoggerFactory loggerFactory,
-                               ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, reflectorOrder,  loggerFactory, logger) {
+                               ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder,  loggerFactory, logger) {
             this.objectReflectorConfiguration = objectReflectorConfiguration;
             FacetFactorySet = objectFacetFactorySet;
             ClassStrategy = objectClassStrategy;

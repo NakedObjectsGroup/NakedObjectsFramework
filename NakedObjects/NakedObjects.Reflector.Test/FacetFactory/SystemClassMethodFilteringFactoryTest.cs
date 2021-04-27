@@ -130,7 +130,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
             var order = new ObjectReflectorOrder<ObjectReflector>();
-            Reflector = new ObjectReflector(objectFactFactorySet, classStrategy, metamodel, config, Array.Empty<IFacetDecorator>(), order, mockLoggerFactory, mockLogger);
+            Reflector = new ObjectReflector(objectFactFactorySet, classStrategy, config, Array.Empty<IFacetDecorator>(), order, mockLoggerFactory, mockLogger);
         }
 
         [TestCleanup]

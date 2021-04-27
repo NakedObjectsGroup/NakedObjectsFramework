@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             var systemTypeFacetFactorySet = new SystemTypeFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>());
             var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var order = new ObjectReflectorOrder<SystemTypeReflector>();
-            return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy) ClassStrategy, metamodel, config, System.Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
+            return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy) ClassStrategy, config, System.Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
         }
 
         protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {

@@ -20,12 +20,11 @@ namespace NakedFramework.ParallelReflector.Component {
     public sealed class SystemTypeReflector : AbstractParallelReflector {
         public SystemTypeReflector(SystemTypeFacetFactorySet systemTypeFacetFactorySet,
                                    SystemTypeClassStrategy systemTypeClassStrategy,
-                                   IMetamodelBuilder metamodel,
                                    ICoreConfiguration coreConfiguration,
                                    IEnumerable<IFacetDecorator> facetDecorators,
                                    IReflectorOrder<SystemTypeReflector> reflectorOrder,
                                    ILoggerFactory loggerFactory,
-                                   ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, reflectorOrder, loggerFactory, logger) {
+                                   ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
             CoreConfiguration = coreConfiguration;
             FacetFactorySet = systemTypeFacetFactorySet;
             ClassStrategy = systemTypeClassStrategy;

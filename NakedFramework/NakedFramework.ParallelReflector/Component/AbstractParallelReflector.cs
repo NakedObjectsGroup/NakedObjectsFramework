@@ -21,16 +21,13 @@ using NakedFramework.ParallelReflector.Reflect;
 namespace NakedFramework.ParallelReflector.Component {
     public abstract class AbstractParallelReflector : IReflector {
         private readonly FacetDecoratorSet facetDecoratorSet;
-        private readonly IMetamodelBuilder initialMetamodel;
         private readonly ILogger<AbstractParallelReflector> logger;
         protected readonly ILoggerFactory LoggerFactory;
 
-        protected AbstractParallelReflector(IMetamodelBuilder metamodel,
-                                            IEnumerable<IFacetDecorator> facetDecorators,
+        protected AbstractParallelReflector(IEnumerable<IFacetDecorator> facetDecorators,
                                             IReflectorOrder reflectorOrder,
                                             ILoggerFactory loggerFactory,
                                             ILogger<AbstractParallelReflector> logger) {
-            initialMetamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             LoggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());

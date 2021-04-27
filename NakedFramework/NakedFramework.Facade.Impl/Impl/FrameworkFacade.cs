@@ -187,7 +187,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 return null;
             }
 
-            return OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType));
+            return GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType));
         }
 
         private ActionContextFacade GetActionContext(IMenuActionFacade actionFacade, string menuPath) =>

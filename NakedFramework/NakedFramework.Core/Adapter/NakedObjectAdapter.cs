@@ -104,7 +104,6 @@ namespace NakedFramework.Core.Adapter {
             str.Append("version", Version?.AsSequence());
         }
 
-        // todo - better to handle null facet or bind in noop facet ? 
         private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>()?.Invoke(this, framework);
 
         #region INakedObjectAdapter Members

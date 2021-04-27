@@ -148,7 +148,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             ClassStrategy = new ObjectClassStrategy(config);
             var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var order = new ObjectReflectorOrder<ObjectReflector>();
-            return new ObjectReflector(objectFactFactorySet, (ObjectClassStrategy) ClassStrategy, metamodel, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
+            return new ObjectReflector(objectFactFactorySet, (ObjectClassStrategy) ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
         }
 
         [TestInitialize]
