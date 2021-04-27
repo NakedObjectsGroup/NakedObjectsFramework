@@ -23,19 +23,18 @@ namespace NakedFramework.ParallelReflector.Component {
                                    IMetamodelBuilder metamodel,
                                    ICoreConfiguration coreConfiguration,
                                    IEnumerable<IFacetDecorator> facetDecorators,
+                                   IReflectorOrder<SystemTypeReflector> reflectorOrder,
                                    ILoggerFactory loggerFactory,
-                                   ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
+                                   ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, reflectorOrder, loggerFactory, logger) {
             CoreConfiguration = coreConfiguration;
-
             FacetFactorySet = systemTypeFacetFactorySet;
             ClassStrategy = systemTypeClassStrategy;
-            Order = 0;
         }
 
         private ICoreConfiguration CoreConfiguration { get; }
 
         public override bool ConcurrencyChecking => false;
-        public override string Name { get; } = "Naked Framework";
+        public override string Name => "Naked Framework";
         public override bool IgnoreCase => false;
 
         protected override IIntrospector GetNewIntrospector() => new SystemTypeIntrospector(this, LoggerFactory.CreateLogger<SystemTypeIntrospector>());

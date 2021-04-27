@@ -8,14 +8,31 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Architecture.Component;
+using NakedFramework.Core.Error;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.ParallelReflector.Component;
+using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Extensions;
+using NakedObjects.Reflector.Component;
 using NakedObjects.Services;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 
 namespace NakedObjects.SystemTest.MultiReflector {
+    
+    class MultiReflectorOrder<T> : IReflectorOrder<T> {
+        public int Order => typeof(T) switch
+        {
+            { } t when t.IsAssignableTo(typeof(SystemTypeReflector)) => 0,
+            { } t when t.IsAssignableTo(typeof(ObjectReflector)) => 1,
+            { } t when t.IsAssignableTo(typeof(FunctionalReflector)) => 1,
+            _ => throw new InitialisationException($"Unexpected reflector type {typeof(T)}")
+        };
+    }
+
     [TestFixture]
     public class MultiReflectorTest : AbstractSystemTest<FooContext> {
         [SetUp]
@@ -42,6 +59,12 @@ namespace NakedObjects.SystemTest.MultiReflector {
             CleanupNakedObjectsFramework(this);
             FooContext.Delete();
         }
+
+
+        protected override Action<NakedCoreOptions> AddCoreOptions => builder => {
+            base.AddCoreOptions(builder);
+            builder.Services.AddSingleton(typeof(IReflectorOrder<>), typeof(MultiReflectorOrder<>));
+        };
 
         protected override Action<NakedCoreOptions> AddNakedFunctions => builder => builder.AddNakedFunctions(NakedFunctionsOptions);
 
@@ -71,18 +94,21 @@ namespace NakedObjects.SystemTest.MultiReflector {
     }
 
     public class Foo {
-        [Title] public virtual string Name { get; set; }
+        [Title]
+        public virtual string Name { get; set; }
 
-        [Key] public virtual int Id { get; set; }
+        [Key]
+        public virtual int Id { get; set; }
 
         public virtual Bar BarProperty { get; set; }
     }
 
+    public record Bar {
+        public virtual string Name { get; set; }
 
-    public record Bar
-    {
-    public virtual string Name { get; set; }
-    [Key] public virtual int Id { get; set; }
-    public override string ToString() => Name;
+        [Key]
+        public virtual int Id { get; set; }
+
+        public override string ToString() => Name;
     }
 }

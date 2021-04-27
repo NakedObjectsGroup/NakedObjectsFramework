@@ -21,7 +21,7 @@ namespace NakedFramework.Architecture.Component {
     public interface IReflector {
         string Name { get; }
 
-        int Order { get; } // todo temp fix 
+        int Order { get; }
 
         bool IgnoreCase { get; }
         bool ConcurrencyChecking { get; }

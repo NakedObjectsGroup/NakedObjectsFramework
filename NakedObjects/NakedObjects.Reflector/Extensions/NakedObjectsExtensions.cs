@@ -33,6 +33,7 @@ namespace NakedObjects.Reflector.Extensions {
             coreOptions.Services.AddDefaultSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
             coreOptions.Services.AddDefaultSingleton<ObjectClassStrategy, ObjectClassStrategy>();
 
+            coreOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(ObjectReflectorOrder<>));
             coreOptions.Services.AddSingleton<IReflector, ObjectReflector>();
             coreOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
             coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.Services));

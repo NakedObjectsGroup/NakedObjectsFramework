@@ -44,6 +44,7 @@ namespace NakedFunctions.Reflector.Extensions {
             coreOptions.Services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
             coreOptions.Services.AddDefaultSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
             coreOptions.Services.AddDefaultSingleton<FunctionClassStrategy, FunctionClassStrategy>();
+            coreOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(FunctionalReflectorOrder<>));
             coreOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
             coreOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
             coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());

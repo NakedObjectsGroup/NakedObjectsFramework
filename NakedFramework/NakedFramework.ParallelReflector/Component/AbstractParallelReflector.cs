@@ -20,23 +20,25 @@ using NakedFramework.ParallelReflector.Reflect;
 
 namespace NakedFramework.ParallelReflector.Component {
     public abstract class AbstractParallelReflector : IReflector {
-        protected readonly FacetDecoratorSet FacetDecoratorSet;
-        protected readonly IMetamodelBuilder InitialMetamodel;
-        protected readonly ILogger<AbstractParallelReflector> Logger;
+        private readonly FacetDecoratorSet facetDecoratorSet;
+        private readonly IMetamodelBuilder initialMetamodel;
+        private readonly ILogger<AbstractParallelReflector> logger;
         protected readonly ILoggerFactory LoggerFactory;
 
         protected AbstractParallelReflector(IMetamodelBuilder metamodel,
                                             IEnumerable<IFacetDecorator> facetDecorators,
+                                            IReflectorOrder reflectorOrder,
                                             ILoggerFactory loggerFactory,
                                             ILogger<AbstractParallelReflector> logger) {
-            InitialMetamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            initialMetamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             LoggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
-            Logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
-            FacetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
+            facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
+            Order = reflectorOrder.Order;
         }
 
-        public IClassStrategy ClassStrategy { get; init; }
-        public IFacetFactorySet FacetFactorySet { get; init; }
+        public IClassStrategy ClassStrategy { get; protected init; }
+        public IFacetFactorySet FacetFactorySet { get; protected init; }
 
         protected abstract IIntrospector GetNewIntrospector();
 
@@ -72,7 +74,7 @@ namespace NakedFramework.ParallelReflector.Component {
             var specification = CreateSpecification(type);
 
             if (specification == null) {
-                throw new ReflectionException(Logger.LogAndReturn($"unrecognised type {type.FullName}"));
+                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
             return specification;
@@ -82,7 +84,7 @@ namespace NakedFramework.ParallelReflector.Component {
             var specification = CreateSpecification(type);
 
             if (specification == null) {
-                throw new ReflectionException(Logger.LogAndReturn($"unrecognised type {type.FullName}"));
+                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
             metamodel = metamodel.Add(TypeKeyUtils.GetKeyForType(type), specification);
@@ -99,10 +101,10 @@ namespace NakedFramework.ParallelReflector.Component {
             var specification = metamodel[TypeKeyUtils.GetKeyForType(type)];
 
             if (specification == null) {
-                throw new ReflectionException(Logger.LogAndReturn($"unrecognised type {type.FullName}"));
+                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
-            metamodel = specification.Introspect(FacetDecoratorSet, GetNewIntrospector(), metamodel);
+            metamodel = specification.Introspect(facetDecoratorSet, GetNewIntrospector(), metamodel);
 
             return (specification, metamodel);
         }
@@ -144,7 +146,7 @@ namespace NakedFramework.ParallelReflector.Component {
 
         public abstract bool ConcurrencyChecking { get; }
         public abstract string Name { get; }
-        public int Order { get; init; }
+        public int Order { get; }
         public abstract bool IgnoreCase { get; }
 
         public virtual (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

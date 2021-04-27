@@ -26,16 +26,16 @@ namespace NakedObjects.Reflector.Component {
                                IMetamodelBuilder metamodel,
                                IObjectReflectorConfiguration objectReflectorConfiguration,
                                IEnumerable<IFacetDecorator> facetDecorators,
+                               IReflectorOrder<ObjectReflector> reflectorOrder,
                                ILoggerFactory loggerFactory,
-                               ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
+                               ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, reflectorOrder,  loggerFactory, logger) {
             this.objectReflectorConfiguration = objectReflectorConfiguration;
             FacetFactorySet = objectFacetFactorySet;
             ClassStrategy = objectClassStrategy;
-            Order = 1;
         }
 
         public override bool ConcurrencyChecking => objectReflectorConfiguration.ConcurrencyChecking;
-        public override string Name { get; } = "Naked Objects";
+        public override string Name => "Naked Objects";
         public override bool IgnoreCase => objectReflectorConfiguration.IgnoreCase;
 
         protected override IIntrospector GetNewIntrospector() => new ObjectIntrospector(this, LoggerFactory.CreateLogger<ObjectIntrospector>());

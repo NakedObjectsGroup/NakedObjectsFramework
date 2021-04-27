@@ -17,10 +17,14 @@ open SystemTestCode
 open TestCode
 open Microsoft.Extensions.Configuration
 open NakedFramework.Xat.TestCase
+open NakedFramework.DependencyInjection.Extensions
 
 [<TestFixture>]
 type DomainSystemTests() = 
     inherit AcceptanceTestCase()
+
+
+    override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ())
 
     override x.ContextInstallers = 
         [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext) |]

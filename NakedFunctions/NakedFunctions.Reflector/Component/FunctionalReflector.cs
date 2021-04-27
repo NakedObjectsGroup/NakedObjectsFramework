@@ -26,19 +26,18 @@ namespace NakedFunctions.Reflector.Component {
                                    IMetamodelBuilder metamodel,
                                    IFunctionalReflectorConfiguration functionalReflectorConfiguration,
                                    IEnumerable<IFacetDecorator> facetDecorators,
-                                   IEnumerable<IFacetFactory> facetFactories,
+                                   IReflectorOrder<FunctionalReflector> reflectorOrder,
                                    ILoggerFactory loggerFactory,
-                                   ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
+                                   ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, reflectorOrder,  loggerFactory, logger) {
             this.functionalReflectorConfiguration = functionalReflectorConfiguration;
             ClassStrategy = functionClassStrategy;
             FacetFactorySet = functionalFacetFactorySet;
-            Order = 2;
         }
 
         public override bool IgnoreCase => functionalReflectorConfiguration.IgnoreCase;
 
         public override bool ConcurrencyChecking => functionalReflectorConfiguration.ConcurrencyChecking;
-        public override string Name { get; } = "Naked Functions";
+        public override string Name => "Naked Functions";
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectFunctionalTypes(Type[] records, Type[] functions, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var allFunctionalTypes = records.Union(functions).ToArray();

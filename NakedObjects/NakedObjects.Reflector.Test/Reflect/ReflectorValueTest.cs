@@ -19,6 +19,7 @@ using NakedFramework.Metamodel.Component;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
+using NakedObjects.Reflector.Component;
 
 namespace NakedObjects.Reflector.Test.Reflect {
     [TestClass]
@@ -28,7 +29,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             ClassStrategy = new SystemTypeClassStrategy(config);
             var systemTypeFacetFactorySet = new SystemTypeFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>());
             var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
-            return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy) ClassStrategy, metamodel, config, System.Array.Empty<IFacetDecorator>(), lf, mockLogger1);
+            var order = new ObjectReflectorOrder<SystemTypeReflector>();
+            return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy) ClassStrategy, metamodel, config, System.Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
         }
 
         protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {

@@ -125,16 +125,20 @@ namespace NakedFramework.Xat.TestCase {
 
         protected virtual Action<NakedCoreOptions> NakedCoreOptions =>
             builder => {
-                builder.MainMenus = MainMenus;
-                builder.AuthorizationConfiguration = AuthorizationConfiguration;
-                builder.AuditConfiguration = AuditConfiguration;
-                builder.ProfileConfiguration = ProfileConfiguration;
-                builder.SupportedSystemTypes = SupportedSystemTypes;
+                AddCoreOptions(builder);
                 AddPersistor(builder);
                 AddNakedObjects(builder);
                 AddNakedFunctions(builder);
                 AddRestfulObjects(builder);
             };
+
+        protected virtual Action<NakedCoreOptions> AddCoreOptions => builder => {
+            builder.MainMenus = MainMenus;
+            builder.AuthorizationConfiguration = AuthorizationConfiguration;
+            builder.AuditConfiguration = AuditConfiguration;
+            builder.ProfileConfiguration = ProfileConfiguration;
+            builder.SupportedSystemTypes = SupportedSystemTypes;
+        };
 
         protected virtual Action<NakedCoreOptions> AddPersistor => builder => builder.AddEF6Persistor(PersistorOptions);
 
