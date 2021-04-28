@@ -304,14 +304,7 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 2);
         }
 
-        public virtual MostSimple AnOverloadedAction() {
-            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
-        }
-
-        public virtual MostSimple AnOverloadedAction(string parm) {
-            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
-        }
-
+       
         public void AnActionWithCollectionParameter(IEnumerable<string> parm) { }
 
         public string[] Choices0AnActionWithCollectionParameter() {

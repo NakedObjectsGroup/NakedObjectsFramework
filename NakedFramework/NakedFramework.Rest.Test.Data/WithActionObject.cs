@@ -7,6 +7,7 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
@@ -16,5 +17,16 @@ namespace RestfulObjects.Test.Data {
         [ConcurrencyCheck]
         [DefaultValue(0)]
         public virtual int Id { get; set; }
+
+        public virtual MostSimple AnOverloadedAction()
+        {
+            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        }
+
+        public virtual MostSimple AnOverloadedAction(string parm)
+        {
+            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        }
+
     }
 }

@@ -919,9 +919,9 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                                   TProperty
                                       ("AnActionWithReferenceParametersWithAutoComplete", 
                                        TObjectJson(makeServiceActionMember "AnActionWithReferenceParametersWithAutoComplete" sName mst [ p17; p18 ]))                                  
-                                  TProperty
-                                      ("AnOverloadedAction", 
-                                       TObjectJson(makeActionMember "services" "AnOverloadedAction" sName "An Overloaded Action" "" mst []))                                  
+                                  //TProperty
+                                  //    ("AnOverloadedAction", 
+                                  //     TObjectJson(makeActionMember "services" "AnOverloadedAction" sName "An Overloaded Action" "" mst []))                                  
                                   TProperty("AnActionWithValueParameter", TObjectJson(makeServiceActionMember "AnActionWithValueParameter" sName mst [ p20 ]))                                  
                                   TProperty("AnActionWithValueParameterWithRange", TObjectJson(makeServiceActionMember "AnActionWithValueParameterWithRange" sName mst [ p45 ]))
                                   TProperty

@@ -58,8 +58,7 @@ namespace NakedFramework.ModelBuilding.Component {
             InstallMainMenus(metamodelBuilder);
             InstallObjectMenus(metamodelBuilder);
 
-            // todo validation of model including no duplicate functions in menus 
-            //ValidateModel(metamodelBuilder);
+            ValidateModel(metamodelBuilder);
         }
 
         private static IMenuActionImmutable[] GetMenuActions(IMenuItemImmutable item) =>

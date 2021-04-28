@@ -224,6 +224,18 @@ namespace RestfulObjects.Test.Data {
 
         public override ICollection<MostSimple> AnErrorCollection() => throw new DomainException("An error exception");
 
+        public virtual MostSimple AnOverloadedAction()
+        {
+            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        }
+
+        public virtual MostSimple AnOverloadedAction(string parm)
+        {
+            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        }
+
+
+
         #region IViewModel Members
 
         [NakedObjectsIgnore]

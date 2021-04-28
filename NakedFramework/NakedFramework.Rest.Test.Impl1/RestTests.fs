@@ -1151,8 +1151,8 @@ type Tests() =
         [<Test>]
         member x.GetOverloadedActionPropertyObject() = ObjectAction18.GetOverloadedActionPropertyObject x.api
         
-        [<Test>]
-        member x.GetOverloadedActionPropertyService() = ObjectAction18.GetOverloadedActionPropertyService x.api
+        //[<Test>]
+        //member x.GetOverloadedActionPropertyService() = ObjectAction18.GetOverloadedActionPropertyService x.api
         
         [<Test>]
         member x.GetOverloadedActionPropertyViewModel() = ObjectAction18.GetOverloadedActionPropertyViewModel x.api
@@ -1553,9 +1553,9 @@ type Tests() =
         member x.PostInvokeOverloadedActionReturnObjectObject() = 
             ObjectActionInvoke19.PostInvokeOverloadedActionReturnObjectObject x.api
         
-        [<Test>]
-        member x.PostInvokeOverloadedActionReturnObjectService() = 
-            ObjectActionInvoke19.PostInvokeOverloadedActionReturnObjectService x.api
+        //[<Test>]
+        //member x.PostInvokeOverloadedActionReturnObjectService() = 
+        //    ObjectActionInvoke19.PostInvokeOverloadedActionReturnObjectService x.api
         
         [<Test>]
         member x.PostInvokeOverloadedActionReturnObjectViewModel() = 
@@ -2316,8 +2316,8 @@ type Tests() =
         [<Test>]
         member x.PostInvokeOverloadedActionObject() = ObjectActionInvoke19.PostInvokeOverloadedActionObject x.api
         
-        [<Test>]
-        member x.PostInvokeOverloadedActionService() = ObjectActionInvoke19.PostInvokeOverloadedActionService x.api
+        //[<Test>]
+        //member x.PostInvokeOverloadedActionService() = ObjectActionInvoke19.PostInvokeOverloadedActionService x.api
         
         [<Test>]
         member x.PostInvokeOverloadedActionViewModel() = ObjectActionInvoke19.PostInvokeOverloadedActionViewModel x.api
