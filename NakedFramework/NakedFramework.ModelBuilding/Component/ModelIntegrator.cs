@@ -59,6 +59,21 @@ namespace NakedFramework.ModelBuilding.Component {
             InstallObjectMenus(metamodelBuilder);
 
             // todo validation of model including no duplicate functions in menus 
+            //ValidateModel(metamodelBuilder);
+        }
+
+        private static IMenuActionImmutable[] GetMenuActions(IMenuItemImmutable item) =>
+            item switch {
+                IMenuActionImmutable actionImmutable => new[] {actionImmutable},
+                IMenuImmutable menu => menu.MenuItems.SelectMany(GetMenuActions).ToArray(),
+                _ => Array.Empty<IMenuActionImmutable>()
+            };
+
+        private void ValidateModel(IMetamodelBuilder builder) {
+            foreach (var menu in metamodelBuilder.MainMenus) {
+                var menuActions = menu.MenuItems.SelectMany(GetMenuActions).ToList();
+                ErrorOnDuplicates(menuActions.Select(a => new ActionHolder(a)).ToList());
+            }
         }
 
         private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;
@@ -87,7 +102,7 @@ namespace NakedFramework.ModelBuilding.Component {
             }).ToList();
 
             if (objectContribActions.Any()) {
-                ErrorOnDuplicates(objectContribActions);
+                ErrorOnDuplicates(objectContribActions.Select(a => new ActionHolder(a)).ToList());
                 spec.AddContributedFunctions(objectContribActions);
             }
 
@@ -106,40 +121,49 @@ namespace NakedFramework.ModelBuilding.Component {
             }).ToList();
 
             if (collectionContribActions.Any()) {
-                ErrorOnDuplicates(collectionContribActions);
+                ErrorOnDuplicates(collectionContribActions.Select(a => new ActionHolder(a)).ToList());
                 spec.AddCollectionContributedActions(collectionContribActions);
             }
         }
 
-        private static void ErrorOnDuplicates(IList<IActionSpecImmutable> actions) {
+        private record ActionHolder {
+            private readonly object wrapped;
+
+            public ActionHolder(IActionSpecImmutable actionSpecImmutable) => wrapped = actionSpecImmutable;
+
+            public ActionHolder(IAssociationSpecImmutable associationSpecImmutable) => wrapped = associationSpecImmutable;
+
+            public ActionHolder(IMenuActionImmutable menuActionImmutable) => wrapped = menuActionImmutable;
+
+            public string Name => wrapped switch {
+                IActionSpecImmutable action => action.Identifier.MemberName,
+                IAssociationSpecImmutable association => association.Identifier.MemberName,
+                IMenuActionImmutable menu => menu.Action.Identifier.MemberName,
+                _ => ""
+            };
+
+            public ITypeSpecImmutable OwnerSpec => wrapped switch {
+                IActionSpecImmutable action => action.OwnerSpec,
+                IAssociationSpecImmutable association => association.OwnerSpec,
+                IMenuActionImmutable menu => menu.Action.OwnerSpec,
+                _ => null
+            };
+        }
+
+        private static void ErrorOnDuplicates(IList<ActionHolder> actions)
+        {
             var names = actions.Select(s => s.Name).ToArray();
             var distinctNames = names.Distinct().ToArray();
 
-            if (names.Length != distinctNames.Length) {
+            if (names.Length != distinctNames.Length)
+            {
                 var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
                 var errors = new List<string>();
 
-                foreach (var name in duplicates) {
+                foreach (var name in duplicates)
+                {
                     var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
                     var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
-                    errors.Add(error);
-                }
-
-                throw new ReflectionException(string.Join(", ", errors));
-            }
-        }
-
-        private static void ErrorOnDuplicates(IList<IAssociationSpecImmutable> actions) {
-            var names = actions.Select(s => s.Identifier.MemberName).ToArray();
-            var distinctNames = names.Distinct().ToArray();
-
-            if (names.Length != distinctNames.Length) {
-                var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
-                var errors = new List<string>();
-
-                foreach (var name in duplicates) {
-                    var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
-                    var error = duplicateActions.Aggregate("Name clash between properties defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
                     errors.Add(error);
                 }
 
@@ -175,7 +199,7 @@ namespace NakedFramework.ModelBuilding.Component {
             if (result.Any()) {
                 var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
                 var orderedFields = spec.Fields.Union(adaptedMembers).OrderBy(f => f, new MemberOrderComparator<IAssociationSpecImmutable>()).ToList();
-                ErrorOnDuplicates(orderedFields);
+                ErrorOnDuplicates(orderedFields.Select(a => new ActionHolder(a)).ToList());
                 spec.AddContributedFields(orderedFields);
             }
         }
@@ -219,7 +243,7 @@ namespace NakedFramework.ModelBuilding.Component {
             var menus = coreConfiguration.MainMenus?.Invoke(menuFactory);
             // Unlike other things specified in objectReflectorConfiguration, this one can't be checked when ObjectReflectorConfiguration is constructed.
             // Allows developer to deliberately not specify any menus
-            if (menus != null) {
+            if (menus is not null) {
                 if (!menus.Any()) {
                     //Catches accidental non-specification of menus
                     throw new ReflectionException(logger.LogAndReturn("No MainMenus specified."));
