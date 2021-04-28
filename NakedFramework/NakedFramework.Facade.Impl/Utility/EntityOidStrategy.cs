@@ -141,7 +141,7 @@ namespace NakedFramework.Facade.Impl.Utility {
 
         #region IOidStrategy Members
 
-        public IFrameworkFacade FrameworkFacade { get; set; }
+        public IFrameworkFacade FrameworkFacade { private get; set; }
 
         public IOidTranslator OidTranslator => FrameworkFacade.OidTranslator;
 

@@ -9,8 +9,7 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Translation {
     public interface IOidStrategy {
-        // todo make public get while refactoring
-        IFrameworkFacade FrameworkFacade { get; set; }
+        IFrameworkFacade FrameworkFacade { set; }
         IOidTranslator OidTranslator { get; }
         object GetDomainObjectByOid(IOidTranslation objectId);
         IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId);
