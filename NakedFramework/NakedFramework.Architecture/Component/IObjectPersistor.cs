@@ -32,6 +32,7 @@ namespace NakedFramework.Architecture.Component {
         PropertyInfo[] GetKeys(Type type);
         INakedObjectAdapter FindByKeys(Type type, object[] keys);
         void Refresh(INakedObjectAdapter nakedObjectAdapter);
+        object Resolve(object domainObject);
         void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter);
         void DestroyObject(INakedObjectAdapter nakedObjectAdapter);
         object CreateObject(ITypeSpec spec);

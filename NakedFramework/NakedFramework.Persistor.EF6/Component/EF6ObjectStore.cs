@@ -405,7 +405,7 @@ namespace NakedFramework.Persistor.EF6.Component {
 
         private void LoadObjectIntoNakedObjectsFramework(object domainObject, EF6LocalContext context) {
             CheckProxies(domainObject);
-            var oid = oidGenerator.CreateOid(EF6Helpers.GetEntityProxiedTypeName(domainObject), context.GetKey(domainObject));
+            var oid = oidGenerator.CreateOid(EF6Helpers.GetEF6ProxiedTypeName(domainObject), context.GetKey(domainObject));
             var nakedObjectAdapter = CreateAdapter(oid, domainObject);
             injector.InjectInto(nakedObjectAdapter.Object);
             LoadComplexTypesIntoNakedObjectFramework(nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsGhost());
@@ -451,7 +451,7 @@ namespace NakedFramework.Persistor.EF6.Component {
 
         private void RecurseUntilAllChangesApplied(int depth) {
             if (depth > MaximumCommitCycles) {
-                var typeNames = contexts.Values.SelectMany(c => c.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Modified).Where(o => o.Entity != null).Select(o => o.Entity.GetEntityProxiedType().FullName)).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ", ") + t);
+                var typeNames = contexts.Values.SelectMany(c => c.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Modified).Where(o => o.Entity != null).Select(o => o.Entity.GetEF6ProxiedType().FullName)).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ", ") + t);
 
                 throw new NakedObjectDomainException(Logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.EntityCommitError, typeNames)));
             }
@@ -487,7 +487,7 @@ namespace NakedFramework.Persistor.EF6.Component {
         }
 
         public bool IsNotPersisted(object owner, PropertyInfo pi) {
-            if (metamodelManager.GetSpecification(owner.GetEntityProxiedType()) is IObjectSpec objectSpec) {
+            if (metamodelManager.GetSpecification(owner.GetEF6ProxiedType()) is IObjectSpec objectSpec) {
                 return objectSpec.Properties.SingleOrDefault(p => p.Id == pi.Name)?.ContainsFacet<INotPersistedFacet>() == true;
             }
 
@@ -497,7 +497,7 @@ namespace NakedFramework.Persistor.EF6.Component {
         #region IObjectStore Members
 
         public void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool parentIsGhost) {
-            var proxiedType = adapter.Object.GetEntityProxiedType();
+            var proxiedType = adapter.Object.GetEF6ProxiedType();
 
             if (contexts.All(c => c.Value.IsAlwaysUnrecognised(proxiedType))) {
                 return;
@@ -554,6 +554,20 @@ namespace NakedFramework.Persistor.EF6.Component {
             finally {
                 contexts.Values.ForEach(c => c.SaveOrUpdateComplete());
             }
+        }
+
+        public object Resolve(object domainObject) {
+            var context = GetContext(domainObject);
+            var entityType = domainObject.GetEF6ProxiedType();
+            var references = context.GetReferenceMembers(entityType);
+            var collection = context.GetCollectionMembers(entityType);
+
+            foreach (var pi in references.Union(collection))
+            {
+                pi.GetValue(domainObject, null);
+            }
+
+            return domainObject;
         }
 
         public void Execute(IPersistenceCommand[] commands) => ExecuteCommands(commands);

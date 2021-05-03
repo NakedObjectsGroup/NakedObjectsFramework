@@ -34,11 +34,10 @@ namespace NakedFramework.Persistor.EF6.Util {
             }
         }
 
-        public static string GetEntityProxiedTypeName(object domainObject) => domainObject.GetEntityProxiedType().FullName;
+        public static string GetEF6ProxiedTypeName(object domainObject) => domainObject.GetEF6ProxiedType().FullName;
 
-        public static Type GetEntityProxiedType(this object domainObject) =>
-            domainObject.GetType() switch
-            {
+        public static Type GetEF6ProxiedType(this object domainObject) =>
+            domainObject.GetType() switch {
                 { } t when FasterTypeUtils.IsEF6Proxy(t) => t.BaseType,
                 { } t => t
             };
@@ -173,9 +172,9 @@ namespace NakedFramework.Persistor.EF6.Util {
             return InvokeUtils.Invoke(mi, objectSet, null);
         }
 
-        public static object[] GetKey(this EF6LocalContext context, object domainObject) => context.GetIdMembers(domainObject.GetEntityProxiedType()).Select(x => x.GetValue(domainObject, null)).ToArray();
+        public static object[] GetKey(this EF6LocalContext context, object domainObject) => context.GetIdMembers(domainObject.GetEF6ProxiedType()).Select(x => x.GetValue(domainObject, null)).ToArray();
 
-        public static object[] GetKey(this EF6LocalContext context, INakedObjectAdapter nakedObjectAdapter) => context.GetIdMembers(nakedObjectAdapter.GetDomainObject().GetEntityProxiedType()).Select(x => x.GetValue(nakedObjectAdapter.GetDomainObject(), null)).ToArray();
+        public static object[] GetKey(this EF6LocalContext context, INakedObjectAdapter nakedObjectAdapter) => context.GetIdMembers(nakedObjectAdapter.GetDomainObject().GetEF6ProxiedType()).Select(x => x.GetValue(nakedObjectAdapter.GetDomainObject(), null)).ToArray();
 
         public static object First(IEnumerable enumerable) {
             // ReSharper disable once LoopCanBeConvertedToQuery
@@ -239,6 +238,6 @@ namespace NakedFramework.Persistor.EF6.Util {
         }
 
         public static IEnumerable<object> GetChangedComplexObjectsInContext(EF6LocalContext context) =>
-            context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).Select(ose => new {Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEntityProxiedType())}).SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).Where(x => x != null).Distinct();
+            context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).Select(ose => new {Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEF6ProxiedType())}).SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).Where(x => x != null).Distinct();
     }
 }

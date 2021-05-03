@@ -118,6 +118,8 @@ namespace NakedFramework.Core.Component {
 
         public void Refresh(INakedObjectAdapter nakedObjectAdapter) => objectStore.Refresh(nakedObjectAdapter);
 
+        public object Resolve(object domainObject) => objectStore.Resolve(domainObject);
+
         public void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.ResolveState.IsResolvable()) {
                 if (nakedObjectAdapter.ResolveState.IsResolved()) {

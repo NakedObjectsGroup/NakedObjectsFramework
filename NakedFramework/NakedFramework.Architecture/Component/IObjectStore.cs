@@ -82,6 +82,7 @@ namespace NakedFramework.Architecture.Component {
         void Reload(INakedObjectAdapter nakedObjectAdapter);
         void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field);
         void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter);
+        object Resolve(object domainObject);
         void Execute(IPersistenceCommand[] commands);
         void StartTransaction();
         PropertyInfo[] GetKeys(Type type);

@@ -52,7 +52,7 @@ namespace NakedFramework.Persistor.EF6.Component {
                 }
 
                 if (add) {
-                    context.GetObjectSet(originalObject.GetEntityProxiedType()).Invoke("AddObject", originalObject);
+                    context.GetObjectSet(originalObject.GetEF6ProxiedType()).Invoke("AddObject", originalObject);
                 }
 
                 return originalObject;
@@ -108,7 +108,7 @@ namespace NakedFramework.Persistor.EF6.Component {
         }
 
         private void CallPersistingPersistedForComplexObjects(INakedObjectAdapter parentAdapter) {
-            var complexMembers = context.GetComplexMembers(parentAdapter.Object.GetEntityProxiedType());
+            var complexMembers = context.GetComplexMembers(parentAdapter.Object.GetEF6ProxiedType());
             foreach (var pi in complexMembers) {
                 var complexObject = pi.GetValue(parentAdapter.Object, null);
                 var childAdapter = parent.CreateAggregatedAdapter(nakedObjectAdapter, pi, complexObject);

@@ -36,13 +36,6 @@ namespace NakedFunctions.Reflector.Component {
 
         public T Reload<T>(T unsaved) where T : class => ProxyMap.ContainsKey(unsaved) ? (T) ProxyMap[unsaved] : Persistor.ValidateProxy(unsaved);
 
-        public T Resolve<T>(T obj) where T : class {
-            // todo naive impl improve
-            foreach (var p in obj.GetType().GetProperties()) {
-                var sink = p.GetValue(obj, null);
-            }
-
-            return obj;
-        }
+        public T Resolve<T>(T obj) where T : class => (T) Persistor.Resolve(obj);
     }
 }

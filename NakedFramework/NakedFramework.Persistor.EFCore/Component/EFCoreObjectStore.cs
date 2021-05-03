@@ -192,6 +192,19 @@ namespace NakedFramework.Persistor.EFCore.Component {
             throw new NotImplementedException();
         }
 
+        public object Resolve(object domainObject) {
+            var context = GetContext(domainObject).WrappedDbContext;
+            var entityType = domainObject.GetEFCoreProxiedType();
+            var references = context.GetReferenceMembers(entityType);
+            var collection = context.GetCollectionMembers(entityType);
+
+            foreach (var pi in references.Union(collection)) {
+                pi.GetValue(domainObject, null);
+            }
+
+            return domainObject;
+        }
+
         public void Execute(IPersistenceCommand[] commands) {
             throw new NotImplementedException();
         }
