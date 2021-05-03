@@ -690,15 +690,6 @@ namespace NakedFramework.Persistor.EF6.Component {
             }
         }
 
-        internal static bool EmptyKey(object key) =>
-            key switch {
-                // todo for all null keys
-                string s => string.IsNullOrEmpty(s),
-                int i => i == 0,
-                null => true,
-                _ => false
-            };
-
         public IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects) {
             functionalPostSave = objects.PostSaveFunction;
             return SetFunctionalProxyMap(ExecuteDetachedObjectCommand(objects));

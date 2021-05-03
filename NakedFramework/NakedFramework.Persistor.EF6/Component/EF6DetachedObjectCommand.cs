@@ -48,7 +48,7 @@ namespace NakedFramework.Persistor.EF6.Component {
 
             foreach (var toSave in detachedObjects.ToSave) {
                 context = parent.GetContext(toSave);
-                if (!context.GetKey(toSave).All(EF6ObjectStore.EmptyKey)) {
+                if (!context.GetKey(toSave).All(TypeKeyUtils.EmptyKey)) {
                     errors.Add($"Save object {toSave} already has a key");
                 }
             }
@@ -56,7 +56,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             foreach (var updateTuple in detachedObjects.ToUpdate) {
                 var (_, toUpdate) = updateTuple;
                 context = parent.GetContext(toUpdate);
-                if (context.GetKey(toUpdate).All(EF6ObjectStore.EmptyKey)) {
+                if (context.GetKey(toUpdate).All(TypeKeyUtils.EmptyKey)) {
                     errors.Add($"Update object {toUpdate} has no key");
                 }
             }
@@ -194,7 +194,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             }
 
             var keys = context.GetKey(originalObject);
-            var persisting = keys.All(EF6ObjectStore.EmptyKey);
+            var persisting = keys.All(TypeKeyUtils.EmptyKey);
 
             return persisting ? ProxyObject(originalObject) : originalObject;
         }

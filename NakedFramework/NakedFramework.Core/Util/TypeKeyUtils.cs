@@ -32,5 +32,27 @@ namespace NakedFramework.Core.Util {
                 : FasterTypeUtils.IsObjectArray(type)
                     ? "System.Array"
                     : FasterTypeUtils.GetProxiedTypeFullName(type);
+
+        public static bool EmptyKey(object key) =>
+            key switch {
+                int i => i == default,
+                string s => string.IsNullOrEmpty(s),
+                byte i => i == default,
+                sbyte i => i == default,
+                char i => i == default,
+                decimal i => i == default,
+                double i => i == default,
+                float i => i == default,
+                uint i => i == default,
+                long i => i == default,
+                ulong i => i == default,
+                short i => i == default,
+                ushort i => i == default,
+                Guid g => g == default,
+                DateTime d => d == default,
+                Array a => a.Length == 0,
+                null => true,
+                _ => false
+            };
     }
 }

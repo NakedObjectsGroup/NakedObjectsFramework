@@ -587,30 +587,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private EFCoreLocalContext GetContext(INakedObjectAdapter nakedObjectAdapter) => GetContext(nakedObjectAdapter.Object);
 
-        private static bool EmptyKey(object key) =>
-            key switch {
-                // todo for all null keys
-                int i => i == default,
-                string s => string.IsNullOrEmpty(s),
-                byte i => i == default,
-                sbyte i => i == default,
-                char i => i == default,
-                decimal i => i == default,
-                double i => i == default,
-                float i => i == default,
-                uint i => i == default,
-                long i => i == default,
-                ulong i => i == default,
-                short i => i == default,
-                ushort i => i == default,
-                Guid g => g == default,
-                DateTime d => d == default,
-                Array a => a.Length == 0,
-                null => true,
-                _ => false
-            };
-
-        internal bool EmptyKeys(object obj) => GetKeys(obj.GetType()).Select(k => k.GetValue(obj, null)).All(EmptyKey);
+        internal bool EmptyKeys(object obj) => GetKeys(obj.GetType()).Select(k => k.GetValue(obj, null)).All(TypeKeyUtils.EmptyKey);
 
         public bool IsNotPersisted(object owner, PropertyInfo pi) {
             if (metamodelManager.GetSpecification(owner.GetEFCoreProxiedType()) is IObjectSpec objectSpec) {
