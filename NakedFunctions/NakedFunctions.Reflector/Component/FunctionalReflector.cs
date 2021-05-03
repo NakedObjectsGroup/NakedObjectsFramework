@@ -42,7 +42,7 @@ namespace NakedFunctions.Reflector.Component {
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectFunctionalTypes(Type[] records, Type[] functions, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var allFunctionalTypes = records.Union(functions).ToArray();
 
-            var placeholders = GetPlaceholders(allFunctionalTypes, ClassStrategy);
+            var placeholders = GetPlaceholders(allFunctionalTypes);
             var pending = specDictionary.Where(i => i.Value.IsPendingIntrospection).Select(i => i.Value.Type);
             var toIntrospect = placeholders.Select(kvp => kvp.Value.Type).Union(pending).ToArray();
             return placeholders.Any()

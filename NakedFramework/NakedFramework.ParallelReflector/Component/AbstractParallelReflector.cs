@@ -52,63 +52,45 @@ namespace NakedFramework.ParallelReflector.Component {
         }
 
         protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectTypes(Type[] toIntrospect, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            specDictionary = toIntrospect.Any()
+            var introspectedDictionary = toIntrospect.Any()
                 ? toIntrospect.AsParallel().SelectMany(type => IntrospectSpecification(type, specDictionary).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary()
                 : specDictionary;
 
-            // todo is this now necessary ?
-            return specDictionary.Any(i => i.Value.IsPlaceHolder)
-                ? IntrospectPlaceholders(specDictionary)
-                : specDictionary;
-        }
-
-        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var ph = specDictionary.Where(i => i.Value.IsPlaceHolder).Select(i => i.Value.Type).ToArray();
-            return IntrospectTypes(ph, specDictionary);
-        }
-
-        private ITypeSpecBuilder GetPlaceholder(Type type) {
-            var specification = CreateSpecification(type);
-
-            if (specification == null) {
-                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
+            if (introspectedDictionary.Any(i => i.Value.IsPlaceHolder)) {
+                var placeholders = introspectedDictionary.Where(i => i.Value.IsPlaceHolder).Select(p => p.Key).Aggregate("", (a, k) => $"{a}, {k}");
+                throw new ReflectionException($"Unexpected placeholder(s): {placeholders}");
             }
 
-            return specification;
+            return introspectedDictionary;
         }
+
+        private ITypeSpecBuilder GetPlaceholder(Type type) => CreateSpecification(type);
 
         private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadPlaceholder(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specification = CreateSpecification(type);
-
-            if (specification == null) {
-                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
-            }
-
             metamodel = metamodel.Add(TypeKeyUtils.GetKeyForType(type), specification);
-
             return (specification, metamodel);
         }
 
-        protected IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types, IClassStrategy classStrategy) =>
+        protected IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types) =>
             types.Select(TypeKeyUtils.FilterNullableAndProxies)
                  .Distinct(new TypeKeyComparer())
                  .ToDictionary(TypeKeyUtils.GetKeyForType, GetPlaceholder).ToImmutableDictionary();
 
         private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecificationAndCache(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var specification = metamodel[TypeKeyUtils.GetKeyForType(type)];
-
-            if (specification == null) {
-                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
-            }
-
+            var specification = metamodel[TypeKeyUtils.GetKeyForType(type)] ?? ThrowNullSpecificationError(type);
             metamodel = specification.Introspect(facetDecoratorSet, GetNewIntrospector(), metamodel);
-
             return (specification, metamodel);
+        }
+
+        private ITypeSpecBuilder ThrowNullSpecificationError(Type type) {
+            throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
         }
 
         private ITypeSpecBuilder CreateSpecification(Type type) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached
-            return ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type), ClassStrategy.IsTypeRecognized(type));
+            var spec = ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type), ClassStrategy.IsTypeRecognized(type));
+            return spec ?? ThrowNullSpecificationError(type);
         }
 
         #region Nested type: TypeKeyComparer

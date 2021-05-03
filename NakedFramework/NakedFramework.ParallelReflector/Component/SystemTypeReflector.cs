@@ -41,7 +41,7 @@ namespace NakedFramework.ParallelReflector.Component {
         protected override IIntrospector GetNewIntrospector() => new SystemTypeIntrospector(this, LoggerFactory.CreateLogger<SystemTypeIntrospector>());
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectSystemTypes(Type[] systemTypes, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var placeholders = GetPlaceholders(systemTypes, ClassStrategy);
+            var placeholders = GetPlaceholders(systemTypes);
             var pending = specDictionary.Where(i => i.Value.IsPendingIntrospection).Select(i => i.Value.Type);
             var toIntrospect = placeholders.Select(kvp => kvp.Value.Type).Union(pending).ToArray();
             return placeholders.Any()
