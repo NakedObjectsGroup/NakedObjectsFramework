@@ -63,6 +63,7 @@ namespace NakedFunctions.Rest.Test {
             typeof(DeleteRecord),
             typeof(BoundedRecord),
             typeof(ByteArrayRecord),
+            typeof(MaskRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -152,6 +153,20 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("Hint1", parsedResult["extensions"]["x-ro-nof-presentationHint"].ToString());
             Assert.AreEqual("Hint2", parsedResult["members"]["Name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
         }
+
+        [Test]
+        public void TestGetObjectMask()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<MaskRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("Title", parsedResult["title"].ToString());
+            Assert.AreEqual("Title a mask", parsedResult["members"]["MaskRecordProperty"]["value"]["title"].ToString());
+        }
+
 
         [Test]
         public void TestGetObjectDuplicates() {

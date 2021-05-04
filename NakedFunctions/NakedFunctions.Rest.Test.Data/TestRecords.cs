@@ -177,4 +177,21 @@ namespace NakedFunctions.Rest.Test.Data {
         public override string ToString() => Name;
         public override int GetHashCode() => base.GetHashCode();
     }
+
+    
+    public record MaskRecord
+    {
+        [Key]
+        public int Id { get; init; }
+
+        public string Name { get; init; }
+
+        [Mask("a mask")]
+        public virtual MaskRecord MaskRecordProperty => this;
+
+        public virtual bool Equals(MaskRecord other) => ReferenceEquals(this, other);
+        public override string ToString() => Name;
+        public string ToString(string mask) => $"{Name} {mask}";
+        public override int GetHashCode() => base.GetHashCode();
+    }
 }

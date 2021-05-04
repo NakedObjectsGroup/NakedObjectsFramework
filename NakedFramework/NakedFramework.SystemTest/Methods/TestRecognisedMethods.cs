@@ -74,6 +74,7 @@ namespace NakedObjects.SystemTest.Method {
                 typeof(Title9),
                 typeof(Title10),
                 typeof(Title11),
+                typeof(Title12),
                 typeof(Updated1),
                 typeof(Updated2),
                 typeof(Updating1),
@@ -133,6 +134,7 @@ namespace NakedObjects.SystemTest.Method {
                 typeof(SimpleRepository<Title9>),
                 typeof(SimpleRepository<Title10>),
                 typeof(SimpleRepository<Title11>),
+                typeof(SimpleRepository<Title12>),
                 typeof(SimpleRepository<Updated1>),
                 typeof(SimpleRepository<Updated2>),
                 typeof(SimpleRepository<Updating1>),
@@ -999,7 +1001,8 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         [Test]
-        public virtual void ToStringRecognisedAsATitle() {
+        public virtual void ToStringRecognisedAsATitle()
+        {
             var obj = NewTestObject<Title5>();
             var prop1 = obj.GetPropertyByName("Prop1");
             prop1.SetValue("Bar");
@@ -1007,6 +1010,17 @@ namespace NakedObjects.SystemTest.Method {
             obj.Save();
             obj.AssertTitleEquals("Bar");
         }
+
+        [Test]
+        public virtual void ToStringWithMask() {
+            var obj = NewTestObject<Title12>();
+            obj.AssertTitleEquals("Simple Title");
+
+            var prop1 = obj.GetPropertyByName(nameof(Title12.Masked));
+
+            Assert.AreEqual("Masked Title a mask", prop1.Title);
+        }
+
 
         [Test]
         public void UnmatchedAutoCompleteMethodShowsUpAsAction() {
@@ -2347,6 +2361,18 @@ namespace NakedObjects.SystemTest.Method {
         [NakedObjectsIgnore]
         public string Title() => throw new Exception("Title method should not have been called");
     }
+
+    public class Title12
+    {
+        public virtual int Id { get; set; }
+
+        [Mask("a mask")]
+        public Title12 Masked => this;
+
+        public override string ToString() => "Simple Title";
+        public string ToString(string mask) => $"Masked Title {mask}";
+    }
+
 
     public enum Sex {
         Male = 1,

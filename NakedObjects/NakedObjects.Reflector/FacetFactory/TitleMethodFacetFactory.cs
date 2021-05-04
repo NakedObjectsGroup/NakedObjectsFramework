@@ -84,8 +84,8 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 methodRemover.SafeRemoveMethod(maskMethod);
 
-                // todo does this make sense ? 
                 if (titleFacet is null && toStringMethod is not null) {
+                    // mask method can be null, facet defaults to ToString() which is always there and so no need to pass in 
                     titleFacet = new TitleFacetViaToStringMethod(maskMethod, specification, Logger<TitleFacetViaToStringMethod>());
                 }
 

@@ -40,9 +40,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             try {
                 var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
+                var maskMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] { typeof(string) });
 
                 if (toStringMethod is not null) {
-                    IFacet titleFacet = new TitleFacetViaToStringMethod(toStringMethod, specification, Logger<TitleFacetViaToStringMethod>());
+                    // mask method can be null, facet defaults to ToString() which is always there and so no need to pass in 
+                    IFacet titleFacet = new TitleFacetViaToStringMethod(maskMethod, specification, Logger<TitleFacetViaToStringMethod>());
                     FacetUtils.AddFacet(titleFacet);
                 }
             }

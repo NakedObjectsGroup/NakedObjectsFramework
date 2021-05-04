@@ -41,6 +41,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<DeleteRecord> DeleteRecords { get; set; }
         public DbSet<BoundedRecord> BoundedRecords { get; set; }
         public DbSet<ByteArrayRecord> ByteArrayRecords { get; set; }
+        public DbSet<MaskRecord> MaskRecords { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(cs);
@@ -84,6 +85,9 @@ namespace NakedFunctions.Rest.Test.Data {
             modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 2, Name = "Two"});
 
             modelBuilder.Entity<ByteArrayRecord>().HasData(new ByteArrayRecord() {Id = 1});
+
+            modelBuilder.Entity<MaskRecord>().Ignore(m => m.MaskRecordProperty);
+            modelBuilder.Entity<MaskRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
         }
     }
 
