@@ -17,7 +17,6 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
         public ActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) { }
 
-        // todo no up link ! 
         public override LinkRepresentation[] GetLinks() =>
             new List<LinkRepresentation> {
                 CreateSelfLink(),

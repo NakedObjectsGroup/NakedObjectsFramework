@@ -24,7 +24,7 @@ namespace NakedFramework.DependencyInjection.Extensions {
         public IAuditConfiguration AuditConfiguration { get; set; }
         public IProfileConfiguration ProfileConfiguration { get; set; }
         public Func<IMenuFactory, IMenu[]> MainMenus { get; set; }
-        public Func<Type[], Type[]> SupportedSystemTypes { get; set; }
+        public Func<Type[], Type[]> SupportedSystemTypes { get; set; } = t => t;
         public IServiceCollection Services { get; }
         public int HashMapCapacity { get; set; } = 10;
         internal Type[] AdditionalSystemTypes { get; set; } = Array.Empty<Type>();

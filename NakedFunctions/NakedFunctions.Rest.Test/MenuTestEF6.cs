@@ -41,7 +41,6 @@ namespace NakedFunctions.Rest.Test {
             typeof(CollectionContributedFunctions)
         };
 
-        // todo should IAlert be here or should we ignore?
         protected override Type[] Records { get; } = {
             typeof(SimpleRecord),
             typeof(DateRecord),
@@ -141,7 +140,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("findbyname_group", function["extensions"]["x-ro-nof-menuPath"].ToString());
 
             function.AssertAction(nameof(MenuTestFunctions.FindByName));
-            function["extensions"].AssertExtensions(8); // todo add 
+            function["extensions"].AssertExtensions(8); 
 
             var links = function["links"] as JArray;
 
@@ -169,8 +168,6 @@ namespace NakedFunctions.Rest.Test {
             var extensions = parameter["extensions"];
             Assert.AreEqual(0, links.Count());
             Assert.AreEqual(7, extensions.Count());
-
-            // todo test rest of json
         }
 
         [Test]

@@ -139,8 +139,6 @@ namespace NakedFunctions.Rest.Test {
             var extensions = parameter["extensions"];
             Assert.AreEqual(0, links.Count());
             Assert.AreEqual(8, extensions.Count());
-
-            // todo test rest of json
         }
 
         [Test]

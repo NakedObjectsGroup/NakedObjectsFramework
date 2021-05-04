@@ -29,15 +29,15 @@ namespace NakedFunctions.Reflector.Extensions {
             var options = new NakedFunctionsOptions();
             setupAction(options);
 
-            // todo - refine
             if (options.FunctionalTypes.Any()) {
                 // filter enums and add to SystemTypes 
                 var enums = options.FunctionalTypes.Where(t => t.IsEnum).ToArray();
+                var coreFunctionalTypes = new[] {typeof(FunctionalContext), typeof(IContext)};
                 options.FunctionalTypes = options.FunctionalTypes.Except(enums).ToArray();
                 coreOptions.SupportedSystemTypes ??= t => t;
                 coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Union(enums).ToArray();
-                coreOptions.AdditionalUnpersistedTypes = new[] {typeof(FunctionalContext), typeof(IContext)};
-                options.FunctionalTypes = options.FunctionalTypes.Append(typeof(IContext)).Append(typeof(FunctionalContext)).Distinct().ToArray();
+                coreOptions.AdditionalUnpersistedTypes = coreFunctionalTypes;
+                options.FunctionalTypes = options.FunctionalTypes.Union(coreFunctionalTypes).Distinct().ToArray();
             }
 
             RegisterWellKnownServices(coreOptions.Services);
