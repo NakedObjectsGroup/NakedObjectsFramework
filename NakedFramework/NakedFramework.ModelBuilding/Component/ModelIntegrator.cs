@@ -17,7 +17,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Menu;
-using NakedFramework.Metamodel.SpecImmutable;
+using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.ModelBuilding.Component {
     public class ModelIntegrator : IModelIntegrator {
@@ -50,10 +50,6 @@ namespace NakedFramework.ModelBuilding.Component {
             var services = serviceList.Services;
             PopulateAssociatedActions(services, metamodelBuilder);
 
-           // PopulateAssociatedFunctions(metamodelBuilder);
-
-            PopulateDisplayAsPropertyFunctions(metamodelBuilder);
-
             //Menus installed once rest of metamodel has been built:
             InstallMainMenus(metamodelBuilder);
             InstallObjectMenus(metamodelBuilder);
@@ -71,145 +67,7 @@ namespace NakedFramework.ModelBuilding.Component {
         private void ValidateModel(IMetamodelBuilder builder) {
             foreach (var menu in metamodelBuilder.MainMenus) {
                 var menuActions = menu.MenuItems.SelectMany(GetMenuActions).ToList();
-                ErrorOnDuplicates(menuActions.Select(a => new ActionHolder(a)).ToList());
-            }
-        }
-
-        private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;
-
-        private static bool IsNotStatic(ITypeSpecImmutable spec) => !IsStatic(spec);
-
-        //private static bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedTo(ts) == true;
-
-        //private static bool IsContributedFunctionToCollectionOf(IActionSpecImmutable sa, IObjectSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollectionOf(ts) == true;
-
-        private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
-
-        //private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecImmutable[] functions) {
-        //    var objectContribActions = functions.AsParallel().SelectMany(functionsSpec => {
-        //        var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
-
-        //        var matchingActionsForObject = new List<IActionSpecImmutable>();
-
-        //        foreach (var sa in serviceActions) {
-        //            if (IsContributedFunction(sa, spec)) {
-        //                matchingActionsForObject.Add(sa);
-        //            }
-        //        }
-
-        //        return matchingActionsForObject;
-        //    }).ToList();
-
-        //    if (objectContribActions.Any()) {
-        //        ErrorOnDuplicates(objectContribActions.Select(a => new ActionHolder(a)).ToList());
-        //        spec.AddContributedFunctions(objectContribActions);
-        //    }
-
-        //    var collectionContribActions = functions.AsParallel().SelectMany(functionsSpec => {
-        //        var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
-
-        //        var matchingActionsForCollection = new List<IActionSpecImmutable>();
-
-        //        foreach (var sa in serviceActions) {
-        //            if (IsContributedFunctionToCollectionOf(sa, spec)) {
-        //                matchingActionsForCollection.Add(sa);
-        //            }
-        //        }
-
-        //        return matchingActionsForCollection;
-        //    }).ToList();
-
-        //    if (collectionContribActions.Any()) {
-        //        ErrorOnDuplicates(collectionContribActions.Select(a => new ActionHolder(a)).ToList());
-        //        spec.AddCollectionContributedActions(collectionContribActions);
-        //    }
-        //}
-
-        private record ActionHolder {
-            private readonly object wrapped;
-
-            public ActionHolder(IActionSpecImmutable actionSpecImmutable) => wrapped = actionSpecImmutable;
-
-            public ActionHolder(IAssociationSpecImmutable associationSpecImmutable) => wrapped = associationSpecImmutable;
-
-            public ActionHolder(IMenuActionImmutable menuActionImmutable) => wrapped = menuActionImmutable;
-
-            public string Name => wrapped switch {
-                IActionSpecImmutable action => action.Identifier.MemberName,
-                IAssociationSpecImmutable association => association.Identifier.MemberName,
-                IMenuActionImmutable menu => menu.Action.Identifier.MemberName,
-                _ => ""
-            };
-
-            public ITypeSpecImmutable OwnerSpec => wrapped switch {
-                IActionSpecImmutable action => action.OwnerSpec,
-                IAssociationSpecImmutable association => association.OwnerSpec,
-                IMenuActionImmutable menu => menu.Action.OwnerSpec,
-                _ => null
-            };
-        }
-
-        private static void ErrorOnDuplicates(IList<ActionHolder> actions)
-        {
-            var names = actions.Select(s => s.Name).ToArray();
-            var distinctNames = names.Distinct().ToArray();
-
-            if (names.Length != distinctNames.Length)
-            {
-                var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
-                var errors = new List<string>();
-
-                foreach (var name in duplicates)
-                {
-                    var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
-                    var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
-                    errors.Add(error);
-                }
-
-                throw new ReflectionException(string.Join(", ", errors));
-            }
-        }
-
-        //private static void PopulateAssociatedFunctions(IMetamodelBuilder metamodel) {
-        //    // todo add facet for this 
-        //    var functions = metamodel.AllSpecifications.Where(IsStatic).ToArray();
-        //    var objects = metamodel.AllSpecifications.Where(IsNotStatic).OfType<IObjectSpecBuilder>();
-
-        //    foreach (var spec in objects) {
-        //        PopulateContributedFunctions(spec, functions);
-        //    }
-        //}
-
-        private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
-            var result = functions.AsParallel().SelectMany(functionsSpec => {
-                var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
-
-                var matchingActionsForObject = new List<IActionSpecImmutable>();
-
-                foreach (var sa in serviceActions) {
-                    if (IsContributedProperty(sa, spec)) {
-                        matchingActionsForObject.Add(sa);
-                    }
-                }
-
-                return matchingActionsForObject;
-            }).ToList();
-
-            if (result.Any()) {
-                var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
-                var orderedFields = spec.Fields.Union(adaptedMembers).OrderBy(f => f, new MemberOrderComparator<IAssociationSpecImmutable>()).ToList();
-                ErrorOnDuplicates(orderedFields.Select(a => new ActionHolder(a)).ToList());
-                spec.AddContributedFields(orderedFields);
-            }
-        }
-
-        private static void PopulateDisplayAsPropertyFunctions(IMetamodelBuilder metamodel) {
-            // todo add facet for this 
-            var functions = metamodel.AllSpecifications.Where(IsStatic).ToArray();
-            var objects = metamodel.AllSpecifications.Where(IsNotStatic).Cast<ITypeSpecBuilder>();
-
-            foreach (var spec in objects) {
-                PopulateDisplayAsPropertyFunctions(spec, functions, metamodel);
+                FacetUtils.ErrorOnDuplicates(menuActions.Select(a => new FacetUtils.ActionHolder(a)).ToList());
             }
         }
 

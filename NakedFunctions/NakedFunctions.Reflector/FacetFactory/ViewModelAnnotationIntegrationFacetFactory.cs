@@ -12,7 +12,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
@@ -23,13 +22,13 @@ using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class ViewModelAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory {
+    public sealed class ViewModelAnnotationIntegrationFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory {
         private const string CreateFromKeys = "CreateFromKeys";
         private const string DeriveKeys = "DeriveKeys";
-        private readonly ILogger<ViewModelAnnotationFacetFactory> logger;
+        private readonly ILogger<ViewModelAnnotationIntegrationFacetFactory> logger;
 
-        public ViewModelAnnotationFacetFactory(IFacetFactoryOrder<ViewModelAnnotationFacetFactory> order, ILoggerFactory loggerFactory) :
-            base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) => logger = loggerFactory.CreateLogger<ViewModelAnnotationFacetFactory>();
+        public ViewModelAnnotationIntegrationFacetFactory(IFacetFactoryOrder<ViewModelAnnotationIntegrationFacetFactory> order, ILoggerFactory loggerFactory) :
+            base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) => logger = loggerFactory.CreateLogger<ViewModelAnnotationIntegrationFacetFactory>();
 
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
             switch (method.Name) {

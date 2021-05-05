@@ -12,7 +12,10 @@ using System.Runtime.CompilerServices;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Utils {
@@ -86,19 +89,46 @@ namespace NakedFramework.Metamodel.Utils {
             return 0;
         }
 
-        //public static bool IsTuple(Type type)
-        //{
-        //    if (type.IsGenericType)
-        //    {
-        //        var genericTypeDefinition = type.GetGenericTypeDefinition();
-        //        return genericTypeDefinition == typeof(Tuple<>) ||
-        //               genericTypeDefinition == typeof(Tuple<,>) ||
-        //               genericTypeDefinition == typeof(Tuple<,,>);
-        //    }
+        public static void ErrorOnDuplicates(IList<ActionHolder> actions) {
+            var names = actions.Select(s => s.Name).ToArray();
+            var distinctNames = names.Distinct().ToArray();
 
-        //    return false;
-        //}
+            if (names.Length != distinctNames.Length) {
+                var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
+                var errors = new List<string>();
 
-        //public static bool IsEitherTuple(Type type) => IsValueTuple(type) || IsTuple(type);
+                foreach (var name in duplicates) {
+                    var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
+                    var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
+                    errors.Add(error);
+                }
+
+                throw new ReflectionException(string.Join(", ", errors));
+            }
+        }
+
+        public record ActionHolder {
+            private readonly object wrapped;
+
+            public ActionHolder(IActionSpecImmutable actionSpecImmutable) => wrapped = actionSpecImmutable;
+
+            public ActionHolder(IAssociationSpecImmutable associationSpecImmutable) => wrapped = associationSpecImmutable;
+
+            public ActionHolder(IMenuActionImmutable menuActionImmutable) => wrapped = menuActionImmutable;
+
+            public string Name => wrapped switch {
+                IActionSpecImmutable action => action.Identifier.MemberName,
+                IAssociationSpecImmutable association => association.Identifier.MemberName,
+                IMenuActionImmutable menu => menu.Action.Identifier.MemberName,
+                _ => ""
+            };
+
+            public ITypeSpecImmutable OwnerSpec => wrapped switch {
+                IActionSpecImmutable action => action.OwnerSpec,
+                IAssociationSpecImmutable association => association.OwnerSpec,
+                IMenuActionImmutable menu => menu.Action.OwnerSpec,
+                _ => null
+            };
+        }
     }
 }

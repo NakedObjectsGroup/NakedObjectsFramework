@@ -6,15 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Facet;
@@ -75,54 +72,5 @@ namespace NakedFunctions.Reflector.Utils {
         public static bool IsAbstract(Type type) => type.IsAbstract;
 
         public static bool IsStatic(Type type) => IsAbstract(type) && IsSealed(type);
-
-        public record ActionHolder
-        {
-            private readonly object wrapped;
-
-            public ActionHolder(IActionSpecImmutable actionSpecImmutable) => wrapped = actionSpecImmutable;
-
-            public ActionHolder(IAssociationSpecImmutable associationSpecImmutable) => wrapped = associationSpecImmutable;
-
-            public ActionHolder(IMenuActionImmutable menuActionImmutable) => wrapped = menuActionImmutable;
-
-            public string Name => wrapped switch
-            {
-                IActionSpecImmutable action => action.Identifier.MemberName,
-                IAssociationSpecImmutable association => association.Identifier.MemberName,
-                IMenuActionImmutable menu => menu.Action.Identifier.MemberName,
-                _ => ""
-            };
-
-            public ITypeSpecImmutable OwnerSpec => wrapped switch
-            {
-                IActionSpecImmutable action => action.OwnerSpec,
-                IAssociationSpecImmutable association => association.OwnerSpec,
-                IMenuActionImmutable menu => menu.Action.OwnerSpec,
-                _ => null
-            };
-        }
-
-
-        public static void ErrorOnDuplicates(IList<ActionHolder> actions)
-        {
-            var names = actions.Select(s => s.Name).ToArray();
-            var distinctNames = names.Distinct().ToArray();
-
-            if (names.Length != distinctNames.Length)
-            {
-                var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
-                var errors = new List<string>();
-
-                foreach (var name in duplicates)
-                {
-                    var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
-                    var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
-                    errors.Add(error);
-                }
-
-                throw new ReflectionException(string.Join(", ", errors));
-            }
-        }
     }
 }

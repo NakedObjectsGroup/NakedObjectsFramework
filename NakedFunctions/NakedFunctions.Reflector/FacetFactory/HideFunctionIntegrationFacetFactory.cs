@@ -12,7 +12,6 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
@@ -22,19 +21,18 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
-using NakedObjects;
 
 namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class HideFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {
+    public sealed class HideFunctionIntegrationFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.HidePrefix
         };
 
-        private readonly ILogger<HideFunctionFacetFactory> logger;
+        private readonly ILogger<HideFunctionIntegrationFacetFactory> logger;
 
-        public HideFunctionFacetFactory(IFacetFactoryOrder<HideFunctionFacetFactory> order, ILoggerFactory loggerFactory)
+        public HideFunctionIntegrationFacetFactory(IFacetFactoryOrder<HideFunctionIntegrationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Objects | FeatureType.Actions) =>
-            logger = loggerFactory.CreateLogger<HideFunctionFacetFactory>();
+            logger = loggerFactory.CreateLogger<HideFunctionIntegrationFacetFactory>();
 
         public string[] Prefixes => FixedPrefixes;
 
@@ -87,9 +85,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             return action;
         }
-
-        
-
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var matchedHides = type.GetMethods().Where(m => !m.Name.StartsWith("Hide")).Where(m => MethodToUse(type, m.ContributedToType(), HiddenName(m)) is not null);

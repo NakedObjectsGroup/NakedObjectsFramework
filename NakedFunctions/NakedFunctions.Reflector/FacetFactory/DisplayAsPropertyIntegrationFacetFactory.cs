@@ -15,30 +15,28 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.SpecImmutable;
+using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class RecordFacetFactory : FunctionalFacetFactoryProcessor {
-        public RecordFacetFactory(IFacetFactoryOrder<RecordFacetFactory> order, ILoggerFactory loggerFactory)
+    public sealed class DisplayAsPropertyIntegrationFacetFactory : FunctionalFacetFactoryProcessor {
+        public DisplayAsPropertyIntegrationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyIntegrationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
-
-        private static bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedTo(ts) == true;
-
-        private static bool IsContributedFunctionToCollectionOf(IActionSpecImmutable sa, IObjectSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollectionOf(ts) == true;
 
         private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;
 
-        private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecImmutable[] functions)
-        {
-            var objectContribActions = functions.AsParallel().SelectMany(functionsSpec => {
+        private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
+
+        private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
+            var result = functions.AsParallel().SelectMany(functionsSpec => {
                 var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
 
                 var matchingActionsForObject = new List<IActionSpecImmutable>();
 
-                foreach (var sa in serviceActions)
-                {
-                    if (IsContributedFunction(sa, spec))
-                    {
+                foreach (var sa in serviceActions) {
+                    if (IsContributedProperty(sa, spec)) {
                         matchingActionsForObject.Add(sa);
                     }
                 }
@@ -46,40 +44,19 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 return matchingActionsForObject;
             }).ToList();
 
-            if (objectContribActions.Any())
-            {
-                FactoryUtils.ErrorOnDuplicates(objectContribActions.Select(a => new FactoryUtils.ActionHolder(a)).ToList());
-                spec.AddContributedFunctions(objectContribActions);
-            }
-
-            var collectionContribActions = functions.AsParallel().SelectMany(functionsSpec => {
-                var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
-
-                var matchingActionsForCollection = new List<IActionSpecImmutable>();
-
-                foreach (var sa in serviceActions)
-                {
-                    if (IsContributedFunctionToCollectionOf(sa, spec))
-                    {
-                        matchingActionsForCollection.Add(sa);
-                    }
-                }
-
-                return matchingActionsForCollection;
-            }).ToList();
-
-            if (collectionContribActions.Any())
-            {
-                FactoryUtils.ErrorOnDuplicates(collectionContribActions.Select(a => new FactoryUtils.ActionHolder(a)).ToList());
-                spec.AddCollectionContributedActions(collectionContribActions);
+            if (result.Any()) {
+                var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
+                var orderedFields = spec.Fields.Union(adaptedMembers).OrderBy(f => f, new MemberOrderComparator<IAssociationSpecImmutable>()).ToList();
+                FacetUtils.ErrorOnDuplicates(orderedFields.Select(a => new FacetUtils.ActionHolder(a)).ToList());
+                spec.AddContributedFields(orderedFields);
             }
         }
 
         private static Action<IMetamodelBuilder> GetAddAction(Type type) {
             void Action(IMetamodelBuilder m) {
-                if (m.GetSpecification(type) is IObjectSpecBuilder spec) {
+                if (m.GetSpecification(type) is ITypeSpecBuilder spec) {
                     var functions = m.AllSpecifications.Where(IsStatic).ToArray();
-                    PopulateContributedFunctions(spec, functions);
+                    PopulateDisplayAsPropertyFunctions(spec, functions, m);
                 }
             }
 
@@ -94,7 +71,5 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             return metamodel;
         }
-
-        
     }
 }
