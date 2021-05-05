@@ -88,6 +88,9 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return action;
         }
 
+        
+
+
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var matchedHides = type.GetMethods().Where(m => !m.Name.StartsWith("Hide")).Where(m => MethodToUse(type, m.ContributedToType(), HiddenName(m)) is not null);
             var unMatchedHides = type.GetMethods().Where(m => m.Name.StartsWith("Hide")).Except(matchedHides).ToArray();
@@ -95,15 +98,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             if (unMatchedHides.Any()) {
                 var actions = unMatchedHides.Select(GetAddAction);
                 void Action(IMetamodelBuilder m) => actions.ForEach(a => a(m));
-                var integrationFacet = specification.GetFacet<IIntegrationFacet>();
-
-                if (integrationFacet is null) {
-                    integrationFacet = new IntegrationFacet(specification, Action);
-                    FacetUtils.AddFacet(integrationFacet);
-                }
-                else {
-                    integrationFacet.AddAction(Action);
-                }
+                FactoryUtils.AddIntegrationFacet(specification, Action);
             }
 
             return metamodel;

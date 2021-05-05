@@ -61,9 +61,9 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             return baseType != null && IsAssignableToGenericType(baseType, genericType);
         }
 
-        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) => ContributedActions = contributedActions.ToImmutableList();
+        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) => ContributedActions = ContributedActions.Union(contributedActions).ToImmutableList();
 
-        public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) => CollectionContributedActions = collectionContributedActions.ToImmutableList();
+        public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) => CollectionContributedActions = CollectionContributedActions.Union(collectionContributedActions).ToImmutableList();
 
         public void AddFinderActions(IList<IActionSpecImmutable> finderActions) => FinderActions = finderActions.ToImmutableList();
 

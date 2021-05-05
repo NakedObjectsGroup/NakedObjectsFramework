@@ -14,6 +14,7 @@ namespace NakedFunctions.Reflector.Reflect {
             new[] {
                 typeof(FallbackFacetFactory),
                 typeof(FunctionsFacetFactory),
+                typeof(RecordFacetFactory),
                 typeof(ContributedFunctionFacetFactory),
                 typeof(InjectedParameterFacetFactory),
                 typeof(InjectedAnnotationFacetFactory),

@@ -50,7 +50,7 @@ namespace NakedFramework.ModelBuilding.Component {
             var services = serviceList.Services;
             PopulateAssociatedActions(services, metamodelBuilder);
 
-            PopulateAssociatedFunctions(metamodelBuilder);
+           // PopulateAssociatedFunctions(metamodelBuilder);
 
             PopulateDisplayAsPropertyFunctions(metamodelBuilder);
 
@@ -79,51 +79,51 @@ namespace NakedFramework.ModelBuilding.Component {
 
         private static bool IsNotStatic(ITypeSpecImmutable spec) => !IsStatic(spec);
 
-        private static bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedTo(ts) == true;
+        //private static bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedTo(ts) == true;
 
-        private static bool IsContributedFunctionToCollectionOf(IActionSpecImmutable sa, IObjectSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollectionOf(ts) == true;
+        //private static bool IsContributedFunctionToCollectionOf(IActionSpecImmutable sa, IObjectSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollectionOf(ts) == true;
 
         private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
 
-        private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
-            var objectContribActions = functions.AsParallel().SelectMany(functionsSpec => {
-                var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
+        //private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecImmutable[] functions) {
+        //    var objectContribActions = functions.AsParallel().SelectMany(functionsSpec => {
+        //        var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
 
-                var matchingActionsForObject = new List<IActionSpecImmutable>();
+        //        var matchingActionsForObject = new List<IActionSpecImmutable>();
 
-                foreach (var sa in serviceActions) {
-                    if (IsContributedFunction(sa, spec)) {
-                        matchingActionsForObject.Add(sa);
-                    }
-                }
+        //        foreach (var sa in serviceActions) {
+        //            if (IsContributedFunction(sa, spec)) {
+        //                matchingActionsForObject.Add(sa);
+        //            }
+        //        }
 
-                return matchingActionsForObject;
-            }).ToList();
+        //        return matchingActionsForObject;
+        //    }).ToList();
 
-            if (objectContribActions.Any()) {
-                ErrorOnDuplicates(objectContribActions.Select(a => new ActionHolder(a)).ToList());
-                spec.AddContributedFunctions(objectContribActions);
-            }
+        //    if (objectContribActions.Any()) {
+        //        ErrorOnDuplicates(objectContribActions.Select(a => new ActionHolder(a)).ToList());
+        //        spec.AddContributedFunctions(objectContribActions);
+        //    }
 
-            var collectionContribActions = functions.AsParallel().SelectMany(functionsSpec => {
-                var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
+        //    var collectionContribActions = functions.AsParallel().SelectMany(functionsSpec => {
+        //        var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
 
-                var matchingActionsForCollection = new List<IActionSpecImmutable>();
+        //        var matchingActionsForCollection = new List<IActionSpecImmutable>();
 
-                foreach (var sa in serviceActions) {
-                    if (IsContributedFunctionToCollectionOf(sa, spec)) {
-                        matchingActionsForCollection.Add(sa);
-                    }
-                }
+        //        foreach (var sa in serviceActions) {
+        //            if (IsContributedFunctionToCollectionOf(sa, spec)) {
+        //                matchingActionsForCollection.Add(sa);
+        //            }
+        //        }
 
-                return matchingActionsForCollection;
-            }).ToList();
+        //        return matchingActionsForCollection;
+        //    }).ToList();
 
-            if (collectionContribActions.Any()) {
-                ErrorOnDuplicates(collectionContribActions.Select(a => new ActionHolder(a)).ToList());
-                spec.AddCollectionContributedActions(collectionContribActions);
-            }
-        }
+        //    if (collectionContribActions.Any()) {
+        //        ErrorOnDuplicates(collectionContribActions.Select(a => new ActionHolder(a)).ToList());
+        //        spec.AddCollectionContributedActions(collectionContribActions);
+        //    }
+        //}
 
         private record ActionHolder {
             private readonly object wrapped;
@@ -170,15 +170,15 @@ namespace NakedFramework.ModelBuilding.Component {
             }
         }
 
-        private static void PopulateAssociatedFunctions(IMetamodelBuilder metamodel) {
-            // todo add facet for this 
-            var functions = metamodel.AllSpecifications.Where(IsStatic).ToArray();
-            var objects = metamodel.AllSpecifications.Where(IsNotStatic).OfType<IObjectSpecBuilder>();
+        //private static void PopulateAssociatedFunctions(IMetamodelBuilder metamodel) {
+        //    // todo add facet for this 
+        //    var functions = metamodel.AllSpecifications.Where(IsStatic).ToArray();
+        //    var objects = metamodel.AllSpecifications.Where(IsNotStatic).OfType<IObjectSpecBuilder>();
 
-            foreach (var spec in objects) {
-                PopulateContributedFunctions(spec, functions, metamodel);
-            }
-        }
+        //    foreach (var spec in objects) {
+        //        PopulateContributedFunctions(spec, functions);
+        //    }
+        //}
 
         private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
             var result = functions.AsParallel().SelectMany(functionsSpec => {
