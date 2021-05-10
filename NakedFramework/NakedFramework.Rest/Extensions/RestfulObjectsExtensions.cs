@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 
@@ -20,7 +21,7 @@ namespace NakedFramework.Rest.Extensions {
             var options = new RestfulObjectsOptions();
             setupAction?.Invoke(options);
 
-            coreOptions.Services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
+            coreOptions.Services.AddDefaultScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
             coreOptions.Services.AddSingleton<IRestfulObjectsConfiguration>(p => RestfulObjectsConfiguration(options));
         }
 

@@ -35,6 +35,12 @@ namespace NakedFramework.DependencyInjection.Utils {
             }
         }
 
+        public static void AddDefaultScoped<TService>(this IServiceCollection services, Func<IServiceProvider, TService> implementationFactory) where TService : class {
+            if (!services.ServiceImplementationExists<TService>()) {
+                services.AddScoped(implementationFactory);
+            }
+        }
+
         public static void AddDefaultTransient<TService, TImplementation>(this IServiceCollection services) where TService : class where TImplementation : class, TService {
             if (!services.ServiceImplementationExists<TService>()) {
                 services.AddScoped<TService, TImplementation>();
