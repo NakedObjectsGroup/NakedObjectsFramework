@@ -8,7 +8,7 @@
 using System.Linq;
 using NakedFunctions;
 
-namespace Template.Test.Data {
+namespace Template.RestTest.DomainModel {
     public static class BarMenu {
         public static (Foo, IContext) GetFoo(int id, IContext context) {
             var foo = context.Instances<Foo>().SingleOrDefault(f => f.Id == id);

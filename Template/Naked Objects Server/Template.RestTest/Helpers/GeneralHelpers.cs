@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Rest.API;
 using Newtonsoft.Json.Linq;
-using Template.Test.TestCase;
+using Template.RestTest.TestCase;
 
-namespace Template.Test.Helpers {
+namespace Template.RestTest.Helpers {
     public static class GeneralHelpers {
         public static JObject GetJObject(this JToken jToken) =>
             jToken switch {

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
-using Template.Test.TestCase;
+using Template.RestTest.TestCase;
 
-namespace Template.Test.Helpers {
+namespace Template.RestTest.Helpers {
     public static class ObjectHelpers {
         public static JObject GetObject(this AbstractRestTest tc, Key key) {
             var api = tc.GetController();

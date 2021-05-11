@@ -7,7 +7,8 @@
 
 using NakedFunctions;
 
-namespace Template.Test.Data {
+namespace Template.RestTest.DomainModel
+{
     public static class FooFunctions {
         public static (Foo, IContext) ResetName(this Foo sp, IContext context) {
             var updated = sp with {Name = "New Name"};

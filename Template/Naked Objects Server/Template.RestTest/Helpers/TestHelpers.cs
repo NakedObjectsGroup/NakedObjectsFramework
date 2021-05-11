@@ -17,9 +17,9 @@ using NakedFramework.Core.Authentication;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
-using Template.Test.TestCase;
+using Template.RestTest.TestCase;
 
-namespace Template.Test.Helpers {
+namespace Template.RestTest.Helpers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade ff, ILogger<RestfulObjectsControllerBase> l, ILoggerFactory lf, IRestfulObjectsConfiguration c) : base(ff, l, lf, c) { }
     }

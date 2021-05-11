@@ -8,7 +8,7 @@
 using System.Linq;
 using NakedObjects;
 
-namespace Template.Test.Data {
+namespace Template.RestTest.DomainModel {
 
     public class BarService {
 

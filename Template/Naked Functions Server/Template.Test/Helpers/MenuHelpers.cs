@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
-using Template.Test.TestCase;
+using Template.RestTest.TestCase;
 
-namespace Template.Test.Helpers {
+namespace Template.RestTest.Helpers {
     public static class MenuHelpers {
         public static JObject GetMenu(this AbstractRestTest tc, string name) {
             var api = tc.GetController();

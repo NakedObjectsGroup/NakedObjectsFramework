@@ -5,9 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using Newtonsoft.Json.Linq;
-using Template.Test.TestCase;
+using Template.RestTest.TestCase;
 
-namespace Template.Test.Helpers {
+namespace Template.RestTest.Helpers {
     public static class ActionHelpers {
         public static JObject InvokeAction(this AbstractRestTest tc, Key key, string actionName, Methods method = Methods.Get) => tc.InvokeAction(key, actionName, new List<(string name, object value)>(), method);
 

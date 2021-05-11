@@ -8,7 +8,8 @@
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace Template.Test.Data {
+namespace Template.RestTest.DomainModel
+{
     [PresentationHint("Hint1")]
     public class Foo {
         [Key]

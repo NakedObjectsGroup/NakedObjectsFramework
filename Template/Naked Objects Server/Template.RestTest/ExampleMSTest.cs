@@ -11,15 +11,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.Rest.Extensions;
-using NakedFunctions.Reflector.Extensions;
+using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
-using Template.Test.Data;
-using Template.Test.Helpers;
-using Template.Test.TestCase;
+using Template.RestTest.DomainModel;
+using Template.RestTest.Helpers;
+using Template.RestTest.TestCase;
 
-namespace Template.Test {
+
+namespace Template.RestTest
+{
     [TestClass]
-    public class MSTestTest : AbstractRestTest {
+    public class ExampleMSTest : AbstractRestTest {
         private static void CleanUpDatabase() => ObjectDbContext.Delete();
 
         protected static void ConfigureServices(IServiceCollection services) {
@@ -28,11 +30,11 @@ namespace Template.Test {
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
 
             services.AddNakedFramework(builder => {
-                builder.MainMenus = DataSetup.MainMenus;
-                builder.AddEF6Persistor(options => { options.ContextInstallers = DataSetup.ContextInstallers; });
-                builder.AddNakedFunctions(options => {
-                    options.FunctionalTypes = DataSetup.Records;
-                    options.Functions = DataSetup.Functions;
+                builder.MainMenus = ModelConfig.MainMenus;
+                builder.AddEF6Persistor(options => { options.ContextInstallers = ModelConfig.ContextInstallers; });
+                builder.AddNakedObjects(options => {
+                    options.Types = ModelConfig.Types;
+                    options.Services = ModelConfig.Services;               
                 });
                 builder.AddRestfulObjects(options => options.BlobsClobs = true);
             });
@@ -70,14 +72,14 @@ namespace Template.Test {
 
         [TestMethod]
         public void TestInvokeAction() {
-            var foo = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.ResetName), Methods.Post);
+            var foo = this.InvokeAction(new Key<Foo>("2"), nameof(Foo.ResetName), Methods.Post);
             Assert.AreEqual("New Name", foo.GetMember(nameof(Foo.Name)).GetValue());
         }
 
         [TestMethod]
         public void TestInvokeActionWithParameters() {
             var parameters = ActionHelpers.CreateParameters(("name", "Updated Name"));
-            var foo = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.UpdateName), parameters, Methods.Post);
+            var foo = this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
             Assert.AreEqual("Updated Name", foo.GetMember(nameof(Foo.Name)).GetValue());
         }
 
@@ -87,20 +89,20 @@ namespace Template.Test {
             var foo1 = this.GetObject(new Key<Foo>("1"));
             var name = foo1.GetMember(nameof(Foo.Name)).GetValue();
             var parameters = ActionHelpers.CreateParameters(("name", name));
-            var foo2 = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.UpdateName), parameters, Methods.Post);
+            var foo2 = this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
             Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
         }
 
         [TestMethod]
         public void TestGetMenu() {
-            var barMenu = this.GetMenu(nameof(BarMenu));
-            Assert.AreEqual(nameof(BarMenu), barMenu.GetTitle());
+            var barMenu = this.GetMenu(nameof(BarService));
+            Assert.AreEqual("Bars", barMenu.GetTitle());
         }
 
         [TestMethod]
         public void TestInvokeMenuAction() {
             var parameters = ActionHelpers.CreateParameters(("id", "1"));
-            var foo = this.InvokeAction(nameof(BarMenu), nameof(BarMenu.GetFoo), parameters, Methods.Post);
+            var foo = this.InvokeAction(nameof(BarService), nameof(BarService.GetFoo), parameters, Methods.Post);
             Assert.AreEqual("Fred", foo.GetMember(nameof(Foo.Name)).GetValue());
         }
 
@@ -111,7 +113,7 @@ namespace Template.Test {
             var foo1 = this.GetObject(new Key<Foo>("1"));
             var name = foo1.GetMember(nameof(Foo.Name)).GetValue();
             var parameters = ActionHelpers.CreateParameters(("from", foo1));
-            var foo2 = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.UpdateNameFrom), parameters, Methods.Post);
+            var foo2 = this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateNameFrom), parameters, Methods.Post);
             Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
         }
     }

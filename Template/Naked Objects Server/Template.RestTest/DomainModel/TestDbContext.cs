@@ -7,7 +7,8 @@
 
 using System.Data.Entity;
 
-namespace Template.Test.Data {
+namespace Template.RestTest.DomainModel
+{
     public static class Constants {
         public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"Spike"};Integrated Security=True;";
 

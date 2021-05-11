@@ -1,4 +1,4 @@
-﻿namespace Template.Test.Helpers {
+﻿namespace Template.RestTest.Helpers {
     public enum Methods {
         Get,
         Post,
