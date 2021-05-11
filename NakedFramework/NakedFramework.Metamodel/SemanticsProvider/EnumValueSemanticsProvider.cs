@@ -11,7 +11,6 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
-using NakedObjects;
 
 namespace NakedFramework.Metamodel.SemanticsProvider {
     [Serializable]

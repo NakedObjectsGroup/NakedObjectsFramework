@@ -8,7 +8,6 @@
 using System;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedObjects;
 
 namespace NakedFramework.Metamodel.Facet {
     [Serializable]

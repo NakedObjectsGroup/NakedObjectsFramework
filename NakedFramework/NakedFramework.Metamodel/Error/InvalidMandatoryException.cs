@@ -7,7 +7,6 @@
 
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
-using NakedObjects;
 
 namespace NakedFramework.Metamodel.Error {
     /// <summary>

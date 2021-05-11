@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Spec;
-using NakedObjects;
 
 namespace NakedFramework.Metamodel.Facet {
     /// <summary>
