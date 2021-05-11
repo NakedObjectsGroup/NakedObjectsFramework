@@ -199,6 +199,9 @@ namespace NakedFunctions.Rest.Test.Data {
         public static bool HideWithHidden2(this SimpleRecord sp, IContext context) => false;
 
         public static bool HideName(this SimpleRecord sp, IContext context) => sp.Name == "hide it";
+
+        [Hidden]
+        public static string HiddenFunction(this HiddenRecord sp, IContext context) => sp.Name;
     }
 
     public static class AutoCompleteRecordFunctions {

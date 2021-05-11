@@ -178,9 +178,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public override int GetHashCode() => base.GetHashCode();
     }
 
-    
-    public record MaskRecord
-    {
+    public record MaskRecord {
         [Key]
         public int Id { get; init; }
 
@@ -190,6 +188,21 @@ namespace NakedFunctions.Rest.Test.Data {
         public virtual MaskRecord MaskRecordProperty => this;
 
         public virtual bool Equals(MaskRecord other) => ReferenceEquals(this, other);
+        public override string ToString() => Name;
+        public string ToString(string mask) => $"{Name} {mask}";
+        public override int GetHashCode() => base.GetHashCode();
+    }
+
+    public record HiddenRecord {
+        [Key]
+        public int Id { get; init; }
+
+        public string Name { get; init; }
+
+        [Hidden]
+        public virtual string HiddenProperty => "";
+
+        public virtual bool Equals(HiddenRecord other) => ReferenceEquals(this, other);
         public override string ToString() => Name;
         public string ToString(string mask) => $"{Name} {mask}";
         public override int GetHashCode() => base.GetHashCode();

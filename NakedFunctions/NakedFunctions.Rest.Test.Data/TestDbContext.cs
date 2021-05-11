@@ -62,6 +62,7 @@ namespace NakedFunctions.Rest.Test.Data {
             context.ByteArrayRecords.Add(new ByteArrayRecord());
 
             context.MaskRecords.Add(new MaskRecord() {Name = "Title"});
+            context.HiddenRecords.Add(new HiddenRecord() { Name = "Title" });
 
             context.SaveChanges();
         }
@@ -84,6 +85,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<BoundedRecord> BoundedRecords { get; set; }
         public DbSet<ByteArrayRecord> ByteArrayRecords { get; set; }
         public DbSet<MaskRecord> MaskRecords { get; set; }
+        public DbSet<HiddenRecord> HiddenRecords { get; set; }
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
             Database.SetInitializer(new DatabaseInitializer<T>());
