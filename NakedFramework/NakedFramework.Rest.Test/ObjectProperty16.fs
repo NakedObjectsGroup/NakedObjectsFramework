@@ -7,7 +7,6 @@
 module NakedObjects.Rest.Test.ObjectProperty16
 
 open NUnit.Framework
-open NakedFramework.Rest.Snapshot.Utility
 open NakedFramework.Rest.Snapshot.Constants
 open NakedFramework.Rest.API
 open System.Net

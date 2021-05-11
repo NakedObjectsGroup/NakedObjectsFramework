@@ -7,18 +7,14 @@
 module NakedObjects.Rest.Test.ObjectActionInvoke19
 
 open NUnit.Framework
-open NakedObjects.Rest
 open System.Net
-open System.Net.Http.Headers
 open Newtonsoft.Json.Linq
 open System.Web
 open System
-open NakedFramework.Rest.Snapshot.Utility
 open NakedFramework.Rest.Snapshot.Constants
 open NakedFramework.Rest.API
-open System.Web.Http
 open System.Linq
-open NakedObjects.Rest.Test.Functions
+open Functions
 
 // 19.3 post to invoke non-idempotent action no parms 
 let VerifyPostInvokeActionReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 

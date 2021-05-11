@@ -6,16 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.DomainTest
 
-open DomainTestCode
+
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedFramework.Persistor.EF6.Configuration
 open NUnit.Framework
 open System
 open System.Data.Entity.Core.Objects
-open TestCode
-open TestTypes
 open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EF6.Component
+open TestTypes
+open TestCode
+open DomainTestCode
 
 let persistor = 
     EF6ObjectStoreConfiguration.NoValidate <- true

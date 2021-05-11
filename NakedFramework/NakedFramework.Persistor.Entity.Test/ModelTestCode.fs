@@ -10,24 +10,22 @@ open Moq
 open NakedObjects
 open NakedFramework.Architecture.Adapter
 open NakedFramework.Core.Component
-open NakedFramework.Core.Configuration
 open NakedFramework.Persistor.EF6.Configuration
 open NakedFramework.Persistor.EF6.Component
 open NUnit.Framework
 open SimpleDatabase
 open System
 open System.Data.Entity.Core.Objects
-open TestCode
-open TestTypes
 open Microsoft.Extensions.Logging
 open NakedObjects.Reflector.Configuration
-open NakedFramework.Core.Component
 open NakedFramework.Architecture.Framework
 open NakedFramework.Architecture.Spec
 open NakedObjects.Core.Component
 open System.Reflection
 open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EFCore.Component
+open TestTypes
+open TestCode
 
 let ModelConfig = 
     let pc = new EF6ContextConfiguration()

@@ -12,16 +12,15 @@ open NakedObjects.Persistor.TestSuite
 open NakedFramework.Persistor.EF6.Configuration
 open NakedFramework.Persistor.EF6.Component
 open NakedObjects.Services
-open NakedObjects.TestTypes
 open NUnit.Framework
 open System
-open System.Data.Entity.Core.Objects.DataClasses
 open System.Security.Principal
-open TestCode
 open TestData
 open Microsoft.Extensions.Configuration
 open NakedFramework.Test.TestCase
 open NakedFramework.DependencyInjection.Extensions
+open TestTypes
+open TestCode
 
 let assemblyName = "NakedFramework.Persistor.Test.Data"
 

@@ -6,16 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.AMultiDomainDatabaseTest
 
-open CodeOnlyTestCode
-open MultiDatabaseTestCode
 open NakedFramework.Persistor.EF6.Configuration
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
 open NUnit.Framework
 open SimpleDatabase
 open System
-open TestCode
 open TestCodeOnly
 open TestTypes
+open TestCode
+open CodeOnlyTestCode
+open MultiDatabaseTestCode
 
 let multiDomainDatabasePersistor = 
     EF6ObjectStoreConfiguration.NoValidate <- true

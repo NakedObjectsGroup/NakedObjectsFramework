@@ -13,8 +13,8 @@ open NakedFramework.DependencyInjection.Extensions
 open Microsoft.Extensions.Configuration
 open NakedFramework.Persistor.EFCore.Extensions
 open Microsoft.EntityFrameworkCore
-open NakedObjects.DomainSystemTest
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
+open NakedObjects.DomainSystemTest
 
 [<TestFixture>]
 type EFCoreDomainSystemTests() = 

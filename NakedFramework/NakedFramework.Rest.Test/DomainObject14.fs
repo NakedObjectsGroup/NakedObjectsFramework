@@ -7,16 +7,14 @@
 module NakedObjects.Rest.Test.DomainObject14
 
 open NUnit.Framework
-open NakedFramework.Rest.Snapshot.Utility
 open NakedFramework.Rest.Snapshot.Constants
 open NakedFramework.Rest.API
 open System.Net
 open System
-open NakedFramework.Rest.Snapshot.Constants
-open NakedObjects.Rest.Test.Functions
 open Newtonsoft.Json.Linq
 open System.Linq
 open RestfulObjects.Test.Data
+open Functions
 
 let GetMostSimpleObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"

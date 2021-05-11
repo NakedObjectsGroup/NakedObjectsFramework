@@ -6,18 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.DomainSystemTest
 
-open NakedFramework.Persistor.EF6.Configuration
-open NakedObjects.TestTypes
+
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedObjects.Services
 open NUnit.Framework
 open System
-open System.Data.Entity.Core.Objects.DataClasses
-open SystemTestCode
-open TestCode
 open Microsoft.Extensions.Configuration
 open NakedFramework.Test.TestCase
 open NakedFramework.DependencyInjection.Extensions
+open TestTypes
+open SystemTestCode
+open TestCode
 
 [<TestFixture>]
 type DomainSystemTests() = 

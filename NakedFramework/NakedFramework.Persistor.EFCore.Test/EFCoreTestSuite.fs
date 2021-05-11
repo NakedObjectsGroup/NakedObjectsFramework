@@ -9,7 +9,6 @@ module NakedFramework.EFCoreTestSuite
 open NakedObjects.Persistor.TestData
 open NakedObjects.Persistor.TestSuite
 open NakedObjects.Services
-open NakedObjects.TestTypes
 open NUnit.Framework
 open System
 open TestData
@@ -21,6 +20,7 @@ open Microsoft.EntityFrameworkCore
 open NakedFramework.Architecture.Component
 open Microsoft.Extensions.DependencyInjection
 open NakedFramework.Persistor.EFCore.Component
+open NakedObjects.TestTypes
 
 let assemblyName = "NakedFramework.Persistor.Test.Data"
 

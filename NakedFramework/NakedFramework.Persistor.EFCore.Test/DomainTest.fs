@@ -10,13 +10,13 @@ module NakedFramework.DomainTest
 open NUnit.Framework
 open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EFCore.Configuration
-open NakedObjects.TestCode
-open NakedObjects.TestTypes
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open Microsoft.EntityFrameworkCore
 open System
-open NakedObjects.DomainTestCode
 open NakedFramework.Persistor.EFCore.Component
+open NakedObjects.TestCode
+open NakedObjects.TestTypes
+open NakedObjects.DomainTestCode
 
 let efCorePersistor = 
     let c = new EFCorePersistorConfiguration()

@@ -7,15 +7,15 @@
 module NakedFramework.ModelTest
 
 open NakedObjects
-open ModelTestCode
-open NakedObjects.TestTypes
 open NUnit.Framework
 open SimpleDatabase
 open System
-open TestCode
 open NakedFramework.Persistor.EFCore.Configuration
 open Microsoft.EntityFrameworkCore
 open NakedFramework.Architecture.Component
+open NakedObjects.TestTypes
+open ModelTestCode
+open TestCode
 
 let efCorePersistor = 
     let c = new EFCorePersistorConfiguration()

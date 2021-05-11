@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.SystemTestCode
 
-
 open NakedFramework.Architecture.Adapter
 open NakedFramework.Core.Resolve
 open NUnit.Framework

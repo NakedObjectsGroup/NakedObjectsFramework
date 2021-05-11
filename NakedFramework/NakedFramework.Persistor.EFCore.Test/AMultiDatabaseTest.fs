@@ -7,18 +7,19 @@
 module NakedFramework.AMultiDatabaseTest
 
 open NakedObjects
-open CodeOnlyTestCode
-open DomainTestCode
-open MultiDatabaseTestCode
+
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NUnit.Framework
-open TestCode
-open TestTypes
 open System
 open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EFCore.Configuration
 open Microsoft.EntityFrameworkCore
 open TestCodeOnly
+open TestCode
+open TestTypes
+open CodeOnlyTestCode
+open DomainTestCode
+open MultiDatabaseTestCode
 
 let multiDatabasePersistor = 
     let c = new EFCorePersistorConfiguration()

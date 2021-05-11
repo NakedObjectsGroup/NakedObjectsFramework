@@ -7,14 +7,12 @@
 module NakedObjects.Rest.Test.ObjectAction18
 
 open NUnit.Framework
-open NakedObjects.Rest
 open System.Net
 open Newtonsoft.Json.Linq
-open NakedFramework.Rest.Snapshot.Utility
 open NakedFramework.Rest.Snapshot.Constants
 open NakedFramework.Rest.API
 open System.Security.Principal
-open NakedObjects.Rest.Test.Functions
+open Functions
 
 // 18.2 get action no parms 
 let VerifyActionProperty refType oType oName f (api : RestfulObjectsControllerBase) = 

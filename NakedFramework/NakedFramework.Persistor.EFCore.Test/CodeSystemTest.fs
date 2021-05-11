@@ -7,7 +7,6 @@
 
 module NakedFramework.CodeSystemTest
 
-open NakedObjects.CodeSystemTest
 open NUnit.Framework
 open System
 open NakedFramework.DependencyInjection.Extensions
@@ -15,6 +14,7 @@ open Microsoft.Extensions.Configuration
 open NakedFramework.Persistor.EFCore.Extensions
 open Microsoft.EntityFrameworkCore
 open TestCodeOnly
+open NakedObjects.CodeSystemTest
 
 [<TestFixture>]
 type EFCoreCodeSystemTests() = 

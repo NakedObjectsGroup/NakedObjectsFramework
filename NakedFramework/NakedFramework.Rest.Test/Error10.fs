@@ -6,14 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.Rest.Test.Error10
 
-open NakedObjects.Rest
-open NakedFramework.Rest.Snapshot.Utility
 open NakedFramework.Rest.Snapshot.Constants
 open NakedFramework.Rest.API
 open Newtonsoft.Json.Linq
 open NUnit.Framework
-open NakedObjects.Rest.Test.Functions
 open System.Net
+open Functions
 
 let Error(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithError"

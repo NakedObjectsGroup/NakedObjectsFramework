@@ -7,19 +7,18 @@
 module NakedObjects.ModelSystemTest
 
 open NakedObjects
-open NakedFramework.Persistor.EF6.Configuration
 open NakedObjects.Services
-open NakedObjects.TestTypes
 open NUnit.Framework
 open SimpleDatabase
 open System
 open System.Collections.Generic
 open System.Linq
-open SystemTestCode
-open TestCode
 open Microsoft.Extensions.Configuration
 open NakedFramework.Test.TestCase
 open NakedFramework.DependencyInjection.Extensions
+open TestTypes
+open SystemTestCode
+open TestCode
 
 [<TestFixture>]
 type ModelSystemTests() = 

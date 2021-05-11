@@ -8,18 +8,15 @@ module NakedObjects.CodeOnlyTestCode
 
 
 open NakedFramework.Persistor.EF6.Configuration
-open NakedFramework.Persistor.EF6.Util
-open NakedFramework.Core
-open NakedFramework.Persistor.EF6.Component
 open NUnit.Framework
 open System
 open System.Data.Entity.ModelConfiguration
-open TestCode
 open TestCodeOnly
-open TestTypes
 open NakedFramework.Core.Error
 open NakedFramework.Architecture.Component
 open NakedFramework.Core.Util
+open TestTypes
+open TestCode
 
 let categorySetter codeOnlyPersistor (c : Category) = 
     c.ID <- GetNextID<Category> codeOnlyPersistor (fun i -> i.ID)

@@ -7,18 +7,13 @@
 module NakedObjects.Rest.Test.DomainTypeActionInvoke26
 
 open NUnit.Framework
-open NakedObjects.Rest
 open System.Net
-open System.Net.Http.Headers
 open Newtonsoft.Json.Linq
 open System.Web
-open NakedFramework.Rest.Snapshot.Utility
 open NakedFramework.Rest.Snapshot.Constants
 open NakedFramework.Rest.API
-open System.Web.Http
 open System.Linq
-open NakedObjects.Rest.Test.Functions
-open Microsoft.AspNetCore.Mvc
+open Functions
 
 let VerifyResult result  resultValue oType oRel ooType ooRel (api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 

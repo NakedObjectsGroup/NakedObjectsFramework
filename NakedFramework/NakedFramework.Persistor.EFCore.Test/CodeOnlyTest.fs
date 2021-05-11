@@ -7,14 +7,14 @@
 module NakedFramework.CodeOnlyTest
 
 open NakedObjects
-open CodeOnlyTestCode
 open NUnit.Framework
-open TestCode
-open TestTypes
 open NakedFramework.Persistor.EFCore.Configuration
 open System
 open Microsoft.EntityFrameworkCore
 open TestCodeOnly
+open TestCode
+open TestTypes
+open CodeOnlyTestCode
 
 let codeOnlyPersistor = 
     let c = new EFCorePersistorConfiguration()

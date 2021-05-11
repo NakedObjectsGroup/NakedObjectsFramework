@@ -15,8 +15,6 @@ open System.Data.Common
 open System.Data.SqlClient
 open System
 open System.Data.Entity.Core.Objects
-open TestCode
-open TestTypes
 open Moq
 open Microsoft.Extensions.Logging
 open NakedFramework.Core.Error
@@ -24,6 +22,8 @@ open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EFCore.Component
 open NakedFramework.Core.Persist
 open NakedFramework.Core.Util
+open TestTypes
+open TestCode
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor

@@ -6,17 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.MultiDatabaseTestCode
 
-open NakedFramework.Core
-open NakedFramework.Persistor.EF6.Component
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NUnit.Framework
 open System
 open System.Data.Entity.Core.Objects
-open TestCode
 open TestCodeOnly
-open TestTypes
 open NakedFramework.Core.Error
 open NakedFramework.Architecture.Component
+open TestTypes
+open TestCode
 
 let CanCreateEntityPersistor multiDatabasePersistor = Assert.IsNotNull(multiDatabasePersistor)
 

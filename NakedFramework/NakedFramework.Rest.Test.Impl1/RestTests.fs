@@ -7,29 +7,18 @@
 module NakedObjects.Rest.Test
 
 open NUnit.Framework
-open NakedObjects.Rest
 open NakedObjects.Rest.Test
 open System
 open RestfulObjects.Test.Data
-open NakedFramework.Facade.Impl
-open NakedFramework.Facade.Impl.Utility
-open NakedObjects.Rest.Test.Helpers
-open NakedObjects.Rest.Test.Functions
-open NakedFramework.Persistor.EF6.Configuration
-open NakedFramework.Facade
-open NakedFramework.Facade.Translation
-open NakedFramework.Facade.Impl
-open NakedFramework.Facade.Interface
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json
-open NakedFramework.Rest.Snapshot.Utility
 open Microsoft.Extensions.Configuration
-open NakedFramework
-open NakedFramework.Rest.Configuration
 open NakedFramework.Test.TestCase
 open NakedFramework.Facade.Utility
 open NakedFramework.DependencyInjection.Extensions
 open NakedFramework.Menu
+open Helpers
+open Functions
 
 type NullStringHasher() = 
     interface IStringHasher with

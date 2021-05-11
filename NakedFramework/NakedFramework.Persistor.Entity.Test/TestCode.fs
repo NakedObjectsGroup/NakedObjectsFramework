@@ -7,25 +7,23 @@
 module NakedObjects.TestCode
 
 open NUnit.Framework
-
 open Moq
 open NakedFramework.Architecture.Component
 open NakedFramework.Core.Component
 open NakedFramework.Core.Authentication
-open NakedFramework.Persistor.EF6.Util
 open NakedFramework.Persistor.EF6.Component
 open System
 open System.Collections.Generic
 open System.Collections
 open System.Security.Principal
-open TestTypes
 open Microsoft.Extensions.Logging
 open NakedObjects.Reflector.Configuration
 open NakedObjects.Core.Component
 open NakedFramework.Persistor.EFCore.Component
-open NakedFramework.Persistor.EFCore.Util
 open NakedFramework.Core.Persist
 open NakedFramework.Core.Util
+open TestTypes
+
 
 let resetPersistor (p : IObjectStore) : IObjectStore =
     match p with 

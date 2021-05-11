@@ -6,11 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.Rest.Test.Helpers
 
-open NakedFramework.Facade
-open NakedFramework.Rest
 open RestfulObjects.Test.Data
 open Microsoft.Extensions.Logging
-open Microsoft.Extensions.Configuration
 open NakedFramework.Rest.Configuration
 open NakedFramework.Rest.API
 open NakedFramework.Facade.Interface

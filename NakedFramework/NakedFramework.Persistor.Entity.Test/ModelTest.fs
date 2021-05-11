@@ -6,13 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.ModelTest
 
-open ModelTestCode
 open NakedFramework.Persistor.EF6.Configuration
 open NakedObjects.TestTypes
 open NUnit.Framework
 open SimpleDatabase
 open System
 open TestCode
+open ModelTestCode
 
 let persistor = 
     let c = new EF6ObjectStoreConfiguration()

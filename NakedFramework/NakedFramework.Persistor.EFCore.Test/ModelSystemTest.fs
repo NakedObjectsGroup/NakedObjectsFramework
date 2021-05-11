@@ -13,8 +13,8 @@ open NakedFramework.DependencyInjection.Extensions
 open Microsoft.Extensions.Configuration
 open NakedFramework.Persistor.EFCore.Extensions
 open Microsoft.EntityFrameworkCore
-open NakedObjects.ModelSystemTest
 open SimpleDatabase
+open NakedObjects.ModelSystemTest
 
 [<TestFixture>]
 type EFCoreModelSystemTests() = 

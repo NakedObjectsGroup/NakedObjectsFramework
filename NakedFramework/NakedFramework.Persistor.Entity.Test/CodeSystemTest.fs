@@ -6,23 +6,21 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.CodeSystemTest
 
-open CodeOnlyTestCode
 open NakedObjects
-open NakedFramework.Core
 open NakedFramework.Core.Util
-open NakedFramework.Persistor.EF6.Configuration
 open NakedObjects.Services
-open NakedObjects.TestTypes
 open NUnit.Framework
 open System
 open System.Collections.Generic
-open SystemTestCode
-open TestCode
 open TestCodeOnly
 open Microsoft.Extensions.Configuration
 open NakedFramework.Test.TestCase
 open NakedFramework.Core.Error
 open NakedFramework.DependencyInjection.Extensions
+open TestTypes
+open SystemTestCode
+open TestCode
+open CodeOnlyTestCode
 
 [<TestFixture>]
 type CodeSystemTests() = 

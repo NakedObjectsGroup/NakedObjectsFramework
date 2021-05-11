@@ -7,7 +7,6 @@
 module NakedObjects.Rest.Test.ObjectCollection17
 
 open NUnit.Framework
-open NakedObjects.Rest
 open System.Net
 open Newtonsoft.Json.Linq
 open System.Web
@@ -15,7 +14,7 @@ open NakedFramework.Rest.Snapshot.Utility
 open NakedFramework.Rest.Snapshot.Constants
 open NakedFramework.Rest.API
 open System
-open NakedObjects.Rest.Test.Functions
+open Functions
 
 let GetCollectionProperty(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
