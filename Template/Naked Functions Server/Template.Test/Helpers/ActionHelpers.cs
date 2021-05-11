@@ -60,7 +60,7 @@ namespace Template.Test.Helpers {
 
         public static JObject InvokeAction(this AbstractRestTest tc, string menuName, string actionName, IList<(string name, object value)> parameters, Methods method = Methods.Get) {
             var (api, map) = tc.SetupForInvoke(parameters, method);
-            var result = api.PostInvokeOnMenu(menuName, actionName, map);
+            var result = api.Invoke(menuName, actionName, map, method);
             return tc.GetParsedActionResult(api, result).GetResult();
         }
 
