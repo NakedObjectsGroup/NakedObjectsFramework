@@ -30,8 +30,11 @@ namespace Template.RestTest.Helpers {
         public static JObject GetExtensions(this JObject jObject) =>
             jObject["extensions"].GetJObject();
 
+        public static string GetResultType(this JObject jObject) =>
+            jObject["resultType"].ToString();
+
         public static JObject GetResult(this JObject jObject) =>
-            jObject["result"].GetJObject();
+            jObject.GetResultType() == "void" ? null : jObject["result"].GetJObject();
 
         public static string GetExtension(this JObject jObject, string name) =>
             jObject.GetExtensions()[name].ToString();
