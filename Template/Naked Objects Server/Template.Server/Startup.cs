@@ -14,12 +14,12 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
-using Template.Model;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
+using Template.Model;
 
 namespace NakedObjects.Rest.App.Demo {
     public class Startup {
@@ -47,8 +47,8 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                builder.AddEF6Persistor(options => { options.ContextInstallers = new[] { ModelConfig.DbContextInstaller }; });
-                //builder.add.AddEFCorePersistor(options => { options.ContextInstallers = new[] { NakedObjectsRunSettings.EFDbContextInstaller }; });
+               // builder.AddEF6Persistor(options => { options.ContextInstallers = new[] { ModelConfig. }; });
+                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextInstaller }; });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;

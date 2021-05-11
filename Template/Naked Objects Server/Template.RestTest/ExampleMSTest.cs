@@ -6,14 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Data.Entity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Menu;
 using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
-using Template.RestTest.DomainModel;
+using Template.Model;
 using Template.RestTest.Helpers;
 using Template.RestTest.TestCase;
 
@@ -21,26 +24,33 @@ using Template.RestTest.TestCase;
 namespace Template.RestTest
 {
     [TestClass]
-    public class ExampleMSTest : AbstractRestTest {
-        private static void CleanUpDatabase() => ObjectDbContext.Delete();
+    public class ExampleMSTest : AbstractRestTest
+    {
+        private static void CleanUpDatabase() => Database.Delete(CsObject);
 
-        protected static void ConfigureServices(IServiceCollection services) {
+        public static readonly string CsObject = @$"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog={"Spike"};Integrated Security=True;";
+
+        protected static void ConfigureServices(IServiceCollection services)
+        {
             ConfigureServicesBase(services);
             services.AddControllers()
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
 
-            services.AddNakedFramework(builder => {
-                builder.MainMenus = ModelConfig.MainMenus;
-                builder.AddEF6Persistor(options => { options.ContextInstallers = ModelConfig.ContextInstallers; });
-                builder.AddNakedObjects(options => {
-                    options.Types = ModelConfig.Types;
-                    options.Services = ModelConfig.Services;               
+            services.AddNakedFramework(builder =>
+            {
+                builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
+                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextInstaller }; });
+                builder.AddNakedObjects(options =>
+                {
+                    options.Types = ModelConfig.Types();
+                    options.Services = ModelConfig.Services();
                 });
                 builder.AddRestfulObjects(options => options.BlobsClobs = true);
             });
         }
 
-        private static IDictionary<string, string> Configuration() {
+        private static IDictionary<string, string> Configuration()
+        {
             var config = ConfigurationBase();
             config["ConnectionStrings:Spike"] = @"Server=(localdb)\MSSQLLocalDB;Initial Catalog=Spike;Integrated Security=True;";
             return config;
@@ -53,32 +63,38 @@ namespace Template.RestTest
         public void TearDown() { }
 
         [ClassInitialize]
-        public static void FixtureSetUp(TestContext tf) {
+        public static void FixtureSetUp(TestContext tf)
+        {
             InitializeNakedFramework(ConfigureServices, Configuration);
         }
 
         [ClassCleanup]
-        public static void FixtureTearDown() {
+        public static void FixtureTearDown()
+        {
             CleanupNakedFramework();
             CleanUpDatabase();
         }
 
+        /*
         [TestMethod]
-        public void TestGetObject() {
+        public void TestGetObject()
+        {
             var foo = this.GetObject(new Key<Foo>("1"));
             Assert.AreEqual("Foo", foo.GetExtension("friendlyName"));
             Assert.AreEqual("Fred", foo.GetTitle());
         }
 
         [TestMethod]
-        public void TestInvokeAction() {
+        public void TestInvokeAction()
+        {
             this.InvokeAction(new Key<Foo>("2"), nameof(Foo.ResetName), Methods.Post);
             var foo = this.GetObject(new Key<Foo>("2"));
             Assert.AreEqual("New Name", foo.GetMember(nameof(Foo.Name)).GetValue());
         }
 
         [TestMethod]
-        public void TestInvokeActionWithParameters() {
+        public void TestInvokeActionWithParameters()
+        {
             var parameters = ActionHelpers.CreateParameters(("name", "Updated Name"));
             this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
             var foo = this.GetObject(new Key<Foo>("2"));
@@ -86,7 +102,8 @@ namespace Template.RestTest
         }
 
         [TestMethod]
-        public void TestCopyName() {
+        public void TestCopyName()
+        {
             // to show multiple server calls
             var foo1 = this.GetObject(new Key<Foo>("1"));
             var name = foo1.GetMember(nameof(Foo.Name)).GetValue();
@@ -97,13 +114,15 @@ namespace Template.RestTest
         }
 
         [TestMethod]
-        public void TestGetMenu() {
+        public void TestGetMenu()
+        {
             var barMenu = this.GetMenu(nameof(BarService));
             Assert.AreEqual("Bars", barMenu.GetTitle());
         }
 
         [TestMethod]
-        public void TestInvokeMenuAction() {
+        public void TestInvokeMenuAction()
+        {
             var parameters = ActionHelpers.CreateParameters(("id", "1"));
             var foo = this.InvokeAction(nameof(BarService), nameof(BarService.GetFoo), parameters, Methods.Post);
             Assert.AreEqual("Fred", foo.GetMember(nameof(Foo.Name)).GetValue());
@@ -120,5 +139,6 @@ namespace Template.RestTest
             var foo2 = this.GetObject(new Key<Foo>("2"));
             Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
         }
+        */
     }
 }

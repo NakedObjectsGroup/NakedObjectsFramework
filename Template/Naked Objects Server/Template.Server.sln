@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Server", "Template
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Model", "Template.Model\Template.Model.csproj", "{5F87A0AD-C881-444D-9C87-084D8D74F00F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.RestTest", "Template.RestTest\Template.RestTest.csproj", "{757233C5-033D-40CD-BBDE-9EDB3F4FEC3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5F87A0AD-C881-444D-9C87-084D8D74F00F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F87A0AD-C881-444D-9C87-084D8D74F00F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F87A0AD-C881-444D-9C87-084D8D74F00F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{757233C5-033D-40CD-BBDE-9EDB3F4FEC3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{757233C5-033D-40CD-BBDE-9EDB3F4FEC3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{757233C5-033D-40CD-BBDE-9EDB3F4FEC3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{757233C5-033D-40CD-BBDE-9EDB3F4FEC3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

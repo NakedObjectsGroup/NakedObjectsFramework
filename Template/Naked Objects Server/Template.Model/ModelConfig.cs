@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
-using Template.Model;
-using System.Data.Entity;
 
-namespace NakedObjects.Rest.App.Demo
+namespace Template.Model
 {
     //A helper class to provide model configuration for use by Startup.cs in the Server project.
     //The implementation here relies on the conventions that:
@@ -22,8 +20,7 @@ namespace NakedObjects.Rest.App.Demo
         public static Type[] MainMenus() => new[] { typeof(ExampleService) };
 
 
-        public static Func<IConfiguration, DbContext> DbContextInstaller => 
-            c => new ExampleDbContext(c.GetConnectionString("ExampleCS"), new ExampleDbInitializer());
-
+        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextInstaller => 
+            c => new ExampleDbContext(c.GetConnectionString("ExampleConnectionString"));
     }
 }
