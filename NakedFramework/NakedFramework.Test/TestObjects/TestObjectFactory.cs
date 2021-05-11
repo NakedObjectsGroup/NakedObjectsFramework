@@ -12,9 +12,9 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Xat.Interface;
+using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Xat.TestObjects {
+namespace NakedFramework.Test.TestObjects {
     public class TestObjectFactory : ITestObjectFactory {
         private readonly INakedObjectsFramework framework;
 

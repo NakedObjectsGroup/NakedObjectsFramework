@@ -13,10 +13,10 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Xat.Interface;
-using NakedFramework.Xat.TestCase;
+using NakedFramework.Test.Interface;
+using NakedFramework.Test.TestCase;
 
-namespace NakedFramework.Xat.TestObjects {
+namespace NakedFramework.Test.TestObjects {
     internal class TestAction : ITestAction {
         private readonly IActionSpec actionSpec;
         private readonly ITestObjectFactory factory;

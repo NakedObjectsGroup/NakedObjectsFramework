@@ -31,12 +31,12 @@ using NakedFramework.Metamodel.Profile;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.Rest.Extensions;
-using NakedFramework.Xat.Interface;
-using NakedFramework.Xat.TestObjects;
+using NakedFramework.Test.Interface;
+using NakedFramework.Test.TestObjects;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Reflector.Extensions;
 
-namespace NakedFramework.Xat.TestCase {
+namespace NakedFramework.Test.TestCase {
     public abstract class AcceptanceTestCase {
         private static IHost host;
 

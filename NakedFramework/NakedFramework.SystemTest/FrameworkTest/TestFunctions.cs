@@ -12,9 +12,10 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFramework;
 using NakedFramework.Menu;
+using NakedObjects;
 using NakedObjects.Services;
+using NakedObjects.SystemTest;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
@@ -22,12 +23,12 @@ using Assert = NUnit.Framework.Assert;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.SystemTest.XATs {
+namespace NakedFramework.SystemTest.FrameworkTest {
     /// <summary>
     ///     Tests various functions of the XATs themselves
     /// </summary>
     [TestFixture]
-    public class TestXATFunctions : AbstractSystemTest<XatDbContext> {
+    public class TestFunctions : AbstractSystemTest<XatDbContext> {
         #region TestEnum enum
 
         public enum TestEnum {
@@ -290,7 +291,7 @@ namespace NakedObjects.SystemTest.XATs {
             }
             catch (Exception e) {
                 IsInstanceOfType(e, typeof(AssertFailedException));
-                Assert.AreEqual("Assert.Fail failed. No service of type NakedObjects.SystemTest.XATs.TestXATFunctions+MyService3", e.Message);
+                Assert.AreEqual("Assert.Fail failed. No service of type NakedFramework.SystemTest.FrameworkTest.TestFunctions+MyService3", e.Message);
             }
         }
 

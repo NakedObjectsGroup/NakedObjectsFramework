@@ -25,7 +25,7 @@ open Newtonsoft.Json
 open NakedFramework.Rest.Snapshot.Utility
 open Microsoft.Extensions.Configuration
 open NakedFramework
-open NakedFramework.Xat.TestCase
+open NakedFramework.Test.TestCase
 open NakedFramework.Facade.Utility
 open NakedFramework.DependencyInjection.Extensions
 open NakedFramework.Menu

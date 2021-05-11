@@ -8,7 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-using NakedFramework.Xat.Interface;
+using NakedFramework.Test.Interface;
 using NakedObjects.Services;
 using NUnit.Framework;
 

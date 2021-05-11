@@ -16,7 +16,7 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
-using NakedFramework.Xat.TestCase;
+using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test.Data;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;

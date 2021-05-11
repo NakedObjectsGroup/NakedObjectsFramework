@@ -15,9 +15,9 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Reflect;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
-using NakedFramework.Xat.Interface;
+using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Xat.TestObjects {
+namespace NakedFramework.Test.TestObjects {
     public class TestProperty : ITestProperty {
         private readonly ITestObjectFactory factory;
         private readonly IAssociationSpec field;

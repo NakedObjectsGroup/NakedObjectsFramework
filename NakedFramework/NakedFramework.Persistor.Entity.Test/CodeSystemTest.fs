@@ -20,7 +20,7 @@ open SystemTestCode
 open TestCode
 open TestCodeOnly
 open Microsoft.Extensions.Configuration
-open NakedFramework.Xat.TestCase
+open NakedFramework.Test.TestCase
 open NakedFramework.Core.Error
 open NakedFramework.DependencyInjection.Extensions
 

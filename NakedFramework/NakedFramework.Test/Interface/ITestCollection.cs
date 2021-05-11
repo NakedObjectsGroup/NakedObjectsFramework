@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedFramework.Xat.Interface {
+namespace NakedFramework.Test.Interface {
     public interface ITestCollection : ITestNaked, IEnumerable<ITestObject> {
         ITestCollection AssertCountIs(int count);
     }

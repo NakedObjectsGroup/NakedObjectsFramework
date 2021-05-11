@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Xat.Interface {
+namespace NakedFramework.Test.Interface {
     public interface ITestHasActions : ITestNaked {
         ITestAction[] Actions { get; }
 

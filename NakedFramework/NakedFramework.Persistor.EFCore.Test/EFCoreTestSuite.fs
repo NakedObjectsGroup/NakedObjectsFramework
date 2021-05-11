@@ -14,7 +14,7 @@ open NUnit.Framework
 open System
 open TestData
 open Microsoft.Extensions.Configuration
-open NakedFramework.Xat.TestCase
+open NakedFramework.Test.TestCase
 open NakedFramework.DependencyInjection.Extensions
 open NakedFramework.Persistor.EFCore.Extensions
 open Microsoft.EntityFrameworkCore

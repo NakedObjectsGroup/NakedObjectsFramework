@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Xat.Interface;
+using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Xat.TestObjects {
+namespace NakedFramework.Test.TestObjects {
     internal class TestValue : ITestValue {
         public TestValue(INakedObjectAdapter nakedObjectAdapter) => NakedObject = nakedObjectAdapter;
 

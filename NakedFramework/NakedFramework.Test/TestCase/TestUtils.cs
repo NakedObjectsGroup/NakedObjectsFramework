@@ -8,11 +8,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Xat.Interface;
-using NakedFramework.Xat.TestObjects;
+using NakedFramework.Test.Interface;
+using NakedFramework.Test.TestObjects;
 
-namespace NakedFramework.Xat.TestCase {
-    public static class XatUtils {
+namespace NakedFramework.Test.TestCase {
+    public static class TestUtils {
         private static ITestNaked AsTestNaked(this object parameter, INakedObjectManager manager) => parameter is ITestNaked testNaked ? testNaked : new TestParameterObject(manager, parameter);
 
         public static ITestNaked[] AsTestNakedArray(this IEnumerable<object> parameters, INakedObjectManager manager) {

@@ -11,7 +11,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Xat.Interface;
+using NakedFramework.Test.Interface;
 using NakedObjects.Services;
 using NUnit.Framework;
 

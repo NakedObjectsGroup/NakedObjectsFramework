@@ -19,7 +19,7 @@ open System.IO
 open System.Text.RegularExpressions
 open System.Xml.Linq
 open Microsoft.Extensions.Configuration
-open NakedFramework.Xat.TestCase
+open NakedFramework.Test.TestCase
 open NakedFramework.DependencyInjection.Extensions
 open NakedObjects.Snapshot.Xml.utility
 open NakedObjects

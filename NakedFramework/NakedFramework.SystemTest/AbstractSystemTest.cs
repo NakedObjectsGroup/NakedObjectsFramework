@@ -11,8 +11,8 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using NakedFramework;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Xat.Interface;
-using NakedFramework.Xat.TestCase;
+using NakedFramework.Test.Interface;
+using NakedFramework.Test.TestCase;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global

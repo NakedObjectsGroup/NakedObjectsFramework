@@ -8,9 +8,9 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Menu;
-using NakedFramework.Xat.Interface;
+using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Xat.TestObjects {
+namespace NakedFramework.Test.TestObjects {
     internal class TestMenu : ITestMenu {
         private readonly ITestObjectFactory factory;
         private readonly IMenuImmutable menu;

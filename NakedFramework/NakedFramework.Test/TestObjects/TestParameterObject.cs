@@ -7,9 +7,9 @@
 
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Xat.Interface;
+using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Xat.TestObjects {
+namespace NakedFramework.Test.TestObjects {
     internal class TestParameterObject : ITestValue {
         private readonly object domainObject;
         private readonly INakedObjectManager manager;

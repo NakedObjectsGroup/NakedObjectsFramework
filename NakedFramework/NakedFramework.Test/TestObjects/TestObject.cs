@@ -15,9 +15,9 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
-using NakedFramework.Xat.Interface;
+using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Xat.TestObjects {
+namespace NakedFramework.Test.TestObjects {
     internal class TestObject : TestHasActions, ITestObject {
         private readonly ILifecycleManager lifecycleManager;
         private readonly IObjectPersistor persistor;

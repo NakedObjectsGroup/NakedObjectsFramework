@@ -18,7 +18,7 @@ open System.Linq
 open SystemTestCode
 open TestCode
 open Microsoft.Extensions.Configuration
-open NakedFramework.Xat.TestCase
+open NakedFramework.Test.TestCase
 open NakedFramework.DependencyInjection.Extensions
 
 [<TestFixture>]

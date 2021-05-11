@@ -20,7 +20,7 @@ open System.Security.Principal
 open TestCode
 open TestData
 open Microsoft.Extensions.Configuration
-open NakedFramework.Xat.TestCase
+open NakedFramework.Test.TestCase
 open NakedFramework.DependencyInjection.Extensions
 
 let assemblyName = "NakedFramework.Persistor.Test.Data"

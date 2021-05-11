@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Xat.Interface {
+namespace NakedFramework.Test.Interface {
     public interface ITestObject : ITestHasActions, ITestHasProperties {
         ITestObject AssertIsDescribedAs(string expectedDescription);
         ITestObject AssertIsType(Type expectedType);

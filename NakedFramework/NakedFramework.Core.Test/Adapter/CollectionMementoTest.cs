@@ -17,7 +17,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Xat.TestCase;
+using NakedFramework.Test.TestCase;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Services;
 using NUnit.Framework;
