@@ -18,17 +18,14 @@ namespace Template.Model
         public static Type[] Types() => 
           DomainClasses.Where(t => t.Namespace == "Template.Model.Types" && !t.IsStaticClass()).ToArray();
 
-
         public static Type[] Functions() =>
           DomainClasses.Where(t => t.Namespace == "Template.Model.Functions"   && t.IsStaticClass()).ToArray();
-
 
         public static Type[] MainMenus() =>
             Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
 
-
         public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextInstaller =>
-            c => new ExampleDbContext(c.GetConnectionString("ExampleConnectionString"));
+            c => new ExampleDbContext(c.GetConnectionString("ExampleCS"));
 
         #region Helpers
         private static IEnumerable<Type> DomainClasses =>

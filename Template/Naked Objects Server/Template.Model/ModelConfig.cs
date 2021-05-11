@@ -21,6 +21,6 @@ namespace Template.Model
 
 
         public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextInstaller => 
-            c => new ExampleDbContext(c.GetConnectionString("ExampleConnectionString"));
+            c => new ExampleDbContext(c.GetConnectionString("ExampleCS"));
     }
 }

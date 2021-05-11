@@ -14,19 +14,21 @@ using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Persistor.Entity.Extensions; //Needed to work with EF 6
-using NakedFramework.Persistor.EFCore.Extensions; //Needed to work with EF Core
+using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
 using Newtonsoft.Json;
 using Template.Model;
 
-namespace NakedFunctions.Rest.App.Demo {
-    public class Startup {
+namespace NakedFunctions.Rest.App.Demo
+{
+    public class Startup
+    {
 
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-        public Startup(IConfiguration configuration) {
+        public Startup(IConfiguration configuration)
+        {
             Configuration = configuration;
         }
 
@@ -34,28 +36,27 @@ namespace NakedFunctions.Rest.App.Demo {
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services) {
+        public void ConfigureServices(IServiceCollection services)
+        {
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedFramework(builder => {
+            services.AddNakedFramework(builder =>
+            {
                 builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                //To use EF6
-                //builder.AddEF6Persistor(options => options.ContextInstallers = new[] { ModelConfig.DbContextInstaller });
-                //To use EF Core 
-                // 1. replace above line with the following line
-               builder.AddEFCorePersistor(options => { options.ContextInstaller = ModelConfig.EFCoreDbContextInstaller; });
-               // 2. Modify the Model project so that it is dependent on EF6 and uses the EF6 version of DbContext and related types.
-
-                builder.AddNakedFunctions(options => {
+                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextInstaller }; });
+                builder.AddNakedFunctions(options =>
+                {
                     options.FunctionalTypes = ModelConfig.Types();
                     options.Functions = ModelConfig.Functions();
                 });
                 builder.AddRestfulObjects(_ => { });
             });
-            services.AddCors(options => {
-                options.AddPolicy(MyAllowSpecificOrigins, builder => {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins, builder =>
+                {
                     builder
                         .WithOrigins("http://localhost:5001")
                         .AllowAnyHeader()
@@ -67,14 +68,16 @@ namespace NakedFunctions.Rest.App.Demo {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder builder, ILoggerFactory loggerFactory) {
-            
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder builder, ILoggerFactory loggerFactory)
+        {
+
             // for Demo use Log4Net. Configured in log4net.config  
             loggerFactory.AddLog4Net();
-            
+
             builder.Build();
 
-            if (env.IsDevelopment()) {
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
             }
 
