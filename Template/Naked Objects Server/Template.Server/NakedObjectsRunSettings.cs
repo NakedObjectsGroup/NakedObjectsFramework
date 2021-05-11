@@ -6,15 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity;
 using Microsoft.Extensions.Configuration;
-using NakedObjects.Core.Configuration;
-using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Menu;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Meta.Audit;
-using NakedObjects.Meta.Authorization;
-using Template.DataBase;
-using Template.SeedData;
+using NakedFramework;
 using Template.Model;
 
 namespace NakedObjects.Rest.App.Demo {
@@ -40,25 +34,9 @@ namespace NakedObjects.Rest.App.Demo {
                 };
             }
         }
+        public static Func<IConfiguration, DbContext> DbContextInstaller => c => new ExampleDbContext(c.GetConnectionString("ExampleConnectionString"), new ExampleDbInitializer());
 
-        public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
-        }
-
-        public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {
-            var config = new EntityObjectStoreConfiguration();
-            var cs = configuration.GetConnectionString("ExampleConnectionString");
-            config.UsingContext(() => new ExampleDbContext(cs, new ExampleDbInitializer()));
-            return config;
-        }
-
-        public static IAuditConfiguration AuditConfig() {
-            return null;
-        }
-
-        public static IAuthorizationConfiguration AuthorizationConfig() {
-            return null;
-        }
+       // public static Func<IConfiguration, DbContext> EFDbContextInstaller => c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
 
         /// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to

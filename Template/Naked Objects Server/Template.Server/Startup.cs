@@ -11,9 +11,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NakedObjects.Architecture.Component;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.Rest.Extensions;
+using NakedObjects.Reflector.Extensions;
+using Template.Model;
+using NakedFramework;
+using NakedFramework.Architecture.Component;
 
 namespace NakedObjects.Rest.App.Demo {
     public class Startup {
@@ -21,7 +27,6 @@ namespace NakedObjects.Rest.App.Demo {
 
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
-            RestfulObjectsConfig.RestPreStart();
         }
 
         public IConfiguration Configuration { get; }
@@ -40,8 +45,23 @@ namespace NakedObjects.Rest.App.Demo {
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedObjects(Configuration);
-
+            services.AddNakedFramework(builder => {
+                builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
+                builder.AddEF6Persistor(options => { options.ContextInstallers = new[] { ModelConfig.DbContextInstaller }; });
+                //builder.add.AddEFCorePersistor(options => { options.ContextInstallers = new[] { NakedObjectsRunSettings.EFDbContextInstaller }; });
+                builder.AddRestfulObjects(options => {
+                    options.AcceptHeaderStrict = true;
+                    options.DebugWarnings = true;
+                    options.DefaultPageSize = 20;
+                    options.InlineDetailsInActionMemberRepresentations = false;
+                    options.InlineDetailsInCollectionMemberRepresentations = false;
+                    options.InlineDetailsInPropertyMemberRepresentations = false;
+                });
+                builder.AddNakedObjects(options => {
+                    options.Types = ModelConfig.Types();
+                    options.Services = ModelConfig.Services();
+                });
+            });
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
                     builder
@@ -56,22 +76,22 @@ namespace NakedObjects.Rest.App.Demo {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IReflector reflector, ILoggerFactory loggerFactory) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder builder, ILoggerFactory loggerFactory)
+        {
+
             // for Demo use Log4Net. Configured in log4net.config  
             loggerFactory.AddLog4Net();
-            reflector.Reflect();
 
-            if (env.IsDevelopment()) {
+            builder.Build();
+
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseCors(MyAllowSpecificOrigins);
-
             app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseMvc(routeBuilder => RestfulObjectsConfig.RegisterRestfulObjectsRoutes(routeBuilder));
+            app.UseRestfulObjects();
         }
     }
 }
