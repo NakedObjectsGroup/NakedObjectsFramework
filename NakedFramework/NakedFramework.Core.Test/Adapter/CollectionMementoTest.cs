@@ -18,7 +18,6 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Test.TestCase;
-using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Services;
 using NUnit.Framework;
 using AdapterUtils = NakedFramework.Core.Util.AdapterUtils;

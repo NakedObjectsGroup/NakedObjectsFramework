@@ -10,9 +10,7 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace TestCodeOnly {
     public class EFCoreCodeFirstContext : DbContext {

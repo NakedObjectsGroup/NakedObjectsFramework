@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;

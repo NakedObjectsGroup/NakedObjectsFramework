@@ -124,7 +124,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
         }
 
         #region Nested type: Customer

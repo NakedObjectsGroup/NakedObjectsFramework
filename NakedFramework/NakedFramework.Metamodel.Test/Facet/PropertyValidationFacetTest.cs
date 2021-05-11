@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.Facet;
 
 namespace NakedObjects.Metamodel.Test.Facet {

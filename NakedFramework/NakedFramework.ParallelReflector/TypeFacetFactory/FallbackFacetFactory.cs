@@ -18,7 +18,6 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedObjects;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory {
     /// <summary>

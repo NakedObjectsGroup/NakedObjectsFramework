@@ -8,8 +8,6 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-using System;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace SimpleDatabase {

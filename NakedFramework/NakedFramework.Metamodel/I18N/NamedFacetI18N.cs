@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedObjects;
 
 namespace NakedFramework.Metamodel.I18N {
     [Serializable]

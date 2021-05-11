@@ -63,7 +63,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(DeleteRecord),
             typeof(BoundedRecord),
             typeof(ByteArrayRecord),
-            typeof(MaskRecord)
+            typeof(MaskRecord),
+            typeof(HiddenRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -1101,6 +1102,19 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             Assert.AreEqual(4, resultObj["value"].Count());
+        }
+
+        [Test]
+        public void TestGetObjectHidden()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<HiddenRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["HiddenProperty"]);
+            Assert.IsNull(parsedResult["members"]["HiddenFunction"]);
         }
     }
 }

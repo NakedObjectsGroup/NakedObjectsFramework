@@ -18,7 +18,6 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedObjects;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class DefaultNamingFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {

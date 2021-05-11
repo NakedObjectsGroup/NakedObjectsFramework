@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Adapter;
 using NakedFramework.Facade.Impl.Impl;

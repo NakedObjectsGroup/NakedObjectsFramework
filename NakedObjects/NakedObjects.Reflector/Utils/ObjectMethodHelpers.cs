@@ -15,7 +15,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Facet;
 

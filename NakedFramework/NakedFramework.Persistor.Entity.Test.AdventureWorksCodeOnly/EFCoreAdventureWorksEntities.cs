@@ -8,10 +8,7 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-using System;
-using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     public class EFCoreAdventureWorksEntities : DbContext {
