@@ -5,14 +5,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
-using NakedFunctions;
+using System.ComponentModel.DataAnnotations;
+using NakedObjects;
 
-namespace Template.Test.Data {
-    public static class BarMenu {
-        public static (Foo, IContext) GetFoo(int id, IContext context) {
-            var foo = context.Instances<Foo>().SingleOrDefault(f => f.Id == id);
-            return (foo, context);
+namespace Template.RestTest.DomainModel
+{
+    [PresentationHint("Hint1")]
+    public class Foo {
+        [Key]
+        public virtual int Id { get; set; }
+
+        [PresentationHint("Hint2")]
+        public virtual string Name { get; set; }
+
+        public void ResetName() => Name = "New Name";
+
+        public void UpdateName(string name) => Name = name;
+
+        public void UpdateNameFrom(Foo from)
+        {
+            Name = from.Name;
         }
+
+        public override string ToString() => Name;
     }
 }

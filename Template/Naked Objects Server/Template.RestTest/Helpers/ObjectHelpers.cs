@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Template.RestTest.Helpers;
 using Template.RestTest.TestCase;
 
 namespace Template.RestTest.Helpers {

@@ -5,20 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using NakedFunctions;
 
-namespace Template.Test.Data {
-    [PresentationHint("Hint1")]
-    public record Foo {
-        [Key]
-        public virtual int Id { get; init; }
-
-        [PresentationHint("Hint2")]
-        public virtual string Name { get; init; }
-
-        public virtual bool Equals(Foo other) => ReferenceEquals(this, other);
-        public override string ToString() => Name;
-        public override int GetHashCode() => base.GetHashCode();
+namespace Template.RestTest.DomainModel {
+    public static class BarMenu {
+        public static (Foo, IContext) GetFoo(int id, IContext context) {
+            var foo = context.Instances<Foo>().SingleOrDefault(f => f.Id == id);
+            return (foo, context);
+        }
     }
 }

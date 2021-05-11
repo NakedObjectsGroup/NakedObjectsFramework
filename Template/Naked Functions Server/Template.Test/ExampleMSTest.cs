@@ -13,13 +13,14 @@ using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
 using Newtonsoft.Json;
-using Template.Test.Data;
-using Template.Test.Helpers;
-using Template.Test.TestCase;
+using Template.RestTest.DomainModel;
+using Template.RestTest.Helpers;
+using Template.RestTest.TestCase;
 
-namespace Template.Test {
+namespace Template.RestTest
+{
     [TestClass]
-    public class MSTestTest : AbstractRestTest {
+    public class ExampleMSTest : AbstractRestTest {
         private static void CleanUpDatabase() => ObjectDbContext.Delete();
 
         protected static void ConfigureServices(IServiceCollection services) {
@@ -28,11 +29,11 @@ namespace Template.Test {
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
 
             services.AddNakedFramework(builder => {
-                builder.MainMenus = DataSetup.MainMenus;
-                builder.AddEF6Persistor(options => { options.ContextInstallers = DataSetup.ContextInstallers; });
+                builder.MainMenus = ModelConfig.MainMenus;
+                builder.AddEF6Persistor(options => { options.ContextInstallers = ModelConfig.ContextInstallers; });
                 builder.AddNakedFunctions(options => {
-                    options.FunctionalTypes = DataSetup.Records;
-                    options.Functions = DataSetup.Functions;
+                    options.FunctionalTypes = ModelConfig.Records;
+                    options.Functions = ModelConfig.Functions;
                 });
                 builder.AddRestfulObjects(options => options.BlobsClobs = true);
             });
