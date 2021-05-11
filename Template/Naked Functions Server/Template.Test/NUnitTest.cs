@@ -1,0 +1,92 @@
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.Rest.Extensions;
+using NakedFunctions.Reflector.Extensions;
+using Newtonsoft.Json;
+using NUnit.Framework;
+using Template.Test.Data;
+using Template.Test.Helpers;
+using Template.Test.TestCase;
+
+namespace Template.Test {
+    public class NUnitTest : NUnitRestTestCase {
+        private static void CleanUpDatabase() => ObjectDbContext.Delete();
+
+        protected override void ConfigureServices(IServiceCollection services) {
+            base.ConfigureServices(services);
+            services.AddControllers()
+                    .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+            services.AddNakedFramework(builder => {
+                builder.AddEF6Persistor(options => { options.ContextInstallers = DataSetup.ContextInstallers; });
+                builder.AddNakedFunctions(options => {
+                    options.FunctionalTypes = DataSetup.Records;
+                    options.Functions = DataSetup.Functions;
+                });
+                builder.AddRestfulObjects(options => options.BlobsClobs = true);
+            });
+        }
+
+        protected override IDictionary<string, string> Configuration() {
+            var config = base.Configuration();
+            config["ConnectionStrings:Spike"] = @"Server=(localdb)\MSSQLLocalDB;Initial Catalog=Spike;Integrated Security=True;";
+            return config;
+        }
+
+        [SetUp]
+        public void SetUp() { }
+
+        [TearDown]
+        public void TearDown() { }
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            CleanUpDatabase();
+        }
+
+        [Test]
+        public void TestGetObject() {
+            var simpleRecord = this.GetObject(new Key<SimpleRecord>("1"));
+
+            Assert.AreEqual("Simple Record", simpleRecord.GetExtension("friendlyName"));
+            Assert.AreEqual("Fred", simpleRecord.GetTitle());
+        }
+
+        [Test]
+        public void TestInvokeAction() {
+            var resetRecord = this.InvokeAction(new Key<SimpleRecord>("2"), nameof(SimpleRecordFunctions.ResetName));
+            Assert.AreEqual("New Name", resetRecord.GetMember(nameof(SimpleRecord.Name)).GetValue());
+        }
+
+        [Test]
+        public void TestInvokeActionWithParameters() {
+            var parameters = ActionHelpers.CreateParameters(("name", "Updated Name"));
+            var resetRecord = this.InvokeAction(new Key<SimpleRecord>("2"), nameof(SimpleRecordFunctions.UpdateName), parameters);
+            Assert.AreEqual("Updated Name", resetRecord.GetMember(nameof(SimpleRecord.Name)).GetValue());
+        }
+
+        [Test]
+        public void TestCopyName() {
+            // to show multiple server calls
+            var record1 = this.GetObject(new Key<SimpleRecord>("1"));
+            var name = record1.GetMember(nameof(SimpleRecord.Name)).GetValue();
+            var parameters = ActionHelpers.CreateParameters(("name", name));
+            var record2 = this.InvokeAction(new Key<SimpleRecord>("2"), nameof(SimpleRecordFunctions.UpdateName), parameters);
+            Assert.AreEqual(name, record2.GetMember(nameof(SimpleRecord.Name)).GetValue());
+        }
+    }
+}
