@@ -65,20 +65,16 @@ namespace Template.Test.Helpers {
             return (json, statusCode, headers);
         }
 
-        public static RestfulObjectsControllerBase AsPost(this RestfulObjectsControllerBase api) {
-            api.HttpContext.Request.Method = "POST";
+        public static RestfulObjectsControllerBase AsMethod(this RestfulObjectsControllerBase api, Methods method) {
+            api.HttpContext.Request.Method = method.ToString().ToUpper();
             return api;
         }
 
-        public static RestfulObjectsControllerBase AsPut(this RestfulObjectsControllerBase api) {
-            api.HttpContext.Request.Method = "PUT";
-            return api;
-        }
+        public static RestfulObjectsControllerBase AsPost(this RestfulObjectsControllerBase api) => api.AsMethod(Methods.Post);
 
-        public static RestfulObjectsControllerBase AsGet(this RestfulObjectsControllerBase api) {
-            api.HttpContext.Request.Method = "GET";
-            return api;
-        }
+        public static RestfulObjectsControllerBase AsPut(this RestfulObjectsControllerBase api) => api.AsMethod(Methods.Put);
+
+        public static RestfulObjectsControllerBase AsGet(this RestfulObjectsControllerBase api) => api.AsMethod(Methods.Get);
 
         public static string FullName<T>() => typeof(T).FullName;
 

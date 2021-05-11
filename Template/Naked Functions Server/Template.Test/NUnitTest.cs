@@ -26,6 +26,7 @@ namespace Template.Test {
             services.AddControllers()
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddNakedFramework(builder => {
+                builder.MainMenus = DataSetup.MainMenus;
                 builder.AddEF6Persistor(options => { options.ContextInstallers = DataSetup.ContextInstallers; });
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = DataSetup.Records;
@@ -58,35 +59,14 @@ namespace Template.Test {
             CleanUpDatabase();
         }
 
+        // actual tests are identical
+
         [Test]
         public void TestGetObject() {
-            var simpleRecord = this.GetObject(new Key<Foo>("1"));
+            var foo = this.GetObject(new Key<Foo>("1"));
 
-            Assert.AreEqual("Foo", simpleRecord.GetExtension("friendlyName"));
-            Assert.AreEqual("Fred", simpleRecord.GetTitle());
-        }
-
-        [Test]
-        public void TestInvokeAction() {
-            var resetRecord = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.ResetName));
-            Assert.AreEqual("New Name", resetRecord.GetMember(nameof(Foo.Name)).GetValue());
-        }
-
-        [Test]
-        public void TestInvokeActionWithParameters() {
-            var parameters = ActionHelpers.CreateParameters(("name", "Updated Name"));
-            var resetRecord = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.UpdateName), parameters);
-            Assert.AreEqual("Updated Name", resetRecord.GetMember(nameof(Foo.Name)).GetValue());
-        }
-
-        [Test]
-        public void TestCopyName() {
-            // to show multiple server calls
-            var record1 = this.GetObject(new Key<Foo>("1"));
-            var name = record1.GetMember(nameof(Foo.Name)).GetValue();
-            var parameters = ActionHelpers.CreateParameters(("name", name));
-            var record2 = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.UpdateName), parameters);
-            Assert.AreEqual(name, record2.GetMember(nameof(Foo.Name)).GetValue());
+            Assert.AreEqual("Foo", foo.GetExtension("friendlyName"));
+            Assert.AreEqual("Fred", foo.GetTitle());
         }
     }
 }

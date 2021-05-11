@@ -22,5 +22,12 @@ namespace Template.Test.Data {
 
             return (updated, context);
         }
+
+        public static (Foo, IContext) UpdateNameFrom(this Foo sp, Foo from, IContext context) {
+            var updated = sp with {Name = from.Name};
+            context = context.WithUpdated(sp, updated);
+
+            return (updated, context);
+        }
     }
 }

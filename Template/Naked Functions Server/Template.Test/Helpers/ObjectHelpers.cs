@@ -1,18 +1,12 @@
-﻿using System.Net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Template.Test.TestCase;
 
 namespace Template.Test.Helpers {
     public static class ObjectHelpers {
         public static JObject GetObject(this AbstractRestTest tc, Key key) {
-            tc.StartServerTransaction();
-            var api = TestHelpers.GetController(tc);
+            var api = tc.GetController();
             var result = api.GetObject(key.Type, key.Id);
-            var (json, sc, _) = TestHelpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int) HttpStatusCode.OK, sc);
-            tc.EndServerTransaction();
-            return JObject.Parse(json);
+            return tc.GetParsedActionResult(api, result);
         }
 
         public static JObject GetMembers(this JObject jObject) =>
@@ -21,7 +15,10 @@ namespace Template.Test.Helpers {
         public static JObject GetMember(this JObject jObject, string name) =>
             jObject.GetMembers()[name].GetJObject();
 
-        public static string GetTitle(this JObject jObject) =>
-            jObject["title"].ToString();
+        public static string GetHref(this JObject jObject) =>
+            jObject["links"][0]["href"].ToString();
+
+        public static string GetDomainType(this JObject jObject) =>
+            jObject["domainType"].ToString();
     }
 }
