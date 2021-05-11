@@ -24,9 +24,5 @@
 
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\RestTest (common)\RestTestFramework.csproj" />
-  </ItemGroup>
-
 
 </Project>
