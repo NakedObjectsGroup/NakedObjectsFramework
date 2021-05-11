@@ -36,6 +36,7 @@ namespace NakedFramework.Architecture.Reflect {
         Everything = Objects | Properties | Collections | Actions | ActionParameters | Interfaces,
         EverythingButActionParameters = Objects | Properties | Collections | Actions | Interfaces,
         EverythingButCollections = Objects | Properties | Actions | ActionParameters | Interfaces,
+        EverythingButObjectsAndInterfaces = Properties | Collections | Actions | ActionParameters,
         ObjectsAndInterfaces = Objects | Interfaces
     }
 }
