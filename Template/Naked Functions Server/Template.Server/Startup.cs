@@ -42,10 +42,10 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddNakedFramework(builder => {
                 builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
                 //To use EF6
-                builder.AddEF6Persistor(options => options.ContextInstallers = new[] { ModelConfig.DbContextInstaller });
+                //builder.AddEF6Persistor(options => options.ContextInstallers = new[] { ModelConfig.DbContextInstaller });
                 //To use EF Core 
                 // 1. replace above line with the following line
-               // builder.AddEFCorePersistor(options => { options.ContextInstaller = ModelConfig.DbContextInstaller });
+               builder.AddEFCorePersistor(options => { options.ContextInstaller = ModelConfig.EFCoreDbContextInstaller; });
                // 2. Modify the Model project so that it is dependent on EF6 and uses the EF6 version of DbContext and related types.
 
                 builder.AddNakedFunctions(options => {
