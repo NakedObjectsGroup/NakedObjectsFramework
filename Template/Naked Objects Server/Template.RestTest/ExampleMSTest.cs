@@ -72,14 +72,16 @@ namespace Template.RestTest
 
         [TestMethod]
         public void TestInvokeAction() {
-            var foo = this.InvokeAction(new Key<Foo>("2"), nameof(Foo.ResetName), Methods.Post);
+            this.InvokeAction(new Key<Foo>("2"), nameof(Foo.ResetName), Methods.Post);
+            var foo = this.GetObject(new Key<Foo>("2"));
             Assert.AreEqual("New Name", foo.GetMember(nameof(Foo.Name)).GetValue());
         }
 
         [TestMethod]
         public void TestInvokeActionWithParameters() {
             var parameters = ActionHelpers.CreateParameters(("name", "Updated Name"));
-            var foo = this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
+            this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
+            var foo = this.GetObject(new Key<Foo>("2"));
             Assert.AreEqual("Updated Name", foo.GetMember(nameof(Foo.Name)).GetValue());
         }
 
@@ -89,7 +91,8 @@ namespace Template.RestTest
             var foo1 = this.GetObject(new Key<Foo>("1"));
             var name = foo1.GetMember(nameof(Foo.Name)).GetValue();
             var parameters = ActionHelpers.CreateParameters(("name", name));
-            var foo2 = this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
+            this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
+            var foo2 = this.GetObject(new Key<Foo>("2"));
             Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
         }
 
@@ -113,7 +116,8 @@ namespace Template.RestTest
             var foo1 = this.GetObject(new Key<Foo>("1"));
             var name = foo1.GetMember(nameof(Foo.Name)).GetValue();
             var parameters = ActionHelpers.CreateParameters(("from", foo1));
-            var foo2 = this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateNameFrom), parameters, Methods.Post);
+            this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateNameFrom), parameters, Methods.Post);
+            var foo2 = this.GetObject(new Key<Foo>("2"));
             Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
         }
     }
