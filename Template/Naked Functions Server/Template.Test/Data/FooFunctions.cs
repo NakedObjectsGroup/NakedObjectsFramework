@@ -8,15 +8,15 @@
 using NakedFunctions;
 
 namespace Template.Test.Data {
-    public static class SimpleRecordFunctions {
-        public static (SimpleRecord, IContext) ResetName(this SimpleRecord sp, IContext context) {
+    public static class FooFunctions {
+        public static (Foo, IContext) ResetName(this Foo sp, IContext context) {
             var updated = sp with {Name = "New Name"};
             context = context.WithUpdated(sp, updated);
 
             return (updated, context);
         }
 
-        public static (SimpleRecord, IContext) UpdateName(this SimpleRecord sp, string name, IContext context) {
+        public static (Foo, IContext) UpdateName(this Foo sp, string name, IContext context) {
             var updated = sp with {Name = name};
             context = context.WithUpdated(sp, updated);
 

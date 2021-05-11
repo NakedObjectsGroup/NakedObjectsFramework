@@ -19,8 +19,7 @@ using Template.Test.TestCase;
 
 namespace Template.Test {
     [TestClass]
-    public class MSTestTest : MSTestRestTestCase {
-        
+    public class MSTestTest : AbstractRestTest {
         private static void CleanUpDatabase() => ObjectDbContext.Delete();
 
         protected static void ConfigureServices(IServiceCollection services) {
@@ -51,43 +50,43 @@ namespace Template.Test {
 
         [ClassInitialize]
         public static void FixtureSetUp(TestContext tf) {
-            InitializeNakedObjectsFramework(ConfigureServices, Configuration);
+            InitializeNakedFramework(ConfigureServices, Configuration);
         }
 
         [ClassCleanup]
         public static void FixtureTearDown() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedFramework();
             CleanUpDatabase();
         }
 
         [TestMethod]
         public void TestGetObject() {
-            var simpleRecord = this.GetObject(new Key<SimpleRecord>("1"));
-            Assert.AreEqual("Simple Record", simpleRecord.GetExtension("friendlyName"));
+            var simpleRecord = this.GetObject(new Key<Foo>("1"));
+            Assert.AreEqual("Foo", simpleRecord.GetExtension("friendlyName"));
             Assert.AreEqual("Fred", simpleRecord.GetTitle());
         }
 
         [TestMethod]
         public void TestInvokeAction() {
-            var resetRecord = this.InvokeAction(new Key<SimpleRecord>("2"), nameof(SimpleRecordFunctions.ResetName));
-            Assert.AreEqual("New Name", resetRecord.GetMember(nameof(SimpleRecord.Name)).GetValue());
+            var resetRecord = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.ResetName));
+            Assert.AreEqual("New Name", resetRecord.GetMember(nameof(Foo.Name)).GetValue());
         }
 
         [TestMethod]
         public void TestInvokeActionWithParameters() {
             var parameters = ActionHelpers.CreateParameters(("name", "Updated Name"));
-            var resetRecord = this.InvokeAction(new Key<SimpleRecord>("2"), nameof(SimpleRecordFunctions.UpdateName), parameters);
-            Assert.AreEqual("Updated Name", resetRecord.GetMember(nameof(SimpleRecord.Name)).GetValue());
+            var resetRecord = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.UpdateName), parameters);
+            Assert.AreEqual("Updated Name", resetRecord.GetMember(nameof(Foo.Name)).GetValue());
         }
 
         [TestMethod]
         public void TestCopyName() {
             // to show multiple server calls
-            var record1 = this.GetObject(new Key<SimpleRecord>("1"));
-            var name = record1.GetMember(nameof(SimpleRecord.Name)).GetValue();
+            var record1 = this.GetObject(new Key<Foo>("1"));
+            var name = record1.GetMember(nameof(Foo.Name)).GetValue();
             var parameters = ActionHelpers.CreateParameters(("name", name));
-            var record2 = this.InvokeAction(new Key<SimpleRecord>("2"), nameof(SimpleRecordFunctions.UpdateName), parameters);
-            Assert.AreEqual(name, record2.GetMember(nameof(SimpleRecord.Name)).GetValue());
+            var record2 = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.UpdateName), parameters);
+            Assert.AreEqual(name, record2.GetMember(nameof(Foo.Name)).GetValue());
         }
     }
 }

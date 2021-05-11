@@ -10,14 +10,14 @@ using NakedFunctions;
 
 namespace Template.Test.Data {
     [PresentationHint("Hint1")]
-    public record SimpleRecord {
+    public record Foo {
         [Key]
         public virtual int Id { get; init; }
 
         [PresentationHint("Hint2")]
         public virtual string Name { get; init; }
 
-        public virtual bool Equals(SimpleRecord other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Foo other) => ReferenceEquals(this, other);
         public override string ToString() => Name;
         public override int GetHashCode() => base.GetHashCode();
     }

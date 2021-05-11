@@ -82,8 +82,8 @@ namespace Template.Test.Helpers {
 
         public static string FullName<T>() => typeof(T).FullName;
 
-        public static RestfulObjectsControllerBase Api(ITestCase tc) {
-            var sp = tc.GetConfiguredContainer();
+        public static RestfulObjectsControllerBase GetController(AbstractRestTest tc) {
+            var sp = tc.GetScopeServices();
             var api = sp.GetService<RestfulObjectsController>();
             return SetMockContext(api, sp);
         }

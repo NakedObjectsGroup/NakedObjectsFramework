@@ -5,11 +5,11 @@ using Microsoft.Extensions.Configuration;
 namespace Template.Test.Data {
     public static class DataSetup {
         public static Type[] Functions { get; } = {
-            typeof(SimpleRecordFunctions)
+            typeof(FooFunctions)
         };
 
         public static Type[] Records { get; } = {
-            typeof(SimpleRecord)
+            typeof(Foo)
         };
 
         public static Func<IConfiguration, DbContext>[] ContextInstallers =>

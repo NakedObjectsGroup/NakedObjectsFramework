@@ -18,11 +18,11 @@ using Template.Test.Helpers;
 using Template.Test.TestCase;
 
 namespace Template.Test {
-    public class NUnitTest : NUnitRestTestCase {
+    public class NUnitTest : AbstractRestTest {
         private static void CleanUpDatabase() => ObjectDbContext.Delete();
 
-        protected override void ConfigureServices(IServiceCollection services) {
-            base.ConfigureServices(services);
+        protected static void ConfigureServices(IServiceCollection services) {
+            ConfigureServicesBase(services);
             services.AddControllers()
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddNakedFramework(builder => {
@@ -35,8 +35,8 @@ namespace Template.Test {
             });
         }
 
-        protected override IDictionary<string, string> Configuration() {
-            var config = base.Configuration();
+        private static IDictionary<string, string> Configuration() {
+            var config = ConfigurationBase();
             config["ConnectionStrings:Spike"] = @"Server=(localdb)\MSSQLLocalDB;Initial Catalog=Spike;Integrated Security=True;";
             return config;
         }
@@ -49,44 +49,44 @@ namespace Template.Test {
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
-            InitializeNakedObjectsFramework(this);
+            InitializeNakedFramework(ConfigureServices, Configuration);
         }
 
         [OneTimeTearDown]
         public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
+            CleanupNakedFramework();
             CleanUpDatabase();
         }
 
         [Test]
         public void TestGetObject() {
-            var simpleRecord = this.GetObject(new Key<SimpleRecord>("1"));
+            var simpleRecord = this.GetObject(new Key<Foo>("1"));
 
-            Assert.AreEqual("Simple Record", simpleRecord.GetExtension("friendlyName"));
+            Assert.AreEqual("Foo", simpleRecord.GetExtension("friendlyName"));
             Assert.AreEqual("Fred", simpleRecord.GetTitle());
         }
 
         [Test]
         public void TestInvokeAction() {
-            var resetRecord = this.InvokeAction(new Key<SimpleRecord>("2"), nameof(SimpleRecordFunctions.ResetName));
-            Assert.AreEqual("New Name", resetRecord.GetMember(nameof(SimpleRecord.Name)).GetValue());
+            var resetRecord = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.ResetName));
+            Assert.AreEqual("New Name", resetRecord.GetMember(nameof(Foo.Name)).GetValue());
         }
 
         [Test]
         public void TestInvokeActionWithParameters() {
             var parameters = ActionHelpers.CreateParameters(("name", "Updated Name"));
-            var resetRecord = this.InvokeAction(new Key<SimpleRecord>("2"), nameof(SimpleRecordFunctions.UpdateName), parameters);
-            Assert.AreEqual("Updated Name", resetRecord.GetMember(nameof(SimpleRecord.Name)).GetValue());
+            var resetRecord = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.UpdateName), parameters);
+            Assert.AreEqual("Updated Name", resetRecord.GetMember(nameof(Foo.Name)).GetValue());
         }
 
         [Test]
         public void TestCopyName() {
             // to show multiple server calls
-            var record1 = this.GetObject(new Key<SimpleRecord>("1"));
-            var name = record1.GetMember(nameof(SimpleRecord.Name)).GetValue();
+            var record1 = this.GetObject(new Key<Foo>("1"));
+            var name = record1.GetMember(nameof(Foo.Name)).GetValue();
             var parameters = ActionHelpers.CreateParameters(("name", name));
-            var record2 = this.InvokeAction(new Key<SimpleRecord>("2"), nameof(SimpleRecordFunctions.UpdateName), parameters);
-            Assert.AreEqual(name, record2.GetMember(nameof(SimpleRecord.Name)).GetValue());
+            var record2 = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.UpdateName), parameters);
+            Assert.AreEqual(name, record2.GetMember(nameof(Foo.Name)).GetValue());
         }
     }
 }

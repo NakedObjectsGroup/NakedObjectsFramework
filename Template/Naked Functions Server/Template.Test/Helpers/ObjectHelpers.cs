@@ -5,9 +5,9 @@ using Template.Test.TestCase;
 
 namespace Template.Test.Helpers {
     public static class ObjectHelpers {
-        public static JObject GetObject(this ITestCase tc, Key key) {
+        public static JObject GetObject(this AbstractRestTest tc, Key key) {
             tc.StartServerTransaction();
-            var api = TestHelpers.Api(tc);
+            var api = TestHelpers.GetController(tc);
             var result = api.GetObject(key.Type, key.Id);
             var (json, sc, _) = TestHelpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int) HttpStatusCode.OK, sc);

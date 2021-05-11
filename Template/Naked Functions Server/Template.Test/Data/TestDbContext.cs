@@ -19,12 +19,12 @@ namespace Template.Test.Data {
     public class DatabaseInitializer<T> : DropCreateDatabaseAlways<T> where T : TestDbContext {
         protected override void Seed(T context) {
             // keep names 4 characters
-            var fred = new SimpleRecord {Name = "Fred"};
+            var fred = new Foo {Name = "Fred"};
 
             context.SimpleRecords.Add(fred);
-            context.SimpleRecords.Add(new SimpleRecord {Name = "Bill"});
-            context.SimpleRecords.Add(new SimpleRecord {Name = "Jack"});
-            context.SimpleRecords.Add(new SimpleRecord {Name = "hide it"});
+            context.SimpleRecords.Add(new Foo {Name = "Bill"});
+            context.SimpleRecords.Add(new Foo {Name = "Jack"});
+            context.SimpleRecords.Add(new Foo {Name = "hide it"});
 
             context.SaveChanges();
         }
@@ -33,7 +33,7 @@ namespace Template.Test.Data {
     public abstract class TestDbContext : DbContext {
         protected TestDbContext(string cs) : base(cs) { }
 
-        public DbSet<SimpleRecord> SimpleRecords { get; set; }
+        public DbSet<Foo> SimpleRecords { get; set; }
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
             Database.SetInitializer(new DatabaseInitializer<T>());
