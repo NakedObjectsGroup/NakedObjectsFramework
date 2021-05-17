@@ -28,7 +28,7 @@ namespace Template.RestTest
 
         private static void CleanUpDatabase() => Database.Delete(cs);
 
-        public static readonly string cs = @"Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=Test;Integrated Security=True;MultipleActiveResultSets=True";
+        public static readonly string cs = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=Test;Integrated Security=True;MultipleActiveResultSets=True";
 
         protected static void ConfigureServices(IServiceCollection services) {
             ConfigureServicesBase(services);
@@ -73,7 +73,7 @@ namespace Template.RestTest
         public void TestGetObject()
         {
             var foo = this.GetObject(new Key<Student>("1"));
-            Assert.AreEqual("Template.Model.Types.Student", foo.GetExtension("friendlyName"));
+            Assert.AreEqual("Student", foo.GetExtension("friendlyName"));
             Assert.AreEqual("Alie Algol", foo.GetTitle());
         }
 
