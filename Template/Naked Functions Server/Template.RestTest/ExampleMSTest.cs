@@ -26,10 +26,9 @@ namespace Template.RestTest
     public class ExampleMSTest : AbstractRestTest {
 
 
-        private static void CleanUpDatabase() => Database.Delete(CsObject);
+        private static void CleanUpDatabase() => Database.Delete(cs);
 
-        public static readonly string CsObject = @$"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog={"Spike"};Integrated Security=True;";
-
+        public static readonly string cs = @"Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=Test;Integrated Security=True;MultipleActiveResultSets=True";
 
         protected static void ConfigureServices(IServiceCollection services) {
             ConfigureServicesBase(services);
@@ -49,7 +48,7 @@ namespace Template.RestTest
 
         private static IDictionary<string, string> Configuration() {
             var config = ConfigurationBase();
-            config["ConnectionStrings:Spike"] = @"Server=(localdb)\MSSQLLocalDB;Initial Catalog=Spike;Integrated Security=True;";
+            config["ConnectionStrings:ExampleCS"] = cs;
             return config;
         }
 
