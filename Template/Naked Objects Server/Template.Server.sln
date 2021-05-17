@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Model", "Template.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.RestTest", "Template.RestTest\Template.RestTest.csproj", "{757233C5-033D-40CD-BBDE-9EDB3F4FEC3A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestTestFramework", "..\RestTest (common)\RestTestFramework.csproj", "{6D5841FE-6331-4C68-9CB4-993AF865BCD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestTestFramework", "..\RestTest (common)\RestTestFramework.csproj", "{13C4A947-7720-4949-A930-303CCA745D82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{757233C5-033D-40CD-BBDE-9EDB3F4FEC3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{757233C5-033D-40CD-BBDE-9EDB3F4FEC3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{757233C5-033D-40CD-BBDE-9EDB3F4FEC3A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D5841FE-6331-4C68-9CB4-993AF865BCD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D5841FE-6331-4C68-9CB4-993AF865BCD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D5841FE-6331-4C68-9CB4-993AF865BCD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D5841FE-6331-4C68-9CB4-993AF865BCD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13C4A947-7720-4949-A930-303CCA745D82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13C4A947-7720-4949-A930-303CCA745D82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13C4A947-7720-4949-A930-303CCA745D82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13C4A947-7720-4949-A930-303CCA745D82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
