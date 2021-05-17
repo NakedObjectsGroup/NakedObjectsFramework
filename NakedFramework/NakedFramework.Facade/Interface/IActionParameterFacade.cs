@@ -13,5 +13,6 @@ namespace NakedFramework.Facade.Interface {
         IActionFacade Action { get; }
         bool IsInjected { get; }
         IObjectFacade GetDefault(IObjectFacade objectFacade);
+        IConsentFacade IsUsable();
     }
 }

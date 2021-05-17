@@ -230,6 +230,10 @@ namespace RestfulObjects.Test.Data {
             return new[] {parm3.ToString(CultureInfo.InvariantCulture), parm4};
         }
 
+        public virtual MostSimple AnActionWithDisabledReferenceParameter([Disabled] MostSimple parm2) {
+            return Container.Instances<MostSimple>().Single(x => x.Id == parm2.Id);
+        }
+
         public virtual MostSimple AnActionWithReferenceParameter(MostSimple parm2) {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm2.Id);
         }

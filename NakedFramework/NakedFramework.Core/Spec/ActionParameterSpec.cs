@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -163,7 +164,9 @@ namespace NakedFramework.Core.Spec {
             return InteractionUtils.IsValid(buf);
         }
 
-        public virtual IConsent IsUsable(INakedObjectAdapter target) => Allow.Default;
+        private string GetDisabledMessage() => GetFacet<IDisabledFacet>() is { } df ? df.DisabledReason(null) : null;
+
+        public virtual IConsent IsUsable(INakedObjectAdapter target) => GetConsent(GetDisabledMessage());
 
         public bool IsNullable {
             get {

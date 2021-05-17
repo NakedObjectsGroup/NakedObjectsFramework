@@ -167,6 +167,11 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                 }
             }
 
+            var consent = parameter.IsUsable();
+            if (consent.IsVetoed) {
+                optionals.Add(new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason));
+            }
+
             return optionals.Any()
                 ? CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals)
                 : new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);

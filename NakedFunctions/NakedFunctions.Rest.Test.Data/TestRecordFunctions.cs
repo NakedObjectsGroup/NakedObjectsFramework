@@ -187,6 +187,8 @@ namespace NakedFunctions.Rest.Test.Data {
         public static SimpleRecord WithDisabled2(this SimpleRecord sp, IContext context) => sp;
 
         public static string DisableWithDisabled2(this SimpleRecord sp, IContext context) => "";
+
+        public static string WithDisabledParameter(this SimpleRecord sp, [Disabled] string disabledParameter, IContext context) => "";
     }
 
     public static class HiddenRecordFunctions {
