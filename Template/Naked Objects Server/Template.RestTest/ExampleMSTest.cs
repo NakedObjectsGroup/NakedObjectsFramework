@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
-using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
@@ -75,70 +74,69 @@ namespace Template.RestTest
             CleanUpDatabase();
         }
 
-        /*
         [TestMethod]
         public void TestGetObject()
         {
-            var foo = this.GetObject(new Key<Foo>("1"));
-            Assert.AreEqual("Foo", foo.GetExtension("friendlyName"));
-            Assert.AreEqual("Fred", foo.GetTitle());
+            var foo = this.GetObject(new Key<Student>("1"));
+            Assert.AreEqual("Template.Model.Types.Student", foo.GetExtension("friendlyName"));
+            Assert.AreEqual("Alie Algol", foo.GetTitle());
         }
 
-        [TestMethod]
-        public void TestInvokeAction()
-        {
-            this.InvokeAction(new Key<Foo>("2"), nameof(Foo.ResetName), Methods.Post);
-            var foo = this.GetObject(new Key<Foo>("2"));
-            Assert.AreEqual("New Name", foo.GetMember(nameof(Foo.Name)).GetValue());
-        }
+        //[TestMethod]
+        //public void TestInvokeAction()
+        //{
+        //    this.InvokeAction(new Key<Foo>("2"), nameof(Foo.ResetName), Methods.Post);
+        //    var foo = this.GetObject(new Key<Foo>("2"));
+        //    Assert.AreEqual("New Name", foo.GetMember(nameof(Foo.Name)).GetValue());
+        //}
 
-        [TestMethod]
-        public void TestInvokeActionWithParameters()
-        {
-            var parameters = ActionHelpers.CreateParameters(("name", "Updated Name"));
-            this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
-            var foo = this.GetObject(new Key<Foo>("2"));
-            Assert.AreEqual("Updated Name", foo.GetMember(nameof(Foo.Name)).GetValue());
-        }
+        //[TestMethod]
+        //public void TestInvokeActionWithParameters()
+        //{
+        //    var parameters = ActionHelpers.CreateParameters(("name", "Updated Name"));
+        //    this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
+        //    var foo = this.GetObject(new Key<Foo>("2"));
+        //    Assert.AreEqual("Updated Name", foo.GetMember(nameof(Foo.Name)).GetValue());
+        //}
 
-        [TestMethod]
-        public void TestCopyName()
-        {
-            // to show multiple server calls
-            var foo1 = this.GetObject(new Key<Foo>("1"));
-            var name = foo1.GetMember(nameof(Foo.Name)).GetValue();
-            var parameters = ActionHelpers.CreateParameters(("name", name));
-            this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
-            var foo2 = this.GetObject(new Key<Foo>("2"));
-            Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
-        }
+        //[TestMethod]
+        //public void TestCopyName()
+        //{
+        //    // to show multiple server calls
+        //    var foo1 = this.GetObject(new Key<Foo>("1"));
+        //    var name = foo1.GetMember(nameof(Foo.Name)).GetValue();
+        //    var parameters = ActionHelpers.CreateParameters(("name", name));
+        //    this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateName), parameters, Methods.Post);
+        //    var foo2 = this.GetObject(new Key<Foo>("2"));
+        //    Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
+        //}
 
-        [TestMethod]
-        public void TestGetMenu()
-        {
-            var barMenu = this.GetMenu(nameof(BarService));
-            Assert.AreEqual("Bars", barMenu.GetTitle());
-        }
+        //[TestMethod]
+        //public void TestGetMenu()
+        //{
+        //    var barMenu = this.GetMenu(nameof(BarService));
+        //    Assert.AreEqual("Bars", barMenu.GetTitle());
+        //}
 
-        [TestMethod]
-        public void TestInvokeMenuAction()
-        {
-            var parameters = ActionHelpers.CreateParameters(("id", "1"));
-            var foo = this.InvokeAction(nameof(BarService), nameof(BarService.GetFoo), parameters, Methods.Post);
-            Assert.AreEqual("Fred", foo.GetMember(nameof(Foo.Name)).GetValue());
-        }
+        //[TestMethod]
+        //public void TestInvokeMenuAction()
+        //{
+        //    var parameters = ActionHelpers.CreateParameters(("id", "1"));
+        //    var foo = this.InvokeAction(nameof(BarService), nameof(BarService.GetFoo), parameters, Methods.Post);
+        //    Assert.AreEqual("Fred", foo.GetMember(nameof(Foo.Name)).GetValue());
+        //}
 
-        [TestMethod]
-        public void TestCopyNameFrom()
-        {
-            // to show reference parameter
-            var foo1 = this.GetObject(new Key<Foo>("1"));
-            var name = foo1.GetMember(nameof(Foo.Name)).GetValue();
-            var parameters = ActionHelpers.CreateParameters(("from", foo1));
-            this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateNameFrom), parameters, Methods.Post);
-            var foo2 = this.GetObject(new Key<Foo>("2"));
-            Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
-        }
-        */
+        //[TestMethod]
+        //public void TestCopyNameFrom()
+        //{
+        //    // to show reference parameter
+        //    var foo1 = this.GetObject(new Key<Foo>("1"));
+        //    var name = foo1.GetMember(nameof(Foo.Name)).GetValue();
+        //    var parameters = ActionHelpers.CreateParameters(("from", foo1));
+        //    this.InvokeAction(new Key<Foo>("2"), nameof(Foo.UpdateNameFrom), parameters, Methods.Post);
+        //    var foo2 = this.GetObject(new Key<Foo>("2"));
+        //    Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
+        //}
+ 
     }
 }
