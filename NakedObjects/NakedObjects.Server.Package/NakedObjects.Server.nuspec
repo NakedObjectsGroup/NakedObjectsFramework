@@ -17,11 +17,9 @@
       <group targetFramework="net5.0">
         <dependency id="NakedObjects.ProgrammingModel" version="[12.0.0-beta04, 13)" />
         <dependency id="EntityFramework" version="[6.4.4, 7)" />
-        <dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[5.0.5, 6)" />
-        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[5.0.5, 6)" />
-        <dependency id="Microsoft.Extensions.DependencyInjection" version="[5.0.1, 6)" />
+        <dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[5.0.6, 6)" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[5.0.6, 6)" />
         <dependency id="Microsoft.Extensions.Configuration" version="[5.0.0, 6)" />
-        <dependency id="Microsoft.Extensions.Logging" version="[5.0.0, 6)" />
         <dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.7, 6)" />
         <dependency id="System.Reflection.Emit" version="[4.7.0, 5)" />
         <dependency id="Microsoft.AspNetCore.Http" version="[2.2.2, 3)" />
