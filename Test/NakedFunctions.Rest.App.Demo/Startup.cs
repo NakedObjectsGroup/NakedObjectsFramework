@@ -40,7 +40,7 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = MenuHelper.GenerateMenus(AWModelConfig.MainMenuTypes());
-                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] {AWModelConfig.EFCDbContextInstaller}; });
+                builder.AddEFCorePersistor(options => { options.ContextCreators = new[] {AWModelConfig.EFCDbContextCreator}; });
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = AWModelConfig.FunctionalTypes();
                     options.Functions = AWModelConfig.Functions();

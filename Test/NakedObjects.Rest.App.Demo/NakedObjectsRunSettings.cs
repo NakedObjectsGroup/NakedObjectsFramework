@@ -51,9 +51,9 @@ namespace NakedObjects.Rest.App.Demo {
         }
 
 
-        public static Func<IConfiguration, DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
+        public static Func<IConfiguration, DbContext> DbContextCreator => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
-        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextInstaller => c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
+        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextCreator => c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
 
         /// <summary>
         ///     Return an array of IMenus (obtained via the factory, then configured) to

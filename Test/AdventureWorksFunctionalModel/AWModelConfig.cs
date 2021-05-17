@@ -18,9 +18,9 @@ namespace AW
             typeof(AWModelConfig).Assembly.GetTypes().Where(t => t.IsPublic && (t.IsClass || t.IsInterface || t.IsEnum));
 
 
-        public static Func<IConfiguration, System.Data.Entity.DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
+        public static Func<IConfiguration, System.Data.Entity.DbContext> DbContextCreator => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
-        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCDbContextInstaller => c => {
+        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCDbContextCreator => c => {
             
             var cc = new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
 
