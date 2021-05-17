@@ -5,15 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedFramework;
 
-namespace NakedFunctions {
+namespace NakedObjects {
     /// <summary>
-    ///     Applied to a function, indicating that the primary role of the function is to create a new persistent object of the
-    ///     specified type
-    ///     with the minimum data set, but with the expectation that the user will likely want to immediately then specify
-    ///     further properties (see EditAttribute).
+    ///     Applied to a function, indicating that the function is intended to allow the user to edit the value of one or more
+    ///     properties
+    ///     on the type the function is contributed to.  The function's paramaters (after the first, 'contributee, parameter)
+    ///     must match
+    ///     properties on the contributee type, both in type and name (except for casing).
     /// </summary>
-    public class CreateNewAttribute : AbstractCreateNewAttribute { }
+    public class EditAttribute : AbstractEditAttribute { }
 }

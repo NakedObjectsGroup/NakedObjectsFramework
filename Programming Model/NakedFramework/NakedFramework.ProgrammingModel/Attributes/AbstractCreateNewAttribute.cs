@@ -6,14 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework;
 
-namespace NakedFunctions {
+namespace NakedFramework {
     /// <summary>
     ///     Applied to a function, indicating that the primary role of the function is to create a new persistent object of the
     ///     specified type
     ///     with the minimum data set, but with the expectation that the user will likely want to immediately then specify
     ///     further properties (see EditAttribute).
     /// </summary>
-    public class CreateNewAttribute : AbstractCreateNewAttribute { }
+    [AttributeUsage(AttributeTargets.Method)]
+    public abstract class AbstractCreateNewAttribute : Attribute { }
 }

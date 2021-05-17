@@ -8,7 +8,7 @@
 using System;
 using NakedFramework;
 
-namespace NakedFunctions {
+namespace NakedObjects {
     /// <summary>
     ///     Applied to a function, indicating that the primary role of the function is to create a new persistent object of the
     ///     specified type
