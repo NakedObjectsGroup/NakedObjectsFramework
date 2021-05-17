@@ -16,7 +16,6 @@ using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
 using Newtonsoft.Json;
 using Template.Model;
-using Template.RestTest.Helpers;
 using Template.RestTest.TestCase;
 
 namespace Template.RestTest
@@ -37,7 +36,7 @@ namespace Template.RestTest
 
             services.AddNakedFramework(builder => {
                 builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextInstaller }; });
+                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = ModelConfig.Types();
                     options.Functions = ModelConfig.Functions();

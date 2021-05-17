@@ -11,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
@@ -46,7 +45,7 @@ namespace NakedFunctions.Rest.App.Demo
             services.AddNakedFramework(builder =>
             {
                 builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextInstaller }; });
+                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
                 builder.AddNakedFunctions(options =>
                 {
                     options.FunctionalTypes = ModelConfig.Types();

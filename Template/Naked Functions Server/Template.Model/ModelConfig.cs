@@ -24,7 +24,7 @@ namespace Template.Model
         public static Type[] MainMenus() =>
             Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
 
-        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextInstaller =>
+        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextCreator =>
             c => {
                 var db = new ExampleDbContext(c.GetConnectionString("ExampleCS"));
                 db.Create();
