@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Menu;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;

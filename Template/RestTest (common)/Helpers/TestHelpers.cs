@@ -18,6 +18,7 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 using Template.RestTest.TestCase;
+using ActionContext = Microsoft.AspNetCore.Mvc.ActionContext;
 
 namespace Template.RestTest.Helpers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {

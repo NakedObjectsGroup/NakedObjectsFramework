@@ -25,7 +25,11 @@ namespace Template.Model
             Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
 
         public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextInstaller =>
-            c => new ExampleDbContext(c.GetConnectionString("ExampleCS"));
+            c => {
+                var db = new ExampleDbContext(c.GetConnectionString("ExampleCS"));
+                db.Create();
+                return db;
+            };
 
         #region Helpers
         private static IEnumerable<Type> DomainClasses =>

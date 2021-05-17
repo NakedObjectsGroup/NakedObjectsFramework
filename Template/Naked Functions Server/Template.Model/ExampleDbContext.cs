@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Template.Model.Types;
 
 namespace Template.Model
@@ -15,6 +17,7 @@ namespace Template.Model
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //optionsBuilder.LogTo(l => Debug.WriteLine(l));
             optionsBuilder.UseSqlServer(cs);
             optionsBuilder.UseLazyLoadingProxies();
         }
