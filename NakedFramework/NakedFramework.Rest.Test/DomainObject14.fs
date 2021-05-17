@@ -1460,6 +1460,20 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
 
+    let makeDisabledParm pmid fid rt =               
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Always disabled"))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+
     let makeParmWithFindMenu pmid fid rt =       
         let p = 
             TObjectJson([ TProperty
@@ -1890,6 +1904,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     let p44 = makeParmWithDefaults "parm" "AnActionWithCollectionParameterRef" "Parm" lst mst    
     let p45 = makeIntParmWithRange "parm1" "Parm1" num
     let p46 = makeParmWithFindMenu "parm2" "Parm2" mst
+    let p47 = makeDisabledParm "parm2" "Parm2" mst
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -2015,7 +2030,8 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                       TProperty
                           ("AnActionWithParametersWithChoicesWithDefaults", 
                            TObjectJson(makeObjectActionMember "AnActionWithParametersWithChoicesWithDefaults" oName mst [ p10; p11; p12; p13 ]))
-                      TProperty("AnActionWithReferenceParameter", TObjectJson(makeObjectActionMember "AnActionWithReferenceParameter" oName mst [ p14 ]))                      
+                      TProperty("AnActionWithReferenceParameter", TObjectJson(makeObjectActionMember "AnActionWithReferenceParameter" oName mst [ p14 ]))
+                      TProperty("AnActionWithDisabledReferenceParameter", TObjectJson(makeObjectActionMember "AnActionWithDisabledReferenceParameter" oName mst [ p47 ])) 
                       TProperty("AnActionWithFindMenuParameter", TObjectJson(makeObjectActionMember "AnActionWithFindMenuParameter" oName mst [ p46 ]))                      
                       TProperty
                           ("AnActionWithReferenceParameterWithChoices", 
@@ -2089,6 +2105,19 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
+    let makeDisabledParm pmid fid rt =               
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Always disabled"))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
     let makeParmWithFindMenu pmid fid rt = 
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -2476,6 +2505,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
     let p44 = makeParmWithDefaults "parm" "AnActionWithCollectionParameterRef" "Parm" lst mst
     let p45 = makeIntParmWithRange "parm1" "Parm1" num
     let p46 = makeParmWithFindMenu "parm2" "Parm2" mst
+    let p47 = makeDisabledParm "parm2" "Parm2" mst
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -2612,7 +2642,8 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                       TProperty
                           ("AnActionWithParametersWithChoicesWithDefaults", 
                            TObjectJson(makeObjectActionMemberSimple "AnActionWithParametersWithChoicesWithDefaults" oName mst [ p10; p11; p12; p13 ]))
-                      TProperty("AnActionWithReferenceParameter", TObjectJson(makeObjectActionMemberSimple "AnActionWithReferenceParameter" oName mst [ p14 ]))                      
+                      TProperty("AnActionWithReferenceParameter", TObjectJson(makeObjectActionMemberSimple "AnActionWithReferenceParameter" oName mst [ p14 ])) 
+                      TProperty("AnActionWithDisabledReferenceParameter", TObjectJson(makeObjectActionMemberSimple "AnActionWithDisabledReferenceParameter" oName mst [ p47 ]))
                       TProperty("AnActionWithFindMenuParameter", TObjectJson(makeObjectActionMemberSimple "AnActionWithFindMenuParameter" oName mst [ p46 ]))                      
                       TProperty
                           ("AnActionWithReferenceParameterWithChoices", 

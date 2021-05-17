@@ -70,6 +70,19 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
+        public void TestDisabledAnnotationPickedUpOnParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            var actionMethod = FindMethod(typeof(Customer7), nameof(Customer7.SomeAction), new[] {typeof(string)});
+            metamodel = facetFactory.ProcessParams(Reflector, actionMethod, 0, Specification, metamodel);
+            var facet = Specification.GetFacet(typeof(IDisabledFacet));
+            var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+            Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
+            Assert.IsNotNull(metamodel);
+        }
+
+
+        [TestMethod]
         public void TestDisabledWhenAlwaysAnnotationPickedUpOn() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
@@ -189,6 +202,16 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         #endregion
+
+        #region Nested type: Customer7
+
+        private class Customer7
+        {
+            public void SomeAction([Disabled] string disabledParameter) { }
+        }
+
+        #endregion
+
 
         #region Setup/Teardown
 

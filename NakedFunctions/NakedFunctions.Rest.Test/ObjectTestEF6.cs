@@ -883,6 +883,20 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
+        public void TestGetRecordActionWithDisabledParameter()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<SimpleRecord>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["WithDefaults"]["parameters"]["default1"]["disabledReason"]);
+            Assert.AreEqual("Always disabled", parsedResult["members"]["WithDisabledParameter"]["parameters"]["disabledParameter"]["disabledReason"].ToString());
+        }
+
+
+        [Test]
         public void TestGetRecordActionWithHidden1() {
             var api = Api();
             var result = api.GetObject(FullName<SimpleRecord>(), "1");

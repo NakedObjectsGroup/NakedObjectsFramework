@@ -151,12 +151,13 @@ namespace NakedFramework.Facade.Impl.Impl {
         public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) => WrappedSpec.GetDefaultType(((ObjectFacade) objectFacade)?.WrappedNakedObject) == TypeOfDefaultValue.Explicit;
 
         public IObjectFacade GetDefault(IObjectFacade objectFacade) => ObjectFacade.Wrap(WrappedSpec.GetDefault(((ObjectFacade) objectFacade)?.WrappedNakedObject), FrameworkFacade, framework);
+        public IConsentFacade IsUsable() =>  new ConsentFacade(WrappedSpec.IsUsable(null));
 
         public bool IsInjected => WrappedSpec.IsInjected;
 
         public IFrameworkFacade FrameworkFacade { get; set; }
 
-        public bool IsFindMenuEnabled => WrappedSpec is IOneToOneActionParameterSpec ws && ws.IsFindMenuEnabled;
+        public bool IsFindMenuEnabled => WrappedSpec is IOneToOneActionParameterSpec {IsFindMenuEnabled: true};
 
         public (Regex, string)? RegEx => WrappedSpec.GetRegEx();
 
