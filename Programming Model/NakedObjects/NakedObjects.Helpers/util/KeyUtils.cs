@@ -10,7 +10,6 @@ using System.Linq;
 using System.Reflection;
 using NakedFramework.Error;
 using NakedFramework.Resources;
-using NakedObjects.UtilInternal;
 
 namespace NakedObjects {
     /// <summary>
@@ -22,12 +21,12 @@ namespace NakedObjects {
     public static class KeyUtils {
         
         public static T FindByKey<T>(this IDomainObjectContainer container, object keyValue) {
-            return (T) ((IInternalAccess) container).FindByKeys(typeof(T), new[] {keyValue});
+            return (T) container.FindByKeys(typeof(T), new[] {keyValue});
         }
 
-        public static T FindByKeys<T>(this IDomainObjectContainer container, object[] keys) => (T) ((IInternalAccess) container).FindByKeys(typeof(T), keys);
+        public static T FindByKeys<T>(this IDomainObjectContainer container, object[] keys) => (T) container.FindByKeys(typeof(T), keys);
 
-        public static PropertyInfo[] GetKeys(this IDomainObjectContainer container, Type type) => ((IInternalAccess) container).GetKeys(type).ToArray();
+        public static PropertyInfo[] GetKeys(this IDomainObjectContainer container, Type type) => container.GetKeys(type).ToArray();
 
         public static PropertyInfo GetSingleKey(this IDomainObjectContainer container, Type type) {
             var keyProperties = container.GetKeys(type);
