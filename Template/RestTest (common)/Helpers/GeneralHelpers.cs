@@ -1,12 +1,11 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Rest.API;
 using Newtonsoft.Json.Linq;
-using Template.RestTest.TestCase;
 
-namespace Template.RestTest.Helpers {
+namespace RestTestFramework
+{
     public static class GeneralHelpers {
         public static JObject GetJObject(this JToken jToken) =>
             jToken switch {

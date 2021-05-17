@@ -7,6 +7,7 @@ namespace Template.Model
     //This example service acts as both a 'repository' (with methods for
     //retrieving objects from the database) and as a 'factory' i.e. providing
     //one or more methods for creating new object(s) from scratch.
+    [Named("Students")]
     public class ExampleService
     {
         #region Injected Services
@@ -31,6 +32,13 @@ namespace Template.Model
         {
             //Filters students to find a match
             return AllStudents().Where(c => c.FullName.ToUpper().Contains(name.ToUpper()));
+        }
+
+        [QueryOnly]
+        public Student FindStudentById(int id)
+        {
+            //Filters students to find a match
+            return AllStudents().SingleOrDefault(c => c.Id == id);
         }
     }
 

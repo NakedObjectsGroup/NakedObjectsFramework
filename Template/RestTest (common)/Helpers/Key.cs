@@ -1,4 +1,5 @@
-﻿namespace Template.RestTest.Helpers {
+﻿namespace RestTestFramework
+{
 
     public record Key(string Type, string Id);
 

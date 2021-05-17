@@ -14,9 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Metamodel.SpecImmutable;
-using Template.RestTest.Helpers;
 
-namespace Template.RestTest.TestCase {
+namespace RestTestFramework {
     public abstract class AbstractRestTest {
         protected AbstractRestTest() {
             DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);

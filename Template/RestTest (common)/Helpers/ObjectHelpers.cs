@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using Template.RestTest.Helpers;
-using Template.RestTest.TestCase;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 
-namespace Template.RestTest.Helpers {
+namespace RestTestFramework
+{
     public static class ObjectHelpers {
         public static JObject GetObject(this AbstractRestTest tc, Key key) {
             var api = tc.GetController();
@@ -28,5 +28,8 @@ namespace Template.RestTest.Helpers {
 
         public static string GetDomainType(this JObject jObject) =>
             jObject["domainType"].ToString();
+
+        public static void AssertHasTitle(this JObject jObject, string expected) =>
+            Assert.AreEqual(expected, jObject.GetTitle());
     }
 }

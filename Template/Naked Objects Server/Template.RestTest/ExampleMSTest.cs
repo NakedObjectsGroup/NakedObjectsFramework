@@ -15,9 +15,8 @@ using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
+using RestTestFramework;
 using Template.Model;
-using Template.RestTest.Helpers;
-using Template.RestTest.TestCase;
 
 
 namespace Template.RestTest
@@ -82,6 +81,25 @@ namespace Template.RestTest
             Assert.AreEqual("Alie Algol", foo.GetTitle());
         }
 
+
+        [TestMethod]
+        public void TestGetMenu()
+        {
+            var menu = this.GetMenu(nameof(ExampleService));
+            Assert.AreEqual("Students", menu.GetTitle());
+        }
+
+        [TestMethod]
+        public void TestInvokeMenuAction()
+        {
+            var parameters = ActionHelpers.CreateParameters(("id", "3"));
+            var stu = this.InvokeAction(nameof(ExampleService), nameof(ExampleService.FindStudentById), parameters, Methods.Get);
+            stu.AssertHasTitle("James Java");
+            var fullName = stu.GetMember(nameof(Student.FullName));
+            fullName.AssertHasFieldName("Full Name").AssertHasValue("James Java").AssertIsEditable();
+        }
+
+
         //[TestMethod]
         //public void TestInvokeAction()
         //{
@@ -137,6 +155,6 @@ namespace Template.RestTest
         //    var foo2 = this.GetObject(new Key<Foo>("2"));
         //    Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
         //}
- 
+
     }
 }

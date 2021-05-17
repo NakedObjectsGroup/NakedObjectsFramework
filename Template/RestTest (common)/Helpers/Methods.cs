@@ -1,4 +1,5 @@
-﻿namespace Template.RestTest.Helpers {
+﻿namespace RestTestFramework
+{
     public enum Methods {
         Get,
         Post,

@@ -19,6 +19,9 @@ namespace Template.Model.Functions
         public static IQueryable<Student> FindStudentByName(string name, IContext context) =>
             context.Instances<Student>().Where(c => c.FullName.ToUpper().Contains(name.ToUpper()));
 
+        public static Student FindStudentById(int id, IContext context) =>
+    context.Instances<Student>().FirstOrDefault(c => c.Id == id);
+
     }
 
 }

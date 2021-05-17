@@ -15,10 +15,10 @@ using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
 using Newtonsoft.Json;
+using RestTestFramework;
 using Template.Model;
+using Template.Model.Functions;
 using Template.Model.Types;
-using Template.RestTest.Helpers;
-using Template.RestTest.TestCase;
 
 namespace Template.RestTest
 {
@@ -77,6 +77,28 @@ namespace Template.RestTest
             Assert.AreEqual("Alie Algol", foo.GetTitle());
         }
 
+
+        [TestMethod]
+        public void TestGetMenu()
+        {
+            var menu = this.GetMenu(nameof(Student_MenuFunctions));
+            Assert.AreEqual("Students", menu.GetTitle());
+        }
+
+        [TestMethod]
+        public void TestInvokeMenuAction()
+        {
+            var parameters = ActionHelpers.CreateParameters(("id", "3"));
+            var stu = this.InvokeAction(nameof(Student_MenuFunctions), nameof(Student_MenuFunctions.FindStudentById), parameters, Methods.Get);
+            stu.AssertHasTitle("James Java");
+            var fullName = stu.GetMember(nameof(Student.FullName));
+            fullName.AssertHasFieldName("Full Name").AssertHasValue("James Java").AssertNotEditable();
+        }
+
+
+       // "disabledReason": "Field not editable"
+
+
         //[TestMethod]
         //public void TestInvokeAction() {
         //    var foo = this.InvokeAction(new Key<Foo>("2"), nameof(FooFunctions.ResetName), Methods.Post);
@@ -100,18 +122,6 @@ namespace Template.RestTest
         //    Assert.AreEqual(name, foo2.GetMember(nameof(Foo.Name)).GetValue());
         //}
 
-        //[TestMethod]
-        //public void TestGetMenu() {
-        //    var barMenu = this.GetMenu(nameof(BarMenu));
-        //    Assert.AreEqual(nameof(BarMenu), barMenu.GetTitle());
-        //}
-
-        //[TestMethod]
-        //public void TestInvokeMenuAction() {
-        //    var parameters = ActionHelpers.CreateParameters(("id", "1"));
-        //    var foo = this.InvokeAction(nameof(BarMenu), nameof(BarMenu.GetFoo), parameters, Methods.Post);
-        //    Assert.AreEqual("Fred", foo.GetMember(nameof(Foo.Name)).GetValue());
-        //}
 
         //[TestMethod]
         //public void TestCopyNameFrom()

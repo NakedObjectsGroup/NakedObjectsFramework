@@ -14,6 +14,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\rpaws\.nuget\packages\microsoft.testplatform.testhost\16.9.1\build\netcoreapp2.1\x64\testhost.dll" />
+    <Content Remove="C:\Users\rpaws\.nuget\packages\microsoft.testplatform.testhost\16.9.1\build\netcoreapp2.1\x64\testhost.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\rpaws\.nuget\packages\nunit3testadapter\3.17.0\build\netcoreapp2.1\nunit.engine.api.dll" />
+    <None Remove="C:\Users\rpaws\.nuget\packages\nunit3testadapter\3.17.0\build\netcoreapp2.1\nunit.engine.core.dll" />
+    <None Remove="C:\Users\rpaws\.nuget\packages\nunit3testadapter\3.17.0\build\netcoreapp2.1\nunit.engine.dll" />
+    <None Remove="C:\Users\rpaws\.nuget\packages\nunit3testadapter\3.17.0\build\netcoreapp2.1\NUnit3.TestAdapter.dll" />
+    <None Remove="C:\Users\rpaws\.nuget\packages\nunit3testadapter\3.17.0\build\netcoreapp2.1\NUnit3.TestAdapter.pdb" />
+  </ItemGroup>
+
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
