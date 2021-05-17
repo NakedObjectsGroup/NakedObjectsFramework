@@ -39,7 +39,7 @@ namespace Template.RestTest
             services.AddNakedFramework(builder =>
             {
                 builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextInstaller }; });
+                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
                 builder.AddNakedObjects(options =>
                 {
                     options.Types = ModelConfig.Types();

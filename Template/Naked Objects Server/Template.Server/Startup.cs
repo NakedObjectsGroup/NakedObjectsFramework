@@ -17,9 +17,9 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
-using NakedFramework;
 using NakedFramework.Architecture.Component;
 using Template.Model;
+using NakedFramework.Menu;
 
 namespace NakedObjects.Rest.App.Demo {
     public class Startup {
@@ -48,7 +48,7 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddNakedFramework(builder => {
                 builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
                // builder.AddEF6Persistor(options => { options.ContextInstallers = new[] { ModelConfig. }; });
-                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextInstaller }; });
+                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;
