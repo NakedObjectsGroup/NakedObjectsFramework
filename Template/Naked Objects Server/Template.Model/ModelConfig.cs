@@ -20,7 +20,12 @@ namespace Template.Model
         public static Type[] MainMenus() => new[] { typeof(ExampleService) };
 
 
-        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextInstaller => 
-            c => new ExampleDbContext(c.GetConnectionString("ExampleCS"));
+        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextCreator =>
+            c =>
+            {
+                var db = new ExampleDbContext(c.GetConnectionString("ExampleCS"));
+                db.Create();
+                return db;
+            };
     }
 }

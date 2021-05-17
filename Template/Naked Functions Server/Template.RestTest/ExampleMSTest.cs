@@ -16,6 +16,7 @@ using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
 using Newtonsoft.Json;
 using Template.Model;
+using Template.Model.Types;
 using Template.RestTest.Helpers;
 using Template.RestTest.TestCase;
 
@@ -37,7 +38,7 @@ namespace Template.RestTest
 
             services.AddNakedFramework(builder => {
                 builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextInstaller }; });
+                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = ModelConfig.Types();
                     options.Functions = ModelConfig.Functions();
@@ -69,12 +70,13 @@ namespace Template.RestTest
             CleanUpDatabase();
         }
 
-        //[TestMethod]
-        //public void TestGetObject() {
-        //    var foo = this.GetObject(new Key<Foo>("1"));
-        //    Assert.AreEqual("Foo", foo.GetExtension("friendlyName"));
-        //    Assert.AreEqual("Fred", foo.GetTitle());
-        //}
+        [TestMethod]
+        public void TestGetObject()
+        {
+            var foo = this.GetObject(new Key<Student>("1"));
+            Assert.AreEqual("Template.Model.Types.Student", foo.GetExtension("friendlyName"));
+            Assert.AreEqual("Alie Algol", foo.GetTitle());
+        }
 
         //[TestMethod]
         //public void TestInvokeAction() {
