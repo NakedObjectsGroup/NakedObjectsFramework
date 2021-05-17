@@ -26,7 +26,7 @@ open CodeOnlyTestCode
 type CodeSystemTests() = 
     inherit AcceptanceTestCase()
 
-    override x.ContextInstallers = 
+    override x.ContextCreators = 
         [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new CodeFirstContext(csCS) :> Data.Entity.DbContext) |]
         
 

@@ -34,12 +34,12 @@ namespace NakedObjects.Rest.Test.App {
             }
         }
 
-        public static Func<IConfiguration, System.Data.Entity.DbContext> EF6DbContextInstaller => c => {
+        public static Func<IConfiguration, System.Data.Entity.DbContext> EF6DbContextCreator => c => {
             var cs = c.GetConnectionString("RestTest");
             return cs.Contains("(localdb)") ? new CodeFirstContextLocal(cs) : new CodeFirstContext(cs);
         };
 
-        public static Func<IConfiguration, DbContext> EFCoreDbContextInstaller => c => {
+        public static Func<IConfiguration, DbContext> EFCoreDbContextCreator => c => {
             var cs = c.GetConnectionString("RestTest");
 
             DbContext CreateLocal() {

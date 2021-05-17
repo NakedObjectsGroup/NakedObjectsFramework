@@ -67,7 +67,7 @@ type DomainTests() =
 
         override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ());
         
-        override x.ContextInstallers = 
+        override x.ContextCreators = 
             [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new TestObjectContext(cs) :> Data.Entity.DbContext) |]
 
 

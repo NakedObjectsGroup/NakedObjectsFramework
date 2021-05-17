@@ -25,7 +25,7 @@ type DomainSystemTests() =
 
     override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ())
 
-    override x.ContextInstallers = 
+    override x.ContextCreators = 
         [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext) |]
 
     override x.Services =  [| typeof<SimpleRepository<ScrapReason>> |]

@@ -18,7 +18,7 @@ namespace NakedFramework.Persistor.EF6.Extensions {
         public int MaximumCommitCycles { get; set; } = 10;
         public Func<Type[]> NotPersistedTypes { get; set; } = () => Array.Empty<Type>();
         public bool RollBackOnError { get; set; } = false;
-        public Func<IConfiguration, DbContext>[] ContextInstallers { get; set; }
+        public Func<IConfiguration, DbContext>[] ContextCreators { get; set; }
         public Action<ObjectContext> CustomConfig { get; set; } = oc => { };
         public bool RequireExplicitAssociationOfTypes { get; set; } = false;
     }

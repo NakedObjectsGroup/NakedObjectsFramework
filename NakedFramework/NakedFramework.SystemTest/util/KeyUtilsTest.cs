@@ -12,7 +12,6 @@ using System.Reflection;
 using System.Security.Principal;
 using NakedFramework;
 using NakedFramework.Error;
-using NakedObjects.UtilInternal;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
@@ -80,7 +79,7 @@ namespace NakedObjects.SystemTest.Util {
 
         #region Nested type: TestContainer
 
-        public class TestContainer : IDomainObjectContainer, IInternalAccess {
+        public class TestContainer : IDomainObjectContainer {
             #region IDomainObjectContainer Members
 
             public IQueryable<T> Instances<T>() where T : class {
@@ -97,15 +96,13 @@ namespace NakedObjects.SystemTest.Util {
 
             #endregion
 
-            #region IInternalAccess Members
-
+            
             public PropertyInfo[] GetKeys(Type type) {
                 return type.GetProperties().Where(p => p.GetCustomAttribute<KeyAttribute>() != null).ToArray();
             }
 
             public object FindByKeys(Type type, object[] keys) => throw new NotImplementedException();
 
-            #endregion
 
             #region not impl
 

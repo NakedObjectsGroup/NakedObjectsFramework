@@ -58,7 +58,7 @@ namespace NakedFunctions.Rest.Test {
 
         protected override bool EnforceProxies => false;
 
-        protected override Func<IConfiguration, System.Data.Entity.DbContext>[] ContextInstallers =>
+        protected override Func<IConfiguration, System.Data.Entity.DbContext>[] ContextCreators =>
             new Func<IConfiguration, System.Data.Entity.DbContext>[] { config => new MenuDbContext() };
 
         protected virtual void CleanUpDatabase()

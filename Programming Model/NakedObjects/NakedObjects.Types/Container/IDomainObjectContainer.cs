@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Security.Principal;
 using NakedFramework;
 
@@ -173,5 +174,9 @@ namespace NakedObjects {
         ITitleBuilder NewTitleBuilder(string text);
 
         #endregion
+
+        PropertyInfo[] GetKeys(Type type);
+
+        object FindByKeys(Type type, object[] keys);
     }
 }

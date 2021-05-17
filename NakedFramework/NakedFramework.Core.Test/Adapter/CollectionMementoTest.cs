@@ -101,7 +101,7 @@ namespace NakedObjects.Core.Test.Adapter {
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<TestDomainObject>)};
 
-        protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
+        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
             new Func<IConfiguration, DbContext>[] { config => {
                     var cs = config.GetConnectionString("TestContext");
                     return new TestContext(cs);

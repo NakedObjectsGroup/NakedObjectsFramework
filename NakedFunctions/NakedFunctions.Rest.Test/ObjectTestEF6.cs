@@ -73,7 +73,7 @@ namespace NakedFunctions.Rest.Test {
 
         protected override bool EnforceProxies => false;
 
-        protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
+        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
             new Func<IConfiguration, DbContext>[] {config => new ObjectDbContext()};
 
         protected virtual void CleanUpDatabase()

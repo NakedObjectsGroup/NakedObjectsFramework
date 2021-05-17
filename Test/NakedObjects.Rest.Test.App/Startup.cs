@@ -35,10 +35,10 @@ namespace NakedObjects.Rest.Test.App {
                 builder.MainMenus = null;
                 builder.AddEF6Persistor(options =>
                 {
-                    options.ContextInstallers = new[] { NakedObjectsRunSettings.EF6DbContextInstaller };
+                    options.ContextCreators = new[] { NakedObjectsRunSettings.EF6DbContextCreator };
                 });
                 //builder.AddEFCorePersistor(options => {
-                //    options.ContextInstallers = new[] { NakedObjectsRunSettings.EFCoreDbContextInstaller };
+                //    options.ContextCreators = new[] { NakedObjectsRunSettings.EFCoreDbContextCreator };
                 //});
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;

@@ -14,7 +14,7 @@ using NakedFunctions.Rest.Test.Data;
 
 namespace NakedFunctions.Rest.Test {
     public class ObjectTestEFCore : ObjectTestEF6 {
-        protected new Func<IConfiguration, DbContext>[] ContextInstallers => new Func<IConfiguration, DbContext>[] {
+        protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
             config => {
                 var context = new EFCoreObjectDbContext();
                 context.Create();
@@ -23,7 +23,7 @@ namespace NakedFunctions.Rest.Test {
         };
 
         protected virtual Action<EFCorePersistorOptions> EFCorePersistorOptions =>
-            options => { options.ContextInstallers = ContextInstallers; };
+            options => { options.ContextCreators = ContextCreators; };
 
         protected override Action<NakedCoreOptions> AddPersistor => builder => { builder.AddEFCorePersistor(EFCorePersistorOptions); };
 
