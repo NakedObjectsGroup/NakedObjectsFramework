@@ -83,7 +83,7 @@ type Tests() =
 
         override x.EnforceProxies = false
         
-        override x.ContextInstallers = 
+        override x.ContextCreators = 
             [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new CodeFirstContextLocal(csRTB) :> Data.Entity.DbContext) |]
          
         override x.RegisterTypes(services) =

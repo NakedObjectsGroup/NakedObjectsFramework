@@ -92,7 +92,7 @@ namespace NakedFramework.Test.TestCase {
 
         protected virtual Func<Type[], Type[]> SupportedSystemTypes => t => t;
 
-        protected virtual Func<IConfiguration, DbContext>[] ContextInstallers => null;
+        protected virtual Func<IConfiguration, DbContext>[] ContextCreators => null;
 
         protected virtual IAuthorizationConfiguration AuthorizationConfiguration => null;
 
@@ -104,7 +104,7 @@ namespace NakedFramework.Test.TestCase {
 
         protected virtual Action<EF6PersistorOptions> PersistorOptions =>
             options => {
-                options.ContextInstallers = ContextInstallers;
+                options.ContextCreators = ContextCreators;
                 options.EnforceProxies = EnforceProxies;
             };
 

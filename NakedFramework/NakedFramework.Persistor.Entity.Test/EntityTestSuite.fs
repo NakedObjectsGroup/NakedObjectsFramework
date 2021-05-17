@@ -130,7 +130,7 @@ type EntityTestSuite() =
 
     override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ());
 
-    override x.ContextInstallers = 
+    override x.ContextCreators = 
         [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new TestDataContext(csTDCO) :> Data.Entity.DbContext) |]
 
     override x.Services = [| typeof<SimpleRepository<Person>>; 

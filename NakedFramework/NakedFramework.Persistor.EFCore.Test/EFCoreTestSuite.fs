@@ -36,12 +36,12 @@ type EFCoreTestSuite() =
 
     override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ())
 
-    member x.ContextInstallers = [|Func<IConfiguration, DbContext> (fun (c) -> 
+    member x.ContextCreators = [|Func<IConfiguration, DbContext> (fun (c) -> 
                let context = new EFCoreTestDataContext(csTDCO)
                context.Create()
                (context :> DbContext))|]
      
-    member x.EFCorePersistorOptions = Action<EFCorePersistorOptions> (fun  (options) -> options.ContextInstallers <- x.ContextInstallers)
+    member x.EFCorePersistorOptions = Action<EFCorePersistorOptions> (fun  (options) -> options.ContextCreators <- x.ContextCreators)
 
     override x.AddPersistor = Action<NakedCoreOptions> (fun (builder) -> builder.AddEFCorePersistor(x.EFCorePersistorOptions))
 

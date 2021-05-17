@@ -22,11 +22,11 @@ type EFCoreModelSystemTests() =
 
     override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ())
 
-    member x.ContextInstallers =[| Func<IConfiguration, DbContext> (fun (c) -> 
+    member x.ContextCreators =[| Func<IConfiguration, DbContext> (fun (c) -> 
                   let context = new EFCoreSimpleDatabaseDbContext(NakedObjects.TestTypes.csMF)
                   context.Create()
                   (context :> DbContext))|]
         
-    member x.EFCorePersistorOptions = Action<EFCorePersistorOptions> (fun  (options) -> options.ContextInstallers <- x.ContextInstallers)
+    member x.EFCorePersistorOptions = Action<EFCorePersistorOptions> (fun  (options) -> options.ContextCreators <- x.ContextCreators)
 
 

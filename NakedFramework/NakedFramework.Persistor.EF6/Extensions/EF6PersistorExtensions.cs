@@ -32,7 +32,7 @@ namespace NakedFramework.Persistor.EF6.Extensions {
                 RequireExplicitAssociationOfTypes = options.RequireExplicitAssociationOfTypes
             };
 
-            var contexts = options.ContextInstallers.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(f => () => f(configuration));
+            var contexts = options.ContextCreators.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(f => () => f(configuration));
             contexts.ForEach(c => config.UsingContext(c));
             return config;
         }

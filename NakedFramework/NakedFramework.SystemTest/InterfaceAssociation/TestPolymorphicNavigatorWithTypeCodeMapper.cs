@@ -21,7 +21,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
 
         protected override bool EnforceProxies => false;
 
-        protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
+        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
             new Func<IConfiguration, DbContext>[] { config => new PolymorphicNavigationContext(DatabaseName) };
 
 

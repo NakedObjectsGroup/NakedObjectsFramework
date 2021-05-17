@@ -28,7 +28,7 @@ type ModelSystemTests() =
 
     override x.EnforceProxies = false
 
-    override x.ContextInstallers = 
+    override x.ContextCreators = 
         [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext) |]
 
 

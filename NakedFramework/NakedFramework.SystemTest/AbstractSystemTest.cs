@@ -37,7 +37,7 @@ namespace NakedObjects.SystemTest {
 
         protected override Action<NakedCoreOptions> AddNakedFunctions => builder => { };
 
-        protected override Func<IConfiguration, DbContext>[] ContextInstallers => 
+        protected override Func<IConfiguration, DbContext>[] ContextCreators => 
             new Func<IConfiguration, DbContext>[] { config => Activator.CreateInstance<TContext>() };
 
         /// <summary>
