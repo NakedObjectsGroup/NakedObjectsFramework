@@ -1074,7 +1074,6 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual("Fred", parsedResult["parameters"]["simpleRecord"]["default"]["title"].ToString());
             Assert.AreEqual("Jane", parsedResult["parameters"]["name"]["default"].ToString());
-            Assert.IsNull(parsedResult["parameters"]["another"]["default"]);
         }
 
         [Test]

@@ -266,7 +266,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public static class EditRecordFunctions {
         [Edit]
-        public static IContext EditFunction(this EditRecord er, SimpleRecord simpleRecord, string name, string another, IContext context) => context;
+        public static IContext EditFunction(this EditRecord er, SimpleRecord simpleRecord, string name, IContext context) => context;
     }
 
     public static class DeleteRecordFunctions {
