@@ -8,9 +8,8 @@
 using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Metamodel.Facet;
 
-namespace NakedFunctions.Reflector.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class EditPropertiesFacet : FacetAbstract, IEditPropertiesFacet {
         public EditPropertiesFacet(ISpecification holder, string[] properties) : base(Type, holder) => Properties = properties;

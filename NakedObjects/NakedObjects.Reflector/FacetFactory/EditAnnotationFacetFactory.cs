@@ -19,40 +19,29 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedFunctions.Reflector.Facet;
-using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class EditAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+namespace NakedObjects.Reflector.FacetFactory {
+    public sealed class EditAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         private readonly ILogger<EditAnnotationFacetFactory> logger;
 
         public EditAnnotationFacetFactory(IFacetFactoryOrder<EditAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters) =>
             logger = loggerFactory.CreateLogger<EditAnnotationFacetFactory>();
 
-        private static bool IsContext(Type t) => t.IsAssignableTo(typeof(IContext));
-
-        private static bool ReturnsContext(MethodInfo method) => IsContext(method.ReturnType) || FacetUtils.IsTuple(method.ReturnType);
-
         private static bool Matches(ParameterInfo pri, PropertyInfo ppi) =>
             string.Equals(pri.Name, ppi.Name, StringComparison.CurrentCultureIgnoreCase) &&
             pri.ParameterType == ppi.PropertyType;
 
         private static IDictionary<ParameterInfo, PropertyInfo> MatchParmsAndProperties(MethodInfo method) {
-            var allParms = method.GetParameters();
-            var toMatchParms = allParms.Where(p => !p.IsInjectedParameter() && !p.IsTargetParameter()).ToArray();
+            var toMatchParms = method.GetParameters();
 
             if (toMatchParms.Any()) {
-                var firstParm = allParms.First();
+                var allProperties = method.ReturnType.GetProperties();
 
-                if (firstParm.IsTargetParameter()) {
-                    var allProperties = firstParm.ParameterType.GetProperties();
+                var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
+                var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
 
-                    var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
-                    var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
-
-                    return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
-                }
+                return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
             }
 
             return new Dictionary<ParameterInfo, PropertyInfo>();
@@ -70,13 +59,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             void AddFacet(IDictionary<ParameterInfo, PropertyInfo> matches) => FacetUtils.AddFacet(new EditPropertiesFacet(specification, matches.Values.Select(p => p.Name).ToArray()));
 
             return Process(method, AddFacet, metamodel);
         }
 
-        private static bool IsEditMethod(MethodInfo method) => method.IsDefined(typeof(EditAttribute), false) && ReturnsContext(method);
+        private static bool IsEditMethod(MethodInfo method) => method.IsDefined(typeof(EditAttribute), false) && method.DeclaringType == method.ReturnType;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             void AddFacet(IDictionary<ParameterInfo, PropertyInfo> matches) {

@@ -11,9 +11,8 @@ using System.Linq;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.Facet;
 
-namespace NakedFunctions.Reflector.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
         private readonly List<ITypeSpecImmutable> objectContributees = new();

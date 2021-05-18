@@ -10,9 +10,8 @@ using System.Linq;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Metamodel.Facet;
 
-namespace NakedFunctions.Reflector.Facet {
+namespace NakedFramework.Metamodel.Facet {
     [Serializable]
     public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
         private readonly Type toCreate;

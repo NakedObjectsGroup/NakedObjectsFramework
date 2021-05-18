@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
@@ -19,28 +18,29 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class CreateNewAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+namespace NakedObjects.Reflector.FacetFactory {
+    public sealed class CreateNewAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<CreateNewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
-        private static bool IsCollectionOrNull(Type type) =>
-            type is null ||
+        private static bool IsCollectionOrVoid(Type type) =>
+            type == typeof(void) ||
             CollectionUtils.IsGenericEnumerable(type) ||
             type.IsArray ||
             CollectionUtils.IsCollectionButNotArray(type);
 
         private static Type ToCreateType(MethodInfo method) {
-            var returnType = FacetUtils.IsTuple(method.ReturnType) ? method.ReturnType.GetGenericArguments().First() : null;
-            return IsCollectionOrNull(returnType) ? null : returnType;
+            var returnType = method.ReturnType;
+            return IsCollectionOrVoid(returnType) ? null : returnType;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (method.IsDefined(typeof(CreateNewAttribute), false)) {
                 var toCreateType = ToCreateType(method);
 
                 if (toCreateType is not null) {
                     FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
+                    methodRemover.RemoveMethod(method);
                 }
             }
 

@@ -19,10 +19,9 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class DisplayAsPropertyAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+namespace NakedObjects.Reflector.FacetFactory {
+    public sealed class DisplayAsPropertyAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         private readonly ILogger<DisplayAsPropertyAnnotationFacetFactory> logger;
 
         public DisplayAsPropertyAnnotationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
@@ -33,7 +32,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static Type GetContributeeType(MethodInfo member) => IsContributedToObject(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // all functions are contributed to first parameter or if menu, itself
 
             if (method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null) {
@@ -44,11 +43,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
                 displayAsPropertyFacet.AddContributee(type);
 
-                FacetUtils.AddFacets(new IFacet[] {
-                    displayAsPropertyFacet,
-                    new PropertyAccessorFacetViaFunction(method, specification),
-                    new MandatoryFacetDefault(specification)
-                });
+                //FacetUtils.AddFacets(new IFacet[] {
+                //    displayAsPropertyFacet,
+                //    new PropertyAccessorFacetViaMethod(method, specification),
+                //    new MandatoryFacetDefault(specification)
+                //});
             }
 
             return metamodel;
