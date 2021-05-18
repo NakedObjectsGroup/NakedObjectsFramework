@@ -2012,7 +2012,6 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                     "an action for testing" [ p35; p36 ]))                      
                       TProperty
                           ("AnActionValidateParameters", 
-                           
                            TObjectJson
                                (makeActionMemberNumber "objects" "AnActionValidateParameters" oName "An Action Validate Parameters" "" "int" [ p37; p38 ]))                      
                       TProperty
@@ -2059,7 +2058,9 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                       TProperty("AnError", TObjectJson(makeActionMemberNumber "objects" "AnError" oName "An Error" "" "int" []))
                       TProperty("AnErrorCollection", TObjectJson(makeObjectActionCollectionMemberNoParms "AnErrorCollection" oName mst))
                       TProperty("AnErrorQuery", TObjectJson(makeObjectActionCollectionMemberNoParms "AnErrorQuery" oName mst))
+                      TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMember "AnActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [] ))
                       TProperty("AzContributedAction", TObjectJson(makeObjectActionMemberNoParms "AzContributedAction" oName mst))
+                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberNoParms "AzContributedActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") ))
                       TProperty("AzContributedActionOnBaseClass", TObjectJson(makeObjectActionMemberNoParms "AzContributedActionOnBaseClass" oName mst))
                       TProperty("AzContributedActionWithRefParm", TObjectJson(makeObjectActionMember "AzContributedActionWithRefParm" oName mst [ p23 ]))
                       TProperty("AzContributedActionWithValueParm", TObjectJson(makeObjectActionMember "AzContributedActionWithValueParm" oName mst [ p24 ])) ]))
@@ -2674,7 +2675,9 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                       TProperty("AnError", TObjectJson(makeActionMemberNumberSimple "objects" "AnError" oName "An Error" "" "int" []))
                       TProperty("AnErrorCollection", TObjectJson(makeObjectActionCollectionMemberNoParmsSimple "AnErrorCollection" oName mst))
                       TProperty("AnErrorQuery", TObjectJson(makeObjectActionCollectionMemberNoParmsSimple "AnErrorQuery" oName mst))
+                      TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberSimple "AnActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [] ))
                       TProperty("AzContributedAction", TObjectJson(makeObjectActionMemberNoParmsSimple "AzContributedAction" oName mst))
+                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberNoParms "AzContributedActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") ))
                       TProperty("AzContributedActionOnBaseClass", TObjectJson(makeObjectActionMemberNoParmsSimple "AzContributedActionOnBaseClass" oName mst))
                       TProperty("AzContributedActionWithRefParm", TObjectJson(makeObjectActionMemberSimple "AzContributedActionWithRefParm" oName mst [ p23 ]))                      
                       TProperty

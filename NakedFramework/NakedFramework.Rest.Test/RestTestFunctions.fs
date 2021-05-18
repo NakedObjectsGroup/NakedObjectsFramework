@@ -374,7 +374,9 @@ let internal makeStringParm pmid fid rt =
 let internal p1 ms = makeListParm "acollection" "Acollection" ms
 let internal p2 ms = makeListParm "acollection" "Acollection" ms
 let internal p3 = makeStringParm "p1" "P1" (ttc "string")
-    
+ 
+let wvProperties = "A String Value,A Date Time Value,A Time Span Value,A Choices Value,A Conditional Choices Value,A Disabled Value,A User Disabled Value,A User Hidden Value,A Value,Id"
+   
 let internal makeActionMember oType  mName (oName : string) fName desc rType parms  =
         let order = if desc = "" then 0 else 1 
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
@@ -385,6 +387,7 @@ let internal makeActionMember oType  mName (oName : string) fName desc rType par
         let hParms = Seq.length parms > 0    
         let presHint = mName = "AnAction"
         let multiLine = mName = "AnActionReturnsNull"
+        let createNew = mName.Contains "ActionWithCreateNewAnnotation"
 
         let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                         TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -395,6 +398,8 @@ let internal makeActionMember oType  mName (oName : string) fName desc rType par
         let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6")) :: extArray else extArray
 
         let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
+
+        let extArray = if createNew then TProperty(JsonPropertyNames.CustomCreateNew, TObjectVal(wvProperties)) :: extArray else extArray
 
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
@@ -414,6 +419,7 @@ let internal makeActionMemberSimple oType  mName (oName : string) fName desc rTy
         let hParms = Seq.length parms > 0     
         let presHint = mName = "AnAction"
         let multiLine = mName = "AnActionReturnsNull"
+        let createNew = mName.Contains "ActionWithCreateNewAnnotation"
 
         let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                         TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -424,6 +430,8 @@ let internal makeActionMemberSimple oType  mName (oName : string) fName desc rTy
         let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6")) :: extArray else extArray
 
         let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
+
+        let extArray = if createNew then TProperty(JsonPropertyNames.CustomCreateNew, TObjectVal(wvProperties)) :: extArray else extArray
 
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );

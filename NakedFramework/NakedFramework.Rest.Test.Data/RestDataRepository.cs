@@ -37,6 +37,11 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
         }
 
+        [CreateNew]
+        public WithValue AzContributedActionWithCreateNewAnnotation([ContributedAction] WithActionObject withAction) {
+            return new WithValue();
+        }
+
         public MostSimplePersist CreateTransientMostSimple() => Container.NewTransientInstance<MostSimplePersist>();
 
         public WithValuePersist CreateTransientWithValue() {

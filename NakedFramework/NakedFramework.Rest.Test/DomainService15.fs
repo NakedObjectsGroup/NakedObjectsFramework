@@ -75,6 +75,7 @@ let GetService(api : RestfulObjectsControllerBase) =
                       TProperty("AzContributedActionWithRefParm", TObjectJson(makeServiceActionMember "AzContributedActionWithRefParm" sName mst [ p3; p4 ]))                      
                       TProperty
                           ("AzContributedActionWithValueParm", TObjectJson(makeServiceActionMember "AzContributedActionWithValueParm" sName mst [ p5; p6 ]))
+                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMember "AzContributedActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [ p1 ]))
                       TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParms "CreateTransientMostSimple" sName mstp))                      
                       TProperty
                           ("CreateTransientWithValue", 
@@ -234,6 +235,7 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
                       TProperty
                           ("AzContributedActionWithValueParm", 
                            TObjectJson(makeServiceActionMemberSimple "AzContributedActionWithValueParm" sName mst [ p5; p6 ]))
+                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMemberSimple "AzContributedActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [ p1 ]))
                       TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParmsSimple "CreateTransientMostSimple" sName mstp))                      
                       TProperty
                           ("CreateTransientWithValue", 
@@ -322,6 +324,7 @@ let GetServiceWithMediaType(api : RestfulObjectsControllerBase) =
                       TProperty("AzContributedActionWithRefParm", TObjectJson(makeServiceActionMember "AzContributedActionWithRefParm" sName mst [ p3; p4 ]))                      
                       TProperty
                           ("AzContributedActionWithValueParm", TObjectJson(makeServiceActionMember "AzContributedActionWithValueParm" sName mst [ p5; p6 ]))
+                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMember "AzContributedActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [ p1 ]))
                       TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParms "CreateTransientMostSimple" sName mstp))                      
                       TProperty
                           ("CreateTransientWithValue", 
@@ -988,6 +991,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                   TProperty
                                       ("AnActionWithValueParameterWithDefault", 
                                        TObjectJson(makeServiceActionMember "AnActionWithValueParameterWithDefault" sName mst [ p22 ]))
+                                  TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMember "AnActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [] ))
                                   TProperty("AnError", TObjectJson(makeActionMemberNumber "services" "AnError" sName "An Error" "" "int" []))
                                   TProperty("AnErrorCollection", TObjectJson(makeServiceActionCollectionMemberNoParms "AnErrorCollection" sName mst))
                                   TProperty("AnErrorQuery", TObjectJson(makeServiceActionCollectionMemberNoParms "AnErrorQuery" sName mst)) ]))

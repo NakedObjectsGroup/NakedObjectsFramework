@@ -60,6 +60,7 @@ namespace NakedObjects.Reflector.Reflect {
                 typeof(ContributedActionAnnotationFacetFactory),
                 typeof(FinderActionFacetFactory),
                 typeof(FindMenuFacetFactory),
+                typeof(CreateNewAnnotationFacetFactory),
                 // must come after any facets that install titles
                 typeof(MaskAnnotationFacetFactory),
                 // must come after any facets that install titles, and after mask

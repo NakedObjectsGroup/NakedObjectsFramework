@@ -335,5 +335,10 @@ namespace RestfulObjects.Test.Data {
         public MostSimple[] Default0AnActionWithCollectionParameterRef() {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
         }
+
+        [CreateNew]
+        public WithValue AnActionWithCreateNewAnnotation() {
+            return new WithValue();
+        }
     }
 }

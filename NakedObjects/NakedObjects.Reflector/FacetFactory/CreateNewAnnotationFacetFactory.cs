@@ -40,7 +40,6 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 if (toCreateType is not null) {
                     FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
-                    methodRemover.RemoveMethod(method);
                 }
             }
 
