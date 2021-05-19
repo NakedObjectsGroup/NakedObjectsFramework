@@ -17,12 +17,8 @@ namespace NakedFramework.Metamodel.Facet {
     public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
         private readonly List<ITypeSpecImmutable> objectContributees = new();
 
-        public DisplayAsPropertyFacet(ISpecification holder, bool isContributedToObject) : base(typeof(IDisplayAsPropertyFacet), holder) =>
-            IsContributedToObject = isContributedToObject;
-
+        public DisplayAsPropertyFacet(ISpecification holder) : base(typeof(IDisplayAsPropertyFacet), holder) { }
         public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
-        public bool IsContributedToObject { get; }
-
         public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
     }
 }

@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             // all functions are contributed to first parameter or if menu, itself
 
             if (method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null) {
-                var displayAsPropertyFacet = new DisplayAsPropertyFacet(specification, IsContributedToObject(method));
+                var displayAsPropertyFacet = new DisplayAsPropertyFacet(specification);
 
                 ITypeSpecImmutable type;
                 (type, metamodel) = reflector.LoadSpecification(GetContributeeType(method), metamodel);

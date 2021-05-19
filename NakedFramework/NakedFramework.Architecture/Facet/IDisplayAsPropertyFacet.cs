@@ -9,8 +9,6 @@ using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Facet {
     public interface IDisplayAsPropertyFacet : IFacet {
-        bool IsContributedToObject { get; }
-
         bool IsContributedTo(ITypeSpecImmutable spec);
     }
 }
