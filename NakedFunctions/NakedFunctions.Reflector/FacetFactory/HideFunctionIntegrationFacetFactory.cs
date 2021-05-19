@@ -93,7 +93,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             if (unMatchedHides.Any()) {
                 var actions = unMatchedHides.Select(GetAddAction);
                 void Action(IMetamodelBuilder m) => actions.ForEach(a => a(m));
-                FactoryUtils.AddIntegrationFacet(specification, Action);
+                FacetUtils.AddIntegrationFacet(specification, Action);
             }
 
             return metamodel;

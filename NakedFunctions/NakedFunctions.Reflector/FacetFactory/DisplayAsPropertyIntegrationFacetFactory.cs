@@ -66,7 +66,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!FactoryUtils.IsStatic(type)) {
                 var action = GetAddAction(type);
-                FactoryUtils.AddIntegrationFacet(specification, action);
+                FacetUtils.AddIntegrationFacet(specification, action);
             }
 
             return metamodel;

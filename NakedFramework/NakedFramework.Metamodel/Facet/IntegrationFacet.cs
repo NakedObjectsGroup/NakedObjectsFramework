@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -7,22 +7,22 @@
 
 using System;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet {
-    public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
-        protected AbstractIntegrationFacet(ISpecification holder) : base(Type, holder) { }
+    public class IntegrationFacet : AbstractIntegrationFacet {
+        private Action<IMetamodelBuilder> toExecute;
+        public IntegrationFacet(ISpecification holder, Action<IMetamodelBuilder> toExecute) : base(holder) => this.toExecute = toExecute;
 
-        private static Type Type => typeof(IIntegrationFacet);
+        public override void Execute(IMetamodelBuilder metamodelBuilder) => toExecute(metamodelBuilder);
 
-        public abstract void Execute(IMetamodelBuilder metamodelBuilder);
-        public abstract void AddAction(Action<IMetamodelBuilder> action);
+        public override void AddAction(Action<IMetamodelBuilder> action) {
+            var oldToExecute = toExecute;
 
-        public void Remove() {
-            if (Specification is ISpecificationBuilder builder) {
-                builder.RemoveFacet(this);
-            }
+            toExecute = mb => {
+                oldToExecute(mb);
+                action(mb);
+            };
         }
     }
 }

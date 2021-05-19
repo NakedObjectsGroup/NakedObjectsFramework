@@ -17,6 +17,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.Utils {
     public static class FacetUtils {
@@ -129,6 +130,21 @@ namespace NakedFramework.Metamodel.Utils {
                 IMenuActionImmutable menu => menu.Action.OwnerSpec,
                 _ => null
             };
+        }
+
+        public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action)
+        {
+            var integrationFacet = specification.GetFacet<IIntegrationFacet>();
+
+            if (integrationFacet is null)
+            {
+                integrationFacet = new IntegrationFacet(specification, action);
+                FacetUtils.AddFacet(integrationFacet);
+            }
+            else
+            {
+                integrationFacet.AddAction(action);
+            }
         }
     }
 }

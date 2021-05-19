@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
+using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Facet;
 
@@ -48,18 +49,6 @@ namespace NakedFunctions.Reflector.Utils {
             }
             catch (InvalidCastException) {
                 throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.Name}");
-            }
-        }
-
-        public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action) {
-            var integrationFacet = specification.GetFacet<IIntegrationFacet>();
-
-            if (integrationFacet is null) {
-                integrationFacet = new IntegrationFacet(specification, action);
-                FacetUtils.AddFacet(integrationFacet);
-            }
-            else {
-                integrationFacet.AddAction(action);
             }
         }
 
