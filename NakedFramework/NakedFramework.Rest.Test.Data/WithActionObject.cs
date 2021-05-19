@@ -28,5 +28,7 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 
+        [Edit]
+        public WithActionObject AnActionWithEditAnnotation(int id) => new() { Id = id };
     }
 }

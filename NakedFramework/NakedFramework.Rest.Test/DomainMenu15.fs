@@ -627,9 +627,9 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeIntParmWithDefault pmid fid rt =                
+    let makeIntParmWithDefault pmid fid rt dv =                
         let p = 
-            TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(4))
+            TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(dv))
                           
                           TProperty
                               (JsonPropertyNames.Links, 
@@ -768,7 +768,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
     let p18 = makeParmWithAC "parm1" "AnActionWithReferenceParametersWithAutoComplete" "Parm1" mst
     let p20 = makeIntParm "parm1" "Parm1" num
     let p21 = makeIntParmWithChoices "parm3" "Parm3" num
-    let p22 = makeIntParmWithDefault "parm5" "Parm5" num
+    let p22 = makeIntParmWithDefault "parm5" "Parm5" num 4
     let p25 = makeIntParm "parm1" "Parm1" num
     let p26 = makeParm "parm2" "Parm2" mst
     let p27 = makeIntParmWithHint "parm1" "Parm1" num

@@ -388,6 +388,7 @@ let internal makeActionMember oType  mName (oName : string) fName desc rType par
         let presHint = mName = "AnAction"
         let multiLine = mName = "AnActionReturnsNull"
         let createNew = mName.Contains "ActionWithCreateNewAnnotation"
+        let edit = mName.Contains "ActionWithEditAnnotation"
 
         let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                         TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -400,6 +401,8 @@ let internal makeActionMember oType  mName (oName : string) fName desc rType par
         let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
 
         let extArray = if createNew then TProperty(JsonPropertyNames.CustomCreateNew, TObjectVal(wvProperties)) :: extArray else extArray
+
+        let extArray = if edit then TProperty(JsonPropertyNames.CustomEditProperties, TObjectVal("Id")) :: extArray else extArray
 
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
@@ -420,6 +423,7 @@ let internal makeActionMemberSimple oType  mName (oName : string) fName desc rTy
         let presHint = mName = "AnAction"
         let multiLine = mName = "AnActionReturnsNull"
         let createNew = mName.Contains "ActionWithCreateNewAnnotation"
+        let edit = mName.Contains "ActionWithEditAnnotation"
 
         let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                         TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -432,6 +436,8 @@ let internal makeActionMemberSimple oType  mName (oName : string) fName desc rTy
         let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
 
         let extArray = if createNew then TProperty(JsonPropertyNames.CustomCreateNew, TObjectVal(wvProperties)) :: extArray else extArray
+
+        let extArray = if edit then TProperty(JsonPropertyNames.CustomEditProperties, TObjectVal("Id")) :: extArray else extArray
 
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );

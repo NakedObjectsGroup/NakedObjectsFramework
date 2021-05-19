@@ -1757,9 +1757,9 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeIntParmWithDefault pmid fid rt =             
+    let makeIntParmWithDefault pmid fid rt dv =             
         let p = 
-            TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(4))                          
+            TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(dv))                          
                           TProperty
                               (JsonPropertyNames.Links, 
                                TArray([  ]))
@@ -1879,7 +1879,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     let p19 = makeValueParm "parm" "Parm" str
     let p20 = makeIntParm "parm1" "Parm1" num
     let p21 = makeIntParmWithChoices "parm3" "Parm3" num
-    let p22 = makeIntParmWithDefault "parm5" "Parm5" num
+    let p22 = makeIntParmWithDefault "parm5" "Parm5" num 4
     let p23 = makeParm "withOtherAction" "With Other Action" (ttc "RestfulObjects.Test.Data.WithActionObject")
     let p24 = makeValueParm "parm" "Parm" str
     let p25 = makeIntParm "parm1" "Parm1" num
@@ -1905,6 +1905,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     let p45 = makeIntParmWithRange "parm1" "Parm1" num
     let p46 = makeParmWithFindMenu "parm2" "Parm2" mst
     let p47 = makeDisabledParm "parm2" "Parm2" mst
+    let p48 = makeIntParmWithDefault "id" "Id" num 1
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -2059,6 +2060,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                       TProperty("AnErrorCollection", TObjectJson(makeObjectActionCollectionMemberNoParms "AnErrorCollection" oName mst))
                       TProperty("AnErrorQuery", TObjectJson(makeObjectActionCollectionMemberNoParms "AnErrorQuery" oName mst))
                       TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMember "AnActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [] ))
+                      TProperty("AnActionWithEditAnnotation", TObjectJson(makeObjectActionMember "AnActionWithEditAnnotation" oName (ttc "RestfulObjects.Test.Data.WithActionObject") [p48] ))
                       TProperty("AzContributedAction", TObjectJson(makeObjectActionMemberNoParms "AzContributedAction" oName mst))
                       TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberNoParms "AzContributedActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") ))
                       TProperty("AzContributedActionOnBaseClass", TObjectJson(makeObjectActionMemberNoParms "AzContributedActionOnBaseClass" oName mst))
@@ -2370,9 +2372,9 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeIntParmWithDefault pmid fid rt = 
+    let makeIntParmWithDefault pmid fid rt dv = 
         let p = 
-            TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(4))
+            TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(dv))
                           TProperty(JsonPropertyNames.Links, TArray([]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
@@ -2481,7 +2483,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
     let p19 = makeValueParm "parm" "Parm" str
     let p20 = makeIntParm "parm1" "Parm1" num
     let p21 = makeIntParmWithChoices "parm3" "Parm3" num
-    let p22 = makeIntParmWithDefault "parm5" "Parm5" num
+    let p22 = makeIntParmWithDefault "parm5" "Parm5" num 4
     let p23 = makeParm "withOtherAction" "With Other Action" (ttc "RestfulObjects.Test.Data.WithActionObject")
     let p24 = makeValueParm "parm" "Parm" str
     let p25 = makeIntParm "parm1" "Parm1" num
@@ -2507,6 +2509,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
     let p45 = makeIntParmWithRange "parm1" "Parm1" num
     let p46 = makeParmWithFindMenu "parm2" "Parm2" mst
     let p47 = makeDisabledParm "parm2" "Parm2" mst
+    let p48 = makeIntParmWithDefault "id" "Id" num 1
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -2676,6 +2679,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                       TProperty("AnErrorCollection", TObjectJson(makeObjectActionCollectionMemberNoParmsSimple "AnErrorCollection" oName mst))
                       TProperty("AnErrorQuery", TObjectJson(makeObjectActionCollectionMemberNoParmsSimple "AnErrorQuery" oName mst))
                       TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberSimple "AnActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [] ))
+                      TProperty("AnActionWithEditAnnotation", TObjectJson(makeObjectActionMemberSimple "AnActionWithEditAnnotation" oName (ttc "RestfulObjects.Test.Data.WithActionObject") [p48] ))
                       TProperty("AzContributedAction", TObjectJson(makeObjectActionMemberNoParmsSimple "AzContributedAction" oName mst))
                       TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberNoParms "AzContributedActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") ))
                       TProperty("AzContributedActionOnBaseClass", TObjectJson(makeObjectActionMemberNoParmsSimple "AzContributedActionOnBaseClass" oName mst))
