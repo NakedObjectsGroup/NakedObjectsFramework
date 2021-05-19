@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
+using NakedObjects.Reflector.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
@@ -28,18 +29,25 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
-        //[TestMethod]
-        //public void TestDisplayAsPropertyAnnotationPickedUpOnAction() {
-        //    IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        [TestMethod]
+        public void TestDisplayAsPropertyAnnotationPickedUpOnAction()
+        {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        //    var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest));
-        //    metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-        //    var facet = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
-        //    Assert.IsNotNull(facet);
-        //    Assert.IsTrue(facet is DisplayAsPropertyFacet);
-        //    AssertNoMethodsRemoved();
-        //    Assert.IsNotNull(metamodel);
-        //}
+            var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest));
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+            var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
+            var facet2 = Specification.GetFacet(typeof(IPropertyAccessorFacet));
+            var facet3 = Specification.GetFacet(typeof(IMandatoryFacet));
+            Assert.IsNotNull(facet1);
+            Assert.IsNotNull(facet2);
+            Assert.IsNotNull(facet3);
+            Assert.IsTrue(facet1 is DisplayAsPropertyFacet);
+            Assert.IsTrue(facet2 is PropertyAccessorFacetViaMethod);
+            Assert.IsTrue(facet3 is MandatoryFacetDefault);
+            AssertMethodRemoved(actionMethod);
+            Assert.IsNotNull(metamodel);
+        }
 
 
         [TestMethod]

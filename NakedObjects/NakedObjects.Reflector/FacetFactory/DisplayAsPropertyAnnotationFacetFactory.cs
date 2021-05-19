@@ -5,47 +5,36 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
+using NakedObjects.Reflector.Facet;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class DisplayAsPropertyAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private readonly ILogger<DisplayAsPropertyAnnotationFacetFactory> logger;
-
         public DisplayAsPropertyAnnotationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Actions) =>
-            logger = loggerFactory.CreateLogger<DisplayAsPropertyAnnotationFacetFactory>();
-
-        private static bool IsContributedToObject(MethodInfo member) => member.IsDefined(typeof(ExtensionAttribute), false);
-
-        private static Type GetContributeeType(MethodInfo member) => IsContributedToObject(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
+            loggerFactory.CreateLogger<DisplayAsPropertyAnnotationFacetFactory>();
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            // all functions are contributed to first parameter or if menu, itself
+            
+            if (method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null && !method.GetParameters().Any()) {
+                FacetUtils.AddFacets(new IFacet[] {
+                    new DisplayAsPropertyFacet(specification),
+                    new PropertyAccessorFacetViaMethod(method, specification, LoggerFactory.CreateLogger<PropertyAccessorFacetViaMethod>()),
+                    new MandatoryFacetDefault(specification)
+                });
 
-            if (method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null) {
-                var displayAsPropertyFacet = new DisplayAsPropertyFacet(specification);
-
-                ITypeSpecImmutable type;
-                (type, metamodel) = reflector.LoadSpecification(GetContributeeType(method), metamodel);
-
-                displayAsPropertyFacet.AddContributee(type);
-
-                //FacetUtils.AddFacets(new IFacet[] {
-                //    displayAsPropertyFacet,
-                //    new PropertyAccessorFacetViaMethod(method, specification),
-                //    new MandatoryFacetDefault(specification)
-                //});
+                methodRemover.RemoveMethod(method);
             }
 
             return metamodel;

@@ -19,7 +19,8 @@ namespace NakedObjects.Reflector.Facet {
     public sealed class PersistingCallbackFacetViaMethod : PersistingCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        [field: NonSerialized] private Action<object> persistingDelegate;
+        [field: NonSerialized] 
+        private Action<object> persistingDelegate;
 
         public PersistingCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
