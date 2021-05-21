@@ -32,5 +32,6 @@ namespace NakedFramework.Architecture.SpecImmutable {
         void AddSubclass(ITypeSpecImmutable subclass);
         void AddContributedFunctions(IList<IActionSpecImmutable> result);
         void AddContributedFields(IList<IAssociationSpecImmutable> addedToFields);
+        void RemoveAction(IActionSpecImmutable action);
     }
 }

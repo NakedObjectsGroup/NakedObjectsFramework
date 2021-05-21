@@ -22,7 +22,7 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public static IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) => new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
 
-        public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, bool isRecognized) {
+        private static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, bool isRecognized) {
             lock (SpecCache) {
                 if (!SpecCache.ContainsKey(type)) {
                     SpecCache.Add(type, new ObjectSpecImmutable(type, isRecognized));
@@ -32,7 +32,7 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             }
         }
 
-        public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, bool isRecognized) {
+        private static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, bool isRecognized) {
             lock (SpecCache) {
                 if (!SpecCache.ContainsKey(type)) {
                     SpecCache.Add(type, new ServiceSpecImmutable(type, isRecognized));
@@ -44,12 +44,12 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService, bool isRecognized) =>
             isService
-                ? (ITypeSpecBuilder) CreateServiceSpecImmutable(type, isRecognized)
+                ? CreateServiceSpecImmutable(type, isRecognized)
                 : CreateObjectSpecImmutable(type, isRecognized);
 
         public static IAssociationSpecImmutable CreateSpecAdapter(IActionSpecImmutable actionSpecImmutable) =>
             actionSpecImmutable.ReturnSpec.IsCollection
-                ? (IAssociationSpecImmutable) new ActionToCollectionSpecAdapter(actionSpecImmutable)
+                ? new ActionToCollectionSpecAdapter(actionSpecImmutable)
                 : new ActionToAssociationSpecAdapter(actionSpecImmutable);
 
         public static void ClearCache() {

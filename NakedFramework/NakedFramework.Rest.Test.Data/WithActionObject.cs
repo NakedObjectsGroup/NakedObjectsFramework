@@ -30,5 +30,10 @@ namespace RestfulObjects.Test.Data {
 
         [Edit]
         public WithActionObject AnActionWithEditAnnotation(int id) => new() { Id = id };
+
+        [DisplayAsProperty]
+        public MostSimple AnObjectActionWithDisplayAsPropertyAnnotation() {
+            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        }
     }
 }

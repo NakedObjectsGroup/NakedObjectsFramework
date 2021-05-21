@@ -38,6 +38,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                     var orderedFields = typeSpecBuilder.Fields.Append(adaptedMember).OrderBy(f => f, new MemberOrderComparator<IAssociationSpecImmutable>()).ToList();
                     FacetUtils.ErrorOnDuplicates(orderedFields.Select(a => new FacetUtils.ActionHolder(a)).ToList());
                     typeSpecBuilder.AddContributedFields(orderedFields);
+                    typeSpecBuilder.RemoveAction(actionSpec);
                 }
 
                 FacetUtils.AddIntegrationFacet(typeSpecBuilder, Action);

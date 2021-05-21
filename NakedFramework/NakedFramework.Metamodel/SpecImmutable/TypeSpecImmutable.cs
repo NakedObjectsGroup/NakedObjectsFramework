@@ -66,6 +66,13 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public void AddFinderActions(IList<IActionSpecImmutable> finderActions) => FinderActions = finderActions.ToImmutableList();
 
+        public void RemoveAction(IActionSpecImmutable action) {
+            if (ObjectActions.Contains(action)) {
+                ObjectActions = ObjectActions.Except(new[] {action}).ToImmutableList();
+            }
+        }
+
+
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
             Fields.ForEach(decorator.DecorateAllHoldersFacets);
