@@ -9,18 +9,28 @@ namespace NakedFramework.Rest.Configuration {
     public interface IRestfulObjectsConfiguration {
         public bool DebugWarnings { get; set; }
 
-        // to make whole application 'read only' 
+        /// <summary>
+        /// Set to true to limit availability of resources accessed via the HTTP Get method 
+        /// i.e. to 'read only' functionality.
+        /// </summary>
         public bool IsReadOnly { get; set; }
 
-        // to change cache settings (transactional, user, non-expiring) where 0 = no-cache
-        // 0, 3600, 86400 are the defaults 
-        // no caching makes debugging easier
+        /// <summary>
+        /// Permits cache settings  to be changed.
+        /// Default values are: 0, 3600, 86400, for: transactional, user, non-expiring caches.
+        /// </summary>
         public (int, int, int) CacheSettings { get; set; }
 
-        // make Accept header handling non-strict (RO spec 2.4.4)
+        /// <summary>
+        /// Permits strict enforcement of Accept headers to be switched off - typically during
+        /// early stages of development only.
+        /// </summary>
         public bool AcceptHeaderStrict { get; set; }
 
-        // to change the size limit on returned collections. The default value is 20.  Specifying 0 means 'unlimited'.
+        /// <summary>
+        /// Permits the default page size (20) for returned queryables to be overridden.
+        /// Specifying 0 means 'unlimited'.
+        /// </summary>
         public int DefaultPageSize { get; set; }
 
         // These flags control Member Representations - if true the 'details' will be included 

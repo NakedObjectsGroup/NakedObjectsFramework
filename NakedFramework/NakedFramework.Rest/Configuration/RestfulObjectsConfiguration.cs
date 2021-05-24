@@ -8,9 +8,29 @@
 namespace NakedFramework.Rest.Configuration {
     public class RestfulObjectsConfiguration : IRestfulObjectsConfiguration {
         public bool DebugWarnings { get; set; }
+
+        /// <summary>
+        /// Set to true to limit availability of resources accessed via the HTTP Get method 
+        /// i.e. to 'read only' functionality.
+        /// </summary>
         public bool IsReadOnly { get; set; }
+
+        /// <summary>
+        /// Permits cache settings  to be changed.
+        /// Default values are: 0, 3600, 86400, for: transactional, user, non-expiring caches.
+        /// </summary>
         public (int, int, int) CacheSettings { get; set; }
+
+        /// <summary>
+        /// Permits strict enforcement of Accept headers to be switched off - typically during
+        /// early stages of development only.
+        /// </summary>
         public bool AcceptHeaderStrict { get; set; }
+
+        /// <summary>
+        /// Permits the default page size (20) for returned queryables to be overridden.
+        /// Specifying 0 means 'unlimited'.
+        /// </summary>
         public int DefaultPageSize { get; set; }
         public bool InlineDetailsInActionMemberRepresentations { get; set; }
         public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
