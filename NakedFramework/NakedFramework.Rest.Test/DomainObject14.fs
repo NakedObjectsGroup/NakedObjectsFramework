@@ -1448,8 +1448,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     let args = 
         TProperty
             (JsonPropertyNames.Arguments,
-            TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))])) 
-                          TProperty("AnObjectActionWithDisplayAsPropertyAnnotation", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))]))]))
+            TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))]))]))
     
     let mp r n = sprintf ";%s=\"%s\"" r n
     
@@ -1912,11 +1911,11 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     let p47 = makeDisabledParm "parm2" "Parm2" mst
     let p48 = makeIntParmWithDefault "id" "Id" num 1
  
-    let valueRel1 = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Property "AnObjectActionWithDisplayAsPropertyAnnotation"
-    let val1 = 
+    let valueRel1 pName  = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Property pName
+    let val1 pName = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-             :: makeGetLinkProp valueRel1 (sprintf "objects/%s/%s" mst (oid)) RepresentationTypes.Object mst)
+             :: makeGetLinkProp (valueRel1 pName) (sprintf "objects/%s/%s" mst (oid)) RepresentationTypes.Object mst)
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -1930,7 +1929,16 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
               (JsonPropertyNames.Members,                
                TObjectJson
                    ([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oName "Id" (TObjectVal(1))))
-                      TProperty("AnObjectActionWithDisplayAsPropertyAnnotation", TObjectJson(makePropertyMemberShort "objects" "AnObjectActionWithDisplayAsPropertyAnnotation" oName "An Object Action With Display As Property Annotation" "" mst false val1 []))
+                      TProperty
+                          ("AzContributedDisplayAsPropertyAction", 
+                           TObjectJson
+                                (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+                                 :: (makePropertyMemberShort "objects" "AzContributedDisplayAsPropertyAction" oName "Az Contributed Display As Property Action" "" mst false (val1 "AzContributedDisplayAsPropertyAction") [])))
+                      TProperty
+                          ("AnObjectActionWithDisplayAsPropertyAnnotation", 
+                           TObjectJson
+                                (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+                                 :: (makePropertyMemberShort "objects" "AnObjectActionWithDisplayAsPropertyAnnotation" oName "An Object Action With Display As Property Annotation" "" mst false (val1 "AnObjectActionWithDisplayAsPropertyAnnotation") [])))
                       TProperty
                           ("ADisabledAction",                            
                            TObjectJson
@@ -2110,8 +2118,8 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
     let args = 
         TProperty
             (JsonPropertyNames.Arguments,
-            TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))])) 
-                          TProperty("AnObjectActionWithDisplayAsPropertyAnnotation", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))]))]))
+            TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))]))]))
+
     let mp r n = sprintf ";%s=\"%s\"" r n
     
     let makeParm pmid fid rt = 
@@ -2527,11 +2535,11 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
     let p47 = makeDisabledParm "parm2" "Parm2" mst
     let p48 = makeIntParmWithDefault "id" "Id" num 1
 
-    let valueRel1 = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Property "AnObjectActionWithDisplayAsPropertyAnnotation"
-    let val1 = 
-          TObjectJson
-              (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-               :: makeGetLinkProp valueRel1 (sprintf "objects/%s/%s" mst (oid)) RepresentationTypes.Object mst)
+    let valueRel1 pName  = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Property pName
+    let val1 pName = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
+             :: makeGetLinkProp (valueRel1 pName) (sprintf "objects/%s/%s" mst (oid)) RepresentationTypes.Object mst)
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -2545,7 +2553,16 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
               (JsonPropertyNames.Members,                
                TObjectJson
                    ([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oName "Id" "" "int" false (TObjectVal(1))))
-                      TProperty("AnObjectActionWithDisplayAsPropertyAnnotation", TObjectJson(makePropertyMemberShort "objects" "AnObjectActionWithDisplayAsPropertyAnnotation" oName "An Object Action With Display As Property Annotation" "" mst false val1 []))
+                      TProperty
+                          ("AzContributedDisplayAsPropertyAction", 
+                           TObjectJson
+                                (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+                                 :: (makePropertyMemberShort "objects" "AzContributedDisplayAsPropertyAction" oName "Az Contributed Display As Property Action" "" mst false (val1 "AzContributedDisplayAsPropertyAction" ) [])))
+                      TProperty
+                          ("AnObjectActionWithDisplayAsPropertyAnnotation", 
+                           TObjectJson
+                                (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+                                 :: (makePropertyMemberShort "objects" "AnObjectActionWithDisplayAsPropertyAnnotation" oName "An Object Action With Display As Property Annotation" "" mst false (val1 "AnObjectActionWithDisplayAsPropertyAnnotation" ) [])))
                       TProperty
                           ("ADisabledAction",                            
                            TObjectJson

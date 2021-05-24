@@ -674,7 +674,7 @@ let internal makePropertyMemberShort oType (mName : string) (oName : string) fNa
       let order = if desc = "" then 0 else 2  
       let conditionalChoices = mName.Contains("ConditionalChoices")
       let choices = mName.Contains("Choices") && (not conditionalChoices)
-      let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not ( oTypeName.Contains("Form") || oTypeName.Contains("Edit")    )))      
+      let disabled = mName.Contains("Disabled") || mName.Contains("DisplayAsProperty") || (oTypeName.Contains("ViewModel") && (not ( oTypeName.Contains("Form") || oTypeName.Contains("Edit")    )))      
       let autocomplete = mName.Contains("AutoComplete")
       let findmenu = mName.Contains("FindMenu")
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName 

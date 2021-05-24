@@ -42,6 +42,11 @@ namespace RestfulObjects.Test.Data {
             return new WithValue();
         }
 
+        [DisplayAsProperty]
+        public MostSimple AzContributedDisplayAsPropertyAction([ContributedAction] WithActionObject withAction) {
+            return Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
+        }
+
         public MostSimplePersist CreateTransientMostSimple() => Container.NewTransientInstance<MostSimplePersist>();
 
         public WithValuePersist CreateTransientWithValue() {

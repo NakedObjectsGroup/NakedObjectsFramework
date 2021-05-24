@@ -39,15 +39,35 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
             var facet2 = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             var facet3 = Specification.GetFacet(typeof(IMandatoryFacet));
-            Assert.IsNotNull(facet1);
-            Assert.IsNotNull(facet2);
-            Assert.IsNotNull(facet3);
+            var facet4 = Specification.GetFacet(typeof(IDisabledFacet));
+        
             Assert.IsTrue(facet1 is DisplayAsPropertyFacet);
             Assert.IsTrue(facet2 is PropertyAccessorFacetViaMethod);
             Assert.IsTrue(facet3 is MandatoryFacetDefault);
+            Assert.IsTrue(facet4 is DisabledFacetAlways);
             AssertMethodRemoved(actionMethod);
             Assert.IsNotNull(metamodel);
         }
+
+        [TestMethod]
+        public void TestDisplayAsPropertyAnnotationPickedUpOnServiceAction()
+        {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            var actionMethod = FindMethod(typeof(CustomerService), nameof(Customer.DisplayAsPropertyTest), new[] {typeof(Customer)});
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+            var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
+            var facet2 = Specification.GetFacet(typeof(IPropertyAccessorFacet));
+            var facet3 = Specification.GetFacet(typeof(IMandatoryFacet));
+            var facet4 = Specification.GetFacet(typeof(IDisabledFacet));
+            Assert.IsTrue(facet1 is DisplayAsPropertyFacet);
+            Assert.IsTrue(facet2 is PropertyAccessorFacetViaContributedAction);
+            Assert.IsTrue(facet3 is MandatoryFacetDefault);
+            Assert.IsTrue(facet4 is DisabledFacetAlways);
+            AssertMethodRemoved(actionMethod);
+            Assert.IsNotNull(metamodel);
+        }
+
 
 
         [TestMethod]
@@ -68,7 +88,14 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public Customer DisplayAsPropertyTest() => this;
         }
 
-        
+
+        private class CustomerService
+        {
+            [DisplayAsProperty]
+            public Customer DisplayAsPropertyTest([ContributedAction]Customer customer ) => customer;
+        }
+
+
         #endregion
 
 

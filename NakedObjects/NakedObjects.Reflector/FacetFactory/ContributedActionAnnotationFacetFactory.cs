@@ -42,10 +42,17 @@ namespace NakedObjects.Reflector.FacetFactory {
                 IsCollection(type.BaseType) ||
                 type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static bool IsContributedAction(MethodInfo member) {
             var allParams = member.GetParameters();
             var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();
-            if (!paramsWithAttribute.Any()) {
+            return paramsWithAttribute.Any();
+        }
+
+        private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var allParams = member.GetParameters();
+            var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() is not null).ToArray();
+            var isDisplayAsProperty = member.IsDefined(typeof(DisplayAsPropertyAttribute), false);
+            if (isDisplayAsProperty || !paramsWithAttribute.Any()) {
                 return metamodel; //Nothing to do
             }
 
