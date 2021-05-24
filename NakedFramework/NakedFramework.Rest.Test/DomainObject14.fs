@@ -1912,10 +1912,17 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     let p48 = makeIntParmWithDefault "id" "Id" num 1
  
     let valueRel1 pName  = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Property pName
+    let valueRel2 pName  = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Collection pName
+    
     let val1 pName = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
              :: makeGetLinkProp (valueRel1 pName) (sprintf "objects/%s/%s" mst (oid)) RepresentationTypes.Object mst)
+
+    let val2 pName = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
+             :: makeGetLinkProp (valueRel2 pName) (sprintf "objects/%s/%s" mst (oid)) RepresentationTypes.Object mst)
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -1939,6 +1946,14 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                            TObjectJson
                                 (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
                                  :: (makePropertyMemberShort "objects" "AnObjectActionWithDisplayAsPropertyAnnotation" oName "An Object Action With Display As Property Annotation" "" mst false (val1 "AnObjectActionWithDisplayAsPropertyAnnotation") [])))
+                      TProperty
+                          ("AzContributedDisplayAsPropertyAction1", 
+                           TObjectJson
+                                (makeCollectionMember "AzContributedDisplayAsPropertyAction1" oName "Az Contributed Display As Property Action1" "" "list" 1 (TArray([(val2 "AzContributedDisplayAsPropertyAction1")]))))
+                      TProperty
+                          ("AnObjectActionWithDisplayAsPropertyAnnotation1", 
+                           TObjectJson
+                                (makeCollectionMember  "AnObjectActionWithDisplayAsPropertyAnnotation1" oName "An Object Action With Display As Property Annotation1" "" "list" 1 (TArray([(val2 "AnObjectActionWithDisplayAsPropertyAnnotation1")]))))
                       TProperty
                           ("ADisabledAction",                            
                            TObjectJson
@@ -2536,10 +2551,17 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
     let p48 = makeIntParmWithDefault "id" "Id" num 1
 
     let valueRel1 pName  = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Property pName
+    let valueRel2 pName  = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Collection pName
+    
     let val1 pName = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
              :: makeGetLinkProp (valueRel1 pName) (sprintf "objects/%s/%s" mst (oid)) RepresentationTypes.Object mst)
+
+    let val2 pName = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
+             :: makeGetLinkProp (valueRel2 pName) (sprintf "objects/%s/%s" mst (oid)) RepresentationTypes.Object mst)
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -2563,6 +2585,15 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                            TObjectJson
                                 (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
                                  :: (makePropertyMemberShort "objects" "AnObjectActionWithDisplayAsPropertyAnnotation" oName "An Object Action With Display As Property Annotation" "" mst false (val1 "AnObjectActionWithDisplayAsPropertyAnnotation" ) [])))
+                      TProperty
+                          ("AzContributedDisplayAsPropertyAction1", 
+                           TObjectJson
+                                (makeCollectionMember "AzContributedDisplayAsPropertyAction1" oName "Az Contributed Display As Property Action1" "" "list" 1 (TArray([(val2 "AzContributedDisplayAsPropertyAction1")]))))
+                      TProperty
+                          ("AnObjectActionWithDisplayAsPropertyAnnotation1", 
+                           TObjectJson
+                                (makeCollectionMember  "AnObjectActionWithDisplayAsPropertyAnnotation1" oName "An Object Action With Display As Property Annotation1" "" "list" 1 (TArray([(val2 "AnObjectActionWithDisplayAsPropertyAnnotation1")]))))
+
                       TProperty
                           ("ADisabledAction",                            
                            TObjectJson

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,22 +19,17 @@ namespace RestfulObjects.Test.Data {
         [DefaultValue(0)]
         public virtual int Id { get; set; }
 
-        public virtual MostSimple AnOverloadedAction()
-        {
-            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
-        }
+        public virtual MostSimple AnOverloadedAction() => Container.Instances<MostSimple>().Single(x => x.Id == 1);
 
-        public virtual MostSimple AnOverloadedAction(string parm)
-        {
-            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
-        }
+        public virtual MostSimple AnOverloadedAction(string parm) => Container.Instances<MostSimple>().Single(x => x.Id == 1);
 
         [Edit]
-        public WithActionObject AnActionWithEditAnnotation(int id) => new() { Id = id };
+        public WithActionObject AnActionWithEditAnnotation(int id) => new() {Id = id};
 
         [DisplayAsProperty]
-        public MostSimple AnObjectActionWithDisplayAsPropertyAnnotation() {
-            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
-        }
+        public MostSimple AnObjectActionWithDisplayAsPropertyAnnotation() => Container.Instances<MostSimple>().Single(x => x.Id == 1);
+
+        [DisplayAsProperty]
+        public IList<MostSimple> AnObjectActionWithDisplayAsPropertyAnnotation1() => Container.Instances<MostSimple>().Take(1).ToList();
     }
 }
