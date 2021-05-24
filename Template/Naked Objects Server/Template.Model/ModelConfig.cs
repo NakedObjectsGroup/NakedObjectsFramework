@@ -12,10 +12,10 @@ namespace Template.Model
     //specify the lists of types, functions, and menus explicitly.
     public static class ModelConfig
     {
-        public static Type[] Types() => new[] { typeof(Student) };
+        public static Type[] DomainModelTypes() => new[] { typeof(Student) };
 
 
-        public static Type[] Services() => new[] { typeof(ExampleService) };
+        public static Type[] DomainModelServices() => new[] { typeof(ExampleService) };
 
         public static Type[] MainMenus() => new[] { typeof(ExampleService) };
 
