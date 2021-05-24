@@ -19,10 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Server", "Template
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Model", "Template.Model\Template.Model.csproj", "{49E75CC4-C254-40CB-8FED-5F8AB9BB708D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.RestTest", "Template.RestTest\Template.RestTest.csproj", "{665C0810-F4E8-4335-AC10-054353515C32}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestTestFramework", "..\RestTest (common)\RestTestFramework.csproj", "{FBF06D76-83EC-4510-86B9-363960849BDD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,14 +33,6 @@ Global
 		{49E75CC4-C254-40CB-8FED-5F8AB9BB708D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49E75CC4-C254-40CB-8FED-5F8AB9BB708D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49E75CC4-C254-40CB-8FED-5F8AB9BB708D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{665C0810-F4E8-4335-AC10-054353515C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{665C0810-F4E8-4335-AC10-054353515C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{665C0810-F4E8-4335-AC10-054353515C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{665C0810-F4E8-4335-AC10-054353515C32}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FBF06D76-83EC-4510-86B9-363960849BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBF06D76-83EC-4510-86B9-363960849BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBF06D76-83EC-4510-86B9-363960849BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBF06D76-83EC-4510-86B9-363960849BDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

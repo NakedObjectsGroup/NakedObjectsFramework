@@ -58,8 +58,8 @@ namespace NakedObjects.Rest.App.Demo {
                     options.InlineDetailsInPropertyMemberRepresentations = false;
                 });
                 builder.AddNakedObjects(options => {
-                    options.Types = ModelConfig.Types();
-                    options.Services = ModelConfig.Services();
+                    options.Types = ModelConfig.DomainModelTypes();
+                    options.Services = ModelConfig.DomainModelServices();
                 });
             });
             services.AddCors(options => {
