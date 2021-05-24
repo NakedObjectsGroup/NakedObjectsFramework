@@ -58,11 +58,15 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         private static bool IsContributedMethod(MethodInfo method) => method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null
                                                                       && method.GetParameters().Length == 1
-                                                                      && method.GetParameters().First().GetCustomAttribute<ContributedActionAttribute>() is not null;
+                                                                      && method.GetParameters().First().GetCustomAttribute<ContributedActionAttribute>() is not null
+                                                                      && !FasterTypeUtils.IsGenericCollection(method.GetParameters().First().ParameterType);
+
+        private static bool MatchesPropertySignature(MethodInfo method) =>
+            method.ReturnType != typeof(void) && (method.ReturnType.IsClass || method.ReturnType.IsInterface || FasterTypeUtils.IsGenericCollection(method.ReturnType));
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             
-            if (IsObjectMethod(method) || IsContributedMethod(method)) {
+            if ((IsObjectMethod(method) || IsContributedMethod(method)) && MatchesPropertySignature(method)) {
                 Type displayOnType;
                 IPropertyAccessorFacet accessorFacet;
 

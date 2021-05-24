@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
@@ -50,6 +51,55 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
+        public void TestDisplayAsPropertyAnnotationIgnoredOnVoidAction()
+        {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+            var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest1));
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+            var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
+            Assert.IsNull(facet1);
+            AssertMethodNotRemoved(actionMethod);
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
+        public void TestDisplayAsPropertyAnnotationIgnoredOnIntAction()
+        {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+            var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest3));
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+            var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
+            Assert.IsNull(facet1);
+            AssertMethodNotRemoved(actionMethod);
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
+        public void TestDisplayAsPropertyAnnotationIgnoredOnWithParmsAction()
+        {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+            var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest2), new Type[]{typeof(int)});
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+            var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
+            Assert.IsNull(facet1);
+            AssertMethodNotRemoved(actionMethod);
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
+        public void TestDisplayAsPropertyAnnotationIgnoredOnCollectionContributedAction()
+        {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+            var actionMethod = FindMethod(typeof(CustomerService), nameof(CustomerService.DisplayAsPropertyTest1), new [] {  typeof(IQueryable<Customer>)});
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+            var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
+            Assert.IsNull(facet1);
+            AssertMethodNotRemoved(actionMethod);
+            Assert.IsNotNull(metamodel);
+        }
+
+
+        [TestMethod]
         public void TestDisplayAsPropertyAnnotationPickedUpOnServiceAction()
         {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
@@ -86,6 +136,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer {
             [DisplayAsProperty]
             public Customer DisplayAsPropertyTest() => this;
+
+            [DisplayAsProperty]
+            public void DisplayAsPropertyTest1() { }
+
+            [DisplayAsProperty]
+            public Customer DisplayAsPropertyTest2(int parm) => this;
+
+            [DisplayAsProperty]
+            public int DisplayAsPropertyTest3() => 0;
         }
 
 
@@ -93,6 +152,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         {
             [DisplayAsProperty]
             public Customer DisplayAsPropertyTest([ContributedAction]Customer customer ) => customer;
+
+            [DisplayAsProperty]
+            public Customer DisplayAsPropertyTest1([ContributedAction] IQueryable<Customer> customer) => customer.First();
         }
 
 
