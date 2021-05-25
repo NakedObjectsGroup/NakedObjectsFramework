@@ -175,7 +175,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 MenuPath = "",
                 Target = propertyContext.Target.WrappedAdapter(),
                 Action = a,
-                VisibleParameters = FilterCCAParms(a, "")
+                VisibleParameters = FilterCCAParms(a)
             }.ToActionContextFacade(this, Framework)).ToArray();
 
         #endregion
@@ -792,10 +792,10 @@ namespace NakedFramework.Facade.Impl.Impl {
             return Framework.NakedObjectManager.GetAdapterFor(obj);
         }
 
-        private ParameterContext[] FilterParms(IActionSpec action, ITypeSpec targetSpec, string uid) =>
+        private ParameterContext[] FilterParms(IActionSpec action, ITypeSpec targetSpec) =>
             action.IsStaticFunction
-                ? FilterParmsForFunctions(action, uid)
-                : FilterParmsForContributedActions(action, targetSpec, uid);
+                ? FilterParmsForFunctions(action)
+                : FilterParmsForContributedActions(action, targetSpec);
 
         private static ParameterContextFacade[] FilterMenuParms(IMenuActionFacade actionFacade) {
             var parms = actionFacade.Action.Parameters;
@@ -815,18 +815,17 @@ namespace NakedFramework.Facade.Impl.Impl {
                 _ => false
             };
 
-        private static ParameterContext[] FilterParmsForFunctions(IActionSpec action, string uid) =>
+        private static ParameterContext[] FilterParmsForFunctions(IActionSpec action) =>
             action.Parameters
                   .Where(p => !IsTargetParm(action, p))
                   .Where(p => !p.IsInjected)
                   .Select(p => new ParameterContext {
                       Action = action,
-                      Parameter = p,
-                      OverloadedUniqueId = uid
+                      Parameter = p
                   })
                   .ToArray();
 
-        private static ParameterContext[] FilterParmsForContributedActions(IActionSpec action, ITypeSpec targetSpec, string uid) {
+        private static ParameterContext[] FilterParmsForContributedActions(IActionSpec action, ITypeSpec targetSpec) {
             IActionParameterSpec[] parms;
             if (action.IsContributedMethod && !action.OnSpec.Equals(targetSpec)) {
                 var tempParms = new List<IActionParameterSpec>();
@@ -850,22 +849,20 @@ namespace NakedFramework.Facade.Impl.Impl {
 
             return parms.Select(p => new ParameterContext {
                 Action = action,
-                Parameter = p,
-                OverloadedUniqueId = uid
+                Parameter = p
             }).ToArray();
         }
 
-        private (IActionSpec spec, string uid) GetActionInternal(string actionName, INakedObjectAdapter nakedObject) {
+        private IActionSpec GetActionInternal(string actionName, INakedObjectAdapter nakedObject) {
             if (string.IsNullOrWhiteSpace(actionName)) {
                 throw new BadRequestNOSException();
             }
 
             var action = nakedObject.Spec.GetActionLeafNodes().Where(p => p.Id == actionName).SingleOrDefault(p => p.IsVisible(nakedObject)) ??
-                         FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec) ??
                          GetActionFromElementSpec(actionName, nakedObject) ??
                          throw new ActionResourceNotFoundNOSException(actionName);
 
-            return (action, FacadeUtils.GetOverloadedUId(action, nakedObject.Spec));
+            return action;
         }
 
         private IActionSpec GetActionFromElementSpec(string actionName, INakedObjectAdapter nakedObject) {
@@ -877,8 +874,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 var elementSpec = Framework.MetamodelManager.GetSpecification(elementSpecImmut);
 
                 if (elementSpec != null) {
-                    action = elementSpec.GetCollectionContributedActions().Where(p => p.Id == actionName).SingleOrDefault(p => p.IsVisible(nakedObject)) ??
-                             FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec);
+                    action = elementSpec.GetCollectionContributedActions().Where(p => p.Id == actionName).SingleOrDefault(p => p.IsVisible(nakedObject));
                 }
             }
 
@@ -893,7 +889,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             var parm = action.Parameters.SingleOrDefault(p => p.Id == parmName);
 
             if (parm == null) {
-                // throw something;
+                // todo throw something;
             }
 
             return parm;
@@ -916,14 +912,12 @@ namespace NakedFramework.Facade.Impl.Impl {
                     var action = GetActionsFromMenuItems(menu.MenuItems).SingleOrDefault(a => a.Identifier.MemberName == actionName);
                     if (action is not null) {
                         var actionSpec = Framework.MetamodelManager.GetActionSpec(action);
-                        var uid = FacadeUtils.GetOverloadedUId(actionSpec, actionSpec.OnSpec);
 
                         return new ActionContext {
                             Target = null,
                             Action = actionSpec,
                             MenuId = menu.Id,
-                            VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec, uid),
-                            OverloadedUniqueId = uid
+                            VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec),
                         };
                     }
                 }
@@ -962,7 +956,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                     return new ActionContext {
                         Target = target,
                         Action = actionSpec,
-                        VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec, "")
+                        VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec)
                     };
                 }
             }
@@ -975,25 +969,23 @@ namespace NakedFramework.Facade.Impl.Impl {
         }
 
         private ActionContext GetAction(string actionName, INakedObjectAdapter nakedObject) {
-            var (actionSpec, uid) = GetActionInternal(actionName, nakedObject);
+            var actionSpec = GetActionInternal(actionName, nakedObject);
             return new ActionContext {
                 Target = nakedObject,
                 Action = actionSpec,
-                VisibleParameters = FilterParms(actionSpec, nakedObject.Spec, uid),
-                OverloadedUniqueId = uid
+                VisibleParameters = FilterParms(actionSpec, nakedObject.Spec)
             };
         }
 
         private ActionContext GetActionWithCompletions(string actionName, INakedObjectAdapter nakedObject, string parmName, ArgumentsContextFacade arguments) {
-            var (actionSpec, uid) = GetActionInternal(actionName, nakedObject);
+            var actionSpec = GetActionInternal(actionName, nakedObject);
             var parm = GetParameterInternal(actionSpec, parmName);
             var completions = GetCompletions(new PropParmAdapter(parm, this, Framework), nakedObject, arguments);
 
             var ac = new ActionContext {
                 Target = nakedObject,
                 Action = actionSpec,
-                VisibleParameters = FilterParms(actionSpec, nakedObject.Spec, uid),
-                OverloadedUniqueId = uid
+                VisibleParameters = FilterParms(actionSpec, nakedObject.Spec)
             };
 
             var pc = ac.VisibleParameters.SingleOrDefault(p => p.Id == parmName);
@@ -1013,7 +1005,6 @@ namespace NakedFramework.Facade.Impl.Impl {
                     var action = GetActionsFromMenuItems(menu.MenuItems).SingleOrDefault(a => a.Identifier.MemberName == actionName);
                     if (action is not null) {
                         var actionSpec = Framework.MetamodelManager.GetActionSpec(action);
-                        var uid = FacadeUtils.GetOverloadedUId(actionSpec, actionSpec.OnSpec);
                         var parm = GetParameterInternal(actionSpec, parmName);
                         var completions = GetCompletions(new PropParmAdapter(parm, this, Framework), null, arguments);
 
@@ -1021,8 +1012,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                             Target = null,
                             Action = actionSpec,
                             MenuId = menu.Id,
-                            VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec, uid),
-                            OverloadedUniqueId = uid
+                            VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec)
                         };
 
                         var pc = ac.VisibleParameters.SingleOrDefault(p => p.Id == parmName);
@@ -1068,15 +1058,14 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         private static bool IsVisible(IMemberSpec actionSpec, INakedObjectAdapter nakedObject, bool isPersisted) => isPersisted ? actionSpec.IsVisibleWhenPersistent(nakedObject) : actionSpec.IsVisible(nakedObject);
 
-        private ParameterContext[] FilterCCAParms(IActionSpec action, string uid) {
+        private ParameterContext[] FilterCCAParms(IActionSpec action) {
             if (action.IsStaticFunction) {
-                return FilterParmsForFunctions(action, uid);
+                return FilterParmsForFunctions(action);
             }
 
             return action.Parameters.Select(p => new ParameterContext {
                 Action = action,
-                Parameter = p,
-                OverloadedUniqueId = uid
+                Parameter = p
             }).ToArray();
         }
 
@@ -1106,19 +1095,17 @@ namespace NakedFramework.Facade.Impl.Impl {
                 var elementSpec = Framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 var cca = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
 
-                ccaContexts = cca.Select(a => new {action = a, uid = FacadeUtils.GetOverloadedUId(MatchingActionSpecOnService(a), a.OnSpec, cca)}).Select(a => new ActionContext {
+                ccaContexts = cca.Select(a => new {action = a}).Select(a => new ActionContext {
                     Action = a.action,
-                    OverloadedUniqueId = a.uid,
                     Target = Framework.ServicesManager.GetService(a.action.OnSpec as IServiceSpec),
-                    VisibleParameters = FilterCCAParms(a.action, a.uid)
+                    VisibleParameters = FilterCCAParms(a.action)
                 }).ToArray();
             }
 
-            var actionContexts = actions.Select(a => new {a.action, uid = FacadeUtils.GetOverloadedUId(a.action, nakedObject.Spec), mp = a.parent}).Select(a => new ActionContext {
+            var actionContexts = actions.Select(a => new {a.action, mp = a.parent}).Select(a => new ActionContext {
                 Action = a.action,
                 Target = nakedObject,
-                VisibleParameters = FilterParms(a.action, nakedObject.Spec, a.uid),
-                OverloadedUniqueId = a.uid,
+                VisibleParameters = FilterParms(a.action, nakedObject.Spec),
                 MenuPath = a.mp
             });
 

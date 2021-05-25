@@ -177,7 +177,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.IsNotNull(parsedResult["members"]["Duplicate"]);
+            Assert.IsNotNull(parsedResult["members"]["Duplicate0"]);
         }
 
         [Test]
@@ -189,7 +189,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.IsNotNull(parsedResult["result"]["members"]["Duplicate"]);
+            Assert.IsNotNull(parsedResult["result"]["members"]["Duplicate1"]);
         }
 
         [Test]

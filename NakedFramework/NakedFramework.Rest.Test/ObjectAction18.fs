@@ -234,7 +234,7 @@ let VerifyOverloadedActionProperty refType oType oName f (api : RestfulObjectsCo
         [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
           TProperty(JsonPropertyNames.Parameters, TObjectJson([]))
           TProperty(JsonPropertyNames.Extensions, 
-                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Overloaded Action"))
+                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Overloaded Action0"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(ttc "RestfulObjects.Test.Data.MostSimple"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))

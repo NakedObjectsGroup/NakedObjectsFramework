@@ -89,7 +89,7 @@ namespace NakedFramework.Persistor.EF6.Configuration {
 
         /// <summary>
         ///     If set the persistor will throw an exception if any type is seen that has not been associated via
-        ///     SpecifyTypesNotAssociatedWithAnyContext or AssociateTypes;
+        ///     SpecifyTypesNotAssociatedWithAnyContext or AssociateTypes
         ///     This is false by default;
         /// </summary>
         public bool RequireExplicitAssociationOfTypes { get; set; }

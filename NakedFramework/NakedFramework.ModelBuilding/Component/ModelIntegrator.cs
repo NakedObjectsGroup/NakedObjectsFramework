@@ -69,6 +69,11 @@ namespace NakedFramework.ModelBuilding.Component {
                 var menuActions = menu.MenuItems.SelectMany(GetMenuActions).ToList();
                 FacetUtils.ErrorOnDuplicates(menuActions.Select(a => new FacetUtils.ActionHolder(a)).ToList());
             }
+
+            //foreach (var spec in metamodelBuilder.AllSpecifications) {
+            //    var actions = spec.ObjectActions.ToList();
+            //    FacetUtils.ErrorOnDuplicates(actions.Select(a => new FacetUtils.ActionHolder(a)).ToList());
+            //}
         }
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {

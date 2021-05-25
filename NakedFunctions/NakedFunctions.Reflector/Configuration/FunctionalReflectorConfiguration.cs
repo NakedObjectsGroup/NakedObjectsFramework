@@ -26,8 +26,6 @@ namespace NakedFunctions.Reflector.Configuration {
 
         public Type[] Types { get; }
         public Type[] Functions { get; }
-
-        public static Type[] Services => Array.Empty<Type>();
         public bool ConcurrencyChecking { get; }
         public bool IgnoreCase { get; }
 

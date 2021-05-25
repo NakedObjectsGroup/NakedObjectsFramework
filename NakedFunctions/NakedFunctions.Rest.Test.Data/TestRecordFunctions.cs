@@ -112,8 +112,8 @@ namespace NakedFunctions.Rest.Test.Data {
         }
 
         public static IQueryable<SimpleRecord> GetQueryable(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>();
-        public static IContext Duplicate(this SimpleRecord sp, IContext context) => context;
-        public static IContext Duplicate(this IQueryable<SimpleRecord> sp, IContext context) => context;
+        public static IContext Duplicate0(this SimpleRecord sp, IContext context) => context;
+        public static IContext Duplicate1(this IQueryable<SimpleRecord> sp, IContext context) => context;
     }
 
     public static class DateRecordFunctions {

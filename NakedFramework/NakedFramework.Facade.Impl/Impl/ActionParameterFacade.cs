@@ -21,12 +21,10 @@ using NakedFramework.Facade.Interface;
 namespace NakedFramework.Facade.Impl.Impl {
     public class ActionParameterFacade : IActionParameterFacade {
         private readonly INakedObjectsFramework framework;
-        private readonly string overloadedUniqueId;
 
-        public ActionParameterFacade(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework, string overloadedUniqueId) {
+        public ActionParameterFacade(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
             WrappedSpec = nakedObjectActionParameter ?? throw new NullReferenceException($"{nameof(nakedObjectActionParameter)} is null");
             this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
-            this.overloadedUniqueId = overloadedUniqueId ?? throw new NullReferenceException($"{nameof(overloadedUniqueId)} is null");
             FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
         }
 
@@ -118,7 +116,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             }
         }
 
-        public IActionFacade Action => new ActionFacade(WrappedSpec.Action, FrameworkFacade, framework, overloadedUniqueId ?? "");
+        public IActionFacade Action => new ActionFacade(WrappedSpec.Action, FrameworkFacade, framework);
 
         public string Id => WrappedSpec.Id;
 

@@ -17,7 +17,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             Id = wrapped.Id;
             Grouping = wrapped.Grouping;
             var action = framework.MetamodelManager.GetActionSpec(wrapped.Action);
-            Action = new ActionFacade(action, facade, framework, "");
+            Action = new ActionFacade(action, facade, framework);
         }
 
         #region IMenuActionFacade Members

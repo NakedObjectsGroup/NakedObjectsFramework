@@ -25,8 +25,8 @@ namespace NakedFramework.Facade.Impl.Contexts {
 
         public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework, string menuId) {
             var pc = new ParameterContextFacade {
-                Parameter = new ActionParameterFacade(Parameter, facade, framework, OverloadedUniqueId ?? ""),
-                Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? ""),
+                Parameter = new ActionParameterFacade(Parameter, facade, framework),
+                Action = new ActionFacade(Action, facade, framework),
                 Completions = Completions?.ToListContextFacade(facade, framework),
                 MenuId = menuId
             };

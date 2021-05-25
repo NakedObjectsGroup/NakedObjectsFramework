@@ -475,7 +475,7 @@ namespace NakedFramework.Persistor.EF6.Component {
                 }
                 catch (ArgumentException) {
                     // not an EF recognized collection 
-                    Logger.LogWarning($"Attempting to 'Count' a non-EF collection: {field.Id}");
+                    Logger.LogWarning($"Attempting to 'Count' a non-EF collection: {field.Id} annotate with 'NotPersisted' to avoid this warning");
                 }
                 catch (InvalidOperationException) {
                     // not an EF recognised entity 

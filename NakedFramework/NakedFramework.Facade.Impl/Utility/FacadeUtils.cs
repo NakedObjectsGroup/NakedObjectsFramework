@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
@@ -33,56 +32,7 @@ namespace NakedFramework.Facade.Impl.Utility {
                 _ => new GeneralErrorNOSException(e)
             };
 
-        private static string GetUniqueSuffix(IActionSpec action, IActionSpec[] actions) {
-            var overloadedActions = actions.Where(a => a.Id == action.Id && actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
-
-            if (overloadedActions.Any()) {
-                static string GetParmsString(IActionSpec spec) => spec.Parameters.Aggregate("", (acc, p) => $"{acc}{p.Id}{p.Spec.FullName}");
-
-                var orderedActions = overloadedActions.Select(act => new {act, parmId = GetParmsString(act)}).OrderBy(ap => ap.parmId).Select(ap => ap.act).ToList();
-
-                var suffix = orderedActions.IndexOf(action).ToString(Thread.CurrentThread.CurrentCulture);
-
-                while (actions.Select(a => a.Id).Contains($"{action.Id}{suffix}")) {
-                    suffix = $"0{suffix}";
-                }
-
-                return suffix;
-            }
-
-            return "";
-        }
-
-        private static (IActionSpec action, string uid)[] GetOverloadedActionsAndUIds(IActionSpec[] actions) =>
-            actions.Where(a => actions.Count(ac => ac.Id == a.Id) > 1).Select(a => (a, GetUniqueSuffix(a, actions))).ToArray();
-
-        public static IActionSpec GetOverloadedAction(string actionName, ITypeSpec spec) {
-            var actions = spec.GetActionLeafNodes();
-            var overloadedActions = GetOverloadedActionsAndUIds(actions);
-
-            return overloadedActions.Where(oa => $"{oa.action.Id}{oa.uid}" == actionName).Select(oa => oa.action).SingleOrDefault();
-        }
-
-        public static string GetOverloadedUId(IActionSpec action, ITypeSpec spec) {
-            var actions = spec.GetActionLeafNodes();
-            var overloadedActions = GetOverloadedActionsAndUIds(actions);
-            return overloadedActions.Where(oa => oa.action == action).Select(oa => oa.uid).SingleOrDefault();
-        }
-
-        public static string GetOverloadedUId(IActionSpec action, ITypeSpec spec, IActionSpec[] actions) {
-            if (spec is IServiceSpec sp) {
-                actions = sp.GetActionLeafNodes();
-            }
-
-            return GetOverloadedUId(action, actions);
-        }
-
-        public static string GetOverloadedUId(IActionSpec action, IActionSpec[] actions) {
-            var overloadedActions = GetOverloadedActionsAndUIds(actions);
-            return overloadedActions.Where(oa => oa.action == action).Select(oa => oa.uid).SingleOrDefault();
-        }
-
-        public static (IActionSpec spec, string uid)[] GetActionsandUidFromSpec(ITypeSpec spec) =>
-            spec.GetActionLeafNodes().Select(action => (action, GetOverloadedUId(action, spec))).ToArray();
+        public static IActionSpec[] GetActionsFromSpec(ITypeSpec spec) =>
+            spec.GetActionLeafNodes().ToArray();
     }
 }

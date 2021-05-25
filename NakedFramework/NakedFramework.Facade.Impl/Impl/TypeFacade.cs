@@ -117,8 +117,8 @@ namespace NakedFramework.Facade.Impl.Impl {
         public bool IsImmutable(IObjectFacade objectFacade) => WrappedValue.IsAlwaysImmutable() || WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient;
 
         public IActionFacade[] GetActionLeafNodes() {
-            var actionsAndUid = FacadeUtils.GetActionsandUidFromSpec(WrappedValue);
-            return actionsAndUid.Select(a => new ActionFacade(a.spec, FrameworkFacade, framework, a.uid ?? "")).Cast<IActionFacade>().ToArray();
+            var actionSpecs = FacadeUtils.GetActionsFromSpec(WrappedValue);
+            return actionSpecs.Select(a => new ActionFacade(a, FrameworkFacade, framework)).Cast<IActionFacade>().ToArray();
         }
 
         public ITypeFacade GetElementType(IObjectFacade objectFacade) {
@@ -137,7 +137,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public IActionFacade[] GetCollectionContributedActions() {
             if (WrappedValue is IObjectSpec objectSpec) {
-                return objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
+                return objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, FrameworkFacade, framework)).Cast<IActionFacade>().ToArray();
             }
 
             return Array.Empty<IActionFacade>();
@@ -145,7 +145,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public IActionFacade[] GetLocallyContributedActions(ITypeFacade typeFacade, string id) {
             if (WrappedValue is IObjectSpec objectSpec) {
-                return objectSpec.GetLocallyContributedActions(((TypeFacade) typeFacade).WrappedValue, id).Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
+                return objectSpec.GetLocallyContributedActions(((TypeFacade) typeFacade).WrappedValue, id).Select(a => new ActionFacade(a, FrameworkFacade, framework)).Cast<IActionFacade>().ToArray();
             }
 
             return Array.Empty<IActionFacade>();
