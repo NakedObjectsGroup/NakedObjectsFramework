@@ -28,17 +28,17 @@ namespace NakedFunctions.Reflector.Test.Component {
     public class ReflectorTest {
         private Action<IServiceCollection> TestHook { get; } = services => { };
 
-        private IHostBuilder CreateHostBuilder(string[] args, Action<NakedCoreOptions> setup) =>
+        private IHostBuilder CreateHostBuilder(string[] args, Action<NakedFrameworkOptions> setup) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => { RegisterTypes(services, setup); });
 
-        protected (IServiceProvider, IHost) GetContainer(Action<NakedCoreOptions> setup) {
+        protected (IServiceProvider, IHost) GetContainer(Action<NakedFrameworkOptions> setup) {
             ImmutableSpecFactory.ClearCache();
             var hostBuilder = CreateHostBuilder(new string[] { }, setup).Build();
             return (hostBuilder.Services, hostBuilder);
         }
 
-        protected virtual void RegisterTypes(IServiceCollection services, Action<NakedCoreOptions> setup) {
+        protected virtual void RegisterTypes(IServiceCollection services, Action<NakedFrameworkOptions> setup) {
             services.AddNakedFramework(setup);
             TestHook(services);
         }
@@ -58,7 +58,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectNoTypes() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 
                 coreOptions.AddNakedFunctions(options => {
@@ -79,7 +79,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectSimpleType() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 //
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -105,7 +105,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectSimpleFunction() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -126,7 +126,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectTupleFunction() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] {typeof(IQueryable<>), typeof(IList<>)};
                 
                 coreOptions.AddNakedFunctions(options => {
@@ -150,7 +150,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectUnsupportedTuple() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(UnsupportedTupleFunctions)};
@@ -176,7 +176,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectSimpleInjectedFunction() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] {typeof(IQueryable<>)};
                 
                 coreOptions.AddNakedFunctions(options => {
@@ -199,7 +199,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectNavigableType() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(NavigableClass), typeof(SimpleClass)};
@@ -219,7 +219,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectBoundedType() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(BoundedClass)};
@@ -240,7 +240,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectCreateNewAction() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -264,7 +264,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectDisplayAsPropertyAction() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -294,7 +294,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectPluralClass() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(PluralClass)};
@@ -318,7 +318,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectIgnoredProperty() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(IgnoredClass)};
@@ -355,7 +355,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectDefaultValueParameter() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -386,7 +386,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectRangeParameter() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -413,7 +413,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectDescribedAs() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(DescribedAsClass)};
@@ -449,7 +449,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectRenderEagerly() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(RenderEagerlyClass)};
@@ -485,7 +485,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectTableView() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(TableViewClass)};
@@ -522,7 +522,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectMask() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(MaskClass)};
@@ -565,7 +565,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectOptionally() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(OptionallyClass)};
@@ -614,7 +614,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectNamed() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(NamedClass)};
@@ -656,7 +656,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectRegex() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(RegexClass)};
@@ -695,7 +695,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectPresentationHint() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(HintClass)};
@@ -737,7 +737,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectPageSize() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -763,7 +763,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectPassword() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -790,7 +790,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectMultiline() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(MultilineClass)};
@@ -831,7 +831,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectOrder() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(OrderClass)};
@@ -874,7 +874,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectHidden() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(HiddenClass)};
@@ -898,7 +898,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectHiddenViaFunction() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(HiddenClass)};
@@ -921,7 +921,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectVersioned() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(VersionedClass)};
@@ -945,7 +945,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectViewModelFunctions() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass), typeof(ViewModel)};
@@ -968,7 +968,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectPotentFunctions() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -997,7 +997,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectContributedCollections() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -1023,7 +1023,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
         [TestMethod]
         public void ReflectEditAnnotation() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(EditClass), typeof(SimpleClass)};
@@ -1074,7 +1074,7 @@ namespace NakedFunctions.Reflector.Test.Component {
         [TestMethod]
         [ExpectedException(typeof(ReflectionException), "string")]
         public void ReflectDuplicateFunctionsSameType() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};
@@ -1099,7 +1099,7 @@ namespace NakedFunctions.Reflector.Test.Component {
         [TestMethod]
         [ExpectedException(typeof(ReflectionException), "string")]
         public void ReflectDuplicateFunctionsDifferentType() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 
                 coreOptions.AddNakedFunctions(options => {
                         options.FunctionalTypes = new[] {typeof(SimpleClass)};

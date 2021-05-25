@@ -108,7 +108,7 @@ namespace NakedObjects.Core.Test.Adapter {
                 }
             };
 
-        protected override Action<NakedCoreOptions> AddNakedFunctions => builder => { };
+        protected override Action<NakedFrameworkOptions> AddNakedFunctions => builder => { };
 
             #region Setup/Teardown
 

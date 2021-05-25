@@ -24,7 +24,7 @@ open TestCode
 type ModelSystemTests() = 
     inherit AcceptanceTestCase()
 
-    override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ());
+    override x.AddNakedFunctions = Action<NakedFrameworkOptions> (fun (builder) -> ());
 
     override x.EnforceProxies = false
 

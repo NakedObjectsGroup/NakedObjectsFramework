@@ -40,15 +40,15 @@ namespace NakedFramework.ModelBuilding.Component {
         }
 
         public void Integrate() {
+            var services = serviceList.Services;
+            PopulateAssociatedActions(services, metamodelBuilder);
+
             // new way of doing things =- introduce integration facets
 
             var integrationFacets = metamodelBuilder.AllSpecifications.Select(s => s.GetFacet<IIntegrationFacet>()).Where(f => f is not null).ToArray();
 
             integrationFacets.ForEach(f => f.Execute(metamodelBuilder));
             integrationFacets.ForEach(f => f.Remove());
-
-            var services = serviceList.Services;
-            PopulateAssociatedActions(services, metamodelBuilder);
 
             //Menus installed once rest of metamodel has been built:
             InstallMainMenus(metamodelBuilder);

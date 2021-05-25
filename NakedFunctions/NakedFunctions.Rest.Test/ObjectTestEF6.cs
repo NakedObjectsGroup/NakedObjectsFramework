@@ -81,7 +81,7 @@ namespace NakedFunctions.Rest.Test {
             ObjectDbContext.Delete();
         }
 
-        protected override Action<NakedCoreOptions> AddNakedObjects => _ => { };
+        protected override Action<NakedFrameworkOptions> AddNakedObjects => _ => { };
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);

@@ -61,12 +61,12 @@ namespace NakedObjects.SystemTest.MultiReflector {
         }
 
 
-        protected override Action<NakedCoreOptions> AddCoreOptions => builder => {
+        protected override Action<NakedFrameworkOptions> AddCoreOptions => builder => {
             base.AddCoreOptions(builder);
             builder.Services.AddSingleton(typeof(IReflectorOrder<>), typeof(MultiReflectorOrder<>));
         };
 
-        protected override Action<NakedCoreOptions> AddNakedFunctions => builder => builder.AddNakedFunctions(NakedFunctionsOptions);
+        protected override Action<NakedFrameworkOptions> AddNakedFunctions => builder => builder.AddNakedFunctions(NakedFunctionsOptions);
 
         protected override Type[] ObjectTypes => new[] {typeof(Foo)};
 

@@ -20,7 +20,7 @@ open NakedObjects.CodeSystemTest
 type EFCoreCodeSystemTests() = 
     inherit CodeSystemTests()
 
-    override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ())
+    override x.AddNakedFunctions = Action<NakedFrameworkOptions> (fun (builder) -> ())
 
     member x.ContextCreators = [|Func<IConfiguration, DbContext> (fun (c) -> 
                   let context = new EFCoreCodeFirstContext(NakedObjects.TestTypes.csCS)

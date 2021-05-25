@@ -25,7 +25,7 @@ namespace NakedFunctions.Reflector.Extensions {
         public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
             new(options.FunctionalTypes, options.Functions, options.ConcurrencyCheck);
 
-        public static void AddNakedFunctions(this NakedCoreOptions coreOptions, Action<NakedFunctionsOptions> setupAction) {
+        public static void AddNakedFunctions(this NakedFrameworkOptions frameworkOptions, Action<NakedFunctionsOptions> setupAction) {
             var options = new NakedFunctionsOptions();
             setupAction(options);
 
@@ -34,24 +34,24 @@ namespace NakedFunctions.Reflector.Extensions {
                 var enums = options.FunctionalTypes.Where(t => t.IsEnum).ToArray();
                 var coreFunctionalTypes = new[] {typeof(FunctionalContext), typeof(IContext)};
                 options.FunctionalTypes = options.FunctionalTypes.Except(enums).ToArray();
-                coreOptions.SupportedSystemTypes ??= t => t;
-                coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Union(enums).ToArray();
-                coreOptions.AdditionalUnpersistedTypes = coreFunctionalTypes;
+                frameworkOptions.SupportedSystemTypes ??= t => t;
+                frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(enums).ToArray();
+                frameworkOptions.AdditionalUnpersistedTypes = coreFunctionalTypes;
                 options.FunctionalTypes = options.FunctionalTypes.Union(coreFunctionalTypes).Distinct().ToArray();
             }
 
-            RegisterWellKnownServices(coreOptions.Services);
-            coreOptions.Services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
-            coreOptions.Services.AddDefaultSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
-            coreOptions.Services.AddDefaultSingleton<FunctionClassStrategy, FunctionClassStrategy>();
-            coreOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(FunctionalReflectorOrder<>));
-            coreOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
-            coreOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
-            coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
+            RegisterWellKnownServices(frameworkOptions.Services);
+            frameworkOptions.Services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
+            frameworkOptions.Services.AddDefaultSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
+            frameworkOptions.Services.AddDefaultSingleton<FunctionClassStrategy, FunctionClassStrategy>();
+            frameworkOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(FunctionalReflectorOrder<>));
+            frameworkOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
+            frameworkOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
+            frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
 
-            coreOptions.Services.AddDefaultScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
+            frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
 
-            options.RegisterCustomTypes?.Invoke(coreOptions.Services);
+            options.RegisterCustomTypes?.Invoke(frameworkOptions.Services);
         }
 
         public static void RegisterWellKnownServices(IServiceCollection services) {

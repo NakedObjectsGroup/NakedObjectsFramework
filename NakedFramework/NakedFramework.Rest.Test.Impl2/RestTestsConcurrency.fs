@@ -31,7 +31,7 @@ type Tests() =
     class
         inherit AcceptanceTestCase()
         
-        override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ());
+        override x.AddNakedFunctions = Action<NakedFrameworkOptions> (fun (builder) -> ());
 
         override x.ObjectTypes = 
             [| typeof<Immutable>

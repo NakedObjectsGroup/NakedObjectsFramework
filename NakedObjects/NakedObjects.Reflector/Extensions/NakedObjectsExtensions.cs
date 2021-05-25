@@ -25,22 +25,22 @@ namespace NakedObjects.Reflector.Extensions {
             return new ObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ConcurrencyCheck);
         }
 
-        public static void AddNakedObjects(this NakedCoreOptions coreOptions, Action<NakedObjectsOptions> setupAction) {
+        public static void AddNakedObjects(this NakedFrameworkOptions frameworkOptions, Action<NakedObjectsOptions> setupAction) {
             var options = new NakedObjectsOptions();
             setupAction(options);
 
-            coreOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
-            coreOptions.Services.AddDefaultSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
-            coreOptions.Services.AddDefaultSingleton<ObjectClassStrategy, ObjectClassStrategy>();
+            frameworkOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
+            frameworkOptions.Services.AddDefaultSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
+            frameworkOptions.Services.AddDefaultSingleton<ObjectClassStrategy, ObjectClassStrategy>();
 
-            coreOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(ObjectReflectorOrder<>));
-            coreOptions.Services.AddSingleton<IReflector, ObjectReflector>();
-            coreOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
-            coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
+            frameworkOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(ObjectReflectorOrder<>));
+            frameworkOptions.Services.AddSingleton<IReflector, ObjectReflector>();
+            frameworkOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
+            frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
 
-            coreOptions.Services.AddDefaultScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
+            frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
 
-            options.RegisterCustomTypes?.Invoke(coreOptions.Services);
+            options.RegisterCustomTypes?.Invoke(frameworkOptions.Services);
         }
     }
 }

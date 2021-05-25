@@ -18,8 +18,8 @@ using NakedFramework.Metamodel.Profile;
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.EFCore")]
 
 namespace NakedFramework.DependencyInjection.Extensions {
-    public class NakedCoreOptions {
-        public NakedCoreOptions(IServiceCollection services) => Services = services;
+    public class NakedFrameworkOptions {
+        public NakedFrameworkOptions(IServiceCollection services) => Services = services;
         public IAuthorizationConfiguration AuthorizationConfiguration { get; set; }
         public IAuditConfiguration AuditConfiguration { get; set; }
         public IProfileConfiguration ProfileConfiguration { get; set; }

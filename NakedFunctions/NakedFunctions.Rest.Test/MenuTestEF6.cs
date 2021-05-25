@@ -66,7 +66,7 @@ namespace NakedFunctions.Rest.Test {
             MenuDbContext.Delete();
         }
 
-        protected override Action<NakedCoreOptions> AddNakedObjects => _ => { };
+        protected override Action<NakedFrameworkOptions> AddNakedObjects => _ => { };
 
         private static string FullName<T>() => typeof(T).FullName;
 

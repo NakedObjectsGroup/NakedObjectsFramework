@@ -32,7 +32,7 @@ type CodeSystemTests() =
 
     override x.Services =  [| typeof<SimpleRepository<Person>> |]
 
-    override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ());
+    override x.AddNakedFunctions = Action<NakedFrameworkOptions> (fun (builder) -> ());
 
     override x.ObjectTypes = [| typeof<Address>;
                                 typeof<Category>;

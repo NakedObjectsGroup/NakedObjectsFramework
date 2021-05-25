@@ -78,19 +78,19 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         private Action<IServiceCollection> TestHook { get; set; } = services => { };
 
-        private IHostBuilder CreateHostBuilder(string[] args, Action<NakedCoreOptions> setup)
+        private IHostBuilder CreateHostBuilder(string[] args, Action<NakedFrameworkOptions> setup)
         {
             return Host.CreateDefaultBuilder(args)
 .ConfigureServices((hostContext, services) => { RegisterTypes(services, setup); });
         }
 
-        protected (IServiceProvider, IHost) GetContainer(Action<NakedCoreOptions> setup) {
+        protected (IServiceProvider, IHost) GetContainer(Action<NakedFrameworkOptions> setup) {
             ImmutableSpecFactory.ClearCache();
             var hostBuilder = CreateHostBuilder(Array.Empty<string>(), setup).Build();
             return (hostBuilder.Services, hostBuilder);
         }
 
-        protected virtual void RegisterTypes(IServiceCollection services, Action<NakedCoreOptions> setup) {
+        protected virtual void RegisterTypes(IServiceCollection services, Action<NakedFrameworkOptions> setup) {
             services.AddNakedFramework(setup);
             TestHook(services);
         }
@@ -102,7 +102,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReflectNoTypes() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
@@ -122,7 +122,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReflectObjectType() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {typeof(object)};
@@ -143,7 +143,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReflectListTypes() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {typeof(List<object>), typeof(List<int>), typeof(object), typeof(int)};
@@ -166,7 +166,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReflectSetTypes() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {typeof(SetWrapper<>), typeof(object)};
@@ -191,7 +191,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             var qo = new List<object>().AsQueryable();
             var qi = new List<int>().AsQueryable();
 
-            void Setup(NakedCoreOptions coreOptions) {
+            void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)};
@@ -216,7 +216,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReflectWhereIterator() {
             var it = new List<int> {1, 2, 3}.Where(i => i == 2);
 
-            void Setup(NakedCoreOptions coreOptions) {
+            void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)};
@@ -240,7 +240,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReflectWhereSelectIterator() {
             var it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
 
-            void Setup(NakedCoreOptions coreOptions) {
+            void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)};
@@ -266,7 +266,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReflectInt() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {typeof(int)};
@@ -287,7 +287,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReflectByteArray() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {typeof(TestObjectWithByteArray), typeof(byte), typeof(byte[])};
@@ -310,7 +310,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReflectStringArray() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {typeof(TestObjectWithStringArray), typeof(string)};
@@ -332,7 +332,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReflectWithScalars() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {typeof(WithScalars)};
@@ -353,7 +353,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReflectSimpleDomainObject() {
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {typeof(SimpleDomainObject)};
@@ -376,7 +376,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReplaceFacetFactory() {
             TestHook = services => ConfigHelpers.RegisterReplacementFacetFactory<IObjectFacetFactoryProcessor, ReplacementBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {typeof(SimpleBoundedObject)};
@@ -400,7 +400,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReplaceDelegatingFacetFactory() {
             TestHook = services => ConfigHelpers.RegisterReplacementFacetFactoryDelegatingToOriginal<IObjectFacetFactoryProcessor, ReplacementDelegatingBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
-            static void Setup(NakedCoreOptions coreOptions) {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] {typeof(SimpleBoundedObject)};

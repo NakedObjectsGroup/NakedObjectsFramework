@@ -25,7 +25,7 @@ namespace NakedFunctions.Rest.Test {
         protected virtual Action<EFCorePersistorOptions> EFCorePersistorOptions =>
             options => { options.ContextCreators = ContextCreators; };
 
-        protected override Action<NakedCoreOptions> AddPersistor => builder => { builder.AddEFCorePersistor(EFCorePersistorOptions); };
+        protected override Action<NakedFrameworkOptions> AddPersistor => builder => { builder.AddEFCorePersistor(EFCorePersistorOptions); };
 
         protected override void CleanUpDatabase() {
             new EFCoreObjectDbContext().Delete();

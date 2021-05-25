@@ -20,7 +20,7 @@ open NakedObjects.DomainSystemTest
 type EFCoreDomainSystemTests() = 
     inherit DomainSystemTests()
 
-    override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ())
+    override x.AddNakedFunctions = Action<NakedFrameworkOptions> (fun (builder) -> ())
 
     member x.ContextCreators = [|Func<IConfiguration, DbContext> (fun (c) -> 
                   let context = new EFCoreAdventureWorksEntities(NakedObjects.TestTypes.csAWMARS) 

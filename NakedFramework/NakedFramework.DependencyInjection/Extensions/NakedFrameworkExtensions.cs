@@ -29,7 +29,7 @@ using NakedFramework.ParallelReflector.Reflect;
 
 namespace NakedFramework.DependencyInjection.Extensions {
     public static class NakedFrameworkExtensions {
-        public static CoreConfiguration CoreConfig(NakedCoreOptions options) {
+        public static CoreConfiguration CoreConfig(NakedFrameworkOptions options) {
             var config = new CoreConfiguration(options.MainMenus);
 
             options.SupportedSystemTypes ??= t => t;
@@ -39,7 +39,7 @@ namespace NakedFramework.DependencyInjection.Extensions {
             return config;
         }
 
-        private static void AddNakedCoreFramework(this IServiceCollection services, NakedCoreOptions options) {
+        private static void AddNakedCoreFramework(this IServiceCollection services, NakedFrameworkOptions options) {
             ParallelConfig.RegisterCoreSingletonTypes(services);
             ParallelConfig.RegisterCoreScopedTypes(services);
 
@@ -74,8 +74,8 @@ namespace NakedFramework.DependencyInjection.Extensions {
             services.AddDefaultTransient<IFrameworkFacade, FrameworkFacade>();
         }
 
-        public static void AddNakedFramework(this IServiceCollection services, Action<NakedCoreOptions> setupAction) {
-            var options = new NakedCoreOptions(services);
+        public static void AddNakedFramework(this IServiceCollection services, Action<NakedFrameworkOptions> setupAction) {
+            var options = new NakedFrameworkOptions(services);
             setupAction(options);
 
             services.AddNakedCoreFramework(options);

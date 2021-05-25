@@ -23,7 +23,7 @@ type DomainSystemTests() =
     inherit AcceptanceTestCase()
 
 
-    override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ())
+    override x.AddNakedFunctions = Action<NakedFrameworkOptions> (fun (builder) -> ())
 
     override x.ContextCreators = 
         [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext) |]

@@ -30,16 +30,16 @@ namespace NakedFramework.Persistor.EFCore.Extensions {
             return config;
         }
 
-        public static void AddEFCorePersistor(this NakedCoreOptions coreOptions, Action<EFCorePersistorOptions> setupAction) {
+        public static void AddEFCorePersistor(this NakedFrameworkOptions frameworkOptions, Action<EFCorePersistorOptions> setupAction) {
             var options = new EFCorePersistorOptions();
             setupAction(options);
 #pragma warning disable EF1001 // Internal EF Core API usage.
-            coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Append(typeof(InternalDbSet<>)).Append(typeof(EntityQueryable<>)).ToArray();
+            frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Append(typeof(InternalDbSet<>)).Append(typeof(EntityQueryable<>)).ToArray();
 #pragma warning restore EF1001 // Internal EF Core API usage.
 
-            coreOptions.Services.AddSingleton(p => EF6ObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
-            coreOptions.Services.AddScoped<IOidGenerator, DatabaseOidGenerator>();
-            coreOptions.Services.AddScoped<IObjectStore, EFCoreObjectStore>();
+            frameworkOptions.Services.AddSingleton(p => EF6ObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
+            frameworkOptions.Services.AddScoped<IOidGenerator, DatabaseOidGenerator>();
+            frameworkOptions.Services.AddScoped<IObjectStore, EFCoreObjectStore>();
         }
     }
 }

@@ -37,18 +37,18 @@ namespace NakedFramework.Persistor.EF6.Extensions {
             return config;
         }
 
-        public static void AddEF6Persistor(this NakedCoreOptions coreOptions, Action<EF6PersistorOptions> setupAction) {
+        public static void AddEF6Persistor(this NakedFrameworkOptions frameworkOptions, Action<EF6PersistorOptions> setupAction) {
             var options = new EF6PersistorOptions();
             setupAction(options);
-            coreOptions.AdditionalSystemTypes = coreOptions.AdditionalSystemTypes.Append(typeof(ObjectQuery<>)).Append(typeof(EntityCollection<>)).ToArray();
+            frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Append(typeof(ObjectQuery<>)).Append(typeof(EntityCollection<>)).ToArray();
 
             var unpersistedTypes = options.NotPersistedTypes();
-            options.NotPersistedTypes = () => unpersistedTypes.Union(coreOptions.AdditionalUnpersistedTypes).ToArray();
+            options.NotPersistedTypes = () => unpersistedTypes.Union(frameworkOptions.AdditionalUnpersistedTypes).ToArray();
 
-            coreOptions.Services.AddSingleton<IEF6ObjectStoreConfiguration>(p => EF6ObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
-            coreOptions.Services.AddScoped<DatabaseOidGenerator, DatabaseOidGenerator>();
-            coreOptions.Services.AddScoped<IOidGenerator, DatabaseOidGenerator>();
-            coreOptions.Services.AddScoped<IObjectStore, EF6ObjectStore>();
+            frameworkOptions.Services.AddSingleton<IEF6ObjectStoreConfiguration>(p => EF6ObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
+            frameworkOptions.Services.AddScoped<DatabaseOidGenerator, DatabaseOidGenerator>();
+            frameworkOptions.Services.AddScoped<IOidGenerator, DatabaseOidGenerator>();
+            frameworkOptions.Services.AddScoped<IObjectStore, EF6ObjectStore>();
         }
     }
 }

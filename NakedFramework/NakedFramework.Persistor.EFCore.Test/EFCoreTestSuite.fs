@@ -34,7 +34,7 @@ type EFCoreTestSuite() =
 
     override x.EnforceProxies = false
 
-    override x.AddNakedFunctions = Action<NakedCoreOptions> (fun (builder) -> ())
+    override x.AddNakedFunctions = Action<NakedFrameworkOptions> (fun (builder) -> ())
 
     member x.ContextCreators = [|Func<IConfiguration, DbContext> (fun (c) -> 
                let context = new EFCoreTestDataContext(csTDCO)
@@ -43,7 +43,7 @@ type EFCoreTestSuite() =
      
     member x.EFCorePersistorOptions = Action<EFCorePersistorOptions> (fun  (options) -> options.ContextCreators <- x.ContextCreators)
 
-    override x.AddPersistor = Action<NakedCoreOptions> (fun (builder) -> builder.AddEFCorePersistor(x.EFCorePersistorOptions))
+    override x.AddPersistor = Action<NakedFrameworkOptions> (fun (builder) -> builder.AddEFCorePersistor(x.EFCorePersistorOptions))
 
     override x.Services = [| typeof<SimpleRepository<Person>>; 
                              typeof<SimpleRepository<Product>>;

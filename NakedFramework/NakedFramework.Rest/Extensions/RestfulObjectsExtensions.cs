@@ -17,12 +17,12 @@ using NakedFramework.Rest.Configuration;
 
 namespace NakedFramework.Rest.Extensions {
     public static class RestfulObjectsExtensions {
-        public static void AddRestfulObjects(this NakedCoreOptions coreOptions, Action<RestfulObjectsOptions> setupAction = null) {
+        public static void AddRestfulObjects(this NakedFrameworkOptions frameworkOptions, Action<RestfulObjectsOptions> setupAction = null) {
             var options = new RestfulObjectsOptions();
             setupAction?.Invoke(options);
 
-            coreOptions.Services.AddDefaultScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
-            coreOptions.Services.AddSingleton<IRestfulObjectsConfiguration>(p => RestfulObjectsConfiguration(options));
+            frameworkOptions.Services.AddDefaultScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
+            frameworkOptions.Services.AddSingleton<IRestfulObjectsConfiguration>(p => RestfulObjectsConfiguration(options));
         }
 
         private static RestfulObjectsConfiguration RestfulObjectsConfiguration(RestfulObjectsOptions options) {

@@ -123,7 +123,7 @@ namespace NakedFramework.Test.TestCase {
 
         protected virtual Action<RestfulObjectsOptions> RestfulObjectsOptions => options => { };
 
-        protected virtual Action<NakedCoreOptions> NakedCoreOptions =>
+        protected virtual Action<NakedFrameworkOptions> NakedFrameworkOptions =>
             builder => {
                 AddCoreOptions(builder);
                 AddPersistor(builder);
@@ -132,7 +132,7 @@ namespace NakedFramework.Test.TestCase {
                 AddRestfulObjects(builder);
             };
 
-        protected virtual Action<NakedCoreOptions> AddCoreOptions => builder => {
+        protected virtual Action<NakedFrameworkOptions> AddCoreOptions => builder => {
             builder.MainMenus = MainMenus;
             builder.AuthorizationConfiguration = AuthorizationConfiguration;
             builder.AuditConfiguration = AuditConfiguration;
@@ -140,13 +140,13 @@ namespace NakedFramework.Test.TestCase {
             builder.SupportedSystemTypes = SupportedSystemTypes;
         };
 
-        protected virtual Action<NakedCoreOptions> AddPersistor => builder => builder.AddEF6Persistor(PersistorOptions);
+        protected virtual Action<NakedFrameworkOptions> AddPersistor => builder => builder.AddEF6Persistor(PersistorOptions);
 
-        protected virtual Action<NakedCoreOptions> AddNakedObjects => builder => builder.AddNakedObjects(NakedObjectsOptions);
+        protected virtual Action<NakedFrameworkOptions> AddNakedObjects => builder => builder.AddNakedObjects(NakedObjectsOptions);
 
-        protected virtual Action<NakedCoreOptions> AddNakedFunctions => builder => builder.AddNakedFunctions(NakedFunctionsOptions);
+        protected virtual Action<NakedFrameworkOptions> AddNakedFunctions => builder => builder.AddNakedFunctions(NakedFunctionsOptions);
 
-        protected virtual Action<NakedCoreOptions> AddRestfulObjects => builder => builder.AddRestfulObjects(RestfulObjectsOptions);
+        protected virtual Action<NakedFrameworkOptions> AddRestfulObjects => builder => builder.AddRestfulObjects(RestfulObjectsOptions);
 
         private IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
@@ -347,7 +347,7 @@ namespace NakedFramework.Test.TestCase {
         }
 
         protected virtual void RegisterTypes(IServiceCollection services) {
-            services.AddNakedFramework(NakedCoreOptions);
+            services.AddNakedFramework(NakedFrameworkOptions);
 
             //Externals
             services.AddScoped(p => TestPrincipal);
