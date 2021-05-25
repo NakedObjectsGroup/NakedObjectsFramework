@@ -13,9 +13,9 @@ namespace NakedFramework.Rest.Extensions {
         public bool IsReadOnly { get; set; } = false;
 
         // to change cache settings (transactional, user, non-expiring) where 0 = no-cache
-        // 0, 3600, 86400 are the defaults 
+        // 0, 3600, 86400 are the spec defaults 
         // no caching makes debugging easier
-        public (int, int, int) CacheSettings { get; set; } = (0, 3600, 86400);
+        public (int, int, int) CacheSettings { get; set; } = (0, 0, 0);
 
         // make Accept header handling non-strict (RO spec 2.4.4)
         public bool AcceptHeaderStrict { get; set; } = true;
