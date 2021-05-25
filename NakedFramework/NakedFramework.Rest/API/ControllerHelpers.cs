@@ -243,7 +243,7 @@ namespace NakedFramework.Rest.API {
             };
 
             if (cacheTime == 0) {
-                responseHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
+                responseHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true, MaxAge = new TimeSpan(0, 0, 0, cacheTime)};
                 responseHeaders.Append(HeaderNames.Pragma, "no-cache");
             }
             else {
