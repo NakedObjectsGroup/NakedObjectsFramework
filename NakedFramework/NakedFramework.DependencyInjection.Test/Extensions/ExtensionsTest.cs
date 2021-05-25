@@ -25,7 +25,7 @@ namespace NakedObjects.DependencyInjection.Test.Extensions {
         [TestMethod]
         public void TestNakedObjects() {
             IServiceCollection services = new ServiceCollection();
-            services.AddNakedFramework(options => { options.AddNakedObjects(options => { options.Types = Array.Empty<Type>(); }); });
+            services.AddNakedFramework(options => { options.AddNakedObjects(options => { options.DomainModelTypes = Array.Empty<Type>(); }); });
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace NakedObjects.DependencyInjection.Test.Extensions {
         public void TestAll() {
             IServiceCollection services = new ServiceCollection();
             services.AddNakedFramework(options => {
-                options.AddNakedObjects(options => { options.Types = Array.Empty<Type>(); });
+                options.AddNakedObjects(options => { options.DomainModelTypes = Array.Empty<Type>(); });
                 options.AddNakedFunctions(options => { options.Functions = Array.Empty<Type>(); });
                 options.AddRestfulObjects(options => { options.AcceptHeaderStrict = true; });
             });

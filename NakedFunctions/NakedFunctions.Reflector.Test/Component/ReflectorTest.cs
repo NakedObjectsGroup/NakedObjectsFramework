@@ -49,8 +49,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         }
 
         private static void EmptyObjectSetup(NakedObjectsOptions options) {
-            options.Types = Array.Empty<Type>();
-            options.Services = Array.Empty<Type>();
+            options.DomainModelTypes = Array.Empty<Type>();
+            options.DomainModelServices = Array.Empty<Type>();
             options.NoValidate = true;
         }
 

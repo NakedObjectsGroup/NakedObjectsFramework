@@ -48,8 +48,8 @@ namespace NakedObjects.Rest.App.Demo {
                     options.InlineDetailsInPropertyMemberRepresentations = false;
                 });
                 builder.AddNakedObjects(options => {
-                    options.Types = NakedObjectsRunSettings.Types;
-                    options.Services = NakedObjectsRunSettings.Services;
+                    options.DomainModelTypes = NakedObjectsRunSettings.Types;
+                    options.DomainModelServices = NakedObjectsRunSettings.Services;
                     options.RegisterCustomTypes = services => {
                         services.AddSingleton(typeof(AppendFacetFactoryOrder<>), typeof(AppendFacetFactoryOrder<>));
                         services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AWNotCountedAnnotationFacetFactoryParallel));

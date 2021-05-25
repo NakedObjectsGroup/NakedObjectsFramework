@@ -110,8 +110,8 @@ namespace NakedFramework.Test.TestCase {
 
         protected virtual Action<NakedObjectsOptions> NakedObjectsOptions =>
             options => {
-                options.Types = ObjectTypes;
-                options.Services = Services;
+                options.DomainModelTypes = ObjectTypes;
+                options.DomainModelServices = Services;
                 options.NoValidate = true;
             };
 

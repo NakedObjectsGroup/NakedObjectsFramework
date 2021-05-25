@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.Extensions {
     public static class NakedObjectsExtensions {
         private static ObjectReflectorConfiguration ObjectReflectorConfig(NakedObjectsOptions options) {
             ObjectReflectorConfiguration.NoValidate = options.NoValidate;
-            return new ObjectReflectorConfiguration(options.Types, options.Services, options.ConcurrencyCheck);
+            return new ObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ConcurrencyCheck);
         }
 
         public static void AddNakedObjects(this NakedCoreOptions coreOptions, Action<NakedObjectsOptions> setupAction) {
@@ -36,7 +36,7 @@ namespace NakedObjects.Reflector.Extensions {
             coreOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(ObjectReflectorOrder<>));
             coreOptions.Services.AddSingleton<IReflector, ObjectReflector>();
             coreOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
-            coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.Services));
+            coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
 
             coreOptions.Services.AddDefaultScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
 

@@ -49,8 +49,8 @@ namespace NakedObjects.Rest.Test.App {
                     options.InlineDetailsInPropertyMemberRepresentations = true;
                 });
                 builder.AddNakedObjects(options => {
-                    options.Types = NakedObjectsRunSettings.Types;
-                    options.Services = NakedObjectsRunSettings.Services;
+                    options.DomainModelTypes = NakedObjectsRunSettings.Types;
+                    options.DomainModelServices = NakedObjectsRunSettings.Services;
                     options.ConcurrencyCheck = false;
                     options.NoValidate = true;
                 });

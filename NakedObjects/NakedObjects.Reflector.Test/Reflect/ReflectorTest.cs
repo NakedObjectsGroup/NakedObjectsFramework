@@ -105,8 +105,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = Array.Empty<Type>();
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = Array.Empty<Type>();
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -125,8 +125,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {typeof(object)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {typeof(object)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -146,8 +146,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {typeof(List<object>), typeof(List<int>), typeof(object), typeof(int)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {typeof(List<object>), typeof(List<int>), typeof(object), typeof(int)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -169,8 +169,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {typeof(SetWrapper<>), typeof(object)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {typeof(SetWrapper<>), typeof(object)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -194,8 +194,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -219,8 +219,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -243,8 +243,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -269,8 +269,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {typeof(int)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {typeof(int)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -290,8 +290,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {typeof(TestObjectWithByteArray), typeof(byte), typeof(byte[])};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {typeof(TestObjectWithByteArray), typeof(byte), typeof(byte[])};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -313,8 +313,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {typeof(TestObjectWithStringArray), typeof(string)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {typeof(TestObjectWithStringArray), typeof(string)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -335,8 +335,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {typeof(WithScalars)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {typeof(WithScalars)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -356,8 +356,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {typeof(SimpleDomainObject)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {typeof(SimpleDomainObject)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -379,8 +379,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {typeof(SimpleBoundedObject)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {typeof(SimpleBoundedObject)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
@@ -403,8 +403,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
             static void Setup(NakedCoreOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
                 coreOptions.AddNakedObjects(options => {
-                    options.Types = new[] {typeof(SimpleBoundedObject)};
-                    options.Services = Array.Empty<Type>();
+                    options.DomainModelTypes = new[] {typeof(SimpleBoundedObject)};
+                    options.DomainModelServices = Array.Empty<Type>();
                     options.NoValidate = true;
                 });
             }
