@@ -42,22 +42,22 @@ namespace NakedFunctions.Rest.App.Demo
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedFramework(builder =>
+            services.AddNakedFramework(frameworkOptions =>
             {
-                builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
-                builder.AddNakedFunctions(options =>
+                frameworkOptions.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
+                frameworkOptions.AddEFCorePersistor(peristorOptions => { peristorOptions.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
+                frameworkOptions.AddNakedFunctions(appOptions =>
                 {
-                    options.FunctionalTypes = ModelConfig.Types();
-                    options.Functions = ModelConfig.Functions();
+                    appOptions.FunctionalTypes = ModelConfig.Types();
+                    appOptions.Functions = ModelConfig.Functions();
                 });
-                builder.AddRestfulObjects(_ => { });
+                frameworkOptions.AddRestfulObjects(_ => { });
             });
-            services.AddCors(options =>
+            services.AddCors(corsOptions =>
             {
-                options.AddPolicy(MyAllowSpecificOrigins, builder =>
+                corsOptions.AddPolicy(MyAllowSpecificOrigins, policyBuilder =>
                 {
-                    builder
+                    policyBuilder
                         .WithOrigins("http://localhost:5001")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning", "ETag", "Set-Cookie")

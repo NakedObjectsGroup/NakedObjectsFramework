@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Template.Model
 {
@@ -24,7 +24,7 @@ namespace Template.Model
         public static Type[] MainMenus() =>
             Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
 
-        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCoreDbContextCreator =>
+        public static Func<IConfiguration, DbContext> EFCoreDbContextCreator =>
             c => {
                 var db = new ExampleDbContext(c.GetConnectionString("ExampleCS"));
                 db.Create();
