@@ -45,26 +45,19 @@ namespace NakedObjects.Rest.App.Demo {
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedFramework(builder => {
-                builder.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-               // builder.AddEF6Persistor(options => { options.ContextInstallers = new[] { ModelConfig. }; });
-                builder.AddEFCorePersistor(options => { options.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
-                builder.AddRestfulObjects(options => {
-                    options.AcceptHeaderStrict = true;
-                    options.DebugWarnings = true;
-                    options.DefaultPageSize = 20;
-                    options.InlineDetailsInActionMemberRepresentations = false;
-                    options.InlineDetailsInCollectionMemberRepresentations = false;
-                    options.InlineDetailsInPropertyMemberRepresentations = false;
-                });
-                builder.AddNakedObjects(options => {
-                    options.Types = ModelConfig.DomainModelTypes();
-                    options.Services = ModelConfig.DomainModelServices();
+            services.AddNakedFramework(frameworkOptions => {
+                frameworkOptions.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
+                // builder.AddEF6Persistor(persistorOptions => { persistorOptions.ContextInstallers = new[] { ModelConfig. }; });
+                frameworkOptions.AddEFCorePersistor(persistorOptions => { persistorOptions.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
+                frameworkOptions.AddRestfulObjects(restOptions => {  });
+                frameworkOptions.AddNakedObjects(appOptions => {
+                    appOptions.Types = ModelConfig.DomainModelTypes();
+                    appOptions.Services = ModelConfig.DomainModelServices();
                 });
             });
-            services.AddCors(options => {
-                options.AddPolicy(MyAllowSpecificOrigins, builder => {
-                    builder
+            services.AddCors(corsOptions => {
+                corsOptions.AddPolicy(MyAllowSpecificOrigins, policyBuilder => {
+                    policyBuilder
                         .WithOrigins("http://localhost:5001",
                             "http://localhost")
                         .AllowAnyHeader()
@@ -78,7 +71,6 @@ namespace NakedObjects.Rest.App.Demo {
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder builder, ILoggerFactory loggerFactory)
         {
-
             // for Demo use Log4Net. Configured in log4net.config  
             loggerFactory.AddLog4Net();
 

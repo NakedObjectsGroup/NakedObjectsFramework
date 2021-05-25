@@ -9,44 +9,47 @@ namespace NakedFramework.Rest.Configuration {
     public interface IRestfulObjectsConfiguration {
         public bool DebugWarnings { get; set; }
 
-        /// <summary>
-        /// Set to true to limit availability of resources accessed via the HTTP Get method 
-        /// i.e. to 'read only' functionality.
-        /// </summary>
+
         public bool IsReadOnly { get; set; }
 
-        /// <summary>
-        /// Permits cache settings  to be changed.
-        /// Default values are: 0, 3600, 86400, for: transactional, user, non-expiring caches.
-        /// </summary>
         public (int, int, int) CacheSettings { get; set; }
 
-        /// <summary>
-        /// Permits strict enforcement of Accept headers to be switched off - typically during
-        /// early stages of development only.
-        /// </summary>
         public bool AcceptHeaderStrict { get; set; }
 
-        /// <summary>
-        /// Permits the default page size (20) for returned queryables to be overridden.
-        /// Specifying 0 means 'unlimited'.
-        /// </summary>
         public int DefaultPageSize { get; set; }
 
-        // These flags control Member Representations - if true the 'details' will be included 
-        // in the the member. This will increase the size of the initial representation but reduce 
-        // the number of messages.   
+        /// <summary>
+        /// Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http messages.
+        /// </summary>
         public bool InlineDetailsInActionMemberRepresentations { get; set; }
+
+        /// <summary>
+        /// Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http messages.
+        /// </summary> 
         public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
+
+        /// <summary>
+        /// Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http messages.
+        /// </summary>
         public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
 
-        // overrides for flags 
+        /// <summary>
+        /// Defaults to true for Naked Objects, where 'proto-peristent objects' are referred to as 'transient objects'.
+        /// </summary>
         public bool ProtoPersistentObjects { get; set; }
+
+
         public bool DeleteObjects { get; set; }
         public bool ValidateOnly { get; set; }
         public string DomainModel { get; set; }
         public bool BlobsClobs { get; set; }
         public bool InlinedMemberRepresentations { get; set; }
+
+        /// <summary>
+        /// It is recommended that this flag remain set at the default (false).
+        /// It should only be set to true if necesssary for backwards-compatibility
+        /// with earlier versions of the framework.
+        /// </summary>
         bool AllowMutatingActionOnImmutableObject { get; set; }
     }
 }

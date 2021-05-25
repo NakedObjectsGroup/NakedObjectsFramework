@@ -7,37 +7,85 @@
 
 namespace NakedFramework.Rest.Extensions {
     public class RestfulObjectsOptions {
+        /// <summary>
+        /// The default value is true, meaning that when errors are encountered, 
+        /// additional information may be passed through the RESTful API
+        /// so that it may be displayed on the client. For live deployment, it should be false
+        /// to avoid security risks.
+        /// </summary>
         public bool DebugWarnings { get; set; } = true;
 
-        // to make whole application 'read only' 
+        /// <summary>
+        /// Set to true to limit availability of resources to those accessed via the HTTP Get method only
+        /// i.e. to 'read only' functionality.
+        /// </summary>
         public bool IsReadOnly { get; set; } = false;
 
-        // to change cache settings (transactional, user, non-expiring) where 0 = no-cache
-        // 0, 3600, 86400 are the spec defaults 
-        // no caching makes debugging easier
+        /// <summary>
+        /// Permits cache settings  to be changed for: transactional, short-term, and long-term caches,
+        /// used for: domain objects, user credentials, and static application resources (e.g. menus).
+        /// Default values are 0 (no-caching) for each.
+        /// </summary>
         public (int, int, int) CacheSettings { get; set; } = (0, 0, 0);
 
-        // make Accept header handling non-strict (RO spec 2.4.4)
+        /// <summary>
+        /// Default is true. Setting to false permits strict enforcement of Accept headers to be switched off 
+        /// - which may be convenient during early stages of development only.
+        /// </summary>
         public bool AcceptHeaderStrict { get; set; } = true;
 
-        // to change the size limit on returned collections. The default value is 20.  Specifying 0 means 'unlimited'.
+
+        /// <summary>
+        /// Default is 20. If not specified by a PageSize attribite on the method this is the page size used.
+        /// Specifying 0 means 'unlimited'.
+        /// </summary>
         public int DefaultPageSize { get; set; } = 20;
 
-        // These flags control Member Representations - if true the 'details' will be included 
-        // in the the member. This will increase the size of the initial representation but reduce 
-        // the number of messages.   
+        /// <summary>
+        /// Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http messages.
+        /// </summary>
         public bool InlineDetailsInActionMemberRepresentations { get; set; } = true;
+
+        /// <summary>
+        /// Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http messages.
+        /// </summary>
         public bool InlineDetailsInCollectionMemberRepresentations { get; set; } = true;
+
+        /// <summary>
+        /// Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http messages.
+        /// </summary>
         public bool InlineDetailsInPropertyMemberRepresentations { get; set; } = true;
 
+        /// <summary>
+        /// Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http messages.
+        /// </summary>
+        public bool InlinedMemberRepresentations { get; set; } = true;
+
+        /// <summary>
+        /// It is recommended that this flag remain set at the default (false).
+        /// It should only be set to true if necesssary for backwards-compatibility
+        /// with earlier versions of the framework.
+        /// </summary>
         public bool AllowMutatingActionOnImmutableObject { get; set; } = false;
 
-        // overrides for flags 
+        /// <summary>
+        /// Defaults to true for Naked Objects, where 'proto-peristent objects' are referred to as 'transient objects'.
+        /// </summary>
         public bool ProtoPersistentObjects { get; set; } = true;
+
+        /// <summary>
+        /// Defaults to false - meaning that resources may not be deleted directly via the Http DEL method. It is still
+        /// possible to delete resources via purpose-written actions, however.
+        /// </summary>
         public bool DeleteObjects { get; set; } = false;
+
+        /// <summary>
+        /// Defaults to true. Permits the use of the x-ro-validate-only flag to validate parameters without attempting to
+        /// invoke the action.
+        /// </summary>
         public bool ValidateOnly { get; set; } = true;
-        public string DomainModel { get; set; } = "simple";
+
         public bool BlobsClobs { get; set; } = false;
-        public bool InlinedMemberRepresentations { get; set; } = true;
+
     }
 }
