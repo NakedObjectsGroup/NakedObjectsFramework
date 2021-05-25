@@ -22,6 +22,7 @@ using NakedFramework.Facade.Translation;
 using NakedFramework.Facade.Utility;
 using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
+using NakedFramework.Metamodel.I18N;
 using NakedFramework.Metamodel.Profile;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
@@ -56,6 +57,10 @@ namespace NakedFramework.DependencyInjection.Extensions {
             if (options.ProfileConfiguration is not null) {
                 services.AddSingleton(options.ProfileConfiguration);
                 services.AddDefaultSingleton<IFacetDecorator, ProfileManager>();
+            }
+
+            if (options.UseI18N) {
+                services.AddDefaultSingleton<IFacetDecorator, I18NManager>();
             }
 
             services.AddSingleton<ICoreConfiguration>(p => CoreConfig(options));

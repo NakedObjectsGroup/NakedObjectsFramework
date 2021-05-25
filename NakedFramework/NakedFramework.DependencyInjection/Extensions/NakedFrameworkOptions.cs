@@ -23,6 +23,7 @@ namespace NakedFramework.DependencyInjection.Extensions {
         public IAuthorizationConfiguration AuthorizationConfiguration { get; set; }
         public IAuditConfiguration AuditConfiguration { get; set; }
         public IProfileConfiguration ProfileConfiguration { get; set; }
+        public bool UseI18N { get; set; } = false;
         public Func<IMenuFactory, IMenu[]> MainMenus { get; set; }
         public Func<Type[], Type[]> SupportedSystemTypes { get; set; } = t => t;
         public IServiceCollection Services { get; }
