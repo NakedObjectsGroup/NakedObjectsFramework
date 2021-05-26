@@ -39,7 +39,7 @@ namespace AW.Functions {
 
         #region Comments
 
-        [Named("AppendComment")]
+        [Named("Append Comment")]
         public static IContext AppendCommentToOrders(this IQueryable<SalesOrderHeader> toOrders, string comment, IContext context)
         {
             var updates = toOrders.Select(x => new { original = x, updated = x.WithAppendedComment(comment, context) });
@@ -78,7 +78,7 @@ namespace AW.Functions {
             return order.IsShipped() ? null : "Not shipped yet";
         }
 
-        [Named("ClearComments")]
+        [Named("Clear Comments")]
         public static IContext ClearCommentsFromOrders(this IQueryable<SalesOrderHeader> toOrders, IContext context)
         {
             var updates = toOrders.Select(x => new { original = x, updated = WithClearedComments(x, context) });
