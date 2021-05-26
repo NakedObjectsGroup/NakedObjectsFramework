@@ -39,13 +39,14 @@ namespace AW.Functions {
 
         #region Comments
 
-        public static IContext AppendComment(this IQueryable<SalesOrderHeader> toOrders, string comment, IContext context)
+        [Named("AppendComment")]
+        public static IContext AppendCommentToOrders(this IQueryable<SalesOrderHeader> toOrders, string comment, IContext context)
         {
             var updates = toOrders.Select(x => new { original = x, updated = x.WithAppendedComment(comment, context) });
             return updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
         }
 
-        //public static string ValidateAppendComment(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) =>
+        //public static string ValidateAppendCommentToOrders(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) =>
         //       toOrder.Count() > 5 ? "You may not apply the same comment to more than 5 orders at one time." : null;
 
         public static IContext AppendComment(
@@ -66,7 +67,7 @@ namespace AW.Functions {
         }
 
         public static void CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders, IContext context) =>
-            AppendComment(toOrders, "User unhappy", context);
+            AppendCommentToOrders(toOrders, "User unhappy", context);
 
 
         public static void CommentAsUserUnhappy(this SalesOrderHeader order, IContext context) {
@@ -77,7 +78,8 @@ namespace AW.Functions {
             return order.IsShipped() ? null : "Not shipped yet";
         }
 
-        public static IContext ClearComments(this IQueryable<SalesOrderHeader> toOrders, IContext context)
+        [Named("ClearComments")]
+        public static IContext ClearCommentsFromOrders(this IQueryable<SalesOrderHeader> toOrders, IContext context)
         {
             var updates = toOrders.Select(x => new { original = x, updated = WithClearedComments(x, context) });
             return updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
