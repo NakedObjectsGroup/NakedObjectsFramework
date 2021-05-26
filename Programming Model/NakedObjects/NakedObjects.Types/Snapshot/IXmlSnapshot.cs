@@ -15,7 +15,7 @@ namespace NakedObjects.Snapshot {
         string Xsd { get; }
         string SchemaLocationFileName { get; }
         void Include(string path);
-        void Include(string path, string annotation);
+        void IncludeWithAnnotation(string path, string annotation);
         string TransformedXml(string transform);
         string TransformedXsd(string transform);
     }

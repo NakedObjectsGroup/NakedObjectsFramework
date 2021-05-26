@@ -78,7 +78,7 @@ namespace NakedObjects.SystemTest.Menus {
             var items = menu.AllItems();
 
             var sub = items[0].AssertIsSubMenu().AssertNameEquals("Bar 4").AsSubMenu().AssertItemCountIs(1);
-            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
+            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action 13");
 
             items[1].AssertIsAction().AssertNameEquals("Action2 Renamed");
             items[2].AssertIsAction().AssertNameEquals("Action1");
@@ -116,7 +116,7 @@ namespace NakedObjects.SystemTest.Menus {
 
             //Note that the sub-type's new action has been added here, by the
             //AddRemainingNativeActions on the superclass menu
-            items[4].AssertIsAction().AssertNameEquals("Action6");
+            items[4].AssertIsAction().AssertNameEquals("Action 12");
 
             sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
@@ -135,10 +135,10 @@ namespace NakedObjects.SystemTest.Menus {
 
             var items = menu.AllItems();
             items[0].AssertIsAction().AssertNameEquals("Action1");
-            items[1].AssertIsAction().AssertNameEquals("Action2 Renamed");
-            items[2].AssertIsAction().AssertNameEquals("Action3");
-            items[3].AssertIsAction().AssertNameEquals("Action4");
-            items[4].AssertIsAction().AssertNameEquals("Action5"); //New in this sub-class
+            items[1].AssertIsAction().AssertNameEquals("Action 11");
+            items[2].AssertIsAction().AssertNameEquals("Action2 Renamed");
+            items[3].AssertIsAction().AssertNameEquals("Action3");
+            items[4].AssertIsAction().AssertNameEquals("Action4"); //New in this sub-class
 
             var sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
@@ -184,7 +184,7 @@ namespace NakedObjects.SystemTest.Menus {
             items[1].AssertIsAction().AssertNameEquals("Renamed1");
             items[2].AssertIsAction().AssertNameEquals("Action4");
             items[3].AssertIsAction().AssertNameEquals("Action3");
-            items[4].AssertIsAction().AssertNameEquals("Action5");
+            items[4].AssertIsAction().AssertNameEquals("Action 15");
 
             var sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
@@ -227,9 +227,9 @@ namespace NakedObjects.SystemTest.Menus {
             menu.AssertItemCountIs(8);
             var items = menu.AllItems();
 
-            items[0].AssertIsAction().AssertNameEquals("Action8");
+            items[0].AssertIsAction().AssertNameEquals("Action 14");
             var sub = items[1].AssertIsSubMenu().AssertNameEquals("Bar 4").AsSubMenu().AssertItemCountIs(1);
-            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
+            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action 13");
 
             items[2].AssertIsAction().AssertNameEquals("Action2 Renamed");
             items[3].AssertIsAction().AssertNameEquals("Action1");
@@ -281,7 +281,7 @@ namespace TestObjectMenu {
     }
 
     public class Foo2 : Foo {
-        public void Action5() { }
+        public void Action15() { }
     }
 
     public class Contrib1 {
@@ -332,7 +332,7 @@ namespace TestObjectMenu {
     }
 
     public class Bar2 : Bar {
-        public void Action5() { }
+        public void Action11() { }
     }
 
     public class Bar3 : Bar {
@@ -340,24 +340,24 @@ namespace TestObjectMenu {
             Bar.Menu(menu);
         }
 
-        public void Action6() { }
+        public void Action12() { }
     }
 
     public class Bar4 : Bar {
         public new static void Menu(IMenu menu) {
-            menu.CreateSubMenu("Bar 4").AddAction("Action7");
+            menu.CreateSubMenu("Bar 4").AddAction("Action13");
             Bar.Menu(menu);
         }
 
-        public void Action7() { }
+        public void Action13() { }
     }
 
     public class Bar5 : Bar4 {
         public new static void Menu(IMenu menu) {
-            menu.AddAction("Action8");
+            menu.AddAction("Action14");
             Bar4.Menu(menu);
         }
 
-        public void Action8() { }
+        public void Action14() { }
     }
 }

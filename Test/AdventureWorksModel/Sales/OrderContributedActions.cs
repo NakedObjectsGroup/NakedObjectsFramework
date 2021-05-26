@@ -74,13 +74,14 @@ namespace AdventureWorksModel {
 
         #region Comments
 
-        public void AppendComment(string commentToAppend, [ContributedAction(subMenu)] IQueryable<SalesOrderHeader> toOrders) {
+        [Named("Append Comment")]
+        public void AppendCommentToOrders(string commentToAppend, [ContributedAction(subMenu)] IQueryable<SalesOrderHeader> toOrders) {
             foreach (SalesOrderHeader order in toOrders) {
                 AppendComment(commentToAppend, order);
             }
         }
 
-        public string ValidateAppendComment(string commentToAppend, IQueryable<SalesOrderHeader> toOrders) {
+        public string ValidateAppendCommentToOrders(string commentToAppend, IQueryable<SalesOrderHeader> toOrders) {
             if (commentToAppend == "fail") {
                 return "For test purposes the comment 'fail' fails validation";
             }
@@ -102,7 +103,7 @@ namespace AdventureWorksModel {
         }
 
         public void CommentAsUsersUnhappy([ContributedAction(subMenu)] IQueryable<SalesOrderHeader> toOrders) {
-            AppendComment("User unhappy", toOrders);
+            AppendCommentToOrders("User unhappy", toOrders);
         }
 
         public string ValidateCommentAsUsersUnhappy(IQueryable<SalesOrderHeader> toOrders) {

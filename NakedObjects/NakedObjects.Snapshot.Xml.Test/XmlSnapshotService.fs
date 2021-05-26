@@ -172,7 +172,7 @@ type DomainTests() =
         member x.XmlForComplexObjectIncludeReferenceWithAnnotation() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
-            ss.Include("TestReference", "test annotation")
+            ss.IncludeWithAnnotation("TestReference", "test annotation")
             checkResults "complexTestDataWithReferenceAnnotation" ss.Xml
             ()
         
@@ -180,7 +180,7 @@ type DomainTests() =
         member x.XmlForComplexObjectIncludeCollectionWithAnnotation() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
-            ss.Include("TestCollection", "test annotation")
+            ss.IncludeWithAnnotation("TestCollection", "test annotation")
             checkResults "complexTestDataWithCollectionAnnotation" ss.Xml
             ()
         

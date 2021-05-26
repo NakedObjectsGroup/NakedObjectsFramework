@@ -505,10 +505,10 @@ namespace NakedObjects.Snapshot.Xml.utility {
         public string TransformedXsd(string transform) => TransformXsd(transform);
 
         public void Include(string path) {
-            Include(path, null);
+            IncludeWithAnnotation(path, null);
         }
 
-        public void Include(string path, string annotation) {
+        public void IncludeWithAnnotation(string path, string annotation) {
             // tokenize into successive fields
             var fieldNames = path.Split('/').Select(tok => tok.ToLower()).ToList();
             IncludeField(rootPlace, fieldNames, annotation);

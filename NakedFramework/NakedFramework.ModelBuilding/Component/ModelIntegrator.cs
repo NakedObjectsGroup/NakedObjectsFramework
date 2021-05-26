@@ -64,16 +64,17 @@ namespace NakedFramework.ModelBuilding.Component {
                 _ => Array.Empty<IMenuActionImmutable>()
             };
 
+        private static FacetUtils.ActionHolder ToActionHolder(IMenuActionImmutable a) => new(a);
+        private static FacetUtils.ActionHolder ToActionHolder(IActionSpecImmutable a) => new(a);
+
         private void ValidateModel(IMetamodelBuilder builder) {
-            foreach (var menu in metamodelBuilder.MainMenus) {
-                var menuActions = menu.MenuItems.SelectMany(GetMenuActions).ToList();
-                FacetUtils.ErrorOnDuplicates(menuActions.Select(a => new FacetUtils.ActionHolder(a)).ToList());
+            foreach (var menu in metamodelBuilder.MainMenus.AsParallel()) {
+                menu.MenuItems.SelectMany(GetMenuActions).Select(ToActionHolder).ErrorOnDuplicates();
             }
 
-            //foreach (var spec in metamodelBuilder.AllSpecifications) {
-            //    var actions = spec.ObjectActions.ToList();
-            //    FacetUtils.ErrorOnDuplicates(actions.Select(a => new FacetUtils.ActionHolder(a)).ToList());
-            //}
+            foreach (var spec in metamodelBuilder.AllSpecifications.AsParallel()) {
+                spec.ObjectActions.Union(spec.ContributedActions).Select(ToActionHolder).ErrorOnDuplicates();
+            }
         }
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {

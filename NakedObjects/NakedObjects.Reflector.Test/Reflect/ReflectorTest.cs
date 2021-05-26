@@ -22,16 +22,38 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Error;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
+using NakedObjects;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.FacetFactory;
+using TestData;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
+
+namespace TestData {
+    public class WithDuplicates
+    {
+        [Key]
+        [Title]
+        public virtual int Id { get; set; }
+
+        public virtual void Duplicate() { }
+
+        public virtual void Duplicate(int parm) { }
+    }
+
+    public class WithDuplicatesService
+    {
+        public virtual WithDuplicates Duplicate([ContributedAction] WithDuplicates parm) => parm;
+    }
+}
+
 
 namespace NakedObjects.Reflector.Test.Reflect {
     public class NullMenuFactory : IMenuFactory {
@@ -373,6 +395,30 @@ namespace NakedObjects.Reflector.Test.Reflect {
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ReflectionException), "string")]
+        public void ReflectDuplicateMethods() {
+            static void Setup(NakedFrameworkOptions coreOptions) {
+                coreOptions.AddNakedObjects(options => {
+                    options.DomainModelTypes = new[] {typeof(WithDuplicates)};
+                    options.DomainModelServices = new[] {typeof(WithDuplicatesService)};
+                });
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host) {
+                try {
+                    container.GetService<IModelBuilder>()?.Build();
+                }
+                catch (ReflectionException e) {
+                    Assert.AreEqual("Name clash between user actions defined on TestData.WithDuplicates.Duplicate and TestData.WithDuplicates.Duplicate and TestData.WithDuplicatesService.Duplicate: actions on and/or contributed to a menu or object must have unique names.", e.Message);
+                    throw;
+                }
+            }
+        }
+
+
+        [TestMethod]
         public void ReplaceFacetFactory() {
             TestHook = services => ConfigHelpers.RegisterReplacementFacetFactory<IObjectFacetFactoryProcessor, ReplacementBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
@@ -638,5 +684,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         }
 
         #endregion
+
+      
     }
 }

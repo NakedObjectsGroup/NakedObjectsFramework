@@ -124,7 +124,9 @@ namespace NakedFramework.Test.TestCase {
                 options.Functions = Functions;
             };
 
-        protected virtual Action<RestfulObjectsOptions> RestfulObjectsOptions => options => { };
+        protected virtual Action<RestfulObjectsOptions> RestfulObjectsOptions => options => {
+            options.CacheSettings = (0, 3600, 86400);
+        };
 
         protected virtual Action<NakedFrameworkOptions> NakedFrameworkOptions =>
             builder => {

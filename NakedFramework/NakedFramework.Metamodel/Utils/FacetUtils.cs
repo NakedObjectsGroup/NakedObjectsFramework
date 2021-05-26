@@ -90,7 +90,7 @@ namespace NakedFramework.Metamodel.Utils {
             return 0;
         }
 
-        public static void ErrorOnDuplicates(IList<ActionHolder> actions) {
+        public static void ErrorOnDuplicates(this IEnumerable<ActionHolder> actions) {
             var names = actions.Select(s => s.Name).ToArray();
             var distinctNames = names.Distinct().ToArray();
 
