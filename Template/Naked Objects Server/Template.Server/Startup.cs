@@ -47,7 +47,7 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(frameworkOptions => {
                 frameworkOptions.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                // builder.AddEF6Persistor(persistorOptions => { persistorOptions.ContextInstallers = new[] { ModelConfig. }; });
+                // frameworkOptions.AddEF6Persistor(persistorOptions => { persistorOptions.ContextInstallers = new[] { ModelConfig. }; });
                 frameworkOptions.AddEFCorePersistor(persistorOptions => { persistorOptions.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
                 frameworkOptions.AddRestfulObjects(restOptions => {  });
                 frameworkOptions.AddNakedObjects(appOptions => {
