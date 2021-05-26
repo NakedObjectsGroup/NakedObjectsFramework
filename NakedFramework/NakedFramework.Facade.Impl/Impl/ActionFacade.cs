@@ -16,12 +16,10 @@ using NakedFramework.Facade.Interface;
 namespace NakedFramework.Facade.Impl.Impl {
     public class ActionFacade : IActionFacade {
         private readonly INakedObjectsFramework framework;
-        private readonly string overloadedUniqueId;
 
-        public ActionFacade(IActionSpec action, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework, string overloadedUniqueId) {
+        public ActionFacade(IActionSpec action, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
             WrappedSpec = action ?? throw new NullReferenceException($"{nameof(action)} is null");
             this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
-            this.overloadedUniqueId = overloadedUniqueId ?? throw new NullReferenceException($"{nameof(overloadedUniqueId)} is null");
             FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
         }
 
@@ -59,7 +57,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public string MemberOrderName => WrappedSpec.GetMemberOrderName();
 
-        public string Id => WrappedSpec.Id + overloadedUniqueId;
+        public string Id => WrappedSpec.Id;
 
         public ITypeFacade ReturnType => new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
 
@@ -72,7 +70,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public int ParameterCount => WrappedSpec.ParameterCount;
 
-        public IActionParameterFacade[] Parameters => WrappedSpec.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray();
+        public IActionParameterFacade[] Parameters => WrappedSpec.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework)).Cast<IActionParameterFacade>().ToArray();
 
         public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade) objectFacade)?.WrappedNakedObject);
 

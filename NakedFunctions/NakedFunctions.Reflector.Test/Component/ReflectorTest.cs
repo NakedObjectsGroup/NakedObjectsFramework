@@ -1090,7 +1090,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                     container.GetService<IModelBuilder>()?.Build();
                 }
                 catch (ReflectionException e) {
-                    Assert.AreEqual("Name clash between user actions defined on NakedFunctions.Reflector.Test.Component.DuplicateFunctions.Function and NakedFunctions.Reflector.Test.Component.DuplicateFunctions.Function", e.Message);
+                    Assert.AreEqual("Name clash between user actions defined on NakedFunctions.Reflector.Test.Component.DuplicateFunctions.Function and NakedFunctions.Reflector.Test.Component.DuplicateFunctions.Function: actions on and/or contributed to a menu or object must have unique names.", e.Message);
                     throw;
                 }
             }
@@ -1115,7 +1115,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                     container.GetService<IModelBuilder>()?.Build();
                 }
                 catch (ReflectionException e) {
-                    Assert.AreEqual("Name clash between user actions defined on NakedFunctions.Reflector.Test.Component.DuplicateFunctions1.Function and NakedFunctions.Reflector.Test.Component.DuplicateFunctions2.Function", e.Message);
+                    Assert.AreEqual("Name clash between user actions defined on NakedFunctions.Reflector.Test.Component.DuplicateFunctions1.Function and NakedFunctions.Reflector.Test.Component.DuplicateFunctions2.Function: actions on and/or contributed to a menu or object must have unique names.", e.Message);
                     throw;
                 }
             }

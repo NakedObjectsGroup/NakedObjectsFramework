@@ -81,6 +81,8 @@ type Tests() =
             
         override x.EnforceProxies = false
 
+        override x.NotPersistedTypes = Func<Type[]> (fun () -> [| typeof<WithAction> |])
+
         override x.ContextCreators = 
             [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new CodeFirstContextLocal(csRTA) :> Data.Entity.DbContext) |]
 

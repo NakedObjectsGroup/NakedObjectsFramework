@@ -2080,8 +2080,8 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                       TProperty
                           ("AnActionWithReferenceParametersWithAutoComplete", 
                            TObjectJson(makeObjectActionMember "AnActionWithReferenceParametersWithAutoComplete" oName mst [ p17; p18 ]))
-                      TProperty("AnOverloadedAction0", TObjectJson(makeActionMember "objects" "AnOverloadedAction0" oName "An Overloaded Action" "" mst []))
-                      TProperty("AnOverloadedAction1", TObjectJson(makeActionMember "objects" "AnOverloadedAction1" oName "An Overloaded Action" "" mst [ p19 ]))
+                      TProperty("AnOverloadedAction0", TObjectJson(makeActionMember "objects" "AnOverloadedAction0" oName "An Overloaded Action0" "" mst []))
+                      TProperty("AnOverloadedAction1", TObjectJson(makeActionMember "objects" "AnOverloadedAction1" oName "An Overloaded Action1" "" mst [ p19 ]))
                       TProperty("AnActionWithValueParameter", TObjectJson(makeObjectActionMember "AnActionWithValueParameter" oName mst [ p20 ]))
                       TProperty("AnActionWithValueParameterWithRange", TObjectJson(makeObjectActionMember "AnActionWithValueParameterWithRange" oName mst [ p45 ]))                      
                       TProperty
@@ -2732,9 +2732,9 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                       TProperty
                           ("AnActionWithReferenceParametersWithAutoComplete", 
                            TObjectJson(makeObjectActionMemberSimple "AnActionWithReferenceParametersWithAutoComplete" oName mst [ p17; p18 ]))
-                      TProperty("AnOverloadedAction0", TObjectJson(makeActionMemberSimple "objects" "AnOverloadedAction0" oName "An Overloaded Action" "" mst []))                      
+                      TProperty("AnOverloadedAction0", TObjectJson(makeActionMemberSimple "objects" "AnOverloadedAction0" oName "An Overloaded Action0" "" mst []))                      
                       TProperty
-                          ("AnOverloadedAction1", TObjectJson(makeActionMemberSimple "objects" "AnOverloadedAction1" oName "An Overloaded Action" "" mst [ p19 ]))
+                          ("AnOverloadedAction1", TObjectJson(makeActionMemberSimple "objects" "AnOverloadedAction1" oName "An Overloaded Action1" "" mst [ p19 ]))
                       TProperty("AnActionWithValueParameter", TObjectJson(makeObjectActionMemberSimple "AnActionWithValueParameter" oName mst [ p20 ]))                      
                       TProperty("AnActionWithValueParameterWithRange", TObjectJson(makeObjectActionMember "AnActionWithValueParameterWithRange" oName mst [ p45 ]))
                       TProperty

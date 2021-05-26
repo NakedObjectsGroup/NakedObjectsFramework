@@ -92,6 +92,8 @@ namespace NakedFramework.Test.TestCase {
 
         protected virtual Func<Type[], Type[]> SupportedSystemTypes => t => t;
 
+        protected virtual Func<Type[]> NotPersistedTypes => Array.Empty<Type>;
+
         protected virtual Func<IConfiguration, DbContext>[] ContextCreators => null;
 
         protected virtual IAuthorizationConfiguration AuthorizationConfiguration => null;
@@ -106,6 +108,7 @@ namespace NakedFramework.Test.TestCase {
             options => {
                 options.ContextCreators = ContextCreators;
                 options.EnforceProxies = EnforceProxies;
+                options.NotPersistedTypes = NotPersistedTypes;
             };
 
         protected virtual Action<NakedObjectsOptions> NakedObjectsOptions =>

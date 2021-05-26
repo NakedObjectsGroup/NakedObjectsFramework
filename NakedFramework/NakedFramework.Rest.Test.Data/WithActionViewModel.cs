@@ -224,12 +224,12 @@ namespace RestfulObjects.Test.Data {
 
         public override ICollection<MostSimple> AnErrorCollection() => throw new DomainException("An error exception");
 
-        public virtual MostSimple AnOverloadedAction()
+        public virtual MostSimple AnOverloadedAction0()
         {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 
-        public virtual MostSimple AnOverloadedAction(string parm)
+        public virtual MostSimple AnOverloadedAction1(string parm)
         {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }

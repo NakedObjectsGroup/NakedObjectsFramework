@@ -181,7 +181,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
             foreach (var property in collectionProperties) {
                 var returnType = property.PropertyType;
                 if (IsUnsupportedSystemType(returnType, metamodel)) {
-                    // logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {returnType}");
+                    logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {returnType}");
                 }
                 else {
                     IIdentifier identifier = new IdentifierImpl(FullName, property.Name);

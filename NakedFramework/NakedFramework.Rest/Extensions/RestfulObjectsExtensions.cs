@@ -38,7 +38,7 @@ namespace NakedFramework.Rest.Extensions {
                 ProtoPersistentObjects = options.ProtoPersistentObjects,
                 DeleteObjects = options.DeleteObjects,
                 ValidateOnly = options.ValidateOnly,
-                DomainModel = options.DomainModel,
+                DomainModel = "simple",
                 BlobsClobs = options.BlobsClobs,
                 InlinedMemberRepresentations = options.InlinedMemberRepresentations,
                 AllowMutatingActionOnImmutableObject = options.AllowMutatingActionOnImmutableObject

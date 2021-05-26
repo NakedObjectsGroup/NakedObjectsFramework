@@ -100,13 +100,8 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
             //optionsBuilder.LogTo(m => Console.WriteLine(m), LogLevel.Trace);
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            //modelBuilder.Entity<Department>()
-            //    .HasMany(e => e.EmployeeDepartmentHistories).
-            //    .WithOne(e => e.Department)
-            //    ;
-
+            
             modelBuilder.Entity<ProductSubcategory>().ToTable("ProductSubcategory", "Production");
             modelBuilder.Entity<ProductCategory>().ToTable("ProductCategory", "Production");
             modelBuilder.Entity<WorkOrder>().ToTable("WorkOrder", "Production");

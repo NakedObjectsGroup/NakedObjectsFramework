@@ -19,9 +19,9 @@ namespace RestfulObjects.Test.Data {
         [DefaultValue(0)]
         public virtual int Id { get; set; }
 
-        public virtual MostSimple AnOverloadedAction() => Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        public virtual MostSimple AnOverloadedAction0() => Container.Instances<MostSimple>().Single(x => x.Id == 1);
 
-        public virtual MostSimple AnOverloadedAction(string parm) => Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        public virtual MostSimple AnOverloadedAction1(string parm) => Container.Instances<MostSimple>().Single(x => x.Id == 1);
 
         [Edit]
         public WithActionObject AnActionWithEditAnnotation(int id) => new() {Id = id};

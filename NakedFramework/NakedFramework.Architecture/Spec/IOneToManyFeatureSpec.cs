@@ -10,7 +10,7 @@ namespace NakedFramework.Architecture.Spec {
     ///     Base interface for <see cref="IOneToManyAssociationSpec" />.
     /// </summary>
     /// <para>
-    ///     Introduced for symmetry with <see cref="IOneToOneFeatureSpec" />;
+    ///     Introduced for symmetry with <see cref="IOneToOneFeatureSpec" />
     /// </para>
     /// <para>
     ///     Is also the route up to the <see cref="IFeatureSpec" /> superinterface.

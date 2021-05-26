@@ -81,7 +81,7 @@ namespace NakedFramework.Architecture.Interactions {
         ///     The arguments for a proposed action invocation.
         /// </summary>
         /// <para>
-        ///     Will be set if the <see cref="InteractionType" /> type is <see cref="Interactions.InteractionType.ActionInvoke" />;
+        ///     Will be set if the <see cref="InteractionType" /> type is <see cref="Interactions.InteractionType.ActionInvoke" />
         ///     <c>null</c> otherwise.
         /// </para>
         INakedObjectAdapter[] ProposedArguments { get; }

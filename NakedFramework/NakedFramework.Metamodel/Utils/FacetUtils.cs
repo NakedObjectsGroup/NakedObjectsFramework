@@ -101,6 +101,7 @@ namespace NakedFramework.Metamodel.Utils {
                 foreach (var name in duplicates) {
                     var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
                     var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
+                    error += ": actions on and/or contributed to a menu or object must have unique names.";
                     errors.Add(error);
                 }
 
