@@ -85,6 +85,9 @@ namespace NakedFramework.Rest.Extensions {
         /// </summary>
         public bool ValidateOnly { get; set; } = true;
 
+        /// <summary>
+        /// Defaults to false. Set this to true to allow blobs/clobs to be passed through the RESTful API.
+        /// </summary>
         public bool BlobsClobs { get; set; } = false;
 
     }
