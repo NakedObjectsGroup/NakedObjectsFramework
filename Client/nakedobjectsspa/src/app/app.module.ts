@@ -8,7 +8,7 @@ import { LibModule as ServicesModule, ObfuscateService } from '@nakedobjects/ser
 import { LibModule as ViewModelModule } from '@nakedobjects/view-models';
 import { RoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-//import { Base64ObfuscateService } from './base64obfuscate.service';
+// import { Base64ObfuscateService } from './base64obfuscate.service';
 
 @NgModule({
     declarations: [
@@ -26,7 +26,7 @@ import { AppComponent } from './app.component';
         GeminiModule.forRoot(),
     ],
     providers: [
-        //{provide : ObfuscateService, useClass: Base64ObfuscateService}
+        // {provide : ObfuscateService, useClass: Base64ObfuscateService}
     ],
     bootstrap: [AppComponent]
 })

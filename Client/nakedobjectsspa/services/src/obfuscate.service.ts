@@ -1,13 +1,12 @@
-import { Injectable } from "@angular/core";
-
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ObfuscateService  {
-    public obfuscate(s : string){
+    public obfuscate(s: string) {
         return s;
     }
 
-    public deobfuscate(s : string){
+    public deobfuscate(s: string) {
         return s;
     }
 }

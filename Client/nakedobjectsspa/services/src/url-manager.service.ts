@@ -241,11 +241,11 @@ export class UrlManagerService {
         return { rp: allRawParams, rpwr: rawParamsWithoutReload };
     }
 
-    private obfuscate(s : string) {
+    private obfuscate(s: string) {
         return this.obfuscateService.obfuscate(s);
     }
 
-    private deobfuscate(s : string) {
+    private deobfuscate(s: string) {
         return this.obfuscateService.deobfuscate(s);
     }
 
