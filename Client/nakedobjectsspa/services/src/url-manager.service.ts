@@ -23,6 +23,8 @@ import { map as rxjsmap } from 'rxjs/operators';
 import { ConfigService } from './config.service';
 import { ClientErrorCode, ErrorCategory, HttpStatusCode } from './error.wrapper';
 import { LoggerService } from './logger.service';
+import { ObfuscateService } from './obfuscate.service';
+
 import {
     ApplicationMode,
     CollectionViewState,
@@ -102,7 +104,8 @@ export class UrlManagerService {
         private readonly router: Router,
         private readonly location: Location,
         private readonly configService: ConfigService,
-        private readonly loggerService: LoggerService
+        private readonly loggerService: LoggerService,
+        private readonly obfuscateService: ObfuscateService
     ) {
     }
 
@@ -224,7 +227,7 @@ export class UrlManagerService {
     }
 
     private getMappedValues(mappedIds: Dictionary<string>) {
-        return mapValues(mappedIds, v => Ro.Value.fromJsonString(v, this.shortCutMarker, this.urlShortCuts));
+        return mapValues(mappedIds, v => Ro.Value.fromJsonString(this.deobfuscate(v), this.shortCutMarker, this.urlShortCuts));
     }
 
     private getInteractionMode(rawInteractionMode: string): InteractionMode {
@@ -238,6 +241,14 @@ export class UrlManagerService {
         return { rp: allRawParams, rpwr: rawParamsWithoutReload };
     }
 
+    private obfuscate(s : string) {
+        return this.obfuscateService.obfuscate(s);
+    }
+
+    private deobfuscate(s : string) {
+        return this.obfuscateService.deobfuscate(s);
+    }
+
     private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: Pane, routeParams: { [key: string]: string }) {
         ({ rp: paneRouteData.rawParms, rpwr: paneRouteData.rawParmsWithoutReload } = this.getPaneParams(routeParams, paneId));
         paneRouteData.menuId = this.getId(akm.menu + paneId, routeParams);
@@ -247,7 +258,7 @@ export class UrlManagerService {
         const rawErrorCategory = this.getId(akm.errorCat + paneId, routeParams);
         paneRouteData.errorCategory = rawErrorCategory ? (<any>ErrorCategory)[rawErrorCategory] : null;
 
-        paneRouteData.objectId = this.getId(akm.object + paneId, routeParams);
+        paneRouteData.objectId =  this.deobfuscate(this.getId(akm.object + paneId, routeParams));
         paneRouteData.actionsOpen = this.getId(akm.actions + paneId, routeParams);
 
         const rawCollectionState = this.getId(akm.collection + paneId, routeParams);
@@ -582,14 +593,14 @@ export class UrlManagerService {
     }
 
     setObject = (resultObject: Ro.DomainObjectRepresentation, paneId: Pane = Pane.Pane1) => {
-        const oid = resultObject.id();
+        const oid = this.obfuscate(resultObject.id());
         const key = `${akm.object}${paneId}`;
         const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
     setObjectWithMode = (resultObject: Ro.DomainObjectRepresentation, newMode: InteractionMode, paneId: Pane = Pane.Pane1) => {
-        const oid = resultObject.id();
+        const oid =  this.obfuscate(resultObject.id());
         const okey = `${akm.object}${paneId}`;
         const mkey = `${akm.interactionMode}${paneId}`;
         const newValues = zipObject([okey, mkey], [oid, InteractionMode[newMode]]) as Dictionary<string>;
@@ -602,7 +613,7 @@ export class UrlManagerService {
         const parent = actionMember.parent;
 
         if (parent instanceof Ro.DomainObjectRepresentation) {
-            newValues[`${akm.object}${toPaneId}`] = parent.id();
+            newValues[`${akm.object}${toPaneId}`] = this.obfuscate(parent.id());
         }
 
         if (parent instanceof Ro.MenuRepresentation) {
@@ -618,14 +629,14 @@ export class UrlManagerService {
 
         newValues[`${akm.collection}${toPaneId}`] = newState;
 
-        forEach(parms, (p, id) => this.setId(`${akm.parm}${toPaneId}_${id}`, p.toJsonString(this.shortCutMarker, this.urlShortCuts), newValues));
+        forEach(parms, (p, id) => this.setId(`${akm.parm}${toPaneId}_${id}`, this.obfuscate(p.toJsonString(this.shortCutMarker, this.urlShortCuts)), newValues));
 
         this.executeTransition(newValues, toPaneId, Transition.ToList, () => true);
         return newValues;
     }
 
     setProperty = (href: string, paneId: Pane = Pane.Pane1) => {
-        const oid = this.getOidFromHref(href);
+        const oid = this.obfuscate(this.getOidFromHref(href));
         const key = `${akm.object}${paneId}`;
         const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
@@ -633,7 +644,7 @@ export class UrlManagerService {
 
     setItem = (link: Ro.Link, paneId: Pane = Pane.Pane1) => {
         const href = link.href();
-        const oid = this.getOidFromHref(href);
+        const oid = this.obfuscate(this.getOidFromHref(href));
         const key = `${akm.object}${paneId}`;
         const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
@@ -643,7 +654,7 @@ export class UrlManagerService {
         const href = attachmentlink.href();
         const okey = `${akm.object}${paneId}`;
         const akey = `${akm.attachment}${paneId}`;
-        const oid = this.getOidFromHref(href);
+        const oid = this.obfuscate(this.getOidFromHref(href));
         const pid = this.getPidFromHref(href);
 
         const newValues = zipObject([okey, akey], [oid, pid]) as Dictionary<string>;
@@ -813,11 +824,11 @@ export class UrlManagerService {
     getListCacheIndexFromSearch = (search: Dictionary<string>, paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
 
         const s1 = this.getId(`${akm.menu}${paneId}`, search) || '';
-        const s2 = this.getId(`${akm.object}${paneId}`, search) || '';
+        const s2 = this.deobfuscate(this.getId(`${akm.object}${paneId}`, search) || '');
         const s3 = this.getId(`${akm.action}${paneId}`, search) || '';
 
         const parms = <Dictionary<string>>pickBy(search, (v, k) => !!k && k.indexOf(akm.parm + paneId) === 0);
-        const mappedParms = mapValues(parms, v => decodeURIComponent(Ro.decompress(v, this.shortCutMarker, this.urlShortCuts)));
+        const mappedParms = mapValues(parms, v => decodeURIComponent(Ro.decompress(this.deobfuscate(v), this.shortCutMarker, this.urlShortCuts)));
 
         const s4 = reduce(mappedParms, (r, n, k) => r + (k + '=' + n + this.keySeparator), '');
 

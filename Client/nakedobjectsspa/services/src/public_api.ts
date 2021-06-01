@@ -7,6 +7,7 @@ export * from './logger.service';
 export * from './mask.service';
 export * from './rep-loader.service';
 export * from './url-manager.service';
+export * from './obfuscate.service';
 
 export * from './auth.service';
 

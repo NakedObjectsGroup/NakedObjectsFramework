@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { ObfuscateService } from './obfuscate.service';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './auth.service';
 import { ClickHandlerService } from './click-handler.service';
@@ -43,6 +44,7 @@ export class LibModule {
                 LoggerService,
                 ConfigService,
                 AuthService,
+                ObfuscateService,
                 { provide: ErrorHandler, useClass: GeminiErrorHandler },
                 { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
                 { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },
