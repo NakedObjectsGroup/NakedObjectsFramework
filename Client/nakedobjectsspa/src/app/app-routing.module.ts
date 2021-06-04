@@ -16,12 +16,9 @@ import {
 import { AuthService, ViewType } from '@nakedobjects/services';
 
 const routes: Routes = [
-    {
-        path: '',
-        redirectTo: '/gemini/home',
-        canActivate: [AuthService],
-        pathMatch: 'full'
-    },
+    { path: '',
+    redirectTo: '/gemini/home',
+    pathMatch: 'full' },
     {
         path: 'gemini/home',
         component: HomeComponent,
@@ -140,16 +137,13 @@ const routes: Routes = [
         canActivate: [AuthService],
         data: { pane: 1, paneType: 'single' }
     },
-    {
-        path: '**',
-        redirectTo: '/gemini/home',
-        canActivate: [AuthService],
-        pathMatch: 'full'
-    }
+    { path: '**',
+    redirectTo: '/gemini/home',
+    pathMatch: 'full' }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
     exports: [RouterModule],
     providers: []
 })
