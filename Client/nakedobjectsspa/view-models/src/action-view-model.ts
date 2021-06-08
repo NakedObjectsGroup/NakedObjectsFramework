@@ -70,30 +70,27 @@ export class ActionViewModel {
     }
 
     readonly invokeWithoutDialogWithParameters = (parameters: Promise<ParameterViewModel[]>, right?: boolean) => {
-        this.incrementPendingPotentAction();
-
         return parameters
             .then((pps: ParameterViewModel[]) => {
                 return this.execute(pps, right);
-            })
+            });
+    }
+
+    private readonly invokeWithoutDialog = (right?: boolean) => {
+        this.incrementPendingPotentAction();
+        this.invokeWithoutDialogWithParameters(this.parameters(), right)
             .then((actionResult: Ro.ActionResultRepresentation) => {
                 this.decrementPendingPotentAction();
-                return actionResult;
+                // if expect result and no warning from server generate one here
+                if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
+                    this.context.broadcastWarning(Msg.noResultMessage);
+                }
             })
             .catch((reject: ErrorWrapper) => {
                 this.decrementPendingPotentAction();
                 const display = (em: Ro.ErrorMap) => this.vm.setMessage(em.invalidReason() || em.warningMessage);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
-    }
-
-    private readonly invokeWithoutDialog = (right?: boolean) => {
-        this.invokeWithoutDialogWithParameters(this.parameters(), right).then((actionResult: Ro.ActionResultRepresentation) => {
-            // if expect result and no warning from server generate one here
-            if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
-                this.context.broadcastWarning(Msg.noResultMessage);
-            }
-        });
     }
 
     // open dialog on current pane always - invoke action goes to pane indicated by click
