@@ -71,7 +71,14 @@ class RequestOptions {
         return this.method === 'POST' || this.method === 'PUT' || this.method === 'DELETE';
     }
 
-    toHttpRequest() {
+    toHttpRequest(allowBrowserCache: boolean) {
+        if (!allowBrowserCache) {
+            const ccHeaders =  ['max-age=0', 'must-revalidate'];
+            this.init.headers = this.init.headers
+                ? this.init.headers.append('Cache-Control', ccHeaders)
+                : new HttpHeaders({'Cache-Control' : ccHeaders });
+        }
+
         return new HttpRequest(this.method, this.url, this.body, this.init);
     }
 }
@@ -85,6 +92,8 @@ export class RepLoaderService {
     ) { }
 
     private loadingCount = 0;
+
+    private allowBrowserCache = false; // initialise to false so first call always goes to server
 
     private loadingCountSource = new Subject<number>();
 
@@ -121,7 +130,8 @@ export class RepLoaderService {
                 return this.handleInvalidResponse(ErrorCategory.HttpServerError);
             }
         } else if (response.status <= 0) {
-            // failed to connect
+            // failed to connect - next call should avoid browser cache
+            this.allowBrowserCache = false;
             category = ErrorCategory.ClientError;
             error = `Failed to connect to server: ${response.url || 'unknown'}`;
         } else {
@@ -156,7 +166,7 @@ export class RepLoaderService {
     private httpValidate(options: RequestOptions): Promise<boolean> {
         this.loadingCountSource.next(++(this.loadingCount));
 
-        return this.http.request(options.toHttpRequest())
+        return this.http.request(options.toHttpRequest(this.allowBrowserCache))
             .toPromise()
             .then(() => {
                 this.loadingCountSource.next(--(this.loadingCount));
@@ -216,9 +226,10 @@ export class RepLoaderService {
 
         this.loadingCountSource.next(++(this.loadingCount));
 
-        return this.http.request(options.toHttpRequest())
+        return this.http.request(options.toHttpRequest(this.allowBrowserCache))
             .toPromise()
             .then((r: HttpResponse<Ro.IRepresentation>) => {
+                this.allowBrowserCache = true;
                 this.loadingCountSource.next(--(this.loadingCount));
 
                 if (!this.isValidResponse(r.body)) {
@@ -297,9 +308,10 @@ export class RepLoaderService {
 
         const options = RequestOptions.fromFile(url, 'GET', mt);
 
-        return this.http.request(options.toHttpRequest())
+        return this.http.request(options.toHttpRequest(this.allowBrowserCache))
             .toPromise()
             .then((r: HttpResponse<Blob>) => {
+                this.allowBrowserCache = true;
                 const blob = r.body!;
                 this.cache.add(options.url!, blob);
                 return blob;
@@ -314,9 +326,10 @@ export class RepLoaderService {
 
         const options = RequestOptions.fromFile(url, 'POST', mt, file);
 
-        return this.http.request(options.toHttpRequest())
+        return this.http.request(options.toHttpRequest(this.allowBrowserCache))
             .toPromise()
             .then(() => {
+                this.allowBrowserCache = true;
                 return Promise.resolve(true);
             })
             .catch(() => {
