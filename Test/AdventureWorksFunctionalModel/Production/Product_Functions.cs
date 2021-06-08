@@ -121,14 +121,13 @@ namespace AW.Functions
         }
 
         [Edit]
-        public static IContext EditCategories(this Product p,
-      ProductCategory category, ProductSubcategory subCategory, IContext context) =>
+        public static IContext EditCategories(this Product p, ProductCategory category, ProductSubcategory subCategory, IContext context) =>
               UpdateProduct(p, p with { ProductSubcategory = subCategory }, context);
 
         public static IList<ProductSubcategory> Choices2EditCategories(this Product p,
-            ProductCategory productCategory, IContext context) =>
-            productCategory is null ? new ProductSubcategory[] { }
-            : context.Instances<ProductSubcategory>().Where(psc => psc.ProductCategory.ProductCategoryID == productCategory.ProductCategoryID).ToArray();
+            ProductCategory category, IContext context) =>
+            category is null ? new ProductSubcategory[] { }
+            : context.Instances<ProductSubcategory>().Where(psc => psc.ProductCategory.ProductCategoryID == category.ProductCategoryID).ToArray();
 
         #endregion
 
