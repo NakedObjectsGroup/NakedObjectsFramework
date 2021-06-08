@@ -19,6 +19,7 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
@@ -137,7 +138,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             }
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveParametersChoicesMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveParametersChoicesMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, MethodInfo actionMethod, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
                 var paramName = paramNames[i];
@@ -180,9 +181,6 @@ namespace NakedObjects.Reflector.FacetFactory {
                 var methodToUse = methodUsingName ?? methodUsingIndex;
 
                 if (methodToUse != null) {
-                    // deliberately not removing both if duplicate to show that method  is duplicate
-                    methodRemover.SafeRemoveMethod(methodToUse);
-
                     // add facets directly to parameters, not to actions
                     var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 
@@ -193,7 +191,28 @@ namespace NakedObjects.Reflector.FacetFactory {
                         parameterNamesAndTypes.Add((name, oSpec));
                     }
 
-                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], Logger<ActionChoicesFacetViaMethod>(), isMultiple));
+                    var mismatchedParm = false;
+
+                    // all parameter names and types must match 
+                    foreach (var (pName, _) in parameterNamesAndTypes) {
+                        var actionParm = actionMethod.GetParameters().SingleOrDefault(p => p.Name == pName);
+                        var choicesParm = methodToUse.GetParameters().SingleOrDefault(p => p.Name == pName);
+
+                        if (actionParm is null) {
+                            logger.LogWarning($"Choices method: {methodToUse.DeclaringType}.{methodToUse.Name} has non matching parameter name: {pName}");
+                            mismatchedParm = true;
+                        }
+                        else if (actionParm.ParameterType != choicesParm?.ParameterType) {
+                            logger.LogWarning($"Choices method parameter: {methodToUse.DeclaringType}.{methodToUse.Name}.{pName} has non matching type: {choicesParm?.ParameterType} should be: {actionParm.ParameterType}");
+                            mismatchedParm = true;
+                        }
+                    }
+
+                    if (!mismatchedParm) {
+                        // deliberately not removing both if duplicate to show that method  is duplicate
+                        methodRemover.SafeRemoveMethod(methodToUse);
+                        FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], Logger<ActionChoicesFacetViaMethod>(), isMultiple));
+                    }
                 }
             }
 
@@ -319,7 +338,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 var paramNames = actionMethod.GetParameters().Select(p => p.Name).ToArray();
 
                 FindAndRemoveParametersAutoCompleteMethod(reflector, methodRemover, type, capitalizedName, paramTypes, actionParameters);
-                metamodel = FindAndRemoveParametersChoicesMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters, metamodel);
+                metamodel = FindAndRemoveParametersChoicesMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionMethod, actionParameters, metamodel);
                 FindAndRemoveParametersDefaultsMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
                 FindAndRemoveParametersValidateMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
             }

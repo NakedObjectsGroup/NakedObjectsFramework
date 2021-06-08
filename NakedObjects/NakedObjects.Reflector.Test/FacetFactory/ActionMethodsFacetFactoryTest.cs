@@ -19,6 +19,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Reflector.Facet;
@@ -115,6 +116,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             AssertMethodNotRemoved(autoCompleteMethod);
         }
+
+        private void CheckChoicesFacetIsNull(MethodInfo choicesMethod, IActionParameterSpecImmutable parameter)
+        {
+            var facet = parameter.GetFacet(typeof(IActionChoicesFacet));
+            Assert.IsNull(facet);
+
+            AssertMethodNotRemoved(choicesMethod);
+        }
+
 
         [TestMethod]
         public void TestActionInvocationFacetIsInstalledAndMethodRemoved() {
@@ -676,6 +686,43 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.AreEqual(0, metamodel.Count);
         }
 
+        [TestMethod]
+        public void TestChoicesParametersDoNotMatchNames()
+        {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+            var actionMethod = FindMethod(typeof(Customer35), nameof(Customer35.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
+            var choices0Method = FindMethod(typeof(Customer35), nameof(Customer35.Choices0SomeAction), new[] { typeof(int) });
+            var choices1Method = FindMethod(typeof(Customer35), nameof(Customer35.Choices1SomeAction), new[] { typeof(long) });
+            var choices2Method = FindMethod(typeof(Customer35), nameof(Customer35.Choices2SomeAction), new[] { typeof(long) });
+
+            var facetHolderWithParms = CreateHolderWithParms();
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+
+            CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
+            CheckChoicesFacetIsNull(choices1Method, facetHolderWithParms.Parameters[1]);
+            CheckChoicesFacet(choices2Method, facetHolderWithParms.Parameters[2]);
+            Assert.AreEqual(0, metamodel.Count);
+        }
+
+        [TestMethod]
+        public void TestChoicesParametersDoNotMatchTypes()
+        {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+            var actionMethod = FindMethod(typeof(Customer36), nameof(Customer36.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
+            var choices0Method = FindMethod(typeof(Customer36), nameof(Customer36.Choices0SomeAction), new[] { typeof(int) });
+            var choices1Method = FindMethod(typeof(Customer36), nameof(Customer36.Choices1SomeAction), new[] { typeof(long) });
+            var choices2Method = FindMethod(typeof(Customer36), nameof(Customer36.Choices2SomeAction), new[] { typeof(string) });
+
+            var facetHolderWithParms = CreateHolderWithParms();
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+
+            CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
+            CheckChoicesFacet(choices1Method, facetHolderWithParms.Parameters[1]);
+            CheckChoicesFacetIsNull(choices2Method, facetHolderWithParms.Parameters[2]);
+            Assert.AreEqual(0, metamodel.Count);
+        }
+
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -1114,6 +1161,27 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public void ActionWithNullableParameter(int? i) { }
             public void ActionWithDictionaryParameter(string path, Dictionary<string, object> answers) { }
         }
+
+        private class Customer35 {
+            public void SomeAction(int x, long y, long z) { }
+
+            public int[] Choices0SomeAction(int x) => Array.Empty<int>();
+
+            public long[] Choices1SomeAction(long p) => Array.Empty<long>();
+
+            public long[] Choices2SomeAction(long z) => Array.Empty<long>();
+        }
+
+        private class Customer36 {
+            public void SomeAction(int x, long y, long z) { }
+
+            public int[] Choices0SomeAction(int x) => Array.Empty<int>();
+
+            public long[] Choices1SomeAction(long y) => Array.Empty<long>();
+
+            public long[] Choices2SomeAction(string z) => Array.Empty<long>();
+        }
+
 
         // ReSharper restore UnusedMember.Local
         // ReSharper restore UnusedParameter.Local
