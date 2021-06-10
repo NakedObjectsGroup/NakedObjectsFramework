@@ -187,7 +187,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                     foreach (var p in methodToUse.GetParameters()) {
                         IObjectSpecBuilder oSpec;
                         (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
-                        var name = p.Name.ToLower();
+                        var name = p.Name?.ToLower();
                         parameterNamesAndTypes.Add((name, oSpec));
                     }
 
@@ -195,8 +195,8 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                     // all parameter names and types must match 
                     foreach (var (pName, _) in parameterNamesAndTypes) {
-                        var actionParm = actionMethod.GetParameters().SingleOrDefault(p => p.Name == pName);
-                        var choicesParm = methodToUse.GetParameters().SingleOrDefault(p => p.Name == pName);
+                        var actionParm = actionMethod.GetParameters().SingleOrDefault(p => p.Name?.ToLower() == pName);
+                        var choicesParm = methodToUse.GetParameters().SingleOrDefault(p => p.Name?.ToLower() == pName);
 
                         if (actionParm is null) {
                             logger.LogWarning($"Choices method: {methodToUse.DeclaringType}.{methodToUse.Name} has non matching parameter name: {pName}");

@@ -37,7 +37,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type declaringType, string capitalizedName, Type[] paramTypes, MethodInfo actionMethod, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
                 var isMultiple = false;
@@ -56,6 +56,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 if (methodToUse is not null) {
                     // add facets directly to parameters, not to actions
                     var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
+                    var mismatchedParm = false;
 
                     foreach (var parameterInfo in InjectUtils.FilterParms(methodToUse)) {
                         ITypeSpecBuilder typeSpecBuilder;
@@ -69,7 +70,24 @@ namespace NakedFunctions.Reflector.FacetFactory {
                         }
                     }
 
-                    FacetUtils.AddFacet(new ActionChoicesFacetViaFunction(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], LoggerFactory.CreateLogger<ActionChoicesFacetViaFunction >(), isMultiple));
+                    // all parameter names and types must match 
+                    foreach (var (pName, _) in parameterNamesAndTypes) {
+                        var actionParm = actionMethod.GetParameters().SingleOrDefault(p => p.Name?.ToLower() == pName);
+                        var choicesParm = methodToUse.GetParameters().SingleOrDefault(p => p.Name?.ToLower() == pName);
+
+                        if (actionParm is null) {
+                            logger.LogWarning($"Choices method: {methodToUse.DeclaringType}.{methodToUse.Name} has non matching parameter name: {pName}");
+                            mismatchedParm = true;
+                        }
+                        else if (actionParm.ParameterType != choicesParm?.ParameterType) {
+                            logger.LogWarning($"Choices method parameter: {methodToUse.DeclaringType}.{methodToUse.Name}.{pName} has non matching type: {choicesParm?.ParameterType} should be: {actionParm.ParameterType}");
+                            mismatchedParm = true;
+                        }
+                    }
+
+                    if (!mismatchedParm) {
+                        FacetUtils.AddFacet(new ActionChoicesFacetViaFunction(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], LoggerFactory.CreateLogger<ActionChoicesFacetViaFunction>(), isMultiple));
+                    }
                 }
             }
 
@@ -91,7 +109,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             if (action is IActionSpecImmutable actionSpecImmutable) {
                 var actionParameters = actionSpecImmutable.Parameters;
-                metamodel = FindChoicesMethod(reflector, declaringType, capitalizedName, paramTypes, actionParameters, metamodel);
+                metamodel = FindChoicesMethod(reflector, declaringType, capitalizedName, paramTypes, actionMethod, actionParameters, metamodel);
             }
 
             return metamodel;
