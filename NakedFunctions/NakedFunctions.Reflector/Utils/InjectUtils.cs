@@ -36,7 +36,7 @@ namespace NakedFunctions.Reflector.Utils {
 
         private static object GetMatchingParameter(this ParameterInfo p, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             var key = p.Name?.ToLower() ?? "";
-            return parameterNameValues?.ContainsKey(key) == true ? parameterNameValues[key].Object : null;
+            return parameterNameValues?.ContainsKey(key) == true ? parameterNameValues[key].GetDomainObject() : null;
         }
 
         private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectAdapter[] parmValues, int i, INakedObjectsFramework framework) =>
