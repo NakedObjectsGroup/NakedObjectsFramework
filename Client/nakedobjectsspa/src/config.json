@@ -47,7 +47,7 @@
                 "color": 12
             }
         ],
-        "default": 1,
+        "default": 0,
         "randomMaxIndex" : 12
     },
     "masks": {
