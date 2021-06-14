@@ -2,7 +2,7 @@
     "authenticate": false,
     "authClientId" : "bB8ln8mh8hVb5kxnpTowceMb0t25Owl9",
     "authDomain" : "nakedobjects.eu.auth0.com",
-    "appPath": "https://nakedfunctionsdemo.azurewebsites.net/",
+    "appPath": "http://localhost:53271",
     "logoffUrl": "",
     "urlShortCuts": [ "http://localhost:5000", "AdventureWorksModel" ],
     "doUrlValidation": true,
@@ -47,7 +47,8 @@
                 "color": 12
             }
         ],
-        "default": 0
+        "default": 1,
+        "randomMaxIndex" : 12
     },
     "masks": {
         "currencyMasks": {

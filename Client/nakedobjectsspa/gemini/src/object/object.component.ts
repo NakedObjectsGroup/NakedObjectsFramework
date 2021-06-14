@@ -48,7 +48,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly configService: ConfigService,
         private readonly dragAndDrop: DragAndDropService,
     ) {
-        this.pendingColor = `${configService.config.objectColor}${this.colorService.getDefault()}`;
+        this.pendingColor = `${configService.config.objectColor}${this.colorService.getConfiguredDefault()}`;
     }
 
     private actionButton: IActionHolder = {

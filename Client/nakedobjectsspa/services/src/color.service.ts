@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
 import forEach from 'lodash-es/forEach';
+import { basename } from 'path';
 import { ConfigService } from './config.service';
 import { ContextService } from './context.service';
 import { TypeResultCache } from './type-result-cache';
@@ -23,9 +24,12 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
         private readonly configService: ConfigService
     ) {
         super(context);
-        super.setDefault(0);
+        this.setDefault(0);
         this.configureFromConfig();
     }
+
+    private configuredDefault: number;
+    private configuredMaxRandomIndex: number;
 
     private typeFromUrl(url: string): string {
         const oid = Ro.ObjectIdWrapper.fromHref(url, this.configService.config.keySeparator);
@@ -52,11 +56,25 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
     }
 
     setDefault(def: number) {
+        this.configuredDefault = def;
         super.setDefault(def);
     }
 
-    getDefault(): number {
-        return this.default;
+    getConfiguredDefault(): number {
+        return this.configuredDefault;
+    }
+
+    simpleHash(str: string) {
+        // tslint:disable-next-line:no-bitwise
+        return Math.abs(Array.from(str).reduce((hash, char) => 0 | (31 * hash + char.charCodeAt(0)), 0));
+    }
+
+    getRandomColorNumber(type: string) {
+        return (this.simpleHash(type) % this.configuredMaxRandomIndex) + 1;
+    }
+
+    getDefault(type: string) {
+        return this.configuredMaxRandomIndex ?  this.getRandomColorNumber(type) : super.getDefault(type);
     }
 
     configureFromConfig(): void {
@@ -67,6 +85,7 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
             const subtypeMap = colorConfig.subtypeMap;
             const regexArray = colorConfig.regexArray;
             const dflt = colorConfig.default;
+            this.configuredMaxRandomIndex = colorConfig.randomMaxIndex;
 
             if (typeMap) {
                 forEach(typeMap, (v, k) => this.addType(k!, v));
