@@ -12,6 +12,7 @@ export interface IActionHolder {
     title: () => string;
     accesskey: string | null;
     presentationHint: string;
+    showDialog: () => boolean;
 }
 
 export function wrapAction(a: ActionViewModel): IActionHolder {
@@ -24,7 +25,8 @@ export function wrapAction(a: ActionViewModel): IActionHolder {
         tempDisabled: () => a.tempDisabled(),
         title: () => a.description,
         accesskey: null,
-        presentationHint: a.presentationHint
+        presentationHint: a.presentationHint,
+        showDialog: () => a.showDialog()
     };
 }
 
@@ -59,7 +61,8 @@ export class ActionComponent {
 
     class() {
         return ({
-            tempdisabled: this.tempDisabled()
+            tempdisabled: this.tempDisabled(),
+            [this.dialogClass()]: true,
         });
     }
 
@@ -73,6 +76,14 @@ export class ActionComponent {
 
     tempDisabled() {
         return this.action.tempDisabled();
+    }
+
+    dialogClass() {
+        return this.showDialog() ? 'dialog' : 'direct';
+    }
+
+    showDialog() {
+        return this.action.showDialog();
     }
 
     get value() {

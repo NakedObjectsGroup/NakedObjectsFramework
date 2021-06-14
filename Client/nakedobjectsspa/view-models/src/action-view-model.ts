@@ -53,7 +53,7 @@ export class ActionViewModel {
     invokableActionRep: Ro.ActionRepresentation | Ro.InvokableActionMember;
 
     // form actions should never show dialogs
-    private readonly showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
+    readonly showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
 
     private readonly incrementPendingPotentAction = () => {
         Helpers.incrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);

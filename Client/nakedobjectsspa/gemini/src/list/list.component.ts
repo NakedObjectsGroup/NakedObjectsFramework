@@ -52,7 +52,8 @@ export class ListComponent implements OnInit, OnDestroy {
         tempDisabled: () => null,
         title: () => this.actionsTooltip,
         accesskey: 'a',
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private reloadButton: IActionHolder = {
@@ -63,7 +64,8 @@ export class ListComponent implements OnInit, OnDestroy {
         tempDisabled: () => null,
         title: () => '',
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private firstButton: IActionHolder = {
@@ -74,7 +76,8 @@ export class ListComponent implements OnInit, OnDestroy {
         tempDisabled: () => null,
         title: () => '',
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private previousButton: IActionHolder = {
@@ -85,7 +88,8 @@ export class ListComponent implements OnInit, OnDestroy {
         tempDisabled: () => null,
         title: () => '',
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private nextButton: IActionHolder = {
@@ -96,7 +100,8 @@ export class ListComponent implements OnInit, OnDestroy {
         tempDisabled: () => null,
         title: () => '',
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private lastButton: IActionHolder = {
@@ -107,7 +112,8 @@ export class ListComponent implements OnInit, OnDestroy {
         tempDisabled: () => null,
         title: () => '',
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private cachedRouteData: PaneRouteData;

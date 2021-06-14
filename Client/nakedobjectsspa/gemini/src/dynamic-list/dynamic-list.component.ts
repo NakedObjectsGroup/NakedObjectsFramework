@@ -36,7 +36,8 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
         tempDisabled: () => null,
         title: () => '',
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private lastOid: string | null;

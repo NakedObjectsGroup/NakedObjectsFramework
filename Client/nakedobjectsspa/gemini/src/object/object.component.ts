@@ -59,7 +59,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         tempDisabled: () => null,
         title: () => this.actionsTooltip(),
         accesskey: 'a',
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private editButton: IActionHolder = {
@@ -70,7 +71,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         tempDisabled: () => null,
         title: () => '',
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private reloadButton: IActionHolder = {
@@ -81,7 +83,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         tempDisabled: () => null,
         title: () => '',
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private saveButton: IActionHolder = {
@@ -92,7 +95,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         tempDisabled: () => null,
         title: () => this.tooltip,
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private saveAndCloseButton: IActionHolder = {
@@ -103,7 +107,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         tempDisabled: () => null,
         title: () => this.tooltip,
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private cancelButton: IActionHolder = {
@@ -114,7 +119,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         tempDisabled: () => null,
         title: () => '',
         accesskey: null,
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     private actionButtons: IActionHolder[] | null;

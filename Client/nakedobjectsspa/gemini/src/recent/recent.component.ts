@@ -38,7 +38,8 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnI
         tempDisabled: () => null,
         title: () => this.recent.getRecentMessage(this.clearDisabled()),
         accesskey: 'c',
-        presentationHint: ''
+        presentationHint: '',
+        showDialog: () => false
     };
 
     @ViewChildren('row')
