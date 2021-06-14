@@ -58,7 +58,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         disabled: () => this.disableActions(),
         tempDisabled: () => null,
         title: () => this.actionsTooltip(),
-        accesskey: 'a'
+        accesskey: 'a',
+        presentationHint: ''
     };
 
     private editButton: IActionHolder = {
@@ -68,7 +69,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         disabled: () => null,
         tempDisabled: () => null,
         title: () => '',
-        accesskey: null
+        accesskey: null,
+        presentationHint: ''
     };
 
     private reloadButton: IActionHolder = {
@@ -78,7 +80,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         disabled: () => null,
         tempDisabled: () => null,
         title: () => '',
-        accesskey: null
+        accesskey: null,
+        presentationHint: ''
     };
 
     private saveButton: IActionHolder = {
@@ -88,7 +91,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         disabled: () => this.form && !this.form.valid ? true : null,
         tempDisabled: () => null,
         title: () => this.tooltip,
-        accesskey: null
+        accesskey: null,
+        presentationHint: ''
     };
 
     private saveAndCloseButton: IActionHolder = {
@@ -98,7 +102,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         disabled: () => this.form && !this.form.valid ? true : null,
         tempDisabled: () => null,
         title: () => this.tooltip,
-        accesskey: null
+        accesskey: null,
+        presentationHint: ''
     };
 
     private cancelButton: IActionHolder = {
@@ -108,7 +113,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         disabled: () => null,
         tempDisabled: () => null,
         title: () => '',
-        accesskey: null
+        accesskey: null,
+        presentationHint: ''
     };
 
     private actionButtons: IActionHolder[] | null;
@@ -149,6 +155,11 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // used to smooth transition before object set
     private pendingColor: string;
+
+    get classes() {
+        const hint = this.object?.presentationHint ?? '';
+        return `${this.color} ${hint}`.trim();
+    }
 
     get color() {
         const obj = this.object;

@@ -23,7 +23,11 @@ export class ParametersComponent {
     @ViewChildren(EditParameterComponent)
     parmComponents: QueryList<EditParameterComponent>;
 
-    classes = () => ({ parameter: true, multilinedialog: this.parent.isMultiLineDialogRow });
+    private hasHint(parm: ParameterViewModel) {
+        return parm?.presentationHint !== null && parm.presentationHint !== undefined;
+    }
+
+    classes = (parm: ParameterViewModel) => ({ parameter: true, multilinedialog: this.parent.isMultiLineDialogRow, [parm.presentationHint]: this.hasHint(parm)});
 
     focus() {
         const parms = this.parmComponents;

@@ -51,7 +51,8 @@ export class ListComponent implements OnInit, OnDestroy {
         disabled: () => this.disableActions(),
         tempDisabled: () => null,
         title: () => this.actionsTooltip,
-        accesskey: 'a'
+        accesskey: 'a',
+        presentationHint: ''
     };
 
     private reloadButton: IActionHolder = {
@@ -61,7 +62,8 @@ export class ListComponent implements OnInit, OnDestroy {
         disabled: () => null,
         tempDisabled: () => null,
         title: () => '',
-        accesskey: null
+        accesskey: null,
+        presentationHint: ''
     };
 
     private firstButton: IActionHolder = {
@@ -71,7 +73,8 @@ export class ListComponent implements OnInit, OnDestroy {
         disabled: () => this.pageFirstDisabled(),
         tempDisabled: () => null,
         title: () => '',
-        accesskey: null
+        accesskey: null,
+        presentationHint: ''
     };
 
     private previousButton: IActionHolder = {
@@ -81,7 +84,8 @@ export class ListComponent implements OnInit, OnDestroy {
         disabled: () => this.pagePreviousDisabled(),
         tempDisabled: () => null,
         title: () => '',
-        accesskey: null
+        accesskey: null,
+        presentationHint: ''
     };
 
     private nextButton: IActionHolder = {
@@ -91,7 +95,8 @@ export class ListComponent implements OnInit, OnDestroy {
         disabled: () => this.pageNextDisabled(),
         tempDisabled: () => null,
         title: () => '',
-        accesskey: null
+        accesskey: null,
+        presentationHint: ''
     };
 
     private lastButton: IActionHolder = {
@@ -101,7 +106,8 @@ export class ListComponent implements OnInit, OnDestroy {
         disabled: () => this.pageLastDisabled(),
         tempDisabled: () => null,
         title: () => '',
-        accesskey: null
+        accesskey: null,
+        presentationHint: ''
     };
 
     private cachedRouteData: PaneRouteData;

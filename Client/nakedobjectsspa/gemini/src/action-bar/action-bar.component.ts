@@ -30,6 +30,11 @@ export class ActionBarComponent implements OnDestroy, AfterViewInit {
 
     private sub: ISubscription;
 
+    classes(action: IActionHolder) {
+        const hint = action.presentationHint ?? '';
+        return hint.trim();
+    }
+
     focusOnFirstAction(actions: QueryList<ActionComponent>) {
         if (actions) {
             // until first element returns true

@@ -36,7 +36,8 @@ export class MenuBarComponent implements AfterViewInit, OnDestroy {
                 disabled: () => null,
                 tempDisabled: () => false,
                 title: () => link.title,
-                accesskey: null
+                accesskey: null,
+                presentationHint: ''
             }));
     }
 

@@ -4,7 +4,7 @@
 <ng-container *ngIf="!object">
     <div class="object view" [ngClass]="color"></div>
 </ng-container>
-<div *ngIf="object && viewMode === 'View'" class="object view" [ngClass]="color">
+<div *ngIf="object && viewMode === 'View'" class="object view" [ngClass]="classes">
     <header class="header" cdkDropList [cdkDropListConnectedTo]="dropZones">
         <div class="title" cdkDrag [cdkDragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)">
             <span class="type">{{friendlyName}}</span> {{title()}}
@@ -20,7 +20,7 @@
     </div>
     <nof-collections class="collections" *ngIf="collections" [collections]="collections"></nof-collections>
 </div>
-<div *ngIf="object && (viewMode === 'Edit' || viewMode === 'Transient' || viewMode === 'Form')" class="object edit" [ngClass]="color">
+<div *ngIf="object && (viewMode === 'Edit' || viewMode === 'Transient' || viewMode === 'Form')" class="object edit" [ngClass]="classes">
     <form (ngSubmit)="onSubmit(false)" [formGroup]="form" autocomplete="off">
         <header class="header" cdkDropList [cdkDropListConnectedTo]="dropZones">
             <div class="title" cdkDrag [cdkDragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)">
@@ -37,7 +37,7 @@
     </form>
     <nof-collections *ngIf="collections" [collections]="collections"></nof-collections>
 </div>
-<div *ngIf="object && viewMode === 'NotPersistent'" class="object view" [ngClass]="color">
+<div *ngIf="object && viewMode === 'NotPersistent'" class="object view" [ngClass]="classes">
     <header class="header" cdkDropList [cdkDropListConnectedTo]="dropZones">
         <div class="title" cdkDrag [cdkDragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)">
             <span class="type">{{friendlyName}}</span> {{title()}}

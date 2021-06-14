@@ -11,6 +11,7 @@ export interface IActionHolder {
     value: string;
     title: () => string;
     accesskey: string | null;
+    presentationHint: string;
 }
 
 export function wrapAction(a: ActionViewModel): IActionHolder {
@@ -22,7 +23,8 @@ export function wrapAction(a: ActionViewModel): IActionHolder {
         disabled: () => a.disabled() ? true : null,
         tempDisabled: () => a.tempDisabled(),
         title: () => a.description,
-        accesskey: null
+        accesskey: null,
+        presentationHint: a.presentationHint
     };
 }
 

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
-import { IMenuHolderViewModel, MenuItemViewModel } from '@nakedobjects/view-models';
+import { ActionViewModel, IMenuHolderViewModel, MenuItemViewModel } from '@nakedobjects/view-models';
 import difference from 'lodash-es/difference';
 import findIndex from 'lodash-es/findIndex';
 import first from 'lodash-es/first';
@@ -70,6 +70,11 @@ export class ActionListComponent implements AfterViewInit, OnDestroy {
     navCollapsed = (menuItem: MenuItemViewModel) => menuItem.navCollapsed;
 
     displayClass = (menuItem: MenuItemViewModel) => ({ collapsed: menuItem.navCollapsed, open: !menuItem.navCollapsed, rootMenu: !menuItem.name });
+
+    classes(action: ActionViewModel) {
+        const hint = action.presentationHint ?? '';
+        return hint.trim();
+    }
 
     focusFromIndex(actions: QueryList<ActionComponent>, index = 0) {
 

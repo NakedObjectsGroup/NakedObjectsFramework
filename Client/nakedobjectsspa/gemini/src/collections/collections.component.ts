@@ -10,4 +10,9 @@ export class CollectionsComponent {
 
     @Input()
     collections: CollectionViewModel[];
+
+    classes(coll: CollectionViewModel) {
+        const hint = coll.presentationHint ?? '';
+        return `collection ${hint}`.trim();
+    }
 }

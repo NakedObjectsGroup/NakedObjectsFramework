@@ -23,6 +23,11 @@ export class PropertiesComponent {
     @ViewChildren(EditPropertyComponent)
     propComponents: QueryList<EditPropertyComponent>;
 
+    classes(prop: PropertyViewModel) {
+        const hint = prop.presentationHint ?? '';
+        return `property ${hint}`.trim();
+    }
+
     focus() {
         const prop = this.propComponents;
         if (prop && prop.length > 0) {

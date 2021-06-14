@@ -45,7 +45,6 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         this.reset(routeData, forceReload);
     }
 
-    private readonly presentationHint: string;
     private readonly template: string;
     private readonly messages: string;
     private readonly pluralName: string;
@@ -55,6 +54,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
     readonly title: string;
     readonly name: string;
+    readonly presentationHint: string;
 
     details: string;
     mayHaveItems: boolean;
