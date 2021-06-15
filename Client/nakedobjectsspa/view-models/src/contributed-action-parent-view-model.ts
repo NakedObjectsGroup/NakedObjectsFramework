@@ -122,10 +122,15 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         actionViewModel.doInvoke = () => { };
 
         const invokeWithoutDialog = (right?: boolean) =>
-            actionViewModel.invokeWithoutDialogWithParameters(Promise.resolve([]), right).then((actionResult: Ro.ActionResultRepresentation) => {
+            actionViewModel.invokeWithoutDialogWithParameters(Promise.resolve([]), right).
+            then((actionResult: Ro.ActionResultRepresentation) => {
                 this.setMessage(actionResult.shouldExpectResult() ? actionResult.warningsOrMessages() || Msg.noResultMessage : '');
                 // clear selected items on void actions
                 this.clearSelected(actionResult);
+            }).
+            catch((reject: ErrorWrapper) => {
+                this.setMessage(reject.message);
+                this.error.handleError(reject);
             });
 
         showDialog().
