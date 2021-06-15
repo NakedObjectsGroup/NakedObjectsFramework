@@ -59,7 +59,7 @@ namespace NakedObjects.Rest.App.Demo {
                 corsOptions.AddPolicy(MyAllowSpecificOrigins, policyBuilder => {
                     policyBuilder
                         .WithOrigins("http://localhost:5001",
-                            "http://localhost")
+                            "http://localhost", "http://localhost:49998")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning","ETag", "Set-Cookie")
                         .AllowAnyMethod()
