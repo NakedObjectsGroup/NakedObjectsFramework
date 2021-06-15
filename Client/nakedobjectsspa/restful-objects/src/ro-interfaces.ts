@@ -193,6 +193,7 @@ export interface IActionInvokeRepresentation extends IResourceRepresentation {
 export interface IParameterRepresentation extends IResourceRepresentation {
     choices?: ValueType[];
     default?: ValueType;
+    disabledReason?: string;
     extensions: IParameterExtensions;
 }
 

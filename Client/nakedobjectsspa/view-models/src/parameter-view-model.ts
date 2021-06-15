@@ -33,7 +33,8 @@ export class ParameterViewModel extends FieldViewModel {
             parameterRep.isScalar(),
             parameterRep.id(),
             parameterRep.isCollectionContributed(),
-            parameterRep.entryType());
+            parameterRep.entryType(),
+            !parameterRep.disabledReason());
 
         this.dflt = parameterRep.default().toString();
         this.hasValue = !!this.dflt;

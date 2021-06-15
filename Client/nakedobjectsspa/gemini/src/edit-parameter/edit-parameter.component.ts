@@ -110,6 +110,10 @@ export class EditParameterComponent extends FieldComponent implements OnInit, On
         return this.parameter.multipleLines;
     }
 
+    get isReadOnly() {
+        return !this.parameter.isEditable;
+    }
+
     choiceName = (choice: ChoiceViewModel) => choice.name;
 
     classes(): Dictionary<boolean | null> {

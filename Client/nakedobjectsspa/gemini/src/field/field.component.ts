@@ -291,8 +291,10 @@ export abstract class FieldComponent implements OnDestroy {
     }
 
     clear() {
-        this.control.reset('');
-        this.model.clear();
+        if (this.model.isEditable) {
+            this.control.reset('');
+            this.model.clear();
+        }
     }
 
     private filterEnter(event: KeyboardEvent) {

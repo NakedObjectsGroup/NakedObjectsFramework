@@ -21,8 +21,7 @@ import * as Msg from './user-messages';
 import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class PropertyViewModel extends FieldViewModel implements IDraggableViewModel {
-
-    readonly isEditable: boolean;
+  
     readonly attachment: AttachmentViewModel | null;
     refType: 'null' | 'navigable' | 'notNavigable';
     // IDraggableViewModel
@@ -53,10 +52,11 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             propertyRep.isScalar(),
             id,
             propertyRep.isCollectionContributed(),
-            propertyRep.entryType());
+            propertyRep.entryType(),
+            !propertyRep.disabledReason()
+            );
 
         this.draggableType = propertyRep.extensions().returnType()!;
-        this.isEditable = !propertyRep.disabledReason();
 
         this.attachment = this.viewModelfactory.attachmentViewModel(propertyRep, onPaneId);
 

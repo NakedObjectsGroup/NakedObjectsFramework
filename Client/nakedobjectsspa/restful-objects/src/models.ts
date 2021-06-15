@@ -1112,6 +1112,10 @@ export class Parameter
         return new Value(withNull(dflt));
     }
 
+    disabledReason(): string {
+        return this.wrapped().disabledReason || '';
+    }
+
     // helper
     isScalar(): boolean {
         return isScalarType(this.extensions().returnType()) ||

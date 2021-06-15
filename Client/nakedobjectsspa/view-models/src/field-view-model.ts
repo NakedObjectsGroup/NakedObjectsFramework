@@ -28,7 +28,8 @@ export abstract class FieldViewModel extends MessageViewModel {
         public readonly isScalar: boolean,
         public readonly id: string,
         public readonly isCollectionContributed: boolean,
-        public readonly entryType: Ro.EntryType
+        public readonly entryType: Ro.EntryType,
+        public readonly isEditable: boolean
     ) {
         super();
         const ext = rep.extensions();
