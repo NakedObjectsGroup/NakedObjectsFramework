@@ -31,7 +31,8 @@
         "subtypeMap": {
             "AdventureWorksModel.BusinessEntity": 8
         },
-        "default": 0
+        "default": 0,
+        "randomMaxIndex" : 12
     },
     "masks": {
         "currencyMasks": {

@@ -62,6 +62,7 @@ export interface IAppConfig {
             [index: string]: number;
         },
         default?: number;
+        randomMaxIndex?: number;
     };
 
     // Note: "D" is the default mask for anything sent to the client as a date+time,

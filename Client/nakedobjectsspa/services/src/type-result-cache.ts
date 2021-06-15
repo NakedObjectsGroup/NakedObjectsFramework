@@ -9,7 +9,7 @@ export abstract class TypeResultCache<T> {
     private readonly regexCache: { regex: RegExp, result: T }[] = [];
     private readonly subtypeCache: { type: string, result: T }[] = [];
 
-    protected default: T;
+    private default: T;
 
     addType(type: string, result: T) {
         this.resultCache[type] = result;
@@ -25,6 +25,10 @@ export abstract class TypeResultCache<T> {
 
     setDefault(def: T) {
         this.default = def;
+    }
+
+    protected getDefault(type: string) {
+        return this.default;
     }
 
     private cacheAndReturn(type: string, result: T) {
@@ -52,11 +56,11 @@ export abstract class TypeResultCache<T> {
                     return this.cacheAndReturn(subtype, c);
                 })
                 .catch(() => {
-                    return this.cacheAndReturn(subtype, this.default);
+                    return this.cacheAndReturn(subtype, this.getDefault(subtype));
                 });
         }
 
-        return this.cacheAndReturn(subtype, this.default);
+        return this.cacheAndReturn(subtype, this.getDefault(subtype));
     }
 
     getResult(type: string | null) {
