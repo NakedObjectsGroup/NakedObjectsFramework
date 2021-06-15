@@ -21,7 +21,7 @@ import * as Msg from './user-messages';
 import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class PropertyViewModel extends FieldViewModel implements IDraggableViewModel {
-  
+
     readonly attachment: AttachmentViewModel | null;
     refType: 'null' | 'navigable' | 'notNavigable';
     // IDraggableViewModel

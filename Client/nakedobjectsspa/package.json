@@ -51,7 +51,7 @@
     "install:cicero": "yarn add file:./dist/nakedobjects-cicero/nakedobjects-cicero-v12.0.0-beta.0.tgz",
     "build:cicero": "yarn && yarn compile:cicero && yarn pack:cicero && yarn install:cicero",
     "build:clean": "rimraf dist && rimraf node_modules/@nakedobjects && yarn cache clean",
-    "build:libs": "yarn build:clean && yarn build:restful-objects && yarn build:services && yarn build:view-models && yarn build:gemini && yarn build:cicero",
+    "build:libs": "yarn lint && yarn build:clean && yarn build:restful-objects && yarn build:services && yarn build:view-models && yarn build:gemini && yarn build:cicero",
     "build:app": "ng build packages --no-progress",
     "build:app:prod": "ng build packages --no-progress --prod"
   },
