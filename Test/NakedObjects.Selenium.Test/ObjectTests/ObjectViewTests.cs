@@ -357,10 +357,10 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
 
             //Default
             GeminiUrl("object?i1=View&o1=___1.PersonCreditCard--10768--6875");
-            WaitForCss(".object.object-color0");
+            WaitForCss(".object");
             wait.Until(dr => dr.FindElements(By.CssSelector("div .reference")).Count >= 2);
             var cc = GetReferenceFromProperty("Credit Card");
-            wait.Until(dr => GetReferenceFromProperty("Credit Card").GetAttribute("class").Contains("link-color0"));
+            wait.Until(dr => GetReferenceFromProperty("Credit Card").GetAttribute("class").Contains("link-color"));
         }
 
         public virtual void ZeroIntValues() {
