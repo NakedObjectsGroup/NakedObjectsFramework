@@ -79,7 +79,7 @@ export class ActionComponent {
     }
 
     dialogClass() {
-        return this.showDialog() ? 'dialog' : 'direct';
+        return this.showDialog() ? 'has-dialog' : 'direct';
     }
 
     showDialog() {
