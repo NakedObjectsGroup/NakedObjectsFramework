@@ -33,11 +33,16 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [TableView(true, "ProductNumber", "ProductSubcategory", "ListPrice"), MemberOrder(1)]
-        public IQueryable<Product> FindProductByName(string searchString) {
+        public IQueryable<Product> FindProductByName([Disabled]string searchString) {
             return from obj in Instances<Product>()
                 where obj.Name.ToUpper().Contains(searchString.ToUpper())
                 orderby obj.Name
                 select obj;
+        }
+
+        public string Default0FindProductByName()
+        {
+            return Instances<Product>().First().Name;
         }
 
         #endregion
@@ -46,7 +51,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [QueryOnly, MemberOrder(2)]
-        public Product FindProductByNumber(string number) {
+        public Product FindProductByNumber([Disabled] string number) {
             IQueryable<Product> query = from obj in Instances<Product>()
                 where obj.ProductNumber == number
                 select obj;
@@ -80,7 +85,7 @@ namespace AdventureWorksModel {
         [FinderAction]
         [QueryOnly]
         [MemberOrder(11)]
-        public Product FindProductByKey(string key) {
+        public Product FindProductByKey([Disabled] string key) {
             return Container.FindByKey<Product>(int.Parse(key));
         }
 
@@ -89,7 +94,7 @@ namespace AdventureWorksModel {
         [FinderAction]
         [QueryOnly]
         [MemberOrder(7)]
-        public Product FindProduct(Product product) {
+        public Product FindProduct([Disabled] Product product) {
             return product;
         }
 
@@ -110,7 +115,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [TableView(true, "ProductNumber", "ListPrice"), MemberOrder(3)]
-        public IQueryable<Product> ListProductsBySubCategory([ContributedAction("Products")] ProductSubcategory subCategory) {
+        public IQueryable<Product> ListProductsBySubCategory([ContributedAction("Products")][Disabled] ProductSubcategory subCategory) {
             return from obj in Instances<Product>()
                 where obj.ProductSubcategory.ProductSubcategoryID == subCategory.ProductSubcategoryID
                 orderby obj.Name
@@ -127,7 +132,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [TableView(true, "ProductNumber", "ListPrice"), MemberOrder(3)]
-        public IQueryable<Product> ListProducts(ProductCategory category, ProductSubcategory subCategory)
+        public IQueryable<Product> ListProducts([Disabled] ProductCategory category, ProductSubcategory subCategory)
         {
             return from obj in Instances<Product>()
                    where obj.ProductSubcategory.ProductSubcategoryID == subCategory.ProductSubcategoryID
@@ -160,7 +165,7 @@ namespace AdventureWorksModel {
         [FinderAction]
         [MemberOrder(4)]
         [QueryOnly]
-        public IList<Product> ListProductsBySubCategories(IEnumerable<ProductSubcategory> subCategories) {
+        public IList<Product> ListProductsBySubCategories([Disabled] IEnumerable<ProductSubcategory> subCategories) {
             return QueryableOfProductsBySubcat(subCategories).ToList();
         }
 
@@ -193,7 +198,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [MemberOrder(8)]
-        public IQueryable<Product> FindProductsByCategory(IEnumerable<ProductCategory> categories, IEnumerable<ProductSubcategory> subcategories) {
+        public IQueryable<Product> FindProductsByCategory([Disabled] IEnumerable<ProductCategory> categories, IEnumerable<ProductSubcategory> subcategories) {
             return QueryableOfProductsBySubcat(subcategories);
         }
 
@@ -237,7 +242,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [MemberOrder(6)]
-        public IQueryable<Product> FindByProductLinesAndClasses(IEnumerable<ProductLineEnum> productLine, IEnumerable<ProductClassEnum> productClass) {
+        public IQueryable<Product> FindByProductLinesAndClasses([Disabled] IEnumerable<ProductLineEnum> productLine, IEnumerable<ProductClassEnum> productClass) {
             IQueryable<Product> products = Container.Instances<Product>();
 
             foreach (ProductLineEnum pl in productLine) {
@@ -263,7 +268,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [MemberOrder(7)]
-        public IQueryable<Product> FindByOptionalProductLinesAndClasses([Optionally]IEnumerable<ProductLineEnum> productLine, [Optionally]IEnumerable<ProductClassEnum> productClass) {
+        public IQueryable<Product> FindByOptionalProductLinesAndClasses([Disabled][Optionally]IEnumerable<ProductLineEnum> productLine, [Optionally]IEnumerable<ProductClassEnum> productClass) {
             IQueryable<Product> products = Container.Instances<Product>();
 
             if (productLine != null) {
@@ -299,7 +304,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [MemberOrder(5)]
-        public IQueryable<Product> FindByProductLineAndClass(ProductLineEnum productLine, ProductClassEnum productClass) {
+        public IQueryable<Product> FindByProductLineAndClass([Disabled] ProductLineEnum productLine, ProductClassEnum productClass) {
             string pls = Enum.GetName(typeof (ProductLineEnum), productLine);
             string pcs = Enum.GetName(typeof (ProductClassEnum), productClass);
 

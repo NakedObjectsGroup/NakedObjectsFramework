@@ -110,8 +110,12 @@ export class EditParameterComponent extends FieldComponent implements OnInit, On
         return this.parameter.multipleLines;
     }
 
-    get isReadOnly() {
-        return !this.parameter.isEditable;
+    get isEditable() {
+        return this.parameter.isEditable;
+    }
+
+    get formattedValue() {
+        return this.parameter.formattedValue;
     }
 
     choiceName = (choice: ChoiceViewModel) => choice.name;

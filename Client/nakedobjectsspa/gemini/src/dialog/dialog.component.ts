@@ -90,9 +90,11 @@ export class DialogComponent implements AfterViewInit, OnDestroy, OnChanges {
     onSubmit(right?: boolean) {
         if (this.dialog) {
             forEach(this.parms,
-                (p, k) => {
-                    const newValue = this.form.value[p.id];
-                    p.setValueFromControl(newValue);
+                (p, _) => {
+                    if (p.isEditable) {
+                        const newValue = this.form.value[p.id];
+                        p.setValueFromControl(newValue);
+                    }
                 });
             this.dialog.doInvoke(right);
         }
@@ -108,7 +110,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy, OnChanges {
         safeUnsubscribe(this.formSub);
         safeUnsubscribe(this.createFormSub);
         ({ form: this.form, dialog: this.dialog, parms: this.parms, sub: this.createFormSub } = createForm(dialog, this.formBuilder));
-        this.formSub = this.form.valueChanges.subscribe((data) => this.onValueChanged());
+        this.formSub = this.form.valueChanges.subscribe((_) => this.onValueChanged());
     }
 
     onValueChanged() {

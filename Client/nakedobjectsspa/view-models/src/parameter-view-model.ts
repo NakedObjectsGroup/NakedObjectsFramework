@@ -41,6 +41,11 @@ export class ParameterViewModel extends FieldViewModel {
 
         const fieldEntryType = this.entryType;
 
+        if (parameterRep.isScalar()) {
+            const remoteMask = parameterRep.extensions().mask();
+            this.localFilter = this.maskService.toLocalFilter(remoteMask, parameterRep.extensions().format()!);
+        }
+
         if (fieldEntryType === Ro.EntryType.Choices || fieldEntryType === Ro.EntryType.MultipleChoices) {
             this.setupParameterChoices();
         }
@@ -63,13 +68,7 @@ export class ParameterViewModel extends FieldViewModel {
             this.setupParameterSelectedValue();
         }
 
-        if (parameterRep.isScalar()) {
-            const remoteMask = parameterRep.extensions().mask();
-            const localFilter = this.maskService.toLocalFilter(remoteMask, parameterRep.extensions().format()!);
-            this.localFilter = localFilter;
-            this.formattedValue = localFilter.filter(this.value ? this.value.toString() : this.value);
-        }
-
+        this.update();
         this.description = this.getRequiredIndicator() + this.description;
     }
 
@@ -208,8 +207,8 @@ export class ParameterViewModel extends FieldViewModel {
                 break;
             case (Ro.EntryType.MultipleChoices):
             case (Ro.EntryType.MultipleConditionalChoices):
-                const count = !this.selectedMultiChoices ? 0 : this.selectedMultiChoices.length;
-                this.formattedValue = `${count} selected`;
+                const selectedChoices = this.selectedMultiChoices.map((c) => c.toString());
+                this.formattedValue = selectedChoices.join();
                 break;
             default:
                 this.formattedValue = this.value ? this.value.toString() : '';
