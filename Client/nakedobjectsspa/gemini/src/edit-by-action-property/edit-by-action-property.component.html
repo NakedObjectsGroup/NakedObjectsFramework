@@ -1,0 +1,42 @@
+<div class="name">{{title}}:</div>
+
+<ng-container *ngIf="propertyType === 'ref'">
+    <ng-container [ngSwitch]="propertyRefType" >
+        <div *ngSwitchCase="null"></div>
+        <div *ngSwitchCase="'notNavigable'">
+            <div class="value">{{formattedValue}}</div>
+        </div>
+        <div cdkDropList [cdkDropListConnectedTo]="dropZones">
+            <div *ngSwitchDefault class="reference" [ngClass]="color" nofClick (leftClick)="doClick()"
+                (rightClick)="doClick(true)" cdkDrag [cdkDragData]="property" tabindex="0">
+                {{formattedValue}}
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+
+<ng-container *ngIf="propertyType === 'scalar'">
+    <ng-container [ngSwitch]="propertyReturnType">
+        <ng-container *ngSwitchCase="'string'">
+
+            <nof-attachment-property *ngIf="isBlob" [attachment]="attachment"></nof-attachment-property>
+            <ng-container *ngIf="!isBlob">
+                <div *ngIf="!isMultiline" class="value">
+                    {{formattedValue}}
+                </div>
+                <div *ngIf="isMultiline" class="value multiline" [ngStyle]="{height : multilineHeight}">
+                    <pre>{{formattedValue}}</pre>
+                </div>
+            </ng-container>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'boolean'">
+            <input type="checkbox" [checked]="value" disabled="disabled" />
+        </ng-container>
+
+        <ng-container *ngSwitchDefault>
+            <div class="value">{{formattedValue}}</div>
+        </ng-container>
+    </ng-container>
+</ng-container>
+<div class="icon edit"></div>

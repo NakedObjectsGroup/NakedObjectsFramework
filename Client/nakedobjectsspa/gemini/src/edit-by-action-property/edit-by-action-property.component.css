@@ -1,0 +1,56 @@
+:host {
+    overflow: hidden;
+    /*To cope with long prop names*/
+    display: block;
+}
+
+:host:not(:last-child) {
+    margin-bottom: var(--space-3);
+}
+
+.name {
+    display: block;
+    float: left;
+    width: var(--field-name-width);
+    padding-right: var(--space-3);
+    font-weight: var(--font-weight-2)er; /*added to match alt*/
+}
+
+.reference, .value {
+    display: block;
+    float: left;
+    width: var(--field-value-width);
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+    margin: var(--space-1);
+}
+
+.reference:hover {
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: var(--default-outline-color);
+}
+
+.reference {
+    cursor: pointer;
+}
+
+.multiline {
+    overflow: auto;
+}
+
+.icon {
+    display: block;
+    cursor: pointer;
+    float: right;
+    width: 20px;
+    height: var(--field-value-height);
+    padding-left: var(--space-3);
+    padding-top: var(--space-3);
+    margin-right: var(--space-3);
+}
+
+.icon.edit {
+    background: var(--pencil-icon);
+    background-size: cover;
+}

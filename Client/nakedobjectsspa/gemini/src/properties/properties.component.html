@@ -1,3 +1,8 @@
 <ng-container *ngIf="form"><nof-edit-property [ngClass]="classes(prop)" *ngFor="let prop of properties" [property]="prop" [parent]="parent" [form]="form"></nof-edit-property></ng-container>
-<ng-container *ngIf="!form"><nof-view-property [ngClass]="classes(prop)" *ngFor="let prop of properties" [property]="prop"></nof-view-property></ng-container>
+<ng-container *ngIf="!form">
+    <ng-container *ngFor="let prop of properties">
+        <nof-view-property *ngIf="!prop.IsEditByAction" [ngClass]="classes(prop)"  [property]="prop"></nof-view-property>
+        <nof-edit-by-action-property *ngIf="prop.IsEditByAction" [ngClass]="classes(prop)" [property]="prop"></nof-edit-by-action-property>
+    </ng-container>
+</ng-container>
 

@@ -27,6 +27,8 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     // IDraggableViewModel
     readonly draggableType: string;
 
+    readonly isEditByAction = false;
+
     constructor(
         public readonly propertyRep: Ro.PropertyMember,
         color: ColorService,
