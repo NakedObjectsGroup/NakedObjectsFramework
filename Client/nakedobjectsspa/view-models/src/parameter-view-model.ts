@@ -207,8 +207,8 @@ export class ParameterViewModel extends FieldViewModel {
                 break;
             case (Ro.EntryType.MultipleChoices):
             case (Ro.EntryType.MultipleConditionalChoices):
-                const selectedChoices = this.selectedMultiChoices.map((c) => c.toString());
-                this.formattedValue = selectedChoices.join();
+                const selectedChoices = this.selectedMultiChoices?.map((c) => c.toString());
+                this.formattedValue = selectedChoices ? selectedChoices.join() : '';
                 break;
             default:
                 this.formattedValue = this.value ? this.value.toString() : '';
