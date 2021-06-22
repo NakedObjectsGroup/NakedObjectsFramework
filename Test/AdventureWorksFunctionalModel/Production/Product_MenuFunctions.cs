@@ -46,5 +46,18 @@ namespace AW.Functions
 
         public static List<ProductSubcategory> Choices1ListProductsByCategory(ProductCategory category) =>
             category.ProductSubcategory.ToList();
+
+
+        [MemberOrder(5)]
+        public static IQueryable<Product> ListBikes(
+          [Disabled] ProductCategory category, [Optionally] ProductSubcategory subCategory, IContext context)
+        {
+            int catId = category.ProductCategoryID;
+            int subId = subCategory is null ? 0 : subCategory.ProductSubcategoryID;
+            return context.Instances<Product>().Where(p => p.ProductSubcategory.ProductCategoryID == catId
+                && (subId == 0 || p.ProductSubcategoryID.Value == subId));
+        }
+
+        public static ProductCategory Default0ListBikes(IContext context) => context.Instances<ProductCategory>().First();
     }
 }
