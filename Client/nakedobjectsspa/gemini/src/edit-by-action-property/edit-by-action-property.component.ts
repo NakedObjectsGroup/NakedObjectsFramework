@@ -87,6 +87,8 @@ export class EditByActionPropertyComponent implements OnInit, OnDestroy {
 
     doClick = (right?: boolean) => this.property.doClick(right);
 
+    doEdit = () => this.property.doEditByAction();
+
     copy(event: KeyboardEvent) {
         const prop = this.property;
         if (prop) {

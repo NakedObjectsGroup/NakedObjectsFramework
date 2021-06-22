@@ -87,11 +87,14 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         this.hasValue = previousValue && !previousValue.isNull;
         this.description = this.getRequiredIndicator() + this.description;
 
-        this.editActions = editActionTuples.filter(t => t[1].includes(id)).map(t => t[0]);
-        this.isEditByAction =  this.editActions.length > 0;
+        const editActions = editActionTuples.filter(t => t[1].includes(id)).map(t => t[0]);
+        this.isEditByAction =  editActions.length > 0;
+        if (this.isEditByAction) {
+            this.editAction = editActions[0];
+        }
     }
 
-    private editActions: ActionViewModel[];
+    private editAction: ActionViewModel;
 
     readonly isEditByAction: boolean;
 
@@ -199,6 +202,8 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
 
     readonly doClick = (right?: boolean) => this.urlManager.setProperty(this.reference, this.clickHandler.pane(this.onPaneId, right));
+
+    readonly doEditByAction = () => this.editAction.doInvoke();
 
     readonly isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();
 }
