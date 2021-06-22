@@ -1,0 +1,4 @@
+<ng-container *ngFor="let parmprop of parametersProperties">
+    <nof-edit-parameter *ngIf="isParameter(parmprop)" [ngClass]="classes(parmprop)" [parameter]="parmprop" [parent]="parent" [form]="form"></nof-edit-parameter>
+    <nof-view-property  *ngIf="isProperty(parmprop)" [ngClass]="classes(parmprop)"  [property]="parmprop"></nof-view-property>
+</ng-container>

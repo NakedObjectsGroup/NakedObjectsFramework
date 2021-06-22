@@ -187,6 +187,14 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         return obj ? obj.tooltip() : '';
     }
 
+    isEditDialog(selectedDialogId: string) {
+        if (this.object.domainObject.hasActionMember(selectedDialogId)) {
+            const action = this.object.domainObject.actionMember(selectedDialogId);
+            return !!action.extensions().editProperties();
+        }
+        return false;
+    }
+
     onSubmit(viewObject: boolean) {
         const obj = this.object;
         if (obj) {

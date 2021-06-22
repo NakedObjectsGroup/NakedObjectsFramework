@@ -1,0 +1,103 @@
+:host {
+    display: block;
+    width: var(--field-width);
+    margin-bottom: var(--space-5);
+    overflow: hidden;
+    /*Needed to force the floated divs inside this to expand the containing div in height*/
+    background-color: var(--dialog-color);
+    color: var(--dialog-text-color);
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-3);
+    /* padding-left: var(--space-3);
+    padding-right: var(--space-3); */
+}
+
+.dialog {
+    display: block;
+    /*added*/
+    overflow-y: auto;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+/*added*/
+form {
+    padding: var(--space-3);
+}
+
+.dialog select {
+    margin-bottom: var(--space-4);
+    border-style: solid;
+    border-color: grey;
+    border-width: 1px;
+}
+
+input[type='text'] {
+    padding-right: var(--space-4);
+    /*To avoid text running over the 'x' (clear button)*/
+    padding-left: var(--space-3);
+    margin-bottom: var(--space-4);
+    border-style: solid;
+    border-color: grey;
+    border-width: 1px;
+}
+/*end*/
+
+input[type=button], input[type=reset], input[type=submit] {
+    margin-left: var(--space-3);
+    margin-top: var(--space-4);
+    margin-right: var(--space-3);
+    margin-bottom: var(--space-3);
+    padding: var(--space-3) 1var(--space-1);
+    text-align: center;
+    vertical-align: middle;
+    border: 1px transparent solid;
+    cursor: pointer;
+    width: auto;
+    *zoom: 1;
+    /* color: black;
+    background-color: white; */
+    float: right;
+    outline: solid;
+    outline-color: lightgrey;
+    outline-width: 1px;
+}
+
+input[type='button']:focus, input[type='button']:hover, input[type='submit']:focus, input[type='submit']:hover {
+    outline: solid;
+    outline-width: 1px;
+    outline-color: black;
+}
+
+input.ok {
+    color: var(--dialog-contrast-text-color);
+    background-color: var(--header-background-color);
+    margin-bottom: var(--space-4);
+}
+
+input.ok:disabled {
+    color: var(--disabled-color);
+}
+
+.title {
+    display: block;
+    font-size: var(--font-size-2);
+    margin-bottom: var(--space-4);
+    /*added*/
+    color: var(--dialog-contrast-text-color);
+    background-color: var(--header-background-color);
+    padding: var(--space-3);
+    font-weight: var(--font-weight-4);
+}
+
+.parameter .name {
+    width: var(--field-name-width);
+    /*To align input box with reference fields*/
+}
+
+.parameter {
+    overflow: hidden;
+    /*To cope with long param/prop names*/
+    display: block;
+}
