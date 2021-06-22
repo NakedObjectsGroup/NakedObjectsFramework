@@ -92,6 +92,16 @@ namespace NakedFrameworkClient.TestFramework
             return new TextInputField(field, helper, enclosingView);
         }
 
+
+        public  void AssertDisabledField(string fieldName, string withValue)
+        {
+            var field = element.FindElements(By.CssSelector("nof-edit-parameter"))
+                .Single(x => x.FindElement(By.CssSelector("label")).Text == fieldName);
+            var value = field.FindElement(By.ClassName("value"));
+            Assert.IsNotNull(value, "Value field not found");
+            Assert.AreEqual(withValue, value.Text);
+        }
+
         //TODO: Factor out common logic
         public ReferenceInputField GetReferenceField(string fieldName)
         {

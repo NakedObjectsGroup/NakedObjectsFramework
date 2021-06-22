@@ -295,6 +295,14 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetTextField("End Date").AssertDefaultValueIs(oneMonthOn);
         }
 
+        [TestMethod]
+        public void ParameterDisabledFunction()
+        {
+            helper.GotoHome().OpenMainMenu("Products")
+                .GetActionWithDialog("List Bikes").Open()
+                .AssertDisabledField("Category", "Bikes");
+        }
+
         //[TestMethod]
         public void ValidateSingleParam()
         {
