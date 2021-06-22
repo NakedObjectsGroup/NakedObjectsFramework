@@ -128,9 +128,13 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         const actions = values(this.domainObject.actionMembers()) as Ro.ActionMember[];
         this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData)).filter(avm => !avm.returnsScalar());
 
+        const editActions = this.actions.filter(avm => avm.editProperties.length > 0);
+
+        const editActionTuples: [ActionViewModel, string[]][] = map(editActions, a => [a, a.editProperties]);
+
         this.menuItems = Helpers.createMenuItems(this.actions);
 
-        this.properties = map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id!, this.props[id!], this.onPaneId, this.propertyMap));
+        this.properties = map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id!, this.props[id!], this.onPaneId, this.propertyMap, editActionTuples));
         this.collections = map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData, resetting));
 
         this.unsaved = routeData.interactionMode === InteractionMode.Transient;
