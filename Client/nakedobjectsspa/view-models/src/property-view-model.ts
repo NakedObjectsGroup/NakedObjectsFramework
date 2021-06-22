@@ -9,6 +9,7 @@ import {
     Pane,
     UrlManagerService
 } from '@nakedobjects/services';
+import { ActionViewModel } from './action-view-model';
 import { Dictionary } from 'lodash';
 import concat from 'lodash-es/concat';
 import find from 'lodash-es/find';
@@ -27,8 +28,6 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     // IDraggableViewModel
     readonly draggableType: string;
 
-    readonly isEditByAction = false;
-
     constructor(
         public readonly propertyRep: Ro.PropertyMember,
         color: ColorService,
@@ -42,8 +41,9 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         id: string,
         private readonly previousValue: Ro.Value,
         onPaneId: Pane,
-        parentValues: () => Dictionary<Ro.Value>
-    ) {
+        parentValues: () => Dictionary<Ro.Value>,
+        private readonly editActionTuples: [ActionViewModel, string[]][]
+        ) {
 
         super(propertyRep,
             color,
@@ -86,7 +86,14 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         }
         this.hasValue = previousValue && !previousValue.isNull;
         this.description = this.getRequiredIndicator() + this.description;
+
+        this.editActions = editActionTuples.filter(t => t[1].includes(id)).map(t => t[0]);
+        this.isEditByAction =  this.editActions.length > 0;
     }
+
+    private editActions: ActionViewModel[];
+
+    readonly isEditByAction: boolean;
 
     private getDigest(propertyRep: Ro.PropertyMember): string | null {
         const parent = propertyRep.parent;

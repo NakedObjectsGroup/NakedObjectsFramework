@@ -85,7 +85,7 @@ export class ViewModelFactoryService {
         return propertyRep ? new TableRowColumnViewModel(id, propertyRep, this.mask) : new TableRowColumnViewModel(id);
     }
 
-    propertyViewModel = (propertyRep: Ro.PropertyMember, id: string, previousValue: Ro.Value, paneId: Pane, parentValues: () => Dictionary<Ro.Value>) => {
+    propertyViewModel = (propertyRep: Ro.PropertyMember, id: string, previousValue: Ro.Value, paneId: Pane, parentValues: () => Dictionary<Ro.Value>, editActionTuples: [ActionViewModel, string[]][]) => {
         return new PropertyViewModel(propertyRep,
             this.color,
             this.error,
@@ -98,7 +98,8 @@ export class ViewModelFactoryService {
             id,
             previousValue,
             paneId,
-            parentValues);
+            parentValues,
+            editActionTuples);
     }
 
     dialogViewModel = (routeData: PaneRouteData, action: Ro.ActionRepresentation | Ro.InvokableActionMember, actionViewModel: ActionViewModel | null, isRow: boolean, row?: number) => {
