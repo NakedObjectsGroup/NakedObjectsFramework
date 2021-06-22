@@ -38,3 +38,19 @@
 .multiline {
     overflow: auto;
 }
+
+.icon {
+    display: block;
+    cursor: pointer;
+    float: right;
+    width: 20px;
+    height: var(--field-value-height);
+    padding-left: var(--space-3);
+    padding-top: var(--space-3);
+    margin-right: var(--space-3);
+}
+
+.icon.edit {
+    background: var(--pencil-icon);
+    background-size: cover;
+}

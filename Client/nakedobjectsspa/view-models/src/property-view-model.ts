@@ -42,7 +42,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         private readonly previousValue: Ro.Value,
         onPaneId: Pane,
         parentValues: () => Dictionary<Ro.Value>,
-        private readonly editActionTuples: [ActionViewModel, string[]][]
+        readonly editActionTuples: [ActionViewModel, string[]][]
         ) {
 
         super(propertyRep,

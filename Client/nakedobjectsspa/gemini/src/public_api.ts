@@ -12,7 +12,6 @@ export * from './dynamic-list/dynamic-list.component';
 export * from './dynamic-object/dynamic-object.component';
 export * from './edit-parameter/edit-parameter.component';
 export * from './edit-property/edit-property.component';
-export * from './edit-by-action-property/edit-by-action-property.component';
 export * from './error/error.component';
 export * from './field/field.component';
 export * from './footer/footer.component';

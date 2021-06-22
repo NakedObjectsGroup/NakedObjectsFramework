@@ -45,7 +45,6 @@ import { TimePickerFacadeComponent } from './time-picker-facade/time-picker-faca
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { ViewParameterComponent } from './view-parameter/view-parameter.component';
 import { ViewPropertyComponent } from './view-property/view-property.component';
-import { EditByActionPropertyComponent } from './edit-by-action-property/edit-by-action-property.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { ParametersPropertiesComponent } from './parameters-properties/parameters-properties.component';
 
@@ -66,7 +65,6 @@ import { ParametersPropertiesComponent } from './parameters-properties/parameter
         ParametersPropertiesComponent,
         EditPropertyComponent,
         ViewPropertyComponent,
-        EditByActionPropertyComponent,
         EditParameterComponent,
         RecentComponent,
         ApplicationPropertiesComponent,
@@ -124,7 +122,6 @@ import { ParametersPropertiesComponent } from './parameters-properties/parameter
         ParametersPropertiesComponent,
         EditPropertyComponent,
         ViewPropertyComponent,
-        EditByActionPropertyComponent,
         EditParameterComponent,
         RecentComponent,
         ApplicationPropertiesComponent,

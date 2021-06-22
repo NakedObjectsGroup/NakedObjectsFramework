@@ -23,6 +23,9 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     @Input()
     property: PropertyViewModel;
 
+    @Input()
+    inDialog: boolean;
+
     // template listeners
 
     @HostListener('keydown', ['$event'])
@@ -85,7 +88,13 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
         return this.property.attachment;
     }
 
+    get isEditByAction() {
+        return  !this.inDialog && this.property.isEditByAction;
+    }
+
     doClick = (right?: boolean) => this.property.doClick(right);
+
+    doEdit = () => this.property.doEditByAction();
 
     copy(event: KeyboardEvent) {
         const prop = this.property;
