@@ -206,4 +206,8 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     readonly doEditByAction = () => this.editAction.doInvoke();
 
     readonly isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();
+
+    get editActionTooltip() {
+        return `${this.editAction.title} ${this.editAction.description}`.trim();
+    }
 }

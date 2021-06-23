@@ -92,6 +92,10 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
         return  !this.inDialog && this.property.isEditByAction;
     }
 
+    get editActionTooltip() {
+        return this.property.editActionTooltip;
+    }
+
     doClick = (right?: boolean) => this.property.doClick(right);
 
     doEdit = () => this.property.doEditByAction();
