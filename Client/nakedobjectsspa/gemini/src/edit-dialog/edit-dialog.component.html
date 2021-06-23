@@ -1,6 +1,9 @@
 <div *ngIf="dialog">
 	<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
-		<nof-parameters-properties class="properties" [parameters]="parameters" [properties]="properties" [parent]="dialog" [form]="form"></nof-parameters-properties>		
+		<ng-container *ngFor="let parmprop of parametersProperties">
+			<nof-edit-parameter *ngIf="isParameter(parmprop)" [ngClass]="classes(parmprop)" [parameter]="parmprop" [parent]="parent" [form]="form"></nof-edit-parameter>
+			<nof-view-property  *ngIf="isProperty(parmprop)" [inDialog]="true" [ngClass]="classes(parmprop)"  [property]="parmprop"></nof-view-property>
+		</ng-container>		
 		<div class="co-validation">{{message}}</div>
 		<div class="form-row">
 			<input class="ok" tabindex="0" type="submit" value="OK" title="{{tooltip}}" nofClick (leftClick)="onSubmit()" (rightClick)="onSubmit(true)" [disabled]="!form.valid" />

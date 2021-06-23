@@ -46,7 +46,6 @@ import { TimePickerComponent } from './time-picker/time-picker.component';
 import { ViewParameterComponent } from './view-parameter/view-parameter.component';
 import { ViewPropertyComponent } from './view-property/view-property.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
-import { ParametersPropertiesComponent } from './parameters-properties/parameters-properties.component';
 
 @NgModule({
     declarations: [
@@ -62,7 +61,6 @@ import { ParametersPropertiesComponent } from './parameters-properties/parameter
         DialogComponent,
         EditDialogComponent,
         ParametersComponent,
-        ParametersPropertiesComponent,
         EditPropertyComponent,
         ViewPropertyComponent,
         EditParameterComponent,
@@ -119,7 +117,6 @@ import { ParametersPropertiesComponent } from './parameters-properties/parameter
         DialogComponent,
         EditDialogComponent,
         ParametersComponent,
-        ParametersPropertiesComponent,
         EditPropertyComponent,
         ViewPropertyComponent,
         EditParameterComponent,
