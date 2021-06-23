@@ -18,6 +18,7 @@ import fromPairs from 'lodash-es/fromPairs';
 import map from 'lodash-es/map';
 import mapValues from 'lodash-es/mapValues';
 import values from 'lodash-es/values';
+import without from 'lodash-es/without';
 import zipObject from 'lodash-es/zipObject';
 import { ActionViewModel } from './action-view-model';
 import { ChoiceViewModel } from './choice-view-model';
@@ -125,10 +126,12 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === 'form' || iMode === 'transient';
         this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getObjectCachedValues(this.domainObject.id(), routeData.paneId) : {};
 
-        const actions = values(this.domainObject.actionMembers()) as Ro.ActionMember[];
-        this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData)).filter(avm => !avm.returnsScalar());
+        const actionMembers = values(this.domainObject.actionMembers()) as Ro.ActionMember[];
+        const allActions = map(actionMembers, action => this.viewModelFactory.actionViewModel(action, this, this.routeData)).filter(avm => !avm.returnsScalar());
 
-        const editActions = this.actions.filter(avm => avm.editProperties.length > 0);
+        // don't show editActions in menu
+        const editActions = allActions.filter(avm => avm.editProperties.length > 0);
+        this.actions =  without(allActions, ...editActions);
 
         const editActionTuples: [ActionViewModel, string[]][] = map(editActions, a => [a, a.editProperties]);
 
