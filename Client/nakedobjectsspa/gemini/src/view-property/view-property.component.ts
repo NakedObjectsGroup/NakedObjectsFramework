@@ -95,7 +95,11 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
 
     doClick = (right?: boolean) => this.property.doClick(right);
 
-    doEdit = () => this.property.doEditByAction();
+    doEdit = () =>  {
+        if (!this.property.isEditActionDisabled) {
+          this.property.doEditByAction();
+        }
+    }
 
     copy(event: KeyboardEvent) {
         const prop = this.property;
@@ -106,6 +110,12 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
 
     setDropZones(ids: string[]) {
         setTimeout(() => this.dropZones = ids);
+    }
+
+    get editActionClass() {
+        return ({
+            tempdisabled: this.property.isEditActionDisabled,
+        });
     }
 
     ngOnInit(): void {
