@@ -53,4 +53,5 @@
 .icon.edit {
     background: var(--pencil-icon);
     background-size: cover;
+    margin-left: 2px;
 }
