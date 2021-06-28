@@ -51,11 +51,11 @@ input[type='button']:focus, input[type='button']:hover, input[type='submit']:foc
     outline: solid;
     outline-width: 1px;
     outline-color: black;
+    background-color: white;
 }
 
 input.ok {
     color: var(--dialog-contrast-text-color);
-    background-color: var(--header-background-color);
     margin-bottom: var(--space-4);
 }
 
