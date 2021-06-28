@@ -2,6 +2,7 @@
     overflow: hidden;
     /*To cope with long prop names*/
     display: block;
+    width: var(--field-width);
 }
 
 :host:not(:last-child) {
