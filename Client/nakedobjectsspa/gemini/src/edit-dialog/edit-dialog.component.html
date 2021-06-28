@@ -4,7 +4,7 @@
 			<nof-edit-parameter *ngIf="isParameter(parmprop)" [ngClass]="classes(parmprop)" [parameter]="parmprop" [parent]="parent" [form]="form"></nof-edit-parameter>
 			<ng-container *ngIf="isLastParameter(parmprop)">
 				<div class="co-validation">{{message}}</div>
-				<div>
+				<div class="form-row">
 					<input class="ok" tabindex="0" type="submit" value="OK" title="{{tooltip}}" nofClick (leftClick)="onSubmit()" (rightClick)="onSubmit(true)" [disabled]="!form.valid" />
 					<input class="cancel" tabindex="0" type="button" nofClick (leftClick)="close()" value="Cancel"/>
 				</div>
