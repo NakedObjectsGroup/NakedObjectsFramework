@@ -2,7 +2,7 @@
 	<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
 		<ng-container *ngFor="let parmprop of parametersProperties">
 			<nof-edit-parameter *ngIf="isParameter(parmprop)" [ngClass]="classes(parmprop)" [parameter]="parmprop" [parent]="parent" [form]="form"></nof-edit-parameter>
-			<ng-container *ngIf="isFirstParameter(parmprop)">
+			<ng-container *ngIf="isLastParameter(parmprop)">
 				<div class="co-validation">{{message}}</div>
 				<div>
 					<input class="ok" tabindex="0" type="submit" value="OK" title="{{tooltip}}" nofClick (leftClick)="onSubmit()" (rightClick)="onSubmit(true)" [disabled]="!form.valid" />

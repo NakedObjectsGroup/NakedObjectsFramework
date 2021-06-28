@@ -47,8 +47,8 @@ export class EditDialogComponent  extends BaseDialogComponent implements AfterVi
         return parmprop instanceof ParameterViewModel;
     }
 
-    isFirstParameter(parmprop: PropertyViewModel | ParameterViewModel) {
-        return parmprop === this.parameters[0];
+    isLastParameter(parmprop: PropertyViewModel | ParameterViewModel) {
+        return parmprop === this.parameters[this.parameters.length - 1];
     }
 
     isProperty(parmprop: PropertyViewModel | ParameterViewModel) {
