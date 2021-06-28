@@ -58,6 +58,7 @@ input[type=button], input[type=reset], input[type=submit] {
     outline: solid;
     outline-color: lightgrey;
     outline-width: 1px;
+    background-color: white;
 }
 
 input[type='button']:focus, input[type='button']:hover, input[type='submit']:focus, input[type='submit']:hover {
@@ -68,7 +69,6 @@ input[type='button']:focus, input[type='button']:hover, input[type='submit']:foc
 
 input.ok {
     color: var(--dialog-contrast-text-color);
-    background-color: var(--header-background-color);
     margin-bottom: var(--space-4);
 }
 
