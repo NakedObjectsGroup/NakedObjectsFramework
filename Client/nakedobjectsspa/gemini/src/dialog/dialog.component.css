@@ -1,15 +1,11 @@
 :host {
     display: block;
-    /* width: var(--field-width); */
-    /* margin-bottom: var(--space-5); */
     overflow: hidden;
     /*Needed to force the floated divs inside this to expand the containing div in height*/
     background-color: var(--dialog-color);
     color: var(--dialog-text-color);
     font-size: var(--font-size-2);
     font-weight: var(--font-weight-3);
-    /* padding-left: var(--space-3);
-    padding-right: var(--space-3); */
 }
 
 .dialog {
