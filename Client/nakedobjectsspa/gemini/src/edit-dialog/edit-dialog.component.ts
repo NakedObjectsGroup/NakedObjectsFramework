@@ -62,6 +62,38 @@ export class EditDialogComponent  extends BaseDialogComponent implements AfterVi
         return ({ parameter: true, [parmprop.presentationHint]: this.hasHint(parmprop)});
     }
 
+    private doNextEditByAction(i: number) {
+        const property = this.properties[i];
+        if (property.isEditByAction) {
+            property.doEditByAction();
+            return true;
+        }
+        return false;
+    }
+
+    onSubmitNext(right?: boolean) {
+        this.onSubmit(right);
+
+        const merged = this.parametersProperties;
+        const lastParameter = this.parameters[this.parameters.length - 1];
+        const lastParameterIndex = merged.indexOf(lastParameter);
+        const nextMergedIndex = lastParameterIndex + 1;
+        const nextProperty = (nextMergedIndex > merged.length - 1) ? this.properties[0] : merged[nextMergedIndex] as PropertyViewModel;
+        const nextPropertyIndex = this.properties.indexOf(nextProperty);
+
+        for (let i = nextPropertyIndex; i < this.properties.length; i++) {
+            if (this.doNextEditByAction(i)) {
+                return;
+            }
+        }
+
+        for (let i = 0; i < nextPropertyIndex; i++) {
+            if (this.doNextEditByAction(i)) {
+                return;
+            }
+        }
+    }
+
     ngAfterViewInit(): void {
         this.sub = this.parmComponents.changes.subscribe(() => this.focus());
     }
