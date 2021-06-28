@@ -7,9 +7,10 @@
 				<div class="form-row">
 					<input class="ok" tabindex="0" type="submit" value="OK" title="{{tooltip}}" nofClick (leftClick)="onSubmit()" (rightClick)="onSubmit(true)" [disabled]="!form.valid" />
 					<input class="cancel" tabindex="0" type="button" nofClick (leftClick)="close()" value="Cancel"/>
+					<input class="next" tabindex="0" type="submit" value="Next" title="{{tooltip}}" nofClick (leftClick)="onSubmit()" (rightClick)="onSubmit(true)" [disabled]="!form.valid" />
 				</div>
 			</ng-container>		
-			<nof-view-property  *ngIf="isProperty(parmprop)" [inDialog]="true" [ngClass]="classes(parmprop)"  [property]="parmprop"></nof-view-property>
+			<nof-view-property  *ngIf="isProperty(parmprop)" [ngClass]="classes(parmprop)"  [property]="parmprop"></nof-view-property>
 		</ng-container>		
 	</form>
 </div>
