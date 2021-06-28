@@ -121,6 +121,10 @@ export class DialogViewModel extends MessageViewModel {
         }
     }
 
+    doCloseKeepUrl = () => {
+        this.doComplete();
+    }
+
     doCloseKeepHistory = () => {
         this.urlManager.closeDialogKeepHistory(this.id, this.onPaneId);
         this.doComplete();

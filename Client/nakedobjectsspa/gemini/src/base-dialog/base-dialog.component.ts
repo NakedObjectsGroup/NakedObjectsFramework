@@ -35,6 +35,7 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
 
     @Input()
     set parent(parent: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel) {
+        this.parentChanged = this.parentViewModel !== parent;
         this.parentViewModel = parent;
     }
 
@@ -43,6 +44,7 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
     }
 
     private currentDialogId: string;
+    private parentChanged: boolean;
 
     @Input()
     set selectedDialogId(id: string) {
@@ -114,7 +116,11 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
 
     closeExistingDialog() {
         if (this.dialog) {
-            this.dialog.doCloseKeepHistory();
+            if (this.dialog.id !== this.currentDialogId) {
+                this.dialog.doCloseKeepHistory();
+            } else {
+                this.dialog.doCloseKeepUrl();
+            }
             this.dialog = null;
         }
     }
@@ -125,9 +131,10 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
 
         if (this.parent && this.currentDialogId) {
 
-            if (this.dialog && this.dialog.id === this.currentDialogId) {
+            if (!this.parentChanged && this.dialog && this.dialog.id === this.currentDialogId) {
                 return;
             }
+            this.parentChanged = false;
 
             const p = this.parent;
             let action: Ro.ActionMember | Ro.ActionRepresentation | null = null;
@@ -159,12 +166,13 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
                         if (this.currentDialogId) {
                             // must be a change
                             this.closeExistingDialog();
-
                             const dialogViewModel = this.viewModelFactory.dialogViewModel(this.parent.routeData, details, actionViewModel, false);
                             this.createForm(dialogViewModel);
                         }
                     })
-                    .catch((reject: ErrorWrapper) => this.error.handleError(reject));
+                    .catch((reject: ErrorWrapper) => {
+                        this.error.handleError(reject);
+                    });
             } else {
                 this.closeExistingDialog();
             }
