@@ -23,9 +23,6 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     @Input()
     property: PropertyViewModel;
 
-    @Input()
-    inDialog: boolean;
-
     // template listeners
 
     @HostListener('keydown', ['$event'])
@@ -89,7 +86,7 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     }
 
     get isEditByAction() {
-        return  !this.inDialog && this.property.isEditByAction;
+        return this.property.isEditByAction;
     }
 
     get editActionTooltip() {
