@@ -1,5 +1,4 @@
 :host {
     width: var(--field-width);
-    padding: var(--space-3);
-    margin-bottom: var(--space-5);
+    display: block;
 }
