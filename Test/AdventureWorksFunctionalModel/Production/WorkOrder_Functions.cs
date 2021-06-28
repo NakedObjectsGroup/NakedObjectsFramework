@@ -19,8 +19,8 @@ namespace AW.Functions
             context.WithUpdated(original, update with { ModifiedDate = context.Now() });
 
         [Edit]
-        public static  IContext ChangeScrappedQuantity(this WorkOrder wo, short newQty, IContext context)
-        => UpdateWO(wo, wo with { ScrappedQty = newQty }, context);
+        public static  IContext ChangeScrappedQuantity(this WorkOrder wo, short scrappedQty, IContext context)
+        => UpdateWO(wo, wo with { ScrappedQty = scrappedQty }, context);
 
         [Edit]
         public static IContext EditDates(this WorkOrder wo, 
