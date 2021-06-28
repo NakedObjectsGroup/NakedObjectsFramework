@@ -33,14 +33,9 @@ export class EditDialogComponent  extends BaseDialogComponent implements AfterVi
     @ViewChildren(EditParameterComponent)
     parmComponents: QueryList<EditParameterComponent>;
 
-    private merged: (ParameterViewModel | PropertyViewModel)[];
-
     get parametersProperties(): (ParameterViewModel | PropertyViewModel)[] {
-        if (!this.merged) {
-            const parmMap = fromPairs(this.parameters.map((p) => [p.id.toLowerCase(), p]));
-            this.merged = map(this.properties, (p) => parmMap[p.id.toLowerCase()] ?? p);
-        }
-        return this.merged;
+        const parmMap = fromPairs(this.parameters.map((p) => [p.id.toLowerCase(), p]));
+        return map(this.properties, (p) => parmMap[p.id.toLowerCase()] ?? p);
     }
 
     isParameter(parmprop: PropertyViewModel | ParameterViewModel) {
