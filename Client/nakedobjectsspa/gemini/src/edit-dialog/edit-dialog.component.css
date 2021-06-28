@@ -52,17 +52,16 @@ input[type='button']:focus, input[type='button']:hover, input[type='submit']:foc
     outline-width: 1px;
     outline-color: black;
     background-color: white;
-}
-
-input.ok {
     color: var(--dialog-contrast-text-color);
-    margin-bottom: var(--space-4);
 }
 
-input.ok:disabled {
+input[value='Next'] {
+    display: none;  /* Hide this capability by default */
+}
+
+input[type='button']:disabled,  input[type='submit']:disabled {
     color: var(--disabled-color);
 }
-
 
 .parameter .name {
     width: var(--field-name-width);
