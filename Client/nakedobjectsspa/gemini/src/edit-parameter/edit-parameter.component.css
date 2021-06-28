@@ -33,7 +33,7 @@ input:hover, input:focus {
 
 .reference, .value, collectionDetails {
     width: var(--field-value-width);
-    padding-left: var(--space-3);
+    /*padding-left: var(--space-3);*/
     margin: var(--space-1);
     float: left;
 }

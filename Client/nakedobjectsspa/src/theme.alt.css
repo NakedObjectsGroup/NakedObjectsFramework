@@ -20,7 +20,7 @@
     --menu-text-color: var(--default-text-color);
 
     /*Fields (properties and parameters) */
-    --field-width: 410px;
+    --field-width: 420px;
     --field-name-width: 145px;
     --field-value-height: 20px;
     --field-value-width: 245px;
