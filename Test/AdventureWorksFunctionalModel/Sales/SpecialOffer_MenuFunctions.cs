@@ -38,7 +38,7 @@ namespace AW.Functions
 
         //TODO: Annotations & complementary methods
 
-        [MemberOrder(4), CreateNew]
+        [MemberOrder(4)]
         public static (SpecialOffer, IContext) CreateNewSpecialOffer(
             [MaxLength(50)] string description,
             decimal discountPct,
