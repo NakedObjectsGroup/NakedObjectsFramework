@@ -43,6 +43,7 @@ export class ActionViewModel {
         this.menuPath = actionRep.extensions().menuPath() || '';
         this.description = this.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
         this.editProperties = actionRep.extensions().editProperties()?.split(',') ?? [];
+        this.createNewProperties = actionRep.extensions().createNewProperties()?.split(',') ?? [];
     }
 
     readonly paneId: Pane;
@@ -51,6 +52,7 @@ export class ActionViewModel {
     readonly description: string;
     readonly presentationHint: string;
     readonly editProperties: string[];
+    readonly createNewProperties: string[];
     gotoResult = true;
     invokableActionRep: Ro.ActionRepresentation | Ro.InvokableActionMember;
 

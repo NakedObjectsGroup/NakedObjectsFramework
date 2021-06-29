@@ -58,6 +58,7 @@ enum Transition {
     ToHome,
     ToMenu,
     ToDialog,
+    ToCreateNewDialog,
     FromDialog,
     FromDialogKeepHistory,
     ToObjectView,
@@ -462,8 +463,12 @@ export class UrlManagerService {
             case (Transition.FromDialogKeepHistory):
                 replace = false;
                 break;
+            case (Transition.ToCreateNewDialog):
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, objectPath));
+                replace = false;
+                this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.CreateNew], search);
+                break;
             case (Transition.ToObjectView):
-
                 ({ path, replace } = this.setupPaneNumberAndTypes(paneId, objectPath));
                 replace = false;
                 search = this.clearPane(search, paneId);
@@ -559,6 +564,14 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToDialog, search => this.getId(key, search) !== dialogId);
     }
 
+    setCreateNewDialog = (dialogId: string, returnType: string, paneId: Pane = Pane.Pane1) => {
+        const key = `${akm.dialog}${paneId}`;
+        const oid = this.obfuscate(`${returnType}${this.keySeparator}${0}`);
+        const obj = `${akm.object}${paneId}`;
+        const newValues = zipObject([key, obj], [dialogId, oid]) as Dictionary<string>;
+        this.executeTransition(newValues, paneId, Transition.ToCreateNewDialog, search => this.getId(key, search) !== dialogId);
+    }
+
     setMultiLineDialog = (dialogId: string, paneId: Pane) => {
         this.pushUrlState();
         const key = `${akm.dialog}${Pane.Pane1}`; // always on 1
@@ -569,6 +582,8 @@ export class UrlManagerService {
     setDialogOrMultiLineDialog = (actionRep: Ro.ActionMember | Ro.ActionRepresentation, paneId: Pane = Pane.Pane1) => {
         if (actionRep.extensions().multipleLines()) {
             this.setMultiLineDialog(actionRep.actionId(), paneId);
+        } else if (actionRep.extensions().createNewProperties()) {
+            this.setCreateNewDialog(actionRep.actionId(), actionRep.extensions().returnType(), paneId);
         } else {
             this.setDialog(actionRep.actionId(), paneId);
         }

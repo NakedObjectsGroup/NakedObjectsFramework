@@ -46,6 +46,7 @@ import * as RoCustom from './ro-interfaces-custom';
  const roNofPresentationHint = 'x-ro-nof-presentationHint';
  const roNofMembers = 'x-ro-nof-members';
  const roNofEditProperties = 'x-ro-nof-editProperties';
+ const roNofCreateNewProperties = 'x-ro-nof-createNew';
 
 // do not couple this back to angular by imports
 
@@ -91,6 +92,7 @@ export class Extensions {
     renderEagerly = () => this.wrapped[roNofRenderEagerly] as boolean;
     presentationHint = () => this.wrapped[roNofPresentationHint] as string;
     editProperties = () => this.wrapped[roNofEditProperties] as string;
+    createNewProperties = () => this.wrapped[roNofCreateNewProperties] as string;
 }
 
 export interface IHasExtensions {
