@@ -91,6 +91,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ActionReturingImmutableList();
             //MultiLineActionDialog();
             InlinePropertyEdit();
+            InlineMultiPropertyEdit();
+            CovalidationOnInlineMultiPropertyEdit();
         }
 
         //[TestMethod]
@@ -796,7 +798,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             jt = emp.GetProperty("Job Title").AssertValueIs("Sales Representative");
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void InlineMultiPropertyEdit()
         {
             var wo = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.WorkOrder--71669")
@@ -816,6 +818,21 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             wo = dialog.ClickOKToViewObject();
             wo.GetProperty("Start Date").AssertValueIs("25 Jun 2008");
             wo.GetProperty("Due Date").AssertValueIs("6 Jul 2008");
+        }
+
+        //[TestMethod]
+        public void CovalidationOnInlineMultiPropertyEdit()
+        {
+            var wo = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.WorkOrder--71669")
+                .GetObjectView(Pane.Left).AssertTitleIs("Road-250 Black, 44: 6/25/2008 12:00:00 AM");
+
+            wo.GetProperty("Start Date").AssertValueIs("25 Jun 2008");
+            var dialog = wo.GetProperty("Due Date").AssertValueIs("6 Jul 2008").ClickOnEditIcon();
+            dialog.GetTextField("Start Date").AssertDefaultValueIs("25 Jun 2008").Clear().Enter("26 Jul 2008");
+            dialog.GetTextField("Due Date").AssertDefaultValueIs("6 Jul 2008").Clear().Enter("7 Jul 2008");
+            Thread.Sleep(1000);
+            dialog.ClickOKWithNoResultExpected();
+            dialog.AssertHasValidationError("StartDate must be before DueDate");
         }
 
     }
