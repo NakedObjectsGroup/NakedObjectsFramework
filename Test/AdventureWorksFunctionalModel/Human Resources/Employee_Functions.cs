@@ -78,22 +78,22 @@ namespace AW.Functions
             Employee original, Employee updated, IContext context) =>
                 context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
-        [Edit]
+        /*[Edit]*/
         public static  IContext UpdateNationalIDNumber(this Employee e, 
             [MaxLength(15)] string nationalIdNumber, IContext context) =>
                 UpdateEmployee(e, e with { NationalIDNumber = nationalIdNumber }, context);
 
-        [Edit]
+        /*[Edit]*/
         public static IContext UpdateLoginID(this Employee e,
              [MaxLength(256)] string loginID, IContext context) =>
                 UpdateEmployee(e, e with { LoginID = loginID }, context);
 
-        [Edit]
+        /*[Edit]*/
         public static  IContext UpdateJobTitle(this Employee e,
             [MaxLength(50)] string jobTitle, IContext context) =>
                 UpdateEmployee(e, e with { JobTitle = jobTitle }, context);
 
-        [Edit]
+        /*[Edit]*/
         public static  IContext UpdateDateOfBirth(this Employee e,
              DateTime dateOfBirth, IContext context) =>
                 UpdateEmployee(e, e with { DateOfBirth = dateOfBirth }, context);
@@ -105,7 +105,7 @@ namespace AW.Functions
         internal static string ValidateDateOfBirth(DateTime dob, IContext context) =>
             (dob > context.Today().AddYears(-16)) || (dob < context.Today().AddYears(-100)) ? "Invalid Date Of Birth" : null;
 
-        [Edit]
+        /*[Edit]*/
         public static IContext UpdateMaritalStatus(this Employee e, 
             string maritalStatus, IContext context) =>
                 UpdateEmployee(e, e with { MaritalStatus = maritalStatus }, context);
@@ -114,7 +114,7 @@ namespace AW.Functions
 
         internal static string[] MaritalStatuses = new[] { "S", "M" };
 
-        [Edit]
+        /*[Edit]*/
         public static IContext UpdateGender(
             this Employee e, string gender, IContext context) =>
                 UpdateEmployee(e, e with { Gender = gender }, context);
@@ -123,33 +123,33 @@ namespace AW.Functions
             
         internal static string[] Genders = new[] { "M", "F" };
 
-        [Edit]
+        /*[Edit]*/
         public static IContext UpdateHireDate(this Employee e,
              DateTime hireDate, IContext context) =>
                 UpdateEmployee(e, e with { HireDate = hireDate }, context);
 
-        [Edit]
+        /*[Edit]*/
         public static IContext UpdateSalaried(this Employee e,
              bool salaried, IContext context) =>
                 UpdateEmployee(e, e with { Salaried = salaried }, context);
 
-        [Edit]
+        /*[Edit]*/
         public static IContext UpdateVacationHours(this Employee e,
             short vacationHours, IContext context) =>
                 UpdateEmployee(e, e with { VacationHours = vacationHours}, context);
 
-        [Edit]
+        /*[Edit]*/
         public static IContext UpdateSickLeaveHours(this Employee e,
             short sickLeaveHours, IContext context) =>
                 UpdateEmployee(e, e with { SickLeaveHours = sickLeaveHours}, context);
 
 
-        [Edit]
+        /*[Edit]*/
         public static IContext UpdateCurrent(this Employee e,
              bool current, IContext context) =>
                 UpdateEmployee(e, e with { Current = current}, context);
 
-        [Edit]
+        /*[Edit]*/
         public static IContext UpdateManager(this Employee e, Employee manager, IContext context) =>
          UpdateEmployee(e, e with { Manager = manager }, context);
 
