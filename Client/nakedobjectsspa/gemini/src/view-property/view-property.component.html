@@ -39,4 +39,4 @@
         </ng-container>
     </ng-container>
 </ng-container>
-<div *ngIf="isEditByAction" class="icon edit" [title]="editActionTooltip" (click)="doEdit()"></div>
+<div *ngIf="isEditByAction" class="icon edit" [ngClass]="editActionClass"  [title]="editActionTooltip" (click)="doEdit()"></div>

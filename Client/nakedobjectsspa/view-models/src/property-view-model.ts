@@ -210,4 +210,8 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     get editActionTooltip() {
         return `${this.editAction.title} ${this.editAction.description}`.trim();
     }
+
+    get isEditActionDisabled() {
+        return this.editAction.disabled();
+    }
 }

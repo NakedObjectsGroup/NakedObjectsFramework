@@ -64,7 +64,7 @@ export class EditDialogComponent  extends BaseDialogComponent implements AfterVi
 
     private doNextEditByAction(i: number) {
         const property = this.properties[i];
-        if (property.isEditByAction) {
+        if (property.isEditByAction && !property.isEditActionDisabled) {
             property.doEditByAction();
             return true;
         }
