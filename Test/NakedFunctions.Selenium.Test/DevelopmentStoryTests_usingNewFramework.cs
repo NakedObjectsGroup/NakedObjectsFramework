@@ -60,6 +60,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ParameterChoicesSimple();
             ParameterChoicesDependent();
             ParameterDefaultFunction();
+            ParameterDisabledFunction();
             ValidateSingleParam();
             ValidateMultipleParams();
             DisableFunction();
@@ -286,7 +287,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetTextField("End Date").AssertDefaultValueIs(oneMonthOn);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ParameterDisabledFunction()
         {
             helper.GotoHome().OpenMainMenu("Products")
