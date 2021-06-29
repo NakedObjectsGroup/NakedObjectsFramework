@@ -42,7 +42,8 @@ export enum InteractionMode {
     Edit,
     Transient,
     Form,
-    NotPersistent
+    NotPersistent,
+    CreateNew
 }
 
 export class RouteData {
