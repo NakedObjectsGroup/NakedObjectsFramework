@@ -81,7 +81,7 @@ namespace AW.Functions
                    select c;
         }
 
-        [MemberOrder("Individuals", 2), CreateNew]
+        [MemberOrder("Individuals", 2)]
         public static (Customer, IContext) CreateNewIndividualCustomer(
             string firstName,
             string lastName,
