@@ -50,7 +50,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectContributedAction();
             InformUserViaIAlertService();
             EditAction();
-            EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
+            //EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
             AccessToIClock();
             RecordsDoNotHaveEditButton();
             EnumProperty();
@@ -58,7 +58,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             DisplayValueAsProperty();
             DisplayCollectionAsProperty();
             DisplayGuidProperty();
-            ParameterChoicesSimple();
+            //ParameterChoicesSimple();
             ParameterChoicesDependent();
             ParameterDefaultFunction();
             ValidateSingleParam();
