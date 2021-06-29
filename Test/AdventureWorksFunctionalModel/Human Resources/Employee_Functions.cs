@@ -105,7 +105,7 @@ namespace AW.Functions
         internal static string ValidateDateOfBirth(DateTime dob, IContext context) =>
             (dob > context.Today().AddYears(-16)) || (dob < context.Today().AddYears(-100)) ? "Invalid Date Of Birth" : null;
 
-        [Edit]
+        
         public static IContext UpdateMaritalStatus(this Employee e, 
             string maritalStatus, IContext context) =>
                 UpdateEmployee(e, e with { MaritalStatus = maritalStatus }, context);

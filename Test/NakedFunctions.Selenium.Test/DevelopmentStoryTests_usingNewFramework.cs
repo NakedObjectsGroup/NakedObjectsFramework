@@ -50,7 +50,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectContributedAction();
             InformUserViaIAlertService();
             EditAction();
-            //EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
             AccessToIClock();
             RecordsDoNotHaveEditButton();
             EnumProperty();
@@ -58,7 +57,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             DisplayValueAsProperty();
             DisplayCollectionAsProperty();
             DisplayGuidProperty();
-            //ParameterChoicesSimple();
+           // ParameterChoicesSimple();
             ParameterChoicesDependent();
             ParameterDefaultFunction();
             ValidateSingleParam();
@@ -90,6 +89,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             QueryContributedActionWithCoValidation();
             ActionReturingImmutableList();
             //MultiLineActionDialog();
+            //EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
         }
 
         //[TestMethod]
@@ -189,15 +189,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             dialog.ClickOKToViewObject().GetProperty("Max Qty").AssertValueIs(original);
         }
 
-        //[TestMethod]
-        public void EditActionWithDefaultSuppliedAutomaticallyByEditAttribute()
-        {
-            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditDescription")
-              .GetObjectView(Pane.Left).AssertTitleIs("Road-650 Overstock")
-              .GetOpenedDialog().GetTextField("Description").AssertDefaultValueIs("Road-650 Overstock");
-
-        }
-
         //[TestMethod] 
         public void AccessToIClock()
         {
@@ -256,7 +247,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             .GetProperty("Rowguid").AssertValueIs("683de5dd-521a-47d4-a573-06a3cdb1bc5d");
         }
 
-       // [TestMethod]
+       //[TestMethod]
         public void ParameterChoicesSimple()
         {
             var emp = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Employee--105")
@@ -264,12 +255,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             emp.GetProperty("Marital Status").AssertValueIs("S");
             var dialog = emp.OpenActions().GetActionWithDialog("Update Marital Status").Open();
 
-            dialog.GetSelectionField("Marital Status").AssertOptionsAre("S", "M").Select(1);
+            dialog.GetSelectionField("Marital Status").AssertOptionsAre("*", "S", "M").Select(2);
             emp = dialog.ClickOKToViewObject();
             emp.GetProperty("Marital Status").AssertValueIs("M");
 
             dialog = emp.OpenActions().GetActionWithDialog("Update Marital Status").Open();
-            dialog.GetSelectionField("Marital Status").AssertOptionsAre("S", "M").Select(0);
+            dialog.GetSelectionField("Marital Status").AssertOptionsAre("*", "S", "M").Select(1);
             emp = dialog.ClickOKToViewObject();
             emp.GetProperty("Marital Status").AssertValueIs("S");
         }
@@ -784,6 +775,16 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
             ////Check third line has now appeared
             //WaitForCssNo(".lineDialog", 2);
+        }
+
+
+        [TestMethod]
+        public void EditActionWithDefaultSuppliedAutomaticallyByEditAttribute()
+        {
+            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditDescription")
+              .GetObjectView(Pane.Left).AssertTitleIs("Road-650 Overstock")
+              .GetOpenedDialog().GetTextField("Description").AssertDefaultValueIs("Road-650 Overstock");
+
         }
 
     }
