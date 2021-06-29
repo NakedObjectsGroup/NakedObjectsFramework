@@ -58,5 +58,14 @@ namespace NakedFrameworkClient.TestFramework
             Assert.IsTrue(imgSrc.StartsWith("data:image/gif;"));
             return this;
         }
+
+        public Dialog ClickOnEditIcon()
+        {
+            var editIcon = element.FindElement(By.CssSelector(".icon.edit"));
+            helper.Click(editIcon);
+            //TODO: Need to find the dialog from the enclosing view - it is not within the menu action
+            var dialogEl = helper.wait.Until(dr => enclosingView.element.FindElement(By.CssSelector("nof-edit-dialog")));
+            return new Dialog(dialogEl, helper, enclosingView);
+        }
     }
 }

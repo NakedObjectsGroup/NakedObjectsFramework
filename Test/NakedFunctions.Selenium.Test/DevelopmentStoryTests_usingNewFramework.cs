@@ -57,7 +57,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             DisplayValueAsProperty();
             DisplayCollectionAsProperty();
             DisplayGuidProperty();
-           // ParameterChoicesSimple();
+            ParameterChoicesSimple();
             ParameterChoicesDependent();
             ParameterDefaultFunction();
             ValidateSingleParam();
@@ -89,7 +89,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             QueryContributedActionWithCoValidation();
             ActionReturingImmutableList();
             //MultiLineActionDialog();
-            //EditActionWithDefaultSuppliedAutomaticallyByEditAttribute();
+            InlinePropertyEdit();
         }
 
         //[TestMethod]
@@ -778,13 +778,21 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
 
-        [TestMethod]
-        public void EditActionWithDefaultSuppliedAutomaticallyByEditAttribute()
+        //[TestMethod]
+        public void InlinePropertyEdit()
         {
-            helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditDescription")
-              .GetObjectView(Pane.Left).AssertTitleIs("Road-650 Overstock")
-              .GetOpenedDialog().GetTextField("Description").AssertDefaultValueIs("Road-650 Overstock");
+                var emp = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Employee--281")
+                    .GetObjectView(Pane.Left).AssertTitleIs("Shu Ito");
 
+           var jt = emp.GetProperty("Job Title").AssertValueIs("Sales Representative");
+            var dialog = jt.ClickOnEditIcon();
+            dialog.GetTextField("Job Title").AssertDefaultValueIs("Sales Representative").Clear().Enter("Sales Executive");
+            emp = dialog.ClickOKToViewObject();
+             jt = emp.GetProperty("Job Title").AssertValueIs("Sales Executive");
+             dialog = jt.ClickOnEditIcon();
+            dialog.GetTextField("Job Title").AssertDefaultValueIs("Sales Executive").Clear().Enter("Sales Representative");
+            emp = dialog.ClickOKToViewObject();
+            jt = emp.GetProperty("Job Title").AssertValueIs("Sales Representative");
         }
 
     }
