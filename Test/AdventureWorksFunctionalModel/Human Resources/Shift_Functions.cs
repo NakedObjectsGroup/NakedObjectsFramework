@@ -17,7 +17,7 @@ namespace AW.Functions {
         internal static IContext UpdateShift(Shift original, Shift updated, IContext context) =>
             context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditTimes(this Shift s, 
             TimeSpan startTime, TimeSpan endTime, IContext context) =>
              UpdateShift(s, s with { StartTime = startTime, EndTime = endTime }, context);
@@ -26,7 +26,7 @@ namespace AW.Functions {
             this Shift s, TimeSpan startTime, TimeSpan endTime) =>
                endTime > startTime ? null : "End time must be after start time";
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditName(this Shift s,
            string name, IContext context) =>
             UpdateShift(s, s with { Name = name }, context);

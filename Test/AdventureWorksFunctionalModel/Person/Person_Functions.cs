@@ -21,7 +21,7 @@ namespace AW.Functions {
             Person original, Person updated, IContext context) =>
                 context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditName(this Person p, 
             [Optionally] string title,
             string firstName,

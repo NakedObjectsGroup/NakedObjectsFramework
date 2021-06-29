@@ -84,7 +84,7 @@ namespace AW.Functions
             Product original, Product updated, IContext context) =>
                  context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditProductLine(this Product p,
             string productLine, IContext context) =>
             UpdateProduct(p, p with { ProductLine = productLine }, context);
@@ -92,7 +92,7 @@ namespace AW.Functions
         public static IList<string> Choices1EditProductLine(this Product p)
         => new List<string> { "R ", "M ", "T ", "S " };  // nchar(2) in database so pad right with space
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditClass(this Product p,
           string @class, IContext context) =>
                 UpdateProduct(p, p with { Class = @class }, context);
@@ -100,7 +100,7 @@ namespace AW.Functions
         public static IList<string> Choices1EditClass(this Product p) =>
             new[] { "H ", "M ", "L " }; // nchar(2) in database so pad right with space
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditStyle(this Product p,
             string style, IContext context) =>
                 UpdateProduct(p, p with { Style = style }, context);
@@ -108,7 +108,7 @@ namespace AW.Functions
         public static IList<string> Choices1EditStyle(this Product p) =>
             new[] { "U ", "M ", "W " }; // nchar(2) in database so pad right with space
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditProductModel(this Product p,
             ProductModel productModel, IContext context) =>
                 UpdateProduct(p, p with { ProductModel = productModel }, context);
@@ -120,7 +120,7 @@ namespace AW.Functions
             return models.Where(pm => pm.Name.ToUpper().Contains(match.ToUpper()));
         }
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditCategories(this Product p, ProductCategory category, ProductSubcategory subCategory, IContext context) =>
               UpdateProduct(p, p with { ProductSubcategory = subCategory }, context);
 

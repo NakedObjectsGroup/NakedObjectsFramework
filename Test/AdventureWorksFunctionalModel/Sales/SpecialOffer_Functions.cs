@@ -21,13 +21,11 @@ namespace AW.Functions
                 context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
         #region Edit
-        /*[Edit]*/
         public static  IContext EditDescription(
             this SpecialOffer sp, string description, IContext context) => 
                 UpdateSpecialOffer(sp, sp with { Description = description}, context);
 
 
-        /*[Edit]*/
         public static IContext EditDiscount(
             this SpecialOffer sp, decimal discountPct, IContext context) => 
             UpdateSpecialOffer(sp, sp with { DiscountPct = discountPct }, context);
@@ -36,7 +34,6 @@ namespace AW.Functions
             this SpecialOffer sp, IContext context) =>
                 DisableIfStarted(sp, context);
 
-        /*[Edit]*/
         public static IContext EditType(
             this SpecialOffer sp, string type, IContext context) => 
                 UpdateSpecialOffer(sp, sp with { Type = type }, context);
@@ -45,7 +42,6 @@ namespace AW.Functions
             this SpecialOffer sp, IContext context) =>
                 HideIfEnded(sp, context);
 
-        /*[Edit]*/
         public static IContext EditCategory(
             this SpecialOffer sp, string category, IContext context) => 
                 UpdateSpecialOffer(sp, sp with { Category = category }, context);
@@ -61,7 +57,6 @@ namespace AW.Functions
         internal static bool HideIfEnded(this SpecialOffer so, IContext context) =>
             context.Today() > so.EndDate;
 
-        /*[Edit]*/
         public static IContext EditDates( this SpecialOffer sp,
             DateTime startDate, DateTime endDate, IContext context) => 
                 UpdateSpecialOffer(sp, sp with { StartDate = startDate, EndDate = endDate }, context);
@@ -75,7 +70,6 @@ namespace AW.Functions
         internal static DateTime DefaultEndDate(IContext context) =>
             context.GetService<IClock>().Today().AddMonths(1);
 
-        /*[Edit]*/
         public static  IContext EditQuantities(this SpecialOffer sp, 
             [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
                 UpdateSpecialOffer(sp, sp with { MinQty = minQty, MaxQty = maxQty }, context);

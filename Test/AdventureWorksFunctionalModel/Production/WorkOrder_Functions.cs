@@ -18,11 +18,11 @@ namespace AW.Functions
             WorkOrder original, WorkOrder update, IContext context) =>
             context.WithUpdated(original, update with { ModifiedDate = context.Now() });
 
-        /*[Edit]*/
+        [Edit]
         public static  IContext ChangeScrappedQuantity(this WorkOrder wo, short scrappedQty, IContext context)
         => UpdateWO(wo, wo with { ScrappedQty = scrappedQty }, context);
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditDates(this WorkOrder wo, 
             DateTime startDate, DateTime dueDate, IContext context) =>
                 UpdateWO(wo, wo with { StartDate = startDate, DueDate = dueDate }, context);
@@ -30,7 +30,7 @@ namespace AW.Functions
         public static string ValidateEditDates(this WorkOrder wo, DateTime startDate, DateTime dueDate) =>
             startDate > dueDate ? "StartDate must be before DueDate" : null;
 
-        /*[Edit]*/
+        [Edit]
         public static  IContext EditOrderQty(
             this WorkOrder wo, int orderQty, IContext context) =>
                 UpdateWO(wo, wo with { OrderQty = orderQty }, context);
@@ -58,12 +58,12 @@ namespace AW.Functions
 
         #region Edits
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditStartDate(this WorkOrder wo,
             [DefaultValue(0)] DateTime startDate, IContext context) =>
             UpdateWO(wo, wo with { StartDate = startDate }, context);
 
-        /*[Edit]*/
+        [Edit]
         public static IContext EditDueDate(this WorkOrder wo,
             [DefaultValue(7)] DateTime dueDate, IContext context) =>
                UpdateWO(wo, wo with { DueDate = dueDate }, context);
