@@ -590,11 +590,14 @@ export class UrlManagerService {
     }
 
     private closeOrCancelDialog(id: string, paneId: Pane, transition: Transition) {
-        const key = `${akm.dialog}${paneId}`;
-        const existingValue = this.getSearch()[key];
+        const dKey = `${akm.dialog}${paneId}`;
+        const existingValue = this.getSearch()[dKey];
 
         if (existingValue === id) {
-            const newValues = zipObject([key], [null]) as Dictionary<string | null>;
+            const iKey = `${akm.interactionMode}${paneId}`;
+            const tKey = `${akm.toCreate}${paneId}`;
+
+            const newValues = zipObject([dKey, iKey, tKey], [null, null, null]) as Dictionary<string | null>;
             this.executeTransition(newValues, paneId, transition, () => true);
         }
     }

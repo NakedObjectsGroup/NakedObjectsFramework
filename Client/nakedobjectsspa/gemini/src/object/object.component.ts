@@ -145,6 +145,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     // template API
     expiredTransient = false;
     object: DomainObjectViewModel | null;
+    toCreateClass = '';
 
     private mode: InteractionMode | null;
     form: FormGroup | null;
@@ -155,9 +156,6 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // must be properties as object may change - eg be reloaded
     get friendlyName() {
-        if (this.mode === InteractionMode.CreateNew) {
-            return 'todo createnew';
-        }
         const obj = this.object;
         return obj ? obj.friendlyName : '';
     }
@@ -217,10 +215,6 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     title() {
-        if (this.mode === InteractionMode.CreateNew) {
-            return 'todo createnew';
-        }
-
         const obj = this.object;
         return obj ? obj.getTitle(this.mode) : '';
     }
@@ -342,6 +336,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedDialogId = routeData.dialogId;
 
         if (routeData.interactionMode === InteractionMode.CreateNew) {
+            this.toCreateClass = routeData.toCreate;
             return;
         }
 

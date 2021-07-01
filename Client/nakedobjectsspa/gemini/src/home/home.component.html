@@ -23,4 +23,5 @@
 		<!--TODO: This is the Single/Split definition-->
 		<nof-create-new-dialog *ngIf="selectedMenu" [selectedDialogId]="selectedDialogId" [parent]="selectedMenu" [toCreateClass]="toCreateClass"></nof-create-new-dialog>
 	</div>
+	<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
 </ng-container>

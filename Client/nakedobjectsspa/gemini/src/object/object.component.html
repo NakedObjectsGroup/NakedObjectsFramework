@@ -52,6 +52,6 @@
     </div>
     <nof-collections class="collections" *ngIf="collections" [collections]="collections"></nof-collections>
 </div>
-<div *ngIf="viewMode === 'CreateNew'" class="object edit" [ngClass]="classes">
-    <nof-create-new-dialog  [parent]="object" [selectedDialogId]="selectedDialogId"></nof-create-new-dialog>
-</div>
+<ng-container *ngIf="viewMode === 'CreateNew'">
+    <nof-create-new-dialog  [parent]="object" [selectedDialogId]="selectedDialogId" [toCreateClass]="toCreateClass"></nof-create-new-dialog>
+</ng-container>

@@ -33,15 +33,12 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
 
     @Input()
     set toCreateClass(cls: string) {
+        this.toCreate = cls;
         this.colorService.toColorNumberFromType(cls).then(c => this.pendingColor = `${this.configService.config.objectColor}${c}`);
     }
 
-    get friendlyName() {
-        return 'todo friendly name';
-    }
-
     get title() {
-        return 'todo title';
+        return `Editing - Unsaved ${this.toCreate}`;
     }
 
      // used to smooth transition before object set
@@ -51,21 +48,12 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
          return this.pendingColor;
     }
 
+    toCreate: string;
+
     private saveButton: IActionHolder = {
         value: 'Save',
-        doClick: () => this.onSubmit(true),
-        show: () => true,
-        disabled: () => this.form && !this.form.valid ? true : null,
-        tempDisabled: () => null,
-        title: () => this.tooltip,
-        accesskey: null,
-        presentationHint: '',
-        showDialog: () => false
-    };
-
-    private saveAndCloseButton: IActionHolder = {
-        value: 'Save & Close',
-        doClick: () => this.onSubmit(false),
+        doClick: () => this.onSubmit(),
+        doRightClick: () => this.onSubmit(true),
         show: () => true,
         disabled: () => this.form && !this.form.valid ? true : null,
         tempDisabled: () => null,
@@ -77,7 +65,7 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
 
     private cancelButton: IActionHolder = {
         value: 'Cancel',
-        doClick: () => this.onSubmit(),
+        doClick: () => this.close(),
         show: () => true,
         disabled: () => null,
         tempDisabled: () => null,
@@ -87,7 +75,7 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
         showDialog: () => false
     };
 
-    private saveButtons = [this.saveButton, this.saveAndCloseButton, this.cancelButton];
+    private saveButtons = [this.saveButton, this.cancelButton];
 
     get actionHolders() {
         return this.saveButtons;

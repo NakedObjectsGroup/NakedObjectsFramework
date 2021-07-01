@@ -1,7 +1,7 @@
 <div  class="object edit" [ngClass]="color">
     <header class="header">
         <div class="title" tabindex="0">
-            <span class="type">{{friendlyName}}</span> {{title}}
+            <span class="type">{{toCreate}}</span> {{title}}
         </div>
 		<div  class="menus">
 			<nof-action-bar [actions]="actionHolders"></nof-action-bar>
@@ -13,10 +13,6 @@
 			<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
 				<nof-parameters class="parameters" [parameters]="parameters" [parent]="dialog" [form]="form"></nof-parameters>
 				<div class="co-validation">{{message}}</div>
-				<div class="form-row">
-					<input class="ok" tabindex="0" type="submit" value="OK" title="{{tooltip}}" nofClick (leftClick)="onSubmit()" (rightClick)="onSubmit(true)" [disabled]="!form.valid" />
-					<input class="cancel" tabindex="0" type="button" nofClick (leftClick)="close()" value="Cancel"/>
-				</div>
 			</form>
 		</div>
     </div>
