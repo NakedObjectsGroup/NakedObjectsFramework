@@ -94,6 +94,7 @@ export class PaneRouteData {
     selectedCollectionItems: Dictionary<boolean[]>;
     actionsOpen: string;
     actionId: string;
+    toCreate: string;
     // Note that actionParams applies to executed actions. For dialogs see dialogFields
     // we have both because of contributed actions where we have to distinguish the action parms that
     // created the current list and the the parms for the contributed action

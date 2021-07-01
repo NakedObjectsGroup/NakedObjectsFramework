@@ -89,7 +89,8 @@ const akm = {
     parm: 'pm',
     prop: 'pp',
     reload: 'r',
-    selected: 's'
+    selected: 's',
+    toCreate: 'tc',
 };
 
 interface ITransitionResult {
@@ -281,6 +282,7 @@ export class UrlManagerService {
         paneRouteData.pageSize = parseInt(this.getId(akm.pageSize + paneId, routeParams), 10);
 
         paneRouteData.attachmentId = this.getId(akm.attachment + paneId, routeParams);
+        paneRouteData.toCreate =  this.getId(akm.toCreate + paneId, routeParams);
     }
 
     private setPaneRouteData(paneRouteData: PaneRouteData, paneId: Pane) {
@@ -397,11 +399,11 @@ export class UrlManagerService {
     }
 
     private validKeysForHome() {
-        return [akm.menu, akm.dialog, akm.reload];
+        return [akm.menu, akm.dialog, akm.reload, akm.interactionMode, akm.toCreate];
     }
 
     private validKeysForObject() {
-        return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection, akm.prop, akm.selected];
+        return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection, akm.prop, akm.selected, akm.toCreate];
     }
 
     private validKeysForMultiLineDialog() {
@@ -464,7 +466,6 @@ export class UrlManagerService {
                 replace = false;
                 break;
             case (Transition.ToCreateNewDialog):
-                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, objectPath));
                 replace = false;
                 this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.CreateNew], search);
                 break;
@@ -565,11 +566,10 @@ export class UrlManagerService {
     }
 
     setCreateNewDialog = (dialogId: string, returnType: string, paneId: Pane = Pane.Pane1) => {
-        const key = `${akm.dialog}${paneId}`;
-        const oid = this.obfuscate(`${returnType}${this.keySeparator}${0}`);
-        const obj = `${akm.object}${paneId}`;
-        const newValues = zipObject([key, obj], [dialogId, oid]) as Dictionary<string>;
-        this.executeTransition(newValues, paneId, Transition.ToCreateNewDialog, search => this.getId(key, search) !== dialogId);
+        const dKey = `${akm.dialog}${paneId}`;
+        const oKey = `${akm.toCreate}${paneId}`;
+        const newValues = zipObject([dKey, oKey], [dialogId, returnType]) as Dictionary<string>;
+        this.executeTransition(newValues, paneId, Transition.ToCreateNewDialog, search => this.getId(dKey, search) !== dialogId);
     }
 
     setMultiLineDialog = (dialogId: string, paneId: Pane) => {
