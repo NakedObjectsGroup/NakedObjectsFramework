@@ -1,7 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as Ro from '@nakedobjects/restful-objects';
-import { ContextService, ErrorService, ErrorWrapper, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
+import { ContextService, ErrorService, ErrorWrapper, InteractionMode, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
 import { LinkViewModel, MenusViewModel, MenuViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import { PaneComponent } from '../pane/pane';
 
@@ -33,6 +33,8 @@ export class HomeComponent extends PaneComponent {
     selectedDialogId: string | null;
 
     hasAuthorisedMenus = true;
+    isCreateNew = false;
+    toCreateClass: string;
 
     private menus: MenusViewModel;
 
@@ -67,6 +69,8 @@ export class HomeComponent extends PaneComponent {
     protected setup(paneRouteData: PaneRouteData) {
         this.getMenus(paneRouteData);
         this.getMenu(paneRouteData);
+        this.isCreateNew = paneRouteData.interactionMode === InteractionMode.CreateNew;
+        this.toCreateClass = paneRouteData.toCreate;
     }
 
 }

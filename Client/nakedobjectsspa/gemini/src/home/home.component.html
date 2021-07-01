@@ -1,4 +1,4 @@
-<ng-container *ngIf="hasAuthorisedMenus">
+<ng-container *ngIf="hasAuthorisedMenus && !isCreateNew">
 	<div [attr.id]="paneIdName" [ngClass]="paneType">
 		<!--TODO: This is the Single/Split definition-->
 		<div class="home">
@@ -15,6 +15,12 @@
 	</div>
 	<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
 </ng-container>
-<ng-container *ngIf="!hasAuthorisedMenus">
+<ng-container *ngIf="!hasAuthorisedMenus && !isCreateNew">
 	<p class="startup-message">Either no menu actions are available  -  or you are not authorized to see any of them.  Please contact the application administrator.</p>
+</ng-container>
+<ng-container *ngIf="isCreateNew">
+	<div [attr.id]="paneIdName" [ngClass]="paneType">
+		<!--TODO: This is the Single/Split definition-->
+		<nof-create-new-dialog *ngIf="selectedMenu" [selectedDialogId]="selectedDialogId" [parent]="selectedMenu" [toCreateClass]="toCreateClass"></nof-create-new-dialog>
+	</div>
 </ng-container>
