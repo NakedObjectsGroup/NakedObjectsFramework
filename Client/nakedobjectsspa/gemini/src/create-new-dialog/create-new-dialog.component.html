@@ -11,7 +11,10 @@
     <div class="main-column">
         <div *ngIf="dialog" class="dialog">
 			<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
-				<nof-parameters class="parameters" [parameters]="parameters" [parent]="dialog" [form]="form"></nof-parameters>
+				<ng-container *ngFor="let parmprop of parametersProperties">
+					<nof-edit-parameter *ngIf="isParameter(parmprop)" [ngClass]="classes(parmprop)" [parameter]="parmprop" [parent]="parent" [form]="form"></nof-edit-parameter>
+					<div *ngIf="isProperty(parmprop)" class="name">{{parmprop}}:</div>
+				</ng-container>
 				<div class="co-validation">{{message}}</div>
 			</form>
 		</div>

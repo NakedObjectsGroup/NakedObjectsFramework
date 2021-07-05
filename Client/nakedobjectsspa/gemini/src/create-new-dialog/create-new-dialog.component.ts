@@ -3,10 +3,13 @@ import { FormBuilder } from '@angular/forms';
 import { ColorService, ConfigService, ContextService, ErrorService } from '@nakedobjects/services';
 import {
     ParameterViewModel,
+    PropertyViewModel,
     ViewModelFactoryService
 } from '@nakedobjects/view-models';
 import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
 import some from 'lodash-es/some';
+import map from 'lodash-es/map';
+import fromPairs from 'lodash-es/fromPairs';
 import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
 import { IActionHolder } from '../action/action.component';
 
@@ -79,6 +82,20 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
 
     get actionHolders() {
         return this.saveButtons;
+    }
+
+    get parametersProperties(): (ParameterViewModel | string)[] {
+        const properties = this.dialog.actionViewModel.createNewProperties;
+        const parmMap = fromPairs(this.parameters.map((p) => [p.title.toLowerCase(), p]));
+        return map(properties, (p) => parmMap[p.toLowerCase()] ?? p);
+    }
+
+    isParameter(parmprop: PropertyViewModel | string) {
+        return parmprop instanceof ParameterViewModel;
+    }
+
+    isProperty(parmprop: PropertyViewModel | string) {
+        return !this.isParameter(parmprop);
     }
 
     private hasHint(parm: ParameterViewModel) {

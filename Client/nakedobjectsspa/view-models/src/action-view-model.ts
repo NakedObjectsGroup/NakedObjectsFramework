@@ -1,4 +1,5 @@
-﻿import * as Ro from '@nakedobjects/restful-objects';
+﻿import { ɵALLOW_MULTIPLE_PLATFORMS } from '@angular/core';
+import * as Ro from '@nakedobjects/restful-objects';
 import {
     ClickHandlerService,
     ContextService,
@@ -9,7 +10,7 @@ import {
     PaneRouteData,
     UrlManagerService
 } from '@nakedobjects/services';
-import { Dictionary } from 'lodash';
+import { Dictionary, every } from 'lodash';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import pickBy from 'lodash-es/pickBy';
@@ -53,6 +54,7 @@ export class ActionViewModel {
     readonly presentationHint: string;
     readonly editProperties: string[];
     readonly createNewProperties: string[];
+    readonly isCreateNew: boolean;
     gotoResult = true;
     invokableActionRep: Ro.ActionRepresentation | Ro.InvokableActionMember;
 
@@ -70,7 +72,21 @@ export class ActionViewModel {
     readonly invokeWithDialog = (right?: boolean) => {
         // clear any previous dialog so we don't pick up values from it
         this.context.clearDialogCachedValues(this.paneId);
-        this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);
+
+        if (this.createNewProperties.length > 0) {
+            this.parameters().then(pps => {
+                const pNames = map(pps, p => p.title);
+
+                if (every(pNames, p => this.createNewProperties.includes(p))) {
+                    this.urlManager.openCreateNewDialog(this.actionRep, this.paneId);
+                } else {
+                    this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);
+                    this.context.broadcastMessage('Showing CreateNew dialog as ordinary dialog because of mismatched names');
+                }
+            });
+        } else {
+            this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);
+        }
     }
 
     readonly invokeWithoutDialogWithParameters = (parameters: Promise<ParameterViewModel[]>, right?: boolean) => {

@@ -579,11 +579,13 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => this.getId(key, search) !== dialogId);
     }
 
+    openCreateNewDialog = (actionRep: Ro.ActionMember | Ro.ActionRepresentation, paneId: Pane = Pane.Pane1) => {
+        this.setCreateNewDialog(actionRep.actionId(), actionRep.extensions().returnType(), paneId);
+    }
+
     setDialogOrMultiLineDialog = (actionRep: Ro.ActionMember | Ro.ActionRepresentation, paneId: Pane = Pane.Pane1) => {
         if (actionRep.extensions().multipleLines()) {
             this.setMultiLineDialog(actionRep.actionId(), paneId);
-        } else if (actionRep.extensions().createNewProperties()) {
-            this.setCreateNewDialog(actionRep.actionId(), actionRep.extensions().returnType(), paneId);
         } else {
             this.setDialog(actionRep.actionId(), paneId);
         }
