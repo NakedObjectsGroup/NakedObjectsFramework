@@ -237,7 +237,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public static OrderedRecord Function2(this OrderedRecord or) => or;
 
         [CreateNew]
-        public static (OrderedRecord, IContext) CreateNewFunction(this OrderedRecord sp, IContext context) => (sp, context);
+        public static (OrderedRecord, IContext) CreateNewFunction(this OrderedRecord sp, int id, IContext context) => (sp, context);
     }
 
     public static class CollectionContributedFunctions {

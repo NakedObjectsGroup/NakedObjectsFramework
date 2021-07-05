@@ -71,5 +71,29 @@ namespace NakedObjects.Reflector.Utils {
                 facets.Add(new DisableForContextFacet(method, specification, loggerFactory.CreateLogger<DisableForContextFacet>()));
             }
         }
+
+        private static bool Matches(ParameterInfo pri, PropertyInfo ppi) =>
+            string.Equals(pri.Name, ppi.Name, StringComparison.CurrentCultureIgnoreCase) &&
+            pri.ParameterType == ppi.PropertyType;
+
+        public static IDictionary<ParameterInfo, PropertyInfo> MatchParmsAndProperties(MethodInfo method, ILogger logger) {
+            var toMatchParms = method.GetParameters().Where(p => !p.IsDefined(typeof(ContributedActionAttribute), false)).ToArray();
+
+            if (toMatchParms.Any()) {
+                var allProperties = method.ReturnType.GetProperties();
+
+                var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
+                var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
+
+                // all parameters must be matched 
+                if (toMatchParms.Length == matchedParameters.Length) {
+                    return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
+                }
+
+                logger.LogWarning($"Not all parameters on {method.DeclaringType}.{method.Name} matched properties");
+            }
+
+            return new Dictionary<ParameterInfo, PropertyInfo>();
+        }
     }
 }

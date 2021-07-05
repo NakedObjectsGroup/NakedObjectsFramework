@@ -34,38 +34,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static bool ReturnsContext(MethodInfo method) => IsContext(method.ReturnType) || FacetUtils.IsTuple(method.ReturnType);
 
-        private static bool Matches(ParameterInfo pri, PropertyInfo ppi) =>
-            string.Equals(pri.Name, ppi.Name, StringComparison.CurrentCultureIgnoreCase) &&
-            pri.ParameterType == ppi.PropertyType;
-
-        private IDictionary<ParameterInfo, PropertyInfo> MatchParmsAndProperties(MethodInfo method) {
-            var allParms = method.GetParameters();
-            var toMatchParms = allParms.Where(p => !p.IsInjectedParameter() && !p.IsTargetParameter()).ToArray();
-
-            if (toMatchParms.Any()) {
-                var firstParm = allParms.First();
-
-                if (firstParm.IsTargetParameter()) {
-                    var allProperties = firstParm.ParameterType.GetProperties();
-
-                    var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
-                    var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
-
-                    // all parameters must be matched 
-                    if (toMatchParms.Length == matchedParameters.Length) {
-                        return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
-                    }
-
-                    logger.LogWarning($"Not all parameters on {method.DeclaringType}.{method.Name} matched properties");
-                }
-            }
-
-            return new Dictionary<ParameterInfo, PropertyInfo>();
-        }
+       
 
         private IImmutableDictionary<string, ITypeSpecBuilder> Process(MethodInfo method, Action<IDictionary<ParameterInfo, PropertyInfo>> addFacet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsEditMethod(method)) {
-                var matches = MatchParmsAndProperties(method);
+                var matches = FactoryUtils.MatchParmsAndProperties(method, logger);
 
                 if (matches.Any()) {
                     addFacet(matches);

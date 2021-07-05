@@ -19,6 +19,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
+using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class EditAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
@@ -28,34 +29,9 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters) =>
             logger = loggerFactory.CreateLogger<EditAnnotationFacetFactory>();
 
-        private static bool Matches(ParameterInfo pri, PropertyInfo ppi) =>
-            string.Equals(pri.Name, ppi.Name, StringComparison.CurrentCultureIgnoreCase) &&
-            pri.ParameterType == ppi.PropertyType;
-
-        private IDictionary<ParameterInfo, PropertyInfo> MatchParmsAndProperties(MethodInfo method) {
-            var toMatchParms = method.GetParameters();
-
-            if (toMatchParms.Any()) {
-                var allProperties = method.ReturnType.GetProperties();
-
-                var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
-                var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
-
-                // all parameters must be matched 
-                if (toMatchParms.Length == matchedParameters.Length)
-                {
-                    return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
-                }
-
-                logger.LogWarning($"Not all parameters on {method.DeclaringType}.{method.Name} matched properties");
-            }
-
-            return new Dictionary<ParameterInfo, PropertyInfo>();
-        }
-
         private IImmutableDictionary<string, ITypeSpecBuilder> Process(MethodInfo method, Action<IDictionary<ParameterInfo, PropertyInfo>> addFacet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsEditMethod(method)) {
-                var matches = MatchParmsAndProperties(method);
+                var matches = ObjectMethodHelpers.MatchParmsAndProperties(method, logger);
 
                 if (matches.Any()) {
                     addFacet(matches);

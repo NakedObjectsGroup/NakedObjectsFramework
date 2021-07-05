@@ -337,7 +337,7 @@ namespace RestfulObjects.Test.Data {
         }
 
         [CreateNew]
-        public WithValue AnActionWithCreateNewAnnotation() {
+        public WithValue AnActionWithCreateNewAnnotation(int aValue) {
             return new WithValue();
         }
     }

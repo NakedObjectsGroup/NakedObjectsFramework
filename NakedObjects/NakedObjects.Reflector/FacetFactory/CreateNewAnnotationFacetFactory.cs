@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
@@ -17,11 +18,16 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
+using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class CreateNewAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+        private readonly ILogger<CreateNewAnnotationFacetFactory> logger;
+
         public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<CreateNewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) { }
+            : base(order.Order, loggerFactory, FeatureType.Actions) {
+            logger = loggerFactory.CreateLogger<CreateNewAnnotationFacetFactory>();
+        }
 
         private static bool IsCollectionOrVoid(Type type) =>
             type == typeof(void) ||
@@ -38,7 +44,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             if (method.IsDefined(typeof(CreateNewAttribute), false)) {
                 var toCreateType = ToCreateType(method);
 
-                if (toCreateType is not null) {
+                if (toCreateType is not null && ObjectMethodHelpers.MatchParmsAndProperties(method, logger).Any()) {
                     FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
                 }
             }

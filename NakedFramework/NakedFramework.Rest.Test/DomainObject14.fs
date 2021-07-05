@@ -1910,7 +1910,8 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     let p46 = makeParmWithFindMenu "parm2" "Parm2" mst
     let p47 = makeDisabledParm "parm2" "Parm2" mst
     let p48 = makeIntParmWithDefault "id" "Id" num 1
- 
+    let p49 = makeIntParm "aValue" "A Value" num
+
     let valueRel1 pName  = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Property pName
     let valueRel2 pName  = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Collection pName
     
@@ -2094,10 +2095,10 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                       TProperty("AnError", TObjectJson(makeActionMemberNumber "objects" "AnError" oName "An Error" "" "int" []))
                       TProperty("AnErrorCollection", TObjectJson(makeObjectActionCollectionMemberNoParms "AnErrorCollection" oName mst))
                       TProperty("AnErrorQuery", TObjectJson(makeObjectActionCollectionMemberNoParms "AnErrorQuery" oName mst))
-                      TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMember "AnActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [] ))
+                      TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMember "AnActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [p49] ))
                       TProperty("AnActionWithEditAnnotation", TObjectJson(makeObjectActionMember "AnActionWithEditAnnotation" oName (ttc "RestfulObjects.Test.Data.WithActionObject") [p48] ))
                       TProperty("AzContributedAction", TObjectJson(makeObjectActionMemberNoParms "AzContributedAction" oName mst))
-                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberNoParms "AzContributedActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") ))
+                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMember "AzContributedActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [p49] ))
                       TProperty("AzContributedActionOnBaseClass", TObjectJson(makeObjectActionMemberNoParms "AzContributedActionOnBaseClass" oName mst))
                       TProperty("AzContributedActionWithRefParm", TObjectJson(makeObjectActionMember "AzContributedActionWithRefParm" oName mst [ p23 ]))
                       TProperty("AzContributedActionWithValueParm", TObjectJson(makeObjectActionMember "AzContributedActionWithValueParm" oName mst [ p24 ])) ]))
@@ -2549,6 +2550,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
     let p46 = makeParmWithFindMenu "parm2" "Parm2" mst
     let p47 = makeDisabledParm "parm2" "Parm2" mst
     let p48 = makeIntParmWithDefault "id" "Id" num 1
+    let p49 = makeIntParm "aValue" "A Value" num
 
     let valueRel1 pName  = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Property pName
     let valueRel2 pName  = RelValues.Value + sprintf ";%s=\"%s\"" RelParamValues.Collection pName
@@ -2749,10 +2751,10 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                       TProperty("AnError", TObjectJson(makeActionMemberNumberSimple "objects" "AnError" oName "An Error" "" "int" []))
                       TProperty("AnErrorCollection", TObjectJson(makeObjectActionCollectionMemberNoParmsSimple "AnErrorCollection" oName mst))
                       TProperty("AnErrorQuery", TObjectJson(makeObjectActionCollectionMemberNoParmsSimple "AnErrorQuery" oName mst))
-                      TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberSimple "AnActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [] ))
+                      TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberSimple "AnActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [p49] ))
                       TProperty("AnActionWithEditAnnotation", TObjectJson(makeObjectActionMemberSimple "AnActionWithEditAnnotation" oName (ttc "RestfulObjects.Test.Data.WithActionObject") [p48] ))
                       TProperty("AzContributedAction", TObjectJson(makeObjectActionMemberNoParmsSimple "AzContributedAction" oName mst))
-                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberNoParms "AzContributedActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") ))
+                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMember "AzContributedActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [p49]))
                       TProperty("AzContributedActionOnBaseClass", TObjectJson(makeObjectActionMemberNoParmsSimple "AzContributedActionOnBaseClass" oName mst))
                       TProperty("AzContributedActionWithRefParm", TObjectJson(makeObjectActionMemberSimple "AzContributedActionWithRefParm" oName mst [ p23 ]))                      
                       TProperty

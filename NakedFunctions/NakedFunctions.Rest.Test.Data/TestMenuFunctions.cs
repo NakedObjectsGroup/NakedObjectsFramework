@@ -46,7 +46,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public static IQueryable<SimpleRecord> FindByEnum(TestEnum eParm, IContext context) => context.Instances<SimpleRecord>();
 
         [CreateNew]
-        public static (OrderedRecord, IContext) CreateNewFunction(IContext context) => (context.Instances<OrderedRecord>().FirstOrDefault(), context);
+        public static (OrderedRecord, IContext) CreateNewFunction(int id, IContext context) => (context.Instances<OrderedRecord>().FirstOrDefault(), context);
     }
 
     public static class DateMenuFunctions {

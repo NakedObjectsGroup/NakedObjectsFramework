@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestCreateNewAnnotationPickedUpOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            var actionMethod = FindMethod(typeof(Customer), nameof(Customer.CreateNewTest));
+            var actionMethod = FindMethod(typeof(Customer), nameof(Customer.CreateNewTest), new []{typeof(int)});
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ICreateNewFacet));
             Assert.IsNotNull(facet);
@@ -48,7 +48,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            var actionMethod = FindMethod(typeof(Customer1), nameof(Customer1.CreateNewTest));
+            var actionMethod = FindMethod(typeof(Customer1), nameof(Customer1.CreateNewTest), new[] { typeof(int) });
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ICreateNewFacet));
             Assert.IsNull(facet);
@@ -61,7 +61,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            var actionMethod = FindMethod(typeof(Customer2), nameof(Customer2.CreateNewTest));
+            var actionMethod = FindMethod(typeof(Customer2), nameof(Customer2.CreateNewTest), new[] { typeof(int) });
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ICreateNewFacet));
             Assert.IsNull(facet);
@@ -84,18 +84,24 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: Customer
 
         private class Customer {
+            public int AValue { get; set; }
+
             [CreateNew]
-            public Customer CreateNewTest() => this;
+            public Customer CreateNewTest(int aValue) => this;
         }
 
         private class Customer1 {
+            public int AValue { get; set; }
+
             [CreateNew]
-            public void CreateNewTest() { }
+            public void CreateNewTest(int aValue) { }
         }
 
         private class Customer2 {
+            public int AValue { get; set; }
+
             [CreateNew]
-            public IList<Customer2> CreateNewTest() => new List<Customer2> {this};
+            public IList<Customer2> CreateNewTest(int aValue) => new List<Customer2> {this};
         }
 
 

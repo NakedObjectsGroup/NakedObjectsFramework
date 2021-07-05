@@ -54,12 +54,26 @@ let GetService(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
+    let makeIntParm pmid fid =               
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
     let p1 = makeParm "withAction" "With Action" wao
     let p2 = makeParm "withAction" "With Action" wa
     let p3 = makeParm "withAction" "With Action" wao
     let p4 = makeParm "withOtherAction" "With Other Action" wao
     let p5 = makeParm "withAction" "With Action" wao
     let p6 = makeValueParm "parm" "Parm" str
+    let p7 = makeIntParm "aValue" "A Value"
     
     let expected = 
         [ TProperty(JsonPropertyNames.ServiceId, TObjectVal(sName))
@@ -75,7 +89,7 @@ let GetService(api : RestfulObjectsControllerBase) =
                       TProperty("AzContributedActionWithRefParm", TObjectJson(makeServiceActionMember "AzContributedActionWithRefParm" sName mst [ p3; p4 ]))                      
                       TProperty
                           ("AzContributedActionWithValueParm", TObjectJson(makeServiceActionMember "AzContributedActionWithValueParm" sName mst [ p5; p6 ]))
-                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMember "AzContributedActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [ p1 ]))
+                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMember "AzContributedActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [ p1; p7 ]))
                       TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParms "CreateTransientMostSimple" sName mstp))                      
                       TProperty
                           ("CreateTransientWithValue", 
@@ -212,12 +226,26 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
+    let makeIntParm pmid fid =               
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
     let p1 = makeParm "withAction" "With Action" wao
     let p2 = makeParm "withAction" "With Action" wa
     let p3 = makeParm "withAction" "With Action" wao
     let p4 = makeParm "withOtherAction" "With Other Action" wao
     let p5 = makeParm "withAction" "With Action" wao
     let p6 = makeValueParm "parm" "Parm" str
+    let p7 = makeIntParm "aValue" "A Value"
     
     let expected = 
         [ TProperty(JsonPropertyNames.ServiceId, TObjectVal(sName))
@@ -235,7 +263,7 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
                       TProperty
                           ("AzContributedActionWithValueParm", 
                            TObjectJson(makeServiceActionMemberSimple "AzContributedActionWithValueParm" sName mst [ p5; p6 ]))
-                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMemberSimple "AzContributedActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [ p1 ]))
+                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMemberSimple "AzContributedActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [ p1; p7 ]))
                       TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParmsSimple "CreateTransientMostSimple" sName mstp))                      
                       TProperty
                           ("CreateTransientWithValue", 
@@ -303,13 +331,27 @@ let GetServiceWithMediaType(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
+    let makeIntParm pmid fid =               
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
     let p1 = makeParm "withAction" "With Action" wao
     let p2 = makeParm "withAction" "With Action" wa
     let p3 = makeParm "withAction" "With Action" wao
     let p4 = makeParm "withOtherAction" "With Other Action" wao
     let p5 = makeParm "withAction" "With Action" wao
     let p6 = makeValueParm "parm" "Parm" str
-    
+    let p7 = makeIntParm "aValue" "A Value"
+
     let expected = 
         [ TProperty(JsonPropertyNames.ServiceId, TObjectVal(sName))
           TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository"))
@@ -324,7 +366,7 @@ let GetServiceWithMediaType(api : RestfulObjectsControllerBase) =
                       TProperty("AzContributedActionWithRefParm", TObjectJson(makeServiceActionMember "AzContributedActionWithRefParm" sName mst [ p3; p4 ]))                      
                       TProperty
                           ("AzContributedActionWithValueParm", TObjectJson(makeServiceActionMember "AzContributedActionWithValueParm" sName mst [ p5; p6 ]))
-                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMember "AzContributedActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [ p1 ]))
+                      TProperty("AzContributedActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMember "AzContributedActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [ p1; p7 ]))
                       TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParms "CreateTransientMostSimple" sName mstp))                      
                       TProperty
                           ("CreateTransientWithValue", 
@@ -813,6 +855,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
     let p45 = makeIntParmWithRange "parm1" "Parm1" num
     let p46 = makeParmWithFindMenu "parm2" "Parm2" mst
     let p47 = makeDisabledParm "parm2" "Parm2" mst
+    let p48 = makeIntParm "aValue" "A Value" num
 
     let expected = 
         [ TProperty(JsonPropertyNames.ServiceId, TObjectVal(sName))
@@ -991,7 +1034,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                   TProperty
                                       ("AnActionWithValueParameterWithDefault", 
                                        TObjectJson(makeServiceActionMember "AnActionWithValueParameterWithDefault" sName mst [ p22 ]))
-                                  TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMember "AnActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [] ))
+                                  TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMember "AnActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [p48] ))
                                   TProperty("AnError", TObjectJson(makeActionMemberNumber "services" "AnError" sName "An Error" "" "int" []))
                                   TProperty("AnErrorCollection", TObjectJson(makeServiceActionCollectionMemberNoParms "AnErrorCollection" sName mst))
                                   TProperty("AnErrorQuery", TObjectJson(makeServiceActionCollectionMemberNoParms "AnErrorQuery" sName mst)) ]))

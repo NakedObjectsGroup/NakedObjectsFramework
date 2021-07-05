@@ -18,11 +18,16 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
+using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class CreateNewAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+        private readonly ILogger<CreateNewAnnotationFacetFactory> logger;
+
         public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<CreateNewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) { }
+            : base(order.Order, loggerFactory, FeatureType.Actions) {
+            logger = loggerFactory.CreateLogger<CreateNewAnnotationFacetFactory>();
+        }
 
         private static bool IsCollectionOrNull(Type type) =>
             type is null ||
@@ -39,7 +44,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             if (method.IsDefined(typeof(CreateNewAttribute), false)) {
                 var toCreateType = ToCreateType(method);
 
-                if (toCreateType is not null) {
+                if (toCreateType is not null && FactoryUtils.MatchParmsAndProperties(method, toCreateType, logger).Any()) {
                     FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
                 }
             }

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -61,5 +62,59 @@ namespace NakedFunctions.Reflector.Utils {
         public static bool IsAbstract(Type type) => type.IsAbstract;
 
         public static bool IsStatic(Type type) => IsAbstract(type) && IsSealed(type);
+
+        private static bool Matches(ParameterInfo pri, PropertyInfo ppi) =>
+            string.Equals(pri.Name, ppi.Name, StringComparison.CurrentCultureIgnoreCase) &&
+            pri.ParameterType == ppi.PropertyType;
+
+        public static IDictionary<ParameterInfo, PropertyInfo> MatchParmsAndProperties(MethodInfo method, ILogger logger)
+        {
+            var allParms = method.GetParameters();
+            var toMatchParms = allParms.Where(p => !p.IsInjectedParameter() && !p.IsTargetParameter()).ToArray();
+
+            if (toMatchParms.Any())
+            {
+                var firstParm = allParms.First();
+
+                if (firstParm.IsTargetParameter())
+                {
+                    var allProperties = firstParm.ParameterType.GetProperties();
+
+                    var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
+                    var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
+
+                    // all parameters must be matched 
+                    if (toMatchParms.Length == matchedParameters.Length)
+                    {
+                        return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
+                    }
+
+                    logger.LogWarning($"Not all parameters on {method.DeclaringType}.{method.Name} matched properties");
+                }
+            }
+
+            return new Dictionary<ParameterInfo, PropertyInfo>();
+        }
+
+        public static IDictionary<ParameterInfo, PropertyInfo> MatchParmsAndProperties(MethodInfo method, Type toCreateType, ILogger logger) {
+            var allParms = method.GetParameters();
+            var toMatchParms = allParms.Where(p => !p.IsInjectedParameter() && !p.IsTargetParameter()).ToArray();
+
+            if (toMatchParms.Any()) {
+                var allProperties = toCreateType.GetProperties();
+
+                var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
+                var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
+
+                // all parameters must be matched 
+                if (toMatchParms.Length == matchedParameters.Length) {
+                    return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
+                }
+
+                logger.LogWarning($"Not all parameters on {method.DeclaringType}.{method.Name} matched properties");
+            }
+
+            return new Dictionary<ParameterInfo, PropertyInfo>();
+        }
     }
 }
