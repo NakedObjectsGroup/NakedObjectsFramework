@@ -10,13 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
-using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFunctions.Reflector.Facet;
 
 namespace NakedFunctions.Reflector.Utils {
     public static class FactoryUtils {
@@ -67,32 +61,32 @@ namespace NakedFunctions.Reflector.Utils {
             string.Equals(pri.Name, ppi.Name, StringComparison.CurrentCultureIgnoreCase) &&
             pri.ParameterType == ppi.PropertyType;
 
-        public static IDictionary<ParameterInfo, PropertyInfo> MatchParmsAndProperties(MethodInfo method, ILogger logger)
-        {
+        public static IDictionary<ParameterInfo, PropertyInfo> MatchParmsAndProperties(MethodInfo method, ILogger logger) {
             var allParms = method.GetParameters();
             var toMatchParms = allParms.Where(p => !p.IsInjectedParameter() && !p.IsTargetParameter()).ToArray();
 
-            if (toMatchParms.Any())
-            {
+            if (toMatchParms.Any()) {
                 var firstParm = allParms.First();
 
-                if (firstParm.IsTargetParameter())
-                {
+                if (firstParm.IsTargetParameter()) {
                     var allProperties = firstParm.ParameterType.GetProperties();
-
-                    var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
-                    var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
-
-                    // all parameters must be matched 
-                    if (toMatchParms.Length == matchedParameters.Length)
-                    {
-                        return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
-                    }
-
-                    logger.LogWarning($"Not all parameters on {method.DeclaringType}.{method.Name} matched properties");
+                    return MatchUp(method, logger, allProperties, toMatchParms);
                 }
             }
 
+            return new Dictionary<ParameterInfo, PropertyInfo>();
+        }
+
+        private static IDictionary<ParameterInfo, PropertyInfo> MatchUp(MethodInfo method, ILogger logger, PropertyInfo[] allProperties, ParameterInfo[] toMatchParms) {
+            var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
+            var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
+
+            // all parameters must be matched 
+            if (toMatchParms.Length == matchedParameters.Length) {
+                return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
+            }
+
+            logger.LogWarning($"Not all parameters on {method.DeclaringType}.{method.Name} matched properties");
             return new Dictionary<ParameterInfo, PropertyInfo>();
         }
 
@@ -102,16 +96,7 @@ namespace NakedFunctions.Reflector.Utils {
 
             if (toMatchParms.Any()) {
                 var allProperties = toCreateType.GetProperties();
-
-                var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
-                var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
-
-                // all parameters must be matched 
-                if (toMatchParms.Length == matchedParameters.Length) {
-                    return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
-                }
-
-                logger.LogWarning($"Not all parameters on {method.DeclaringType}.{method.Name} matched properties");
+                return MatchUp(method, logger, allProperties, toMatchParms);
             }
 
             return new Dictionary<ParameterInfo, PropertyInfo>();
