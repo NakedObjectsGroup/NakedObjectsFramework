@@ -40,12 +40,6 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
         this.colorService.toColorNumberFromType(cls).then(c => this.pendingColor = `${this.configService.config.objectColor}${c}`);
     }
 
-    get title() {
-        const toCreateSplit = this.toCreate.split('.');
-        const toCreateName = toCreateSplit[toCreateSplit.length - 1];
-        return `Creating New ${toCreateName}`;
-    }
-
      // used to smooth transition before object set
     private pendingColor: string;
 
