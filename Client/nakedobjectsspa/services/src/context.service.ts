@@ -610,7 +610,6 @@ export class ContextService {
         const [, p1, p2] = this.currentObjects;
         this.currentObjects[1] = p2;
         this.currentObjects[2] = p1;
-
     }
 
     getError = () => this.currentError;

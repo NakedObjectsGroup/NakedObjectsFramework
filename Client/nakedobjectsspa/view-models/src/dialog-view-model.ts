@@ -136,8 +136,8 @@ export class DialogViewModel extends MessageViewModel {
     }
 
     private doComplete() {
-        this.submit();
         this.decrementPendingPotentAction();
+        this.submit();
     }
 
     clearMessages = () => {

@@ -95,6 +95,7 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
     close = () => {
         if (this.dialog) {
             this.dialog.doCloseReplaceHistory();
+            this.dialog = null;
         }
     }
 
@@ -186,6 +187,7 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
         safeUnsubscribe(this.createFormSub);
         safeUnsubscribe(this.formSub);
         safeUnsubscribe(this.sub);
+        this.closeExistingDialog();
     }
 
     ngOnChanges(): void {
