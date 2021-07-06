@@ -337,7 +337,6 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (routeData.interactionMode === InteractionMode.CreateNew) {
             this.toCreateClass = routeData.toCreate;
-            return;
         }
 
         if (isChanging || modeChanging || wasDirty) {
