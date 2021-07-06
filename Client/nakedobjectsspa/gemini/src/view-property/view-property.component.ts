@@ -23,6 +23,9 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     @Input()
     property: PropertyViewModel;
 
+    @Input()
+    propertyName: string;
+
     // template listeners
 
     @HostListener('keydown', ['$event'])
@@ -38,11 +41,11 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     // template API
 
     get title() {
-        return this.property.title;
+        return this.property?.title ?? this.propertyName;
     }
 
     get propertyType() {
-        return this.property.type;
+        return this.property?.type ?? 'scalar';
     }
 
     get propertyRefType() {
@@ -50,11 +53,11 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     }
 
     get propertyReturnType() {
-        return this.property.returnType;
+        return this.property?.returnType ?? '';
     }
 
     get formattedValue() {
-        return this.property.formattedValue;
+        return this.property?.formattedValue ?? '';
     }
 
     get value() {
@@ -86,7 +89,7 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     }
 
     get isEditByAction() {
-        return this.property.isEditByAction;
+        return this.property?.isEditByAction ?? false;
     }
 
     get editActionTooltip() {
