@@ -904,7 +904,12 @@ export class UrlManagerService {
         const segments = path.split('/');
         const [, mode, oldPane1, oldPane2 = homePath] = segments;
         const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
-        const search = this.swapSearchIds(this.getSearch()) as any;
+        // possible search has just changed order so toggle flag to ensure we reload
+        let search = this.getSearch();
+        const oldReloadFlag1 = search[akm.reload + Pane.Pane1];
+        const oldReloadFlag2 = search[akm.reload + Pane.Pane2];
+        search = this.swapSearchIds(search);
+        search = this.toggleReloadFlagsForSwap(search, oldReloadFlag1, oldReloadFlag2);
         this.currentPaneId = getOtherPane(this.currentPaneId);
 
         const tree = this.router.createUrlTree([newPath], { queryParams: search });
@@ -1012,6 +1017,14 @@ export class UrlManagerService {
     isAttachment = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, attachmentPath);
     isApplicationProperties = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, applicationPropertiesPath);
     isMultiLineDialog = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, multiLineDialogPath);
+
+    private toggleReloadFlagsForSwap(search: any, oldFlag1: string, oldFlag2: string) {
+        const newFlag1 = oldFlag1 === '1' ? 0 : 1;
+        const newFlag2 = oldFlag2 === '1' ? 0 : 1;
+        search[akm.reload + Pane.Pane1] = newFlag1;
+        search[akm.reload + Pane.Pane2] = newFlag2;
+        return search;
+    }
 
     private toggleReloadFlag(search: any, paneId: Pane) {
         const currentFlag = search[akm.reload + paneId];
