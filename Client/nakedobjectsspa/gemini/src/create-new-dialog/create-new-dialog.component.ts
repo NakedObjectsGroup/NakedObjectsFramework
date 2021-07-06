@@ -41,7 +41,9 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
     }
 
     get title() {
-        return `Editing - Unsaved ${this.toCreate}`;
+        const toCreateSplit = this.toCreate.split('.');
+        const toCreateName = toCreateSplit[toCreateSplit.length - 1];
+        return `Creating New ${toCreateName}`;
     }
 
      // used to smooth transition before object set
