@@ -154,6 +154,7 @@ namespace AW.Functions
         //    return (product, context.WithUpdated(pp, pp2));
         //}
 
+        [CreateNew]
         public static (WorkOrder, IContext context) CreateNewWorkOrder(
              this Product product,
              int orderQty,

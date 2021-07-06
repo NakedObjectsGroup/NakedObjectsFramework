@@ -44,7 +44,7 @@ namespace AW.Functions
            this Vendor vendor, DateTime? fromDate, DateTime? toDate) =>
                 PurchaseOrder_MenuFunctions.ValidateListPurchaseOrders(vendor, fromDate, toDate);
 
-        [MemberOrder("Purchase Orders", 1)]
+        [MemberOrder("Purchase Orders", 1), CreateNew]
         public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(this Vendor vendor,
            ShipMethod shipMethod, IContext context) =>
                 PurchaseOrder_MenuFunctions.CreateNewPurchaseOrder(vendor, shipMethod, context);

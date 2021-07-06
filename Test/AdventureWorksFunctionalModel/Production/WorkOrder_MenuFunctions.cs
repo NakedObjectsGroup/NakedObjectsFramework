@@ -21,6 +21,7 @@ namespace AW.Functions
         public static WorkOrder RandomWorkOrder(IContext context) =>
             Random<WorkOrder>(context);
 
+        [CreateNew]
         public static (WorkOrder, IContext context) CreateNewWorkOrder(
              [DescribedAs("product partial name")] Product product,
              int orderQty,

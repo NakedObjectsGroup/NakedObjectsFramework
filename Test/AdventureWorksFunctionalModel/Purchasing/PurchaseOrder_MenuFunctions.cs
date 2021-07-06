@@ -104,7 +104,7 @@ namespace AW.Functions
         #endregion
 
         #region Create New Purchase Order
-        [MemberOrder(6)]
+        [MemberOrder(6), CreateNew]
         public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(
             Vendor vendor,
             ShipMethod shipMethod,
