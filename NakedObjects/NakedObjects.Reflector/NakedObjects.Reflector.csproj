@@ -19,4 +19,8 @@
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Test\" />
+  </ItemGroup>
 </Project>
