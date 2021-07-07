@@ -10,7 +10,13 @@ namespace NakedFrameworkClient.TestFramework
     {
         public Dialog(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
 
-        public Dialog AssertHasFields(params string[] fieldNames) => throw new NotImplementedException();
+        public Dialog AssertTitleIs(string expected) 
+            {
+                Assert.AreEqual(expected, helper.WaitForChildElement(element, ".title").Text);
+                return this;
+            }
+
+            public Dialog AssertHasFields(params string[] fieldNames) => throw new NotImplementedException();
 
         public virtual Dialog AssertNoValidationError() =>
           AssertHasValidationError(string.Empty);

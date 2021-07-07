@@ -11,9 +11,9 @@ namespace NakedFrameworkClient.TestFramework
     {
         public ObjectView(IWebElement element, Helper helper, Pane pane = Pane.Single) : base(element, helper, pane) { }
 
-        public override ObjectView AssertTitleIs(string title)
+        public override ObjectView AssertTitleIs(string expected)
         {         
-            Assert.AreEqual(title, helper.WaitForChildElement(element, ".title").Text);
+            Assert.AreEqual(expected, helper.WaitForChildElement(element, ".title").Text);
             return this;
         }
 

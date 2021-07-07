@@ -9,9 +9,9 @@ namespace NakedFrameworkClient.TestFramework
     {
         public Reference(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
 
-        public virtual Reference AssertTitleIs(string title)
+        public virtual Reference AssertTitleIs(string expected)
         {
-            Assert.AreEqual(title, element.Text);
+            Assert.AreEqual(expected, element.Text);
             return this;
         }
 

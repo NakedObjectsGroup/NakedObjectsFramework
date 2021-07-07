@@ -9,9 +9,9 @@ namespace NakedFrameworkClient.TestFramework
     {   //TODO: actions
         public ListView(IWebElement element, Helper helper, Pane pane = Pane.Single) : base(element, helper, pane) { }
 
-        public override ListView AssertTitleIs(string title)
+        public override ListView AssertTitleIs(string expected)
         {
-            Assert.AreEqual(title, element.FindElement(By.CssSelector(".title")).Text);
+            Assert.AreEqual(expected, element.FindElement(By.CssSelector(".title")).Text);
             return this;
         }
 

@@ -93,7 +93,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             InlinePropertyEdit();
             InlineMultiPropertyEdit();
             CovalidationOnInlineMultiPropertyEdit();
+            CreateNewUsingAttribute();
         }
+
 
         //[TestMethod]
         public void RetrieveObjectViaMenuAction()
@@ -835,5 +837,21 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             dialog.AssertHasValidationError("StartDate must be before DueDate");
         }
 
+        //[TestMethod]
+        public void CreateNewUsingAttribute()
+        {
+            var cnv = helper.GotoHome().OpenMainMenu("Work Orders")
+                .GetActionWithDialog("Create New Work Order").OpenToCreateNewView();
+            cnv.AssertTitleIs("Create New Work Order");
+            cnv.AssertHasEmptyProperties("Stocked Qty", "Scrapped Qty", "Scrap Reason", "End Date", "Due Date", "Modified Date", "Work Order Routings");
+            cnv.AssertSaveIsDisabled("Missing mandatory fields: Product; Order Qty; Start Date;");
+            var dialog = cnv.GetDialog();
+            dialog.GetReferenceField("Product").Enter("fr").AssertHasAutoCompleteOption(0, "Freewheel").SelectAutoCompleteOption(0);
+            dialog.GetTextField("Order Qty").Enter("1");
+            dialog.GetTextField("Start Date").Enter(DateTime.Today.ToString("d"));
+            var workOrder = cnv.ClickSaveToViewSavedObject();
+            Assert.IsTrue(workOrder.GetTitle().StartsWith("Freewheel: "));
+            workOrder.GetProperty("Order Qty").AssertValueIs("1");
+        }
     }
 }

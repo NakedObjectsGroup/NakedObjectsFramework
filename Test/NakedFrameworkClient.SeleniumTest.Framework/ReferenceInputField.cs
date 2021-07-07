@@ -53,5 +53,13 @@ namespace NakedFrameworkClient.TestFramework
             Assert.AreEqual(optionText, element.FindElements(By.CssSelector(".suggestions li")).ElementAt(index).Text);
             return this;
         }
+
+        public ReferenceInputField SelectAutoCompleteOption(int index)
+        {
+            helper.wait.Until(dr => element.FindElements(By.CssSelector(".suggestions li")).Count > index);
+            var option = element.FindElements(By.CssSelector(".suggestions li")).ElementAt(index).FindElement(By.CssSelector("a"));
+            option.Click();
+            return this;
+        }
     }
 }
