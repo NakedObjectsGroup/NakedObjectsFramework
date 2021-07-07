@@ -104,5 +104,8 @@ namespace AdventureWorksModel {
         #endregion
 
         #endregion
+
+        [DisplayAsProperty]
+        public int Six() => 6;
     }
 }

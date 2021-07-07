@@ -69,5 +69,8 @@ namespace AdventureWorksModel.Sales {
             specialOffer.MaxQty = maxQty;
         }
 
+        [DisplayAsProperty]
+        public int Five() => 5;
+
     }
 }
