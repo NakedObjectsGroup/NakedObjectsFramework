@@ -6,7 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Runtime.CompilerServices;
 using NakedFramework;
+
+[assembly:InternalsVisibleTo("NakedFramework.Rest.Test.Data")]
 
 namespace NakedObjects {
     /// <summary>
@@ -15,5 +18,5 @@ namespace NakedObjects {
     ///     with the minimum data set, but with the expectation that the user will likely want to immediately then specify
     ///     further properties (see EditAttribute).
     /// </summary>
-    public class CreateNewAttribute : AbstractCreateNewAttribute { }
+    internal class CreateNewAttribute : AbstractCreateNewAttribute { }
 }
