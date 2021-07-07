@@ -53,6 +53,12 @@ namespace AdventureWorksModel {
         [MemberOrder(61)]
         public virtual int MinQty { get; set; }
 
+        [Edit]
+        public void EditMinQty(int minQty)
+        {
+            MinQty = minQty; 
+        }
+
         [Optionally]
         [MemberOrder(62)]
         public virtual int? MaxQty { get; set; }
