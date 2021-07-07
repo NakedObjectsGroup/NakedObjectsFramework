@@ -137,6 +137,13 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
                 ext[JsonPropertyNames.CustomEditProperties] = string.Join(',', editProperties);
             }
 
+            var finderMethodPrefix = ActionContext.Action.FinderMethodPrefix;
+
+            if (finderMethodPrefix is not null) {
+                ext ??= new Dictionary<string, object>();
+                ext[JsonPropertyNames.CustomFinderAction] = finderMethodPrefix;
+            }
+
             return ext;
         }
 

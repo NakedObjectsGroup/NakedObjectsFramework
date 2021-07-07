@@ -76,6 +76,8 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public IConsentFacade IsUsable(IObjectFacade objectFacade) => new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade) objectFacade)?.WrappedNakedObject));
 
+        public string FinderMethodPrefix => WrappedSpec.GetFinderMethodPrefix();
+
         public ITypeFacade OnType => new TypeFacade(WrappedSpec.OnSpec, FrameworkFacade, framework);
 
         public IFrameworkFacade FrameworkFacade { get; set; }

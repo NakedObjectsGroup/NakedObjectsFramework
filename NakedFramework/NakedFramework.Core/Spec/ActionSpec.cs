@@ -195,6 +195,8 @@ namespace NakedFramework.Core.Spec {
             return spec is not null && actionSpecImmutable.IsContributedToLocalCollectionOf(spec, id);
         }
 
+        public string GetFinderMethodPrefix() => actionSpecImmutable.GetFacet<IFinderActionFacet>()?.Value;
+
         #endregion
     }
 

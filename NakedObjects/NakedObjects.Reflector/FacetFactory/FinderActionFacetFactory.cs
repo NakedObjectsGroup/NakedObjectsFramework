@@ -36,6 +36,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) => attribute is null ? null : new FinderActionFacet(holder);
+        private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) => attribute is null ? null : new FinderActionFacet(holder, attribute.Prefix ?? "");
     }
 }
