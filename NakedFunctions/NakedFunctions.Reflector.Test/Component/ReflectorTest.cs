@@ -284,11 +284,13 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(false, propertySpec.ReturnSpec.IsCollection);
+                Assert.AreEqual("Always disabled", propertySpec.GetFacet<IDisabledFacet>().DisabledReason(null));
 
                 propertySpec = spec.Fields[1];
                 facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(true, propertySpec.ReturnSpec.IsCollection);
+                Assert.AreEqual("Always disabled", propertySpec.GetFacet<IDisabledFacet>().DisabledReason(null));
             }
         }
 
