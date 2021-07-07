@@ -47,7 +47,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 FacetUtils.AddFacets(new IFacet[] {
                     displayAsPropertyFacet,
                     new PropertyAccessorFacetViaFunction(method, specification),
-                    new MandatoryFacetDefault(specification)
+                    new MandatoryFacetDefault(specification),
+                    new DisabledFacetAlways(specification)
                 });
             }
 
