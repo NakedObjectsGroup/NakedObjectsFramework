@@ -63,5 +63,11 @@ namespace AdventureWorksModel.Sales {
             }
         }
 
+        [Edit]
+        public void EditMaxQty([ContributedAction] SpecialOffer specialOffer, int maxQty)
+        {
+            specialOffer.MaxQty = maxQty;
+        }
+
     }
 }
