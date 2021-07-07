@@ -389,6 +389,8 @@ let internal makeActionMember oType  mName (oName : string) fName desc rType par
         let multiLine = mName = "AnActionReturnsNull"
         let createNew = mName.Contains "ActionWithCreateNewAnnotation"
         let edit = mName.Contains "ActionWithEditAnnotation"
+        let finder = mName.Contains "FinderAction"
+        let prefix = if mName.Contains "FinderAction1" then "" else "aprefix"
 
         let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                         TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -403,6 +405,8 @@ let internal makeActionMember oType  mName (oName : string) fName desc rType par
         let extArray = if createNew then TProperty(JsonPropertyNames.CustomCreateNew, TObjectVal(wvProperties)) :: extArray else extArray
 
         let extArray = if edit then TProperty(JsonPropertyNames.CustomEditProperties, TObjectVal("Id")) :: extArray else extArray
+
+        let extArray = if finder then TProperty(JsonPropertyNames.CustomFinderAction, TObjectVal(prefix)) :: extArray else extArray
 
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );

@@ -1035,6 +1035,8 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                       ("AnActionWithValueParameterWithDefault", 
                                        TObjectJson(makeServiceActionMember "AnActionWithValueParameterWithDefault" sName mst [ p22 ]))
                                   TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeServiceActionMember "AnActionWithCreateNewAnnotation" sName (ttc "RestfulObjects.Test.Data.WithValue") [p48] ))
+                                  TProperty("FinderAction1", TObjectJson(makeServiceActionMember "FinderAction1" sName (ttc "RestfulObjects.Test.Data.WithValue") [p48] ))
+                                  TProperty("FinderAction2", TObjectJson(makeServiceActionMember "FinderAction2" sName (ttc "RestfulObjects.Test.Data.WithValue") [p48] ))
                                   TProperty("AnError", TObjectJson(makeActionMemberNumber "services" "AnError" sName "An Error" "" "int" []))
                                   TProperty("AnErrorCollection", TObjectJson(makeServiceActionCollectionMemberNoParms "AnErrorCollection" sName mst))
                                   TProperty("AnErrorQuery", TObjectJson(makeServiceActionCollectionMemberNoParms "AnErrorQuery" sName mst)) ]))

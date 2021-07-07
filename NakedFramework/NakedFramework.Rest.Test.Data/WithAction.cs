@@ -340,5 +340,11 @@ namespace RestfulObjects.Test.Data {
         public WithValue AnActionWithCreateNewAnnotation(int aValue) {
             return new WithValue();
         }
+
+        [FinderAction]
+        public WithValue FinderAction1(int aValue) => new();
+
+        [FinderAction("aprefix")]
+        public WithValue FinderAction2(int aValue) => new();
     }
 }
