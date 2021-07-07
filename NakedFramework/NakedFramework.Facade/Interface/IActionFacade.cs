@@ -30,5 +30,6 @@ namespace NakedFramework.Facade.Interface {
         string[] EditProperties { get; }
         bool IsVisible(IObjectFacade objectFacade);
         IConsentFacade IsUsable(IObjectFacade objectFacade);
+        string FinderMethodPrefix { get; }
     }
 }
