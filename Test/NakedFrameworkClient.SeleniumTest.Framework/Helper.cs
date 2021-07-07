@@ -858,6 +858,15 @@ namespace NakedFrameworkClient.TestFramework
             return new ObjectView(el, this, pane);
         }
 
+        public CreateNewView GetCreateNewView(Pane pane = Pane.Single)
+        {
+
+            WaitForCss(CssSelectorFor(pane) + "nof-create-new-dialog .title");
+            WaitForCss(CssSelectorFor(pane) + "nof-create-new-dialog .dialog");
+            var el = WaitForCss(CssSelectorFor(pane) + "nof-create-new-dialog ");
+            return new CreateNewView(el, this, pane);
+        }
+
         public ListView GetReloadedListView(Pane pane = Pane.Single)
         {
             WaitForCss(CssSelectorFor(pane) + " .list");
