@@ -198,7 +198,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
         }
 
 
-        public virtual void ContributedCollectionUsingDisplayAsProperty()
+        public virtual void ContributedCollection_UsingDisplayAsProperty()
         {
             GeminiUrl("object?o1=___1.SpecialOffer--10");
             WaitForCss(".collection", 1);
@@ -616,9 +616,9 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
         }
 
         [TestMethod]
-        public override void ContributedCollectionUsingDisplayAsProperty()
+        public override void ContributedCollection_UsingDisplayAsProperty()
         {
-            base.ContributedCollectionUsingDisplayAsProperty();
+            base.ContributedCollection_UsingDisplayAsProperty();
         }
 
         [TestMethod]
@@ -823,7 +823,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             OpenAndCloseSubMenusTo3Levels();
             Properties();
             Collections();
-            ContributedCollectionUsingDisplayAsProperty();
+            ContributedCollection_UsingDisplayAsProperty();
             CollectionEagerlyRendered();
             DateAndCurrencyProperties();
             ConcurrencyProperties();

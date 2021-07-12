@@ -19,6 +19,24 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
 
         protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+        public virtual void EditPropertyInline_usingEditAttribute()
+        {
+            GeminiUrl("object?o1=___1.SpecialOffer--10");
+            var minQty = WaitForCssNo(".property", 6);
+            Assert.IsTrue(minQty.Text.StartsWith("Min Qty"));
+            var pencil = minQty.FindElement(By.CssSelector(".icon.edit"));
+            Click(pencil);
+            ClearFieldThenType("nof-edit-parameter input", "2");
+            Click(WaitForCss(".form-row input.ok"));
+            minQty = WaitForTextEquals(".property", 6, "2");
+            //Revert
+             pencil = minQty.FindElement(By.CssSelector(".icon.edit"));
+            Click(pencil);
+            ClearFieldThenType("nof-edit-parameter input", "1");
+            Click(WaitForCss("form-row input.ok"));
+            WaitForTextEquals(".property", 6, "1");
+        }
+
         public virtual void ObjectEditChangeScalar() {
             var rand = new Random();
             GeminiUrl("object?o1=___1.Product--870");
@@ -369,6 +387,12 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
 
     public abstract class ObjectEditTests : ObjectEditTestsRoot {
         [TestMethod]
+        public override void EditPropertyInline_usingEditAttribute()
+        {
+            base.EditPropertyInline_usingEditAttribute();
+        }
+
+        [TestMethod]
         public override void ObjectEditChangeScalar() {
             base.ObjectEditChangeScalar();
         }
@@ -501,6 +525,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
         [TestMethod] //Mega
         [Priority(0)]
         public void ObjectEditTest() {
+            EditPropertyInline_usingEditAttribute();
             ObjectEditChangeScalar();
             LocalValidationOfMandatoryFields();
             LocalValidationOfMaxLength();
