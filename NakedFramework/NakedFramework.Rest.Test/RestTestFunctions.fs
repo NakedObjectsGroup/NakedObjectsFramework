@@ -571,16 +571,21 @@ let internal makeVoidActionMember oType mName (oName : string) fName desc parms 
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
 
         let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
+        let edit = mName.Contains "ActionVoidWithEditAnnotation"
+
+        let hParms = Seq.length parms > 0    
+        let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
+                        TProperty(JsonPropertyNames.Description, TObjectVal(desc));
+                        TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));                                             
+                        TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))];
+
+        let extArray = if edit then TProperty(JsonPropertyNames.CustomEditProperties, TObjectVal("Id")) :: extArray else extArray
 
 
-        let hParms = Seq.length parms > 0       
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
           TProperty(JsonPropertyNames.Id, TObjectVal(mName));
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
-                                                                  TProperty(JsonPropertyNames.Description, TObjectVal(desc));
-                                                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));                                             
-                                                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
+          TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");                                     
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
                                                        ]))]
@@ -591,16 +596,21 @@ let internal makeVoidActionMemberSimple oType mName (oName : string) fName desc 
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
 
         let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
-
+        let edit = mName.Contains "ActionVoidWithEditAnnotation"
         
-        let hParms = Seq.length parms > 0           
+        let hParms = Seq.length parms > 0
+        let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
+                        TProperty(JsonPropertyNames.Description, TObjectVal(desc));
+                        TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));                                             
+                        TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))];
+
+        let extArray = if edit then TProperty(JsonPropertyNames.CustomEditProperties, TObjectVal("Id")) :: extArray else extArray
+
+
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
           TProperty(JsonPropertyNames.Id, TObjectVal(mName));
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
-                                                                  TProperty(JsonPropertyNames.Description, TObjectVal(desc));  
-                                                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));                                           
-                                                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
+          TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "")]))]
 

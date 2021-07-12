@@ -26,6 +26,9 @@ namespace RestfulObjects.Test.Data {
         [Edit]
         public WithActionObject AnActionWithEditAnnotation(int id) => new() {Id = id};
 
+        [Edit]
+        public void AnActionVoidWithEditAnnotation(int id) => Id = id;
+
         [DisplayAsProperty]
         public MostSimple AnObjectActionWithDisplayAsPropertyAnnotation() => Container.Instances<MostSimple>().Single(x => x.Id == 1);
 
