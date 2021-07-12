@@ -62,19 +62,10 @@ namespace NakedObjects.Reflector.FacetFactory {
             return (method.DeclaringType?.IsAssignableTo(method.ReturnType) == true, method.ReturnType);
         }
 
-        private static (bool, Type) IsContributedEdit(MethodInfo method) {
-            var contributedToType = method.GetParameters().SingleOrDefault(p => p.IsDefined(typeof(ContributedActionAttribute), false) && !p.ParameterType.IsValueType)?.ParameterType;
-
-            if (contributedToType is not null && method.ReturnType == typeof(void)) {
-                return (true, contributedToType);
-            }
-
-            return (contributedToType is not null && contributedToType.IsAssignableTo(method.ReturnType), method.ReturnType);
-        }
 
         private static (bool, Type) IsEditMethod(MethodInfo method) {
             if (method.IsDefined(typeof(EditAttribute), false)) {
-                return IsContributedAction(method) ? IsContributedEdit(method) : IsInstanceEdit(method);
+                return IsContributedAction(method) ? (false, null) : IsInstanceEdit(method);
             }
 
             return (false, null);
