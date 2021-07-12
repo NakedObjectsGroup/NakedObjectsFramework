@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NakedObjects;
 
 namespace AdventureWorksModel.Sales {
     public class SpecialOfferContributedActions
     {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
 
         public void ExtendOffers([ContributedAction] IQueryable<SpecialOffer> offers, DateTime toDate)
         {
@@ -63,14 +67,16 @@ namespace AdventureWorksModel.Sales {
             }
         }
 
-        [Edit]
-        public void EditMaxQty([ContributedAction] SpecialOffer specialOffer, int maxQty)
-        {
-            specialOffer.MaxQty = maxQty;
-        }
-
         [DisplayAsProperty]
-        public int Five() => 5;
-
+        public ICollection<Product> Products([ContributedAction] SpecialOffer so)
+        {
+            int soid = so.SpecialOfferID;
+            var prods = Container.Instances<Product>();
+            var sops = Container.Instances<SpecialOfferProduct>();
+            return (from p in prods
+                    from sop in sops
+                    where sop.SpecialOfferID == soid && p.ProductID == sop.ProductID
+                    select p).ToList();
+        }
     }
 }

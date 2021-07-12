@@ -197,6 +197,14 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             WaitUntilGone(d => d.FindElement(By.CssSelector("table")));
         }
 
+
+        public virtual void ContributedCollectionUsingDisplayAsProperty()
+        {
+            GeminiUrl("object?o1=___1.SpecialOffer--10");
+            WaitForCss(".collection", 1);
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Products:\r\n3 Items"));
+        }
+
         public virtual void NotCountedCollection() {
             //Test NotCounted collection
             GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
@@ -608,6 +616,12 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
         }
 
         [TestMethod]
+        public override void ContributedCollectionUsingDisplayAsProperty()
+        {
+            base.ContributedCollectionUsingDisplayAsProperty();
+        }
+
+        [TestMethod]
         public override void NotCountedCollection() {
             base.NotCountedCollection();
         }
@@ -809,6 +823,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             OpenAndCloseSubMenusTo3Levels();
             Properties();
             Collections();
+            ContributedCollectionUsingDisplayAsProperty();
             CollectionEagerlyRendered();
             DateAndCurrencyProperties();
             ConcurrencyProperties();

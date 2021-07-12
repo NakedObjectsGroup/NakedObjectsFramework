@@ -53,6 +53,12 @@ namespace AdventureWorksModel {
         [MemberOrder(61)]
         public virtual int MinQty { get; set; }
 
+        [Edit]
+        public void EditMinQty(int minQty) => MinQty = minQty;
+
+        [Edit]
+        public string ValidateEditMinQty(int minQty) => minQty > 0 ? null : "Min Qty must be > 0";
+
         [Optionally]
         [MemberOrder(62)]
         public virtual int? MaxQty { get; set; }
