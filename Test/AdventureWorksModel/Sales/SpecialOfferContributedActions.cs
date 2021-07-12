@@ -75,7 +75,7 @@ namespace AdventureWorksModel.Sales {
             var sops = Container.Instances<SpecialOfferProduct>();
             return (from p in prods
                     from sop in sops
-                    where p.ProductID == sop.ProductID
+                    where sop.SpecialOfferID == soid && p.ProductID == sop.ProductID
                     select p).ToList();
         }
     }
