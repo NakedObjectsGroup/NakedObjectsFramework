@@ -128,6 +128,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
             Type returnType;
             (returnSpec, returnType, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector, actionMethod);
 
+            if (returnType == typeof(void)) {
+                logger.LogWarning($"Ignoring function with void return type {actionMethod.DeclaringType}.{actionMethod.Name}");
+                return metamodel;
+            }
+
+
             if (!(returnSpec is IObjectSpecImmutable)) {
                 throw new ReflectionException($"{returnSpec.Identifier} must be Object spec");
             }
