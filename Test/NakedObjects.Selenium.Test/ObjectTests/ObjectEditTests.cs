@@ -22,8 +22,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
         public virtual void EditPropertyInline_usingEditAttribute()
         {
             GeminiUrl("object?o1=___1.SpecialOffer--10");
-            var properties = br.FindElements(By.CssSelector(".property"));
-            var minQty = properties[6];
+            var minQty = WaitForCssNo(".property", 6);
             Assert.IsTrue(minQty.Text.StartsWith("Min Qty"));
             var pencil = minQty.FindElement(By.CssSelector(".icon.edit"));
             Click(pencil);
