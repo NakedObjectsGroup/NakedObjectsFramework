@@ -1952,9 +1952,19 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                            TObjectJson
                                 (makeCollectionMember "AzContributedDisplayAsPropertyAction1" oName "Az Contributed Display As Property Action1" "" "list" 1 (TArray([(val2 "AzContributedDisplayAsPropertyAction1")]))))
                       TProperty
+                           ("AzContributedDisplayAsPropertyAction2", 
+                             TObjectJson
+                                  (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+                                   :: (makePropertyMemberWithNumber "objects" "AzContributedDisplayAsPropertyAction2" oName "Az Contributed Display As Property Action2" "" "int" false (TObjectVal(1)))))
+                      TProperty
                           ("AnObjectActionWithDisplayAsPropertyAnnotation1", 
                            TObjectJson
                                 (makeCollectionMember  "AnObjectActionWithDisplayAsPropertyAnnotation1" oName "An Object Action With Display As Property Annotation1" "" "list" 1 (TArray([(val2 "AnObjectActionWithDisplayAsPropertyAnnotation1")]))))
+                      TProperty
+                          ("AnObjectActionWithDisplayAsPropertyAnnotation2", 
+                           TObjectJson
+                                (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+                                 :: (makePropertyMemberWithNumber "objects" "AnObjectActionWithDisplayAsPropertyAnnotation2" oName "An Object Action With Display As Property Annotation2" "" "int" false (TObjectVal(1)))))
                       TProperty
                           ("ADisabledAction",                            
                            TObjectJson
@@ -2595,10 +2605,20 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                            TObjectJson
                                 (makeCollectionMember "AzContributedDisplayAsPropertyAction1" oName "Az Contributed Display As Property Action1" "" "list" 1 (TArray([(val2 "AzContributedDisplayAsPropertyAction1")]))))
                       TProperty
+                          ("AzContributedDisplayAsPropertyAction2", 
+                           TObjectJson
+                                (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+                                 :: (makePropertyMemberWithNumber "objects" "AzContributedDisplayAsPropertyAction2" oName "Az Contributed Display As Property Action2" "" "int" false (TObjectVal(1)))))
+
+                      TProperty
                           ("AnObjectActionWithDisplayAsPropertyAnnotation1", 
                            TObjectJson
                                 (makeCollectionMember  "AnObjectActionWithDisplayAsPropertyAnnotation1" oName "An Object Action With Display As Property Annotation1" "" "list" 1 (TArray([(val2 "AnObjectActionWithDisplayAsPropertyAnnotation1")]))))
-
+                      TProperty
+                          ("AnObjectActionWithDisplayAsPropertyAnnotation2", 
+                           TObjectJson
+                                (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+                                 :: (makePropertyMemberWithNumber "objects" "AnObjectActionWithDisplayAsPropertyAnnotation2" oName "An Object Action With Display As Property Annotation2" "" "int" false (TObjectVal(1)))))
                       TProperty
                           ("ADisabledAction",                            
                            TObjectJson

@@ -1101,7 +1101,7 @@ let internal makePropertyMemberWithNumber oType (mName : string) (oName : string
       let order = if desc = "" then 0 else 3
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let choices = mName.Contains("Choices")
-      let disabled = mName.Contains("Disabled")  || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit"))))          
+      let disabled = mName.Contains("Disabled")  || mName.Contains("DisplayAsProperty")  || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit"))))          
       let range = mName.Contains("Range")
 
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));

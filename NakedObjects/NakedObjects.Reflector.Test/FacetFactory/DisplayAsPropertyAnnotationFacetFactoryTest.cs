@@ -63,14 +63,20 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestDisplayAsPropertyAnnotationIgnoredOnIntAction()
+        public void TestDisplayAsPropertyAnnotationNotIgnoredOnIntAction()
         {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest3));
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
-            Assert.IsNull(facet1);
-            AssertMethodNotRemoved(actionMethod);
+            var facet2 = Specification.GetFacet(typeof(IPropertyAccessorFacet));
+            var facet3 = Specification.GetFacet(typeof(IMandatoryFacet));
+            var facet4 = Specification.GetFacet(typeof(IDisabledFacet));
+            Assert.IsTrue(facet1 is DisplayAsPropertyFacet);
+            Assert.IsTrue(facet2 is PropertyAccessorFacetViaMethod);
+            Assert.IsTrue(facet3 is MandatoryFacetDefault);
+            Assert.IsTrue(facet4 is DisabledFacetAlways);
+            AssertMethodRemoved(actionMethod);
             Assert.IsNotNull(metamodel);
         }
 

@@ -34,5 +34,8 @@ namespace RestfulObjects.Test.Data {
 
         [DisplayAsProperty]
         public IList<MostSimple> AnObjectActionWithDisplayAsPropertyAnnotation1() => Container.Instances<MostSimple>().Take(1).ToList();
+
+        [DisplayAsProperty]
+        public int AnObjectActionWithDisplayAsPropertyAnnotation2() => Id;
     }
 }

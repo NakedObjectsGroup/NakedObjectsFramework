@@ -61,8 +61,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                                                                       && method.GetParameters().First().GetCustomAttribute<ContributedActionAttribute>() is not null
                                                                       && !FasterTypeUtils.IsGenericCollection(method.GetParameters().First().ParameterType);
 
-        private static bool MatchesPropertySignature(MethodInfo method) =>
-            method.ReturnType != typeof(void) && (method.ReturnType.IsClass || method.ReturnType.IsInterface || FasterTypeUtils.IsGenericCollection(method.ReturnType));
+        private static bool MatchesPropertySignature(MethodInfo method) => method.ReturnType != typeof(void);
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             
