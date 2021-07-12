@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             if (method.IsDefined(typeof(CreateNewAttribute), false)) {
                 var toCreateType = ToCreateType(method);
 
-                if (toCreateType is not null && ObjectMethodHelpers.MatchParmsAndProperties(method, logger).Any()) {
+                if (toCreateType is not null && ObjectMethodHelpers.MatchParmsAndProperties(method, toCreateType, logger).Any()) {
                     FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
                 }
             }

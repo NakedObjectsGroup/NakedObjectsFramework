@@ -30,8 +30,9 @@ namespace NakedObjects.Reflector.FacetFactory {
             logger = loggerFactory.CreateLogger<EditAnnotationFacetFactory>();
 
         private IImmutableDictionary<string, ITypeSpecBuilder> Process(MethodInfo method, Action<IDictionary<ParameterInfo, PropertyInfo>> addFacet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (IsEditMethod(method)) {
-                var matches = ObjectMethodHelpers.MatchParmsAndProperties(method, logger);
+            var (isEdit, toEdit) = IsEditMethod(method);
+            if (isEdit) {
+                var matches = ObjectMethodHelpers.MatchParmsAndProperties(method, toEdit, logger);
 
                 if (matches.Any()) {
                     addFacet(matches);
@@ -47,7 +48,32 @@ namespace NakedObjects.Reflector.FacetFactory {
             return Process(method, AddFacet, metamodel);
         }
 
-        private static bool IsEditMethod(MethodInfo method) => method.IsDefined(typeof(EditAttribute), false) && method.DeclaringType.IsAssignableTo(method.ReturnType);
+        private static bool IsContributedAction(MethodInfo member) {
+            var allParams = member.GetParameters();
+            var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() is not null).Where(p => !p.ParameterType.IsValueType).ToArray();
+            return paramsWithAttribute.Any();
+        }
+
+        private static (bool, Type) IsInstanceEdit(MethodInfo method) {
+            if (method.ReturnType == typeof(void)) {
+                return (true, method.DeclaringType);
+            }
+
+            return (method.DeclaringType?.IsAssignableTo(method.ReturnType) == true, method.ReturnType);
+        }
+
+        private static (bool, Type) IsContributedEdit(MethodInfo method) {
+            var contributedToType = method.GetParameters().SingleOrDefault(p => p.IsDefined(typeof(ContributedActionAttribute), false) && !p.ParameterType.IsValueType)?.ParameterType;
+            return (contributedToType is not null && contributedToType.IsAssignableTo(method.ReturnType), method.ReturnType);
+        }
+
+        private static (bool, Type) IsEditMethod(MethodInfo method) {
+            if (method.IsDefined(typeof(EditAttribute), false)) {
+                return IsContributedAction(method) ? IsContributedEdit(method) : IsInstanceEdit(method);
+            }
+
+            return (false, null);
+        }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             void AddFacet(IDictionary<ParameterInfo, PropertyInfo> matches) {

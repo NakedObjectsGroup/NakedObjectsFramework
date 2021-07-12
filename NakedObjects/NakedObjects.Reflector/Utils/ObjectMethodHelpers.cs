@@ -76,11 +76,11 @@ namespace NakedObjects.Reflector.Utils {
             string.Equals(pri.Name, ppi.Name, StringComparison.CurrentCultureIgnoreCase) &&
             pri.ParameterType == ppi.PropertyType;
 
-        public static IDictionary<ParameterInfo, PropertyInfo> MatchParmsAndProperties(MethodInfo method, ILogger logger) {
+        public static IDictionary<ParameterInfo, PropertyInfo> MatchParmsAndProperties(MethodInfo method, Type toEdit, ILogger logger) {
             var toMatchParms = method.GetParameters().Where(p => !p.IsDefined(typeof(ContributedActionAttribute), false)).ToArray();
 
             if (toMatchParms.Any()) {
-                var allProperties = method.ReturnType.GetProperties();
+                var allProperties = toEdit.GetProperties();
 
                 var matchedProperties = allProperties.Where(p => toMatchParms.Any(tmp => Matches(tmp, p))).ToArray();
                 var matchedParameters = toMatchParms.Where(tmp => allProperties.Any(p => Matches(tmp, p))).ToArray();
@@ -90,7 +90,7 @@ namespace NakedObjects.Reflector.Utils {
                     return matchedParameters.ToDictionary(p => p, p => matchedProperties.Single(mp => Matches(p, mp)));
                 }
 
-                logger.LogWarning($"Not all parameters on {method.DeclaringType}.{method.Name} matched properties");
+                logger.LogWarning($"Not all parameters on {method.DeclaringType}.{method.Name} matched properties on {toEdit}");
             }
 
             return new Dictionary<ParameterInfo, PropertyInfo>();
