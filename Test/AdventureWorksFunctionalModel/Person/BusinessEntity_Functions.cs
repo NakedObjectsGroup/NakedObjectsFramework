@@ -1,6 +1,7 @@
 using NakedFunctions;
 using AW.Types;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AW.Functions
 {
@@ -28,8 +29,8 @@ namespace AW.Functions
             return (a, context.WithNew(a).WithNew(bea));
         }
 
-        public static IList<StateProvince> Choices7CreateNewAddress(this Address a, CountryRegion countryRegion, IContext context) =>
-                Address_Functions.StateProvincesForCountry(countryRegion, context);
+        public static IList<StateProvince> Choices7CreateNewAddress(this BusinessEntity be, CountryRegion countryRegion, IContext context) =>
+            countryRegion is null ? new List<StateProvince>() : Address_Functions.StateProvincesForCountry(countryRegion, context).ToList();
 
 
         public static (BusinessEntity, IContext) CreateNewEmailAddress(

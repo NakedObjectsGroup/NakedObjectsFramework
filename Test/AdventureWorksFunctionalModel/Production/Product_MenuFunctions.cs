@@ -5,12 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
-using NakedFunctions;
-using AW.Types;
-
-using static AW.Helpers;
 using System.Collections.Generic;
+using System.Linq;
+using AW.Types;
+using NakedFunctions;
+using static AW.Helpers;
 
 namespace AW.Functions
 {
@@ -45,7 +44,7 @@ namespace AW.Functions
         }
 
         public static List<ProductSubcategory> Choices1ListProductsByCategory(ProductCategory category) =>
-            category.ProductSubcategory.ToList();
+            category?.ProductSubcategory.ToList() ?? new List<ProductSubcategory>();
 
 
         [MemberOrder(5)]
