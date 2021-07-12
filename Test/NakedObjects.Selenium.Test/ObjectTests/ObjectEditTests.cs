@@ -27,13 +27,13 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             var pencil = minQty.FindElement(By.CssSelector(".icon.edit"));
             Click(pencil);
             ClearFieldThenType("nof-edit-parameter input", "2");
-            Click(WaitForCss("nof-edit-parameter .ok"));
+            Click(WaitForCss(".form-row input.ok"));
             minQty = WaitForTextEquals(".property", 6, "2");
             //Revert
              pencil = minQty.FindElement(By.CssSelector(".icon.edit"));
             Click(pencil);
             ClearFieldThenType("nof-edit-parameter input", "1");
-            Click(WaitForCss("nof-edit-parameter .ok"));
+            Click(WaitForCss("form-row input.ok"));
             WaitForTextEquals(".property", 6, "1");
         }
 
