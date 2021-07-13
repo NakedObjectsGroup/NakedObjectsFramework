@@ -116,7 +116,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             if (!actionMethod.IsStatic) {
                 throw new ReflectionException($"{actionMethod.DeclaringType}.{actionMethod.Name} must be static");
             }
-
+            
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
             var type = actionMethod.DeclaringType;
@@ -127,12 +127,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             Type returnType;
             (returnSpec, returnType, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector, actionMethod);
-
-            if (returnType == typeof(void)) {
-                logger.LogWarning($"Ignoring function with void return type {actionMethod.DeclaringType}.{actionMethod.Name}");
-                return metamodel;
-            }
-
 
             if (!(returnSpec is IObjectSpecImmutable)) {
                 throw new ReflectionException($"{returnSpec.Identifier} must be Object spec");
@@ -199,6 +193,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
             return candidates.Where(methodInfo => !classStrategy.IsIgnored(methodInfo) &&
+                                                  !(methodInfo.ReturnType == typeof(void)) &&
                                                   methodInfo.IsStatic &&
                                                   IsStatic(methodInfo.DeclaringType)).ToArray();
         }
