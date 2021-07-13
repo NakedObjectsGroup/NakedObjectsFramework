@@ -28,13 +28,15 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             Click(pencil);
             ClearFieldThenType("nof-edit-parameter input", "2");
             Click(WaitForCss(".form-row input.ok"));
-            minQty = WaitForTextEquals(".property", 6, "2");
+            WaitForCssNo(".property", 8);
+            minQty = WaitForCssNo(".property", 6);
+            Assert.AreEqual("2", minQty.FindElement(By.CssSelector(".value")).Text);
             //Revert
-             pencil = minQty.FindElement(By.CssSelector(".icon.edit"));
+            pencil = minQty.FindElement(By.CssSelector(".icon.edit"));
             Click(pencil);
             ClearFieldThenType("nof-edit-parameter input", "1");
-            Click(WaitForCss("form-row input.ok"));
-            WaitForTextEquals(".property", 6, "1");
+            Click(WaitForCss(".form-row input.ok"));
+            WaitForTextEquals(".property .value", 6, "1");
         }
 
         public virtual void ObjectEditChangeScalar() {
@@ -523,7 +525,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
 
     public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot {
         [TestMethod] //Mega
-        [Priority(0)]
+        //[Priority(0)]
         public void ObjectEditTest() {
             EditPropertyInline_usingEditAttribute();
             ObjectEditChangeScalar();
@@ -542,7 +544,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
         }
 
         [TestMethod]
-        [Priority(-1)]
+        //[Priority(-1)]
         public void ProblematicObjectEditTests() {
             ObjectEditCancelLeavesUnchanged();
             RangeValidationOnDate();

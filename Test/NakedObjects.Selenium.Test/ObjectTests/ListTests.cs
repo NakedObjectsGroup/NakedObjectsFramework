@@ -514,7 +514,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             NavigateToItemFromTableView();
             Paging();
             PageSizeRecognised();
-            ListDoesNotRefreshWithoutReload();
+           //ListDoesNotRefreshWithoutReload();
             ReloadingListGetsUpdatedObject();
             EagerlyRenderTableViewFromAction();
             PagingTableView();
