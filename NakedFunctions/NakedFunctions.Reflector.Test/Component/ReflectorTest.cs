@@ -1196,5 +1196,42 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNull(choices2Facet);
             }
         }
+
+        [TestMethod]
+        public void ReflectTargetMismatchedChoices()
+        {
+            static void Setup(NakedFrameworkOptions coreOptions)
+            {
+
+                coreOptions.AddNakedFunctions(options => {
+                        options.FunctionalTypes = new[] { typeof(SimpleClass) };
+                        options.Functions = new[] { typeof(MismatchedTargetClass) };
+                    }
+                );
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
+
+                var actionSpecs = spec.ContributedActions;
+                var actionSpec = actionSpecs.SingleOrDefault(s => s.Identifier.MemberName == nameof(MismatchedTargetClass.ActionWithChoices));
+
+                var parameterSpecs = actionSpec.Parameters;
+
+                var p1Spec = parameterSpecs[1];
+                var p2Spec = parameterSpecs[2];
+
+                var choices1Facet = p1Spec.GetFacet<IActionChoicesFacet>();
+                var choices2Facet = p1Spec.GetFacet<IActionChoicesFacet>();
+
+                Assert.IsNull(choices1Facet);
+                Assert.IsNull(choices2Facet);
+            }
+        }
     }
 }

@@ -49,7 +49,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
                 var returnType = typeof(IEnumerable<>).MakeGenericType(paramType);
                 var name = $"{RecognisedMethodsAndPrefixes.ParameterChoicesPrefix}{i}{capitalizedName}";
-                bool Matcher(MethodInfo mi) => Matches(mi, name, returnType);
+                var targetType = actionMethod.ContributedToType();
+                bool Matcher(MethodInfo mi) => Matches(mi, name, returnType, targetType);
 
                 var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
@@ -94,8 +95,9 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static bool Matches(MethodInfo methodInfo, string name, Type returnType) =>
+        private static bool Matches(MethodInfo methodInfo, string name, Type returnType, Type targetType) =>
             methodInfo.Name == name &&
+            methodInfo.ContributedToType() == targetType &&
             MatchReturnType(methodInfo.ReturnType, returnType);
 
         private static bool MatchReturnType(Type returnType, Type toMatch) => CollectionUtils.IsGenericEnumerable(returnType) && returnType.GenericTypeArguments.SequenceEqual(toMatch.GenericTypeArguments);

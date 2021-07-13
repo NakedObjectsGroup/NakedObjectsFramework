@@ -29,7 +29,7 @@ namespace AW.Functions
             return (a, context.WithNew(a).WithNew(bea));
         }
 
-        public static IList<StateProvince> Choices7CreateNewAddress(this BusinessEntity be, CountryRegion countryRegion, IContext context) =>
+        public static IList<StateProvince> Choices7CreateNewAddress(this Address be, CountryRegion countryRegion, IContext context) =>
             countryRegion is null ? new List<StateProvince>() : Address_Functions.StateProvincesForCountry(countryRegion, context).ToList();
 
 

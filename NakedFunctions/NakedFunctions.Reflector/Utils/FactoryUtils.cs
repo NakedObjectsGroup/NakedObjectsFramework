@@ -32,7 +32,7 @@ namespace NakedFunctions.Reflector.Utils {
             var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != complementaryMethod);
 
             foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"Method found: {methodInfo.Name} not matching expected signature");
+                logger.LogWarning($"Method found: {methodInfo.DeclaringType}.{methodInfo.Name} not matching expected signature");
             }
 
             return complementaryMethod;
@@ -43,7 +43,7 @@ namespace NakedFunctions.Reflector.Utils {
                 return methodDelegate is not null ? (T) methodDelegate(null, parms) : (T) method.Invoke(null, parms);
             }
             catch (InvalidCastException) {
-                throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.Name}");
+                throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.DeclaringType}.{method.Name}");
             }
         }
 

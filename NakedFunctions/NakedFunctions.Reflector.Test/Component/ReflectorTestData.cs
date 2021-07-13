@@ -302,4 +302,11 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static IList<int> Choices1ActionWithMismatchedChoices(this SimpleClass target, string parm3) => new List<int> { 0 };
         public static IList<string> Choices2ActionWithMismatchedChoices(this SimpleClass target, string parm1) => new List<string> { "0" };
     }
+
+    public static class MismatchedTargetClass
+    {
+        public static IContext ActionWithChoices(this SimpleClass target, int parm1, string parm2, IContext context) => context;
+
+        public static IList<int> Choices1ActionWithChoices(this NavigableClass target, string parm2) => new List<int> { 0 };
+    }
 }
