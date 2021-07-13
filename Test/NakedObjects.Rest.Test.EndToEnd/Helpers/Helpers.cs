@@ -122,7 +122,7 @@ namespace RestfulObjects.Test.EndToEnd {
                     // suppress failures
                 }
 
-                Assert.Fail(e.Message + " " + content);
+                Assert.Fail(e.Message);
             }
         }
 
