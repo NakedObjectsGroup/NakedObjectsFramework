@@ -57,7 +57,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             Links = tempLinks.ToArray();
         }
 
-        private (string name, ActionContextFacade action)[] GetMenuItem(IFrameworkFacade frameworkFacade, IMenuItemFacade item, string parent = "") => frameworkFacade.GetMenuItem(item, parent);
+        private static (string name, ActionContextFacade action)[] GetMenuItem(IFrameworkFacade frameworkFacade, IMenuItemFacade item, string parent = "") => frameworkFacade.GetMenuItem(item, parent);
 
         private static bool IsVisibleAndUsable(ActionContextFacade actionContextFacade) =>
             actionContextFacade.Action.IsVisible(actionContextFacade.Target) &&

@@ -792,7 +792,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             return Framework.NakedObjectManager.GetAdapterFor(obj);
         }
 
-        private ParameterContext[] FilterParms(IActionSpec action, ITypeSpec targetSpec) =>
+        private static ParameterContext[] FilterParms(IActionSpec action, ITypeSpec targetSpec) =>
             action.IsStaticFunction
                 ? FilterParmsForFunctions(action)
                 : FilterParmsForContributedActions(action, targetSpec);
@@ -917,7 +917,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                             Target = null,
                             Action = actionSpec,
                             MenuId = menu.Id,
-                            VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec),
+                            VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec)
                         };
                     }
                 }
@@ -1058,7 +1058,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         private static bool IsVisible(IMemberSpec actionSpec, INakedObjectAdapter nakedObject, bool isPersisted) => isPersisted ? actionSpec.IsVisibleWhenPersistent(nakedObject) : actionSpec.IsVisible(nakedObject);
 
-        private ParameterContext[] FilterCCAParms(IActionSpec action) {
+        private static ParameterContext[] FilterCCAParms(IActionSpec action) {
             if (action.IsStaticFunction) {
                 return FilterParmsForFunctions(action);
             }

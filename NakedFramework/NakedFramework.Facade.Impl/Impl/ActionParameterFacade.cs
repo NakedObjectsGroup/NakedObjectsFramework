@@ -48,9 +48,7 @@ namespace NakedFramework.Facade.Impl.Impl {
                 return parm.WrappedSpec().Spec.GetFacet<IParseableFacet>().ParseTextEntry((string) rawValue, framework.NakedObjectManager);
             }
 
-            var collectionParm = parm.WrappedSpec() as IOneToManyActionParameterSpec;
-
-            if (collectionParm != null && collectionParm.ElementSpec.IsParseable) {
+            if (parm.WrappedSpec() is IOneToManyActionParameterSpec collectionParm && collectionParm.ElementSpec.IsParseable) {
                 if (rawValue is not string[] stringArray || !stringArray.Any()) {
                     return null;
                 }

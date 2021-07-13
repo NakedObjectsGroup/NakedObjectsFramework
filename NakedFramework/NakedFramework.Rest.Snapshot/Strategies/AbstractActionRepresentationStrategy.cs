@@ -127,7 +127,6 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
             if (createNewProperties.Any()) {
                 ext ??= new Dictionary<string, object>();
                 ext[JsonPropertyNames.CustomCreateNew] = string.Join(',', createNewProperties);
-                ;
             }
 
             var editProperties = ActionContext.Action.EditProperties;

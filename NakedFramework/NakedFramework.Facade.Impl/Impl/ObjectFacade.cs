@@ -35,7 +35,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedObjectsFramework framework) => nakedObject == null ? null : new ObjectFacade(nakedObject, facade, framework);
 
-        private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) => objectRepresentingCollection.Oid is ICollectionMemento cm && cm.IsNotQueryable;
+        private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) => objectRepresentingCollection.Oid is ICollectionMemento {IsNotQueryable: true};
 
         private INakedObjectAdapter Page(INakedObjectAdapter objectRepresentingCollection, int page, int size, bool forceEnumerable) {
             var toEnumerable = IsNotQueryable(objectRepresentingCollection) || forceEnumerable;

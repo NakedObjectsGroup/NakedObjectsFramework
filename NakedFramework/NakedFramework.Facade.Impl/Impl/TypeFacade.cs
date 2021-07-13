@@ -94,14 +94,14 @@ namespace NakedFramework.Facade.Impl.Impl {
         public bool IsAlwaysImmutable {
             get {
                 var facet = WrappedValue.GetFacet<IImmutableFacet>();
-                return facet != null && facet.Value == WhenTo.Always;
+                return facet is {Value: WhenTo.Always};
             }
         }
 
         public bool IsImmutableOncePersisted {
             get {
                 var facet = WrappedValue.GetFacet<IImmutableFacet>();
-                return facet != null && facet.Value == WhenTo.OncePersisted;
+                return facet is {Value: WhenTo.OncePersisted};
             }
         }
 

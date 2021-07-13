@@ -140,7 +140,7 @@ namespace NakedFramework.Metamodel.Utils {
             if (integrationFacet is null)
             {
                 integrationFacet = new IntegrationFacet(specification, action);
-                FacetUtils.AddFacet(integrationFacet);
+                AddFacet(integrationFacet);
             }
             else
             {
