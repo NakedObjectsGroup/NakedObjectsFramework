@@ -192,10 +192,16 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private static bool IsStatic(Type type) => type.IsAbstract && type.IsSealed;
 
         public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
-            return candidates.Where(methodInfo => !classStrategy.IsIgnored(methodInfo) &&
-                                                  !(methodInfo.ReturnType == typeof(void)) &&
-                                                  methodInfo.IsStatic &&
-                                                  IsStatic(methodInfo.DeclaringType)).ToArray();
+            var ignored = candidates.Where(methodInfo => classStrategy.IsIgnored(methodInfo) ||
+                                                         methodInfo.ReturnType == typeof(void) ||
+                                                         !methodInfo.IsStatic ||
+                                                         !IsStatic(methodInfo.DeclaringType)).ToArray();
+
+            foreach (var method in ignored.Where(m => m.ReturnType == typeof(void))) {
+                logger.LogWarning($"Ignored as returns void {method.DeclaringType}.{method.Name}");
+            }
+
+            return candidates.Except(ignored).ToArray();
         }
 
         #endregion
