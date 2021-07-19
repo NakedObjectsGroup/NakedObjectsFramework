@@ -22,35 +22,33 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
         public virtual void EditPropertyInline_usingEditAttribute()
         {
             GeminiUrl("object?o1=___1.SpecialOffer--10");
-            var minQty = WaitForCssNo(".property", 6);
+            var minQty = WaitForCssNo(".property", 7);
             Assert.IsTrue(minQty.Text.StartsWith("Min Qty"));
             var pencil = minQty.FindElement(By.CssSelector(".icon.edit"));
             Click(pencil);
             ClearFieldThenType("nof-edit-parameter input", "2");
             Click(WaitForCss(".form-row input.ok"));
             WaitForCssNo(".property", 9);
-            minQty = WaitForCssNo(".property", 6);
+            minQty = WaitForCssNo(".property", 7);
             Assert.AreEqual("2", minQty.FindElement(By.CssSelector(".value")).Text);
             //Revert
             pencil = minQty.FindElement(By.CssSelector(".icon.edit"));
             Click(pencil);
             ClearFieldThenType("nof-edit-parameter input", "1");
             Click(WaitForCss(".form-row input.ok"));
-            WaitForTextEquals(".property .value", 6, "1");
+            WaitForTextEquals(".property .value", 7, "1");
         }
 
         public virtual void EditAttributeHonoursValidationMethod()
         {
             GeminiUrl("object?o1=___1.SpecialOffer--10");
-            var minQty = WaitForCssNo(".property", 6);
+            var minQty = WaitForCssNo(".property", 7);
             Assert.IsTrue(minQty.Text.StartsWith("Min Qty"));
             var pencil = minQty.FindElement(By.CssSelector(".icon.edit"));
             Click(pencil);
             ClearFieldThenType("nof-edit-parameter input", "0");
             Click(WaitForCss(".form-row input.ok"));
-            var validation = WaitForCss(".parameter .validation");
-            Assert.AreEqual("Min Qty must be > 0", validation.Text);
-
+            wait.Until(el => el.FindElement(By.CssSelector(".parameter .validation")).Text == "Min Qty must be > 0");
         }
 
         public virtual void ObjectEditChangeScalar() {

@@ -92,10 +92,10 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
 
         public virtual void DisplayAsPropertyOnALocalInstanceMethod()
         {
-            GeminiUrl("object?o1=___1.SpecialOffer--10");
-            WaitForTitle("Sport Helmet Discount-2002");
+            GeminiUrl("object?o1=___1.SpecialOffer--2");
+            WaitForTitle("Volume Discount 11 to 14");
             var days = GetPropertyValue("Duration (days)");
-            Assert.AreEqual("30", days);
+            Assert.AreEqual("1,095", days);
         }
 
         public virtual void Collections() {
@@ -383,8 +383,8 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             WaitForView(Pane.Single, PaneType.Object, "Touring-3000 Promotion");
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
-            Assert.AreEqual("Max Qty:", properties[7].Text);
-            Assert.AreEqual("Min Qty:\r\n0", properties[6].Text);
+            Assert.AreEqual("Max Qty:", properties[8].Text);
+            Assert.AreEqual("Min Qty:\r\n0", properties[7].Text);
         }
 
         public virtual void AddingObjectToCollectionUpdatesTableView() {
