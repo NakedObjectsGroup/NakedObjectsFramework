@@ -848,7 +848,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var dialog = cnv.GetDialog();
             dialog.GetReferenceField("Product").Enter("fr").AssertHasAutoCompleteOption(0, "Freewheel").SelectAutoCompleteOption(0);
             dialog.GetTextField("Order Qty").Enter("1");
-            dialog.GetTextField("Start Date").Enter(DateTime.Today.ToString("d"));
+            dialog.GetTextField("Start Date").Enter("01 Jan 2021");
             var workOrder = cnv.ClickSaveToViewSavedObject();
             Assert.IsTrue(workOrder.GetTitle().StartsWith("Freewheel: "));
             workOrder.GetProperty("Order Qty").AssertValueIs("1");
