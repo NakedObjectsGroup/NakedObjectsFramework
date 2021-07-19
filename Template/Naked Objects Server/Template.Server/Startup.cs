@@ -48,11 +48,11 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddNakedFramework(frameworkOptions => {
                 frameworkOptions.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
                 // frameworkOptions.AddEF6Persistor(persistorOptions => { persistorOptions.ContextInstallers = new[] { ModelConfig. }; });
-                frameworkOptions.AddEFCorePersistor(persistorOptions => { persistorOptions.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
+                frameworkOptions.AddEFCorePersistor(persistorOptions => { persistorOptions.ContextCreators = new[] { ModelConfig.EFCoreDbContextCreator }; });
                 frameworkOptions.AddRestfulObjects(restOptions => {  });
                 frameworkOptions.AddNakedObjects(appOptions => {
-                    appOptions.Types = ModelConfig.DomainModelTypes();
-                    appOptions.Services = ModelConfig.DomainModelServices();
+                    appOptions.DomainModelTypes = ModelConfig.DomainModelTypes();
+                    appOptions.DomainModelServices = ModelConfig.DomainModelServices();
                 });
             });
             services.AddCors(corsOptions => {
