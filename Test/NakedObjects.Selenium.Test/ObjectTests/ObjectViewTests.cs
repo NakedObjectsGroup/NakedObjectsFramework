@@ -90,6 +90,14 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"), properties[3].Text);
         }
 
+        public virtual void DisplayAsPropertyOnALocalInstanceMethod()
+        {
+            GeminiUrl("object?o1=___1.SpecialOffer--10");
+            WaitForTitle("Sport Helmet Discount-2002");
+            var days = GetPropertyValue("Duration (days)");
+            Assert.AreEqual("30", days);
+        }
+
         public virtual void Collections() {
             GeminiUrl("object?i1=View&o1=___1.Product--821");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n2 Items"));
@@ -197,10 +205,9 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             WaitUntilGone(d => d.FindElement(By.CssSelector("table")));
         }
 
-
         public virtual void ContributedCollection_UsingDisplayAsProperty()
         {
-            GeminiUrl("object?o1=___1.SpecialOffer--10");
+            GeminiUrl("object?o1=___1.SpecialOffer--8");
             WaitForCss(".collection", 1);
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Products:\r\n3 Items"));
         }
@@ -816,8 +823,9 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
 
     public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot {
         [TestMethod] //Mega
-        [Priority(0)]
+        //[Priority(0)]
         public void ObjectViewTest() {
+            DisplayAsPropertyOnALocalInstanceMethod();
             ActionsAlreadyOpen();
             OpenActionsMenuNotAlreadyOpen();
             OpenAndCloseSubMenusTo3Levels();
