@@ -40,7 +40,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         #endregion
 
 
-        //[TestMethod]
+        [TestMethod]
         public void AllWorkingStories()
         {
             RetrieveObjectViaMenuAction();
@@ -837,7 +837,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             dialog.AssertHasValidationError("StartDate must be before DueDate");
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void CreateNewUsingAttribute()
         {
             var cnv = helper.GotoHome().OpenMainMenu("Work Orders")
