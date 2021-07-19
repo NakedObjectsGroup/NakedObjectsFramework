@@ -1386,17 +1386,17 @@
     merge-source-map "^1.1.0"
     schema-utils "^2.7.0"
 
-"@nakedobjects/cicero@file:./dist/nakedobjects-cicero/nakedobjects-cicero-v12.0.0-beta.0.tgz":
-  version "12.0.0-beta.0"
-  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v12.0.0-beta.0.tgz#8ca57cfaba4beec96078ff02beb66aaf4830089b"
+"@nakedobjects/cicero@file:./dist/nakedobjects-cicero/nakedobjects-cicero-v12.0.0-rc.1.tgz":
+  version "12.0.0-rc.1"
+  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v12.0.0-rc.1.tgz#2e1a483784b08d53f2aa3eb4b19108d639dff80d"
   dependencies:
     lodash "~4.17.21"
     lodash-es "~4.17.21"
     tslib "~2.3.0"
 
-"@nakedobjects/gemini@file:./dist/nakedobjects-gemini/nakedobjects-gemini-v12.0.0-beta.0.tgz":
-  version "12.0.0-beta.0"
-  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v12.0.0-beta.0.tgz#57a87df357fe97ea6a01c674cb916e8801200189"
+"@nakedobjects/gemini@file:./dist/nakedobjects-gemini/nakedobjects-gemini-v12.0.0-rc.1.tgz":
+  version "12.0.0-rc.1"
+  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v12.0.0-rc.1.tgz#b5c5c3482e10ceef9deadeb919252ab394a072bf"
   dependencies:
     auth0-js "^9.16.1"
     lodash "~4.17.21"
@@ -1404,17 +1404,17 @@
     moment "~2.29.1"
     tslib "~2.3.0"
 
-"@nakedobjects/restful-objects@file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v12.0.0-beta.0.tgz":
-  version "12.0.0-beta.0"
-  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v12.0.0-beta.0.tgz#a0ecec4420660a66709a5f39f9c74f222bfeea3a"
+"@nakedobjects/restful-objects@file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v12.0.0-rc.1.tgz":
+  version "12.0.0-rc.1"
+  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v12.0.0-rc.1.tgz#3d5840649434dfd8117b52806314cfab433cbd61"
   dependencies:
     lodash "~4.17.21"
     lodash-es "~4.17.21"
     tslib "^2.2.0"
 
-"@nakedobjects/services@file:./dist/nakedobjects-services/nakedobjects-services-v12.0.0-beta.0.tgz":
-  version "12.0.0-beta.0"
-  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v12.0.0-beta.0.tgz#35582053492b3a794ae0b30291afbc212bd9a329"
+"@nakedobjects/services@file:./dist/nakedobjects-services/nakedobjects-services-v12.0.0-rc.1.tgz":
+  version "12.0.0-rc.1"
+  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v12.0.0-rc.1.tgz#d222dff30fc33893bb2bd4b6998faf5b5667eecb"
   dependencies:
     auth0-js "^9.16.2"
     lodash "~4.17.21"
@@ -1422,9 +1422,9 @@
     moment "2.29.1"
     tslib "~2.3.0"
 
-"@nakedobjects/view-models@file:./dist/nakedobjects-view-models/nakedobjects-view-models-v12.0.0-beta.0.tgz":
-  version "12.0.0-beta.0"
-  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v12.0.0-beta.0.tgz#1fc00ee01b257f4ecba8601b6a36d779737f6d56"
+"@nakedobjects/view-models@file:./dist/nakedobjects-view-models/nakedobjects-view-models-v12.0.0-rc.1.tgz":
+  version "12.0.0-rc.1"
+  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v12.0.0-rc.1.tgz#a98dc351a2a7e3f417eec7bdab0fd3522949cf64"
   dependencies:
     lodash "~4.17.21"
     lodash-es "~4.17.21"
