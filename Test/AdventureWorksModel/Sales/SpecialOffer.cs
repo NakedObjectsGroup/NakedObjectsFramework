@@ -104,5 +104,8 @@ namespace AdventureWorksModel {
         #endregion
 
         #endregion
+
+        [DisplayAsProperty, Named("Duration (days)")]
+        public int Duration() => (EndDate - StartDate).Days;
     }
 }
