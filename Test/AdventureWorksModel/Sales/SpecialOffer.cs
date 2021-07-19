@@ -50,6 +50,9 @@ namespace AdventureWorksModel {
         [Mask("d")]
         public virtual DateTime EndDate { get; set; }
 
+        [DisplayAsProperty, Named("Duration (days)"), MemberOrder(53)]
+        public int Duration() => (EndDate - StartDate).Days;
+
         [MemberOrder(61)]
         public virtual int MinQty { get; set; }
 
@@ -105,7 +108,6 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        [DisplayAsProperty, Named("Duration (days)")]
-        public int Duration() => (EndDate - StartDate).Days;
+
     }
 }
