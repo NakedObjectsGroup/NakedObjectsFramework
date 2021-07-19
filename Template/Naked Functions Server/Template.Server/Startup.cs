@@ -45,7 +45,7 @@ namespace NakedFunctions.Rest.App.Demo
             services.AddNakedFramework(frameworkOptions =>
             {
                 frameworkOptions.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                frameworkOptions.AddEFCorePersistor(peristorOptions => { peristorOptions.ContextInstallers = new[] { ModelConfig.EFCoreDbContextCreator }; });
+                frameworkOptions.AddEFCorePersistor(peristorOptions => { peristorOptions.ContextCreators = new[] { ModelConfig.EFCoreDbContextCreator }; });
                 frameworkOptions.AddNakedFunctions(appOptions =>
                 {
                     appOptions.FunctionalTypes = ModelConfig.Types();
