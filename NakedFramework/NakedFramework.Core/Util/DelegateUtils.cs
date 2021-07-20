@@ -19,7 +19,7 @@ namespace NakedFramework.Core.Util {
 
         private static string CreationFailed(string reason, MethodInfo method) =>
             // don't log system or NOF types
-            FasterTypeUtils.IsSystem(method.DeclaringType) || FasterTypeUtils.IsNakedObjects(method.DeclaringType)
+            FasterTypeUtils.IsSystemOrNaked(method.DeclaringType)
                 ? ""
                 : $"Not creating delegate for {reason} method {method.DeclaringType}.{method}";
 

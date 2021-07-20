@@ -76,7 +76,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             foreach (var parameterInfo in method.GetParameters()) {
                 if (classStrategy.IsIgnored(parameterInfo.ParameterType)) {
                     // log if not a System or NOF type
-                    if (!FasterTypeUtils.IsSystem(method.DeclaringType) && !FasterTypeUtils.IsNakedObjects(method.DeclaringType)) {
+                    if (!FasterTypeUtils.IsSystemOrNaked(method.DeclaringType)) {
                         logger.LogWarning($"Ignoring method: {method.DeclaringType}.{method.Name} because parameter '{parameterInfo.Name}' is of type {parameterInfo.ParameterType}");
                     }
 

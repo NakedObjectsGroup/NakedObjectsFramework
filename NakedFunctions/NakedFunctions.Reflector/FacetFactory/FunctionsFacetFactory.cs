@@ -58,21 +58,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 IsCollection(type.BaseType) ||
                 type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
 
-        private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
-            foreach (var parameterInfo in method.GetParameters()) {
-                if (classStrategy.IsIgnored(parameterInfo.ParameterType)) {
-                    // log if not a System or NOF type
-                    if (!FasterTypeUtils.IsSystem(method.DeclaringType) && !FasterTypeUtils.IsNakedObjects(method.DeclaringType)) {
-                        logger.LogWarning("Ignoring method: {method.DeclaringType}.{method.Name} because parameter '{parameterInfo.Name}' is of type {parameterInfo.ParameterType}");
-                    }
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         /// <summary>
         ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
         /// </summary>
@@ -198,7 +183,9 @@ namespace NakedFunctions.Reflector.FacetFactory {
                                                          !IsStatic(methodInfo.DeclaringType)).ToArray();
 
             foreach (var method in ignored.Where(m => m.ReturnType == typeof(void))) {
-                logger.LogWarning($"Ignored as returns void {method.DeclaringType}.{method.Name}");
+                if (!FasterTypeUtils.IsSystemOrNaked(method.DeclaringType)) {
+                    logger.LogWarning($"Ignored as returns void {method.DeclaringType}.{method.Name}");
+                }
             }
 
             return candidates.Except(ignored).ToArray();
