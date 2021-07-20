@@ -66,6 +66,8 @@ namespace NakedObjects.Reflector.FacetFactory {
             ActionPrefixes.Any(prefix => IsComplementaryActionMethod(actionMethod, prefix)) ||
             ParameterPrefixes.Any(prefix => IsComplementaryParameterMethod(actionMethod, prefix));
 
+        private static bool IsNotOverride(MethodInfo method) => method.GetBaseDefinition().DeclaringType == method.DeclaringType;
+
         private bool IsComplementaryPropertyMethod(MethodInfo actionMethod, string prefix) {
             if (MatchesPrefix(actionMethod, prefix, out var propertyName)) {
                 var declaringType = actionMethod.DeclaringType;
@@ -76,7 +78,11 @@ namespace NakedObjects.Reflector.FacetFactory {
                 var baseType = declaringType.BaseType;
 
                 if (InheritsProperty(baseType, propertyName)) {
-                    logger.LogWarning($"Filtering method {actionMethod.Name} because of property {propertyName} on {baseType?.FullName}");
+                    if (IsNotOverride(actionMethod)) {
+                        // no override so flag
+                        logger.LogWarning($"Filtering method {actionMethod.Name} because of property {propertyName} on {baseType?.FullName}");
+                    }
+
                     return true;
                 }
             }
@@ -92,8 +98,12 @@ namespace NakedObjects.Reflector.FacetFactory {
                 }
 
                 if (InheritsMethod(declaringType.BaseType, propertyName)) {
-                    var baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
-                    logger.LogWarning($"Filtering method {actionMethod.Name} because of action {propertyName} on {baseTypeName}");
+                    if (IsNotOverride(actionMethod)) {
+                        // no override so flag
+                        var baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
+                        logger.LogWarning($"Filtering method {actionMethod.Name} because of action {propertyName} on {baseTypeName}");
+                    }
+
                     return true;
                 }
             }
@@ -110,8 +120,12 @@ namespace NakedObjects.Reflector.FacetFactory {
                 }
 
                 if (InheritsMethod(declaringType.BaseType, propertyName)) {
-                    var baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
-                    logger.LogWarning($"Filtering method {actionMethod.Name} because of action {propertyName} on {baseTypeName}");
+                    if (IsNotOverride(actionMethod)) {
+                        // no override so flag
+                        var baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
+                        logger.LogWarning($"Filtering method {actionMethod.Name} because of action {propertyName} on {baseTypeName}");
+                    }
+
                     return true;
                 }
             }
