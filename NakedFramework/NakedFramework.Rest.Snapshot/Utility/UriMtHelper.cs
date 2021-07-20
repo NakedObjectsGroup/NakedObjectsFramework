@@ -463,7 +463,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         public string GetRelParametersFor(IMemberFacade memberFacade) =>
             memberFacade switch {
-                IActionFacade _ => FormatParameter(RelParamValues.Action, memberFacade.Id) + (param == null ? "" : FormatParameter(RelParamValues.Param, param.Id)),
+                IActionFacade => FormatParameter(RelParamValues.Action, memberFacade.Id) + (param == null ? "" : FormatParameter(RelParamValues.Param, param.Id)),
                 IAssociationFacade associationFacade => FormatParameter(associationFacade.IsCollection ? RelParamValues.Collection : RelParamValues.Property, associationFacade.Id),
                 _ => throw new ArgumentException("Unexpected type:" + memberFacade.GetType())
             };

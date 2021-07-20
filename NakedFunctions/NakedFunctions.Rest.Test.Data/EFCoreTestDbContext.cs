@@ -85,7 +85,7 @@ namespace NakedFunctions.Rest.Test.Data {
             modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 1, Name = "One"});
             modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 2, Name = "Two"});
 
-            modelBuilder.Entity<ByteArrayRecord>().HasData(new ByteArrayRecord() {Id = 1});
+            modelBuilder.Entity<ByteArrayRecord>().HasData(new ByteArrayRecord {Id = 1});
 
             modelBuilder.Entity<MaskRecord>().Ignore(m => m.MaskRecordProperty);
             modelBuilder.Entity<MaskRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });

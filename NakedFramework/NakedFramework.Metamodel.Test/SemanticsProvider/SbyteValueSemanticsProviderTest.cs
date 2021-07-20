@@ -70,7 +70,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestParseInvariant() {
-            const sbyte c1 = (sbyte) 11;
+            const sbyte c1 = 11;
             var s1 = c1.ToString(CultureInfo.InvariantCulture);
             var c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
@@ -94,7 +94,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestValue() {
             ISbyteValueFacet facet = value;
-            const sbyte testValue = (sbyte) 101;
+            const sbyte testValue = 101;
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
             Assert.AreEqual(testValue, facet.SByteValue(mockNo.Object));

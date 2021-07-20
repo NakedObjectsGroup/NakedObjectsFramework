@@ -38,7 +38,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             MapRepresentation value;
 
             // All reasons why we cannot create a link representation
-            if (context.Specification.IsCollection && context.ElementSpecification != null && !context.ElementSpecification.IsParseable) {
+            if (context.Specification.IsCollection && context.ElementSpecification is {IsParseable: false}) {
                 var proposedObjectFacade = frameworkFacade.GetObject(context.ProposedValue);
                 var coll = proposedObjectFacade.ToEnumerable().Select(no => CreateObjectRef(oidStrategy, req, no, flags)).ToArray();
                 value = CreateMap(context, coll);
@@ -94,11 +94,9 @@ namespace NakedFramework.Rest.Snapshot.Representation {
         }
 
         public static MapRepresentation Create(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, HttpRequest req, ContextFacade context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
-            var objectContext = context as ObjectContextFacade;
-            var actionResultContext = context as ActionResultContextFacade;
             MapRepresentation mapRepresentation;
 
-            if (objectContext != null) {
+            if (context is ObjectContextFacade objectContext) {
                 var optionalProperties = objectContext.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, frameworkFacade, req, c, flags))).ToList();
                 if (!string.IsNullOrEmpty(objectContext.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, objectContext.Reason));
@@ -106,7 +104,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
                 mapRepresentation = Create(optionalProperties.ToArray());
             }
-            else if (actionResultContext != null) {
+            else if (context is ActionResultContextFacade actionResultContext) {
                 var optionalProperties = actionResultContext.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, frameworkFacade, req, c, flags))).ToList();
 
                 if (!string.IsNullOrEmpty(actionResultContext.Reason)) {

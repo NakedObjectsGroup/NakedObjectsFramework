@@ -186,14 +186,12 @@ namespace NakedFramework.Core.Spec {
 
         public override bool IsVisibleWhenPersistent(INakedObjectAdapter target) => base.IsVisibleWhenPersistent(RealTarget(target));
 
-        public INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) {
-            return parameterSet ?? (IsContributedMethod ? new[] {target} : Array.Empty<INakedObjectAdapter>());
-        }
+        public INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) =>
+            parameterSet ?? (IsContributedMethod ? new[] {target} : Array.Empty<INakedObjectAdapter>());
 
-        public bool IsLocallyContributedTo(ITypeSpec typeSpec, string id) {
-            var spec = Framework.MetamodelManager.Metamodel.GetSpecification(typeSpec.FullName) as IObjectSpecImmutable;
-            return spec is not null && actionSpecImmutable.IsContributedToLocalCollectionOf(spec, id);
-        }
+        public bool IsLocallyContributedTo(ITypeSpec typeSpec, string id) =>
+            Framework.MetamodelManager.Metamodel.GetSpecification(typeSpec.FullName) is IObjectSpecImmutable spec &&
+            actionSpecImmutable.IsContributedToLocalCollectionOf(spec, id);
 
         public string GetFinderMethodPrefix() => actionSpecImmutable.GetFacet<IFinderActionFacet>()?.Value;
 

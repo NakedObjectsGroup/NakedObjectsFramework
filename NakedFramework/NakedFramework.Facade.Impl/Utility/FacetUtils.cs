@@ -67,7 +67,7 @@ namespace NakedFramework.Facade.Impl.Utility {
 
         public static (bool title, string[] columns)? GetTableViewData(this ISpecification spec) {
             var facet = spec.GetFacet<ITableViewFacet>();
-            return facet == null ? ((bool Title, string[] Columns)?) null : (facet.Title, facet.Columns);
+            return facet == null ? null : (facet.Title, facet.Columns);
         }
 
         public static int GetNumberOfLinesWithDefault(this ISpecification spec) {
@@ -92,12 +92,12 @@ namespace NakedFramework.Facade.Impl.Utility {
 
         public static (Regex, string)? GetRegEx(this ISpecification spec) {
             var regEx = spec.GetFacet<IRegExFacet>();
-            return regEx == null ? ((Regex Pattern, string FailureMessage)?) null : (regEx.Pattern, regEx.FailureMessage);
+            return regEx == null ? null : (regEx.Pattern, regEx.FailureMessage);
         }
 
         public static (IConvertible, IConvertible, bool)? GetRange(this ISpecification spec) {
             var rangeFacet = spec.GetFacet<IRangeFacet>();
-            return rangeFacet == null ? ((IConvertible Min, IConvertible Max, bool IsDateRange)?) null : (rangeFacet.Min, rangeFacet.Max, rangeFacet.IsDateRange);
+            return rangeFacet == null ? null : (rangeFacet.Min, rangeFacet.Max, rangeFacet.IsDateRange);
         }
     }
 }

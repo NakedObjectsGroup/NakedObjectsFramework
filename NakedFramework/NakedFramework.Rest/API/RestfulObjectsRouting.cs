@@ -19,7 +19,7 @@ namespace NakedFramework.Rest.API {
         public static void AddRestRoutes(IRouteBuilder routes, string routePrefix = "") {
             if (!string.IsNullOrWhiteSpace(routePrefix)) {
                 UriMtHelper.GetApplicationPath = req => {
-                    var appPath = req.PathBase.ToString() ?? "";
+                    var appPath = req.PathBase.ToString();
                     return EnsureTrailingSlash(appPath) + EnsureTrailingSlash(routePrefix);
                 };
             }

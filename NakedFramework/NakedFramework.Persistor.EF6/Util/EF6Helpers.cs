@@ -49,7 +49,7 @@ namespace NakedFramework.Persistor.EF6.Util {
 
         internal static T GetProperty<T>(this object onObject, string name) => (T) onObject.GetType().GetProperty(name)?.GetValue(onObject);
 
-        private static string GetNamespaceForType(this ObjectContext context, Type type) => context.MetadataWorkspace.GetItems(DataSpace.CSpace).Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType || x.BuiltInTypeKind == BuiltInTypeKind.ComplexType).OfType<EdmType>().Where(et => et.Name == type.Name).Select(et => et.NamespaceName).SingleOrDefault();
+        private static string GetNamespaceForType(this ObjectContext context, Type type) => context.MetadataWorkspace.GetItems(DataSpace.CSpace).Where(x => x.BuiltInTypeKind is BuiltInTypeKind.EntityType or BuiltInTypeKind.ComplexType).OfType<EdmType>().Where(et => et.Name == type.Name).Select(et => et.NamespaceName).SingleOrDefault();
 
         internal static StructuralType GetStructuralType(ObjectContext context, Type type) {
             var name = type.Name;
@@ -59,7 +59,7 @@ namespace NakedFramework.Persistor.EF6.Util {
 
         private static EntityType GetEntityType(this EF6LocalContext context, Type type) => context.GetStructuralType(type) as EntityType;
 
-        private static bool IsTypeInOSpace(this ObjectContext context, Type type) => context.MetadataWorkspace.GetItems(DataSpace.OSpace).Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType || x.BuiltInTypeKind == BuiltInTypeKind.ComplexType).OfType<EdmType>().Any(et => et.FullName == type.FullName);
+        private static bool IsTypeInOSpace(this ObjectContext context, Type type) => context.MetadataWorkspace.GetItems(DataSpace.OSpace).Where(x => x.BuiltInTypeKind is BuiltInTypeKind.EntityType or BuiltInTypeKind.ComplexType).OfType<EdmType>().Any(et => et.FullName == type.FullName);
 
         // problem is that OSpace is not populated until an object set is created. 
         // and there seems to be no way of navigating to the OSpace type from the CSpace. 

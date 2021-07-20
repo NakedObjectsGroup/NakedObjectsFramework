@@ -55,7 +55,7 @@ namespace NakedFramework.Rest.API {
             config = newConfig;
             RestControlFlags.ConfiguredPageSize = config.DefaultPageSize;
             RestSnapshot.DebugFilter = config.DebugWarnings
-                ? (Func<Func<string>, string>) (f => f())
+                ? f => f()
                 : _ => "Enable DebugWarnings to see message";
         }
 
@@ -459,22 +459,22 @@ namespace NakedFramework.Rest.API {
 
         private Action<string> LogFacadeException(NakedObjectsFacadeException e) {
             return e switch {
-                DataUpdateNOSException _ => s => logger.LogError(e, s),
-                GeneralErrorNOSException _ => s => logger.LogError(e, s),
-                NoContentNOSException _ => s => logger.LogInformation(e, s),
-                NotAllowedNOSException _ => s => logger.LogWarning(e, s),
-                PreconditionFailedNOSException _ => s => logger.LogWarning(e, s),
-                PreconditionMissingNOSException _ => s => logger.LogError(e, s),
-                ActionResourceNotFoundNOSException _ => s => logger.LogError(e, s),
-                BadArgumentsNOSException _ => s => logger.LogWarning(e, s),
-                BadRequestNOSException _ => s => logger.LogWarning(e, s),
-                CollectionResourceNotFoundNOSException _ => s => logger.LogError(e, s),
-                MenuResourceNotFoundNOSException _ => s => logger.LogError(e, s),
-                ObjectResourceNotFoundNOSException _ => s => logger.LogError(e, s),
-                PropertyResourceNotFoundNOSException _ => s => logger.LogError(e, s),
-                ServiceResourceNotFoundNOSException _ => s => logger.LogError(e, s),
-                TypeActionResourceNotFoundException _ => s => logger.LogError(e, s),
-                TypeResourceNotFoundNOSException _ => s => logger.LogError(e, s),
+                DataUpdateNOSException => s => logger.LogError(e, s),
+                GeneralErrorNOSException => s => logger.LogError(e, s),
+                NoContentNOSException => s => logger.LogInformation(e, s),
+                NotAllowedNOSException => s => logger.LogWarning(e, s),
+                PreconditionFailedNOSException => s => logger.LogWarning(e, s),
+                PreconditionMissingNOSException => s => logger.LogError(e, s),
+                ActionResourceNotFoundNOSException => s => logger.LogError(e, s),
+                BadArgumentsNOSException => s => logger.LogWarning(e, s),
+                BadRequestNOSException => s => logger.LogWarning(e, s),
+                CollectionResourceNotFoundNOSException => s => logger.LogError(e, s),
+                MenuResourceNotFoundNOSException => s => logger.LogError(e, s),
+                ObjectResourceNotFoundNOSException => s => logger.LogError(e, s),
+                PropertyResourceNotFoundNOSException => s => logger.LogError(e, s),
+                ServiceResourceNotFoundNOSException => s => logger.LogError(e, s),
+                TypeActionResourceNotFoundException => s => logger.LogError(e, s),
+                TypeResourceNotFoundNOSException => s => logger.LogError(e, s),
                 _ => s => logger.LogError(e, s)
             };
         }
@@ -495,7 +495,7 @@ namespace NakedFramework.Rest.API {
             SetHeaders(ss);
 
             return ss.Representation switch {
-                NullRepresentation _ => new StatusCodeResult((int) ss.HttpStatusCode),
+                NullRepresentation => new StatusCodeResult((int) ss.HttpStatusCode),
                 AttachmentRepresentation attachmentRepresentation => FileResult(attachmentRepresentation),
                 _ => new JsonResult(ss.Representation)
             };

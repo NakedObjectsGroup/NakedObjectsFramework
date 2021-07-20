@@ -35,7 +35,7 @@ namespace NakedObjects.Core.Container {
             if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
                 var state = adapter.ValidToPersist();
                 if (state != null) {
-                    throw new PersistFailedException(logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
+                    throw new PersistFailedException(logger.LogAndReturn(string.Format(Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
                 }
             }
         }
@@ -50,12 +50,12 @@ namespace NakedObjects.Core.Container {
 
         public void DisposeInstance(object persistentObject) {
             if (persistentObject == null) {
-                throw new ArgumentException(logger.LogAndReturn(NakedObjects.Resources.NakedObjects.DisposeReferenceError));
+                throw new ArgumentException(logger.LogAndReturn(Resources.NakedObjects.DisposeReferenceError));
             }
 
             var adapter = framework.NakedObjectManager.GetAdapterFor(persistentObject);
             if (!IsPersistent(persistentObject)) {
-                throw new DisposeFailedException(logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.NotPersistentMessage, adapter)));
+                throw new DisposeFailedException(logger.LogAndReturn(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter)));
             }
 
             framework.Persistor.DestroyObject(adapter);
@@ -72,7 +72,7 @@ namespace NakedObjects.Core.Container {
         public void Persist<T>(ref T transientObject) {
             var adapter = framework.NakedObjectManager.GetAdapterFor(transientObject);
             if (IsPersistent(transientObject)) {
-                throw new PersistFailedException(logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.AlreadyPersistentMessage, adapter)));
+                throw new PersistFailedException(logger.LogAndReturn(string.Format(Resources.NakedObjects.AlreadyPersistentMessage, adapter)));
             }
 
             Validate(adapter);

@@ -740,16 +740,14 @@ namespace NakedFramework.Facade.Impl.Impl {
                 return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), Framework.NakedObjectManager);
             }
 
-            if (elementSpec != null) {
-                if (elementSpec.IsParseable) {
-                    var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), Framework.NakedObjectManager)).ToArray();
-                    var elementType = TypeUtils.GetType(elementSpec.FullName);
-                    var collType = typeof(List<>).MakeGenericType(elementType);
-                    var list = ((IList) Activator.CreateInstance(collType))?.AsQueryable();
-                    var collection = Framework.NakedObjectManager.CreateAdapter(list, null, null);
-                    collection.Spec.GetFacet<ICollectionFacet>().Init(collection, elements);
-                    return collection;
-                }
+            if (elementSpec is {IsParseable: true}) {
+                var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), Framework.NakedObjectManager)).ToArray();
+                var elementType = TypeUtils.GetType(elementSpec.FullName);
+                var collType = typeof(List<>).MakeGenericType(elementType);
+                var list = ((IList) Activator.CreateInstance(collType))?.AsQueryable();
+                var collection = Framework.NakedObjectManager.CreateAdapter(list, null, null);
+                collection.Spec.GetFacet<ICollectionFacet>().Init(collection, elements);
+                return collection;
             }
 
             if (specification.IsQueryable) {
@@ -1185,9 +1183,9 @@ namespace NakedFramework.Facade.Impl.Impl {
 
             private Func<(string name, IObjectSpec spec)[]> GetChoicesParameters => prop == null ? (Func<(string, IObjectSpec)[]>) parm.GetChoicesParameters : prop.GetChoicesParameters;
 
-            private Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]> GetChoices => prop == null ? (Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]>) parm.GetChoices : prop.GetChoices;
+            private Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]> GetChoices => prop == null ? parm.GetChoices : prop.GetChoices;
 
-            private Func<INakedObjectAdapter, string, INakedObjectAdapter[]> GetCompletions => prop == null ? (Func<INakedObjectAdapter, string, INakedObjectAdapter[]>) parm.GetCompletions : prop.GetCompletions;
+            private Func<INakedObjectAdapter, string, INakedObjectAdapter[]> GetCompletions => prop == null ? parm.GetCompletions : prop.GetCompletions;
 
             private void CheckAutocompleOrConditional() {
                 if (!(IsAutoCompleteEnabled || GetChoicesParameters().Any())) {

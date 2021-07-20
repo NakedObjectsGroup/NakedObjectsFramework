@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.Facet {
             }
 
             var isHidden = (bool) methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
-            return isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
+            return isHidden ? Resources.NakedObjects.Hidden : null;
         }
 
         #endregion

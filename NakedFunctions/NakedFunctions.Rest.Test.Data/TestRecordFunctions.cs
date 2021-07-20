@@ -13,7 +13,7 @@ using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Rest.Test.Data {
     internal static class Helpers {
-        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) where T : class => (obj, context.WithNew<T>(obj));
+        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) where T : class => (obj, context.WithNew(obj));
 
         internal static (T, IContext) DisplayAndUpdate<T>(T obj, T proxy, IContext context) where T : class => (obj, ((FunctionalContext) context).WithUpdated(proxy, obj));
     }

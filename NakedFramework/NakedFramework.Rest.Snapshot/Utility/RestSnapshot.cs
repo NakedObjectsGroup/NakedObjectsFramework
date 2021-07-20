@@ -293,12 +293,12 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                 BadPersistArgumentsException bpe when bpe.ContextFacade != null && bpe.Contexts.Any() => ArgumentsRepresentation.Create(oidStrategy, frameworkFacade, req, bpe.ContextFacade, bpe.Contexts, ArgumentsRepresentation.Format.Full, bpe.Flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
                 WithContextNOSException wce when wce.ContextFacade != null => ArgumentsRepresentation.Create(oidStrategy, frameworkFacade, req, wce.ContextFacade, ArgumentsRepresentation.Format.MembersOnly, RestControlFlags.DefaultFlags(), UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
                 WithContextNOSException wce when wce.Contexts.Any() => ArgumentsRepresentation.Create(oidStrategy, frameworkFacade, req, wce.Contexts, ArgumentsRepresentation.Format.MembersOnly, RestControlFlags.DefaultFlags(), UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
-                WithContextNOSException _ => NullRepresentation.Create(),
-                ResourceNotFoundNOSException _ => NullRepresentation.Create(),
-                NotAllowedNOSException _ => NullRepresentation.Create(),
-                PreconditionFailedNOSException _ => NullRepresentation.Create(),
-                PreconditionMissingNOSException _ => NullRepresentation.Create(),
-                NoContentNOSException _ => NullRepresentation.Create(),
+                WithContextNOSException => NullRepresentation.Create(),
+                ResourceNotFoundNOSException => NullRepresentation.Create(),
+                NotAllowedNOSException => NullRepresentation.Create(),
+                PreconditionFailedNOSException => NullRepresentation.Create(),
+                PreconditionMissingNOSException => NullRepresentation.Create(),
+                NoContentNOSException => NullRepresentation.Create(),
                 _ => ErrorRepresentation.Create(oidStrategy, e)
             };
 
@@ -321,15 +321,15 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             const HttpStatusCode preconditionHeaderMissing = (HttpStatusCode) 428;
 
             HttpStatusCode = e switch {
-                ResourceNotFoundNOSException _ => HttpStatusCode.NotFound,
+                ResourceNotFoundNOSException => HttpStatusCode.NotFound,
                 BadArgumentsNOSException bre when bre.Contexts.Any(c => c.ErrorCause == Cause.Immutable) => HttpStatusCode.MethodNotAllowed,
                 BadArgumentsNOSException bre when bre.Contexts.Any(c => c.ErrorCause == Cause.Disabled) => HttpStatusCode.Forbidden,
-                BadArgumentsNOSException _ => unprocessableEntity,
-                BadRequestNOSException _ => HttpStatusCode.BadRequest,
-                NotAllowedNOSException _ => HttpStatusCode.MethodNotAllowed,
-                NoContentNOSException _ => HttpStatusCode.NoContent,
-                PreconditionFailedNOSException _ => HttpStatusCode.PreconditionFailed,
-                PreconditionMissingNOSException _ => preconditionHeaderMissing,
+                BadArgumentsNOSException => unprocessableEntity,
+                BadRequestNOSException => HttpStatusCode.BadRequest,
+                NotAllowedNOSException => HttpStatusCode.MethodNotAllowed,
+                NoContentNOSException => HttpStatusCode.NoContent,
+                PreconditionFailedNOSException => HttpStatusCode.PreconditionFailed,
+                PreconditionMissingNOSException => preconditionHeaderMissing,
                 _ => HttpStatusCode.InternalServerError
             };
         }
@@ -341,12 +341,12 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             }
 
             var warnings = e switch {
-                ResourceNotFoundNOSException _ => new List<string> {e.Message},
+                ResourceNotFoundNOSException => new List<string> {e.Message},
                 WithContextNOSException bae when bae.Contexts.Any(c => c.ErrorCause == Cause.Immutable) => ImmutableWarning(),
                 WithContextNOSException bae when bae.Contexts.Any(c => !string.IsNullOrEmpty(c.Reason)) => bae.Contexts.Where(c => !string.IsNullOrEmpty(c.Reason)).Select(c => c.Reason).ToList(),
                 WithContextNOSException bae when string.IsNullOrWhiteSpace(bae.Message) => new List<string>(),
                 WithContextNOSException bae => new List<string> {bae.Message},
-                NoContentNOSException _ => new List<string>(),
+                NoContentNOSException => new List<string>(),
                 _ => new List<string> {e.Message}
             };
 

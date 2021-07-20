@@ -81,24 +81,12 @@ namespace NakedFramework.Rest.Snapshot.Strategies {
                 return new CollectionMemberRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
             }
 
-            if (inline && DoNotCountAndNotEager(propertyContext)) {
-                return new CollectionMemberNotCountedRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
-            }
-
-            if (inline && !InlineDetails(propertyContext, flags)) {
-                return new CollectionMemberRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
-            }
-
-            return new CollectionWithDetailsRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
-        }
-
-        private static ActionContextFacade ActionContext(IActionFacade actionFacade, IObjectFacade target) =>
-            new() {
-                MenuPath = "",
-                Target = target,
-                Action = actionFacade,
-                VisibleParameters = actionFacade.Parameters.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade}).ToArray()
+            return inline switch {
+                true when DoNotCountAndNotEager(propertyContext) => new CollectionMemberNotCountedRepresentationStrategy(frameworkFacade, req, propertyContext, flags),
+                true when !InlineDetails(propertyContext, flags) => new CollectionMemberRepresentationStrategy(frameworkFacade, req, propertyContext, flags),
+                _ => new CollectionWithDetailsRepresentationStrategy(frameworkFacade, req, propertyContext, flags)
             };
+        }
 
         public virtual InlineActionRepresentation[] GetActions() {
             return !PropertyContext.Target.IsTransient

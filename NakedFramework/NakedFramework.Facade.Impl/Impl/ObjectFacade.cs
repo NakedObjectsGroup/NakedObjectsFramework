@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -52,7 +51,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         private INakedObjectAdapter Select(INakedObjectAdapter objectRepresentingCollection, object[] selected, bool forceEnumerable) {
             var result = CollectionUtils.CloneCollectionAndPopulate(objectRepresentingCollection.Object, selected);
-            var adapter = framework.NakedObjectManager.CreateAdapter(objectRepresentingCollection.Spec.IsQueryable && !forceEnumerable ? (IEnumerable) result.AsQueryable() : result, null, null);
+            var adapter = framework.NakedObjectManager.CreateAdapter(objectRepresentingCollection.Spec.IsQueryable && !forceEnumerable ? result.AsQueryable() : result, null, null);
             var currentMemento = (ICollectionMemento) objectRepresentingCollection.Oid;
             var newMemento = currentMemento.NewSelectionMemento(selected, false);
             adapter.SetATransientOid(newMemento);

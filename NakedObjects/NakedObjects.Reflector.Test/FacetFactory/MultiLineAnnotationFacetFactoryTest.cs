@@ -140,7 +140,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         private class Customer3
         {
-            [MultiLine()]
+            [MultiLine]
             public string FirstName => null;
         }
 

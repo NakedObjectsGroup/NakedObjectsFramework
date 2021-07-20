@@ -17,8 +17,8 @@ namespace NakedFramework.Persistor.EF6.Configuration {
 
         public Func<DbContext> DbContext { get; set; }
 
-        public Func<Type[]> PreCachedTypes { get; set; } = () => Array.Empty<Type>();
+        public Func<Type[]> PreCachedTypes { get; set; } = Array.Empty<Type>;
 
-        public Func<Type[]> NotPersistedTypes { get; set; } = () => Array.Empty<Type>();
+        public Func<Type[]> NotPersistedTypes { get; set; } = Array.Empty<Type>;
     }
 }

@@ -37,7 +37,7 @@ namespace NakedFunctions.Reflector.Test.Component {
     }
 
     [Plural("Class Plural")]
-    public record PluralClass { }
+    public record PluralClass;
 
     [DescribedAs("Class Description")]
     public record DescribedAsClass {
@@ -166,7 +166,7 @@ namespace NakedFunctions.Reflector.Test.Component {
     }
 
     [Bounded]
-    public record BoundedClass { }
+    public record BoundedClass;
 
     public record IgnoredClass {
         internal virtual string IgnoredProperty { get; init; }

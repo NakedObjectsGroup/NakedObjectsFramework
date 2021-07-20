@@ -57,7 +57,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 ThrowError($"View model function {deriveMethod.Name} on {deriveMethod.DeclaringType} has missing 'this' parameter");
             }
 
-            var vmAttribute = deriveMethodVmType?.GetCustomAttribute<ViewModelAttribute>();
+            var vmAttribute = deriveMethodVmType.GetCustomAttribute<ViewModelAttribute>();
             var attributeFunctionsType = vmAttribute?.TypeDefiningVMFunctions;
             if (attributeFunctionsType is null) {
                 ThrowError($"Missing ViewModelAttribute on {deriveMethodVmType}");

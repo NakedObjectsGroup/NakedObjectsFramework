@@ -52,43 +52,9 @@ namespace NakedFramework.Metamodel.Utils {
             return parameterNames.Select(GetValue).ToArray();
         }
 
-        public static bool IsNotANoopFacet(IFacet facet) => facet != null && !facet.IsNoOp;
+        public static bool IsNotANoopFacet(IFacet facet) => facet is {IsNoOp: false};
 
         public static bool IsTuple(Type type) => type.GetInterfaces().Any(i => i == typeof(ITuple));
-
-        public static bool IsAction(Type type) {
-            if (type.IsGenericType) {
-                var genericTypeDefinition = type.GetGenericTypeDefinition();
-
-                return genericTypeDefinition == typeof(Action<>);
-            }
-
-            return false;
-        }
-
-        public static int ValueTupleSize(Type type) {
-            if (type.IsGenericType) {
-                var genericTypeDefinition = type.GetGenericTypeDefinition();
-
-                if (genericTypeDefinition == typeof(ValueTuple<>)) {
-                    return 1;
-                }
-
-                if (genericTypeDefinition == typeof(ValueTuple<,>)) {
-                    return 2;
-                }
-
-                if (genericTypeDefinition == typeof(ValueTuple<,,>)) {
-                    return 3;
-                }
-
-                if (genericTypeDefinition == typeof(ValueTuple<,,,>)) {
-                    throw new NotImplementedException("only support tuples up to size 3");
-                }
-            }
-
-            return 0;
-        }
 
         public static void ErrorOnDuplicates(this IEnumerable<ActionHolder> actions) {
             var names = actions.Select(s => s.Name).ToArray();
@@ -133,17 +99,14 @@ namespace NakedFramework.Metamodel.Utils {
             };
         }
 
-        public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action)
-        {
+        public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action) {
             var integrationFacet = specification.GetFacet<IIntegrationFacet>();
 
-            if (integrationFacet is null)
-            {
+            if (integrationFacet is null) {
                 integrationFacet = new IntegrationFacet(specification, action);
                 AddFacet(integrationFacet);
             }
-            else
-            {
+            else {
                 integrationFacet.AddAction(action);
             }
         }

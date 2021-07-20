@@ -278,8 +278,8 @@ namespace NakedFramework.Rest.Model {
                 reservedArgs.DomainModel = domainModel;
                 reservedArgs.Page = page != null ? int.Parse(page) : 0;
                 reservedArgs.PageSize = pageSize != null ? int.Parse(pageSize) : 0;
-                reservedArgs.InlinePropertyDetails = inlineFlag != null ? bool.Parse(inlineFlag) : (bool?) null;
-                reservedArgs.InlineCollectionItems = inlineItemsFlag != null ? bool.Parse(inlineItemsFlag) : (bool?) null;
+                reservedArgs.InlinePropertyDetails = inlineFlag != null ? bool.Parse(inlineFlag) : null;
+                reservedArgs.InlineCollectionItems = inlineItemsFlag != null ? bool.Parse(inlineItemsFlag) : null;
             }
             catch (Exception e) {
                 args.IsMalformed = true;

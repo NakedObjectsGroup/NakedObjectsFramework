@@ -71,11 +71,11 @@ namespace NakedFramework.Metamodel.Facet {
             return 0;
         }
 
-        private static bool IsSIntegral(object o) => o is sbyte || o is short || o is int || o is long;
+        private static bool IsSIntegral(object o) => o is sbyte or short or int or long;
 
-        private static bool IsUIntegral(object o) => o is byte || o is ushort || o is uint || o is ulong;
+        private static bool IsUIntegral(object o) => o is byte or ushort or uint or ulong;
 
-        private static bool IsFloat(object o) => o is float || o is double;
+        private static bool IsFloat(object o) => o is float or double;
 
         private static bool IsDecimal(object o) => o is decimal;
 

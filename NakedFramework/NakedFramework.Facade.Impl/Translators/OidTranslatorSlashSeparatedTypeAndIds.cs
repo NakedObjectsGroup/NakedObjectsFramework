@@ -36,7 +36,7 @@ namespace NakedFramework.Facade.Impl.Translators {
         private static string KeyRepresentation(object obj) {
             var key = obj switch {
                 DateTime time => time.Ticks,
-                Guid _ => obj.ToString(),
+                Guid => obj.ToString(),
                 _ => obj
             };
 

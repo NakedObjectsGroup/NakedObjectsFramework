@@ -66,7 +66,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestParseInvariant() {
-            const short c1 = (short) 12346;
+            const short c1 = 12346;
             var s1 = c1.ToString(CultureInfo.InvariantCulture);
             var c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
@@ -101,7 +101,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestValue() {
             var facet = (IShortValueFacet) GetValue();
-            const short testValue = (short) 121;
+            const short testValue = 121;
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
             Assert.AreEqual(testValue, facet.ShortValue(mockNo.Object));

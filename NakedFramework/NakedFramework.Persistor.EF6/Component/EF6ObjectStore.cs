@@ -253,7 +253,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             switch (exception) {
                 case ConcurrencyException concurrencyException:
                     throw new ConcurrencyException(newMessage, exception) {SourceNakedObjectAdapter = concurrencyException.SourceNakedObjectAdapter};
-                case DataUpdateException _:
+                case DataUpdateException:
                     throw new DataUpdateException(newMessage, exception);
                 default:
                     // should never get here - just rethrow 
@@ -394,7 +394,7 @@ namespace NakedFramework.Persistor.EF6.Component {
                 msg = string.Format(NakedObjects.Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), explanation);
             }
 
-            if (!(objectToCheck is IEntityWithChangeTracker)) {
+            if (objectToCheck is not IEntityWithChangeTracker) {
                 msg = string.Format(NakedObjects.Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), explanation);
             }
 
@@ -694,7 +694,7 @@ namespace NakedFramework.Persistor.EF6.Component {
 
         public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class => (T) CreateInstance(typeof(T));
 
-        public PropertyInfo[] GetKeys(Type type) => GetContext(TypeUtils.GetProxiedType(type)).GetIdMembers(TypeUtils.GetProxiedType(type));
+        public PropertyInfo[] GetKeys(Type type) => GetContext(type.GetProxiedType()).GetIdMembers(type.GetProxiedType());
 
         public void Refresh(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.Spec.GetFacet<IComplexTypeFacet>() == null) {

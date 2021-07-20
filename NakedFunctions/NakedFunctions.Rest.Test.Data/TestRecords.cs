@@ -28,7 +28,7 @@ namespace NakedFunctions.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public virtual bool Equals(SimpleRecord other) => ReferenceEquals(this, other);
+        public virtual bool Equals(DeleteRecord other) => ReferenceEquals(this, other);
         public override string ToString() => "";
         public override int GetHashCode() => base.GetHashCode();
     }
@@ -81,7 +81,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public string Name { get; init; }
 
-        public virtual bool Equals(SimpleRecord other) => ReferenceEquals(this, other);
+        public virtual bool Equals(UpdatedRecord other) => ReferenceEquals(this, other);
         public override string ToString() => Name;
         public override int GetHashCode() => base.GetHashCode();
     }

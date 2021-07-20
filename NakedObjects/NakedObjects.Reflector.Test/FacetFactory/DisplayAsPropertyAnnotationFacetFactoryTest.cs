@@ -84,7 +84,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestDisplayAsPropertyAnnotationIgnoredOnWithParmsAction()
         {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest2), new Type[]{typeof(int)});
+            var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest2), new[]{typeof(int)});
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
             Assert.IsNull(facet1);

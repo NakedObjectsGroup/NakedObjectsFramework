@@ -337,7 +337,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             switch (exception) {
                 case ConcurrencyException concurrencyException:
                     throw new ConcurrencyException(newMessage, exception) {SourceNakedObjectAdapter = concurrencyException.SourceNakedObjectAdapter};
-                case DataUpdateException _:
+                case DataUpdateException:
                     throw new DataUpdateException(newMessage, exception);
                 default:
                     // should never get here - just rethrow 
@@ -423,7 +423,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
 
         private void RecurseUntilAllChangesApplied(int depth) {
             if (depth > MaximumCommitCycles) {
-                var typeNames = contexts.SelectMany(c => c.WrappedDbContext.ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified).Select(o => o.Entity.GetEFCoreProxiedType().FullName)).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ", ") + t);
+                var typeNames = contexts.SelectMany(c => c.WrappedDbContext.ChangeTracker.Entries().Where(e => e.State is EntityState.Added or EntityState.Modified).Select(o => o.Entity.GetEFCoreProxiedType().FullName)).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ", ") + t);
 
                 throw new NakedObjectDomainException(Logger.LogAndReturn(string.Format(NakedObjects.Resources.NakedObjects.EntityCommitError, typeNames)));
             }

@@ -56,13 +56,13 @@ namespace NakedFunctions.Rest.Test.Data {
 
             context.DeleteRecords.Add(new DeleteRecord());
             context.DeleteRecords.Add(new DeleteRecord());
-            context.BoundedRecords.Add(new BoundedRecord() { Name = "One"});
-            context.BoundedRecords.Add(new BoundedRecord() { Name = "Two" });
+            context.BoundedRecords.Add(new BoundedRecord { Name = "One"});
+            context.BoundedRecords.Add(new BoundedRecord { Name = "Two" });
 
             context.ByteArrayRecords.Add(new ByteArrayRecord());
 
-            context.MaskRecords.Add(new MaskRecord() {Name = "Title"});
-            context.HiddenRecords.Add(new HiddenRecord() { Name = "Title" });
+            context.MaskRecords.Add(new MaskRecord {Name = "Title"});
+            context.HiddenRecords.Add(new HiddenRecord { Name = "Title" });
 
             context.SaveChanges();
         }

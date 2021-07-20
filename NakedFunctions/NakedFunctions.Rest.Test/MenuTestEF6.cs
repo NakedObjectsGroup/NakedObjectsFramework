@@ -454,7 +454,6 @@ namespace NakedFunctions.Rest.Test {
             var choices = parsedResult["choices"];
             Assert.AreEqual(1, choices.Count());
             Assert.AreEqual("Jack", choices[0]["title"].ToString());
-            ;
         }
 
         [Test]
