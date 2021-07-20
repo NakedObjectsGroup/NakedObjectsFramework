@@ -23,8 +23,8 @@ namespace AW.Functions
         => UpdateWO(wo, wo with { ScrappedQty = scrappedQty }, context);
 
         [Edit]
-        public static IContext EditDates(this WorkOrder wo, 
-            DateTime startDate, DateTime dueDate, IContext context) =>
+        public static IContext EditDates(this WorkOrder wo,
+            [DefaultValue(0)] DateTime startDate, [DefaultValue(7)] DateTime dueDate, IContext context) =>
                 UpdateWO(wo, wo with { StartDate = startDate, DueDate = dueDate }, context);
 
         public static string ValidateEditDates(this WorkOrder wo, DateTime startDate, DateTime dueDate) =>
@@ -55,19 +55,5 @@ namespace AW.Functions
             };
             return (wor, context.WithNew(wor));
         }
-
-        #region Edits
-
-        [Edit]
-        public static IContext EditStartDate(this WorkOrder wo,
-            [DefaultValue(0)] DateTime startDate, IContext context) =>
-            UpdateWO(wo, wo with { StartDate = startDate }, context);
-
-        [Edit]
-        public static IContext EditDueDate(this WorkOrder wo,
-            [DefaultValue(7)] DateTime dueDate, IContext context) =>
-               UpdateWO(wo, wo with { DueDate = dueDate }, context);
-
-        #endregion
     }
 }

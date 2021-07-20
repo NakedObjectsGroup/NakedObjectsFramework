@@ -126,9 +126,9 @@ namespace AW.Functions
               UpdateProduct(p, p with { ProductSubcategory = productSubcategory }, context);
 
         public static IList<ProductSubcategory> Choices2EditCategories(this Product p,
-            ProductCategory category, IContext context) =>
-            category is null ? new ProductSubcategory[] { }
-            : context.Instances<ProductSubcategory>().Where(psc => psc.ProductCategory.ProductCategoryID == category.ProductCategoryID).ToArray();
+            ProductCategory productCategory, IContext context) =>
+            productCategory is null ? new ProductSubcategory[] { }
+            : context.Instances<ProductSubcategory>().Where(psc => psc.ProductCategory.ProductCategoryID == productCategory.ProductCategoryID).ToArray();
 
         #endregion
 
@@ -197,7 +197,7 @@ namespace AW.Functions
         private static List<int> Ratings() => new List<int> { 1, 2, 3, 4, 5 };
 
         public static string ValidateAddProductReview(this Product p,
-            int rating, string comments) =>
+             DateTime dateOfReview, int rating, string comments) =>
             LessThan5StarsRequiresComment(rating, comments);
 
         private static string LessThan5StarsRequiresComment(int rating, string comments) =>
