@@ -212,7 +212,9 @@ namespace NakedFramework.ParallelReflector.Reflect {
                 var propertyType = property.PropertyType;
 
                 if (IsUnsupportedSystemType(propertyType, metamodel)) {
-                    logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {propertyType}");
+                    if (!FasterTypeUtils.IsSystemOrNaked(property.DeclaringType)) {
+                        logger.LogWarning($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {propertyType}");
+                    }
                 }
                 else {
                     // create a reference property spec
