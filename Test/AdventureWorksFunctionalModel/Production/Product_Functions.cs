@@ -62,6 +62,7 @@ namespace AW.Functions
 
         [PageSize(20)]
         public static IQueryable<SpecialOffer> AutoComplete1AssociateWithSpecialOffer(
+            this Product product,
             [MinLength(2)] string name, IContext context) =>
             context.Instances<SpecialOffer>().Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
         #endregion
@@ -115,14 +116,14 @@ namespace AW.Functions
 
 
         public static IQueryable<ProductModel> AutoComplete1EditProductModel(this Product p,
-            [MinLength(3)] string match, IQueryable<ProductModel> models)
+            [MinLength(3)] string match, IContext context)
         {
-            return models.Where(pm => pm.Name.ToUpper().Contains(match.ToUpper()));
+            return context.Instances<ProductModel>().Where(pm => pm.Name.ToUpper().Contains(match.ToUpper()));
         }
 
         [Edit]
-        public static IContext EditCategories(this Product p, ProductCategory category, ProductSubcategory subCategory, IContext context) =>
-              UpdateProduct(p, p with { ProductSubcategory = subCategory }, context);
+        public static IContext EditCategories(this Product p, ProductCategory productCategory, ProductSubcategory productSubcategory, IContext context) =>
+              UpdateProduct(p, p with { ProductSubcategory = productSubcategory }, context);
 
         public static IList<ProductSubcategory> Choices2EditCategories(this Product p,
             ProductCategory category, IContext context) =>
@@ -191,12 +192,12 @@ namespace AW.Functions
             };
         }
 
-        public static List<int> Choices4AddProductReview(this Product p) => Ratings();
+        public static List<int> Choices2AddProductReview(this Product p) => Ratings();
 
         private static List<int> Ratings() => new List<int> { 1, 2, 3, 4, 5 };
 
         public static string ValidateAddProductReview(this Product p,
-            string reviewerName, DateTime date, string emailAddress, int rating, string comments) =>
+            int rating, string comments) =>
             LessThan5StarsRequiresComment(rating, comments);
 
         private static string LessThan5StarsRequiresComment(int rating, string comments) =>

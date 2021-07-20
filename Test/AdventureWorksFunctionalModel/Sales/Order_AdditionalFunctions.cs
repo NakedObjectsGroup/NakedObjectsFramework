@@ -140,7 +140,7 @@ namespace AW.Functions {
         }
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoComplete1QuickOrder(this SalesOrderHeader soh,
+        public static IQueryable<Product> AutoComplete1QuickOrder(this Customer customer,
                [MinLength(2)] string name, IContext context) =>
                     Product_MenuFunctions.FindProductByName(name, context);
 
