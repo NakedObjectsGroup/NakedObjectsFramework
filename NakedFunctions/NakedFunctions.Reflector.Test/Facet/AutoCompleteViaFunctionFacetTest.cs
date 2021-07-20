@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Reflector.Facet;
 
@@ -25,8 +26,20 @@ namespace NakedFunctions.Reflector.Test.Facet {
             Assert.AreEqual(TestValue[1], result[1]);
         }
 
+        [TestMethod]
+        public void TestGetSingleCompletions() {
+            var method = typeof(TestClass).GetMethod(nameof(TestClass.Completion));
+            var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null, null);
+
+            var result = testFacet.GetCompletions(null, null, null);
+
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual(TestValue[0], result[0]);
+        }
+
         public static class TestClass {
             public static string[] Completions() => TestValue;
+            public static string Completion() => TestValue.First();
         }
     }
 }

@@ -211,6 +211,11 @@ namespace NakedFunctions.Rest.Test.Data {
 
         [PageSize(2)]
         public static IQueryable<SimpleRecord> AutoComplete1WithAutoComplete(this SimpleRecord sp, [MinLength(2)] string name, IContext context) => context.Instances<SimpleRecord>();
+
+        public static SimpleRecord WithSingleAutoComplete(this SimpleRecord sp, SimpleRecord simpleRecord, IContext context) => simpleRecord;
+
+        [PageSize(2)]
+        public static SimpleRecord AutoComplete1WithSingleAutoComplete(this SimpleRecord sp, [MinLength(2)] string name, IContext context) => context.Instances<SimpleRecord>().First();
     }
 
     public static class DisplayAsPropertyRecordFunctions {
