@@ -5,9 +5,10 @@
     "applicationName": "Student Records",
     "appPath": "http://localhost:5000/",
     "colors": {
-        "typeMap": {
-            "Template.Model.Student": 1
-        }
+      "typeMap": {
+        "Template.Model.Student": 1
+      },
+      "randomMaxIndex": 10
     },
     "masks": {
         "currencyMasks": {
