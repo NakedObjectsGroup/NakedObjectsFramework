@@ -72,7 +72,7 @@ namespace AW.Functions {
         }
 
         public static IQueryable<SalesOrderHeader> FindOrders(
-            [Optionally] Customer customer, 
+            [DescribedAs("Enter the Account Number (AW + 8 digits) & select the customer")] [Optionally] Customer customer, 
             [Optionally] DateTime? orderDate, IContext context) =>
              customer == null ?
                 ByDate(context.Instances<SalesOrderHeader>(), orderDate)
