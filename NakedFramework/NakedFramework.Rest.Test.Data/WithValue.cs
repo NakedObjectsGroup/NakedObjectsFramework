@@ -47,14 +47,14 @@ namespace RestfulObjects.Test.Data {
         [DescribedAs("A datetime value for testing")]
         [Mask("d")]
         [MemberOrder(Sequence = "4")]
-        public virtual DateTime ADateTimeValue { get; set; } = new DateTime(2012, 2, 10);
+        public virtual DateTime ADateTimeValue { get; set; } = new(2012, 2, 10);
 
         [Optionally]
         [DescribedAs("A timespan value for testing")]
         [Mask("d")]
         [NotMapped]
         [MemberOrder(Sequence = "5")]
-        public virtual TimeSpan ATimeSpanValue { get; set; } = new TimeSpan(1, 2, 3, 4, 5);
+        public virtual TimeSpan ATimeSpanValue { get; set; } = new(1, 2, 3, 4, 5);
 
         [AuthorizeProperty(ViewUsers = "viewUser")]
         public virtual int AUserHiddenValue { get; set; }

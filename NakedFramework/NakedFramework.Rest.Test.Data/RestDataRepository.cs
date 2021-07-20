@@ -40,7 +40,7 @@ namespace RestfulObjects.Test.Data {
 
         [CreateNew]
         public WithValue AzContributedActionWithCreateNewAnnotation([ContributedAction] WithActionObject withAction, int aValue) {
-            return new WithValue();
+            return new();
         }
 
         [DisplayAsProperty]

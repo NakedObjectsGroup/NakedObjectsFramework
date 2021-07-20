@@ -25,7 +25,7 @@ namespace NakedObjects.Core.Test.Adapter {
         private readonly INakedObjectManager nakedObjectManager = new Mock<INakedObjectManager>().Object;
         private readonly IOid oid = new Mock<IOid>().Object;
         private readonly IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
-        private readonly object poco = new object();
+        private readonly object poco = new();
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly ILogger<NullVersion> vLogger = new Mock<ILogger<NullVersion>>().Object;
 

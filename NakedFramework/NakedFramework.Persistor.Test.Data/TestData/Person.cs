@@ -37,7 +37,7 @@ namespace TestData {
         [Optionally]
         public virtual Pet Pet { get; set; }
 
-        public virtual Address Address { get; set; } = new Address();
+        public virtual Address Address { get; set; } = new();
 
         public virtual ICollection<Person> Relatives { get; set; } = new List<Person>();
 

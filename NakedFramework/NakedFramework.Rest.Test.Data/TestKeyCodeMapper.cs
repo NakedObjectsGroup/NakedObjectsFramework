@@ -17,7 +17,7 @@ using NakedFramework.Architecture.Component;
 namespace RestfulObjects.Test.Data {
     public class TestKeyCodeMapper : IKeyCodeMapper {
         private const string KeySeparator = "--";
-        private static readonly RijndaelManaged Provider = new RijndaelManaged();
+        private static readonly RijndaelManaged Provider = new();
 
         // these are constants so that tests are reproduceable
         private static readonly byte[] Iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

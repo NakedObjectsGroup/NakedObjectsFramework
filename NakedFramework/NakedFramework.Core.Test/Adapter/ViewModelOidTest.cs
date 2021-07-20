@@ -15,8 +15,8 @@ using NUnit.Framework;
 namespace NakedObjects.Core.Test.Adapter {
     [TestFixture]
     public class ViewModelOidTest {
-        private readonly Mock<IMetamodelManager> mockMetamodel = new Mock<IMetamodelManager>();
-        private readonly Mock<IObjectSpec> mockObjectSpec = new Mock<IObjectSpec>();
+        private readonly Mock<IMetamodelManager> mockMetamodel = new();
+        private readonly Mock<IObjectSpec> mockObjectSpec = new();
 
         [SetUp]
         public void SetUp() {

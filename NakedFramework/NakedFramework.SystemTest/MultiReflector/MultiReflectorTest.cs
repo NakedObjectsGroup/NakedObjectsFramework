@@ -23,7 +23,7 @@ using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.MultiReflector {
     
-    class MultiReflectorOrder<T> : IReflectorOrder<T> {
+    internal class MultiReflectorOrder<T> : IReflectorOrder<T> {
         public int Order => typeof(T) switch
         {
             { } t when t.IsAssignableTo(typeof(SystemTypeReflector)) => 0,

@@ -557,7 +557,7 @@ namespace NakedObjects.SystemTest.Audit {
     }
 
     public class MyDefaultAuditor : IAuditor {
-        public static readonly Auditor Auditor = new Auditor("default");
+        public static readonly Auditor Auditor = new("default");
 
         public string NamespaceToAudit { get; private set; }
 
@@ -597,7 +597,7 @@ namespace NakedObjects.SystemTest.Audit {
     }
 
     public class FooAuditor : IAuditor {
-        public static readonly Auditor Auditor = new Auditor("foo");
+        public static readonly Auditor Auditor = new("foo");
 
         public FooAuditor() => NamespaceToAudit = typeof(Foo).FullName;
 
@@ -639,7 +639,7 @@ namespace NakedObjects.SystemTest.Audit {
     }
 
     public class QuxAuditor : IAuditor {
-        public static readonly Auditor Auditor = new Auditor("qux");
+        public static readonly Auditor Auditor = new("qux");
 
         public QuxAuditor() => NamespaceToAudit = typeof(Qux).FullName;
 

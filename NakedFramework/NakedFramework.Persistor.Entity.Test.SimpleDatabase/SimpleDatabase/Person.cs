@@ -89,15 +89,15 @@ namespace SimpleDatabase {
 
 // ReSharper disable InconsistentNaming
 
-        public virtual NameType ComplexProperty { get; set; } = new NameType();
+        public virtual NameType ComplexProperty { get; set; } = new();
 
-        public virtual ComplexType1 ComplexProperty_1 { get; set; } = new ComplexType1();
+        public virtual ComplexType1 ComplexProperty_1 { get; set; } = new();
 
         #endregion
 
         #region Navigation Properties
 
-        private readonly List<Food> _food = new List<Food>();
+        private readonly List<Food> _food = new();
 
         public virtual ICollection<Food> Food => _food;
 

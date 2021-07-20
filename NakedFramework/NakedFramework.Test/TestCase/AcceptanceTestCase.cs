@@ -64,9 +64,7 @@ namespace NakedFramework.Test.TestCase {
 
         protected ILoggerFactory LoggerFactory { get; private set; }
 
-        protected virtual object[] Fixtures {
-            get { return Array.Empty<object>(); }
-        }
+        protected virtual object[] Fixtures => Array.Empty<object>();
 
         /// <summary>
         ///     By default this returns the union of the types specified in MenuServices, ContributedActions
@@ -74,21 +72,13 @@ namespace NakedFramework.Test.TestCase {
         ///     The property may be overridden to return a fresh list of types, in which case Menu Services etc
         ///     will be ignored.
         /// </summary>
-        protected virtual Type[] Services {
-            get { return Array.Empty<Type>(); }
-        }
+        protected virtual Type[] Services => Array.Empty<Type>();
 
-        protected virtual Type[] ObjectTypes {
-            get { return Array.Empty<Type>(); }
-        }
+        protected virtual Type[] ObjectTypes => Array.Empty<Type>();
 
-        protected virtual Type[] Records {
-            get { return Array.Empty<Type>(); }
-        }
+        protected virtual Type[] Records => Array.Empty<Type>();
 
-        protected virtual Type[] Functions {
-            get { return Array.Empty<Type>(); }
-        }
+        protected virtual Type[] Functions => Array.Empty<Type>();
 
         protected virtual Func<Type[], Type[]> SupportedSystemTypes => t => t;
 

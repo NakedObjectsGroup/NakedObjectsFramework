@@ -28,10 +28,10 @@ namespace RestfulObjects.Test.Data {
             set => attachment = value;
         }
 
-        public virtual FileAttachment FileAttachment => new FileAttachment(attachment, "afile", "application/pdf");
+        public virtual FileAttachment FileAttachment => new(attachment, "afile", "application/pdf");
 
-        public virtual Image Image => new Image(attachment, "animage", "image/jpeg");
+        public virtual Image Image => new(attachment, "animage", "image/jpeg");
 
-        public virtual Image ImageWithDefault => new Image(attachment, "animage.gif");
+        public virtual Image ImageWithDefault => new(attachment, "animage.gif");
     }
 }

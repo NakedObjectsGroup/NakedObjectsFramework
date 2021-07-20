@@ -385,7 +385,7 @@ namespace NakedFramework.SystemTest.FrameworkTest {
             public string Prop2 { get; set; }
 
             [Mask("d")]
-            public DateTime Prop3 { get; set; } = new DateTime(2013, 8, 16);
+            public DateTime Prop3 { get; set; } = new(2013, 8, 16);
 
             [DisplayName("Bar")]
             public string Prop4 { get; set; }

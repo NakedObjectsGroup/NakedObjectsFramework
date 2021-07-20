@@ -23,9 +23,7 @@ namespace NakedFramework.Test.TestObjects {
 
         public string Title => NakedObject.TitleString();
 
-        public INakedObjectAdapter NakedObject {
-            get => manager.CreateAdapter(domainObject, null, null);
-        }
+        public INakedObjectAdapter NakedObject => manager.CreateAdapter(domainObject, null, null);
 
         #endregion
     }

@@ -27,7 +27,7 @@ namespace NakedObjects.SystemTest.Menus {
             new[] {
                 typeof(Foo),
                 typeof(Foo2),
-                typeof(Bar),
+                typeof(Bar)
             };
 
 

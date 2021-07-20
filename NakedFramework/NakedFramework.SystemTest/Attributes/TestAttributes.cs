@@ -1961,7 +1961,7 @@ namespace SystemTest.Attributes {
         [FinderAction] //Returns string
         public string NotFinderAction4() => null;
 
-        internal FinderAction1 NewObject1() => new FinderAction1();
+        internal FinderAction1 NewObject1() => new();
     }
 
     public class FinderAction1 {

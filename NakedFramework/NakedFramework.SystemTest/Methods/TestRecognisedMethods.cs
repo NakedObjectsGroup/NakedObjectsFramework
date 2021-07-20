@@ -1583,9 +1583,9 @@ namespace NakedObjects.SystemTest.Method {
 
         public Choices4 Prop3 { get; set; }
 
-        public List<int> ChoicesProp1() => new List<int> {4, 8, 9};
+        public List<int> ChoicesProp1() => new() {4, 8, 9};
 
-        public List<string> ChoicesProp2() => new List<string> {"Fee", "Foo", "Fuu"};
+        public List<string> ChoicesProp2() => new() {"Fee", "Foo", "Fuu"};
 
         public List<Choices4> ChoicesProp3() => Container.Instances<Choices4>().ToList();
 
