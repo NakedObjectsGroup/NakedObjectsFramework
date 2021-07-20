@@ -20,11 +20,12 @@ namespace NakedFunctions.Reflector.Utils {
             methodInfo.ReturnType == returnType &&
             methodInfo.ContributedToType() == targetType;
 
-        public static MethodInfo FindComplementaryMethod(Type declaringType, string name, Func<MethodInfo, bool> matcher, ILogger logger) {
+        // if no need to log don't pass in logger
+        public static MethodInfo FindComplementaryMethod(Type declaringType, string name, Func<MethodInfo, bool> matcher, ILogger logger = null) {
             var complementaryMethods = declaringType.GetMethods().Where(matcher).ToArray();
 
             if (complementaryMethods.Length > 1) {
-                logger.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
+                logger?.LogWarning($"Multiple methods found: {name} with matching signature - ignoring");
                 return null;
             }
 
@@ -32,7 +33,7 @@ namespace NakedFunctions.Reflector.Utils {
             var nameMatches = declaringType.GetMethods().Where(mi => mi.Name == name && mi != complementaryMethod);
 
             foreach (var methodInfo in nameMatches) {
-                logger.LogWarning($"Method found: {methodInfo.DeclaringType}.{methodInfo.Name} not matching expected signature");
+                logger?.LogWarning($"Method found: {methodInfo.DeclaringType}.{methodInfo.Name} not matching expected signature");
             }
 
             return complementaryMethod;

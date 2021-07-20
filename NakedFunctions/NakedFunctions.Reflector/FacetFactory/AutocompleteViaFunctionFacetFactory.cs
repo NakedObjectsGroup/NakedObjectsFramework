@@ -62,11 +62,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private MethodInfo FindAutoCompleteMethodWithReturnTypes(Type type, string name, Type paramType, Type targetType) {
             var method = FindAutoCompleteMethod(type, name, typeof(IQueryable<>).MakeGenericType(paramType), targetType) ??
-                         FindAutoCompleteMethod(type, name, paramType, targetType);
+                         FindAutoCompleteMethod(type, name, paramType, targetType, TypeUtils.IsString(paramType) ? null : logger);
 
             //... or returning an enumerable of string
             if (method is null && TypeUtils.IsString(paramType)) {
-                method = FindAutoCompleteMethod(type, name, typeof(IEnumerable<string>), targetType);
+                method = FindAutoCompleteMethod(type, name, typeof(IEnumerable<string>), targetType, logger);
             }
 
             return method;
@@ -81,7 +81,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             methodInfo.Matches(name, type, returnType, targetType) &&
             MatchParams(methodInfo);
 
-        private MethodInfo FindAutoCompleteMethod(Type declaringType, string name, Type returnType, Type targetType) {
+        private static MethodInfo FindAutoCompleteMethod(Type declaringType, string name, Type returnType, Type targetType, ILogger logger = null) {
             bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, returnType, targetType);
             return FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
         }

@@ -663,6 +663,54 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
+        public void TestGetMenuActionWithSingleAutoComplete() {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(AutoCompleteMenuFunctions), nameof(AutoCompleteMenuFunctions.WithSingleAutoComplete));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(AutoCompleteMenuFunctions.WithSingleAutoComplete), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+
+            var parameter = parameters["simpleRecord"];
+            Assert.AreEqual("", parameter["links"][0]["arguments"]["x-ro-searchTerm"]["value"].ToString());
+            Assert.AreEqual("2", parameter["links"][0]["extensions"]["minLength"].ToString());
+            Assert.AreEqual("http://localhost/menus/AutoCompleteMenuFunctions/actions/WithSingleAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
+        }
+
+        [Test]
+        public void TestInvokeMenuActionPromptWithSingleAutoComplete() {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>(), ReservedArguments = new ReservedArguments { SearchTerm = "Fr" } };
+            var result = api.GetParameterPromptOnMenu(nameof(AutoCompleteMenuFunctions), nameof(AutoCompleteMenuFunctions.WithSingleAutoComplete), "simpleRecord", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("simpleRecord", parsedResult["id"].ToString());
+            var choices = parsedResult["choices"];
+            Assert.AreEqual(1, choices.Count()); // tests PageSize
+            Assert.AreEqual("Fred", choices[0]["title"].ToString());
+        }
+
+        [Test]
+        public void TestInvokeMenuActionWithSingleAutoComplete() {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "simpleRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") } } };
+
+            var result = api.GetInvokeOnMenu(nameof(AutoCompleteMenuFunctions), nameof(AutoCompleteMenuFunctions.WithSingleAutoComplete), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("Fred", resultObj["title"].ToString());
+        }
+
+        [Test]
         public void TestGetMenuActionWithValidateNoContext() {
             var api = Api();
             var result = api.GetMenuAction(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithValidationNoContext));
