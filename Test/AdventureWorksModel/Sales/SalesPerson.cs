@@ -138,7 +138,7 @@ namespace AdventureWorksModel {
 
         private ICollection<SalesPersonQuotaHistory> _quotaHistory = new List<SalesPersonQuotaHistory>();
 
-        [TableView(false, "QuotaDate", "SalesQuota", "QuotaDate")] //Column name deliberately duplicated to test that this is ignored
+        [TableView(false, "QuotaDate", "SalesQuota")] //Column name deliberately duplicated to test that this is ignored
         public virtual ICollection<SalesPersonQuotaHistory> QuotaHistory {
             get { return _quotaHistory; }
             set { _quotaHistory = value; }
