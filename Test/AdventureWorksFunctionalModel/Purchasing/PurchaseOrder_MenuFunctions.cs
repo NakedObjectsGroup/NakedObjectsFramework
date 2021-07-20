@@ -77,7 +77,7 @@ namespace AW.Functions
         [MemberOrder("Purchase Orders", 5)]
         [TableView(true, "Vendor", "OrderDate", "Status")]
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForProduct(
-             this Product product, IContext context) => 
+             Product product, IContext context) => 
             from obj in context.Instances<PurchaseOrderDetail>()
                    where obj.Product.ProductID == product.ProductID &&
                          obj.PurchaseOrderHeader.Status <= 2

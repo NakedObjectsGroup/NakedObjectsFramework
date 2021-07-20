@@ -23,7 +23,7 @@ namespace AW.Functions
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrders(this Vendor vendor, IContext context) =>
             PurchaseOrder_MenuFunctions.OpenPurchaseOrdersForVendor(vendor, context);
 
-        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrders([MinLength(2)] string name, IContext context) =>
+        public static IQueryable<Vendor> AutoComplete1OpenPurchaseOrders(this Vendor vendor,  [MinLength(2)] string name, IContext context) =>
             PurchaseOrder_MenuFunctions.AutoComplete0OpenPurchaseOrdersForVendor(name, context);
 
 

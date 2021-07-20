@@ -94,8 +94,8 @@ namespace AW.Functions
                 UpdateEmployee(e, e with { JobTitle = jobTitle }, context);
 
         [Edit]
-        public static  IContext UpdateDateOfBirth(this Employee e,
-             DateTime dateOfBirth, IContext context) =>
+        public static IContext UpdateDateOfBirth(this Employee e,
+             DateTime? dateOfBirth, IContext context) =>
                 UpdateEmployee(e, e with { DateOfBirth = dateOfBirth }, context);
 
         public static string ValidateUpdateDateOfBirth(this Employee e, 
@@ -125,7 +125,7 @@ namespace AW.Functions
 
         [Edit]
         public static IContext UpdateHireDate(this Employee e,
-             DateTime hireDate, IContext context) =>
+             DateTime? hireDate, IContext context) =>
                 UpdateEmployee(e, e with { HireDate = hireDate }, context);
 
         [Edit]

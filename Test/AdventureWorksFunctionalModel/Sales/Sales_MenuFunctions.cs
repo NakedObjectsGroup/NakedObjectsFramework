@@ -47,9 +47,9 @@ namespace AW.Functions {
         [TableView(true),MemberOrder("Sales",1)] //TableView == ListView
         public static IQueryable<Store> ListAccountsForSalesPerson(
             SalesPerson sp,
-            IQueryable<Store> stores
+            IContext context
             ) {
-            return from obj in stores
+            return from obj in context.Instances<Store>()
                 where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID
                 select obj;
         }
@@ -57,9 +57,9 @@ namespace AW.Functions {
         [PageSize(20)]
         public static IQueryable<SalesPerson> AutoComplete0ListAccountsForSalesPerson(
             [MinLength(2)] string name,
-            IQueryable<SalesPerson> sps
-            ) {
-            return sps.Where(sp => sp.EmployeeDetails.PersonDetails.LastName.ToUpper().StartsWith(name.ToUpper()));
+            IContext context) 
+        {
+            return context.Instances<SalesPerson>().Where(sp => sp.EmployeeDetails.PersonDetails.LastName.ToUpper().StartsWith(name.ToUpper()));
         }
 
         #endregion
