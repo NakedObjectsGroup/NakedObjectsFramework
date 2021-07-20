@@ -10,9 +10,10 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
+using NakedObjects.Core.Async;
 using NUnit.Framework;
 
-namespace NakedObjects.Core.Async {
+namespace NakedFramework.Core.Test.Async {
     [TestFixture]
     public class AsyncServiceTest {
         [Test]

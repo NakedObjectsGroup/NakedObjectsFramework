@@ -10,7 +10,7 @@ using NakedFramework.Core.Util;
 using NUnit.Framework;
 using NAssert = NUnit.Framework.Assert;
 
-namespace NakedObjects.Core.Util.Query {
+namespace NakedFramework.Core.Test.Util {
     [TestFixture]
     public class QueryableUtilsTest {
         [Test]

@@ -98,7 +98,7 @@ namespace NakedFramework.Core.Component {
             var oid = new ViewModelOid(metamodel, spec);
             var adapter = NewAdapterForKnownObject(viewModel, oid);
 
-            var versionObject = adapter.GetVersion(this);
+            var versionObject = adapter.GetVersion();
             if (versionObject is not null) {
                 adapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
             }

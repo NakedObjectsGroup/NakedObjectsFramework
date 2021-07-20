@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 using NUnit.Framework;
 
-namespace NakedObjects.Core.Test.Resolve {
+namespace NakedFramework.Core.Test.Resolve {
     [TestFixture]
     public class ResolveStateTest {
         private static void ExpectException(Action x) {

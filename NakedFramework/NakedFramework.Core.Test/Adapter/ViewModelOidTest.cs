@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
 using NUnit.Framework;
 
-namespace NakedObjects.Core.Test.Adapter {
+namespace NakedFramework.Core.Test.Adapter {
     [TestFixture]
     public class ViewModelOidTest {
         private readonly Mock<IMetamodelManager> mockMetamodel = new();

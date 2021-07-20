@@ -81,7 +81,7 @@ namespace NakedFramework.Core.Util {
                 fullDateTime.Minute,
                 fullDateTime.Second);
 
-        public static object GetVersion(this INakedObjectAdapter nakedObjectAdapter, INakedObjectManager manager) {
+        public static object GetVersion(this INakedObjectAdapter nakedObjectAdapter) {
             var versionProperty = nakedObjectAdapter.GetVersionProperty();
 
             if (versionProperty is not null) {

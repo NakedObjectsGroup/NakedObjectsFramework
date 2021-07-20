@@ -17,7 +17,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NUnit.Framework;
 
-namespace NakedObjects.Core.Test.Component {
+namespace NakedFramework.Core.Test.Component {
     /// <summary>
     ///     Summary description for DefaultPersistAlgorithmTest
     /// </summary>

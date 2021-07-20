@@ -26,7 +26,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private readonly EFCoreObjectStore parent;
         private readonly ISession session;
         private List<INakedObjectAdapter> updatingNakedObjects;
-        private INakedObjectManager Manager { get; }
 
         private string Name { get; }
 
@@ -177,7 +176,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 var currentPersistedNakedObjectsAdapter = PersistedNakedObjects.ToArray();
                 PersistedNakedObjects.Clear();
                 updatingNakedObjects.ForEach(no => no.Updated());
-                updatingNakedObjects.ForEach(no => no.UpdateVersion(session, Manager));
+                updatingNakedObjects.ForEach(no => no.UpdateVersion(session));
                 currentPersistedNakedObjectsAdapter.ForEach(no => no.Persisted());
             }
             finally {

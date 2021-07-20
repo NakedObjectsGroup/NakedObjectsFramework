@@ -172,7 +172,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 }
                 case IDatabaseOid databaseOid: {
                     var adapter = CreateAdapter(databaseOid, GetObjectByKey(databaseOid, hint));
-                    adapter.UpdateVersion(session, nakedObjectManager);
+                    adapter.UpdateVersion(session);
                     return adapter;
                 }
                 default:
@@ -239,7 +239,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
             var obj = GetContext(type).WrappedDbContext.Find(type, keys);
             var oid = oidGenerator.CreateOid(type.FullName, keys);
             var adapter = CreateAdapter(oid, obj);
-            adapter.UpdateVersion(session, nakedObjectManager);
+            adapter.UpdateVersion(session);
             return adapter;
         }
 
@@ -469,7 +469,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 var nakedObjectAdapter = CreateAdapter(oid, domainObject);
                 injector.InjectInto(nakedObjectAdapter.Object);
                 LoadComplexTypesIntoNakedObjectFramework(nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsGhost());
-                nakedObjectAdapter.UpdateVersion(session, nakedObjectManager);
+                nakedObjectAdapter.UpdateVersion(session);
 
                 if (nakedObjectAdapter.ResolveState.IsGhost()) {
                     StartResolving(nakedObjectAdapter);
@@ -507,7 +507,7 @@ namespace NakedFramework.Persistor.EFCore.Component {
                 }
             }
 
-            nakedObjectAdapter.UpdateVersion(session, nakedObjectManager);
+            nakedObjectAdapter.UpdateVersion(session);
         }
 
         private static bool FieldIsPersisted(IAssociationSpec field) => !(field.ContainsFacet<INotPersistedFacet>() || field.ContainsFacet<IDisplayAsPropertyFacet>());

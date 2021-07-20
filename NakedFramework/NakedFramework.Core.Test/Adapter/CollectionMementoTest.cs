@@ -18,13 +18,14 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Test.TestCase;
+using NakedObjects;
 using NakedObjects.Services;
 using NUnit.Framework;
 using AdapterUtils = NakedFramework.Core.Util.AdapterUtils;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.Core.Test.Adapter {
+namespace NakedFramework.Core.Test.Adapter {
     public class TestDomainObject {
         public IDomainObjectContainer Container { protected get; set; }
 

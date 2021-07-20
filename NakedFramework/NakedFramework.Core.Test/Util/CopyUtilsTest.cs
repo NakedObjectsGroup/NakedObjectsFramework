@@ -10,7 +10,7 @@ using System.Linq;
 using NakedFramework.Core.Util;
 using NUnit.Framework;
 
-namespace NakedObjects.Core.Test.Util {
+namespace NakedFramework.Core.Test.Util {
     [TestFixture]
     public class CopyUtilsTest {
         [Test]
