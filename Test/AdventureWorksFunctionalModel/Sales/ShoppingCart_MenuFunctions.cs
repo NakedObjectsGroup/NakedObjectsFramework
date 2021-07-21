@@ -17,7 +17,7 @@ namespace AW.Functions {
     /// </summary>
     /// 
     [Named("Cart")]
-    public static class ShoppingCat_MenuFunctions {
+    public static class ShoppingCart_MenuFunctions {
 
         //TODO: The Cart should probably be a view model
         [Named("Show Cart")]
@@ -93,7 +93,7 @@ namespace AW.Functions {
         private static string UserName(IPrincipal principal) {
             return principal.Identity.Name;
         }
-
+        
         public static  IContext AddAllItemsInCartToOrder(
             SalesOrderHeader order, IContext context) {
 
@@ -104,12 +104,8 @@ namespace AW.Functions {
             return context3;
         }
 
-        public static void RemoveItems(IQueryable<ShoppingCartItem> items) {
-            foreach (ShoppingCartItem item in items) {
-
-                //TODO: how to handle this>
-                //Container.DisposeInstance(item);
-            }
+        public static IContext RemoveItems(IQueryable<ShoppingCartItem> items, IContext context) {
+           throw new NotImplementedException();
         }
 
         public static IContext EmptyCart(IContext context) {

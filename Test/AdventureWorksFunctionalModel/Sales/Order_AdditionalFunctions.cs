@@ -66,13 +66,12 @@ namespace AW.Functions {
             return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
         }
 
-        public static void CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders, IContext context) =>
+        public static IContext CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders, IContext context) =>
             AppendCommentToOrders(toOrders, "User unhappy", context);
 
 
-        public static void CommentAsUserUnhappy(this SalesOrderHeader order, IContext context) {
+        public static IContext CommentAsUserUnhappy(this SalesOrderHeader order, IContext context) =>
             AppendComment(order, "User unhappy", context);
-        }
 
         public static string DisableCommentAsUserUnhappy(this SalesOrderHeader order) {
             return order.IsShipped() ? null : "Not shipped yet";

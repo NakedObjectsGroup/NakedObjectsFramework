@@ -21,14 +21,14 @@ namespace AW.Functions {
         public IQueryable<ShoppingCartItem> RemoveItems(
             IQueryable<ShoppingCartItem> items,
             IContext context) {
-            ShoppingCat_MenuFunctions.RemoveItems(items);
-            return ShoppingCat_MenuFunctions.Cart(context);
+            ShoppingCart_MenuFunctions.RemoveItems(items, context);
+            return ShoppingCart_MenuFunctions.Cart(context);
         }
 
-        public IContext AddToCart(Product product, IContext context) =>  ShoppingCat_MenuFunctions.AddToShoppingCart(product, context);
+        public IContext AddToCart(Product product, IContext context) =>  ShoppingCart_MenuFunctions.AddToShoppingCart(product, context);
 
         public string DisableAddToCart(IContext context) {
-            return ShoppingCat_MenuFunctions.DisableIfNoCustomerForUser(context);
+            return ShoppingCart_MenuFunctions.DisableIfNoCustomerForUser(context);
         }
     }
 }

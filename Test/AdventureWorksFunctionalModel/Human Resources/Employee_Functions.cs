@@ -99,11 +99,11 @@ namespace AW.Functions
                 UpdateEmployee(e, e with { DateOfBirth = dateOfBirth }, context);
 
         public static string ValidateUpdateDateOfBirth(this Employee e, 
-            DateTime dob, IContext context) => 
-                ValidateDateOfBirth(dob, context);
+            DateTime? dateOfBirth, IContext context) => 
+                ValidateDateOfBirth(dateOfBirth, context);
 
-        internal static string ValidateDateOfBirth(DateTime dob, IContext context) =>
-            (dob > context.Today().AddYears(-16)) || (dob < context.Today().AddYears(-100)) ? "Invalid Date Of Birth" : null;
+        internal static string ValidateDateOfBirth(DateTime? dateOfBirth, IContext context) =>
+            (dateOfBirth > context.Today().AddYears(-16)) || (dateOfBirth < context.Today().AddYears(-100)) ? "Invalid Date Of Birth" : null;
 
         
         public static IContext UpdateMaritalStatus(this Employee e, 
