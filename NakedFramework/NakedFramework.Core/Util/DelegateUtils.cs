@@ -17,32 +17,34 @@ namespace NakedFramework.Core.Util {
     public static class DelegateUtils {
         // This is all based on http://codeblog.jonskeet.uk/2008/08/09/making-reflection-fly-and-exploring-delegates/comment-page-1/
 
+        private const int MaxParameters = 6;
+
         private static string CreationFailed(string reason, MethodInfo method) =>
             // don't log system or NOF types
             FasterTypeUtils.IsSystemOrNaked(method.DeclaringType)
                 ? ""
-                : $"Not creating delegate for {reason} method {method.DeclaringType}.{method}";
+                : $"Not creating delegate for method {method.DeclaringType}.{method}. It will be called using reflection rather than a delegate. This is because {reason}";
 
         public static (Func<object, object[], object>, string) CreateDelegate(MethodInfo method) {
             try {
                 if (method.IsSecurityTransparent) {
                     // don't seem to be able to bind delegates to these just return null
-                    return (null, CreationFailed("IsSecurityTransparent", method));
+                    return (null, CreationFailed("property 'IsSecurityTransparent' is true", method));
                 }
 
                 if (method.ContainsGenericParameters) {
                     // don't seem to be able to bind delegates to these just return null
-                    return (null, CreationFailed("ContainsGenericParameters", method));
+                    return (null, CreationFailed("property 'ContainsGenericParameters' is true", method));
                 }
 
                 if (method.DeclaringType is not null && !method.DeclaringType.IsClass) {
                     // don't seem to be able to bind delegates to these just return null
-                    return (null, CreationFailed("non class", method));
+                    return (null, CreationFailed("property 'DeclaringType.IsClass' is false", method));
                 }
 
-                if (method.GetParameters().Length > 6) {
+                if (method.GetParameters().Length > MaxParameters) {
                     // only support 6 parameters via delegates - return null and default to reflection
-                    return (null, CreationFailed("too many parameters", method));
+                    return (null, CreationFailed($"it has more than {MaxParameters} parameters. Suggest: reducing the number of parameters if possible.", method));
                 }
 
                 var delegateHelper = MakeDelegateHelper(method.DeclaringType, method);
