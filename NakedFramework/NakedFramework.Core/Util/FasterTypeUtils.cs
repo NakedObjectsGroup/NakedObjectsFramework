@@ -35,7 +35,7 @@ namespace NakedFramework.Core.Util {
 
         private static bool IsMicrosoft(string typeName) => typeName.StartsWith(MicrosoftTypePrefix, StringComparison.Ordinal);
 
-        private static bool IsNakedFramework(string typeName) => typeName.StartsWith(NakedObjectsTypePrefix, StringComparison.Ordinal);
+        private static bool IsNakedFramework(string typeName) => typeName.StartsWith(NakedFrameworkTypePrefix, StringComparison.Ordinal);
 
         public static bool IsNakedObjects(string typeName) => typeName.StartsWith(NakedObjectsTypePrefix, StringComparison.Ordinal);
 
