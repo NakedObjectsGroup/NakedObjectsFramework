@@ -61,6 +61,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         private MethodInfo FindAutoCompleteMethodWithReturnTypes(Type type, string name, Type paramType, Type targetType) {
+            // only log by passing in logger the final attempt to find method
             var method = FindAutoCompleteMethod(type, name, typeof(IQueryable<>).MakeGenericType(paramType), targetType) ??
                          FindAutoCompleteMethod(type, name, paramType, targetType, TypeUtils.IsString(paramType) ? null : logger);
 
