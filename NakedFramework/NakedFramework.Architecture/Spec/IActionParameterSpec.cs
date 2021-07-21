@@ -86,5 +86,7 @@ namespace NakedFramework.Architecture.Spec {
         ///     GetDefault type value for parameter
         /// </summary>
         TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter);
+
+        (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter);
     }
 }

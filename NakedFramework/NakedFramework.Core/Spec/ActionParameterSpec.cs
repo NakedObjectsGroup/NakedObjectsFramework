@@ -61,7 +61,7 @@ namespace NakedFramework.Core.Spec {
             }
         }
 
-        private (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
+        public (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
             if (parentAction.IsContributedMethod && nakedObjectAdapter != null) {
                 var matchingParms = parentAction.Parameters.Where(p => nakedObjectAdapter.Spec.IsOfType(p.Spec)).ToArray();
 

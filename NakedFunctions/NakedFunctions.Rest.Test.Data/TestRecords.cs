@@ -56,8 +56,8 @@ namespace NakedFunctions.Rest.Test.Data {
         public int Id { get; init; }
 
         public string Name { get; init; }
-        public DateTime EndDate { get; init; } = DateTime.Now;
-        public DateTime StartDate { get; init; } = DateTime.Now;
+        public DateTime? EndDate { get; init; } 
+        public DateTime? StartDate { get; init; } = DateTime.Now;
         public virtual bool Equals(DateRecord other) => ReferenceEquals(this, other);
 
         public override int GetHashCode() => base.GetHashCode();

@@ -62,12 +62,9 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 if (matches.ContainsKey(thisParameter)) {
                     var property = matches[thisParameter];
                     // leave any existing default facet
-                    if (specification.ContainsFacet<IActionDefaultsFacet>()) {
-                        logger.LogWarning($"Edit default not added to {thisParameter} on {method} as has explicit default method");
-                    }
-                    else {
-                        FacetUtils.AddFacet(new ActionDefaultsFacetViaProperty(property, specification, LoggerFactory.CreateLogger<ActionDefaultsFacetViaProperty>()));
-                    }
+                    var defaultFacet = specification.GetFacet<IActionDefaultsFacet>();
+
+                    FacetUtils.AddFacet(new ActionDefaultsFacetViaProperty(property, specification, defaultFacet, LoggerFactory.CreateLogger<ActionDefaultsFacetViaProperty>()));
                 }
             }
 

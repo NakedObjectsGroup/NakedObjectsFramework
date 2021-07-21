@@ -20,10 +20,12 @@ namespace NakedFramework.Metamodel.Facet {
     public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly Func<object, object[], object> methodDelegate;
         private readonly PropertyInfo property;
+        private readonly IActionDefaultsFacet actionDefaultsFacet;
 
-        public ActionDefaultsFacetViaProperty(PropertyInfo property, ISpecification holder, ILogger<ActionDefaultsFacetViaProperty> logger)
+        public ActionDefaultsFacetViaProperty(PropertyInfo property, ISpecification holder, IActionDefaultsFacet actionDefaultsFacet, ILogger<ActionDefaultsFacetViaProperty> logger)
             : base(holder) {
             this.property = property;
+            this.actionDefaultsFacet = actionDefaultsFacet;
             methodDelegate = LogNull(DelegateUtils.CreateDelegate(property.GetGetMethod()), logger);
         }
 
@@ -31,6 +33,10 @@ namespace NakedFramework.Metamodel.Facet {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
             var defaultValue = methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+            if (actionDefaultsFacet is not null && (defaultValue is null || string.IsNullOrWhiteSpace(defaultValue.ToString()))) {
+                return actionDefaultsFacet.GetDefault(nakedObjectAdapter, framework);
+            }
+
             return (defaultValue, TypeOfDefaultValue.Explicit);
         }
 

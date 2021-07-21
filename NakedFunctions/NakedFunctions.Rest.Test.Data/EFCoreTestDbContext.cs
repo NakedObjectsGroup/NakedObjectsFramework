@@ -60,7 +60,7 @@ namespace NakedFunctions.Rest.Test.Data {
             var ur = new UpdatedRecord {Id = 1, Name = ""};
             modelBuilder.Entity<UpdatedRecord>().HasData(ur);
 
-            var dr = new DateRecord {Id = 1, EndDate = DateTime.Now, StartDate = DateTime.Now};
+            var dr = new DateRecord {Id = 1, StartDate = DateTime.Now, EndDate = null};
 
             modelBuilder.Entity<DateRecord>().HasData(dr);
             modelBuilder.Entity<EnumRecord>().HasData(new EnumRecord {Id = 1});

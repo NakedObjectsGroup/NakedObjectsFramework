@@ -118,12 +118,12 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public static class DateRecordFunctions {
         [Edit]
-        public static (DateRecord, IContext) EditDates(this DateRecord sp, DateTime startDate, DateTime endDate, IContext context)
+        public static (DateRecord, IContext) EditDates(this DateRecord sp, DateTime? startDate, DateTime? endDate, IContext context)
             => Helpers.DisplayAndUpdate(sp with {StartDate = startDate, EndDate = endDate}, sp, context);
 
-        public static DateTime Default1EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today();
+        public static DateTime? Default1EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today().AddDays(1);
 
-        public static DateTime Default2EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today().AddDays(90);
+        public static DateTime? Default2EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today().AddDays(90);
 
         public static DateRecord DateWithDefault(this DateRecord sp, [DefaultValue(22)] DateTime dt, IContext context) => sp;
     }
