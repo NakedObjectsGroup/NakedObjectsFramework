@@ -130,6 +130,15 @@ namespace AdventureWorksModel {
             return DateTime.Now.AddMonths(1);
         }
 
+        [Edit]
+        public void EditDates(DateTime startDate, DateTime dueDate)
+        {
+            StartDate = startDate;
+            DueDate = dueDate;
+        }
+
+        public string ValidateEndDates(DateTime startDate, DateTime dueDate) =>
+            dueDate < startDate ? "Due date is before start date" : null;
         #endregion
 
         #region Product
