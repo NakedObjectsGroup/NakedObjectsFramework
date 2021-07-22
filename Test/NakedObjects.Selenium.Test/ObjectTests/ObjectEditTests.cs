@@ -60,7 +60,9 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             Click(pencil);
             ClearFieldThenType("nof-edit-parameter:nth-of-type(1) input", "6 Jan 2007");
             ClearFieldThenType("nof-edit-parameter:nth-of-type(2) input", "5 Jan 2007");
+            Thread.Sleep(1000);
             Click(WaitForCss(".form-row input.ok"));
+            Thread.Sleep(1000);
             wait.Until(el => el.FindElement(By.CssSelector(".co-validation")).Text == "Due date is before start date");
         }
 
