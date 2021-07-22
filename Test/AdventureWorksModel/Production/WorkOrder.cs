@@ -137,7 +137,7 @@ namespace AdventureWorksModel {
             DueDate = dueDate;
         }
 
-        public string ValidateEndDates(DateTime startDate, DateTime dueDate) =>
+        public string ValidateEditDates(DateTime startDate, DateTime dueDate) =>
             dueDate < startDate ? "Due date is before start date" : null;
         #endregion
 
