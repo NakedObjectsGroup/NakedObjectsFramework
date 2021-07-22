@@ -51,6 +51,20 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             wait.Until(el => el.FindElement(By.CssSelector(".parameter .validation")).Text == "Min Qty must be > 0");
         }
 
+        public virtual void EditAttribute_ValidateOnMultipleProperties()
+        {
+            GeminiUrl("object?i1=View&o1=___1.WorkOrder--26138");
+            var prop = WaitForCssNo(".property", 5);
+            Assert.IsTrue(prop.Text.StartsWith("Start Date"));
+            var pencil = prop.FindElement(By.CssSelector(".icon.edit"));
+            Click(pencil);
+            ClearFieldThenType("nof-edit-parameter:nth-of-type(1) input", "6 Jan 2007");
+            ClearFieldThenType("nof-edit-parameter:nth-of-type(2) input", "5 Jan 2007");
+            Click(WaitForCss(".form-row input.ok"));
+            wait.Until(el => el.FindElement(By.CssSelector(".co-validation")).Text == "Due date is before start date");
+        }
+
+
         public virtual void ObjectEditChangeScalar() {
             var rand = new Random();
             GeminiUrl("object?o1=___1.Product--870");
@@ -401,6 +415,12 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
 
     public abstract class ObjectEditTests : ObjectEditTestsRoot {
         [TestMethod]
+        public override void EditAttribute_ValidateOnMultipleProperties()
+        {
+            base.EditAttribute_ValidateOnMultipleProperties();
+        }
+
+        [TestMethod]
         public override void EditAttributeHonoursValidationMethod()
         {
             base.EditAttributeHonoursValidationMethod();
@@ -544,6 +564,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
         [TestMethod] //Mega
         //[Priority(0)]
         public void ObjectEditTest() {
+            EditAttribute_ValidateOnMultipleProperties();
             EditAttributeHonoursValidationMethod();
             EditPropertyInline_usingEditAttribute();
             ObjectEditChangeScalar();
