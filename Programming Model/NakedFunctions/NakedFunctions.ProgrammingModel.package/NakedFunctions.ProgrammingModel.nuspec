@@ -14,7 +14,7 @@
     <tags>functional programming naked functions</tags>
     <dependencies>
       <group targetFramework="net5.0">
-        <dependency id="NakedFramework.ProgrammingModel" version="[12.0.0-rc01, 13)" />
+        <dependency id="NakedFramework.ProgrammingModel" version="[12.0.0, 13)" />
       </group>
     </dependencies>
   </metadata>
