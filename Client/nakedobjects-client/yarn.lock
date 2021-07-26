@@ -1388,7 +1388,7 @@
 
 "@nakedobjects/cicero@file:./dist/nakedobjects-cicero/nakedobjects-cicero-v12.0.0.tgz":
   version "12.0.0"
-  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v12.0.0.tgz#94a7e5cbb964ce413d08dedcbf13bacba5b75f9f"
+  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v12.0.0.tgz#3538d11fb11f3c67b5865a4e8e4e531d04b64813"
   dependencies:
     lodash "~4.17.21"
     lodash-es "~4.17.21"
@@ -1396,7 +1396,7 @@
 
 "@nakedobjects/gemini@file:./dist/nakedobjects-gemini/nakedobjects-gemini-v12.0.0.tgz":
   version "12.0.0"
-  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v12.0.0.tgz#9ca50f6da81e91490448ac05c4212ab94fd09c43"
+  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v12.0.0.tgz#67b5e7253bcc0c0f52b3036b0fd67e3911ac6322"
   dependencies:
     auth0-js "^9.16.1"
     lodash "~4.17.21"
@@ -1406,7 +1406,7 @@
 
 "@nakedobjects/restful-objects@file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v12.0.0.tgz":
   version "12.0.0"
-  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v12.0.0.tgz#2b3924f3db80debbd34ff24dcbf46118d9096931"
+  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v12.0.0.tgz#28bb9bfa532011f2b466739a7e9f9e126c49b2bf"
   dependencies:
     lodash "~4.17.21"
     lodash-es "~4.17.21"
@@ -1414,7 +1414,7 @@
 
 "@nakedobjects/services@file:./dist/nakedobjects-services/nakedobjects-services-v12.0.0.tgz":
   version "12.0.0"
-  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v12.0.0.tgz#b9b678345185007891cba49de7366e593b6388bd"
+  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v12.0.0.tgz#79b5778d01671905d5fad58d7767dea798619ff2"
   dependencies:
     auth0-js "^9.16.2"
     lodash "~4.17.21"
@@ -1424,7 +1424,7 @@
 
 "@nakedobjects/view-models@file:./dist/nakedobjects-view-models/nakedobjects-view-models-v12.0.0.tgz":
   version "12.0.0"
-  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v12.0.0.tgz#25e37a06c58648509b4076782bc70ce7c15cd786"
+  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v12.0.0.tgz#4395b80bb762f7430df730d1802b70c337eeb297"
   dependencies:
     lodash "~4.17.21"
     lodash-es "~4.17.21"

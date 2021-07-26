@@ -6,7 +6,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "nakedobjectsspa": {
+        "nakedobjects-client": {
             "root": "",
             "sourceRoot": "src",
             "projectType": "application",
@@ -21,7 +21,7 @@
                             "styles": true,
                             "vendor": true
                           },
-                        "outputPath": "dist/nakedobjectsspa",
+                        "outputPath": "dist/nakedobjects-client",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": "src/polyfills.ts",
@@ -66,18 +66,18 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "nakedobjectsspa:build"
+                        "browserTarget": "nakedobjects-client:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "nakedobjectsspa:build:production"
+                            "browserTarget": "nakedobjects-client:build:production"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "nakedobjectsspa:build"
+                        "browserTarget": "nakedobjects-client:build"
                     }
                 },
                 "test": {
@@ -224,7 +224,7 @@
                             "styles": true,
                             "vendor": true
                           },
-                        "outputPath": "dist/nakedobjectsspa",
+                        "outputPath": "dist/nakedobjects-client",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "tsConfig": "src/tsconfig.packages.json",
@@ -329,5 +329,5 @@
             }
         }
     },
-    "defaultProject": "nakedobjectsspa"
+    "defaultProject": "nakedobjects-client"
 }
