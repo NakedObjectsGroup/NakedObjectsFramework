@@ -73,16 +73,12 @@ namespace NakedObjects.Rest.App.Demo {
         {
             // for Demo use Log4Net. Configured in log4net.config  
             loggerFactory.AddLog4Net();
-
             builder.Build();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseAuthentication();
-
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
