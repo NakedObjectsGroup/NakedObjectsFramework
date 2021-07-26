@@ -26,19 +26,17 @@ Both frameworks therefore offer the following advantages:
 
 Naked Objects
 =============
-Naked Objects is a mature framework, under continuous development for 20 years (last 7 on GitHub) and now at version 11.
+Naked Objects is a mature framework, under continuous development for 20 years (last 7 on GitHub) and now at version 12.
 
 Full documentation of how use the framework (typically starting from the Template projects) is contained in the [Application Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx).
-There is no need to download and build the source, as the recommended way to use the framework is via the published NuGet and NPM packages. (However there are details in the manual on how to build the source for those that want to.)
+There is no need to download and build the source, as the recommended way to use the framework is via the published NuGet and NPM packages. (However there are details in the manual on how to build the source for those that really want to.)
 
-As of v11, all assemblies will are now built on .NET Core 3. Dependency on System.Dynamic, has been removed, due to concerns that it might be cause of (very rare) runtime errors. The NuGet package structure has also been simplified to just two packages:
+Differences between v12 and v11:
 
-* NakedObjects.Server (currently v11.0.0)
+* Now works with either Entity Framework Core or Entity Framework 6
+* Permits Properties (incl. Collection properties) to be 'contrributed' to an object (using the new **DisplayAsProperty** attribute) in a manner similar to the existing concept of 'contributed actions'.
+* Permits actions whose purpose is to edit one or more properties on a persisent objects to be annoted with the new **Edit** attribute, and hence allowe the action to be invoked using the new 'edit' icon next to any of those fields, and to edit the propert values _in situ_ rather than via a separate dialog.
 
-* NakedObjects.ProgrammingModel (currently v11.0.0.)	 
-	Note however that this is identical to 7.0.4 - the previous release - except compiled against .NET Core 3,
-	so no changes to domain object model code are required. (Members obsoleted since 7.0 have now been removed).
-	
 Naked Functions
 ===============
 
