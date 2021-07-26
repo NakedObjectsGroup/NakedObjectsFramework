@@ -175,7 +175,6 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<Employee>()
                         .Ignore(e => e.SalesPerson);
-                        //.WithOne(e => e.Employee);
 
             modelBuilder.Entity<EmployeePayHistory>()
                         .Property(e => e.Rate)
@@ -305,7 +304,6 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<Location>()
                         .Property(e => e.CostRate)
-                        //.HasPrecision(10, 4)
                         .HasColumnType("smallmoney");
 
             modelBuilder.Entity<Location>()
@@ -412,8 +410,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<ProductCategory>()
                         .HasMany(e => e.ProductSubcategories)
-                        .WithOne(e => e.ProductCategory)
-                ;
+                        .WithOne(e => e.ProductCategory);
 
             modelBuilder.Entity<ProductCostHistory>()
                         .Property(e => e.StandardCost)
@@ -421,8 +418,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<ProductDescription>()
                         .HasMany(e => e.ProductModelProductDescriptionCultures)
-                        .WithOne(e => e.ProductDescription)
-                ;
+                        .WithOne(e => e.ProductDescription);
 
             modelBuilder.Entity<ProductListPriceHistory>()
                         .Property(e => e.ListPrice)
@@ -430,13 +426,11 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<ProductModel>()
                         .HasMany(e => e.ProductModelIllustrations)
-                        .WithOne(e => e.ProductModel)
-                ;
+                        .WithOne(e => e.ProductModel);
 
             modelBuilder.Entity<ProductModel>()
                         .HasMany(e => e.ProductModelProductDescriptionCultures)
-                        .WithOne(e => e.ProductModel)
-                ;
+                        .WithOne(e => e.ProductModel);
 
             modelBuilder.Entity<ProductModelProductDescriptionCulture>()
                         .Property(e => e.CultureID)
@@ -444,8 +438,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<ProductPhoto>()
                         .HasMany(e => e.ProductProductPhotoes)
-                        .WithOne(e => e.ProductPhoto)
-                ;
+                        .WithOne(e => e.ProductPhoto);
 
             modelBuilder.Entity<TransactionHistory>()
                         .Property(e => e.TransactionType)
@@ -469,8 +462,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<UnitMeasure>()
                         .HasMany(e => e.BillOfMaterials)
-                        .WithOne(e => e.UnitMeasure)
-                ;
+                        .WithOne(e => e.UnitMeasure);
 
             modelBuilder.Entity<UnitMeasure>()
                         .HasMany(e => e.Products)
@@ -484,13 +476,11 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<UnitMeasure>()
                         .HasMany(e => e.ProductVendors)
-                        .WithOne(e => e.UnitMeasure)
-                ;
+                        .WithOne(e => e.UnitMeasure);
 
             modelBuilder.Entity<WorkOrder>()
                         .HasMany(e => e.WorkOrderRoutings)
-                        .WithOne(e => e.WorkOrder)
-                ;
+                        .WithOne(e => e.WorkOrder);
 
             modelBuilder.Entity<WorkOrderRouting>()
                         .Property(e => e.ActualResourceHrs)
@@ -554,8 +544,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<PurchaseOrderHeader>()
                         .HasMany(e => e.PurchaseOrderDetails)
-                        .WithOne(e => e.PurchaseOrderHeader)
-                ;
+                        .WithOne(e => e.PurchaseOrderHeader);
 
             modelBuilder.Entity<ShipMethod>()
                         .Property(e => e.ShipBase)
@@ -567,33 +556,27 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<ShipMethod>()
                         .HasMany(e => e.PurchaseOrderHeaders)
-                        .WithOne(e => e.ShipMethod)
-                ;
+                        .WithOne(e => e.ShipMethod);
 
             modelBuilder.Entity<ShipMethod>()
                         .HasMany(e => e.SalesOrderHeaders)
-                        .WithOne(e => e.ShipMethod)
-                ;
+                        .WithOne(e => e.ShipMethod);
 
             modelBuilder.Entity<Vendor>()
                         .HasMany(e => e.ProductVendors)
-                        .WithOne(e => e.Vendor)
-                ;
+                        .WithOne(e => e.Vendor);
 
             modelBuilder.Entity<Vendor>()
                         .HasMany(e => e.PurchaseOrderHeaders)
-                        .WithOne(e => e.Vendor)
-                ;
+                        .WithOne(e => e.Vendor);
 
             modelBuilder.Entity<Vendor>()
                         .HasMany(e => e.VendorAddresses)
-                        .WithOne(e => e.Vendor)
-                ;
+                        .WithOne(e => e.Vendor);
 
             modelBuilder.Entity<Vendor>()
                         .HasMany(e => e.VendorContacts)
-                        .WithOne(e => e.Vendor)
-                ;
+                        .WithOne(e => e.Vendor);
 
             modelBuilder.Entity<CountryRegionCurrency>()
                         .Property(e => e.CurrencyCode)
@@ -601,8 +584,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<CreditCard>()
                         .HasMany(e => e.ContactCreditCards)
-                        .WithOne(e => e.CreditCard)
-                ;
+                        .WithOne(e => e.CreditCard);
 
             modelBuilder.Entity<Currency>()
                         .Property(e => e.CurrencyCode)
@@ -610,20 +592,17 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<Currency>()
                         .HasMany(e => e.CountryRegionCurrencies)
-                        .WithOne(e => e.Currency)
-                ;
+                        .WithOne(e => e.Currency);
 
             modelBuilder.Entity<Currency>()
                         .HasMany(e => e.CurrencyRates)
                         .WithOne(e => e.Currency)
-                        .HasForeignKey(e => e.FromCurrencyCode)
-                ;
+                        .HasForeignKey(e => e.FromCurrencyCode);
 
             modelBuilder.Entity<Currency>()
                         .HasMany(e => e.CurrencyRates1)
                         .WithOne(e => e.Currency1)
-                        .HasForeignKey(e => e.ToCurrencyCode)
-                ;
+                        .HasForeignKey(e => e.ToCurrencyCode);
 
             modelBuilder.Entity<CurrencyRate>()
                         .Property(e => e.FromCurrencyCode)
@@ -651,21 +630,11 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<Customer>()
                         .HasMany(e => e.CustomerAddresses)
-                        .WithOne(e => e.Customer)
-                ;
-
-            //modelBuilder.Entity<Customer>()
-            //    .HasOptional(e => e.Individual)
-            //    .WithOne(e => e.Customer);
+                        .WithOne(e => e.Customer);
 
             modelBuilder.Entity<Customer>()
                         .HasMany(e => e.SalesOrderHeaders)
-                        .WithOne(e => e.Customer)
-                ;
-
-            //modelBuilder.Entity<Customer>()
-            //    .HasOptional(e => e.Store)
-            //    .WithOne(e => e.Customer);
+                        .WithOne(e => e.Customer);
 
             modelBuilder.Entity<SalesOrderDetail>()
                         .Property(e => e.UnitPrice)
@@ -710,7 +679,6 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
             modelBuilder.Entity<SalesPerson>()
                         .Property(e => e.CommissionPct)
                         .HasColumnType("smallmoney");
-                        //.HasPrecision(10, 4);
 
             modelBuilder.Entity<SalesPerson>()
                         .Property(e => e.SalesYTD)
@@ -722,13 +690,11 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<SalesPerson>()
                         .HasMany(e => e.SalesPersonQuotaHistories)
-                        .WithOne(e => e.SalesPerson)
-                ;
+                        .WithOne(e => e.SalesPerson);
 
             modelBuilder.Entity<SalesPerson>()
                         .HasMany(e => e.SalesTerritoryHistories)
-                        .WithOne(e => e.SalesPerson)
-                ;
+                        .WithOne(e => e.SalesPerson);
 
             modelBuilder.Entity<SalesPersonQuotaHistory>()
                         .Property(e => e.SalesQuota)
@@ -736,13 +702,12 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<SalesReason>()
                         .HasMany(e => e.SalesOrderHeaderSalesReasons)
-                        .WithOne(e => e.SalesReason)
-                ;
+                        .WithOne(e => e.SalesReason);
 
             modelBuilder.Entity<SalesTaxRate>()
                         .Property(e => e.TaxRate)
                         .HasColumnType("smallmoney");
-                        //.HasPrecision(10, 4);
+            
 
             modelBuilder.Entity<SalesTerritory>()
                         .Property(e => e.SalesYTD)
@@ -762,34 +727,28 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
             modelBuilder.Entity<SalesTerritory>()
                         .HasMany(e => e.StateProvinces)
-                        .WithOne(e => e.SalesTerritory)
-                ;
+                        .WithOne(e => e.SalesTerritory);
 
             modelBuilder.Entity<SalesTerritory>()
                         .HasMany(e => e.SalesTerritoryHistories)
-                        .WithOne(e => e.SalesTerritory)
-                ;
+                        .WithOne(e => e.SalesTerritory);
 
             modelBuilder.Entity<SpecialOffer>()
                         .Property(e => e.DiscountPct)
                         .HasColumnType("smallmoney");
-                        //.HasPrecision(10, 4);
 
             modelBuilder.Entity<SpecialOffer>()
                         .HasMany(e => e.SpecialOfferProducts)
-                        .WithOne(e => e.SpecialOffer)
-                ;
+                        .WithOne(e => e.SpecialOffer);
 
             modelBuilder.Entity<SpecialOfferProduct>()
                         .HasMany(e => e.SalesOrderDetails)
                         .WithOne(e => e.SpecialOfferProduct)
-                        .HasForeignKey(e => new {e.SpecialOfferID, e.ProductID})
-                ;
+                        .HasForeignKey(e => new {e.SpecialOfferID, e.ProductID});
 
             modelBuilder.Entity<Store>()
                         .HasMany(e => e.StoreContacts)
-                        .WithOne(e => e.Store)
-                ;
+                        .WithOne(e => e.Store);
         }
     }
 }

@@ -471,7 +471,6 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public sealed class ReplacementBoundedAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
             public ReplacementBoundedAnnotationFacetFactory(IFacetFactoryOrder<BoundedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
                 : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) {
-                //Assert.AreEqual(16, order.Order);
             }
 
             public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
@@ -491,7 +490,6 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
                 this.originalFactory = originalFactory;
 
-            //Assert.AreEqual(17, order.Order);
             public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
                 Assert.IsNotNull(originalFactory);
                 return metamodel;

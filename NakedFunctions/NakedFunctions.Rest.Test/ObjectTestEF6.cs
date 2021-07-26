@@ -370,8 +370,6 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
-
-            //resultObj.AssertObject("Ellen", FullName<UpdatedRecord>()", "4");
             Assert.AreEqual("Ellen", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -388,8 +386,6 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
-
-            //resultObj.AssertObject("Ellen", FullName<UpdatedRecord>()", "4");
             Assert.AreEqual("EllenUpdated", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -406,8 +402,6 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
-
-            //resultObj.AssertObject("Ellen", FullName<UpdatedRecord>()", "4");
             Assert.AreEqual("EllenUpdatedUpdatedUpdated", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -424,7 +418,6 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
-
             Assert.AreEqual("Test", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -441,7 +434,6 @@ namespace NakedFunctions.Rest.Test {
             var resultObj = parsedResult["result"];
 
             Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
-
             Assert.AreEqual("Fred", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -704,9 +696,6 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual(startDate, DateTime.Parse(sd));
             Assert.AreEqual(endDate, DateTime.Parse(ed));
-
-            //resultObj.AssertObject("Fred4", FullName<UpdatedRecord>()", "1");
-            //Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
         }
 
         [Test]

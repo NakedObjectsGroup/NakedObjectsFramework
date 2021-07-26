@@ -539,29 +539,11 @@ namespace NakedFunctions.Reflector.Test.Component {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<MaskClass>());
-                
-                //[Mask]  (currently) allowed only on a property
-                //var facet = spec.GetFacet<IMaskFacet>();
-                //Assert.IsNotNull(facet);
-                //Assert.AreEqual("Class Mask", facet.Value);
 
                 var propertySpec = spec.Fields.First();
                 var facet = propertySpec.GetFacet<IMaskFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual("Property Mask", facet.Value);
-
-                //var actionSpec = spec.ContributedActions.First();
-
-
-                //facet = actionSpec.GetFacet<IMaskFacet>();
-                //Assert.IsNotNull(facet);
-                //Assert.AreEqual("Function Mask", facet.Value);
-
-                //var parmSpec = actionSpec.Parameters[1];
-
-                //facet = parmSpec.GetFacet<IMaskFacet>();
-                //Assert.IsNotNull(facet);
-                //Assert.AreEqual("Parameter Mask", facet.Value);
             }
         }
 
@@ -590,12 +572,6 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(true, facet.IsMandatory);
                 Assert.AreEqual(false, facet.IsOptional);
-
-                //[Optionally] cannot (currently) be applied to a property
-                //facet = propertySpec2.GetFacet<IMandatoryFacet>();
-                //Assert.IsNotNull(facet);
-                //Assert.AreEqual(false, facet.IsMandatory);
-                //Assert.AreEqual(true, facet.IsOptional);
 
                 var actionSpec = spec.ContributedActions.First();
 
@@ -917,7 +893,6 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
                 var facet = spec.Fields.Single(f => f.Name == "Hidden Property Via Function").GetFacet<IHideForContextFacet>();
                 Assert.IsNotNull(facet);
-                //Assert.AreEqual(WhenTo.Always, facet.Value);
             }
         }
 

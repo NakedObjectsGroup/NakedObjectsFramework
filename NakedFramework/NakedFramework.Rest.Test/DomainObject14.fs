@@ -619,7 +619,6 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                   TObjectJson([ TProperty("Bool", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Byte", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Char", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-                                //TProperty("CharArray", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]));
                                 TProperty("Decimal", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("DateTime", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Double", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -631,7 +630,6 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                 TProperty("Long", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Password", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("SByte", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-                                //TProperty("SByteArray", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]));
                                 TProperty("Short", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("String", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("UInt", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -656,9 +654,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                TObjectJson
                    ([ TProperty("Bool", TObjectJson(makePropertyMemberWithType "objects" "Bool" oName "Bool" "" "boolean" false (TObjectVal(true))))
                       TProperty("Byte", TObjectJson(makePropertyMemberWithNumber "objects" "Byte" oName "Byte" "" "int" false (TObjectVal(1))))
-                      //TProperty("ByteArray", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) :: makePropertyMemberWithTypeNoValue "objects"  "ByteArray" oid "Byte Array" "" "blob"  false)) ;
                       TProperty("Char", TObjectJson(makePropertyMemberWithFormat "objects" "Char" oName "Char" "" "string" false (TObjectVal("3"))))
-                      //TProperty("CharArray", TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "CharArray" oid "Char Array" "" "clob"  false)) ;
                       TProperty("Decimal", TObjectJson(makePropertyMemberWithNumber "objects" "Decimal" oName "Decimal" "" "decimal" false (TObjectVal(5.1))))
                       
                       TProperty
@@ -679,7 +675,6 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                       TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oName "Long" "" "int" false (TObjectVal(9))))
                       TProperty("Password", TObjectJson(makePropertyMemberWithFormat "objects" "Password" oName "Password" "" "string" false (TObjectVal(null))))
                       TProperty("SByte", TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oName "S Byte" "" "int" false (TObjectVal(10))))
-                      //TProperty("SByteArray",TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "SByteArray" oid "S Byte Array" "" "blob"  false)) ;
                       TProperty("Set", TObjectJson(makeCollectionMember "Set" oName "Set" "" "set" 0 emptyValue))
                       TProperty("Short", TObjectJson(makePropertyMemberWithNumber "objects" "Short" oName "Short" "" "int" false (TObjectVal(12))))
                       TProperty("String", TObjectJson(makePropertyMemberWithFormat "objects" "String" oName "String" "" "string" false (TObjectVal("13"))))
@@ -1178,7 +1173,6 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                   TObjectJson([ TProperty("Bool", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Byte", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Char", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-                                //TProperty("CharArray", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]));
                                 TProperty("Decimal", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("DateTime", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Double", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -1190,7 +1184,6 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                                 TProperty("Long", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Password", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("SByte", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-                                //TProperty("SByteArray", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]));
                                 TProperty("Short", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("String", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("UInt", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -1209,9 +1202,7 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                TObjectJson
                    ([ TProperty("Bool", TObjectJson(makePropertyMemberWithType "objects" "Bool" oName "Bool" "" "boolean" false (TObjectVal(false))))
                       TProperty("Byte", TObjectJson(makePropertyMemberWithNumber "objects" "Byte" oName "Byte" "" "int" false (TObjectVal(2))))
-                      //TProperty("ByteArray", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) :: makePropertyMemberWithTypeNoValue "objects"  "ByteArray" oid "Byte Array" "" "blob"  false)) ;
                       TProperty("Char", TObjectJson(makePropertyMemberWithFormat "objects" "Char" oName "Char" "" "string" false (TObjectVal("3"))))
-                      //TProperty("CharArray", TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "CharArray" oid "Char Array" "" "clob"  false)) ;
                       TProperty("Decimal", TObjectJson(makePropertyMemberWithNumber "objects" "Decimal" oName "Decimal" "" "decimal" false (TObjectVal(100.9))))                      
                       TProperty
                           ("DateTime",                            
@@ -1232,7 +1223,6 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                       TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oName "Long" "" "int" false (TObjectVal(500))))
                       TProperty("Password", TObjectJson(makePropertyMemberWithFormat "objects" "Password" oName "Password" "" "string" false (TObjectVal(null))))
                       TProperty("SByte", TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oName "S Byte" "" "int" false (TObjectVal(3))))
-                      //TProperty("SByteArray",TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "SByteArray" oid "S Byte Array" "" "blob"  false)) ;
                       TProperty("Set", TObjectJson(makeCollectionMember "Set" oName "Set" "" "set" 0 emptyValue))
                       TProperty("Short", TObjectJson(makePropertyMemberWithNumber "objects" "Short" oName "Short" "" "int" false (TObjectVal(4))))
                       TProperty("String", TObjectJson(makePropertyMemberWithFormat "objects" "String" oName "String" "" "string" false (TObjectVal("44"))))

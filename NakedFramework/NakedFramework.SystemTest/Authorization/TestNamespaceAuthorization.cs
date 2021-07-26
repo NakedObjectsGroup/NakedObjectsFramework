@@ -136,15 +136,12 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         #endregion
 
         public void Init() {
-            //initialized = false;
             throw new NotImplementedException();
         }
 
         public void Shutdown() {
             throw new NotImplementedException();
         }
-
-        //bool initialized = false;
     }
 
     public class MyAppAuthorizer : INamespaceAuthorizer {

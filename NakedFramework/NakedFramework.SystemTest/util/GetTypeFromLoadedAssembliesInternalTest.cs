@@ -22,7 +22,6 @@ namespace NakedObjects.SystemTest.Util {
 
         [OneTimeTearDown]
         public void Output() {
-            //OutputCsv("GetTypeFromLoadedAssembliesInternalTest");
         }
 
         [Test]

@@ -51,8 +51,6 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public virtual ICollection<Customer> Customers { get; set; } = new HashSet<Customer>();
 
-        //public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
-
         public virtual ICollection<SalesPerson> SalesPersons { get; set; } = new HashSet<SalesPerson>();
 
         public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; } = new HashSet<SalesTerritoryHistory>();

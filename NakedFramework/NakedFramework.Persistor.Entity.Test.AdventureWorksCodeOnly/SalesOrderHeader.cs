@@ -48,8 +48,6 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public int? SalesPersonID { get; set; }
 
-        //public int? TerritoryID { get; set; }
-
         public int BillToAddressID { get; set; }
 
         public int ShipToAddressID { get; set; }
@@ -100,8 +98,6 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
         public virtual ICollection<SalesOrderDetail> SalesOrderDetails { get; set; } = new HashSet<SalesOrderDetail>();
 
         public virtual SalesPerson SalesPerson { get; set; }
-
-        //public virtual SalesTerritory SalesTerritory { get; set; }
 
         public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReasons { get; set; } = new HashSet<SalesOrderHeaderSalesReason>();
     }

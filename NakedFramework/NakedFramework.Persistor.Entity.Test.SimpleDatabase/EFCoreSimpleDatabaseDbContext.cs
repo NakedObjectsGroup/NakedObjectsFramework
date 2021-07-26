@@ -37,11 +37,6 @@ namespace SimpleDatabase {
             modelBuilder.Entity<Person>().Ignore(p => p.Parent);
             modelBuilder.Entity<Person>().ToTable("People", "dbo");
 
-            //modelBuilder.Entity<NameType>().Ignore(p => p.Parent);
-            //modelBuilder.Entity<ComplexType1>().Ignore(p => p.Parent);
-
-            //modelBuilder.Entity<Food>().Ignore(f => f.Person);
-
             modelBuilder.Entity<Person>().HasMany(p => p.Food).WithOne(f => f.Person).HasForeignKey("Person_Id");
      
         }
