@@ -22,6 +22,7 @@ function getCreateFiles(localFiles: Tree) {
         { path: "src/assets/list.png", file: localFiles.get("assets/list.png")! },
         { path: "src/assets/summary.png", file: localFiles.get("assets/summary.png")! },
         { path: "src/assets/table.png", file: localFiles.get("assets/table.png")! },
+        { path: "src/assets/table.png", file: localFiles.get("assets/pencil.png")! },
         { path: "src/fonts/iconFont.eot", file: localFiles.get("fonts/iconFont.eot")! },
         { path: "src/fonts/iconFont.svg", file: localFiles.get("fonts/iconFont.svg")! },
         { path: "src/fonts/iconFont.ttf", file: localFiles.get("fonts/iconFont.ttf")! },
