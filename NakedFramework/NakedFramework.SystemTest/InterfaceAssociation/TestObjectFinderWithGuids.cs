@@ -20,30 +20,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.ObjectFinderGuid {
     [TestFixture]
     public class TestObjectFinderWithGuids : AbstractSystemTest<PaymentContext> {
-        private ITestObject customer1;
-        private ITestObject customer2;
-        private ITestProperty key1;
-        private ITestProperty payee1;
-        private ITestObject payment1;
-        private ITestObject supplier1;
-
-        protected override Type[] ObjectTypes =>
-            new[] {
-                typeof(IPayee),
-                typeof(ObjectFinder),
-                typeof(Payment),
-                typeof(Customer),
-                typeof(Supplier)
-            };
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(ObjectFinder),
-                typeof(SimpleRepository<Payment>),
-                typeof(SimpleRepository<Customer>),
-                typeof(SimpleRepository<Supplier>)
-            };
-
         [SetUp]
         public void Initialize() {
             StartTest();
@@ -76,6 +52,30 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
             CleanupNakedObjectsFramework(this);
             PaymentContext.Delete();
         }
+
+        private ITestObject customer1;
+        private ITestObject customer2;
+        private ITestProperty key1;
+        private ITestProperty payee1;
+        private ITestObject payment1;
+        private ITestObject supplier1;
+
+        protected override Type[] ObjectTypes =>
+            new[] {
+                typeof(IPayee),
+                typeof(ObjectFinder),
+                typeof(Payment),
+                typeof(Customer),
+                typeof(Supplier)
+            };
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(ObjectFinder),
+                typeof(SimpleRepository<Payment>),
+                typeof(SimpleRepository<Customer>),
+                typeof(SimpleRepository<Supplier>)
+            };
 
         [Test]
         public void ChangeAssociatedObjectType() {

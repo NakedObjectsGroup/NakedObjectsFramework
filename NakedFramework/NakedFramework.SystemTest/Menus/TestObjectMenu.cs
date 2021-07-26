@@ -22,6 +22,26 @@ using TestObjectMenu;
 namespace NakedObjects.SystemTest.Menus {
     [TestFixture]
     public class TestObjectMenu : AbstractSystemTest<MenusDbContext> {
+        [SetUp]
+        public void SetUp() => StartTest();
+
+        [TearDown]
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            MenusDbContext.Delete();
+            var context = Activator.CreateInstance<MenusDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            MenusDbContext.Delete();
+        }
 
         protected override Type[] ObjectTypes =>
             new[] {
@@ -47,27 +67,6 @@ namespace NakedObjects.SystemTest.Menus {
                 typeof(Contrib2),
                 typeof(Contrib3)
             };
-
-        [SetUp]
-        public void SetUp() => StartTest();
-
-        [TearDown]
-        public void TearDown() => EndTest();
-
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            MenusDbContext.Delete();
-            var context = Activator.CreateInstance<MenusDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            MenusDbContext.Delete();
-        }
 
         [Test]
         public void SubClassAddingNewSubMenuAboveSuperMenu() {

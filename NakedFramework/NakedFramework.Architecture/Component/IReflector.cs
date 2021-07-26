@@ -11,14 +11,12 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Component {
-
     public enum ReflectorType {
         System,
         Object,
-        Functional, 
+        Functional,
         Hybrid
     }
-
 
     /// <summary>
     ///     The Reflector is responsible for parsing the code of the domain model and creating the

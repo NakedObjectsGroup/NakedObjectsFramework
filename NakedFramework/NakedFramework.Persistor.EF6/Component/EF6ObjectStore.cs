@@ -37,31 +37,23 @@ using NakedFramework.Persistor.EF6.Util;
 namespace NakedFramework.Persistor.EF6.Component {
     public sealed class EF6ObjectStore : IObjectStore, IDisposable {
         private readonly Func<object, INakedObjectAdapter> getAdapterFor;
+
+        internal readonly ILogger<EF6ObjectStore> Logger;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly DatabaseOidGenerator oidGenerator;
         private readonly ISession session;
         private IDictionary<EF6ContextConfiguration, EF6LocalContext> contexts = new Dictionary<EF6ContextConfiguration, EF6LocalContext>();
-        private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
-        private IDomainObjectInjector injector;
-        private Action<object, EventArgs> savingChangesHandler;
-        private Func<Type, ITypeSpec> loadSpecification;
-        private Func<IDictionary<object, object>, bool> functionalPostSave = _ => false;
-
-        internal readonly ILogger<EF6ObjectStore> Logger;
         internal Func<IOid, object, INakedObjectAdapter> CreateAdapter;
         internal Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> CreateAggregatedAdapter;
+        private Func<IDictionary<object, object>, bool> functionalPostSave = _ => false;
+        private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
         internal Action<INakedObjectAdapter> HandleLoaded;
+        private IDomainObjectInjector injector;
+        private Func<Type, ITypeSpec> loadSpecification;
         internal Action<INakedObjectAdapter> RemoveAdapter;
         internal Action<INakedObjectAdapter, object> ReplacePoco;
-
-        private static bool EnforceProxies { get; set; }
-        private bool RollBackOnError { get; set; }
-        private Func<bool> IsInitializedCheck { get; }
-
-        // set is internally visible for testing
-        internal static int MaximumCommitCycles { get; set; }
-        internal static bool RequireExplicitAssociationOfTypes { get; private set; }
+        private Action<object, EventArgs> savingChangesHandler;
 
         internal EF6ObjectStore(IMetamodelManager metamodelManager, ISession session, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EF6ObjectStore> logger) {
             this.metamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
@@ -94,6 +86,14 @@ namespace NakedFramework.Persistor.EF6.Component {
             IsInitializedCheck = config.IsInitializedCheck;
             SetupContexts();
         }
+
+        private static bool EnforceProxies { get; set; }
+        private bool RollBackOnError { get; set; }
+        private Func<bool> IsInitializedCheck { get; }
+
+        // set is internally visible for testing
+        internal static int MaximumCommitCycles { get; set; }
+        internal static bool RequireExplicitAssociationOfTypes { get; private set; }
 
         #region IDisposable Members
 
@@ -171,7 +171,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             context.DefaultMergeOption = entityContextConfiguration.DefaultMergeOption;
             context.WrappedObjectContext.ContextOptions.LazyLoadingEnabled = true;
             context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled = true;
-            context.WrappedObjectContext.SavingChanges += (o, e) => savingChangesHandler(o,e);
+            context.WrappedObjectContext.SavingChanges += (o, e) => savingChangesHandler(o, e);
             context.WrappedObjectContext.ObjectStateManager.ObjectStateManagerChanged += (_, args) => {
                 if (args.Action == CollectionChangeAction.Add) {
                     LoadObjectIntoNakedObjectsFramework(args.Element, context);
@@ -376,7 +376,6 @@ namespace NakedFramework.Persistor.EF6.Component {
             return msg.ToString();
         }
 
-
         internal void CheckProxies(object objectToCheck) {
             var objectType = objectToCheck.GetType();
             if (!EnforceProxies || FasterTypeUtils.IsSystem(objectType)) {
@@ -562,8 +561,7 @@ namespace NakedFramework.Persistor.EF6.Component {
             var references = context.GetReferenceMembers(entityType);
             var collection = context.GetCollectionMembers(entityType);
 
-            foreach (var pi in references.Union(collection))
-            {
+            foreach (var pi in references.Union(collection)) {
                 pi.GetValue(domainObject, null);
             }
 

@@ -11,8 +11,7 @@ using NakedFramework.Core.Error;
 
 namespace NakedObjects.Reflector.Utils {
     public static class FactoryUtils {
-        
-        public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object target,  object[] parms) {
+        public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object target, object[] parms) {
             try {
                 return methodDelegate is not null ? (T) methodDelegate(target, parms) : (T) method.Invoke(target, parms);
             }

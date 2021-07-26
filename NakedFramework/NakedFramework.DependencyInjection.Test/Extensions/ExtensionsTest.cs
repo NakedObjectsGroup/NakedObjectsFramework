@@ -35,8 +35,7 @@ namespace NakedObjects.DependencyInjection.Test.Extensions {
         }
 
         [TestMethod]
-        public void TestRestfulObjects()
-        {
+        public void TestRestfulObjects() {
             IServiceCollection services = new ServiceCollection();
             services.AddNakedFramework(options => { options.AddRestfulObjects(options => { options.AcceptHeaderStrict = true; }); });
         }

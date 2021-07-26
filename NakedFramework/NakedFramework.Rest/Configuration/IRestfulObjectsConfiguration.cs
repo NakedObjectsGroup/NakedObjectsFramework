@@ -9,7 +9,6 @@ namespace NakedFramework.Rest.Configuration {
     public interface IRestfulObjectsConfiguration {
         public bool DebugWarnings { get; set; }
 
-
         public bool IsReadOnly { get; set; }
 
         public (int, int, int) CacheSettings { get; set; }
@@ -19,25 +18,27 @@ namespace NakedFramework.Rest.Configuration {
         public int DefaultPageSize { get; set; }
 
         /// <summary>
-        /// Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http messages.
+        ///     Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http
+        ///     messages.
         /// </summary>
         public bool InlineDetailsInActionMemberRepresentations { get; set; }
 
         /// <summary>
-        /// Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http messages.
-        /// </summary> 
+        ///     Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http
+        ///     messages.
+        /// </summary>
         public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
 
         /// <summary>
-        /// Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http messages.
+        ///     Defaults to true. Setting to false will decrease size of representations, but typically increase the number of Http
+        ///     messages.
         /// </summary>
         public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
 
         /// <summary>
-        /// Defaults to true for Naked Objects, where 'proto-peristent objects' are referred to as 'transient objects'.
+        ///     Defaults to true for Naked Objects, where 'proto-peristent objects' are referred to as 'transient objects'.
         /// </summary>
         public bool ProtoPersistentObjects { get; set; }
-
 
         public bool DeleteObjects { get; set; }
         public bool ValidateOnly { get; set; }
@@ -46,9 +47,9 @@ namespace NakedFramework.Rest.Configuration {
         public bool InlinedMemberRepresentations { get; set; }
 
         /// <summary>
-        /// It is recommended that this flag remain set at the default (false).
-        /// It should only be set to true if necesssary for backwards-compatibility
-        /// with earlier versions of the framework.
+        ///     It is recommended that this flag remain set at the default (false).
+        ///     It should only be set to true if necesssary for backwards-compatibility
+        ///     with earlier versions of the framework.
         /// </summary>
         bool AllowMutatingActionOnImmutableObject { get; set; }
     }

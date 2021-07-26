@@ -22,7 +22,6 @@ using NakedObjects.Reflector.Facet;
 
 namespace NakedObjects.Reflector.Utils {
     public static class ObjectMethodHelpers {
-
         /// <summary>
         ///     Returns  specific public methods that: have the specified prefix; have the specified return Type, or
         ///     void, and has the specified number of parameters. If the returnType is specified as null then the return
@@ -39,8 +38,6 @@ namespace NakedObjects.Reflector.Utils {
                                                string name,
                                                Type returnType = null) =>
             type.GetMethods(MethodHelpers.GetBindingFlagsForMethodType(methodType, reflector)).Where(m => m.Name == name).Where(m => m.IsStatic && methodType == MethodType.Class || !m.IsStatic && methodType == MethodType.Object).Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null).Where(m => returnType == null || returnType.IsAssignableFrom(m.ReturnType)).ToArray();
-
-
 
         public static void FindDefaultHideMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory) {
             var method = MethodHelpers.FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);

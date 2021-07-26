@@ -27,8 +27,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private readonly ISession session;
         private List<INakedObjectAdapter> updatingNakedObjects;
 
-        private string Name { get; }
-
         private EFCoreLocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, EFCoreObjectStore parent) {
             this.session = session;
             this.parent = parent;
@@ -42,6 +40,8 @@ namespace NakedFramework.Persistor.EFCore.Component {
             WrappedDbContext = context();
             Name = WrappedDbContext.ToString();
         }
+
+        private string Name { get; }
 
         public DbContext WrappedDbContext { get; private set; }
         public ISet<INakedObjectAdapter> LoadedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();

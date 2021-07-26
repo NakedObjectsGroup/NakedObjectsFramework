@@ -1056,163 +1056,109 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             [AuthorizeProperty(ViewRoles = "", ViewUsers = "", EditRoles = "", EditUsers = "")]
             public int Property9 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
 
             [AuthorizeAction]
-            public int Action2()
-            {
-                return 0;
-            }
+            public int Action2() => 0;
 
             [AuthorizeAction(Roles = "aRole")]
-            public int Action3()
-            {
-                return 0;
-            }
+            public int Action3() => 0;
 
             [AuthorizeAction(Users = "aUser")]
-            public int Action4()
-            {
-                return 0;
-            }
+            public int Action4() => 0;
 
             [AuthorizeAction(Roles = "aRole", Users = "aUser")]
-            public int Action5()
-            {
-                return 0;
-            }
+            public int Action5() => 0;
         }
 
         private class Customer1 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeProperty]
         private class Customer2 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeProperty(ViewRoles = "")]
         private class Customer3 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeProperty(ViewUsers = "")]
         private class Customer4 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeProperty(EditRoles = "")]
         private class Customer5 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeProperty(EditUsers = "")]
         private class Customer6 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
         private class Customer7 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeProperty(EditRoles = "aRole", EditUsers = "aUser")]
         private class Customer8 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeProperty(ViewRoles = "", ViewUsers = "", EditRoles = "", EditUsers = "")]
         private class Customer9 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeAction]
         private class Customer10 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeAction(Roles = "aRole")]
         private class Customer11 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeAction(Users = "aUser")]
         private class Customer12 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeAction(Roles = "aRole", Users = "aUser")]
         private class Customer13 {
             public int Property1 => 0;
 
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         [AuthorizeAction(Roles = "aRole", Users = "aUser")]
@@ -1222,10 +1168,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public int Property1 => 0;
 
             [AuthorizeAction(Roles = "anotherRole", Users = "anotherUser")]
-            public int Action1()
-            {
-                return 0;
-            }
+            public int Action1() => 0;
         }
 
         // ReSharper restore UnusedMember.Local
@@ -1242,10 +1185,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         #region IPrincipal Members
 
-        public bool IsInRole(string role)
-        {
-            return role == testRole;
-        }
+        public bool IsInRole(string role) => role == testRole;
 
         public IIdentity Identity => new TestIdentity(testUser);
 

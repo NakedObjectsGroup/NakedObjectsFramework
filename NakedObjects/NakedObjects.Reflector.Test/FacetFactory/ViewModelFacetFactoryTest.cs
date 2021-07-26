@@ -171,10 +171,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         private class Class2 {
             // ReSharper disable once UnusedMember.Local
-            public string[] DeriveKeys()
-            {
-                return null;
-            }
+            public string[] DeriveKeys() => null;
 
             // ReSharper disable once UnusedMember.Local
             // ReSharper disable once UnusedParameter.Local
@@ -222,10 +219,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
                 Value2 = instanceId[1];
             }
 
-            public bool IsEditView()
-            {
-                return false;
-            }
+            public bool IsEditView() => false;
 
             #endregion
         }

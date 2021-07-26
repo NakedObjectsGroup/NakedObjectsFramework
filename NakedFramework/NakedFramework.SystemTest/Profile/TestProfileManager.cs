@@ -22,13 +22,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Profile {
     [TestFixture]
     public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
-        protected override Type[] ObjectTypes => new[] {
-            typeof(Foo),
-            typeof(QueryableList<Foo>)
-        };
-
-        protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
-
         [SetUp]
         public void SetUp() {
             StartTest();
@@ -56,6 +49,13 @@ namespace NakedObjects.SystemTest.Profile {
             CleanupNakedObjectsFramework(this);
             ProfileDbContext.Delete();
         }
+
+        protected override Type[] ObjectTypes => new[] {
+            typeof(Foo),
+            typeof(QueryableList<Foo>)
+        };
+
+        protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 
         protected override IProfileConfiguration ProfileConfiguration =>
             new ProfileConfiguration<MyProfiler> {
@@ -335,8 +335,6 @@ namespace NakedObjects.SystemTest.Profile {
             TestCallback2(callbackData[5]);
         }
 
-        #region Nested type: CallbackData
-
         private class CallbackData {
             public CallbackData(IPrincipal principal, ProfileEvent profileEvent, Type type, string member) {
                 Principal = principal;
@@ -350,8 +348,6 @@ namespace NakedObjects.SystemTest.Profile {
             public Type Type { get; }
             public string Member { get; }
         }
-
-        #endregion
     }
 
     #region Classes used by tests

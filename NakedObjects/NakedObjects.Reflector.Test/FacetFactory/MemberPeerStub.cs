@@ -33,45 +33,21 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         public string GroupFullName => "";
 
-        public string GetHelp()
-        {
-            return null;
-        }
+        public string GetHelp() => null;
 
-        public IConsent IsUsableDeclaratively()
-        {
-            return Allow.Default;
-        }
+        public IConsent IsUsableDeclaratively() => Allow.Default;
 
-        public IConsent IsUsableForSession(ISession session)
-        {
-            return Allow.Default;
-        }
+        public IConsent IsUsableForSession(ISession session) => Allow.Default;
 
-        public IConsent IsUsable(INakedObjectAdapter target)
-        {
-            return null;
-        }
+        public IConsent IsUsable(INakedObjectAdapter target) => null;
 
-        public bool IsVisibleDeclaratively()
-        {
-            return false;
-        }
+        public bool IsVisibleDeclaratively() => false;
 
-        public bool IsVisibleForSession(ISession session)
-        {
-            return false;
-        }
+        public bool IsVisibleForSession(ISession session) => false;
 
-        public bool IsVisible(INakedObjectAdapter target)
-        {
-            return false;
-        }
+        public bool IsVisible(INakedObjectAdapter target) => false;
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
 
         #region Nested type: IdentifierNull
 
@@ -84,10 +60,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
                 : base("", "") =>
                 this.owner = owner;
 
-            public override string ToString()
-            {
-                return owner.Name;
-            }
+            public override string ToString() => owner.Name;
         }
 
         #endregion

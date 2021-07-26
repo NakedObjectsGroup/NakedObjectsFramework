@@ -52,15 +52,11 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(oo.IsPropertyMatch<Match, int>(null, mm => mm.Prop2));
         }
 
-        #region Nested type: Match
-
         public class Match {
             public string Prop1 { get; set; }
             public int Prop2 { get; set; }
             public Match Prop3 { get; set; }
             public int? Prop4 { get; set; }
         }
-
-        #endregion
     }
 }

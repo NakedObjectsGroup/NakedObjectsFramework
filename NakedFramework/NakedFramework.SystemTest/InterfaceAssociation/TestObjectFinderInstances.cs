@@ -20,25 +20,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.ObjectFinderInstances {
     [TestFixture]
     public class TestObjectFinderInstances : AbstractSystemTest<PaymentContext> {
-
-        protected override Type[] ObjectTypes =>
-            new[] {
-                typeof(IPayee),
-                typeof(NakedObjects.SystemTest.ObjectFinderGuid.IPayee),
-                typeof(Payment),
-                typeof(Customer),
-                typeof(Supplier)
-            };
-
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(ObjectFinder),
-                typeof(SimpleRepository<Customer>),
-                typeof(SimpleRepository<Supplier>),
-                typeof(MyService)
-            };
-
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -56,6 +37,23 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
             CleanupNakedObjectsFramework(this);
             PaymentContext.Delete();
         }
+
+        protected override Type[] ObjectTypes =>
+            new[] {
+                typeof(IPayee),
+                typeof(ObjectFinderGuid.IPayee),
+                typeof(Payment),
+                typeof(Customer),
+                typeof(Supplier)
+            };
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(ObjectFinder),
+                typeof(SimpleRepository<Customer>),
+                typeof(SimpleRepository<Supplier>),
+                typeof(MyService)
+            };
 
         [Test]
         public void FindInstances() {

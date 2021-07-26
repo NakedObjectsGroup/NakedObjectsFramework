@@ -131,7 +131,6 @@ namespace NakedFramework.Persistor.EF6.Component {
             }
         }
 
-
         private void ProxyReferencesAndCopyValuesToProxy(object objectToProxy, object proxy) {
             var nonIdMembers = context.GetNonIdMembers(objectToProxy.GetType());
             nonIdMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));

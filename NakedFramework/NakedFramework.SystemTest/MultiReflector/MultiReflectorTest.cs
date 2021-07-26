@@ -22,10 +22,8 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 
 namespace NakedObjects.SystemTest.MultiReflector {
-    
     internal class MultiReflectorOrder<T> : IReflectorOrder<T> {
-        public int Order => typeof(T) switch
-        {
+        public int Order => typeof(T) switch {
             { } t when t.IsAssignableTo(typeof(SystemTypeReflector)) => 0,
             { } t when t.IsAssignableTo(typeof(ObjectReflector)) => 1,
             { } t when t.IsAssignableTo(typeof(FunctionalReflector)) => 1,
@@ -59,7 +57,6 @@ namespace NakedObjects.SystemTest.MultiReflector {
             CleanupNakedObjectsFramework(this);
             FooContext.Delete();
         }
-
 
         protected override Action<NakedFrameworkOptions> AddCoreOptions => builder => {
             base.AddCoreOptions(builder);

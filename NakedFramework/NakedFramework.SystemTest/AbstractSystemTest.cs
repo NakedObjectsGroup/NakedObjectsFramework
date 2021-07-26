@@ -32,13 +32,12 @@ namespace NakedObjects.SystemTest {
 
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
         where TContext : DbContext {
-
         protected override bool EnforceProxies => false;
 
         protected override Action<NakedFrameworkOptions> AddNakedFunctions => builder => { };
 
-        protected override Func<IConfiguration, DbContext>[] ContextCreators => 
-            new Func<IConfiguration, DbContext>[] { config => Activator.CreateInstance<TContext>() };
+        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
+            new Func<IConfiguration, DbContext>[] {config => Activator.CreateInstance<TContext>()};
 
         /// <summary>
         ///     Assumes that a SimpleRepository for the type T has been registered in Services

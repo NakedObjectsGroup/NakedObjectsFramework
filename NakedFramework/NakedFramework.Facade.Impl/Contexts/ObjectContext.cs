@@ -20,7 +20,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
         public bool Mutated { get; set; }
 
         public (string serverName, string oid)? Redirected => Specification?.GetFacet<IRedirectedFacet>()?.GetRedirection(Target.Object);
-        
+
         public override string Id => Target.Oid.ToString();
 
         public override ITypeSpec Specification => Target.Spec;

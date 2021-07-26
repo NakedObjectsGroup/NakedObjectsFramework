@@ -160,10 +160,8 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
 
     #region Classes used in test
 
-    public class LocalMainMenus
-    {
-        public static IMenu[] MainMenus(IMenuFactory factory)
-        {
+    public class LocalMainMenus {
+        public static IMenu[] MainMenus(IMenuFactory factory) {
             var foos = factory.NewMenu<FooService>(true);
             var bars = factory.NewMenu<BarService>(true);
 
@@ -181,8 +179,8 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
             sub2.AddAction("Action0");
 
             var hyb = factory.NewMenu("Hybrid", "hybrid");
-              hyb.AddAction(typeof(FooService),"FooAction0");
-            hyb.AddAction(typeof(BarService),"BarAction0");
+            hyb.AddAction(typeof(FooService), "FooAction0");
+            hyb.AddAction(typeof(BarService), "BarAction0");
             hyb.AddRemainingActions(typeof(QuxService));
 
             var empty = factory.NewMenu<object>(false, "Empty");
@@ -190,9 +188,10 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
             var empty2 = factory.NewMenu<object>(false, "Empty2");
             empty2.CreateSubMenu("Sub");
 
-            return new[] { foos, bars, q, subs, hyb, empty, empty2 };
+            return new[] {foos, bars, q, subs, hyb, empty, empty2};
         }
     }
+
     public class FooService {
         public void FooAction0() { }
 

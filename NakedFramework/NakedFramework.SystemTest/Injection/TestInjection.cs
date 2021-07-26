@@ -18,6 +18,26 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Injection {
     [TestFixture]
     public class TestInjection : AbstractSystemTest<InjectionDbContext> {
+        [SetUp]
+        public void SetUp() => StartTest();
+
+        [TearDown]
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            InjectionDbContext.Delete();
+            var context = Activator.CreateInstance<InjectionDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            InjectionDbContext.Delete();
+        }
 
         protected override Type[] ObjectTypes => new[] {
             typeof(Object1),
@@ -45,27 +65,6 @@ namespace NakedObjects.SystemTest.Injection {
                 typeof(Service4ImplB),
                 typeof(Service4ImplC)
             };
-
-        [SetUp]
-        public void SetUp() => StartTest();
-
-        [TearDown]
-        public void TearDown() => EndTest();
-
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            InjectionDbContext.Delete();
-            var context = Activator.CreateInstance<InjectionDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            InjectionDbContext.Delete();
-        }
 
         [Test]
         public void InjectArrayOfServicesDefinedByInterface() {

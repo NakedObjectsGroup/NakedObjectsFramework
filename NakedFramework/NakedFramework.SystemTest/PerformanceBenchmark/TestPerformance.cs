@@ -18,15 +18,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Performance {
     [TestFixture]
     public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
-        protected override Type[] ObjectTypes =>
-            new[] {
-                typeof(Qux)
-            };
-
-        protected override Type[] Services => new[] {
-            typeof(SimpleRepository<Qux>)
-        };
-
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -48,6 +39,15 @@ namespace NakedObjects.SystemTest.Performance {
             CleanupNakedObjectsFramework(this);
             PerformanceDbContext.Delete();
         }
+
+        protected override Type[] ObjectTypes =>
+            new[] {
+                typeof(Qux)
+            };
+
+        protected override Type[] Services => new[] {
+            typeof(SimpleRepository<Qux>)
+        };
 
         private void GetSingleRandomQux() {
             var q = GetTestService("Quxes").GetAction("Get Random").InvokeReturnObject();

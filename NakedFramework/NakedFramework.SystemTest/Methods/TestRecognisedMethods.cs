@@ -24,6 +24,26 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Method {
     [TestFixture]
     public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
+        [SetUp]
+        public void SetUp() => StartTest();
+
+        [TearDown]
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            MethodsDbContext.Delete();
+            var context = Activator.CreateInstance<MethodsDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            MethodsDbContext.Delete();
+        }
 
         protected override Type[] ObjectTypes =>
             new[] {
@@ -145,27 +165,6 @@ namespace NakedObjects.SystemTest.Method {
                 typeof(SimpleRepository<Validate4>),
                 typeof(SimpleRepository<Validate5>)
             };
-
-        [SetUp]
-        public void SetUp() => StartTest();
-
-        [TearDown]
-        public void TearDown() => EndTest();
-
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            MethodsDbContext.Delete();
-            var context = Activator.CreateInstance<MethodsDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            MethodsDbContext.Delete();
-        }
 
         private void CreateAuto2(string prop1) {
             var obj2 = NewTestObject<Auto2>();
@@ -1001,8 +1000,7 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         [Test]
-        public virtual void ToStringRecognisedAsATitle()
-        {
+        public virtual void ToStringRecognisedAsATitle() {
             var obj = NewTestObject<Title5>();
             var prop1 = obj.GetPropertyByName("Prop1");
             prop1.SetValue("Bar");
@@ -1020,7 +1018,6 @@ namespace NakedObjects.SystemTest.Method {
 
             Assert.AreEqual("Masked Title a mask", prop1.Title);
         }
-
 
         [Test]
         public void UnmatchedAutoCompleteMethodShowsUpAsAction() {
@@ -2362,8 +2359,7 @@ namespace NakedObjects.SystemTest.Method {
         public string Title() => throw new Exception("Title method should not have been called");
     }
 
-    public class Title12
-    {
+    public class Title12 {
         public virtual int Id { get; set; }
 
         [Mask("a mask")]
@@ -2372,7 +2368,6 @@ namespace NakedObjects.SystemTest.Method {
         public override string ToString() => "Simple Title";
         public string ToString(string mask) => $"Masked Title {mask}";
     }
-
 
     public enum Sex {
         Male = 1,

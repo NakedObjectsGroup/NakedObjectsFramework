@@ -16,14 +16,6 @@ using TestObjectMenu;
 namespace NakedObjects.SystemTest.Menus {
     [TestFixture]
     public class TestServiceMenus : AbstractSystemTest<MenusDbContext> {
-        protected override Type[] Services =>
-            new[] {
-                typeof(FooService),
-                typeof(ServiceWithSubMenus),
-                typeof(BarService),
-                typeof(QuxService)
-            };
-
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -44,6 +36,14 @@ namespace NakedObjects.SystemTest.Menus {
             CleanupNakedObjectsFramework(this);
             MenusDbContext.Delete();
         }
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(FooService),
+                typeof(ServiceWithSubMenus),
+                typeof(BarService),
+                typeof(QuxService)
+            };
 
         [Test]
         public void TestDefaultServiceMenu() {

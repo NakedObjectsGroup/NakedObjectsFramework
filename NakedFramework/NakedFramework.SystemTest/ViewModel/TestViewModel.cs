@@ -21,13 +21,6 @@ using NUnit.Framework;
 namespace NakedObjects.Helpers.Test.ViewModel {
     [TestFixture]
     public class TestViewModel : AbstractSystemTest<FooContext> {
-        private ITestObject foo1;
-        private ITestService views;
-
-        protected override Type[] ObjectTypes => new[] {typeof(Foo), typeof(ViewFoo) };
-
-        protected override Type[] Services => new[] {typeof(ViewModelService), typeof(SimpleRepository<Foo>)};
-
         [SetUp]
         public void Initialize() {
             StartTest();
@@ -58,6 +51,13 @@ namespace NakedObjects.Helpers.Test.ViewModel {
             CleanupNakedObjectsFramework(this);
             FooContext.Delete();
         }
+
+        private ITestObject foo1;
+        private ITestService views;
+
+        protected override Type[] ObjectTypes => new[] {typeof(Foo), typeof(ViewFoo)};
+
+        protected override Type[] Services => new[] {typeof(ViewModelService), typeof(SimpleRepository<Foo>)};
 
         [Test]
         public virtual void AttemptRestoreWithInvalidKey() {

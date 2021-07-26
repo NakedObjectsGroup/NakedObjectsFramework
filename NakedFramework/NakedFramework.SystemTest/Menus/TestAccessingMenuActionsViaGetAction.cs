@@ -22,23 +22,6 @@ namespace NakedObjects.SystemTest.Menus {
     //of GetAction, including with specified subMenu.
     [TestFixture]
     public class TestAccessingMenuActionsViaGetAction : AbstractSystemTest<CADbContext> {
-
-        protected override Type[] ObjectTypes =>
-            new[] {
-                typeof(Foo),
-                typeof(Foo2),
-                typeof(Bar)
-            };
-
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(SimpleRepository<Foo>),
-                typeof(SimpleRepository<Foo2>),
-                typeof(SimpleRepository<Bar>),
-                typeof(ContributingService)
-            };
-
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -59,6 +42,21 @@ namespace NakedObjects.SystemTest.Menus {
             CleanupNakedObjectsFramework(this);
             CADbContext.Delete();
         }
+
+        protected override Type[] ObjectTypes =>
+            new[] {
+                typeof(Foo),
+                typeof(Foo2),
+                typeof(Bar)
+            };
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Foo>),
+                typeof(SimpleRepository<Foo2>),
+                typeof(SimpleRepository<Bar>),
+                typeof(ContributingService)
+            };
 
         [Test]
         public void ContributedActionToObjectWithDefaultMenu() {

@@ -77,8 +77,6 @@ namespace NakedObjects.SystemTest.Util {
             }
         }
 
-        #region Nested type: TestContainer
-
         public class TestContainer : IDomainObjectContainer {
             #region IDomainObjectContainer Members
 
@@ -96,13 +94,11 @@ namespace NakedObjects.SystemTest.Util {
 
             #endregion
 
-            
             public PropertyInfo[] GetKeys(Type type) {
                 return type.GetProperties().Where(p => p.GetCustomAttribute<KeyAttribute>() != null).ToArray();
             }
 
             public object FindByKeys(Type type, object[] keys) => throw new NotImplementedException();
-
 
             #region not impl
 
@@ -183,18 +179,10 @@ namespace NakedObjects.SystemTest.Util {
             #endregion
         }
 
-        #endregion
-
-        #region Nested type: TestKey
-
         public class TestKey {
             [Key]
             public int AName { get; set; }
         }
-
-        #endregion
-
-        #region Nested type: TestMultiKey
 
         public class TestMultiKey {
             [Key]
@@ -204,23 +192,13 @@ namespace NakedObjects.SystemTest.Util {
             public int AName1 { get; set; }
         }
 
-        #endregion
-
-        #region Nested type: TestNoKey
-
         public class TestNoKey {
             public int AName { get; set; }
         }
-
-        #endregion
-
-        #region Nested type: TestStringKey
 
         public class TestStringKey {
             [Key]
             public string AName { get; set; }
         }
-
-        #endregion
     }
 }

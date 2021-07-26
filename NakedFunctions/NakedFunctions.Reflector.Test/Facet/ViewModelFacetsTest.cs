@@ -41,7 +41,6 @@ namespace NakedFunctions.Reflector.Test.Facet {
             public IResolveStateMachine ResolveState { get; }
             public IVersion Version { get; }
             public IVersion OptimisticLock { get; set; }
-            public string IconName() => throw new NotImplementedException();
             public string TitleString() => throw new NotImplementedException();
             public string InvariantString() => throw new NotImplementedException();
             public void CheckLock(IVersion otherVersion) => throw new NotImplementedException();
@@ -58,6 +57,7 @@ namespace NakedFunctions.Reflector.Test.Facet {
             public void Persisted() => throw new NotImplementedException();
             public void Updating() => throw new NotImplementedException();
             public void Updated() => throw new NotImplementedException();
+            public string IconName() => throw new NotImplementedException();
             public object PersistingAndReturn() => throw new NotImplementedException();
             public object PersistedAndReturn() => throw new NotImplementedException();
             public object UpdatingAndReturn() => throw new NotImplementedException();

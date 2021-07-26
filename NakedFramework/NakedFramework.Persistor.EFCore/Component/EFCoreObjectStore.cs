@@ -31,29 +31,23 @@ using NakedFramework.Persistor.EFCore.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
     public class EFCoreObjectStore : IObjectStore, IDisposable {
+        private readonly Dictionary<ComplexTypeMatcher, (INakedObjectAdapter, PropertyInfo)> adaptersWithComplexChildren = new();
         private readonly EFCorePersistorConfiguration config;
+        internal readonly ILogger<EFCoreObjectStore> Logger;
+        private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
-        private readonly IMetamodelManager metamodelManager;
-        private readonly Dictionary<ComplexTypeMatcher, (INakedObjectAdapter, PropertyInfo)> adaptersWithComplexChildren = new();
         private EFCoreLocalContext[] contexts;
-        private Func<IDictionary<object, object>, bool> functionalPostSave = _ => false;
-        private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
-        private IDomainObjectInjector injector;
-        private Action<object> savingChanges;
-
-        // internal and settable for testing
-        internal int MaximumCommitCycles { get; set; }
-        internal readonly ILogger<EFCoreObjectStore> Logger;
         internal Func<IOid, object, INakedObjectAdapter> CreateAdapter;
         internal Func<INakedObjectAdapter, PropertyInfo, object, INakedObjectAdapter> CreateAggregatedAdapter;
+        private Func<IDictionary<object, object>, bool> functionalPostSave = _ => false;
+        private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
         internal Action<INakedObjectAdapter> HandleLoaded;
+        private IDomainObjectInjector injector;
         internal Action<INakedObjectAdapter> RemoveAdapter;
         internal Action<INakedObjectAdapter, object> ReplacePoco;
-
-        public bool IsInitialized => true;
-        public string Name => "EF Core Object Store";
+        private Action<object> savingChanges;
 
         public EFCoreObjectStore(EFCorePersistorConfiguration config,
                                  IOidGenerator oidGenerator,
@@ -81,7 +75,13 @@ namespace NakedFramework.Persistor.EFCore.Component {
             SetupContexts();
         }
 
+        // internal and settable for testing
+        internal int MaximumCommitCycles { get; set; }
+
         public void Dispose() => contexts.ForEach(c => c.Dispose());
+
+        public bool IsInitialized => true;
+        public string Name => "EF Core Object Store";
 
         public void AbortTransaction() => RollBackContext();
 

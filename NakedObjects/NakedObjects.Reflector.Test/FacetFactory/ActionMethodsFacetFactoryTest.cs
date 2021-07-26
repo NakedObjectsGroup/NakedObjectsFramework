@@ -116,14 +116,12 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             AssertMethodNotRemoved(autoCompleteMethod);
         }
 
-        private void CheckChoicesFacetIsNull(MethodInfo choicesMethod, IActionParameterSpecImmutable parameter)
-        {
+        private void CheckChoicesFacetIsNull(MethodInfo choicesMethod, IActionParameterSpecImmutable parameter) {
             var facet = parameter.GetFacet(typeof(IActionChoicesFacet));
             Assert.IsNull(facet);
 
             AssertMethodNotRemoved(choicesMethod);
         }
-
 
         [TestMethod]
         public void TestActionInvocationFacetIsInstalledAndMethodRemoved() {
@@ -686,13 +684,12 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestChoicesParametersDoNotMatchNames()
-        {
+        public void TestChoicesParametersDoNotMatchNames() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            var actionMethod = FindMethod(typeof(Customer35), nameof(Customer35.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
-            var choices0Method = FindMethod(typeof(Customer35), nameof(Customer35.Choices0SomeAction), new[] { typeof(int) });
-            var choices1Method = FindMethod(typeof(Customer35), nameof(Customer35.Choices1SomeAction), new[] { typeof(long) });
-            var choices2Method = FindMethod(typeof(Customer35), nameof(Customer35.Choices2SomeAction), new[] { typeof(long) });
+            var actionMethod = FindMethod(typeof(Customer35), nameof(Customer35.SomeAction), new[] {typeof(int), typeof(long), typeof(long)});
+            var choices0Method = FindMethod(typeof(Customer35), nameof(Customer35.Choices0SomeAction), new[] {typeof(int)});
+            var choices1Method = FindMethod(typeof(Customer35), nameof(Customer35.Choices1SomeAction), new[] {typeof(long)});
+            var choices2Method = FindMethod(typeof(Customer35), nameof(Customer35.Choices2SomeAction), new[] {typeof(long)});
 
             var facetHolderWithParms = CreateHolderWithParms();
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -704,13 +701,12 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestChoicesParametersDoNotMatchTypes()
-        {
+        public void TestChoicesParametersDoNotMatchTypes() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            var actionMethod = FindMethod(typeof(Customer36), nameof(Customer36.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
-            var choices0Method = FindMethod(typeof(Customer36), nameof(Customer36.Choices0SomeAction), new[] { typeof(int) });
-            var choices1Method = FindMethod(typeof(Customer36), nameof(Customer36.Choices1SomeAction), new[] { typeof(long) });
-            var choices2Method = FindMethod(typeof(Customer36), nameof(Customer36.Choices2SomeAction), new[] { typeof(string) });
+            var actionMethod = FindMethod(typeof(Customer36), nameof(Customer36.SomeAction), new[] {typeof(int), typeof(long), typeof(long)});
+            var choices0Method = FindMethod(typeof(Customer36), nameof(Customer36.Choices0SomeAction), new[] {typeof(int)});
+            var choices1Method = FindMethod(typeof(Customer36), nameof(Customer36.Choices1SomeAction), new[] {typeof(long)});
+            var choices2Method = FindMethod(typeof(Customer36), nameof(Customer36.Choices2SomeAction), new[] {typeof(string)});
 
             var facetHolderWithParms = CreateHolderWithParms();
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -720,7 +716,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             CheckChoicesFacetIsNull(choices2Method, facetHolderWithParms.Parameters[2]);
             Assert.AreEqual(0, metamodel.Count);
         }
-
 
         #region Setup/Teardown
 
@@ -755,150 +750,81 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer11 {
             public void SomeAction(int x, long y, long z) { }
 
-            public int Default0SomeAction()
-            {
-                return 0;
-            }
+            public int Default0SomeAction() => 0;
 
-            public long Default1SomeAction()
-            {
-                return 0;
-            }
+            public long Default1SomeAction() => 0;
 
-            public long Default2SomeAction()
-            {
-                return 0;
-            }
+            public long Default2SomeAction() => 0;
         }
 
         private class Customer22 {
             public void SomeAction(int x, long y, long z) { }
 
-            public int DefaultSomeAction(int x)
-            {
-                return 0;
-            }
+            public int DefaultSomeAction(int x) => 0;
 
-            public long DefaultSomeAction(long y)
-            {
-                return 0;
-            }
+            public long DefaultSomeAction(long y) => 0;
 
-            public long Default2SomeAction()
-            {
-                return 0;
-            }
+            public long Default2SomeAction() => 0;
         }
 
         private class Customer13 {
             public void SomeAction(int x, long y, long z) { }
 
-            public int[] Choices0SomeAction()
-            {
-                return Array.Empty<int>();
-            }
+            public int[] Choices0SomeAction() => Array.Empty<int>();
 
-            public long[] Choices1SomeAction()
-            {
-                return Array.Empty<long>();
-            }
+            public long[] Choices1SomeAction() => Array.Empty<long>();
 
-            public long[] Choices2SomeAction()
-            {
-                return Array.Empty<long>();
-            }
+            public long[] Choices2SomeAction() => Array.Empty<long>();
         }
 
         private class Customer26 {
             public void SomeAction(string x, Customer26 y, long z) { }
 
-            public IQueryable<string> AutoComplete0SomeAction(string name)
-            {
-                return Array.Empty<string>().AsQueryable();
-            }
+            public IQueryable<string> AutoComplete0SomeAction(string name) => Array.Empty<string>().AsQueryable();
 
-            public IQueryable<Customer26> AutoComplete1SomeAction(string name)
-            {
-                return Array.Empty<Customer26>().AsQueryable();
-            }
+            public IQueryable<Customer26> AutoComplete1SomeAction(string name) => Array.Empty<Customer26>().AsQueryable();
 
-            public IQueryable<long> AutoComplete2SomeAction(string name)
-            {
-                return Array.Empty<long>().AsQueryable();
-            }
+            public IQueryable<long> AutoComplete2SomeAction(string name) => Array.Empty<long>().AsQueryable();
         }
 
         private class Customer27 {
             public void SomeAction(string x, string y, string z) { }
 
-            public IQueryable<int> AutoComplete0SomeAction(string name)
-            {
-                return Array.Empty<int>().AsQueryable();
-            }
+            public IQueryable<int> AutoComplete0SomeAction(string name) => Array.Empty<int>().AsQueryable();
 
-            public IQueryable<string> AutoComplete1SomeAction()
-            {
-                return Array.Empty<string>().AsQueryable();
-            }
+            public IQueryable<string> AutoComplete1SomeAction() => Array.Empty<string>().AsQueryable();
 
-            public IQueryable<string> AutoComplete2SomeAction(int name)
-            {
-                return Array.Empty<string>().AsQueryable();
-            }
+            public IQueryable<string> AutoComplete2SomeAction(int name) => Array.Empty<string>().AsQueryable();
         }
 
         private class Customer28 {
             public void SomeAction(string x, Customer26 y, long z) { }
 
             [PageSize(33)]
-            public IQueryable<string> AutoComplete0SomeAction([MinLength(2)] string name)
-            {
-                return Array.Empty<string>().AsQueryable();
-            }
+            public IQueryable<string> AutoComplete0SomeAction([MinLength(2)] string name) => Array.Empty<string>().AsQueryable();
 
             [PageSize(66)]
-            public IQueryable<Customer26> AutoComplete1SomeAction([MinLength(3)] string name)
-            {
-                return Array.Empty<Customer26>().AsQueryable();
-            }
+            public IQueryable<Customer26> AutoComplete1SomeAction([MinLength(3)] string name) => Array.Empty<Customer26>().AsQueryable();
         }
 
         private class Customer30 {
             public void SomeAction(int x, long y, long z) { }
 
-            public int[] Choices0SomeAction(long y, long z)
-            {
-                return Array.Empty<int>();
-            }
+            public int[] Choices0SomeAction(long y, long z) => Array.Empty<int>();
 
-            public long[] Choices1SomeAction(long z)
-            {
-                return Array.Empty<long>();
-            }
+            public long[] Choices1SomeAction(long z) => Array.Empty<long>();
 
-            public long[] Choices2SomeAction()
-            {
-                return Array.Empty<long>();
-            }
+            public long[] Choices2SomeAction() => Array.Empty<long>();
         }
 
         private class Customer21 {
             public void SomeAction(int x, long y, long z) { }
 
-            public int[] ChoicesSomeAction(int x)
-            {
-                return Array.Empty<int>();
-            }
+            public int[] ChoicesSomeAction(int x) => Array.Empty<int>();
 
-            public long[] ChoicesSomeAction(long y)
-            {
-                return Array.Empty<long>();
-            }
+            public long[] ChoicesSomeAction(long y) => Array.Empty<long>();
 
-            public long[] Choices2SomeAction()
-            {
-                return Array.Empty<long>();
-            }
+            public long[] Choices2SomeAction() => Array.Empty<long>();
         }
 
         private class Customer14 {
@@ -906,125 +832,77 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         private class Customer15 {
-            public string SomeAction()
-            {
-                return null;
-            }
+            public string SomeAction() => null;
         }
 
         private class Customer16 {
-            public string SomeAction()
-            {
-                return null;
-            }
+            public string SomeAction() => null;
         }
 
         private class Customer8 {
             public void SomeAction() { }
 
-            public string ValidateSomeAction()
-            {
-                return null;
-            }
+            public string ValidateSomeAction() => null;
         }
 
         private class Customer9 {
             public void SomeAction(int x, int y) { }
 
-            public string ValidateSomeAction(int x, int y)
-            {
-                return null;
-            }
+            public string ValidateSomeAction(int x, int y) => null;
         }
 
         private class Customer10 {
             public void SomeActionOne() { }
 
-            public bool HideSomeActionOne()
-            {
-                return false;
-            }
+            public bool HideSomeActionOne() => false;
 
             public void SomeActionTwo(int x) { }
 
-            public bool HideSomeActionTwo()
-            {
-                return false;
-            }
+            public bool HideSomeActionTwo() => false;
 
             public void SomeActionThree(int x) { }
 
-            public bool HideSomeActionThree()
-            {
-                return false;
-            }
+            public bool HideSomeActionThree() => false;
 
             public void SomeActionFour(int x, int y) { }
 
-            public bool HideSomeActionFour()
-            {
-                return false;
-            }
+            public bool HideSomeActionFour() => false;
         }
 
         private class Customer12 {
             public void SomeActionOne() { }
 
-            public string DisableSomeActionOne()
-            {
-                return "";
-            }
+            public string DisableSomeActionOne() => "";
 
             public void SomeActionTwo(int x) { }
 
-            public string DisableSomeActionTwo()
-            {
-                return "";
-            }
+            public string DisableSomeActionTwo() => "";
 
             public void SomeActionThree(int x) { }
 
-            public string DisableSomeActionThree()
-            {
-                return "";
-            }
+            public string DisableSomeActionThree() => "";
 
             public void SomeActionFour(int x, int y) { }
 
-            public string DisableSomeActionFour()
-            {
-                return "";
-            }
+            public string DisableSomeActionFour() => "";
         }
 
         private class Customer18 {
-            public string DisableActionDefault()
-            {
-                return "";
-            }
+            public string DisableActionDefault() => "";
 
             public void SomeActionTwo(int x) { }
 
-            public string DisableSomeActionTwo()
-            {
-                return "";
-            }
+            public string DisableSomeActionTwo() => "";
 
             public void SomeActionThree(int x) { }
         }
 
         private class Customer19 {
-            public bool HideActionDefault()
-            {
-                return false;
-            }
+            public bool HideActionDefault() => false;
 
             public void SomeActionTwo(int x) { }
 
-            public bool HideSomeActionTwo()
-            {
-                return false;
-            }
+            public bool HideSomeActionTwo() => false;
 
             public void SomeActionThree(int x) { }
         }
@@ -1032,15 +910,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public class CustomerStatic {
             public void SomeAction(int x, long y) { }
 
-            public static bool HideSomeAction(IPrincipal principal)
-            {
-                return true;
-            }
+            public static bool HideSomeAction(IPrincipal principal) => true;
 
-            public static string DisableSomeAction(IPrincipal principal)
-            {
-                return "disabled for this user";
-            }
+            public static string DisableSomeAction(IPrincipal principal) => "disabled for this user";
 
             public static void OtherAction(int x, long y) { }
         }
@@ -1048,57 +920,33 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer17 {
             public void SomeAction(int x, long y, long z) { }
 
-            public string Validate0SomeAction(int x)
-            {
-                return "failed";
-            }
+            public string Validate0SomeAction(int x) => "failed";
 
-            public string Validate1SomeAction(long x)
-            {
-                return null;
-            }
+            public string Validate1SomeAction(long x) => null;
         }
 
         private class Customer20 {
             public void SomeAction(int x, long y, long z) { }
 
-            public string ValidateSomeAction(int x)
-            {
-                return "failed";
-            }
+            public string ValidateSomeAction(int x) => "failed";
 
-            public string ValidateSomeAction(long y)
-            {
-                return null;
-            }
+            public string ValidateSomeAction(long y) => null;
         }
 
         private class Customer23 {
             public void SomeAction(int x, long y, long z) { }
 
-            public string ValidateSomeAction(int x)
-            {
-                return "failed";
-            }
+            public string ValidateSomeAction(int x) => "failed";
 
-            public string ValidateSomeAction(long y)
-            {
-                return null;
-            }
+            public string ValidateSomeAction(long y) => null;
         }
 
         private class Customer24 {
             public void SomeAction(int x, long y, long z) { }
 
-            public string ValidateSomeAction(int x)
-            {
-                return "failed";
-            }
+            public string ValidateSomeAction(int x) => "failed";
 
-            public string ValidateSomeAction(long y)
-            {
-                return null;
-            }
+            public string ValidateSomeAction(long y) => null;
         }
 
         private class Customer25 {
@@ -1110,33 +958,18 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer32 {
             public void SomeAction(string x, ICustomer y, long z) { }
 
-            public IQueryable<string> AutoComplete0SomeAction(string name)
-            {
-                return Array.Empty<string>().AsQueryable();
-            }
+            public IQueryable<string> AutoComplete0SomeAction(string name) => Array.Empty<string>().AsQueryable();
 
-            public IQueryable<ICustomer> AutoComplete1SomeAction(string name)
-            {
-                return Array.Empty<ICustomer>().AsQueryable();
-            }
+            public IQueryable<ICustomer> AutoComplete1SomeAction(string name) => Array.Empty<ICustomer>().AsQueryable();
 
-            public IQueryable<long> AutoComplete2SomeAction(string name)
-            {
-                return Array.Empty<long>().AsQueryable();
-            }
+            public IQueryable<long> AutoComplete2SomeAction(string name) => Array.Empty<long>().AsQueryable();
         }
 
         private class Customer33 {
-            public IQueryable<Customer33> SomeQueryableAction1()
-            {
-                return null;
-            }
+            public IQueryable<Customer33> SomeQueryableAction1() => null;
 
             [QueryOnly]
-            public IEnumerable<Customer33> SomeQueryableAction2()
-            {
-                return null;
-            }
+            public IEnumerable<Customer33> SomeQueryableAction2() => null;
         }
 
         private class Customer34 {
@@ -1180,7 +1013,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public long[] Choices2SomeAction(string z) => Array.Empty<long>();
         }
-
 
         // ReSharper restore UnusedMember.Local
         // ReSharper restore UnusedParameter.Local

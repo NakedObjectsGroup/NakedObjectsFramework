@@ -28,6 +28,29 @@ namespace NakedFramework.Persistor.EF6.Component {
             this.parent = parent;
         }
 
+        public IList<(object original, object updated)> Execute() {
+            ValidateDetachedObjects();
+            try {
+                foreach (var toSave in detachedObjects.ToSave) {
+                    ProxyIfNotAlreadySeen((null, toSave));
+                }
+
+                foreach (var updateTuple in detachedObjects.ToUpdate) {
+                    ProxyIfNotAlreadySeen(updateTuple);
+                }
+
+                foreach (var toDelete in detachedObjects.ToDelete) {
+                    DeleteObject(toDelete);
+                }
+
+                return detachedObjects.SavedAndUpdated;
+            }
+            catch (Exception e) {
+                parent.Logger.LogWarning($"Error in EF6CreateObjectCommand.Execute: {e.Message}");
+                throw;
+            }
+        }
+
         public INakedObjectAdapter OnObject() => context.CurrentSaveRootObjectAdapter;
 
         private bool IsSavedOrUpdated(object obj) => detachedObjects.SavedAndUpdated.Any(t => t.original == obj);
@@ -64,29 +87,6 @@ namespace NakedFramework.Persistor.EF6.Component {
             if (errors.Any()) {
                 var error = errors.Aggregate("", (s, a) => $"{a}{(string.IsNullOrEmpty(a) ? "" : ", ")}{s}");
                 throw new PersistFailedException(error);
-            }
-        }
-
-        public IList<(object original, object updated)> Execute() {
-            ValidateDetachedObjects();
-            try {
-                foreach (var toSave in detachedObjects.ToSave) {
-                    ProxyIfNotAlreadySeen((null, toSave));
-                }
-
-                foreach (var updateTuple in detachedObjects.ToUpdate) {
-                    ProxyIfNotAlreadySeen(updateTuple);
-                }
-
-                foreach (var toDelete in detachedObjects.ToDelete) {
-                    DeleteObject(toDelete);
-                }
-
-                return detachedObjects.SavedAndUpdated;
-            }
-            catch (Exception e) {
-                parent.Logger.LogWarning($"Error in EF6CreateObjectCommand.Execute: {e.Message}");
-                throw;
             }
         }
 

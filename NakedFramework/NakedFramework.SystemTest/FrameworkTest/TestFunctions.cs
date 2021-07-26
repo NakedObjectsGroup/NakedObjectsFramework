@@ -29,19 +29,6 @@ namespace NakedFramework.SystemTest.FrameworkTest {
     /// </summary>
     [TestFixture]
     public class TestFunctions : AbstractSystemTest<XatDbContext> {
-        #region TestEnum enum
-
-        public enum TestEnum {
-            Value1,
-            Value2
-        }
-
-        #endregion
-
-        protected override Type[] ObjectTypes => new[] { typeof(Object1), typeof(TestEnum) };
-
-        protected override Type[] Services => new[] {typeof(SimpleRepository<Object1>), typeof(MyService1), typeof(MyService2)};
-
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -62,6 +49,15 @@ namespace NakedFramework.SystemTest.FrameworkTest {
             CleanupNakedObjectsFramework(this);
             XatDbContext.Delete();
         }
+
+        public enum TestEnum {
+            Value1,
+            Value2
+        }
+
+        protected override Type[] ObjectTypes => new[] {typeof(Object1), typeof(TestEnum)};
+
+        protected override Type[] Services => new[] {typeof(SimpleRepository<Object1>), typeof(MyService1), typeof(MyService2)};
 
         [Test]
         public virtual void IncorrectTitle() {
@@ -355,27 +351,13 @@ namespace NakedFramework.SystemTest.FrameworkTest {
             }
         }
 
-        #region Nested type: MyService1
-
         public class MyService1 { }
-
-        #endregion
-
-        #region Nested type: MyService2
 
         [DisplayName("Service Two")]
         public class MyService2 { }
 
-        #endregion
-
-        #region Nested type: MyService3
-
         //Not registered as a service
         public class MyService3 { }
-
-        #endregion
-
-        #region Nested type: Object1
 
         public class Object1 {
             [DefaultValue(8)]
@@ -420,8 +402,6 @@ namespace NakedFramework.SystemTest.FrameworkTest {
 
             public void ActionNumber4(string p1, int p2) { }
         }
-
-        #endregion
     }
 
     #region Classes used by tests

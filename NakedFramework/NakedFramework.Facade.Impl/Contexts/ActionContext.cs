@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
@@ -25,12 +26,12 @@ namespace NakedFramework.Facade.Impl.Contexts {
         public override ITypeSpec Specification => Action.ReturnSpec;
 
         public ParameterContext[] VisibleParameters {
-            get => parameters ?? System.Array.Empty<ParameterContext>();
+            get => parameters ?? Array.Empty<ParameterContext>();
             set => parameters = value;
         }
 
         public PropertyContext[] VisibleProperties {
-            get => properties ?? System.Array.Empty<PropertyContext>();
+            get => properties ?? Array.Empty<PropertyContext>();
             set => properties = value;
         }
 

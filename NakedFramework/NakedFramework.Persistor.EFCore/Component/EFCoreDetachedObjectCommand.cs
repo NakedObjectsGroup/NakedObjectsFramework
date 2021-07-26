@@ -16,7 +16,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
 
 namespace NakedFramework.Persistor.EFCore.Component {
-    public class EFCoreDetachedObjectCommand  : IDetachedObjectCommand {
+    public class EFCoreDetachedObjectCommand : IDetachedObjectCommand {
         private readonly IDetachedObjects detachedObjects;
         private readonly EFCoreObjectStore parent;
         private DbContext context;
@@ -24,6 +24,29 @@ namespace NakedFramework.Persistor.EFCore.Component {
         public EFCoreDetachedObjectCommand(IDetachedObjects detachedObjects, EFCoreObjectStore parent) {
             this.detachedObjects = detachedObjects;
             this.parent = parent;
+        }
+
+        public IList<(object original, object updated)> Execute() {
+            ValidateDetachedObjects();
+            try {
+                foreach (var toSave in detachedObjects.ToSave) {
+                    ProxyIfNotAlreadySeen((null, toSave));
+                }
+
+                foreach (var updateTuple in detachedObjects.ToUpdate) {
+                    ProxyIfNotAlreadySeen(updateTuple);
+                }
+
+                foreach (var toDelete in detachedObjects.ToDelete) {
+                    DeleteObject(toDelete);
+                }
+
+                return detachedObjects.SavedAndUpdated;
+            }
+            catch (Exception e) {
+                parent.Logger.LogWarning($"Error in {nameof(EFCoreDetachedObjectCommand)}.{nameof(Execute)}: {e.Message}");
+                throw;
+            }
         }
 
         private bool IsSavedOrUpdated(object obj) => detachedObjects.SavedAndUpdated.Any(t => t.original == obj);
@@ -60,29 +83,6 @@ namespace NakedFramework.Persistor.EFCore.Component {
             if (errors.Any()) {
                 var error = errors.Aggregate("", (s, a) => $"{a}{(string.IsNullOrEmpty(a) ? "" : ", ")}{s}");
                 throw new PersistFailedException(error);
-            }
-        }
-
-        public IList<(object original, object updated)> Execute() {
-            ValidateDetachedObjects();
-            try {
-                foreach (var toSave in detachedObjects.ToSave) {
-                    ProxyIfNotAlreadySeen((null, toSave));
-                }
-
-                foreach (var updateTuple in detachedObjects.ToUpdate) {
-                    ProxyIfNotAlreadySeen(updateTuple);
-                }
-
-                foreach (var toDelete in detachedObjects.ToDelete) {
-                    DeleteObject(toDelete);
-                }
-
-                return detachedObjects.SavedAndUpdated;
-            }
-            catch (Exception e) {
-                parent.Logger.LogWarning($"Error in {nameof(EFCoreDetachedObjectCommand)}.{nameof(Execute)}: {e.Message}");
-                throw;
             }
         }
 

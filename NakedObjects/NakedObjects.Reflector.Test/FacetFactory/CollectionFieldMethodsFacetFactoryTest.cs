@@ -228,10 +228,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public void AddToOrders(Order o) { }
 
-            public string ValidateAddToOrders(Order o)
-            {
-                return null;
-            }
+            public string ValidateAddToOrders(Order o) => null;
         }
 
         #endregion
@@ -243,10 +240,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public void RemoveFromOrders(Order o) { }
 
-            public string ValidateRemoveFromOrders(Order o)
-            {
-                return null;
-            }
+            public string ValidateRemoveFromOrders(Order o) => null;
         }
 
         #endregion
@@ -356,47 +350,23 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public class CustomerStatic {
             public IList Orders => null;
 
-            public static string NameOrders()
-            {
-                return "Most Recent Orders";
-            }
+            public static string NameOrders() => "Most Recent Orders";
 
-            public static string DescriptionOrders()
-            {
-                return "Some old description";
-            }
+            public static string DescriptionOrders() => "Some old description";
 
-            public static bool AlwaysHideOrders()
-            {
-                return true;
-            }
+            public static bool AlwaysHideOrders() => true;
 
-            public static bool ProtectOrders()
-            {
-                return true;
-            }
+            public static bool ProtectOrders() => true;
 
-            public static bool HideOrders(IPrincipal principal)
-            {
-                return true;
-            }
+            public static bool HideOrders(IPrincipal principal) => true;
 
-            public static string DisableOrders(IPrincipal principal)
-            {
-                return "disabled for this user";
-            }
+            public static string DisableOrders(IPrincipal principal) => "disabled for this user";
 
             public static void OtherOrders() { }
 
-            public static bool AlwaysHideOtherOrders()
-            {
-                return false;
-            }
+            public static bool AlwaysHideOtherOrders() => false;
 
-            public static bool ProtectOtherOrders()
-            {
-                return false;
-            }
+            public static bool ProtectOtherOrders() => false;
         }
 
         #endregion

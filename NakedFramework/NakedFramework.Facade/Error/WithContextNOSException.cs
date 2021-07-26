@@ -11,7 +11,7 @@ using NakedFramework.Facade.Contexts;
 
 namespace NakedFramework.Facade.Error {
     public abstract class WithContextNOSException : NakedObjectsFacadeException {
-        private IList<ContextFacade> contexts;
+        private readonly IList<ContextFacade> contexts;
         protected WithContextNOSException() { }
         protected WithContextNOSException(string message) : base(message) { }
         protected WithContextNOSException(string message, Exception e) : base(message, e) { }

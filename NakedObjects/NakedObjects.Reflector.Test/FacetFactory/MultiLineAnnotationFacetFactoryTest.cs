@@ -42,7 +42,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         public void TestMultiLineAnnotationDefaults() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-
             var property = FindProperty(typeof(Customer3), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IMultiLineFacet));
@@ -138,8 +137,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         #region Nested type: Customer3
 
-        private class Customer3
-        {
+        private class Customer3 {
             [MultiLine]
             public string FirstName => null;
         }

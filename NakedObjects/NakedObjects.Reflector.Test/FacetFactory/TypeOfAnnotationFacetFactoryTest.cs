@@ -120,10 +120,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         private class Customer3 {
             // ReSharper disable once UnusedMember.Local
-            public IList<Order> SomeAction()
-            {
-                return null;
-            }
+            public IList<Order> SomeAction() => null;
         }
 
         #endregion
@@ -141,10 +138,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         private class Customer9 {
             // ReSharper disable once UnusedMember.Local
-            public Order[] SomeAction()
-            {
-                return null;
-            }
+            public Order[] SomeAction() => null;
         }
 
         #endregion

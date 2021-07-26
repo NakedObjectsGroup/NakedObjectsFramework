@@ -144,10 +144,9 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm) => WrappedSpec.GetCompletions(((ObjectFacade) objectFacade).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
 
-
         private (IObjectFacade, TypeOfDefaultValue)? cachedDefault;
 
-        private (IObjectFacade value, TypeOfDefaultValue type) GetDefaultAndType (IObjectFacade objectFacade) {
+        private (IObjectFacade value, TypeOfDefaultValue type) GetDefaultAndType(IObjectFacade objectFacade) {
             if (cachedDefault is null) {
                 var (defaultValue, defaultType) = WrappedSpec.GetDefaultValueAndType(((ObjectFacade) objectFacade)?.WrappedNakedObject);
                 cachedDefault = (ObjectFacade.Wrap(defaultValue, FrameworkFacade, framework), defaultType);
@@ -159,8 +158,8 @@ namespace NakedFramework.Facade.Impl.Impl {
         public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) => GetDefaultAndType(objectFacade).type == TypeOfDefaultValue.Explicit;
 
         public IObjectFacade GetDefault(IObjectFacade objectFacade) => GetDefaultAndType(objectFacade).value;
-        
-        public IConsentFacade IsUsable() =>  new ConsentFacade(WrappedSpec.IsUsable(null));
+
+        public IConsentFacade IsUsable() => new ConsentFacade(WrappedSpec.IsUsable(null));
 
         public bool IsInjected => WrappedSpec.IsInjected;
 

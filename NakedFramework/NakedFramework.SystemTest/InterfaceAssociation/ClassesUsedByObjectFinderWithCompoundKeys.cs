@@ -31,7 +31,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         public DbSet<Employee> Employees { get; set; }
 
         public static void Delete() => Database.Delete(Cs);
-      
     }
 
     public class DatabaseInitializer {

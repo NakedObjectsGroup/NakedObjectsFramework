@@ -114,8 +114,8 @@ namespace NakedFramework.Facade.Impl.Impl {
         }
 
         public (string, ITypeFacade)[] GetChoicesParameters() =>
-            WrappedSpec is IOneToOneFeatureSpec oneToOneFeature 
-                ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() 
+            WrappedSpec is IOneToOneFeatureSpec oneToOneFeature
+                ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray()
                 : Array.Empty<(string, ITypeFacade)>();
 
         public (IObjectFacade, string)[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) =>

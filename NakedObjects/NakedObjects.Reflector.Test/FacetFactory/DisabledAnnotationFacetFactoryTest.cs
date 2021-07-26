@@ -81,7 +81,6 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(metamodel);
         }
 
-
         [TestMethod]
         public void TestDisabledWhenAlwaysAnnotationPickedUpOn() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
@@ -205,13 +204,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         #region Nested type: Customer7
 
-        private class Customer7
-        {
+        private class Customer7 {
             public void SomeAction([Disabled] string disabledParameter) { }
         }
 
         #endregion
-
 
         #region Setup/Teardown
 

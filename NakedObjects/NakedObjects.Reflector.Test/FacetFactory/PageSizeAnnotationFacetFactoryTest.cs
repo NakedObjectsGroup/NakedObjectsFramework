@@ -79,10 +79,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer {
             [PageSize(7)]
             // ReSharper disable once UnusedMember.Local
-            public IQueryable<Customer> SomeAction()
-            {
-                return null;
-            }
+            public IQueryable<Customer> SomeAction() => null;
         }
 
         #endregion
@@ -91,10 +88,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         private class Customer1 {
             // ReSharper disable once UnusedMember.Local
-            public IQueryable<Customer1> SomeAction()
-            {
-                return null;
-            }
+            public IQueryable<Customer1> SomeAction() => null;
         }
 
         #endregion

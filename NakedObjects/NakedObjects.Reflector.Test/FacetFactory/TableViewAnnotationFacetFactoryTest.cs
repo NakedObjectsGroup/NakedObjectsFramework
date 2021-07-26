@@ -239,34 +239,19 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public ICollection<Order> Orders2 { get; set; }
 
             [TableView(false, "col5", "col6")]
-            public Order[] OrdersAction()
-            {
-                return null;
-            }
+            public Order[] OrdersAction() => null;
 
             [TableView(true, "col7", "col8")]
-            public ICollection<Order> OrdersAction1()
-            {
-                return null;
-            }
+            public ICollection<Order> OrdersAction1() => null;
 
             [TableView(true)]
-            public ICollection<Order> OrdersAction2()
-            {
-                return null;
-            }
+            public ICollection<Order> OrdersAction2() => null;
 
             [TableView(true, "col7", "col8")]
-            public IQueryable<Order> OrdersAction3()
-            {
-                return null;
-            }
+            public IQueryable<Order> OrdersAction3() => null;
 
             [TableView(true, "col7", "col8", "col7", "col8")]
-            public IQueryable<Order> OrdersAction4()
-            {
-                return null;
-            }
+            public IQueryable<Order> OrdersAction4() => null;
         }
 
         #endregion
@@ -277,15 +262,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public Order[] Orders { get; set; }
             public ICollection<Order> Orders1 { get; set; }
 
-            public Order[] OrdersAction()
-            {
-                return null;
-            }
+            public Order[] OrdersAction() => null;
 
-            public ICollection<Order> OrdersAction1()
-            {
-                return null;
-            }
+            public ICollection<Order> OrdersAction1() => null;
         }
 
         #endregion

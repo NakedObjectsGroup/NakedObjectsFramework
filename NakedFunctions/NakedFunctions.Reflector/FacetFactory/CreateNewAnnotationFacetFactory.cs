@@ -25,9 +25,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<CreateNewAnnotationFacetFactory> logger;
 
         public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<CreateNewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) {
+            : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<CreateNewAnnotationFacetFactory>();
-        }
 
         private static bool IsCollectionOrNull(Type type) =>
             type is null ||

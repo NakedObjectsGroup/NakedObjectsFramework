@@ -131,13 +131,9 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 NewFacetFactory<CollectionFacetFactory>()
             };
 
-        private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory
-        {
-            return (T)Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), LoggerFactory);
-        }
+        private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T) Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), LoggerFactory);
 
-        protected static void AssertIsInstanceOfType<T>(object o)
-        {
+        protected static void AssertIsInstanceOfType<T>(object o) {
             Assert.IsInstanceOfType(o, typeof(T));
         }
 
@@ -157,7 +153,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             ObjectReflectorConfiguration.NoValidate = true;
 
             var metamodel = new MetamodelHolder(cache, LoggerFactory.CreateLogger<MetamodelHolder>());
-        
+
             var reflector = Reflector(metamodel, LoggerFactory);
 
             ITypeSpecBuilder spec;
@@ -186,13 +182,11 @@ namespace NakedObjects.Reflector.Test.Reflect {
             Assert.Fail("Spec missing: " + type.FullName);
         }
 
-        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs)
-        {
+        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
             return specs.SingleOrDefault(s => s.FullName == type.FullName);
         }
 
-        public static void AssertSpec(Type type, ITypeSpecBuilder[] specs)
-        {
+        public static void AssertSpec(Type type, ITypeSpecBuilder[] specs) {
             AssertSpec(type, GetSpec(type, specs));
         }
     }

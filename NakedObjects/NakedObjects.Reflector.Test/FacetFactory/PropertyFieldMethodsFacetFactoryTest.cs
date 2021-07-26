@@ -83,64 +83,44 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer10 {
             public string FirstName => null;
 
-            public string[] ChoicesFirstName()
-            {
-                return null;
-            }
+            public string[] ChoicesFirstName() => null;
         }
 
         // ReSharper disable InconsistentNaming
         private class Customer10r {
             public string FirstName => null;
 
-            public string[] ChoicesFirstName()
-            {
-                return null;
-            }
+            public string[] ChoicesFirstName() => null;
         }
 
         private class Customer10l {
             public string FirstName => null;
 
-            public string[] ChoicesFirstName()
-            {
-                return null;
-            }
+            public string[] ChoicesFirstName() => null;
         }
 
         private class Customer11 {
             public string FirstName => null;
 
-            public string DefaultFirstName()
-            {
-                return null;
-            }
+            public string DefaultFirstName() => null;
         }
 
         private class Customer11r {
             public string FirstName => null;
 
-            public string DefaultFirstName()
-            {
-                return null;
-            }
+            public string DefaultFirstName() => null;
         }
 
         private class Customer11l {
             public string FirstName => null;
 
-            public string DefaultFirstName()
-            {
-                return null;
-            }
+            public string DefaultFirstName() => null;
         }
 
         private class Customer12 {
             public string FirstName => null; // ReSharper disable UnusedParameter.Local
-            public string ValidateFirstName(string firstName)
-            {
-                return null;
-            }
+
+            public string ValidateFirstName(string firstName) => null;
         }
 
         private class Customer13 {
@@ -148,15 +128,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string SecondName => null;
 
-            public bool HideFirstName()
-            {
-                return false;
-            }
+            public bool HideFirstName() => false;
 
-            public bool HideSecondName()
-            {
-                return false;
-            }
+            public bool HideSecondName() => false;
         }
 
         private class Customer14 {
@@ -164,15 +138,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string SecondName => null;
 
-            public bool HidePropertyDefault()
-            {
-                return false;
-            }
+            public bool HidePropertyDefault() => false;
 
-            public bool HideSecondName()
-            {
-                return false;
-            }
+            public bool HideSecondName() => false;
         }
 
         private class Customer15 {
@@ -180,15 +148,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string SecondName => null;
 
-            public string DisableFirstName(string firstName)
-            {
-                return null;
-            }
+            public string DisableFirstName(string firstName) => null;
 
-            public string DisableSecondName()
-            {
-                return null;
-            }
+            public string DisableSecondName() => null;
         }
 
         private class Customer16 {
@@ -196,15 +158,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string SecondName => null;
 
-            public string DisablePropertyDefault()
-            {
-                return null;
-            }
+            public string DisablePropertyDefault() => null;
 
-            public string DisableSecondName()
-            {
-                return null;
-            }
+            public string DisableSecondName() => null;
         }
 
         private class Customer17 {
@@ -212,10 +168,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string LastName => null;
 
-            public string[] ChoicesFirstName(string lastName)
-            {
-                return null;
-            }
+            public string[] ChoicesFirstName(string lastName) => null;
         }
 
         private class Customer18 {
@@ -223,33 +176,21 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
             public string LastName => null;
 
-            public string[] ChoicesFirstName()
-            {
-                return null;
-            }
+            public string[] ChoicesFirstName() => null;
 
-            public string[] ChoicesFirstName(string lastName)
-            {
-                return null;
-            }
+            public string[] ChoicesFirstName(string lastName) => null;
         }
 
         private class Customer19 {
             public string FirstName => null;
 
-            public string ValidateFirstName(string firstName)
-            {
-                return null;
-            }
+            public string ValidateFirstName(string firstName) => null;
         }
 
         private class Customer20 {
             public string FirstName => null;
 
-            public string ValidateFirstName(string firstName)
-            {
-                return null;
-            }
+            public string ValidateFirstName(string firstName) => null;
         }
 
         private class Customer2 {
@@ -299,101 +240,59 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             }
 
             // set required otherwise marked as DisabledFacetAlways          
-            public static string NameFirstName()
-            {
-                return "Given name";
-            }
+            public static string NameFirstName() => "Given name";
 
-            public static string DescriptionFirstName()
-            {
-                return "Some old description";
-            }
+            public static string DescriptionFirstName() => "Some old description";
 
-            public static bool AlwaysHideFirstName()
-            {
-                return true;
-            }
+            public static bool AlwaysHideFirstName() => true;
 
-            public static bool ProtectFirstName()
-            {
-                return true;
-            }
+            public static bool ProtectFirstName() => true;
 
-            public static bool HideFirstName(IPrincipal principal)
-            {
-                return true;
-            }
+            public static bool HideFirstName(IPrincipal principal) => true;
 
-            public static string DisableFirstName(IPrincipal principal)
-            {
-                return "disabled for this user";
-            }
+            public static string DisableFirstName(IPrincipal principal) => "disabled for this user";
 
             // set required otherwise marked as DisabledFacetAlways    
-            public static bool AlwaysHideLastName()
-            {
-                return false;
-            }
+            public static bool AlwaysHideLastName() => false;
 
-            public static bool ProtectLastName()
-            {
-                return false;
-            }
+            public static bool ProtectLastName() => false;
         }
 
         private class Customer21 {
             public string FirstName => null;
 
-            public IQueryable<string> AutoCompleteFirstName(string name)
-            {
-                return null;
-            }
+            public IQueryable<string> AutoCompleteFirstName(string name) => null;
         }
 
         private class Customer22 {
             public string FirstName => null;
 
-            public IEnumerable<string> AutoCompleteFirstName(string name)
-            {
-                return null;
-            }
+            public IEnumerable<string> AutoCompleteFirstName(string name) => null;
         }
 
         private class Customer23 {
             public string FirstName => null;
 
-            public IQueryable<string> AutoCompleteFirstName()
-            {
-                return null;
-            }
+            public IQueryable<string> AutoCompleteFirstName() => null;
         }
 
         private class Customer24 {
             public string FirstName => null;
 
-            public IQueryable<string> AutoCompleteFirstName(int name)
-            {
-                return null;
-            }
+            public IQueryable<string> AutoCompleteFirstName(int name) => null;
         }
 
         private class Customer25 {
             public string FirstName => null;
 
-            public IQueryable<string> AutoCompletFirstName(string name)
-            {
-                return null;
-            }
+            public IQueryable<string> AutoCompletFirstName(string name) => null;
         }
 
         private class Customer26 {
             public string FirstName => null;
 
             [PageSize(33)]
-            public IQueryable<string> AutoCompleteFirstName([MinLength(3)] string name)
-            {
-                return null;
-            }
+            public IQueryable<string> AutoCompleteFirstName([MinLength(3)] string name) => null;
         }
 
         public interface NameInterface {
@@ -403,10 +302,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer27 {
             public NameInterface FirstName => null;
 
-            public IQueryable<NameInterface> AutoCompleteFirstName(string name)
-            {
-                return null;
-            }
+            public IQueryable<NameInterface> AutoCompleteFirstName(string name) => null;
         }
 
         [TestMethod]

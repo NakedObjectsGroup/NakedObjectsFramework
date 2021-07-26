@@ -147,10 +147,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public IList<Customer1> Coll { get; set; }
 
             [Eagerly(Do.Rendering)]
-            public IList<Customer1> Act()
-            {
-                return new List<Customer1>();
-            }
+            public IList<Customer1> Act() => new List<Customer1>();
         }
 
         #endregion
@@ -162,10 +159,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public int Prop { get; set; }
             public IList<Customer1> Coll { get; set; }
 
-            public IList<Customer1> Act()
-            {
-                return new List<Customer1>();
-            }
+            public IList<Customer1> Act() => new List<Customer1>();
         }
 
         #endregion

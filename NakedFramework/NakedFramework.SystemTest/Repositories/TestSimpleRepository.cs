@@ -13,19 +13,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Repositories {
     [TestFixture]
     public class TestSimpleRepository : AbstractSystemTest<SimpleRepositoryDbContext> {
-        private Customer cust1;
-        private Customer cust2;
-
-        protected override Type[] ObjectTypes =>
-            new[] {
-                typeof(Customer)
-            };
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(SimpleRepository<Customer>)
-            };
-
         [SetUp]
         public void SetUp() {
             StartTest();
@@ -57,6 +44,19 @@ namespace NakedObjects.SystemTest.Repositories {
             CleanupNakedObjectsFramework(this);
             SimpleRepositoryDbContext.Delete();
         }
+
+        private Customer cust1;
+        private Customer cust2;
+
+        protected override Type[] ObjectTypes =>
+            new[] {
+                typeof(Customer)
+            };
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Customer>)
+            };
 
         [Test]
         public void FindByKey() {

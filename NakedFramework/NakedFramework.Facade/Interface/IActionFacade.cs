@@ -28,8 +28,8 @@ namespace NakedFramework.Facade.Interface {
         bool IsStatic { get; }
         bool IsQueryContributedAction { get; }
         string[] EditProperties { get; }
+        string FinderMethodPrefix { get; }
         bool IsVisible(IObjectFacade objectFacade);
         IConsentFacade IsUsable(IObjectFacade objectFacade);
-        string FinderMethodPrefix { get; }
     }
 }

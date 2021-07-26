@@ -24,12 +24,9 @@ using NakedFramework.Persistor.EF6.Component;
 
 namespace NakedFramework.Persistor.EF6.Util {
     public static class EF6Helpers {
-
-        public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager)
-        {
+        public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager) {
             var versionObject = nakedObjectAdapter?.GetVersion();
-            if (versionObject != null)
-            {
+            if (versionObject != null) {
                 nakedObjectAdapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
             }
         }
@@ -41,7 +38,6 @@ namespace NakedFramework.Persistor.EF6.Util {
                 { } t when FasterTypeUtils.IsEF6Proxy(t) => t.BaseType,
                 { } t => t
             };
-
 
         internal static T Invoke<T>(this object onObject, string name, params object[] parms) => (T) onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
 
@@ -111,7 +107,7 @@ namespace NakedFramework.Persistor.EF6.Util {
         public static object CreateQuery(this EF6LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {
             var mostBaseType = context.GetMostBaseType(type);
             var mi = context.WrappedObjectContext.GetType().GetMethod("CreateQuery").MakeGenericMethod(mostBaseType);
-            var parms = new List<object> {queryString, Array.Empty<ObjectParameter>() };
+            var parms = new List<object> {queryString, Array.Empty<ObjectParameter>()};
 
             var os = mi.Invoke(context.WrappedObjectContext, parms.ToArray());
 

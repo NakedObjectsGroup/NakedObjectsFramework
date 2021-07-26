@@ -24,8 +24,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Setup/Teardown
 
         [TestInitialize]
-        public virtual void SetUp()
-        {
+        public virtual void SetUp() {
             comparator = new MemberOrderComparator<MemberPeerStub>();
         }
 

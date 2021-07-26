@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework;
 using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.Util {
@@ -12,7 +13,7 @@ namespace NakedObjects.SystemTest.Util {
     public class GetTypeFromLoadedAssembliesInternalTest : GetTypeFromLoadedAssembliesTestAbstract {
         [SetUp]
         public void ClearCache() {
-            NakedFramework.TypeUtils.ClearCache();
+            TypeUtils.ClearCache();
         }
 
         [OneTimeSetUp]
@@ -21,87 +22,86 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         [OneTimeTearDown]
-        public void Output() {
-        }
+        public void Output() { }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesInParallel() {
-            TestHarnessFindTypeFromLoadedAssembliesInParallel(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesInParallel(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesInParallelMultiRandomOrder() {
-            TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomOrder(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomOrder(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesInParallelMultiRandomOrderTenTimes() {
-            TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomOrderTenTimes(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomOrderTenTimes(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesInParallelMultiRandomSelection() {
-            TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomSelection(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomSelection(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesInParallelMultiRandomSelectionTenTimes() {
-            TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomSelectionTenTimes(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomSelectionTenTimes(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesInParallelRandomOrder() {
-            TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrder(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrder(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesInParallelRandomOrderTenTimes() {
-            TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrderTenTimes(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrderTenTimes(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesInParallelRandomSelection() {
-            TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelection(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelection(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesInParallelRandomSelectionTenTimes() {
-            TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelectionTenTimes(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelectionTenTimes(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesInParallelTenTimes() {
-            TestHarnessFindTypeFromLoadedAssembliesInParallelTenTimes(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesInParallelTenTimes(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesOnce() {
-            TestHarnessFindTypeFromLoadedAssembliesOnce(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesOnce(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesOnceRandomOrder() {
-            TestHarnessFindTypeFromLoadedAssembliesOnceRandomOrder(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesOnceRandomOrder(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesOnceRandomSelection() {
-            TestHarnessFindTypeFromLoadedAssembliesOnceRandomSelection(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesOnceRandomSelection(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesTenTimes() {
-            TestHarnessFindTypeFromLoadedAssembliesTenTimes(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesTenTimes(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesTenTimesRandomOrder() {
-            TestHarnessFindTypeFromLoadedAssembliesTenTimesRandomOrder(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesTenTimesRandomOrder(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [Test]
         public void TestFindTypeFromLoadedAssembliesTenTimesRandomSelection() {
-            TestHarnessFindTypeFromLoadedAssembliesTenTimesRandomSelection(NakedFramework.TypeUtils.GetTypeFromLoadedAssembliesInternal);
+            TestHarnessFindTypeFromLoadedAssembliesTenTimesRandomSelection(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
     }
 }

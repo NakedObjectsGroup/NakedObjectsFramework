@@ -68,10 +68,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private class Customer : IEnumerable {
             #region IEnumerable Members
 
-            public IEnumerator GetEnumerator()
-            {
-                return null;
-            }
+            public IEnumerator GetEnumerator() => null;
 
             #endregion
 

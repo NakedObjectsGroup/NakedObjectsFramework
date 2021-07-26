@@ -18,14 +18,6 @@ using TestObjectMenu;
 namespace NakedObjects.SystemTest.Menus.Service {
     [TestFixture]
     public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
-        protected override Type[] Services =>
-            new[] {
-                typeof(FooService),
-                typeof(ServiceWithSubMenus),
-                typeof(BarService),
-                typeof(QuxService)
-            };
-
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -47,8 +39,15 @@ namespace NakedObjects.SystemTest.Menus.Service {
             MenusDbContext.Delete();
         }
 
-        protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
+        protected override Type[] Services =>
+            new[] {
+                typeof(FooService),
+                typeof(ServiceWithSubMenus),
+                typeof(BarService),
+                typeof(QuxService)
+            };
 
+        protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
 
         [Test]
         public virtual void TestMainMenus() {
@@ -70,10 +69,8 @@ namespace NakedObjects.SystemTest.Menus.Service {
 
     #region Classes used in test
 
-    public class LocalMainMenus
-    {
-        public static IMenu[] MainMenus(IMenuFactory factory)
-        {
+    public class LocalMainMenus {
+        public static IMenu[] MainMenus(IMenuFactory factory) {
             var menuDefs = new Dictionary<Type, Action<IMenu>> {
                 {typeof(FooService), FooService.Menu},
                 {typeof(BarService), BarService.Menu},
@@ -81,8 +78,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
             };
 
             var menus = new List<IMenu>();
-            foreach (var menuDef in menuDefs)
-            {
+            foreach (var menuDef in menuDefs) {
                 var menu = factory.NewMenu(menuDef.Key);
                 menuDef.Value(menu);
                 menus.Add(menu);
@@ -109,7 +105,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
         public static void Menu(IMenu menu) {
             var type = typeof(ServiceWithSubMenus);
             var sub1 = menu.CreateSubMenu("Sub1");
-            sub1.AddAction(type,"Action1");
+            sub1.AddAction(type, "Action1");
             sub1.AddAction(type, "Action3");
             var sub2 = menu.CreateSubMenu("Sub2");
             sub2.AddAction(type, "Action2");

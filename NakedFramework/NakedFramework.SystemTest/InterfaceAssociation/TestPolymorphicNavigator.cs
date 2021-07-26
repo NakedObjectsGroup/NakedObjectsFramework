@@ -14,17 +14,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestFixture]
     public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
-        private const string DatabaseName = "TestPolymorphicNavigator";
-
-        protected override bool EnforceProxies => false;
-
-        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
-            new Func<IConfiguration, DbContext>[] { config => new PolymorphicNavigationContext(DatabaseName) };
-
-
-
-        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeName()};
-
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -41,6 +30,15 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         public void DeleteDatabase() {
             CleanupNakedObjectsFramework(this);
         }
+
+        private const string DatabaseName = "TestPolymorphicNavigator";
+
+        protected override bool EnforceProxies => false;
+
+        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
+            new Func<IConfiguration, DbContext>[] {config => new PolymorphicNavigationContext(DatabaseName)};
+
+        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeName()};
 
         [Test]
         public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {

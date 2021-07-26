@@ -83,10 +83,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         private class Customer {
             // ReSharper disable once UnusedMember.Local
-            public string Title()
-            {
-                return "Some title";
-            }
+            public string Title() => "Some title";
         }
 
         #endregion
@@ -94,17 +91,11 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: Customer1
 
         private class Customer1 {
-            public override string ToString()
-            {
-                return "Some title via ToString";
-            }
+            public override string ToString() => "Some title via ToString";
 
             // ReSharper disable once UnusedParameter.Local
             // ReSharper disable once UnusedMember.Local
-            public string ToString(string mask)
-            {
-                return "Some title via ToString";
-            }
+            public string ToString(string mask) => "Some title via ToString";
         }
 
         #endregion

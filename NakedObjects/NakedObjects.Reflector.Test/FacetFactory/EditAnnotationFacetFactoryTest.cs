@@ -58,11 +58,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestEditAnnotationPickedUpUnmatchedProperty()
-        {
+        public void TestEditAnnotationPickedUpUnmatchedProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            var actionMethod = FindMethod(typeof(Customer1), nameof(Customer1.EditTest), new[] { typeof(string), typeof(int) });
+            var actionMethod = FindMethod(typeof(Customer1), nameof(Customer1.EditTest), new[] {typeof(string), typeof(int)});
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEditPropertiesFacet));
             Assert.IsNotNull(facet);
@@ -72,11 +71,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestDefaultsPickedUpOnSubclass()
-        {
+        public void TestDefaultsPickedUpOnSubclass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            var actionMethod = FindMethod(typeof(Customer5), nameof(Customer5.EditTest), new[] { typeof(string), typeof(int) });
+            var actionMethod = FindMethod(typeof(Customer5), nameof(Customer5.EditTest), new[] {typeof(string), typeof(int)});
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEditPropertiesFacet));
             Assert.IsNotNull(facet);
@@ -85,22 +83,18 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(metamodel);
         }
 
-
         [TestMethod]
-        public void TestEditAnnotationIgnoredUnmatchedParameter()
-        {
+        public void TestEditAnnotationIgnoredUnmatchedParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            var actionMethod = FindMethod(typeof(Customer2), nameof(Customer2.EditTest), new[] { typeof(string), typeof(int), typeof(int) });
+            var actionMethod = FindMethod(typeof(Customer2), nameof(Customer2.EditTest), new[] {typeof(string), typeof(int), typeof(int)});
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IEditPropertiesFacet));
             Assert.IsNull(facet);
         }
 
-
         [TestMethod]
-        public void TestEditAnnotationIgnoredNoParameter()
-        {
+        public void TestEditAnnotationIgnoredNoParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer3), nameof(Customer2.EditTest));
@@ -109,10 +103,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNull(facet);
         }
 
-
         [TestMethod]
-        public override void TestFeatureTypes()
-        {
+        public override void TestFeatureTypes() {
             var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
@@ -121,61 +113,52 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
         }
 
-
         #region Nested type: Customer
 
         private class Customer {
-            [Edit]
-            public Customer EditTest(string property1, int property2) => this;
-
             public string Property1 => "";
             public int Property2 => 1;
+
+            [Edit]
+            public Customer EditTest(string property1, int property2) => this;
         }
 
-        private class Customer1
-        {
-            [Edit]
-            public Customer1 EditTest(string property1, int property2) => this;
-
+        private class Customer1 {
             public string Property1 => "";
             public int Property2 => 1;
             public int Property3 => 1;
+
+            [Edit]
+            public Customer1 EditTest(string property1, int property2) => this;
         }
 
-        private class Customer2
-        {
+        private class Customer2 {
+            public string Property1 => "";
+            public int Property2 => 1;
+
             [Edit]
             public Customer2 EditTest(string property1, int property2, int property3) => this;
-
-            public string Property1 => "";
-            public int Property2 => 1;
         }
 
-        private class Customer3
-        {
+        private class Customer3 {
+            public string Property1 => "";
+            public int Property2 => 1;
+
             [Edit]
             public Customer3 EditTest() => this;
+        }
 
+        private class Customer4 {
             public string Property1 => "";
             public int Property2 => 1;
         }
 
-        private class Customer4 
-        {
-            public string Property1 => "";
-            public int Property2 => 1;
-        }
-
-        private class Customer5 : Customer4
-        {
+        private class Customer5 : Customer4 {
             [Edit]
             public Customer4 EditTest(string property1, int property2) => this;
         }
 
-
-
         #endregion
-
 
         #region Setup/Teardown
 

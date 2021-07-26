@@ -17,18 +17,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestFixture]
     public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
-        private const string DatabaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
-
-        protected override bool EnforceProxies => false;
-
-        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
-            new Func<IConfiguration, DbContext>[] { config => new PolymorphicNavigationContext(DatabaseName) };
-
-
-        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeCode()};
-
-        protected override Type[] Services => base.Services.Union(new[] {typeof(Services.PolymorphicNavigator), typeof(SimpleTypeCodeMapper)}).ToArray();
-
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -45,6 +33,17 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
+
+        private const string DatabaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
+
+        protected override bool EnforceProxies => false;
+
+        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
+            new Func<IConfiguration, DbContext>[] {config => new PolymorphicNavigationContext(DatabaseName)};
+
+        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeCode()};
+
+        protected override Type[] Services => base.Services.Union(new[] {typeof(Services.PolymorphicNavigator), typeof(SimpleTypeCodeMapper)}).ToArray();
 
         [Test]
         public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
@@ -115,13 +114,21 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             };
 
         public string CodeFromType(Type type) {
-            if (type == typeof(CustomerAsPayee)) { return "CUS"; }
+            if (type == typeof(CustomerAsPayee)) {
+                return "CUS";
+            }
 
-            if (type == typeof(SupplierAsPayee)) { return "SUP"; }
+            if (type == typeof(SupplierAsPayee)) {
+                return "SUP";
+            }
 
-            if (type == typeof(InvoiceAsPayableItem)) { return "INV"; }
+            if (type == typeof(InvoiceAsPayableItem)) {
+                return "INV";
+            }
 
-            if (type == typeof(ExpenseClaimAsPayableItem)) { return "EXP"; }
+            if (type == typeof(ExpenseClaimAsPayableItem)) {
+                return "EXP";
+            }
 
             throw new DomainException("Type not recognised: " + type);
         }

@@ -70,15 +70,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Reflector = null;
         }
 
-        protected IFacetFactoryOrder<T> GetOrder<T>()
-        {
-            return new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories());
-        }
+        protected IFacetFactoryOrder<T> GetOrder<T>() => new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories());
 
-        protected static bool Contains<T>(T[] array, T val)
-        {
-            return array.Contains(val);
-        }
+        protected static bool Contains<T>(T[] array, T val) => array.Contains(val);
 
         protected MethodInfo FindMethod(Type type, string methodName, Type[] parameterTypes) {
             try {
@@ -134,10 +128,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             }
         }
 
-        protected MethodInfo FindMethod(Type type, string methodName)
-        {
-            return FindMethod(type, methodName, Type.EmptyTypes);
-        }
+        protected MethodInfo FindMethod(Type type, string methodName) => FindMethod(type, methodName, Type.EmptyTypes);
 
         protected void AssertRemovedCalled(int count) {
             mockMethodRemover.Verify(remover => remover.RemoveMethod(It.IsAny<MethodInfo>()), Times.Exactly(count));

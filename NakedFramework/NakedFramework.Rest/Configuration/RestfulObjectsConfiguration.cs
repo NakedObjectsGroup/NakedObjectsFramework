@@ -31,9 +31,9 @@ namespace NakedFramework.Rest.Configuration {
         public bool InlinedMemberRepresentations { get; set; }
 
         /// <summary>
-        /// It is recommended that this flag remain set at the default (false).
-        /// It should only be set to true if necesssary for backwards-compatibility
-        /// with earlier versions of the framework.
+        ///     It is recommended that this flag remain set at the default (false).
+        ///     It should only be set to true if necesssary for backwards-compatibility
+        ///     with earlier versions of the framework.
         /// </summary>
         public bool AllowMutatingActionOnImmutableObject { get; set; }
     }

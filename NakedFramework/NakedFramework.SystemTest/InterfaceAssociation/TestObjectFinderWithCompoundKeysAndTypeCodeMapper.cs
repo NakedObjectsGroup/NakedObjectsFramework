@@ -14,31 +14,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper {
     [TestFixture]
     public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
-
-        protected override Type[] ObjectTypes => new[] {
-            typeof(IPayee),
-            typeof(Payment),
-            typeof(CustomerOne),
-            typeof(CustomerTwo), 
-            typeof(CustomerThree),
-            typeof(CustomerFour),
-            typeof(Supplier),
-            typeof(Employee)
-        };
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(ObjectFinderWithTypeCodeMapper),
-                typeof(SimpleRepository<Payment>),
-                typeof(SimpleRepository<CustomerOne>),
-                typeof(SimpleRepository<CustomerTwo>),
-                typeof(SimpleRepository<CustomerThree>),
-                typeof(SimpleRepository<CustomerFour>),
-                typeof(SimpleRepository<Supplier>),
-                typeof(SimpleRepository<Employee>),
-                typeof(SimpleTypeCodeMapper)
-            };
-
         [SetUp]
         public void SetUp() => Initialize();
 
@@ -60,6 +35,30 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
             CleanupNakedObjectsFramework(this);
             PaymentContext.Delete();
         }
+
+        protected override Type[] ObjectTypes => new[] {
+            typeof(IPayee),
+            typeof(Payment),
+            typeof(CustomerOne),
+            typeof(CustomerTwo),
+            typeof(CustomerThree),
+            typeof(CustomerFour),
+            typeof(Supplier),
+            typeof(Employee)
+        };
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(ObjectFinderWithTypeCodeMapper),
+                typeof(SimpleRepository<Payment>),
+                typeof(SimpleRepository<CustomerOne>),
+                typeof(SimpleRepository<CustomerTwo>),
+                typeof(SimpleRepository<CustomerThree>),
+                typeof(SimpleRepository<CustomerFour>),
+                typeof(SimpleRepository<Supplier>),
+                typeof(SimpleRepository<Employee>),
+                typeof(SimpleTypeCodeMapper)
+            };
 
         [Test]
         public void ChangeAssociatedObjectType() {
@@ -204,13 +203,21 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
             };
 
         public string CodeFromType(Type type) {
-            if (type == typeof(CustomerOne)) { return "CU1"; }
+            if (type == typeof(CustomerOne)) {
+                return "CU1";
+            }
 
-            if (type == typeof(CustomerTwo)) { return "CU2"; }
+            if (type == typeof(CustomerTwo)) {
+                return "CU2";
+            }
 
-            if (type == typeof(CustomerThree)) { return "CU3"; }
+            if (type == typeof(CustomerThree)) {
+                return "CU3";
+            }
 
-            if (type == typeof(Supplier)) { return "SUP"; }
+            if (type == typeof(Supplier)) {
+                return "SUP";
+            }
 
             throw new DomainException("Type not recognised: " + type);
         }

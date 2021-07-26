@@ -18,14 +18,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Container {
     [TestFixture]
     public class TestContainer : AbstractSystemTest<ContainerDbContext> {
-
-        protected override Type[] ObjectTypes => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2), typeof(TestEnum) };
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(SimpleRepository<Object1>)
-            };
-
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -46,6 +38,13 @@ namespace NakedObjects.SystemTest.Container {
             CleanupNakedObjectsFramework(this);
             ContainerDbContext.Delete();
         }
+
+        protected override Type[] ObjectTypes => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2), typeof(TestEnum)};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Object1>)
+            };
 
         [Test]
         public void DefaultsTransient() {
@@ -100,6 +99,7 @@ namespace NakedObjects.SystemTest.Container {
     public class Object1 {
         [NakedObjectsIgnore] // as container is public for test
         public IDomainObjectContainer Container { get; set; }
+
         public virtual int Id { get; set; }
 
         public ViewModel2 NewViewModel() => Container.NewViewModel<ViewModel2>();
@@ -159,8 +159,7 @@ namespace NakedObjects.SystemTest.Container {
             return new string[] { };
         }
 
-        public void PopulateUsingKeys(string[] keys) {
-        }
+        public void PopulateUsingKeys(string[] keys) { }
 
         #endregion
     }

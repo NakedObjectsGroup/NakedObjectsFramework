@@ -16,6 +16,27 @@ using Assert = NUnit.Framework.Assert;
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     [TestFixture]
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
+        [SetUp]
+        public void SetUp() => Initialize();
+
+        [TearDown]
+        public void TearDown() => CleanUp();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            PaymentContext.Delete();
+            var context = Activator.CreateInstance<PaymentContext>();
+
+            context.Database.Create();
+            DatabaseInitializer.Seed(context);
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void TearDownTest() {
+            CleanupNakedObjectsFramework(this);
+            PaymentContext.Delete();
+        }
 
         protected override Type[] ObjectTypes =>
             new[] {
@@ -40,28 +61,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
                 typeof(SimpleRepository<Supplier>),
                 typeof(SimpleRepository<Employee>)
             };
-
-        [SetUp]
-        public void SetUp() => Initialize();
-
-        [TearDown]
-        public void TearDown() => CleanUp();
-
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            PaymentContext.Delete();
-            var context = Activator.CreateInstance<PaymentContext>();
-
-            context.Database.Create();
-            DatabaseInitializer.Seed(context);
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework(this);
-            PaymentContext.Delete();
-        }
 
         [Test]
         public virtual void ChangeAssociatedObjectType() {

@@ -31,8 +31,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
-        public void TestDisplayAsPropertyAnnotationPickedUpOnAction()
-        {
+        public void TestDisplayAsPropertyAnnotationPickedUpOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest));
@@ -41,7 +40,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var facet2 = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             var facet3 = Specification.GetFacet(typeof(IMandatoryFacet));
             var facet4 = Specification.GetFacet(typeof(IDisabledFacet));
-        
+
             Assert.IsTrue(facet1 is DisplayAsPropertyFacet);
             Assert.IsTrue(facet2 is PropertyAccessorFacetViaMethod);
             Assert.IsTrue(facet3 is MandatoryFacetDefault);
@@ -51,8 +50,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestDisplayAsPropertyAnnotationIgnoredOnVoidAction()
-        {
+        public void TestDisplayAsPropertyAnnotationIgnoredOnVoidAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest1));
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
@@ -63,8 +61,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestDisplayAsPropertyAnnotationNotIgnoredOnIntAction()
-        {
+        public void TestDisplayAsPropertyAnnotationNotIgnoredOnIntAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest3));
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
@@ -81,10 +78,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestDisplayAsPropertyAnnotationIgnoredOnWithParmsAction()
-        {
+        public void TestDisplayAsPropertyAnnotationIgnoredOnWithParmsAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest2), new[]{typeof(int)});
+            var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest2), new[] {typeof(int)});
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
             Assert.IsNull(facet1);
@@ -93,10 +89,9 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestDisplayAsPropertyAnnotationIgnoredOnCollectionContributedAction()
-        {
+        public void TestDisplayAsPropertyAnnotationIgnoredOnCollectionContributedAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            var actionMethod = FindMethod(typeof(CustomerService), nameof(CustomerService.DisplayAsPropertyTest1), new [] {  typeof(IQueryable<Customer>)});
+            var actionMethod = FindMethod(typeof(CustomerService), nameof(CustomerService.DisplayAsPropertyTest1), new[] {typeof(IQueryable<Customer>)});
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
             Assert.IsNull(facet1);
@@ -104,10 +99,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(metamodel);
         }
 
-
         [TestMethod]
-        public void TestDisplayAsPropertyAnnotationPickedUpOnServiceAction()
-        {
+        public void TestDisplayAsPropertyAnnotationPickedUpOnServiceAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(CustomerService), nameof(Customer.DisplayAsPropertyTest), new[] {typeof(Customer)});
@@ -124,11 +117,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(metamodel);
         }
 
-
-
         [TestMethod]
-        public override void TestFeatureTypes()
-        {
+        public override void TestFeatureTypes() {
             var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
@@ -153,19 +143,15 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             public int DisplayAsPropertyTest3() => 0;
         }
 
-
-        private class CustomerService
-        {
+        private class CustomerService {
             [DisplayAsProperty]
-            public Customer DisplayAsPropertyTest([ContributedAction]Customer customer ) => customer;
+            public Customer DisplayAsPropertyTest([ContributedAction] Customer customer) => customer;
 
             [DisplayAsProperty]
             public Customer DisplayAsPropertyTest1([ContributedAction] IQueryable<Customer> customer) => customer.First();
         }
 
-
         #endregion
-
 
         #region Setup/Teardown
 

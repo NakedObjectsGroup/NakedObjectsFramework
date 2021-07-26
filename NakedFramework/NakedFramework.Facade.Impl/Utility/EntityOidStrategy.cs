@@ -23,9 +23,9 @@ using NakedFramework.Facade.Translation;
 namespace NakedFramework.Facade.Impl.Utility {
     public class EntityOidStrategy : IOidStrategy {
         private readonly INakedObjectsFramework framework;
-        private readonly ITypeCodeMapper typeCodeMapper;
         private readonly IKeyCodeMapper keyCodeMapper;
         private readonly ILogger<EntityOidStrategy> logger;
+        private readonly ITypeCodeMapper typeCodeMapper;
 
         public EntityOidStrategy(INakedObjectsFramework framework, ITypeCodeMapper typeCodeMapper, IKeyCodeMapper keyCodeMapper, ILogger<EntityOidStrategy> logger) {
             this.framework = framework;

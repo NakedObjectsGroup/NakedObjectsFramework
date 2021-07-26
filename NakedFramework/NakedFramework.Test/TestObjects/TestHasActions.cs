@@ -48,9 +48,7 @@ namespace NakedFramework.Test.TestObjects {
             return (ITestObject) this;
         }
 
-        public override string ToString() {
-            return NakedObject is null ? $"{base.ToString()} null" : $"{base.ToString()} {NakedObject.Spec.ShortName}/{NakedObject}";
-        }
+        public override string ToString() => NakedObject is null ? $"{base.ToString()} null" : $"{base.ToString()} {NakedObject.Spec.ShortName}/{NakedObject}";
 
         private static string AppendActions(IActionSpec[] actionsSpec) {
             var order = new StringBuilder();
