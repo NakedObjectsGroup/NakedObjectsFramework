@@ -27,9 +27,7 @@ namespace NakedObjects.SystemTest.Util {
         private static readonly IDictionary<string, Runs> Results = new Dictionary<string, Runs>();
 
         private static ModuleBuilder CreateModuleBuilder(string name) {
-            //AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName {Name = name}, AssemblyBuilderAccess.Run);
             var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName {Name = name}, AssemblyBuilderAccess.Run);
-
             return assemblyBuilder.DefineDynamicModule($"{name}Module");
         }
 

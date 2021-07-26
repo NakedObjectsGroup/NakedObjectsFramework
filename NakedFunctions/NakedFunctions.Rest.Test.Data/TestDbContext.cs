@@ -42,8 +42,6 @@ namespace NakedFunctions.Rest.Test.Data {
 
             context.ReferenceRecords.Add(new ReferenceRecord {UpdatedRecord = ur, DateRecord = dr});
 
-            //context.CollectionRecords.Add(new CollectionRecord {UpdatedRecords = new List<UpdatedRecord> {ur}});
-
             context.CollectionRecords.Add(new CollectionRecord());
 
             context.GuidRecords.Add(new GuidRecord());

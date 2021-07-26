@@ -67,8 +67,6 @@ namespace NakedFunctions.Rest.Test.Data {
 
             modelBuilder.Entity<ReferenceRecord>().HasData(new {Id = 1, UpdatedRecordId = 1, DateRecordId = 1});
 
-            //context.CollectionRecords.Add(new CollectionRecord {UpdatedRecords = new List<UpdatedRecord> {ur}});
-
             modelBuilder.Entity<CollectionRecord>().HasData(new CollectionRecord {Id = 1});
 
             modelBuilder.Entity<GuidRecord>().HasData(new GuidRecord {Id = 1});

@@ -22,7 +22,7 @@ namespace NakedObjects.Core.Container {
         public bool IsEmpty(object obj, string format) => obj == null || IsEmpty(Container.TitleOf(obj, format));
 
         /// <summary>
-        ///     Determines if the specified text is empty. Will return true if either: the specified reference is null;
+        ///     Determines if the specified text is empty. Will return true if either: the specified reference is null
         ///     or if the reference is an empty string
         /// </summary>
         public static bool IsEmpty(string text) => string.IsNullOrEmpty(text);

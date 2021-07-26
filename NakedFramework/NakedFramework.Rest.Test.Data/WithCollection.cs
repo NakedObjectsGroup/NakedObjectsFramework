@@ -29,10 +29,6 @@ namespace RestfulObjects.Test.Data {
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        //public void ICollection<T>.Add(T item) {
-        //   wrapped.Add(item);
-        //}
-
         public void UnionWith(IEnumerable<T> other) {
             throw new NotImplementedException();
         }

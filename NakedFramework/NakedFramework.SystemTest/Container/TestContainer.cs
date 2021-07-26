@@ -156,12 +156,10 @@ namespace NakedObjects.SystemTest.Container {
         #region IViewModel Members
 
         public string[] DeriveKeys() {
-            //  throw new NotImplementedException();
             return new string[] { };
         }
 
         public void PopulateUsingKeys(string[] keys) {
-            // throw new NotImplementedException();
         }
 
         #endregion

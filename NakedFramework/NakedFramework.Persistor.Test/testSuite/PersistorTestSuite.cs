@@ -346,7 +346,6 @@ namespace NakedObjects.Persistor.TestSuite {
         public void CollectionPropertyCollectionResolveStateIsPersistent() {
             var relativesAdapter = GetAdaptedRelatives(GetPerson(1));
             Assert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
-            //  Assert.IsFalse(relativesAdapter.ResolveState.IsResolved(), "should not be resolved");
             Assert.IsNotNull(relativesAdapter.Oid, "is  null");
             Assert.IsInstanceOf(typeof(IAggregateOid), relativesAdapter.Oid, "is not aggregate");
         }
@@ -354,7 +353,6 @@ namespace NakedObjects.Persistor.TestSuite {
         public void EmptyCollectionPropertyCollectionResolveStateIsPersistent() {
             var relativesAdapter = GetAdaptedRelatives(GetPerson(2));
             Assert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
-            //  Assert.IsFalse(relativesAdapter.ResolveState.IsResolved(), "should not be resolved");
             Assert.IsNotNull(relativesAdapter.Oid, "is  null");
             Assert.IsInstanceOf(typeof(IAggregateOid), relativesAdapter.Oid, "is not aggregate");
         }
