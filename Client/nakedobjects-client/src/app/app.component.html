@@ -2,11 +2,11 @@
   <p class="startup-message">Loading configuration...</p>
 </ng-container>
 <ng-container *ngIf="config.loadingStatus === 1">
-  <ng-container *ngIf="!auth.authenticate || auth.isAuthenticated()">
+  <ng-container *ngIf="!$any(auth).authenticate || auth.isAuthenticated()">
     <router-outlet></router-outlet>
     <nof-footer *ngIf="isGemini()"></nof-footer>
   </ng-container>
-  <ng-container *ngIf="auth.authenticate && !auth.isAuthenticated()">
+  <ng-container *ngIf="$any(auth).authenticate && !auth.isAuthenticated()">
     <nof-login></nof-login>
   </ng-container>
 </ng-container>
