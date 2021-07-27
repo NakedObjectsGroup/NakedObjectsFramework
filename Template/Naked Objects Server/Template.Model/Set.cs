@@ -16,7 +16,7 @@ namespace Template.Model
         [Hidden]
         public virtual int Id { get; set; }
 
-        [MemberOrder(1), Title]
+        [MemberOrder(1)]
         public virtual string SetName { get; set; }
 
         [MemberOrder(2)]
@@ -55,6 +55,8 @@ namespace Template.Model
             int yg = YearGroup;
             return Container.Instances<Set>().Where(s => s.Subject.Id == subjId && s.YearGroup == yg).ToList();
         }
+
+        public override string ToString() => SetName;
     }
 }
 

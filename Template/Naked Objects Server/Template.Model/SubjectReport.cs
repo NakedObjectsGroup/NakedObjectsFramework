@@ -53,6 +53,8 @@ namespace Template.Model
         [MemberOrder(6)]
         [MultiLine][Optionally]
         public virtual string Notes { get; set; }
+
+        public override string ToString() => $"{Subject} {Date.ToString("d")}";
     }
 
     public enum Grades

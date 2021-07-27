@@ -16,7 +16,7 @@ namespace Template.Model
         [Hidden]
         public virtual int Id { get; set; }
 
-        [Title][MemberOrder(1)]
+        [MemberOrder(1)]
         public virtual string FullName { get; set; }
 
         [MemberOrder(5), Eagerly(Do.Rendering)]
@@ -27,5 +27,7 @@ namespace Template.Model
             int id = this.Id;
             return Container.Instances<Set>().Where(s => s.Teacher.Id == id).OrderBy(s => s.Subject.Name).ThenBy(s => s.YearGroup).ToList();
         }
+
+        public override string ToString() => FullName;
     }
 }

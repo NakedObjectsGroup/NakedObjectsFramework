@@ -2,6 +2,7 @@
 
 namespace Template.Model
 {
+    [Bounded]
     public class Subject
     {
         #region Injected Services
@@ -13,7 +14,9 @@ namespace Template.Model
         [Hidden]
         public virtual int Id { get; set; }
 
-        [MemberOrder(1), Title]
+        [MemberOrder(1)]
         public virtual string Name { get; set; }
+
+        public override string ToString() => Name;
     }
 }

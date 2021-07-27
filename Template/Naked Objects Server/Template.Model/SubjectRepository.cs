@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace Template.Model
 {
+    [Named("Subjects")]
     public class SubjectRepository
     {
         #region Injected Services

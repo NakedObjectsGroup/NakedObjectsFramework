@@ -20,7 +20,7 @@ namespace Template.Model
         [Hidden]
         public virtual int Id { get; set; }
 
-        [MemberOrder(1), Title]
+        [MemberOrder(1)]
         public virtual string FullName { get; set; }
 
         [MemberOrder(2), Range(9, 13)]
@@ -57,6 +57,8 @@ namespace Template.Model
         }
 
         public void SendMessage(string subject, string message) => Container.InformUser("Message sent to " + FullName);
+
+        public override string ToString() => FullName;
 
     }
 }
