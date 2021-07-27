@@ -14,6 +14,7 @@ namespace Template.Model
         public DbSet<Student> Sets { get; set; }
         public DbSet<Student> Teachers { get; set; }
         public DbSet<Student> Subjects { get; set; }
+        public DbSet<SubjectReport> SubjectReports { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
