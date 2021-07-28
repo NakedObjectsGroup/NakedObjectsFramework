@@ -2,11 +2,11 @@ This repository is now home to two C# application development frameworks: **Nake
 
 * You write only domain types and logic. For Naked Objects that means classes representing persistent domain entities and view models, with all your domain logic encapsulated as methods. For Naked Functions it means writing C# records (or immutable classes) and freestanding (static) functions that are 100% side-effect free. 
 
-* Persistence is managed through Entity Framework - either EF 6 or (imminently) EF Core.
+* Persistence is managed through Entity Framework Core or Entity Framework 6
 
-* Using introspection (during start-up only) the frameworks generate a complete RESTful API for the domain code.
+* Using introspection (during start-up) the frameworks generate a complete RESTful API for the domain code.
 
-* A generic client consumes this RESTful API to provide a rich user interface. The client, which is common to both Naked Objects and Naked Functions, is written in Angular and runs as a Single Page Application (SPA). 
+* A generic client consumes this RESTful API to provide a rich user interface. The client, which is common to both Naked Objects and Naked Functions, is written in Angular 12 and runs as a Single Page Application (SPA). 
 
 * The generic client may be customised for look and feel using standard Angular patterns, and the beauty of the design is that this customisation may be undertaken completely independently of the domain application development. Many users have found that there is no need to customise it at all: the generic client is good enough for deployment. At the other extreme, since the Client adopts a well-structured layered architecture (each layer being a separate NPM package) you may choose to build your SPA from scratch, using only the lower layers of the generic Client architecture as helpers to interact with the RESTful API.
 
@@ -22,7 +22,7 @@ Both frameworks therefore offer the following advantages:
 
 * Stateless server operation with all the deployment benefits of using a pure RESTful API.
 
-* Improved communication between users and developers because the UI corresponds directly to the underlying domain model.
+* Improved communication between users and developers during development/maintenance because the UI corresponds directly to the underlying domain model.
 
 Naked Objects
 =============
