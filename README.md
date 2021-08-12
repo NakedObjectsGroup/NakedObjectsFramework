@@ -44,9 +44,9 @@ Naked Functions is a brand new framework, currently in Beta-release.
 
 While the full Application Developer Manual is currently under construction, the following PowerPoint slides will help:
 
-* [Getting Started with Naked Functions](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Getting%20started%20with%20Naked%20Functions.pptx)
+* [Getting Started with Naked Functions](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Functions/Getting%20started%20with%20Naked%20Functions.pptx)
 
-* [The Naked Functions programming model](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/The%20Naked%20Functions%20programming%20model.pptx)
+* [The Naked Functions programming model](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Functions/The%20Naked%20Functions%20programming%20model.pptx)
 
 
 
