@@ -30,11 +30,10 @@ namespace NakedFramework.Metamodel.Facet {
 
         #endregion
 
-
         protected static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair, ILogger logger) {
             var (delFunc, warning) = pair;
-            if (delFunc == null && !string.IsNullOrWhiteSpace(warning)) {
-                logger.LogWarning(warning);
+            if (delFunc is null && !string.IsNullOrWhiteSpace(warning)) {
+                logger.LogInformation(warning);
             }
 
             return delFunc;
