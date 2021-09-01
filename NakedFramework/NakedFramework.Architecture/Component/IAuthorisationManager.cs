@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Architecture.Component {
     /// <summary>
@@ -17,14 +18,14 @@ namespace NakedFramework.Architecture.Component {
         ///     class/object represented by the member identifier. Normally the view of the specified field, or the
         ///     display of the action will be suppress if this returns false.
         /// </summary>
-        bool IsVisible(ISession session, ILifecycleManager lifecycleManager, INakedObjectAdapter target, IIdentifier identifier);
+        bool IsVisible(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier);
 
         /// <summary>
         ///     Returns true when the use represented by the specified session is authorized to change the field
         ///     represented by the member identifier. Normally the specified field will be not appear editable if this
         ///     returns false.
         /// </summary>
-        bool IsEditable(ISession session, ILifecycleManager lifecycleManager, INakedObjectAdapter target, IIdentifier identifier);
+        bool IsEditable(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

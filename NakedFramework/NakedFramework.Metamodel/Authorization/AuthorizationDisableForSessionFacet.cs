@@ -27,7 +27,7 @@ namespace NakedFramework.Metamodel.Authorization {
         }
 
         public override string DisabledReason(INakedObjectAdapter target, INakedObjectsFramework framework) =>
-            authorizationManager.IsEditable(framework.Session, framework.LifecycleManager, target, identifier)
+            authorizationManager.IsEditable(framework, target, identifier)
                 ? null
                 : "Not authorized to edit";
     }

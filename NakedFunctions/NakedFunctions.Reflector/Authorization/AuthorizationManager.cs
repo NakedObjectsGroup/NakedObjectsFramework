@@ -18,9 +18,11 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
-using NakedFramework.Security;
+using NakedFramework.Metamodel.Authorization;
+using NakedFunctions.Reflector.Component;
+using NakedFunctions.Security;
 
-namespace NakedFramework.Metamodel.Authorization {
+namespace NakedFunctions.Reflector.Authorization {
     [Serializable]
     public sealed class AuthorizationManager : IAuthorizationManager, IFacetDecorator {
         private readonly Type defaultAuthorizer;
@@ -50,7 +52,7 @@ namespace NakedFramework.Metamodel.Authorization {
 
             if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
                 var nameAuth = (INamespaceAuthorizer) authorizer;
-                return nameAuth.IsVisible(framework.Session.Principal, target.Object, identifier.MemberName);
+                return nameAuth.IsVisible(target.Object, identifier.MemberName, new FunctionalContext());
             }
 
             //Must be an ITypeAuthorizer, including default authorizer (ITypeAuthorizer<object>)
@@ -63,7 +65,7 @@ namespace NakedFramework.Metamodel.Authorization {
 
             if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
                 var nameAuth = (INamespaceAuthorizer) authorizer;
-                return nameAuth.IsEditable(framework.Session.Principal, target.Object, identifier.MemberName);
+                return nameAuth.IsEditable(target.Object, identifier.MemberName, new FunctionalContext() );
             }
 
             return isEditableDelegates[authType](authorizer, framework.Session.Principal, target.GetDomainObject(), identifier.MemberName);
