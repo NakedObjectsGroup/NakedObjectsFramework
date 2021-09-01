@@ -23,9 +23,8 @@ using NakedFunctions.Security;
 namespace NakedFunctions.Reflector.Authorization {
     [Serializable]
     public sealed class AuthorizationManager : AbstractAuthorizationManager {
-
-        private readonly ImmutableDictionary<Type, Func<object,  object, string, IContext, bool>> isEditableDelegates;
-        private readonly ImmutableDictionary<Type, Func<object,  object, string, IContext, bool>> isVisibleDelegates;
+        private readonly ImmutableDictionary<Type, Func<object, object, string, IContext, bool>> isEditableDelegates;
+        private readonly ImmutableDictionary<Type, Func<object, object, string, IContext, bool>> isVisibleDelegates;
 
         public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration, ILogger<AuthorizationManager> logger) : base(authorizationConfiguration, logger) {
             var isVisibleDict = new Dictionary<Type, Func<object, object, string, IContext, bool>> {
@@ -43,7 +42,8 @@ namespace NakedFunctions.Reflector.Authorization {
 
                 isVisibleDelegates = isVisibleDict.Union(typeAuthorizers.Values.ToDictionary(type => type, type => FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(type.GetMethod("IsVisible")))).ToImmutableDictionary();
                 isEditableDelegates = isEditableDict.Union(typeAuthorizers.Values.ToDictionary(type => type, type => FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(type.GetMethod("IsEditable")))).ToImmutableDictionary();
-            } else {
+            }
+            else {
                 // default authorizer must be the only TypeAuthorizer
                 isVisibleDelegates = isVisibleDict.ToImmutableDictionary();
                 isEditableDelegates = isEditableDict.ToImmutableDictionary();
@@ -51,30 +51,27 @@ namespace NakedFunctions.Reflector.Authorization {
         }
 
         protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedObject(type);
+        private static FunctionalContext FunctionalContext(INakedObjectsFramework framework) => new() { Persistor = framework.Persistor, Provider = framework.ServiceProvider };
 
         public override bool IsVisible(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
             var authorizer = GetAuthorizer(target, framework.LifecycleManager);
-            var authType = authorizer.GetType();
 
-            if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
-                var nameAuth = (INamespaceAuthorizer)authorizer;
-                return nameAuth.IsVisible(target.Object, identifier.MemberName, new FunctionalContext());
+            if (authorizer is INamespaceAuthorizer nameAuth) {
+                return nameAuth.IsVisible(target.Object, identifier.MemberName, FunctionalContext(framework));
             }
 
             //Must be an ITypeAuthorizer, including default authorizer (ITypeAuthorizer<object>)
-            return isVisibleDelegates[authType](authorizer, target.GetDomainObject(), identifier.MemberName, new FunctionalContext());
+            return isVisibleDelegates[authorizer.GetType()](authorizer, target.GetDomainObject(), identifier.MemberName, FunctionalContext(framework));
         }
 
         public override bool IsEditable(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
             var authorizer = GetAuthorizer(target, framework.LifecycleManager);
-            var authType = authorizer.GetType();
 
-            if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
-                var nameAuth = (INamespaceAuthorizer)authorizer;
-                return nameAuth.IsEditable(target.Object, identifier.MemberName, new FunctionalContext());
+            if (authorizer is INamespaceAuthorizer nameAuth) {
+                return nameAuth.IsEditable(target.Object, identifier.MemberName, FunctionalContext(framework));
             }
 
-            return isEditableDelegates[authType](authorizer, target.GetDomainObject(), identifier.MemberName, new FunctionalContext());
+            return isEditableDelegates[authorizer.GetType()](authorizer, target.GetDomainObject(), identifier.MemberName, FunctionalContext(framework));
         }
     }
 }
