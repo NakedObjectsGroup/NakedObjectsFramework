@@ -22,7 +22,6 @@ using NakedFramework.Security;
 namespace NakedObjects.Reflector.Authorization {
     [Serializable]
     public sealed class AuthorizationManager : AbstractAuthorizationManager {
-
         private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isEditableDelegates;
         private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isVisibleDelegates;
 
@@ -54,27 +53,23 @@ namespace NakedObjects.Reflector.Authorization {
 
         public override bool IsVisible(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
             var authorizer = GetAuthorizer(target, framework.LifecycleManager);
-            var authType = authorizer.GetType();
 
-            if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
-                var nameAuth = (INamespaceAuthorizer)authorizer;
+            if (authorizer is INamespaceAuthorizer nameAuth) {
                 return nameAuth.IsVisible(framework.Session.Principal, target.Object, identifier.MemberName);
             }
 
             //Must be an ITypeAuthorizer, including default authorizer (ITypeAuthorizer<object>)
-            return isVisibleDelegates[authType](authorizer, framework.Session.Principal, target.GetDomainObject(), identifier.MemberName);
+            return isVisibleDelegates[authorizer.GetType()](authorizer, framework.Session.Principal, target.GetDomainObject(), identifier.MemberName);
         }
 
         public override bool IsEditable(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
             var authorizer = GetAuthorizer(target, framework.LifecycleManager);
-            var authType = authorizer.GetType();
 
-            if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
-                var nameAuth = (INamespaceAuthorizer)authorizer;
+            if (authorizer is INamespaceAuthorizer nameAuth) {
                 return nameAuth.IsEditable(framework.Session.Principal, target.Object, identifier.MemberName);
             }
 
-            return isEditableDelegates[authType](authorizer, framework.Session.Principal, target.GetDomainObject(), identifier.MemberName);
+            return isEditableDelegates[authorizer.GetType()](authorizer, framework.Session.Principal, target.GetDomainObject(), identifier.MemberName);
         }
     }
 }
