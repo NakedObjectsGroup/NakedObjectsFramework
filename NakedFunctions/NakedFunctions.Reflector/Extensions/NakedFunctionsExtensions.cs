@@ -14,6 +14,7 @@ using NakedFramework.Core.Component;
 using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
+using NakedFunctions.Reflector.Authorization;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Reflector.FacetFactory;
@@ -52,6 +53,11 @@ namespace NakedFunctions.Reflector.Extensions {
             frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
 
             options.RegisterCustomTypes?.Invoke(frameworkOptions.Services);
+
+            if (frameworkOptions.AuthorizationConfiguration is not null) {
+                frameworkOptions.Services.AddSingleton(frameworkOptions.AuthorizationConfiguration);
+                frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuthorizationManager>();
+            }
         }
 
         public static void RegisterWellKnownServices(IServiceCollection services) {

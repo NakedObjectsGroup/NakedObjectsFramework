@@ -10,14 +10,18 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Facade.Utility;
+using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
+using NakedFunctions.Reflector.Authorization;
 using NakedFunctions.Rest.Test.Data;
+using NakedFunctions.Security;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -27,6 +31,25 @@ namespace NakedFunctions.Rest.Test {
     public class NullStringHasher : IStringHasher {
         public string GetHash(string toHash) => null;
     }
+
+    public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
+        public bool IsEditable(object target, string memberName, IContext context) => true;
+
+        public bool IsVisible(object target, string memberName, IContext context) => true;
+    }
+
+    public class TestNamespaceAuthorizer : INamespaceAuthorizer {
+        public bool IsEditable(object target, string memberName, IContext context) => true;
+
+        public bool IsVisible(object target, string memberName, IContext context) => true;
+    }
+
+    public class TestTypeAuthorizer1 : ITypeAuthorizer<SimpleRecord> {
+        public bool IsEditable(SimpleRecord target, string memberName, IContext context) => true;
+
+        public bool IsVisible(SimpleRecord target, string memberName, IContext context) => true;
+    }
+
 
     public class ObjectTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
@@ -88,6 +111,16 @@ namespace NakedFunctions.Rest.Test {
             services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
             services.AddMvc(options => options.EnableEndpointRouting = false)
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        }
+
+        protected override IAuthorizationConfiguration AuthorizationConfiguration {
+            get {
+                var config = new AuthorizationConfiguration<TestDefaultAuthorizer>();
+
+                config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("1");
+                config.AddTypeAuthorizer<SimpleRecord, TestTypeAuthorizer1>();
+                return config;
+            }
         }
 
         [SetUp]
