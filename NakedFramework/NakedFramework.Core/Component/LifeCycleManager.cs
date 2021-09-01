@@ -56,20 +56,20 @@ namespace NakedFramework.Core.Component {
 
         private object CreateObject(ITypeSpec spec) {
             var type = TypeUtils.GetType(spec.FullName);
-            return spec.IsViewModel || spec is IServiceSpec || spec.ContainsFacet<INotPersistedFacet>() ? CreateNotPersistedObject(type, spec is IServiceSpec) : objectPersistor.CreateObject(spec);
+            return spec.IsViewModel || spec is IServiceSpec || spec.ContainsFacet<INotPersistedFacet>() ? CreateNotPersistedObject(type, spec is IServiceSpec, true) : objectPersistor.CreateObject(spec);
         }
 
-        private object CreateNotPersistedObject(Type type) {
+        private object CreateNotPersistedObject(Type type, bool inject) {
             var instance = Activator.CreateInstance(type);
-            return InitDomainObject(instance);
+            return inject ? InitDomainObject(instance) : instance;
         }
 
-        private object CreateNotPersistedObject(Type type, bool cache) {
+        private object CreateNotPersistedObject(Type type, bool cache, bool inject) {
             if (cache) {
-                return nonPersistedObjectCache.ContainsKey(type) ? nonPersistedObjectCache[type] : nonPersistedObjectCache[type] = CreateNotPersistedObject(type);
+                return nonPersistedObjectCache.ContainsKey(type) ? nonPersistedObjectCache[type] : nonPersistedObjectCache[type] = CreateNotPersistedObject(type, inject);
             }
 
-            return CreateNotPersistedObject(type);
+            return CreateNotPersistedObject(type, inject);
         }
 
         private IOid RestoreGenericOid(string[] encodedData, INakedObjectsFramework framework) {
@@ -178,6 +178,8 @@ namespace NakedFramework.Core.Component {
         }
 
         public object CreateNonAdaptedInjectedObject(Type type) => CreateNotPersistedObject(type, true);
+
+        public object CreateNonAdaptedObject(Type type) => CreateNotPersistedObject(type, true);
 
         public INakedObjectAdapter GetViewModel(IOid oid, INakedObjectsFramework framework) => nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid, framework);
 

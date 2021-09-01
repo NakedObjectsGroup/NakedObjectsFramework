@@ -25,6 +25,8 @@ namespace NakedFramework.Architecture.Component {
 
         object CreateNonAdaptedInjectedObject(Type type);
 
+        object CreateNonAdaptedObject(Type type);
+
         /// <summary>
         ///     Makes a naked object persistent. The specified object should be stored away via this object store's
         ///     persistence mechanism, and have an new and unique OID assigned to it (by calling the object's

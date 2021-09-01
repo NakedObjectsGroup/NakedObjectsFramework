@@ -50,7 +50,7 @@ namespace NakedFunctions.Reflector.Authorization {
             }
         }
 
-        protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
+        protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedObject(type);
 
         public override bool IsVisible(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
             var authorizer = GetAuthorizer(target, framework.LifecycleManager);
