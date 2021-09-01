@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Security;
+using NakedObjects.Reflector.Authorization;
 
 namespace NakedObjects.Meta.Test.Authorization {
     [TestClass]

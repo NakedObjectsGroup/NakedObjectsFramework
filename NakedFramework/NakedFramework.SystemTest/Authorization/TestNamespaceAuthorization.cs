@@ -13,6 +13,7 @@ using MyApp.MyCluster2;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Security;
 using NakedObjects;
+using NakedObjects.Reflector.Authorization;
 using NakedObjects.Services;
 using NotMyApp.MyCluster2;
 using NUnit.Framework;

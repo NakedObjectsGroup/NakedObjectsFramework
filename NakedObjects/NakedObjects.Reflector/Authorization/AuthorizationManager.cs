@@ -16,9 +16,10 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Security;
 
-namespace NakedFramework.Metamodel.Authorization {
+namespace NakedObjects.Reflector.Authorization {
     [Serializable]
     public sealed class AuthorizationManager : AbstractAuthorizationManager {
 

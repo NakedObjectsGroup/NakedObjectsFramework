@@ -11,6 +11,7 @@ using System.Security.Principal;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Security;
 using NakedObjects.Core.Util;
+using NakedObjects.Reflector.Authorization;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;
 using NUnit.Framework;

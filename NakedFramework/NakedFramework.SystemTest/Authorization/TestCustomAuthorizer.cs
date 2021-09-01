@@ -11,6 +11,7 @@ using System.Security.Principal;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Security;
+using NakedObjects.Reflector.Authorization;
 using NakedObjects.Services;
 using NUnit.Framework;
 
