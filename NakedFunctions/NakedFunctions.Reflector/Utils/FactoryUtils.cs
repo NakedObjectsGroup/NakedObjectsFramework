@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Util;
 
 namespace NakedFunctions.Reflector.Utils {
     public static class FactoryUtils {
@@ -101,6 +102,25 @@ namespace NakedFunctions.Reflector.Utils {
             }
 
             return new Dictionary<ParameterInfo, PropertyInfo>();
+        }
+
+        private static Func<object, object, string, IContext, bool> TypeAuthorizerHelper<TTarget, TAuth>(MethodInfo method) where TTarget : class {
+            var func = (Func<TTarget, TAuth, string, IContext, bool>)Delegate.CreateDelegate(typeof(Func<TTarget, TAuth, string, IContext, bool>), method);
+            return (target, auth, name, context) => func((TTarget)target, (TAuth)auth, name, context);
+        }
+
+        public static Func<object, object, string, IContext, bool> CreateFunctionalTypeAuthorizerDelegate(MethodInfo method) {
+            var genericHelper = typeof(FactoryUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
+
+            // Now supply the type arguments
+            var typeArgs = new List<Type> { method.DeclaringType, Enumerable.First(DelegateUtils.GetTypeAuthorizerType(method.DeclaringType).GenericTypeArguments) };
+            var delegateHelper = genericHelper.MakeGenericMethod(typeArgs.ToArray());
+
+            // Now call it. The null argument is because it’s a static method.
+            var ret = delegateHelper.Invoke(null, new object[] { method });
+
+            // Cast the result to the right kind of delegate and return it
+            return (Func<object, object, string, IContext, bool>)ret;
         }
     }
 }

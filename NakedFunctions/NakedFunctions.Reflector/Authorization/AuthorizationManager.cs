@@ -9,124 +9,72 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Authorization;
 using NakedFunctions.Reflector.Component;
+using NakedFunctions.Reflector.Utils;
 using NakedFunctions.Security;
 
 namespace NakedFunctions.Reflector.Authorization {
     [Serializable]
-    public sealed class AuthorizationManager : IAuthorizationManager, IFacetDecorator {
-        private readonly Type defaultAuthorizer;
-        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isEditableDelegates;
-        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isVisibleDelegates;
-        private readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
-        private readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
+    public sealed class AuthorizationManager : AbstractAuthorizationManager {
 
-        private static object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
+        private readonly ImmutableDictionary<Type, Func<object,  object, string, IContext, bool>> isEditableDelegates;
+        private readonly ImmutableDictionary<Type, Func<object,  object, string, IContext, bool>> isVisibleDelegates;
 
-        private object GetAuthorizer(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
-            //Look for exact-fit TypeAuthorizer
-            // order here as ImmutableDictionary not ordered
-            var fullyQualifiedOfTarget = target.Spec.FullName;
-            var authorizer = typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
-                             namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
-                             defaultAuthorizer;
-
-            return CreateAuthorizer(authorizer, lifecycleManager);
-        }
-
-        #region IAuthorizationManager Members
-
-        public bool IsVisible(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
-            var authorizer = GetAuthorizer(target, framework.LifecycleManager);
-            var authType = authorizer.GetType();
-
-            if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
-                var nameAuth = (INamespaceAuthorizer) authorizer;
-                return nameAuth.IsVisible(target.Object, identifier.MemberName, new FunctionalContext());
-            }
-
-            //Must be an ITypeAuthorizer, including default authorizer (ITypeAuthorizer<object>)
-            return isVisibleDelegates[authType](authorizer, framework.Session.Principal, target.GetDomainObject(), identifier.MemberName);
-        }
-
-        public bool IsEditable(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
-            var authorizer = GetAuthorizer(target, framework.LifecycleManager);
-            var authType = authorizer.GetType();
-
-            if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
-                var nameAuth = (INamespaceAuthorizer) authorizer;
-                return nameAuth.IsEditable(target.Object, identifier.MemberName, new FunctionalContext() );
-            }
-
-            return isEditableDelegates[authType](authorizer, framework.Session.Principal, target.GetDomainObject(), identifier.MemberName);
-        }
-
-        #endregion
-
-        #region Constructors
-
-        public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration, ILogger<AuthorizationManager> logger) {
-            defaultAuthorizer = authorizationConfiguration.DefaultAuthorizer;
-            if (defaultAuthorizer == null) {
-                throw new InitialisationException(logger.LogAndReturn("Default Authorizer cannot be null"));
-            }
-
-            var isVisibleDict = new Dictionary<Type, Func<object, IPrincipal, object, string, bool>> {
-                {defaultAuthorizer, DelegateUtils.CreateTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsVisible"))}
+        public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration, ILogger<AuthorizationManager> logger) : base(authorizationConfiguration, logger) {
+            var isVisibleDict = new Dictionary<Type, Func<object, object, string, IContext, bool>> {
+                { defaultAuthorizer, FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsVisible")) }
             };
 
-            var isEditableDict = new Dictionary<Type, Func<object, IPrincipal, object, string, bool>> {
-                {defaultAuthorizer, DelegateUtils.CreateTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsEditable"))}
+            var isEditableDict = new Dictionary<Type, Func<object, object, string, IContext, bool>> {
+                { defaultAuthorizer, FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsEditable")) }
             };
 
-            if (authorizationConfiguration.NamespaceAuthorizers.Any()) {
-                namespaceAuthorizers = authorizationConfiguration.NamespaceAuthorizers.ToImmutableDictionary();
-            }
-
-            if (authorizationConfiguration.TypeAuthorizers.Any()) {
-                if (authorizationConfiguration.TypeAuthorizers.Values.Any(t => typeof(ITypeAuthorizer<object>).IsAssignableFrom(t))) {
+            if (typeAuthorizers.Any()) {
+                if (typeAuthorizers.Values.Any(t => typeof(ITypeAuthorizer<object>).IsAssignableFrom(t))) {
                     throw new InitialisationException(logger.LogAndReturn("Only Default Authorizer can be ITypeAuthorizer<object>"));
                 }
 
-                typeAuthorizers = authorizationConfiguration.TypeAuthorizers.ToImmutableDictionary();
-                isVisibleDelegates = isVisibleDict.Union(authorizationConfiguration.TypeAuthorizers.Values.ToDictionary(type => type, type => DelegateUtils.CreateTypeAuthorizerDelegate(type.GetMethod("IsVisible")))).ToImmutableDictionary();
-                isEditableDelegates = isEditableDict.Union(authorizationConfiguration.TypeAuthorizers.Values.ToDictionary(type => type, type => DelegateUtils.CreateTypeAuthorizerDelegate(type.GetMethod("IsEditable")))).ToImmutableDictionary();
-            }
-            else {
+                isVisibleDelegates = isVisibleDict.Union(typeAuthorizers.Values.ToDictionary(type => type, type => FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(type.GetMethod("IsVisible")))).ToImmutableDictionary();
+                isEditableDelegates = isEditableDict.Union(typeAuthorizers.Values.ToDictionary(type => type, type => FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(type.GetMethod("IsEditable")))).ToImmutableDictionary();
+            } else {
                 // default authorizer must be the only TypeAuthorizer
                 isVisibleDelegates = isVisibleDict.ToImmutableDictionary();
                 isEditableDelegates = isEditableDict.ToImmutableDictionary();
             }
         }
 
-        public IFacet Decorate(IFacet facet, ISpecification holder) {
-            var facetType = facet.FacetType;
-            var specification = facet.Specification;
-            var identifier = holder.Identifier;
+        protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
 
-            if (facetType == typeof(IHideForSessionFacet)) {
-                return new AuthorizationHideForSessionFacet(identifier, this, specification);
+        public override bool IsVisible(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
+            var authorizer = GetAuthorizer(target, framework.LifecycleManager);
+            var authType = authorizer.GetType();
+
+            if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
+                var nameAuth = (INamespaceAuthorizer)authorizer;
+                return nameAuth.IsVisible(target.Object, identifier.MemberName, new FunctionalContext());
             }
 
-            if (facetType == typeof(IDisableForSessionFacet)) {
-                return new AuthorizationDisableForSessionFacet(identifier, this, specification);
-            }
-
-            return facet;
+            //Must be an ITypeAuthorizer, including default authorizer (ITypeAuthorizer<object>)
+            return isVisibleDelegates[authType](authorizer, target.GetDomainObject(), identifier.MemberName, new FunctionalContext());
         }
 
-        public Type[] ForFacetTypes { get; } = {typeof(IHideForSessionFacet), typeof(IDisableForSessionFacet)};
+        public override bool IsEditable(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
+            var authorizer = GetAuthorizer(target, framework.LifecycleManager);
+            var authType = authorizer.GetType();
 
-        #endregion
+            if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
+                var nameAuth = (INamespaceAuthorizer)authorizer;
+                return nameAuth.IsEditable(target.Object, identifier.MemberName, new FunctionalContext());
+            }
+
+            return isEditableDelegates[authType](authorizer, target.GetDomainObject(), identifier.MemberName, new FunctionalContext());
+        }
     }
 }

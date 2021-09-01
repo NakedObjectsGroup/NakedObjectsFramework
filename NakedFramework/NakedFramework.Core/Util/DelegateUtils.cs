@@ -74,7 +74,7 @@ namespace NakedFramework.Core.Util {
             return (Action<object>) ret;
         }
 
-        private static Type GetTypeAuthorizerType(Type type) {
+        public static Type GetTypeAuthorizerType(Type type) {
             if (type is null) {
                 return null;
             }
@@ -84,7 +84,7 @@ namespace NakedFramework.Core.Util {
                 : type.GetInterfaces().FirstOrDefault(i => GetTypeAuthorizerType(i) != null);
         }
 
-        public static Func<object, IPrincipal, object, string, bool> CreateTypeAuthorizerDelegate(MethodInfo method) {
+        public static Func<object, IPrincipal, object, string, bool> CreateObjectTypeAuthorizerDelegate(MethodInfo method) {
             var genericHelper = typeof(DelegateUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
 
             // Now supply the type arguments
