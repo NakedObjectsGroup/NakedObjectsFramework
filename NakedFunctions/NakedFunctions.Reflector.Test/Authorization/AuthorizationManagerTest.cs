@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -15,10 +14,10 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Authorization;
-using NakedFramework.Security;
-using NakedObjects.Reflector.Authorization;
+using NakedFunctions.Reflector.Authorization;
+using NakedFunctions.Security;
 
-namespace NakedObjects.Meta.Test.Authorization {
+namespace NakedFunctions.Reflector.Test.Authorization {
     [TestClass]
     public class AuthorizationManagerTest {
         private readonly ILogger<AuthorizationManager> mockLogger = new Mock<ILogger<AuthorizationManager>>().Object;
@@ -126,9 +125,9 @@ namespace NakedObjects.Meta.Test.Authorization {
         public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
             #region ITypeAuthorizer<object> Members
 
-            public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
+            public bool IsEditable(object target, string memberName, IContext context) => true;
 
-            public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
+            public bool IsVisible(object target, string memberName, IContext context) => true;
 
             #endregion
         }
@@ -140,9 +139,9 @@ namespace NakedObjects.Meta.Test.Authorization {
         public class TestNamespaceAuthorizer : INamespaceAuthorizer {
             #region INamespaceAuthorizer Members
 
-            public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
+            public bool IsEditable(object target, string memberName, IContext context) => true;
 
-            public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
+            public bool IsVisible(object target, string memberName, IContext context) => true;
 
             #endregion
         }
