@@ -97,8 +97,6 @@ namespace NakedFunctions.Reflector.Test.Authorization {
         public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
             #region ITypeAuthorizer<object> Members
 
-            public bool IsEditable(object target, string memberName, IContext context) => true;
-
             public bool IsVisible(object target, string memberName, IContext context) => true;
 
             #endregion
@@ -110,8 +108,6 @@ namespace NakedFunctions.Reflector.Test.Authorization {
 
         public class TestNamespaceAuthorizer : INamespaceAuthorizer {
             #region INamespaceAuthorizer Members
-
-            public bool IsEditable(object target, string memberName, IContext context) => true;
 
             public bool IsVisible(object target, string memberName, IContext context) => true;
 
