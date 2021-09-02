@@ -12,7 +12,9 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Authorization;
@@ -23,16 +25,11 @@ using NakedFunctions.Security;
 namespace NakedFunctions.Reflector.Authorization {
     [Serializable]
     public sealed class AuthorizationManager : AbstractAuthorizationManager {
-        private readonly ImmutableDictionary<Type, Func<object, object, string, IContext, bool>> isEditableDelegates;
         private readonly ImmutableDictionary<Type, Func<object, object, string, IContext, bool>> isVisibleDelegates;
 
         public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration, ILogger<AuthorizationManager> logger) : base(authorizationConfiguration, logger) {
             var isVisibleDict = new Dictionary<Type, Func<object, object, string, IContext, bool>> {
                 { defaultAuthorizer, FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsVisible")) }
-            };
-
-            var isEditableDict = new Dictionary<Type, Func<object, object, string, IContext, bool>> {
-                { defaultAuthorizer, FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsEditable")) }
             };
 
             if (typeAuthorizers.Any()) {
@@ -41,13 +38,23 @@ namespace NakedFunctions.Reflector.Authorization {
                 }
 
                 isVisibleDelegates = isVisibleDict.Union(typeAuthorizers.Values.ToDictionary(type => type, type => FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(type.GetMethod("IsVisible")))).ToImmutableDictionary();
-                isEditableDelegates = isEditableDict.Union(typeAuthorizers.Values.ToDictionary(type => type, type => FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(type.GetMethod("IsEditable")))).ToImmutableDictionary();
             }
             else {
                 // default authorizer must be the only TypeAuthorizer
                 isVisibleDelegates = isVisibleDict.ToImmutableDictionary();
-                isEditableDelegates = isEditableDict.ToImmutableDictionary();
             }
+        }
+
+        public override IFacet Decorate(IFacet facet, ISpecification holder) {
+            var facetType = facet.FacetType;
+            var specification = facet.Specification;
+            var identifier = holder.Identifier;
+
+            if (facetType == typeof(IHideForSessionFacet)) {
+                return new AuthorizationHideForSessionFacet(identifier, this, specification);
+            }
+
+            return facet;
         }
 
         protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedObject(type);
@@ -64,14 +71,6 @@ namespace NakedFunctions.Reflector.Authorization {
             return isVisibleDelegates[authorizer.GetType()](authorizer, target.GetDomainObject(), identifier.MemberName, FunctionalContext(framework));
         }
 
-        public override bool IsEditable(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
-            var authorizer = GetAuthorizer(target, framework.LifecycleManager);
-
-            if (authorizer is INamespaceAuthorizer nameAuth) {
-                return nameAuth.IsEditable(target.Object, identifier.MemberName, FunctionalContext(framework));
-            }
-
-            return isEditableDelegates[authorizer.GetType()](authorizer, target.GetDomainObject(), identifier.MemberName, FunctionalContext(framework));
-        }
+        public override bool IsEditable(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) => false;
     }
 }

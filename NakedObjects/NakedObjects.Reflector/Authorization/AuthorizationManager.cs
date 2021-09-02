@@ -13,7 +13,9 @@ using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Authorization;
@@ -47,6 +49,22 @@ namespace NakedObjects.Reflector.Authorization {
                 isVisibleDelegates = isVisibleDict.ToImmutableDictionary();
                 isEditableDelegates = isEditableDict.ToImmutableDictionary();
             }
+        }
+
+        public override IFacet Decorate(IFacet facet, ISpecification holder) {
+            var facetType = facet.FacetType;
+            var specification = facet.Specification;
+            var identifier = holder.Identifier;
+
+            if (facetType == typeof(IHideForSessionFacet)) {
+                return new AuthorizationHideForSessionFacet(identifier, this, specification);
+            }
+
+            if (facetType == typeof(IDisableForSessionFacet)) {
+                return new AuthorizationDisableForSessionFacet(identifier, this, specification);
+            }
+
+            return facet;
         }
 
         protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);

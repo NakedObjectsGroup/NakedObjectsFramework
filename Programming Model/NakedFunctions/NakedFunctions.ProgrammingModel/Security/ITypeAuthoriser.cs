@@ -15,15 +15,6 @@ namespace NakedFunctions.Security {
     /// </typeparam>
     public interface ITypeAuthorizer<T> {
         /// <summary>
-        ///     Called only for properties on an object when user attempts to edit the object
-        /// </summary>
-        /// <param name="target">Domain object instance</param>
-        /// <param name="memberName">String representation of property name</param>
-        /// <param name="context">IContext</param>
-        /// <returns></returns>
-        bool IsEditable(T target, string memberName, IContext context);
-
-        /// <summary>
         ///     Called on properties and actions on an object when user attempts to view the object
         /// </summary>
         /// <param name="target">Domain object instance</param>
