@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Data.Entity;
+using NakedFunctions.Rest.Test.Data.Sub;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class Constants {
@@ -71,6 +72,7 @@ namespace NakedFunctions.Rest.Test.Data {
         protected override void Seed(AuthDbContext context) {
             context.Foos.Add(new Foo { Id = 1 });
             context.Bars.Add(new Bar { Id = 1 });
+            context.Quxs.Add(new Qux { Id = 1 });
 
             context.SaveChanges();
         }
@@ -119,6 +121,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public DbSet<Foo> Foos { get; set; }
         public DbSet<Bar> Bars { get; set; }
+        public DbSet<Qux> Quxs { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new AuthDatabaseInitializer());

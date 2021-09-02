@@ -17,6 +17,7 @@ using NakedFramework.Rest.API;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Reflector.Authorization;
 using NakedFunctions.Rest.Test.Data;
+using NakedFunctions.Rest.Test.Data.Sub;
 using NakedFunctions.Security;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
@@ -95,10 +96,11 @@ namespace NakedFunctions.Rest.Test {
         }
     }
 
-
     public class AuthTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
             typeof(BarFunctions),
+            typeof(QuxFunctions),
+            typeof(FooFunctions),
         };
 
         protected override Type[] Records { get; } = {
@@ -136,7 +138,7 @@ namespace NakedFunctions.Rest.Test {
             get {
                 var config = new AuthorizationConfiguration<TestDefaultAuthorizer>();
 
-                config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("1");
+                config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("NakedFunctions.Rest.Test.Data.Sub");
                 config.AddTypeAuthorizer<Foo, TestTypeAuthorizerFoo>();
                 return config;
             }
@@ -210,7 +212,7 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void DefaultAuthorizerCalledForNonSpecificTypeAllows() {
+        public void DefaultAuthorizerCalledForNonSpecificTypeAllowsProp() {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
@@ -230,7 +232,7 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void DefaultAuthorizerCalledForNonSpecificTypeBlocks() {
+        public void DefaultAuthorizerCalledForNonSpecificTypeBlocksProp() {
             ResetDefaultAuth(false);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
@@ -242,12 +244,204 @@ namespace NakedFunctions.Rest.Test {
             var parsedResult = JObject.Parse(json);
 
             Assert.IsNull(parsedResult["members"]["Prop1"]);
-           
+            
+            AssertDefaultAuth(3, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(0, 0);
+        }
+
+        [Test]
+        public void DefaultAuthorizerCalledForNonSpecificTypeAllowsMethod() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<Bar>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
             AssertDefaultAuth(3, 0);
             AssertNamespaceAuth(0, 0);
             AssertTypeFooAuth(0, 0);
         }
+
+        [Test]
+        public void DefaultAuthorizerCalledForNonSpecificTypeBlocksMethod() {
+            ResetDefaultAuth(false);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<Bar>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["Act1"]);
+
+            AssertDefaultAuth(3, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(0, 0);
+        }
+
+        [Test]
+        public void NamespaceAuthorizerCalledForNonSpecificTypeAllowsProp() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<Qux>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Prop1"]);
+            Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(3, 0);
+            AssertTypeFooAuth(0, 0);
+        }
+
+        [Test]
+        public void NamespaceAuthorizerCalledForNonSpecificTypeBlocksProp() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(false);
+            ResetTypeFooAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<Qux>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["Prop1"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(3, 0);
+            AssertTypeFooAuth(0, 0);
+        }
+
+        [Test]
+        public void NamespaceAuthorizerCalledForNonSpecificTypeAllowsMethod() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<Qux>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Act1"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(3, 0);
+            AssertTypeFooAuth(0, 0);
+        }
+
+        [Test]
+        public void NamespaceAuthorizerCalledForNonSpecificTypeBlocksMethod() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(false);
+            ResetTypeFooAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<Qux>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["Act1"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(3, 0);
+            AssertTypeFooAuth(0, 0);
+        }
+
+        [Test]
+        public void TypeAuthorizerCalledForSpecificTypeAllowsProp() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<Foo>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Prop1"]);
+            Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(3, 0);
+        }
+
+        [Test]
+        public void TypeAuthorizerCalledForSpecificTypeBlocksProp() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(false);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<Foo>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["Prop1"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(3, 0);
+        }
+
+        [Test]
+        public void TypeAuthorizerCalledForSpecificTypeAllowsMethod() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<Foo>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Act1"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(3, 0);
+        }
+
+        [Test]
+        public void TypeAuthorizerCalledForSpecificTypeBlocksMethod() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(false);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<Foo>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["Act1"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(3, 0);
+        }
+
 
 
     }
