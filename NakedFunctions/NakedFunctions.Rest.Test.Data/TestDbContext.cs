@@ -20,6 +20,7 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static readonly string CsMenu = @$"Data Source={Server};Initial Catalog={"MenuRestTests"};Integrated Security=True;";
         public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;";
+        public static readonly string CsAuth = @$"Data Source={Server};Initial Catalog={"AuthRestTests"};Integrated Security=True;";
     }
 
     public class DatabaseInitializer<T> : DropCreateDatabaseAlways<T> where T : TestDbContext {
@@ -66,6 +67,16 @@ namespace NakedFunctions.Rest.Test.Data {
         }
     }
 
+    public class AuthDatabaseInitializer : DropCreateDatabaseAlways<AuthDbContext> {
+        protected override void Seed(AuthDbContext context) {
+            context.Foos.Add(new Foo { Id = 1 });
+            context.Bars.Add(new Bar { Id = 1 });
+
+            context.SaveChanges();
+        }
+    }
+
+
     public abstract class TestDbContext : DbContext {
         protected TestDbContext(string cs) : base(cs) { }
 
@@ -100,5 +111,16 @@ namespace NakedFunctions.Rest.Test.Data {
         public ObjectDbContext() : base(Constants.CsObject) { }
         public static void Delete() => Database.Delete(Constants.CsObject);
         protected override void OnModelCreating(DbModelBuilder modelBuilder) => OnModelCreating<ObjectDbContext>(modelBuilder);
+    }
+
+    public class AuthDbContext : DbContext {
+        public AuthDbContext() : base(Constants.CsAuth) { }
+        public static void Delete() => Database.Delete(Constants.CsAuth);
+
+        public DbSet<Foo> Foos { get; set; }
+        public DbSet<Bar> Bars { get; set; }
+
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new AuthDatabaseInitializer());
     }
 }

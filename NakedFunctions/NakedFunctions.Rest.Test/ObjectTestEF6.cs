@@ -28,28 +28,7 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace NakedFunctions.Rest.Test {
-    public class NullStringHasher : IStringHasher {
-        public string GetHash(string toHash) => null;
-    }
-
-    public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
-        public bool IsEditable(object target, string memberName, IContext context) => true;
-
-        public bool IsVisible(object target, string memberName, IContext context) => true;
-    }
-
-    public class TestNamespaceAuthorizer : INamespaceAuthorizer {
-        public bool IsEditable(object target, string memberName, IContext context) => true;
-
-        public bool IsVisible(object target, string memberName, IContext context) => true;
-    }
-
-    public class TestTypeAuthorizer1 : ITypeAuthorizer<SimpleRecord> {
-        public bool IsEditable(SimpleRecord target, string memberName, IContext context) => true;
-
-        public bool IsVisible(SimpleRecord target, string memberName, IContext context) => true;
-    }
-
+  
 
     public class ObjectTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
@@ -111,16 +90,6 @@ namespace NakedFunctions.Rest.Test {
             services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
             services.AddMvc(options => options.EnableEndpointRouting = false)
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
-        }
-
-        protected override IAuthorizationConfiguration AuthorizationConfiguration {
-            get {
-                var config = new AuthorizationConfiguration<TestDefaultAuthorizer>();
-
-                config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("1");
-                config.AddTypeAuthorizer<SimpleRecord, TestTypeAuthorizer1>();
-                return config;
-            }
         }
 
         [SetUp]
