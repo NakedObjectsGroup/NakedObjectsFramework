@@ -73,7 +73,7 @@ namespace NakedFunctions.Rest.Test.Data {
             context.Foos.Add(new Foo { Id = 1 });
             context.Bars.Add(new Bar { Id = 1 });
             context.Quxs.Add(new Qux { Id = 1 });
-
+            context.FooSubs.Add(new FooSub { Id = 2 });
             context.SaveChanges();
         }
     }
@@ -122,7 +122,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<Foo> Foos { get; set; }
         public DbSet<Bar> Bars { get; set; }
         public DbSet<Qux> Quxs { get; set; }
-
+        public DbSet<FooSub> FooSubs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new AuthDatabaseInitializer());
     }

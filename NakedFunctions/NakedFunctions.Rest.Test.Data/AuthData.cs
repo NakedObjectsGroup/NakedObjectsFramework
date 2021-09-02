@@ -17,16 +17,16 @@
         public virtual string Prop2 { get; set; }
     }
 
-    public record SubTypeOfFoo : Foo {
-        public virtual string Prop2 { get; set; }
-    }
-
     public static class BarFunctions {
         public static Bar Act1(this Bar bar, IContext context) => bar;
     }
 
     public static class FooFunctions {
         public static Foo Act1(this Foo foo, IContext context) => foo;
+    }
+
+    public static class FooSubFunctions {
+        public static FooSub Act2(this FooSub foosub, IContext context) => foosub;
     }
 }
 
@@ -42,4 +42,5 @@ namespace NakedFunctions.Rest.Test.Data.Sub {
     public static class QuxFunctions {
         public static Qux Act1(this Qux qux, IContext context) => qux;
     }
+
 }

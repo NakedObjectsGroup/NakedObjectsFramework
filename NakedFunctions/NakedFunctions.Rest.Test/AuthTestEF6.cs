@@ -96,11 +96,35 @@ namespace NakedFunctions.Rest.Test {
         }
     }
 
+    public class TestTypeAuthorizerFooSub : ITypeAuthorizer<FooSub> {
+        public static bool Allow = true;
+        public static int EditCount = 0;
+        public static int VisibleCount = 0;
+
+        public bool IsEditable(FooSub target, string memberName, IContext context) {
+            Assert.IsNotNull(target);
+            Assert.IsNotNull(memberName);
+            Assert.IsNotNull(context);
+            EditCount++;
+            return Allow;
+        }
+
+        public bool IsVisible(FooSub target, string memberName, IContext context) {
+            Assert.IsNotNull(target);
+            Assert.IsNotNull(memberName);
+            Assert.IsNotNull(context);
+            VisibleCount++;
+            return Allow;
+        }
+    }
+
+
     public class AuthTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
             typeof(BarFunctions),
             typeof(QuxFunctions),
             typeof(FooFunctions),
+            typeof(FooSubFunctions),
         };
 
         protected override Type[] Records { get; } = {
@@ -108,7 +132,6 @@ namespace NakedFunctions.Rest.Test {
             typeof(Bar),
             typeof(Qux),
             typeof(FooSub),
-            typeof(SubTypeOfFoo),
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -140,6 +163,7 @@ namespace NakedFunctions.Rest.Test {
 
                 config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("NakedFunctions.Rest.Test.Data.Sub");
                 config.AddTypeAuthorizer<Foo, TestTypeAuthorizerFoo>();
+                config.AddTypeAuthorizer<FooSub, TestTypeAuthorizerFooSub>();
                 return config;
             }
         }
@@ -196,6 +220,12 @@ namespace NakedFunctions.Rest.Test {
             TestTypeAuthorizerFoo.VisibleCount = 0;
         }
 
+        private static void ResetTypeFooSubAuth(bool allow) {
+            TestTypeAuthorizerFooSub.Allow = allow;
+            TestTypeAuthorizerFooSub.EditCount = 0;
+            TestTypeAuthorizerFooSub.VisibleCount = 0;
+        }
+
         private static void AssertDefaultAuth(int expectedVisible, int expectedEditable) {
             Assert.AreEqual(expectedVisible, TestDefaultAuthorizer.VisibleCount);
             Assert.AreEqual(expectedEditable, TestDefaultAuthorizer.EditCount);
@@ -211,11 +241,17 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(expectedEditable, TestTypeAuthorizerFoo.EditCount);
         }
 
+        private static void AssertTypeFooSubAuth(int expectedVisible, int expectedEditable) {
+            Assert.AreEqual(expectedVisible, TestTypeAuthorizerFooSub.VisibleCount);
+            Assert.AreEqual(expectedEditable, TestTypeAuthorizerFooSub.EditCount);
+        }
+
         [Test]
         public void DefaultAuthorizerCalledForNonSpecificTypeAllowsProp() {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Bar>(), "1");
@@ -229,6 +265,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(3,0);
             AssertNamespaceAuth(0,0);
             AssertTypeFooAuth(0,0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -236,6 +273,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(false);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Bar>(), "1");
@@ -248,6 +286,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(3, 0);
             AssertNamespaceAuth(0, 0);
             AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -255,6 +294,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Bar>(), "1");
@@ -267,6 +307,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(3, 0);
             AssertNamespaceAuth(0, 0);
             AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -274,6 +315,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(false);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Bar>(), "1");
@@ -286,6 +328,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(3, 0);
             AssertNamespaceAuth(0, 0);
             AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -293,6 +336,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Qux>(), "1");
@@ -306,6 +350,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(0, 0);
             AssertNamespaceAuth(3, 0);
             AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -313,6 +358,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(false);
             ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Qux>(), "1");
@@ -325,6 +371,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(0, 0);
             AssertNamespaceAuth(3, 0);
             AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -332,6 +379,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Qux>(), "1");
@@ -344,6 +392,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(0, 0);
             AssertNamespaceAuth(3, 0);
             AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -351,6 +400,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(false);
             ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Qux>(), "1");
@@ -363,6 +413,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(0, 0);
             AssertNamespaceAuth(3, 0);
             AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -370,6 +421,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Foo>(), "1");
@@ -383,6 +435,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(0, 0);
             AssertNamespaceAuth(0, 0);
             AssertTypeFooAuth(3, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -390,6 +443,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(false);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Foo>(), "1");
@@ -402,6 +456,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(0, 0);
             AssertNamespaceAuth(0, 0);
             AssertTypeFooAuth(3, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -409,6 +464,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Foo>(), "1");
@@ -421,6 +477,7 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(0, 0);
             AssertNamespaceAuth(0, 0);
             AssertTypeFooAuth(3, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
         [Test]
@@ -428,6 +485,7 @@ namespace NakedFunctions.Rest.Test {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(false);
+            ResetTypeFooSubAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Foo>(), "1");
@@ -440,9 +498,96 @@ namespace NakedFunctions.Rest.Test {
             AssertDefaultAuth(0, 0);
             AssertNamespaceAuth(0, 0);
             AssertTypeFooAuth(3, 0);
+            AssertTypeFooSubAuth(0, 0);
         }
 
+        [Test]
+        public void TypeAuthorizerCalledForSpecificSubTypeAllowsProp() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
 
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<FooSub>(), "2");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Prop1"]);
+            Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
+            Assert.IsNotNull(parsedResult["members"]["Prop2"]);
+            Assert.IsNotNull(parsedResult["members"]["Prop2"]["disabledReason"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(5, 0);
+        }
+
+        [Test]
+        public void TypeAuthorizerCalledForSpecificSubTypeBlocksProp() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(false);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<FooSub>(), "2");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["Prop1"]);
+            Assert.IsNull(parsedResult["members"]["Prop2"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(5, 0);
+        }
+
+        [Test]
+        public void TypeAuthorizerCalledForSpecificSubTypeAllowsMethod() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<FooSub>(), "2");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Act2"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(5, 0);
+        }
+
+        [Test]
+        public void TypeAuthorizerCalledForSpecificSubTypeBlocksMethod() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(false);
+
+            var api = Api().AsGet();
+            var result = api.GetObject(FullName<FooSub>(), "2");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["Act2"]);
+
+            AssertDefaultAuth(0, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(0, 0);
+            AssertTypeFooSubAuth(5, 0);
+        }
 
     }
 }
