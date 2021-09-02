@@ -42,5 +42,4 @@ namespace NakedFunctions.Rest.Test.Data.Sub {
     public static class QuxFunctions {
         public static Qux Act1(this Qux qux, IContext context) => qux;
     }
-
 }

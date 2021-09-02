@@ -27,14 +27,14 @@ namespace NakedFunctions.Rest.Test.Data {
     public class DatabaseInitializer<T> : DropCreateDatabaseAlways<T> where T : TestDbContext {
         protected override void Seed(T context) {
             // keep names 4 characters
-            var fred = new SimpleRecord {Name = "Fred"};
+            var fred = new SimpleRecord { Name = "Fred" };
 
             context.SimpleRecords.Add(fred);
-            context.SimpleRecords.Add(new SimpleRecord {Name = "Bill"});
-            context.SimpleRecords.Add(new SimpleRecord {Name = "Jack"});
-            context.SimpleRecords.Add(new SimpleRecord {Name = "hide it"});
+            context.SimpleRecords.Add(new SimpleRecord { Name = "Bill" });
+            context.SimpleRecords.Add(new SimpleRecord { Name = "Jack" });
+            context.SimpleRecords.Add(new SimpleRecord { Name = "hide it" });
 
-            var ur = new UpdatedRecord {Name = ""};
+            var ur = new UpdatedRecord { Name = "" };
             context.UpdatedRecords.Add(ur);
 
             var dr = new DateRecord();
@@ -42,7 +42,7 @@ namespace NakedFunctions.Rest.Test.Data {
             context.DateRecords.Add(dr);
             context.EnumRecords.Add(new EnumRecord());
 
-            context.ReferenceRecords.Add(new ReferenceRecord {UpdatedRecord = ur, DateRecord = dr});
+            context.ReferenceRecords.Add(new ReferenceRecord { UpdatedRecord = ur, DateRecord = dr });
 
             context.CollectionRecords.Add(new CollectionRecord());
 
@@ -52,16 +52,16 @@ namespace NakedFunctions.Rest.Test.Data {
 
             context.OrderedRecords.Add(new OrderedRecord());
 
-            context.EditRecords.Add(new EditRecord {Name = "Jane", SimpleRecord = fred, NotMatched = "no"});
+            context.EditRecords.Add(new EditRecord { Name = "Jane", SimpleRecord = fred, NotMatched = "no" });
 
             context.DeleteRecords.Add(new DeleteRecord());
             context.DeleteRecords.Add(new DeleteRecord());
-            context.BoundedRecords.Add(new BoundedRecord { Name = "One"});
+            context.BoundedRecords.Add(new BoundedRecord { Name = "One" });
             context.BoundedRecords.Add(new BoundedRecord { Name = "Two" });
 
             context.ByteArrayRecords.Add(new ByteArrayRecord());
 
-            context.MaskRecords.Add(new MaskRecord {Name = "Title"});
+            context.MaskRecords.Add(new MaskRecord { Name = "Title" });
             context.HiddenRecords.Add(new HiddenRecord { Name = "Title" });
 
             context.SaveChanges();
@@ -77,7 +77,6 @@ namespace NakedFunctions.Rest.Test.Data {
             context.SaveChanges();
         }
     }
-
 
     public abstract class TestDbContext : DbContext {
         protected TestDbContext(string cs) : base(cs) { }
@@ -117,12 +116,12 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public class AuthDbContext : DbContext {
         public AuthDbContext() : base(Constants.CsAuth) { }
-        public static void Delete() => Database.Delete(Constants.CsAuth);
 
         public DbSet<Foo> Foos { get; set; }
         public DbSet<Bar> Bars { get; set; }
         public DbSet<Qux> Quxs { get; set; }
         public DbSet<FooSub> FooSubs { get; set; }
+        public static void Delete() => Database.Delete(Constants.CsAuth);
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new AuthDatabaseInitializer());
     }

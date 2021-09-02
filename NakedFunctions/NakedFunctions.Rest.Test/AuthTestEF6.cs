@@ -24,7 +24,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-
 namespace NakedFunctions.Rest.Test {
     public class NullStringHasher : IStringHasher {
         public string GetHash(string toHash) => null;
@@ -32,8 +31,8 @@ namespace NakedFunctions.Rest.Test {
 
     public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
         public static bool Allow = true;
-        public static int EditCount = 0;
-        public static int VisibleCount = 0;
+        public static int EditCount;
+        public static int VisibleCount;
 
         public bool IsEditable(object target, string memberName, IContext context) {
             Assert.IsNotNull(target);
@@ -54,8 +53,8 @@ namespace NakedFunctions.Rest.Test {
 
     public class TestNamespaceAuthorizer : INamespaceAuthorizer {
         public static bool Allow = true;
-        public static int EditCount = 0;
-        public static int VisibleCount = 0;
+        public static int EditCount;
+        public static int VisibleCount;
 
         public bool IsEditable(object target, string memberName, IContext context) {
             Assert.IsNotNull(target);
@@ -76,8 +75,8 @@ namespace NakedFunctions.Rest.Test {
 
     public class TestTypeAuthorizerFoo : ITypeAuthorizer<Foo> {
         public static bool Allow = true;
-        public static int EditCount = 0;
-        public static int VisibleCount = 0;
+        public static int EditCount;
+        public static int VisibleCount;
 
         public bool IsEditable(Foo target, string memberName, IContext context) {
             Assert.IsNotNull(target);
@@ -98,8 +97,8 @@ namespace NakedFunctions.Rest.Test {
 
     public class TestTypeAuthorizerFooSub : ITypeAuthorizer<FooSub> {
         public static bool Allow = true;
-        public static int EditCount = 0;
-        public static int VisibleCount = 0;
+        public static int EditCount;
+        public static int VisibleCount;
 
         public bool IsEditable(FooSub target, string memberName, IContext context) {
             Assert.IsNotNull(target);
@@ -118,20 +117,19 @@ namespace NakedFunctions.Rest.Test {
         }
     }
 
-
     public class AuthTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
             typeof(BarFunctions),
             typeof(QuxFunctions),
             typeof(FooFunctions),
-            typeof(FooSubFunctions),
+            typeof(FooSubFunctions)
         };
 
         protected override Type[] Records { get; } = {
             typeof(Foo),
             typeof(Bar),
             typeof(Qux),
-            typeof(FooSub),
+            typeof(FooSub)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -141,21 +139,9 @@ namespace NakedFunctions.Rest.Test {
         protected override bool EnforceProxies => false;
 
         protected override Func<IConfiguration, DbContext>[] ContextCreators =>
-            new Func<IConfiguration, DbContext>[] {config => new AuthDbContext()};
-
-        protected virtual void CleanUpDatabase()
-        {
-            ObjectDbContext.Delete();
-        }
+            new Func<IConfiguration, DbContext>[] { config => new AuthDbContext() };
 
         protected override Action<NakedFrameworkOptions> AddNakedObjects => _ => { };
-
-        protected override void RegisterTypes(IServiceCollection services) {
-            base.RegisterTypes(services);
-            services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
-            services.AddMvc(options => options.EnableEndpointRouting = false)
-                    .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
-        }
 
         protected override IAuthorizationConfiguration AuthorizationConfiguration {
             get {
@@ -166,6 +152,17 @@ namespace NakedFunctions.Rest.Test {
                 config.AddTypeAuthorizer<FooSub, TestTypeAuthorizerFooSub>();
                 return config;
             }
+        }
+
+        protected virtual void CleanUpDatabase() {
+            ObjectDbContext.Delete();
+        }
+
+        protected override void RegisterTypes(IServiceCollection services) {
+            base.RegisterTypes(services);
+            services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+                    .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
         }
 
         [SetUp]
@@ -196,7 +193,7 @@ namespace NakedFunctions.Rest.Test {
             var api = Api().AsGet();
             var result = api.GetObject(type, id);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
             return JObject.Parse(json);
         }
 
@@ -262,9 +259,9 @@ namespace NakedFunctions.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["Prop1"]);
             Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
 
-            AssertDefaultAuth(3,0);
-            AssertNamespaceAuth(0,0);
-            AssertTypeFooAuth(0,0);
+            AssertDefaultAuth(3, 0);
+            AssertNamespaceAuth(0, 0);
+            AssertTypeFooAuth(0, 0);
             AssertTypeFooSubAuth(0, 0);
         }
 
@@ -282,7 +279,7 @@ namespace NakedFunctions.Rest.Test {
             var parsedResult = JObject.Parse(json);
 
             Assert.IsNull(parsedResult["members"]["Prop1"]);
-            
+
             AssertDefaultAuth(3, 0);
             AssertNamespaceAuth(0, 0);
             AssertTypeFooAuth(0, 0);
@@ -588,6 +585,5 @@ namespace NakedFunctions.Rest.Test {
             AssertTypeFooAuth(0, 0);
             AssertTypeFooSubAuth(5, 0);
         }
-
     }
 }
