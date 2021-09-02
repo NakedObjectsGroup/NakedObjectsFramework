@@ -86,34 +86,6 @@ namespace NakedFunctions.Reflector.Test.Authorization {
             Assert.IsInstanceOfType(facet, typeof(AuthorizationHideForSessionFacet));
         }
 
-        [TestMethod]
-        public void TestDecorateDisableForSessionFacet() {
-            var config = new Mock<IAuthorizationConfiguration>();
-
-            config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
-            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
-            config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
-
-            var manager = new AuthorizationManager(config.Object, mockLogger);
-
-            var testSpec = new Mock<ISpecification>();
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
-            var testFacet = new Mock<IDisableForSessionFacet>();
-
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
-
-            testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
-
-            testFacet.Setup(n => n.FacetType).Returns(typeof(IDisableForSessionFacet));
-
-            testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
-
-            var facet = manager.Decorate(testFacet.Object, testHolder.Object);
-
-            Assert.IsInstanceOfType(facet, typeof(AuthorizationDisableForSessionFacet));
-        }
-
         #region Nested type: TestClass
 
         public class TestClass { }

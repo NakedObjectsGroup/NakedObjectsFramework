@@ -31,16 +31,7 @@ namespace NakedFunctions.Rest.Test {
 
     public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
         public static bool Allow = true;
-        public static int EditCount;
         public static int VisibleCount;
-
-        public bool IsEditable(object target, string memberName, IContext context) {
-            Assert.IsNotNull(target);
-            Assert.IsNotNull(memberName);
-            Assert.IsNotNull(context);
-            EditCount++;
-            return Allow;
-        }
 
         public bool IsVisible(object target, string memberName, IContext context) {
             Assert.IsNotNull(target);
@@ -53,16 +44,7 @@ namespace NakedFunctions.Rest.Test {
 
     public class TestNamespaceAuthorizer : INamespaceAuthorizer {
         public static bool Allow = true;
-        public static int EditCount;
         public static int VisibleCount;
-
-        public bool IsEditable(object target, string memberName, IContext context) {
-            Assert.IsNotNull(target);
-            Assert.IsNotNull(memberName);
-            Assert.IsNotNull(context);
-            EditCount++;
-            return Allow;
-        }
 
         public bool IsVisible(object target, string memberName, IContext context) {
             Assert.IsNotNull(target);
@@ -75,16 +57,7 @@ namespace NakedFunctions.Rest.Test {
 
     public class TestTypeAuthorizerFoo : ITypeAuthorizer<Foo> {
         public static bool Allow = true;
-        public static int EditCount;
         public static int VisibleCount;
-
-        public bool IsEditable(Foo target, string memberName, IContext context) {
-            Assert.IsNotNull(target);
-            Assert.IsNotNull(memberName);
-            Assert.IsNotNull(context);
-            EditCount++;
-            return Allow;
-        }
 
         public bool IsVisible(Foo target, string memberName, IContext context) {
             Assert.IsNotNull(target);
@@ -97,16 +70,7 @@ namespace NakedFunctions.Rest.Test {
 
     public class TestTypeAuthorizerFooSub : ITypeAuthorizer<FooSub> {
         public static bool Allow = true;
-        public static int EditCount;
         public static int VisibleCount;
-
-        public bool IsEditable(FooSub target, string memberName, IContext context) {
-            Assert.IsNotNull(target);
-            Assert.IsNotNull(memberName);
-            Assert.IsNotNull(context);
-            EditCount++;
-            return Allow;
-        }
 
         public bool IsVisible(FooSub target, string memberName, IContext context) {
             Assert.IsNotNull(target);
@@ -201,46 +165,38 @@ namespace NakedFunctions.Rest.Test {
 
         private static void ResetDefaultAuth(bool allow) {
             TestDefaultAuthorizer.Allow = allow;
-            TestDefaultAuthorizer.EditCount = 0;
             TestDefaultAuthorizer.VisibleCount = 0;
         }
 
         private static void ResetNamespaceAuth(bool allow) {
             TestNamespaceAuthorizer.Allow = allow;
-            TestNamespaceAuthorizer.EditCount = 0;
             TestNamespaceAuthorizer.VisibleCount = 0;
         }
 
         private static void ResetTypeFooAuth(bool allow) {
             TestTypeAuthorizerFoo.Allow = allow;
-            TestTypeAuthorizerFoo.EditCount = 0;
             TestTypeAuthorizerFoo.VisibleCount = 0;
         }
 
         private static void ResetTypeFooSubAuth(bool allow) {
             TestTypeAuthorizerFooSub.Allow = allow;
-            TestTypeAuthorizerFooSub.EditCount = 0;
             TestTypeAuthorizerFooSub.VisibleCount = 0;
         }
 
-        private static void AssertDefaultAuth(int expectedVisible, int expectedEditable) {
+        private static void AssertDefaultAuth(int expectedVisible) {
             Assert.AreEqual(expectedVisible, TestDefaultAuthorizer.VisibleCount);
-            Assert.AreEqual(expectedEditable, TestDefaultAuthorizer.EditCount);
         }
 
-        private static void AssertNamespaceAuth(int expectedVisible, int expectedEditable) {
+        private static void AssertNamespaceAuth(int expectedVisible) {
             Assert.AreEqual(expectedVisible, TestNamespaceAuthorizer.VisibleCount);
-            Assert.AreEqual(expectedEditable, TestNamespaceAuthorizer.EditCount);
         }
 
-        private static void AssertTypeFooAuth(int expectedVisible, int expectedEditable) {
+        private static void AssertTypeFooAuth(int expectedVisible) {
             Assert.AreEqual(expectedVisible, TestTypeAuthorizerFoo.VisibleCount);
-            Assert.AreEqual(expectedEditable, TestTypeAuthorizerFoo.EditCount);
         }
 
-        private static void AssertTypeFooSubAuth(int expectedVisible, int expectedEditable) {
+        private static void AssertTypeFooSubAuth(int expectedVisible) {
             Assert.AreEqual(expectedVisible, TestTypeAuthorizerFooSub.VisibleCount);
-            Assert.AreEqual(expectedEditable, TestTypeAuthorizerFooSub.EditCount);
         }
 
         [Test]
@@ -259,10 +215,10 @@ namespace NakedFunctions.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["Prop1"]);
             Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
 
-            AssertDefaultAuth(3, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(3);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -280,10 +236,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNull(parsedResult["members"]["Prop1"]);
 
-            AssertDefaultAuth(3, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(3);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -301,10 +257,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
-            AssertDefaultAuth(3, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(3);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -322,10 +278,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNull(parsedResult["members"]["Act1"]);
 
-            AssertDefaultAuth(3, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(3);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -344,10 +300,10 @@ namespace NakedFunctions.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["Prop1"]);
             Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(3, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(3);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -365,10 +321,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNull(parsedResult["members"]["Prop1"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(3, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(3);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -386,10 +342,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(3, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(3);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -407,10 +363,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNull(parsedResult["members"]["Act1"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(3, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(3);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -429,10 +385,10 @@ namespace NakedFunctions.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["Prop1"]);
             Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(3, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(3);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -450,10 +406,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNull(parsedResult["members"]["Prop1"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(3, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(3);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -471,10 +427,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(3, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(3);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -492,10 +448,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNull(parsedResult["members"]["Act1"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(3, 0);
-            AssertTypeFooSubAuth(0, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(3);
+            AssertTypeFooSubAuth(0);
         }
 
         [Test]
@@ -516,10 +472,10 @@ namespace NakedFunctions.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["Prop2"]);
             Assert.IsNotNull(parsedResult["members"]["Prop2"]["disabledReason"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(5, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(5);
         }
 
         [Test]
@@ -538,10 +494,10 @@ namespace NakedFunctions.Rest.Test {
             Assert.IsNull(parsedResult["members"]["Prop1"]);
             Assert.IsNull(parsedResult["members"]["Prop2"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(5, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(5);
         }
 
         [Test]
@@ -559,10 +515,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNotNull(parsedResult["members"]["Act2"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(5, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(5);
         }
 
         [Test]
@@ -580,10 +536,10 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNull(parsedResult["members"]["Act2"]);
 
-            AssertDefaultAuth(0, 0);
-            AssertNamespaceAuth(0, 0);
-            AssertTypeFooAuth(0, 0);
-            AssertTypeFooSubAuth(5, 0);
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(5);
         }
     }
 }
