@@ -15,14 +15,14 @@ namespace Template.Model
     //specify the lists of types, functions, and menus explicitly.
     public static class ModelConfig
     {
-        public static Type[] Types() => 
-          DomainClasses.Where(t => t.Namespace == "Template.Model.Types" && !t.IsStaticClass()).ToArray();
+        public static Type[] DomainTypes() => 
+          PublicClassesInterfacesEnums.Where(t => t.Namespace == "Template.Model.Types" && !t.IsStaticClass()).ToArray();
 
-        public static Type[] Functions() =>
-          DomainClasses.Where(t => t.Namespace == "Template.Model.Functions"   && t.IsStaticClass()).ToArray();
+        public static Type[] TypesDefiningDomainFunctions() =>
+          PublicClassesInterfacesEnums.Where(t => t.Namespace == "Template.Model.Functions"   && t.IsStaticClass()).ToArray();
 
-        public static Type[] MainMenus() =>
-            Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
+    public static Type[] MainMenus() =>
+        TypesDefiningDomainFunctions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
 
         public static Func<IConfiguration, DbContext> EFCoreDbContextCreator =>
             c => {
@@ -32,7 +32,7 @@ namespace Template.Model
             };
 
         #region Helpers
-        private static IEnumerable<Type> DomainClasses =>
+        private static IEnumerable<Type> PublicClassesInterfacesEnums =>
             typeof(ModelConfig).Assembly.GetTypes().Where(t => t.IsPublic && (t.IsClass || t.IsInterface || t.IsEnum));
 
         private static bool IsStaticClass(this Type t) => t.IsAbstract && t.IsSealed;
