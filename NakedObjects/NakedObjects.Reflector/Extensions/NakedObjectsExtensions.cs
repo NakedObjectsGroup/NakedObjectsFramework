@@ -14,6 +14,7 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedObjects.Core.Component;
+using NakedObjects.Reflector.Audit;
 using NakedObjects.Reflector.Authorization;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
@@ -46,6 +47,11 @@ namespace NakedObjects.Reflector.Extensions {
             if (frameworkOptions.AuthorizationConfiguration is not null) {
                 frameworkOptions.Services.AddSingleton(frameworkOptions.AuthorizationConfiguration);
                 frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuthorizationManager>();
+            }
+
+            if (frameworkOptions.AuditConfiguration is not null) {
+                frameworkOptions.Services.AddSingleton(frameworkOptions.AuditConfiguration);
+                frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuditManager>();
             }
         }
     }

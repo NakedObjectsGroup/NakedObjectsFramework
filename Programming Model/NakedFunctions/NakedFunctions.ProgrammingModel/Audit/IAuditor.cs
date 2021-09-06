@@ -5,15 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Security.Principal;
-
 namespace NakedFunctions.Audit {
     /// <summary>
     ///     Allows domain programmers to define an auditing service.
     /// </summary>
     public interface IAuditor {
-        IContext ActionInvoked(string actionName, object onObject, object[] withParameters, IContext context);
-        IContext ActionInvoked(string actionName, string menuName, object[] withParameters, IContext context);
+        IContext ActionInvoked(string actionName, object onObject, bool queryOnly, object[] withParameters, IContext context);
+        IContext ActionInvoked(string actionName, string menuName, bool queryOnly, object[] withParameters, IContext context);
         IContext ObjectUpdated(object updatedObject, IContext context);
         IContext ObjectPersisted(object updatedObject, IContext context);
     }

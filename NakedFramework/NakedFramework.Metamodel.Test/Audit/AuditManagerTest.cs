@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Audit;
 using NakedFramework.Metamodel.Audit;
+using NakedObjects.Reflector.Audit;
 
 namespace NakedObjects.Meta.Test.Audit {
     [TestClass]

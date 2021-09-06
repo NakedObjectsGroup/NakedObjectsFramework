@@ -12,21 +12,15 @@ using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Facade.Utility;
 using NakedFramework.Menu;
-using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Rest.API;
 using NakedFramework.Test.TestCase;
-using NakedFunctions.Audit;
-using NakedFunctions.Reflector.Authorization;
 using NakedFunctions.Rest.Test.Data;
 using NakedFunctions.Rest.Test.Data.Sub;
-using NakedFunctions.Security;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using static NakedFunctions.Rest.Test.AuthHelpers;
 
 namespace NakedFunctions.Rest.Test {
 
@@ -36,9 +30,6 @@ namespace NakedFunctions.Rest.Test {
 
        
     }
-
-
-
 
     public class AuditTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
@@ -68,7 +59,6 @@ namespace NakedFunctions.Rest.Test {
 
         protected override Action<NakedFrameworkOptions> AddNakedObjects => _ => { };
 
-       
 
         protected virtual void CleanUpDatabase() {
             ObjectDbContext.Delete();
@@ -114,14 +104,6 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             return JObject.Parse(json);
         }
-
-     
-
-
-       
-
-
-
     }
 
     public class MenuAuditTestEF6 : AcceptanceTestCase {
@@ -199,9 +181,6 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             return JObject.Parse(json);
         }
-
-
-      
     }
 
 }
