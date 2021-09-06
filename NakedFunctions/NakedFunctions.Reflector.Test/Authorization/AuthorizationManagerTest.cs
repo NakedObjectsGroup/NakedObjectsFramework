@@ -22,6 +22,10 @@ namespace NakedFunctions.Reflector.Test.Authorization {
     public class AuthorizationManagerTest {
         private readonly ILogger<AuthorizationManager> mockLogger = new Mock<ILogger<AuthorizationManager>>().Object;
 
+        public class TestMainMenuAuthorizer : IMainMenuAuthorizer {
+            public bool IsVisible(string target, string memberName, IContext context) => throw new NotImplementedException();
+        }
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -31,7 +35,7 @@ namespace NakedFunctions.Reflector.Test.Authorization {
 
         [TestMethod]
         public void TestCreateOk() {
-            var config = new AuthorizationConfiguration<ITypeAuthorizer<object>>();
+            var config = new AuthorizationConfiguration<ITypeAuthorizer<object>, TestMainMenuAuthorizer>();
 
             config.AddNamespaceAuthorizer<INamespaceAuthorizer>("1");
             config.AddTypeAuthorizer<TestClass, ITypeAuthorizer<TestClass>>();

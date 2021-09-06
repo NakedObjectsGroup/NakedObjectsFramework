@@ -11,13 +11,16 @@ using NakedFramework.Metamodel.Authorization;
 using NakedFunctions.Security;
 
 namespace NakedFunctions.Reflector.Authorization {
-    public class AuthorizationConfiguration<TDefault>
+    public class AuthorizationConfiguration<TDefault, TMainMenu>
         : IAuthorizationConfiguration
-        where TDefault : ITypeAuthorizer<object> {
+        where TDefault : ITypeAuthorizer<object>
+        where TMainMenu : IMainMenuAuthorizer {
         public AuthorizationConfiguration() {
             DefaultAuthorizer = typeof(TDefault);
             NamespaceAuthorizers = new Dictionary<string, Type>();
-            TypeAuthorizers = new Dictionary<string, Type>();
+            var stringQualifiedName = typeof(string).FullName;
+
+            TypeAuthorizers = new Dictionary<string, Type>() { { stringQualifiedName, typeof(TMainMenu) } };
         }
 
         //The specified type authorizer will apply to the whole namespace specified
@@ -30,12 +33,6 @@ namespace NakedFunctions.Reflector.Authorization {
             where TDomain : new()
             where TAuth : ITypeAuthorizer<TDomain> {
             var fullyQualifiedName = typeof(TDomain).FullName;
-            TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
-        }
-
-        public void AddMainMenuAuthorizer<TAuth>()
-            where TAuth : IMainMenuAuthorizer {
-            var fullyQualifiedName = typeof(string).FullName;
             TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
         }
 
