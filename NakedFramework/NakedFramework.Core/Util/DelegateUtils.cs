@@ -81,7 +81,7 @@ namespace NakedFramework.Core.Util {
 
             return type.Name.StartsWith("ITypeAuthorizer")
                 ? type
-                : type.GetInterfaces().FirstOrDefault(i => GetTypeAuthorizerType(i) != null);
+                : type.GetInterfaces().Select(GetTypeAuthorizerType).FirstOrDefault(t => t is not null);
         }
 
         public static Func<object, IPrincipal, object, string, bool> CreateObjectTypeAuthorizerDelegate(MethodInfo method) {

@@ -34,7 +34,7 @@ namespace NakedFunctions.Reflector.Authorization {
         }
 
         public void AddMainMenuAuthorizer<TAuth>()
-            where TAuth : ITypeAuthorizer<string> {
+            where TAuth : IMainMenuAuthorizer {
             var fullyQualifiedName = typeof(string).FullName;
             TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
         }

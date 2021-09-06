@@ -133,7 +133,7 @@ namespace NakedFunctions.Rest.Test {
         }
     }
 
-    public class TestMenuAuthorizer : ITypeAuthorizer<string> {
+    public class TestMenuAuthorizer : IMainMenuAuthorizer {
         public static bool Allow = true;
         public static int VisibleCount;
 
@@ -611,7 +611,7 @@ namespace NakedFunctions.Rest.Test {
         // menus
 
         [Test]
-        public void DefaultAuthorizerCalledForMenuAllowsMethod() {
+        public void DefaultAuthorizerNotCalledForMenuAllowsMethod() {
             ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
@@ -626,81 +626,38 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
-            AssertDefaultAuth(4);
+            AssertDefaultAuth(0);
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
             AssertMenuAuth(0);
         }
 
+
         [Test]
-        public void DefaultAuthorizerCalledForMenuBlocksMethod() {
-            ResetDefaultAuth(false);
+        public void NamespaceAuthorizerNotCalledForMenu() {
+            ResetDefaultAuth(true);
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
             ResetMenuAuth(true);
 
             var api = Api().AsGet();
-            var result = api.GetMenu(nameof(FooMenuFunctions));
+            var result = api.GetMenu(nameof(QuxMenuFunctions));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.IsNull(parsedResult["members"]["Act1"]);
+            Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
-            AssertDefaultAuth(6);
+            AssertDefaultAuth(0);
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
             AssertMenuAuth(0);
         }
 
-        //[Test]
-        //public void NamespaceAuthorizerCalledForMenuAllowsMethod() {
-        //    ResetDefaultAuth(true);
-        //    ResetNamespaceAuth(true);
-        //    ResetTypeFooAuth(true);
-        //    ResetTypeFooSubAuth(true);
-        //    ResetMenuAuth(true);
 
-        //    var api = Api().AsGet();
-        //    var result = api.GetMenu(nameof(QuxMenuFunctions));
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    Assert.IsNotNull(parsedResult["members"]["Act1"]);
-
-        //    AssertDefaultAuth(0);
-        //    AssertNamespaceAuth(1);
-        //    AssertTypeFooAuth(0);
-        //    AssertTypeFooSubAuth(0);
-        //    AssertMenuAuth(0);
-        //}
-
-        //[Test]
-        //public void NamespaceAuthorizerCalledForMenuBlocksMethod() {
-        //    ResetDefaultAuth(true);
-        //    ResetNamespaceAuth(false);
-        //    ResetTypeFooAuth(true);
-        //    ResetTypeFooSubAuth(true);
-        //    ResetMenuAuth(false);
-
-        //    var api = Api().AsGet();
-        //    var result = api.GetMenu(nameof(QuxMenuFunctions));
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
-
-        //    Assert.IsNull(parsedResult["members"]["Act1"]);
-
-        //    AssertDefaultAuth(0);
-        //    AssertNamespaceAuth(1);
-        //    AssertTypeFooAuth(0);
-        //    AssertTypeFooSubAuth(0);
-        //    AssertMenuAuth(0);
-        //}
 
     }
 
