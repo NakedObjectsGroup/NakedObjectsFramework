@@ -44,11 +44,6 @@ namespace NakedFramework.DependencyInjection.Extensions {
             ParallelConfig.RegisterCoreSingletonTypes(services);
             ParallelConfig.RegisterCoreScopedTypes(services);
 
-            if (options.AuditConfiguration is not null) {
-                services.AddSingleton(options.AuditConfiguration);
-                services.AddDefaultSingleton<IFacetDecorator, AuditManager>();
-            }
-
             if (options.ProfileConfiguration is not null) {
                 services.AddSingleton(options.ProfileConfiguration);
                 services.AddDefaultSingleton<IFacetDecorator, ProfileManager>();

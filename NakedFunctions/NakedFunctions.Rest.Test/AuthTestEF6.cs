@@ -138,14 +138,13 @@ namespace NakedFunctions.Rest.Test {
         public static int VisibleCount;
 
         public bool IsVisible(string target, string memberName, IContext context) {
-            Assert.AreEqual("NakedFunctions.Rest.Test.Data.FooMenuFunctions", target);
+            Assert.IsTrue(target is "NakedFunctions.Rest.Test.Data.Sub.QuxMenuFunctions" or "NakedFunctions.Rest.Test.Data.FooMenuFunctions");
             Assert.IsTrue(memberName is "Act1" or "Act2");
             Assert.IsNotNull(context);
             VisibleCount++;
             return memberName is "Act1" ? Allow : true;
         }
     }
-
 
     public class AuthTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
@@ -177,7 +176,7 @@ namespace NakedFunctions.Rest.Test {
 
         protected override IAuthorizationConfiguration AuthorizationConfiguration {
             get {
-                var config = new AuthorizationConfiguration<TestDefaultAuthorizer>();
+                var config = new AuthorizationConfiguration<TestDefaultAuthorizer, TestMenuAuthorizer>();
 
                 config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("NakedFunctions.Rest.Test.Data.Sub");
                 config.AddTypeAuthorizer<Foo, TestTypeAuthorizerFoo>();
@@ -190,7 +189,7 @@ namespace NakedFunctions.Rest.Test {
             ObjectDbContext.Delete();
         }
 
-        protected override IMenu[] MainMenus(IMenuFactory factory) => new[] {typeof(FooMenuFunctions), typeof(QuxMenuFunctions)}.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
+        protected override IMenu[] MainMenus(IMenuFactory factory) => new[] { typeof(FooMenuFunctions), typeof(QuxMenuFunctions) }.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
@@ -230,8 +229,6 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             return JObject.Parse(json);
         }
-
-     
 
         [Test]
         public void DefaultAuthorizerCalledForNonSpecificTypeAllowsProp() {
@@ -630,9 +627,8 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
-            AssertMenuAuth(0);
+            AssertMenuAuth(4);
         }
-
 
         [Test]
         public void NamespaceAuthorizerNotCalledForMenu() {
@@ -654,22 +650,17 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
-            AssertMenuAuth(0);
+            AssertMenuAuth(4);
         }
-
-
-
     }
 
     public class MenuAuthTestEF6 : AcceptanceTestCase {
-        
-
         protected override Type[] Functions { get; } = {
             typeof(BarFunctions),
             typeof(QuxFunctions),
             typeof(FooFunctions),
             typeof(FooSubFunctions),
-            typeof(FooMenuFunctions),
+            typeof(FooMenuFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -692,16 +683,14 @@ namespace NakedFunctions.Rest.Test {
 
         protected override IAuthorizationConfiguration AuthorizationConfiguration {
             get {
-                var config = new AuthorizationConfiguration<TestDefaultAuthorizer>();
+                var config = new AuthorizationConfiguration<TestDefaultAuthorizer, TestMenuAuthorizer>();
 
                 config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("NakedFunctions.Rest.Test.Data.Sub");
                 config.AddTypeAuthorizer<Foo, TestTypeAuthorizerFoo>();
                 config.AddTypeAuthorizer<FooSub, TestTypeAuthorizerFooSub>();
-                config.AddMainMenuAuthorizer<TestMenuAuthorizer>();
                 return config;
             }
         }
-
 
         protected virtual void CleanUpDatabase() {
             ObjectDbContext.Delete();
@@ -747,7 +736,6 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             return JObject.Parse(json);
         }
-
 
         // menus
 
@@ -797,5 +785,4 @@ namespace NakedFunctions.Rest.Test {
             AssertMenuAuth(4);
         }
     }
-
 }
