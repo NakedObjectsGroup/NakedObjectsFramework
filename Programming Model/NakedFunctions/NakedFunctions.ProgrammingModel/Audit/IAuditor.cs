@@ -12,9 +12,9 @@ namespace NakedFunctions.Audit {
     ///     Allows domain programmers to define an auditing service.
     /// </summary>
     public interface IAuditor {
-        void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters);
-        void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters);
-        void ObjectUpdated(IPrincipal byPrincipal, object updatedObject);
-        void ObjectPersisted(IPrincipal byPrincipal, object updatedObject);
+        IContext ActionInvoked(string actionName, object onObject, object[] withParameters, IContext context);
+        IContext ActionInvoked(string actionName, string menuName, object[] withParameters, IContext context);
+        IContext ObjectUpdated(object updatedObject, IContext context);
+        IContext ObjectPersisted(object updatedObject, IContext context);
     }
 }
