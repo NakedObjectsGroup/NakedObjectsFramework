@@ -7,11 +7,13 @@
 
 using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Facade.Utility;
+using NakedFramework.Menu;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Rest.API;
 using NakedFramework.Test.TestCase;
@@ -23,10 +25,60 @@ using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using static NakedFunctions.Rest.Test.AuthHelpers;
 
 namespace NakedFunctions.Rest.Test {
     public class NullStringHasher : IStringHasher {
         public string GetHash(string toHash) => null;
+    }
+
+    public static class AuthHelpers {
+        public static string FullName<T>() => typeof(T).FullName;
+
+        public static void ResetDefaultAuth(bool allow) {
+            TestDefaultAuthorizer.Allow = allow;
+            TestDefaultAuthorizer.VisibleCount = 0;
+        }
+
+        public static void ResetNamespaceAuth(bool allow) {
+            TestNamespaceAuthorizer.Allow = allow;
+            TestNamespaceAuthorizer.VisibleCount = 0;
+        }
+
+        public static void ResetTypeFooAuth(bool allow) {
+            TestTypeAuthorizerFoo.Allow = allow;
+            TestTypeAuthorizerFoo.VisibleCount = 0;
+        }
+
+        public static void ResetTypeFooSubAuth(bool allow) {
+            TestTypeAuthorizerFooSub.Allow = allow;
+            TestTypeAuthorizerFooSub.VisibleCount = 0;
+        }
+
+        public static void ResetMenuAuth(bool allow) {
+            TestMenuAuthorizer.Allow = allow;
+            TestMenuAuthorizer.VisibleCount = 0;
+        }
+
+        public static void AssertDefaultAuth(int expectedVisible) {
+            Assert.AreEqual(expectedVisible, TestDefaultAuthorizer.VisibleCount);
+        }
+
+        public static void AssertNamespaceAuth(int expectedVisible) {
+            Assert.AreEqual(expectedVisible, TestNamespaceAuthorizer.VisibleCount);
+        }
+
+        public static void AssertTypeFooAuth(int expectedVisible) {
+            Assert.AreEqual(expectedVisible, TestTypeAuthorizerFoo.VisibleCount);
+        }
+
+        public static void AssertTypeFooSubAuth(int expectedVisible) {
+            Assert.AreEqual(expectedVisible, TestTypeAuthorizerFooSub.VisibleCount);
+        }
+
+        public static void AssertMenuAuth(int expectedVisible) {
+            Assert.AreEqual(expectedVisible, TestMenuAuthorizer.VisibleCount);
+        }
     }
 
     public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
@@ -38,7 +90,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.IsNotNull(memberName);
             Assert.IsNotNull(context);
             VisibleCount++;
-            return Allow;
+            return memberName is "Act1" or "Prop1" ? Allow : true;
         }
     }
 
@@ -81,12 +133,28 @@ namespace NakedFunctions.Rest.Test {
         }
     }
 
+    public class TestMenuAuthorizer : ITypeAuthorizer<string> {
+        public static bool Allow = true;
+        public static int VisibleCount;
+
+        public bool IsVisible(string target, string memberName, IContext context) {
+            Assert.AreEqual("NakedFunctions.Rest.Test.Data.FooMenuFunctions", target);
+            Assert.IsTrue(memberName is "Act1" or "Act2");
+            Assert.IsNotNull(context);
+            VisibleCount++;
+            return memberName is "Act1" ? Allow : true;
+        }
+    }
+
+
     public class AuthTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
             typeof(BarFunctions),
             typeof(QuxFunctions),
             typeof(FooFunctions),
-            typeof(FooSubFunctions)
+            typeof(FooSubFunctions),
+            typeof(FooMenuFunctions),
+            typeof(QuxMenuFunctions)
         };
 
         protected override Type[] Records { get; } = {
@@ -121,6 +189,8 @@ namespace NakedFunctions.Rest.Test {
         protected virtual void CleanUpDatabase() {
             ObjectDbContext.Delete();
         }
+
+        protected override IMenu[] MainMenus(IMenuFactory factory) => new[] {typeof(FooMenuFunctions), typeof(QuxMenuFunctions)}.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
@@ -161,43 +231,7 @@ namespace NakedFunctions.Rest.Test {
             return JObject.Parse(json);
         }
 
-        private static string FullName<T>() => typeof(T).FullName;
-
-        private static void ResetDefaultAuth(bool allow) {
-            TestDefaultAuthorizer.Allow = allow;
-            TestDefaultAuthorizer.VisibleCount = 0;
-        }
-
-        private static void ResetNamespaceAuth(bool allow) {
-            TestNamespaceAuthorizer.Allow = allow;
-            TestNamespaceAuthorizer.VisibleCount = 0;
-        }
-
-        private static void ResetTypeFooAuth(bool allow) {
-            TestTypeAuthorizerFoo.Allow = allow;
-            TestTypeAuthorizerFoo.VisibleCount = 0;
-        }
-
-        private static void ResetTypeFooSubAuth(bool allow) {
-            TestTypeAuthorizerFooSub.Allow = allow;
-            TestTypeAuthorizerFooSub.VisibleCount = 0;
-        }
-
-        private static void AssertDefaultAuth(int expectedVisible) {
-            Assert.AreEqual(expectedVisible, TestDefaultAuthorizer.VisibleCount);
-        }
-
-        private static void AssertNamespaceAuth(int expectedVisible) {
-            Assert.AreEqual(expectedVisible, TestNamespaceAuthorizer.VisibleCount);
-        }
-
-        private static void AssertTypeFooAuth(int expectedVisible) {
-            Assert.AreEqual(expectedVisible, TestTypeAuthorizerFoo.VisibleCount);
-        }
-
-        private static void AssertTypeFooSubAuth(int expectedVisible) {
-            Assert.AreEqual(expectedVisible, TestTypeAuthorizerFooSub.VisibleCount);
-        }
+     
 
         [Test]
         public void DefaultAuthorizerCalledForNonSpecificTypeAllowsProp() {
@@ -205,6 +239,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Bar>(), "1");
@@ -219,6 +254,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -227,6 +263,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Bar>(), "1");
@@ -240,6 +277,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -248,6 +286,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Bar>(), "1");
@@ -261,6 +300,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -269,6 +309,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Bar>(), "1");
@@ -282,6 +323,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -290,6 +332,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Qux>(), "1");
@@ -304,6 +347,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(3);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -312,6 +356,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(false);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Qux>(), "1");
@@ -325,6 +370,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(3);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -333,6 +379,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Qux>(), "1");
@@ -346,6 +393,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(3);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -354,6 +402,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(false);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Qux>(), "1");
@@ -367,6 +416,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(3);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -375,6 +425,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Foo>(), "1");
@@ -389,6 +440,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(3);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -397,6 +449,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(false);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Foo>(), "1");
@@ -410,6 +463,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(3);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -418,6 +472,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Foo>(), "1");
@@ -431,6 +486,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(3);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -439,6 +495,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(false);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<Foo>(), "1");
@@ -452,6 +509,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(3);
             AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -460,6 +518,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<FooSub>(), "2");
@@ -476,6 +535,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(5);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -484,6 +544,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(false);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<FooSub>(), "2");
@@ -498,6 +559,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(5);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -506,6 +568,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<FooSub>(), "2");
@@ -519,6 +582,7 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(5);
+            AssertMenuAuth(0);
         }
 
         [Test]
@@ -527,6 +591,7 @@ namespace NakedFunctions.Rest.Test {
             ResetNamespaceAuth(true);
             ResetTypeFooAuth(true);
             ResetTypeFooSubAuth(false);
+            ResetMenuAuth(true);
 
             var api = Api().AsGet();
             var result = api.GetObject(FullName<FooSub>(), "2");
@@ -540,6 +605,240 @@ namespace NakedFunctions.Rest.Test {
             AssertNamespaceAuth(0);
             AssertTypeFooAuth(0);
             AssertTypeFooSubAuth(5);
+            AssertMenuAuth(0);
+        }
+
+        // menus
+
+        [Test]
+        public void DefaultAuthorizerCalledForMenuAllowsMethod() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetMenu(nameof(FooMenuFunctions));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Act1"]);
+
+            AssertDefaultAuth(4);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
+        }
+
+        [Test]
+        public void DefaultAuthorizerCalledForMenuBlocksMethod() {
+            ResetDefaultAuth(false);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetMenu(nameof(FooMenuFunctions));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["Act1"]);
+
+            AssertDefaultAuth(6);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
+            AssertMenuAuth(0);
+        }
+
+        //[Test]
+        //public void NamespaceAuthorizerCalledForMenuAllowsMethod() {
+        //    ResetDefaultAuth(true);
+        //    ResetNamespaceAuth(true);
+        //    ResetTypeFooAuth(true);
+        //    ResetTypeFooSubAuth(true);
+        //    ResetMenuAuth(true);
+
+        //    var api = Api().AsGet();
+        //    var result = api.GetMenu(nameof(QuxMenuFunctions));
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
+
+        //    Assert.IsNotNull(parsedResult["members"]["Act1"]);
+
+        //    AssertDefaultAuth(0);
+        //    AssertNamespaceAuth(1);
+        //    AssertTypeFooAuth(0);
+        //    AssertTypeFooSubAuth(0);
+        //    AssertMenuAuth(0);
+        //}
+
+        //[Test]
+        //public void NamespaceAuthorizerCalledForMenuBlocksMethod() {
+        //    ResetDefaultAuth(true);
+        //    ResetNamespaceAuth(false);
+        //    ResetTypeFooAuth(true);
+        //    ResetTypeFooSubAuth(true);
+        //    ResetMenuAuth(false);
+
+        //    var api = Api().AsGet();
+        //    var result = api.GetMenu(nameof(QuxMenuFunctions));
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
+
+        //    Assert.IsNull(parsedResult["members"]["Act1"]);
+
+        //    AssertDefaultAuth(0);
+        //    AssertNamespaceAuth(1);
+        //    AssertTypeFooAuth(0);
+        //    AssertTypeFooSubAuth(0);
+        //    AssertMenuAuth(0);
+        //}
+
+    }
+
+    public class MenuAuthTestEF6 : AcceptanceTestCase {
+        
+
+        protected override Type[] Functions { get; } = {
+            typeof(BarFunctions),
+            typeof(QuxFunctions),
+            typeof(FooFunctions),
+            typeof(FooSubFunctions),
+            typeof(FooMenuFunctions),
+        };
+
+        protected override Type[] Records { get; } = {
+            typeof(Foo),
+            typeof(Bar),
+            typeof(Qux),
+            typeof(FooSub)
+        };
+
+        protected override Type[] ObjectTypes { get; } = { };
+
+        protected override Type[] Services { get; } = { };
+
+        protected override bool EnforceProxies => false;
+
+        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
+            new Func<IConfiguration, DbContext>[] { config => new AuthDbContext() };
+
+        protected override Action<NakedFrameworkOptions> AddNakedObjects => _ => { };
+
+        protected override IAuthorizationConfiguration AuthorizationConfiguration {
+            get {
+                var config = new AuthorizationConfiguration<TestDefaultAuthorizer>();
+
+                config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("NakedFunctions.Rest.Test.Data.Sub");
+                config.AddTypeAuthorizer<Foo, TestTypeAuthorizerFoo>();
+                config.AddTypeAuthorizer<FooSub, TestTypeAuthorizerFooSub>();
+                config.AddMainMenuAuthorizer<TestMenuAuthorizer>();
+                return config;
+            }
+        }
+
+
+        protected virtual void CleanUpDatabase() {
+            ObjectDbContext.Delete();
+        }
+
+        protected override IMenu[] MainMenus(IMenuFactory factory) => new[] { typeof(FooMenuFunctions) }.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
+
+        protected override void RegisterTypes(IServiceCollection services) {
+            base.RegisterTypes(services);
+            services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+                    .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        }
+
+        [SetUp]
+        public void SetUp() => StartTest();
+
+        [TearDown]
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            ObjectReflectorConfiguration.NoValidate = true;
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            CleanUpDatabase();
+        }
+
+        protected RestfulObjectsControllerBase Api() {
+            var sp = GetConfiguredContainer();
+            var api = sp.GetService<RestfulObjectsController>();
+            return Helpers.SetMockContext(api, sp);
+        }
+
+        private JObject GetObject(string type, string id) {
+            var api = Api().AsGet();
+            var result = api.GetObject(type, id);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            return JObject.Parse(json);
+        }
+
+
+        // menus
+
+        [Test]
+        public void MenuAuthorizerCalledForNonSpecificMenuAllowsMethod() {
+            ResetDefaultAuth(true);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
+            ResetMenuAuth(true);
+
+            var api = Api().AsGet();
+            var result = api.GetMenu(nameof(FooMenuFunctions));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNotNull(parsedResult["members"]["Act1"]);
+
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
+            AssertMenuAuth(3);
+        }
+
+        [Test]
+        public void MenuAuthorizerCalledForNonSpecificMenuBlocksMethod() {
+            ResetDefaultAuth(false);
+            ResetNamespaceAuth(true);
+            ResetTypeFooAuth(true);
+            ResetTypeFooSubAuth(true);
+            ResetMenuAuth(false);
+
+            var api = Api().AsGet();
+            var result = api.GetMenu(nameof(FooMenuFunctions));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.IsNull(parsedResult["members"]["Act1"]);
+
+            AssertDefaultAuth(0);
+            AssertNamespaceAuth(0);
+            AssertTypeFooAuth(0);
+            AssertTypeFooSubAuth(0);
+            AssertMenuAuth(4);
         }
     }
+
 }

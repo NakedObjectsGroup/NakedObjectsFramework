@@ -1,4 +1,6 @@
-﻿namespace NakedFunctions.Rest.Test.Data {
+﻿using System.Linq;
+
+namespace NakedFunctions.Rest.Test.Data {
     public record Foo {
         public virtual int Id { get; set; }
 
@@ -28,6 +30,11 @@
     public static class FooSubFunctions {
         public static FooSub Act2(this FooSub foosub, IContext context) => foosub;
     }
+
+    public static class FooMenuFunctions {
+        public static Foo Act1(IContext context) => context.Instances<Foo>().FirstOrDefault();
+        public static Foo Act2(IContext context) => context.Instances<Foo>().FirstOrDefault();
+    }
 }
 
 namespace NakedFunctions.Rest.Test.Data.Sub {
@@ -41,5 +48,10 @@ namespace NakedFunctions.Rest.Test.Data.Sub {
 
     public static class QuxFunctions {
         public static Qux Act1(this Qux qux, IContext context) => qux;
+    }
+
+    public static class QuxMenuFunctions {
+        public static Foo Act1(IContext context) => context.Instances<Foo>().FirstOrDefault();
+        public static Foo Act2(IContext context) => context.Instances<Foo>().FirstOrDefault();
     }
 }

@@ -33,6 +33,12 @@ namespace NakedFunctions.Reflector.Authorization {
             TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
         }
 
+        public void AddMainMenuAuthorizer<TAuth>()
+            where TAuth : ITypeAuthorizer<string> {
+            var fullyQualifiedName = typeof(string).FullName;
+            TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
+        }
+
         #region IAuthorizationConfiguration Members
 
         public Type DefaultAuthorizer { get; }
