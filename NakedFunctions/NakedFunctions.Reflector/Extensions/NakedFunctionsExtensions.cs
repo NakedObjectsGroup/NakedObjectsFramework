@@ -61,7 +61,7 @@ namespace NakedFunctions.Reflector.Extensions {
             }
 
             if (frameworkOptions.AuditConfiguration is not null) {
-                frameworkOptions.Services.AddSingleton(frameworkOptions.AuditConfiguration);
+                frameworkOptions.Services.AddSingleton((IFunctionalAuditConfiguration)frameworkOptions.AuditConfiguration);
                 frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuditManager>();
             }
         }

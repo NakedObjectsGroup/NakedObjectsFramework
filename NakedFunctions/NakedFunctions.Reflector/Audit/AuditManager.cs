@@ -22,27 +22,37 @@ using NakedFunctions.Reflector.Component;
 namespace NakedFunctions.Reflector.Audit {
     [Serializable]
     public sealed class AuditManager : AbstractAuditManager, IFacetDecorator, IAuditManager {
-        public AuditManager(IAuditConfiguration config, ILogger<AuditManager> logger) : base(config, logger) { }
+        private readonly Type MainMenuAuditor;
+
+        public AuditManager(IFunctionalAuditConfiguration config, ILogger<AuditManager> logger) : base(config, logger) {
+            MainMenuAuditor = config.MainMenuAuditor;
+        }
 
         protected override void ValidateType(Type toValidate) {
-            if (!typeof(IAuditor).IsAssignableFrom(toValidate)) {
+            if (!typeof(ITypeAuditor).IsAssignableFrom(toValidate)) {
                 throw new InitialisationException(Logger.LogAndReturn($"{toValidate.FullName} is not an IAuditor"));
             }
         }
 
-        private IAuditor GetAuditor(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) => GetNamespaceAuditorFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
+        private object GetAuditor(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) {
+            if (nakedObjectAdapter is null) {
+                return CreateAuditor(MainMenuAuditor, lifecycleManager);
+            }
 
-        private IAuditor GetNamespaceAuditorFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
+            return GetNamespaceAuditorFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
+        }
+
+        private object GetNamespaceAuditorFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
             var fullyQualifiedOfTarget = target.Spec.FullName;
             // order here as ImmutableDictionary not ordered
             var auditor = NamespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
 
-            return auditor != null ? CreateAuditor(auditor, lifecycleManager) : null;
+            return auditor is not null ? CreateAuditor(auditor, lifecycleManager) : null;
         }
 
-        private static IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedObject(auditor) as IAuditor;
+        private static object CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedObject(auditor);
 
-        private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(DefaultAuditor, lifecycleManager);
+        private object GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(DefaultAuditor, lifecycleManager);
 
         private static FunctionalContext FunctionalContext(INakedObjectsFramework framework) => new() { Persistor = framework.Persistor, Provider = framework.ServiceProvider };
 
@@ -52,22 +62,22 @@ namespace NakedFunctions.Reflector.Audit {
             var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
 
             var memberName = identifier.MemberName;
-            if (nakedObjectAdapter is null) {
+            if (auditor is IMenuAuditor menuAuditor) {
                 var menu = identifier.ClassName;
-                auditor.ActionInvoked(memberName, menu, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
+                menuAuditor.ActionInvoked(memberName, menu, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
             }
-            else {
-                auditor.ActionInvoked(memberName, nakedObjectAdapter.GetDomainObject(), queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
+            else if (auditor is ITypeAuditor typeAuditor) {
+                typeAuditor.ActionInvoked(memberName, nakedObjectAdapter.GetDomainObject(), queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
             }
         }
 
         public void Updated(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
-            var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
+            var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager) as ITypeAuditor;
             auditor.ObjectUpdated(nakedObjectAdapter.GetDomainObject(), null);
         }
 
         public void Persisted(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
-            var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
+            var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager) as ITypeAuditor;
             auditor.ObjectPersisted(nakedObjectAdapter.GetDomainObject(), null);
         }
 

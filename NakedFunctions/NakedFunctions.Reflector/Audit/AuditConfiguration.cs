@@ -7,24 +7,25 @@
 
 using System;
 using System.Collections.Generic;
-using NakedFramework.Metamodel.Audit;
 using NakedFunctions.Audit;
 
 namespace NakedFunctions.Reflector.Audit {
     //Add namespace auditors individually via AddNamespaceAuditor, or create the whole dictionary
     //and set the NamespaceAuditors property.
-    public class AuditConfiguration<TDefault> : IAuditConfiguration where TDefault : IAuditor {
+    public class AuditConfiguration<TDefault, TMainMenu> : IFunctionalAuditConfiguration where TDefault : ITypeAuditor where TMainMenu : IMenuAuditor {
         public AuditConfiguration() {
             DefaultAuditor = typeof(TDefault);
+            MainMenuAuditor = typeof(TMainMenu);
             NamespaceAuditors = new Dictionary<string, Type>();
         }
 
         #region IAuditConfiguration Members
 
         public Type DefaultAuditor { get; }
+        public Type MainMenuAuditor { get; }
         public Dictionary<string, Type> NamespaceAuditors { get; }
 
-        public void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor => NamespaceAuditors.Add(namespaceCovered, typeof(T));
+        public void AddNamespaceAuditor<T>(string namespaceCovered) where T : ITypeAuditor => NamespaceAuditors.Add(namespaceCovered, typeof(T));
 
         #endregion
     }

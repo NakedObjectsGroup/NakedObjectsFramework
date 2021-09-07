@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Audit;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Audit;
@@ -38,13 +39,50 @@ namespace NakedFunctions.Rest.Test {
             DefaultAuditor.ActionInvokedCount = 0;
         }
 
+        public static void ResetMenuAudit() {
+            MenuAuditor.ActionInvokedCount = 0;
+        }
+
         public static void AssertDefaultAudit(int expectedVisible) {
             Assert.AreEqual(expectedVisible, DefaultAuditor.ActionInvokedCount);
         }
 
+        public static void ResetBarAudit() {
+            BarAuditor.ActionInvokedCount = 0;
+        }
+
+        public static void AssertBarAudit(int expectedVisible) {
+            Assert.AreEqual(expectedVisible, BarAuditor.ActionInvokedCount);
+        }
+
+        public static void ResetQuxAudit() {
+            QuxAuditor.ActionInvokedCount = 0;
+        }
+
+        public static void AssertQuxAudit(int expectedVisible) {
+            Assert.AreEqual(expectedVisible, QuxAuditor.ActionInvokedCount);
+        }
+
+        public static void AssertMenuAudit(int expectedVisible) {
+            Assert.AreEqual(expectedVisible, MenuAuditor.ActionInvokedCount);
+        }
     }
 
-    public class DefaultAuditor : IAuditor {
+    public class MenuAuditor : IMenuAuditor {
+        public static int ActionInvokedCount = 0;
+
+        public IContext ActionInvoked(string actionName, string menuName, bool queryOnly, object[] withParameters, IContext context) {
+            Assert.IsNotNull(actionName);
+            Assert.IsNotNull(menuName);
+            Assert.IsNotNull(queryOnly);
+            Assert.IsNotNull(withParameters);
+            Assert.IsNotNull(context);
+            ActionInvokedCount++;
+            return context;
+        }
+    }
+
+    public class DefaultAuditor : ITypeAuditor {
         public static int ActionInvokedCount = 0;
 
         public IContext ActionInvoked(string actionName, object onObject, bool queryOnly, object[] withParameters, IContext context) {
@@ -57,12 +95,47 @@ namespace NakedFunctions.Rest.Test {
             return context;
         }
 
-        public IContext ActionInvoked(string actionName, string menuName, bool queryOnly, object[] withParameters, IContext context) => throw new NotImplementedException();
+        public IContext ObjectUpdated(object updatedObject, IContext context) => throw new NotImplementedException();
+
+        public IContext ObjectPersisted(object updatedObject, IContext context) => throw new NotImplementedException();
+    }
+
+    public class BarAuditor : ITypeAuditor {
+        public static int ActionInvokedCount = 0;
+
+        public IContext ActionInvoked(string actionName, object onObject, bool queryOnly, object[] withParameters, IContext context) {
+            Assert.IsNotNull(actionName);
+            Assert.IsNotNull(onObject);
+            Assert.IsNotNull(queryOnly);
+            Assert.IsNotNull(withParameters);
+            Assert.IsNotNull(context);
+            ActionInvokedCount++;
+            return context;
+        }
 
         public IContext ObjectUpdated(object updatedObject, IContext context) => throw new NotImplementedException();
 
         public IContext ObjectPersisted(object updatedObject, IContext context) => throw new NotImplementedException();
     }
+
+    public class QuxAuditor : ITypeAuditor {
+        public static int ActionInvokedCount = 0;
+
+        public IContext ActionInvoked(string actionName, object onObject, bool queryOnly, object[] withParameters, IContext context) {
+            Assert.IsNotNull(actionName);
+            Assert.IsNotNull(onObject);
+            Assert.IsNotNull(queryOnly);
+            Assert.IsNotNull(withParameters);
+            Assert.IsNotNull(context);
+            ActionInvokedCount++;
+            return context;
+        }
+
+        public IContext ObjectUpdated(object updatedObject, IContext context) => throw new NotImplementedException();
+
+        public IContext ObjectPersisted(object updatedObject, IContext context) => throw new NotImplementedException();
+    }
+
 
 
     public class AuditTestEF6 : AcceptanceTestCase {
@@ -109,9 +182,9 @@ namespace NakedFunctions.Rest.Test {
 
         protected override IAuditConfiguration AuditConfiguration {
             get {
-                var config = new AuditConfiguration<DefaultAuditor>();
-                //config.AddNamespaceAuditor<FooAuditor>(typeof(Foo).FullName);
-                //config.AddNamespaceAuditor<QuxAuditor>(typeof(Qux).FullName);
+                var config = new AuditConfiguration<DefaultAuditor, MenuAuditor>();
+                config.AddNamespaceAuditor<BarAuditor>(typeof(Bar).FullName);
+                config.AddNamespaceAuditor<QuxAuditor>(typeof(Qux).FullName);
                 return config;
             }
         }
@@ -150,8 +223,10 @@ namespace NakedFunctions.Rest.Test {
 
         [Test]
         public void DefaultAuditorCalledForNonSpecificType() {
-
             ResetDefaultAudit();
+            ResetBarAudit();
+            ResetQuxAudit();
+            ResetMenuAudit();
 
             var api = Api();
             var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
@@ -161,8 +236,50 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
 
             AssertDefaultAudit(1);
+            AssertBarAudit(0);
+            AssertQuxAudit(0);
+            AssertMenuAudit(0);
         }
 
+        [Test]
+        public void NamespaceAuditorCalledForSpecificType() {
+            ResetDefaultAudit();
+            ResetBarAudit();
+            ResetQuxAudit();
+            ResetMenuAudit();
+
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+
+            var result = api.GetInvoke(FullName<Bar>(), "1", nameof(BarFunctions.Act1), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+
+            AssertDefaultAudit(0);
+            AssertBarAudit(1);
+            AssertQuxAudit(0);
+            AssertMenuAudit(0);
+        }
+
+        [Test]
+        public void MenuAuditorCalledForNonSpecificMenu() {
+            ResetDefaultAudit();
+            ResetBarAudit();
+            ResetQuxAudit();
+            ResetMenuAudit();
+
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+
+            var result = api.GetInvokeOnMenu(nameof(FooMenuFunctions), nameof(FooMenuFunctions.Act1), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+
+            AssertDefaultAudit(0);
+            AssertBarAudit(0);
+            AssertQuxAudit(0);
+            AssertMenuAudit(1);
+        }
     }
 
     public class MenuAuditTestEF6 : AcceptanceTestCase {
