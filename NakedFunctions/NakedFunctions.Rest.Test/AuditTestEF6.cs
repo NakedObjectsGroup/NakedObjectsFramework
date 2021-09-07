@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -13,14 +14,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
+using NakedFramework.Metamodel.Audit;
 using NakedFramework.Rest.API;
+using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
+using NakedFunctions.Audit;
+using NakedFunctions.Reflector.Audit;
 using NakedFunctions.Rest.Test.Data;
 using NakedFunctions.Rest.Test.Data.Sub;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using static NakedFunctions.Rest.Test.AuditHelpers;
 
 namespace NakedFunctions.Rest.Test {
 
@@ -28,8 +34,36 @@ namespace NakedFunctions.Rest.Test {
     public static class AuditHelpers {
         public static string FullName<T>() => typeof(T).FullName;
 
-       
+        public static void ResetDefaultAudit() {
+            DefaultAuditor.ActionInvokedCount = 0;
+        }
+
+        public static void AssertDefaultAudit(int expectedVisible) {
+            Assert.AreEqual(expectedVisible, DefaultAuditor.ActionInvokedCount);
+        }
+
     }
+
+    public class DefaultAuditor : IAuditor {
+        public static int ActionInvokedCount = 0;
+
+        public IContext ActionInvoked(string actionName, object onObject, bool queryOnly, object[] withParameters, IContext context) {
+            Assert.IsNotNull(actionName);
+            Assert.IsNotNull(onObject);
+            Assert.IsNotNull(queryOnly);
+            Assert.IsNotNull(withParameters);
+            Assert.IsNotNull(context);
+            ActionInvokedCount++;
+            return context;
+        }
+
+        public IContext ActionInvoked(string actionName, string menuName, bool queryOnly, object[] withParameters, IContext context) => throw new NotImplementedException();
+
+        public IContext ObjectUpdated(object updatedObject, IContext context) => throw new NotImplementedException();
+
+        public IContext ObjectPersisted(object updatedObject, IContext context) => throw new NotImplementedException();
+    }
+
 
     public class AuditTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
@@ -73,6 +107,15 @@ namespace NakedFunctions.Rest.Test {
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
         }
 
+        protected override IAuditConfiguration AuditConfiguration {
+            get {
+                var config = new AuditConfiguration<DefaultAuditor>();
+                //config.AddNamespaceAuditor<FooAuditor>(typeof(Foo).FullName);
+                //config.AddNamespaceAuditor<QuxAuditor>(typeof(Qux).FullName);
+                return config;
+            }
+        }
+
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -104,6 +147,22 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             return JObject.Parse(json);
         }
+
+        [Test]
+        public void DefaultAuditorCalledForNonSpecificType() {
+
+            ResetDefaultAudit();
+
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+
+            var result = api.GetInvoke(FullName<Foo>(), "1", nameof(FooFunctions.Act1), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+
+            AssertDefaultAudit(1);
+        }
+
     }
 
     public class MenuAuditTestEF6 : AcceptanceTestCase {
