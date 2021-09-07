@@ -17,7 +17,7 @@ using NakedFramework.Audit;
 using NakedFramework.Metamodel.Audit;
 using NakedObjects.Reflector.Audit;
 
-namespace NakedObjects.Meta.Test.Audit {
+namespace NakedFunctions.Reflector.Test.Audit {
     [TestClass]
     public class AuditManagerTest {
         private readonly ILogger<AuditManager> mockLogger = new Mock<ILogger<AuditManager>>().Object;

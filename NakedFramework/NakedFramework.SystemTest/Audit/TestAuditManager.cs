@@ -13,6 +13,7 @@ using NakedFramework;
 using NakedFramework.Metamodel.Audit;
 using NakedFramework.Audit;
 using NakedObjects.Core.Util;
+using NakedObjects.Reflector.Audit;
 using NakedObjects.Services;
 using NUnit.Framework;
 

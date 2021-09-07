@@ -14,10 +14,11 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Audit;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Audit;
+using NakedFunctions.Audit;
+using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Reflector.Audit {
     [Serializable]
@@ -60,30 +61,31 @@ namespace NakedFunctions.Reflector.Audit {
 
         private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(defaultAuditor, lifecycleManager);
 
+        private static FunctionalContext FunctionalContext(INakedObjectsFramework framework) => new() { Persistor = framework.Persistor, Provider = framework.ServiceProvider };
+
         #region IAuditManager Members
 
         public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedObjectsFramework framework) {
             var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
 
-            var byPrincipal = framework.Session.Principal;
             var memberName = identifier.MemberName;
-            if (nakedObjectAdapter.Spec is IServiceSpec) {
-                var serviceName = nakedObjectAdapter.Spec.GetTitle(nakedObjectAdapter);
-                auditor.ActionInvoked(byPrincipal, memberName, serviceName, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
+            if (nakedObjectAdapter is null) {
+                var menu = identifier.ClassName;
+                auditor.ActionInvoked(memberName, menu, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
             }
             else {
-                auditor.ActionInvoked(byPrincipal, memberName, nakedObjectAdapter.GetDomainObject(), queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
+                auditor.ActionInvoked(memberName, nakedObjectAdapter.GetDomainObject(), queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
             }
         }
 
         public void Updated(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
-            auditor.ObjectUpdated(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
+            auditor.ObjectUpdated(nakedObjectAdapter.GetDomainObject(), null);
         }
 
         public void Persisted(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
-            auditor.ObjectPersisted(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
+            auditor.ObjectPersisted(nakedObjectAdapter.GetDomainObject(), null);
         }
 
         #endregion
