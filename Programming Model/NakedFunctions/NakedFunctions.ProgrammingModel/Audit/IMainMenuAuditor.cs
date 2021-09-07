@@ -9,7 +9,7 @@ namespace NakedFunctions.Audit {
     /// <summary>
     ///     Allows domain programmers to define an auditing service.
     /// </summary>
-    public interface IMenuAuditor {
+    public interface IMainMenuAuditor {
         IContext ActionInvoked(string actionName, string menuName, bool queryOnly, object[] withParameters, IContext context);
     }
 }

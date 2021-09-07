@@ -12,7 +12,7 @@ using NakedFunctions.Audit;
 namespace NakedFunctions.Reflector.Audit {
     //Add namespace auditors individually via AddNamespaceAuditor, or create the whole dictionary
     //and set the NamespaceAuditors property.
-    public class AuditConfiguration<TDefault, TMainMenu> : IFunctionalAuditConfiguration where TDefault : ITypeAuditor where TMainMenu : IMenuAuditor {
+    public class AuditConfiguration<TDefault, TMainMenu> : IFunctionalAuditConfiguration where TDefault : ITypeAuditor where TMainMenu : IMainMenuAuditor {
         public AuditConfiguration() {
             DefaultAuditor = typeof(TDefault);
             MainMenuAuditor = typeof(TMainMenu);

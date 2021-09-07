@@ -62,7 +62,7 @@ namespace NakedFunctions.Reflector.Audit {
             var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
 
             var memberName = identifier.MemberName;
-            if (auditor is IMenuAuditor menuAuditor) {
+            if (auditor is IMainMenuAuditor menuAuditor) {
                 var menu = identifier.ClassName;
                 menuAuditor.ActionInvoked(memberName, menu, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
             }

@@ -68,7 +68,7 @@ namespace NakedFunctions.Rest.Test {
         }
     }
 
-    public class MenuAuditor : IMenuAuditor {
+    public class MenuAuditor : IMainMenuAuditor {
         public static int ActionInvokedCount = 0;
 
         public IContext ActionInvoked(string actionName, string menuName, bool queryOnly, object[] withParameters, IContext context) {
