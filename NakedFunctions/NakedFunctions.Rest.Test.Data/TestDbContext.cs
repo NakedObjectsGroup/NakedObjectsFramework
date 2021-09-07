@@ -121,6 +121,7 @@ namespace NakedFunctions.Rest.Test.Data {
         public DbSet<Bar> Bars { get; set; }
         public DbSet<Qux> Quxs { get; set; }
         public DbSet<FooSub> FooSubs { get; set; }
+        public DbSet<AuditRecord> AuditRecords { get; set; }
         public static void Delete() => Database.Delete(Constants.CsAuth);
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new AuthDatabaseInitializer());

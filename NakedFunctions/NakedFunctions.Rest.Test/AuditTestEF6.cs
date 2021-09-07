@@ -12,7 +12,6 @@ using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NakedFramework.Audit;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Audit;
@@ -128,7 +127,8 @@ namespace NakedFunctions.Rest.Test {
             Assert.IsNotNull(withParameters);
             Assert.IsNotNull(context);
             ActionInvokedCount++;
-            return context;
+
+            return context.WithNew(new AuditRecord() { Message = "new audit" });
         }
 
         public IContext ObjectUpdated(object updatedObject, IContext context) => throw new NotImplementedException();
@@ -152,7 +152,8 @@ namespace NakedFunctions.Rest.Test {
             typeof(Foo),
             typeof(Bar),
             typeof(Qux),
-            typeof(FooSub)
+            typeof(FooSub),
+            typeof(AuditRecord)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -260,6 +261,28 @@ namespace NakedFunctions.Rest.Test {
             AssertQuxAudit(0);
             AssertMenuAudit(0);
         }
+
+        [Test, Ignore("pending transaction decision")]
+        public void NamespaceAuditorCalledForSpecificTypeWithUpdate() {
+            ResetDefaultAudit();
+            ResetBarAudit();
+            ResetQuxAudit();
+            ResetMenuAudit();
+
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+
+            var result = api.GetInvoke(FullName<Qux>(), "1", nameof(BarFunctions.Act1), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+
+            AssertDefaultAudit(0);
+            AssertBarAudit(0);
+            AssertQuxAudit(1);
+            AssertMenuAudit(0);
+        }
+
+
 
         [Test]
         public void MenuAuditorCalledForNonSpecificMenu() {

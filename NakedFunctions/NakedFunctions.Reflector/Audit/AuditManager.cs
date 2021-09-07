@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
@@ -14,6 +15,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Persist;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Audit;
 using NakedFunctions.Audit;
@@ -58,16 +60,27 @@ namespace NakedFunctions.Reflector.Audit {
 
         #region IAuditManager Members
 
+        private static void PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, object[] deletedObjects, (object proxy, object updated)[] updatedObjects, Func<IDictionary<object, object>, bool> postSaveFunction) =>
+            lifecycleManager.Persist(new DetachedObjects(newObjects, deletedObjects, updatedObjects, postSaveFunction));
+
+        private static void HandleContext(FunctionalContext functionalContext, INakedObjectsFramework framework) =>
+            PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Deleted, functionalContext.Updated, _ => false);
+
         public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedObjectsFramework framework) {
             var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
 
             var memberName = identifier.MemberName;
+            IContext context = null;
             if (auditor is IMainMenuAuditor menuAuditor) {
                 var menu = identifier.ClassName;
-                menuAuditor.ActionInvoked(memberName, menu, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
+                context = menuAuditor.ActionInvoked(memberName, menu, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
             }
             else if (auditor is ITypeAuditor typeAuditor) {
-                typeAuditor.ActionInvoked(memberName, nakedObjectAdapter.GetDomainObject(), queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
+                context = typeAuditor.ActionInvoked(memberName, nakedObjectAdapter.GetDomainObject(), queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray(), FunctionalContext(framework));
+            }
+
+            if (context is FunctionalContext fc) {
+                HandleContext(fc, framework);
             }
         }
 
