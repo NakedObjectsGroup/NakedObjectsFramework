@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
@@ -21,28 +20,12 @@ using NakedFramework.Metamodel.Audit;
 
 namespace NakedObjects.Reflector.Audit {
     [Serializable]
-    public sealed class AuditManager : IFacetDecorator, IAuditManager {
-        private readonly Type defaultAuditor;
-        private readonly ILogger<AuditManager> logger;
-        private readonly ImmutableDictionary<string, Type> namespaceAuditors;
+    public sealed class AuditManager : AbstractAuditManager, IFacetDecorator, IAuditManager {
+        public AuditManager(IAuditConfiguration config, ILogger<AuditManager> logger) : base(config, logger) { }
 
-        public AuditManager(IAuditConfiguration config, ILogger<AuditManager> logger) {
-            this.logger = logger;
-            defaultAuditor = config.DefaultAuditor;
-            namespaceAuditors = config.NamespaceAuditors.ToImmutableDictionary();
-            Validate();
-        }
-
-        private void ValidateType(Type toValidate) {
+        protected override void ValidateType(Type toValidate) {
             if (!typeof(IAuditor).IsAssignableFrom(toValidate)) {
-                throw new InitialisationException(logger.LogAndReturn($"{toValidate.FullName} is not an IAuditor"));
-            }
-        }
-
-        private void Validate() {
-            ValidateType(defaultAuditor);
-            if (namespaceAuditors.Any()) {
-                namespaceAuditors.ForEach(kvp => ValidateType(kvp.Value));
+                throw new InitialisationException(Logger.LogAndReturn($"{toValidate.FullName} is not an IAuditor"));
             }
         }
 
@@ -51,14 +34,14 @@ namespace NakedObjects.Reflector.Audit {
         private IAuditor GetNamespaceAuditorFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
             var fullyQualifiedOfTarget = target.Spec.FullName;
             // order here as ImmutableDictionary not ordered
-            var auditor = namespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
+            var auditor = NamespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
 
             return auditor != null ? CreateAuditor(auditor, lifecycleManager) : null;
         }
 
         private static IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
 
-        private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(defaultAuditor, lifecycleManager);
+        private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(DefaultAuditor, lifecycleManager);
 
         #region IAuditManager Members
 
@@ -92,21 +75,21 @@ namespace NakedObjects.Reflector.Audit {
 
         public IFacet Decorate(IFacet facet, ISpecification holder) {
             if (facet.FacetType == typeof(IActionInvocationFacet)) {
-                return new AuditActionInvocationFacet((IActionInvocationFacet) facet, this);
+                return new AuditActionInvocationFacet((IActionInvocationFacet)facet, this);
             }
 
             if (facet.FacetType == typeof(IUpdatedCallbackFacet)) {
-                return new AuditUpdatedFacet((IUpdatedCallbackFacet) facet, this);
+                return new AuditUpdatedFacet((IUpdatedCallbackFacet)facet, this);
             }
 
             if (facet.FacetType == typeof(IPersistedCallbackFacet)) {
-                return new AuditPersistedFacet((IPersistedCallbackFacet) facet, this);
+                return new AuditPersistedFacet((IPersistedCallbackFacet)facet, this);
             }
 
             return facet;
         }
 
-        public Type[] ForFacetTypes { get; } = {typeof(IActionInvocationFacet), typeof(IUpdatedCallbackFacet), typeof(IPersistedCallbackFacet)};
+        public Type[] ForFacetTypes { get; } = { typeof(IActionInvocationFacet), typeof(IUpdatedCallbackFacet), typeof(IPersistedCallbackFacet) };
 
         #endregion
     }
