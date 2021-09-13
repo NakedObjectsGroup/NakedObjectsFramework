@@ -6,7 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Data.Entity;
-using NakedFunctions.Rest.Test.Data.Sub;
+using Rest.Test.Data;
+using Rest.Test.Data.Sub;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class Constants {

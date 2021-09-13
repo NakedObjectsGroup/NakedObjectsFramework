@@ -28,5 +28,20 @@
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Test\NakedFramework.Test.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Model.Designer.cs">
+      <DependentUpon>Model.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Model.resx">
+      <LastGenOutput>Model.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 
 </Project>

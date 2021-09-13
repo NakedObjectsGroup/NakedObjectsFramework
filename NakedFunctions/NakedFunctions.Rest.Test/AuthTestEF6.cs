@@ -19,12 +19,13 @@ using NakedFramework.Rest.API;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Reflector.Authorization;
 using NakedFunctions.Rest.Test.Data;
-using NakedFunctions.Rest.Test.Data.Sub;
 using NakedFunctions.Security;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using Rest.Test.Data;
+using Rest.Test.Data.Sub;
 using static NakedFunctions.Rest.Test.AuthHelpers;
 
 namespace NakedFunctions.Rest.Test {
@@ -138,7 +139,7 @@ namespace NakedFunctions.Rest.Test {
         public static int VisibleCount;
 
         public bool IsVisible(string target, string memberName, IContext context) {
-            Assert.IsTrue(target is "NakedFunctions.Rest.Test.Data.Sub.QuxMenuFunctions" or "NakedFunctions.Rest.Test.Data.FooMenuFunctions");
+            Assert.IsTrue(target is "Rest.Test.Data.Sub.QuxMenuFunctions" or "Rest.Test.Data.FooMenuFunctions");
             Assert.IsTrue(memberName is "Act1" or "Act2");
             Assert.IsNotNull(context);
             VisibleCount++;
@@ -178,7 +179,7 @@ namespace NakedFunctions.Rest.Test {
             get {
                 var config = new AuthorizationConfiguration<TestDefaultAuthorizer, TestMenuAuthorizer>();
 
-                config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("NakedFunctions.Rest.Test.Data.Sub");
+                config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("Rest.Test.Data.Sub");
                 config.AddTypeAuthorizer<Foo, TestTypeAuthorizerFoo>();
                 config.AddTypeAuthorizer<FooSub, TestTypeAuthorizerFooSub>();
                 return config;
@@ -685,7 +686,7 @@ namespace NakedFunctions.Rest.Test {
             get {
                 var config = new AuthorizationConfiguration<TestDefaultAuthorizer, TestMenuAuthorizer>();
 
-                config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("NakedFunctions.Rest.Test.Data.Sub");
+                config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("Rest.Test.Data.Sub");
                 config.AddTypeAuthorizer<Foo, TestTypeAuthorizerFoo>();
                 config.AddTypeAuthorizer<FooSub, TestTypeAuthorizerFooSub>();
                 return config;

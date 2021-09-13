@@ -1,6 +1,9 @@
 ﻿using System.Linq;
+using NakedFunctions;
+using Rest.Test.Data;
 
-namespace NakedFunctions.Rest.Test.Data {
+// non NakedFunctions namespace for I18N tests
+namespace Rest.Test.Data {
     public record Foo {
         public virtual int Id { get; set; }
 
@@ -43,7 +46,7 @@ namespace NakedFunctions.Rest.Test.Data {
     }
 }
 
-namespace NakedFunctions.Rest.Test.Data.Sub {
+namespace Rest.Test.Data.Sub {
     public record Qux {
         public virtual int Id { get; set; }
 
