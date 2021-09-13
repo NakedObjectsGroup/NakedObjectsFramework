@@ -42,8 +42,8 @@ namespace NakedFunctions.Rest.App.Demo {
                 builder.MainMenus = MenuHelper.GenerateMenus(AWModelConfig.MainMenuTypes());
                 builder.AddEFCorePersistor(options => { options.ContextCreators = new[] {AWModelConfig.EFCDbContextCreator}; });
                 builder.AddNakedFunctions(options => {
-                    options.FunctionalTypes = AWModelConfig.FunctionalTypes();
-                    options.Functions = AWModelConfig.Functions();
+                    options.DomainTypes = AWModelConfig.FunctionalTypes();
+                    options.DomainFunctions = AWModelConfig.Functions();
                 });
                 builder.AddRestfulObjects(options => options.BlobsClobs = true);
             });
