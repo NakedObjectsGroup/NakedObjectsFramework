@@ -44,7 +44,9 @@ namespace Rest.Test.Data {
         public static FooSub Act2(this FooSub foosub, IContext context) => foosub;
     }
 
+    [DescribedAs("FooMenuFunctions")]
     public static class FooMenuFunctions {
+        [DescribedAs("Act1")]
         public static Foo Act1(IContext context) => context.Instances<Foo>().FirstOrDefault();
         public static Foo Act2(IContext context) => context.Instances<Foo>().FirstOrDefault();
     }

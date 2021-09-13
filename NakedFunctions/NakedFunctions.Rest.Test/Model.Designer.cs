@@ -142,5 +142,41 @@ namespace NakedFunctions.Rest.Test {
                         "on_name", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ChangedAct1Description.
+        /// </summary>
+        public static string Rest_Test_Data_FooMenuFunctions_Act1_NakedFunctions_IContext__action_description {
+            get {
+                return ResourceManager.GetString("Rest_Test_Data_FooMenuFunctions_Act1_NakedFunctions_IContext__action_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ChangedAct1Name.
+        /// </summary>
+        public static string Rest_Test_Data_FooMenuFunctions_Act1_NakedFunctions_IContext__action_name {
+            get {
+                return ResourceManager.GetString("Rest_Test_Data_FooMenuFunctions_Act1_NakedFunctions_IContext__action_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ChangedFooMenuFunctionsDescription.
+        /// </summary>
+        public static string Rest_Test_Data_FooMenuFunctions_action_description {
+            get {
+                return ResourceManager.GetString("Rest_Test_Data_FooMenuFunctions_action_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ChangedFooMenuFunctionsName.
+        /// </summary>
+        public static string Rest_Test_Data_FooMenuFunctions_action_name {
+            get {
+                return ResourceManager.GetString("Rest_Test_Data_FooMenuFunctions_action_name", resourceCulture);
+            }
+        }
     }
 }

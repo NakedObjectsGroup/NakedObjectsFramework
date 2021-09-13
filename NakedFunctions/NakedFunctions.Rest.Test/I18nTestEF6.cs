@@ -115,5 +115,19 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("Changed Act 1 Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
             Assert.AreEqual("ChangedAct1Description", parsedResult["members"]["Act1"]["extensions"]["description"].ToString());
         }
+
+        [Test]
+        public void TestGetMenu() {
+            var api = Api();
+            var result = api.GetMenu(nameof(FooMenuFunctions));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            //Assert.AreEqual("Changed Foo Menu Functions Name", parsedResult["extensions"]["friendlyName"].ToString());
+            //Assert.AreEqual("ChangedFooMenuFunctionsDescription", parsedResult["extensions"]["description"].ToString());
+            Assert.AreEqual("Changed Act 1 Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
+            Assert.AreEqual("ChangedAct1Description", parsedResult["members"]["Act1"]["extensions"]["description"].ToString());
+        }
     }
 }
