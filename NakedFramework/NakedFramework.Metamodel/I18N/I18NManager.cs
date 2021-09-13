@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 using NakedObjects.Resources;
 
 namespace NakedFramework.Metamodel.I18N {
@@ -30,9 +31,11 @@ namespace NakedFramework.Metamodel.I18N {
 
         public I18NManager(ILogger<I18NManager> logger) => this.logger = logger;
 
+        public static ResourceManager TestResourceManager { get; set; } = null;
+
         // make resources testable 
         public ResourceManager Resources {
-            private get => resources ?? Model.ResourceManager;
+            private get => resources ??= TestResourceManager ?? Model.ResourceManager;
             set => resources = value;
         }
 
@@ -53,7 +56,7 @@ namespace NakedFramework.Metamodel.I18N {
         }
 
         private string GetText(string key) {
-            if (key.StartsWith("System.") || key.StartsWith("NakedObjects.")) {
+            if (FasterTypeUtils.IsSystemOrNaked(key)) {
                 return null;
             }
 
@@ -69,15 +72,17 @@ namespace NakedFramework.Metamodel.I18N {
         }
 
         private string CreateKey(string key) {
-            if (keyCache.ContainsKey(key)) {
-                return keyCache[key];
+            lock (keyCache) {
+                if (keyCache.ContainsKey(key)) {
+                    return keyCache[key];
+                }
+
+                var newKey = key.Replace('.', '_').Replace(':', '_').Replace('#', '_').Replace('/', '_').Replace('(', '_').Replace(')', '_').Replace(',', '_').Replace('?', '_');
+
+                keyCache[key] = newKey;
+
+                return newKey;
             }
-
-            var newKey = key.Replace('.', '_').Replace(':', '_').Replace('#', '_').Replace('/', '_').Replace('(', '_').Replace(')', '_').Replace(',', '_').Replace('?', '_');
-
-            keyCache[key] = newKey;
-
-            return newKey;
         }
 
         private string GetName(IIdentifier identifier) => GetText(identifier, Name);

@@ -41,12 +41,18 @@ namespace NakedFramework.Core.Util {
 
         private static bool IsNakedFunctions(string typeName) => typeName.StartsWith(NakedFunctionsTypePrefix, StringComparison.Ordinal);
 
-        private static bool IsNaked(Type type) {
-            var fullName = type?.FullName ?? "";
+        private static bool IsNaked(string fullName) {
             return IsNakedFramework(fullName) || IsNakedObjects(fullName) || IsNakedFunctions(fullName);
         }
 
+        private static bool IsNaked(Type type) {
+            var fullName = type?.FullName ?? "";
+            return IsNaked(fullName);
+        }
+
         public static bool IsSystemOrNaked(Type type) => IsSystem(type) || IsNaked(type);
+
+        public static bool IsSystemOrNaked(string typeName) => IsSystem(typeName) || IsNaked(typeName);
 
         public static bool IsSystem(Type type) {
             var fullName = type?.FullName ?? "";
