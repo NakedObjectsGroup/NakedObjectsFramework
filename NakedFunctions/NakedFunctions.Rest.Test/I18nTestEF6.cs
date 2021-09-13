@@ -28,19 +28,12 @@ namespace NakedFunctions.Rest.Test {
     
     public class I18nTestEF6 : AcceptanceTestCase {
         protected override Type[] Functions { get; } = {
-            typeof(BarFunctions),
-            typeof(QuxFunctions),
             typeof(FooFunctions),
-            typeof(FooSubFunctions),
-            typeof(FooMenuFunctions),
-            typeof(QuxMenuFunctions)
+            typeof(FooMenuFunctions)
         };
 
         protected override Type[] Records { get; } = {
-            typeof(Foo),
-            typeof(Bar),
-            typeof(Qux),
-            typeof(FooSub)
+            typeof(Foo)
         };
 
         protected override Type[] ObjectTypes { get; } = { };
@@ -63,7 +56,7 @@ namespace NakedFunctions.Rest.Test {
             ObjectDbContext.Delete();
         }
 
-        protected override IMenu[] MainMenus(IMenuFactory factory) => new[] { typeof(FooMenuFunctions), typeof(QuxMenuFunctions) }.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
+        protected override IMenu[] MainMenus(IMenuFactory factory) => new[] { typeof(FooMenuFunctions) }.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
@@ -116,7 +109,11 @@ namespace NakedFunctions.Rest.Test {
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("Changed Foo Name", parsedResult["extensions"]["friendlyName"].ToString());
-            Assert.AreEqual("Changed Property Prop1", parsedResult["members"]["Prop1"]["extensions"]["friendlyName"].ToString());
+            Assert.AreEqual("ChangedFooDescription", parsedResult["extensions"]["description"].ToString());
+            Assert.AreEqual("Changed Prop 1 Name", parsedResult["members"]["Prop1"]["extensions"]["friendlyName"].ToString());
+            Assert.AreEqual("ChangedProp1Description", parsedResult["members"]["Prop1"]["extensions"]["description"].ToString());
+            Assert.AreEqual("Changed Act 1 Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
+            Assert.AreEqual("ChangedAct1Description", parsedResult["members"]["Act1"]["extensions"]["description"].ToString());
         }
     }
 }

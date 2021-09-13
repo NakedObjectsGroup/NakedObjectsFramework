@@ -88,6 +88,15 @@ namespace NakedFunctions.Rest.Test {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ChangedFooDescription.
+        /// </summary>
+        public static string Rest_Test_Data_Foo_action_description {
+            get {
+                return ResourceManager.GetString("Rest_Test_Data_Foo_action_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ChangedFooName.
         /// </summary>
         public static string Rest_Test_Data_Foo_action_name {
@@ -97,11 +106,40 @@ namespace NakedFunctions.Rest.Test {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ChangedPropertyProp1.
+        ///   Looks up a localized string similar to ChangedProp1Description.
+        /// </summary>
+        public static string Rest_Test_Data_Foo_Prop1_property_description {
+            get {
+                return ResourceManager.GetString("Rest_Test_Data_Foo_Prop1_property_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ChangedProp1Name.
         /// </summary>
         public static string Rest_Test_Data_Foo_Prop1_property_name {
             get {
                 return ResourceManager.GetString("Rest_Test_Data_Foo_Prop1_property_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ChangedAct1Description.
+        /// </summary>
+        public static string Rest_Test_Data_FooFunctions_Act1_Rest_Test_Data_Foo_NakedFunctions_IContext__action_description {
+            get {
+                return ResourceManager.GetString("Rest_Test_Data_FooFunctions_Act1_Rest_Test_Data_Foo_NakedFunctions_IContext__acti" +
+                        "on_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ChangedAct1Name.
+        /// </summary>
+        public static string Rest_Test_Data_FooFunctions_Act1_Rest_Test_Data_Foo_NakedFunctions_IContext__action_name {
+            get {
+                return ResourceManager.GetString("Rest_Test_Data_FooFunctions_Act1_Rest_Test_Data_Foo_NakedFunctions_IContext__acti" +
+                        "on_name", resourceCulture);
             }
         }
     }

@@ -4,9 +4,11 @@ using Rest.Test.Data;
 
 // non NakedFunctions namespace for I18N tests
 namespace Rest.Test.Data {
+    [DescribedAs("Foo")]
     public record Foo {
         public virtual int Id { get; set; }
 
+        [DescribedAs("Prop1")]
         public virtual string Prop1 { get; set; }
 
         public override string ToString() => "foo1";
@@ -32,7 +34,9 @@ namespace Rest.Test.Data {
         public static Bar Act1(this Bar bar, IContext context) => bar;
     }
 
+    [DescribedAs("FooFunctions")]
     public static class FooFunctions {
+        [DescribedAs("Act1")]
         public static Foo Act1(this Foo foo, IContext context) => foo;
     }
 

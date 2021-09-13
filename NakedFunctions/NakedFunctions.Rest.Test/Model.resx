@@ -130,6 +130,18 @@
     <value>ChangedFooName</value>
   </data>
   <data name="Rest_Test_Data_Foo_Prop1_property_name" xml:space="preserve">
-    <value>ChangedPropertyProp1</value>
+    <value>ChangedProp1Name</value>
+  </data>
+  <data name="Rest_Test_Data_FooFunctions_Act1_Rest_Test_Data_Foo_NakedFunctions_IContext__action_description" xml:space="preserve">
+    <value>ChangedAct1Description</value>
+  </data>
+  <data name="Rest_Test_Data_FooFunctions_Act1_Rest_Test_Data_Foo_NakedFunctions_IContext__action_name" xml:space="preserve">
+    <value>ChangedAct1Name</value>
+  </data>
+  <data name="Rest_Test_Data_Foo_action_description" xml:space="preserve">
+    <value>ChangedFooDescription</value>
+  </data>
+  <data name="Rest_Test_Data_Foo_Prop1_property_description" xml:space="preserve">
+    <value>ChangedProp1Description</value>
   </data>
 </root>
