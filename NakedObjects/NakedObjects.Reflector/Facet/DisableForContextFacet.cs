@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.Facet {
 
         public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
 
         #endregion
 

@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.Facet {
             methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             var obj = methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
             return obj == null ? null : framework.NakedObjectManager.CreateAdapter(obj, null, null).TitleString();
         }

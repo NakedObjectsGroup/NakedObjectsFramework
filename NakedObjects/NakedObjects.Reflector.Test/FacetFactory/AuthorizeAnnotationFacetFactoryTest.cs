@@ -29,8 +29,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private ILifecycleManager lifecycleManager;
         private Mock<ILifecycleManager> mockPersistor;
 
-        private readonly Mock<INakedObjectsFramework> mockFramework = new();
-        private readonly INakedObjectsFramework framework;
+        private readonly Mock<INakedFramework> mockFramework = new();
+        private readonly INakedFramework framework;
 
         protected override Type[] SupportedTypes => new[] {typeof(IHiddenFacet)};
 

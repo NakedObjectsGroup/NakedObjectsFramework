@@ -27,7 +27,7 @@ namespace NakedFunctions.Reflector.Facet {
             methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) =>
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) =>
             methodDelegate.Invoke<string>(method, method.GetParameterValues(nakedObjectAdapter, framework));
 
         #region IImperativeFacet Members

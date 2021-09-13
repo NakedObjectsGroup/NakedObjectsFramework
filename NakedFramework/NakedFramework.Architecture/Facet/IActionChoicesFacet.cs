@@ -22,6 +22,6 @@ namespace NakedFramework.Architecture.Facet {
     public interface IActionChoicesFacet : IFacet {
         (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
         bool IsMultiple { get; }
-        object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework);
+        object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework);
     }
 }

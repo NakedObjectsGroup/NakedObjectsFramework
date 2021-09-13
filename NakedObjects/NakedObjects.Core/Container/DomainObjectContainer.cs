@@ -22,10 +22,10 @@ using NakedFramework.Error;
 
 namespace NakedObjects.Core.Container {
     public sealed class DomainObjectContainer : IDomainObjectContainer {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
         private readonly ILogger<DomainObjectContainer> logger;
 
-        public DomainObjectContainer(INakedObjectsFramework framework,
+        public DomainObjectContainer(INakedFramework framework,
                                      ILogger<DomainObjectContainer> logger) {
             this.framework = framework;
             this.logger = logger;

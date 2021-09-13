@@ -77,7 +77,7 @@ type EFCoreTestSuite() =
     
     override x.Fixtures = [| box (new TestDataFixture()) |]
      
-    member x.Tests = new PersistorTestSuite(x.NakedObjectsFramework)
+    member x.Tests = new PersistorTestSuite(x.NakedFramework)
     
     [<Test>]
     member x.CanAccessCollectionProperty() = x.Tests.CanAccessCollectionProperty()
@@ -212,7 +212,7 @@ type EFCoreTestSuite() =
     [<Test>]
     member x.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax() = 
        
-        let os = x.NakedObjectsFramework.ServiceProvider.GetService<IObjectStore>() :?> EFCoreObjectStore
+        let os = x.NakedFramework.ServiceProvider.GetService<IObjectStore>() :?> EFCoreObjectStore
         os.MaximumCommitCycles <- 1
         x.Tests.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax()
         os.MaximumCommitCycles <- 10

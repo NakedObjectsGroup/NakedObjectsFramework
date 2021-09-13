@@ -56,39 +56,39 @@ namespace NakedObjects.SystemTest.Component {
 
         [Test]
         public virtual void MetamodelManagerAllSpecs() {
-            var allSpecs = NakedObjectsFramework.MetamodelManager.AllSpecs;
+            var allSpecs = NakedFramework.MetamodelManager.AllSpecs;
             Assert.AreEqual(59, allSpecs.Length);
         }
 
         [Test]
         public virtual void NakedObjectManagerNewAdapterForKnownObjectTest() {
             var poco = foo1.GetDomainObject();
-            var adapter = NakedObjectsFramework.NakedObjectManager.NewAdapterForKnownObject(poco, null);
+            var adapter = NakedFramework.NakedObjectManager.NewAdapterForKnownObject(poco, null);
             Assert.AreEqual(poco, adapter.Object);
         }
 
         [Test]
         public virtual void ObjectPersistorReloadTest() {
             var poco = foo1.GetDomainObject();
-            var adapter = NakedObjectsFramework.NakedObjectManager.GetAdapterFor(poco);
-            NakedObjectsFramework.Persistor.Reload(adapter);
+            var adapter = NakedFramework.NakedObjectManager.GetAdapterFor(poco);
+            NakedFramework.Persistor.Reload(adapter);
             Assert.AreEqual(poco, adapter.Object);
         }
 
         [Test]
         public virtual void ObjectPersistorResolveFieldTest() {
             var poco = foo1.GetDomainObject();
-            var adapter = NakedObjectsFramework.NakedObjectManager.GetAdapterFor(poco);
+            var adapter = NakedFramework.NakedObjectManager.GetAdapterFor(poco);
             var field = (adapter.Spec as IObjectSpec)?.Properties.First();
-            NakedObjectsFramework.Persistor.ResolveField(adapter, field);
+            NakedFramework.Persistor.ResolveField(adapter, field);
             Assert.AreEqual(poco, adapter.Object);
         }
 
         [Test]
         public virtual void ObjectPersistorLoadFieldTest() {
             var poco = foo1.GetDomainObject();
-            var adapter = NakedObjectsFramework.NakedObjectManager.GetAdapterFor(poco);
-            NakedObjectsFramework.Persistor.LoadField(adapter, nameof(Foo.Name));
+            var adapter = NakedFramework.NakedObjectManager.GetAdapterFor(poco);
+            NakedFramework.Persistor.LoadField(adapter, nameof(Foo.Name));
             Assert.AreEqual(poco, adapter.Object);
         }
 
@@ -100,19 +100,19 @@ namespace NakedObjects.SystemTest.Component {
 
         [Test]
         public virtual void ServicesManagerGetServiceTest() {
-            var service = NakedObjectsFramework.ServicesManager.GetService("SimpleRepository-Foo");
+            var service = NakedFramework.ServicesManager.GetService("SimpleRepository-Foo");
             Assert.AreEqual(typeof(SimpleRepository<Foo>), service.Object.GetType());
         }
 
         [Test]
         public virtual void SessionIsAuthenticatedTest() {
-            var session = NakedObjectsFramework.Session;
+            var session = NakedFramework.Session;
             Assert.IsTrue(session.IsAuthenticated);
         }
 
         [Test]
         public virtual void TransactionManagerTransactionLevelTest() {
-            var transactionManager = NakedObjectsFramework.TransactionManager;
+            var transactionManager = NakedFramework.TransactionManager;
             transactionManager.StartTransaction();
             Assert.AreEqual(1, transactionManager.TransactionLevel);
             transactionManager.EndTransaction();

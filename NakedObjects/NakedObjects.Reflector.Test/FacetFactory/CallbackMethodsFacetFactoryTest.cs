@@ -54,7 +54,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var loggerFactory = new Mock<ILoggerFactory>().Object;
             var logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
 
-            var framework = new Mock<INakedObjectsFramework>().Object;
+            var framework = new Mock<INakedFramework>().Object;
 
             return new NakedObjectAdapter(obj, null, framework, loggerFactory, logger);
         }

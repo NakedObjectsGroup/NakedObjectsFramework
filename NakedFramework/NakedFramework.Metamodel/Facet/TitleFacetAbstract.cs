@@ -21,9 +21,9 @@ namespace NakedFramework.Metamodel.Facet {
 
         #region ITitleFacet Members
 
-        public virtual string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => GetTitle(nakedObjectAdapter, framework);
+        public virtual string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => GetTitle(nakedObjectAdapter, framework);
 
-        public abstract string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
+        public abstract string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 
         #endregion
     }

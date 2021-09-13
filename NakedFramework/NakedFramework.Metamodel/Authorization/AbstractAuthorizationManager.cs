@@ -39,8 +39,8 @@ namespace NakedFramework.Metamodel.Authorization {
             }
         }
 
-        public abstract bool IsVisible(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier);
-        public abstract bool IsEditable(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier);
+        public abstract bool IsVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier);
+        public abstract bool IsEditable(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier);
         public abstract IFacet Decorate(IFacet facet, ISpecification holder);
 
         public Type[] ForFacetTypes { get; } = { typeof(IHideForSessionFacet), typeof(IDisableForSessionFacet) };

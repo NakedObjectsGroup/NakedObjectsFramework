@@ -41,7 +41,7 @@ namespace NakedFramework.Core.Spec {
         private string name;
         private IObjectSpec spec;
 
-        protected internal ActionParameterSpec(int number, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectsFramework framework) {
+        protected internal ActionParameterSpec(int number, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedFramework framework) {
             Number = number;
             Framework = framework;
             parentAction = actionSpec ?? throw new InitialisationException($"{nameof(actionSpec)} is null");
@@ -113,7 +113,7 @@ namespace NakedFramework.Core.Spec {
         }
 
         public virtual int Number { get; }
-        protected INakedObjectsFramework Framework { get; }
+        protected INakedFramework Framework { get; }
 
         public virtual IActionSpec Action => parentAction;
 

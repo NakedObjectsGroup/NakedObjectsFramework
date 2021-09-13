@@ -42,7 +42,7 @@ let mockLoggerFactory = new Mock<ILoggerFactory>();
 let mockLogger = new Mock<ILogger<DomainObjectContainerInjector>>();
 let injector = new DomainObjectContainerInjector(serviceList, mockLoggerFactory.Object, mockLogger.Object);
 
-injector.set_Framework (new Mock<INakedObjectsFramework>()).Object
+injector.set_Framework (new Mock<INakedFramework>()).Object
 
 let setupEF6PersistorForInjectorTesting (p : EF6ObjectStore) = 
     p.SetupForTesting

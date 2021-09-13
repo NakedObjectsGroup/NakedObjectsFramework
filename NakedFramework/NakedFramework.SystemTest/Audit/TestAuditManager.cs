@@ -402,11 +402,11 @@ namespace NakedObjects.SystemTest.Audit {
                 fooUpdatedCount++;
             };
 
-            NakedObjectsFramework.TransactionManager.StartTransaction();
+            NakedFramework.TransactionManager.StartTransaction();
 
             foo.GetPropertyByName("Prop1").SetValue(newValue);
 
-            NakedObjectsFramework.TransactionManager.EndTransaction();
+            NakedFramework.TransactionManager.EndTransaction();
 
             Assert.AreEqual(1, fooUpdatedCount, "expect foo auditor to be called for updates");
         }
@@ -432,11 +432,11 @@ namespace NakedObjects.SystemTest.Audit {
                 quxUpdatedCount++;
             };
 
-            NakedObjectsFramework.TransactionManager.StartTransaction();
+            NakedFramework.TransactionManager.StartTransaction();
 
             qux.GetPropertyByName("Prop1").SetValue(newValue);
 
-            NakedObjectsFramework.TransactionManager.EndTransaction();
+            NakedFramework.TransactionManager.EndTransaction();
             Assert.AreEqual(1, quxUpdatedCount, "expect qux auditor to be called for updates");
         }
 
@@ -522,9 +522,9 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual(newValue, ((Bar) o).Prop1);
                 defaultUpdatedCount++;
             };
-            NakedObjectsFramework.TransactionManager.StartTransaction();
+            NakedFramework.TransactionManager.StartTransaction();
             bar.GetPropertyByName("Prop1").SetValue(newValue);
-            NakedObjectsFramework.TransactionManager.EndTransaction();
+            NakedFramework.TransactionManager.EndTransaction();
             Assert.AreEqual(1, defaultUpdatedCount, "expect default auditor to be called for updates");
         }
     }

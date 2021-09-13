@@ -21,7 +21,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         #region IDisableForSessionFacet Members
 
-        public abstract string DisabledReason(INakedObjectAdapter target, INakedObjectsFramework framework);
+        public abstract string DisabledReason(INakedObjectAdapter target, INakedFramework framework);
 
         #endregion
     }

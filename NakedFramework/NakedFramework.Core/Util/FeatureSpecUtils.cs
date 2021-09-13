@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Core.Util {
     public static class FeatureSpecUtils {
-        public static string PropertyTitle(this IMemberSpec memberSpec, INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+        public static string PropertyTitle(this IMemberSpec memberSpec, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             if (nakedObjectAdapter is null) {
                 return "";
             }

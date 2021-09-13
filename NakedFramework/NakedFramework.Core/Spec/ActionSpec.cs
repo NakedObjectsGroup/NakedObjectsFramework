@@ -37,7 +37,7 @@ namespace NakedFramework.Core.Spec {
         // cached values     
         private IObjectSpec returnSpec;
 
-        public ActionSpec(INakedObjectsFramework framework,
+        public ActionSpec(INakedFramework framework,
                           SpecFactory memberFactory,
                           IActionSpecImmutable actionSpecImmutable,
                           ILoggerFactory loggerFactory,

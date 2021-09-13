@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Framework;
 
 namespace NakedFunctions.Reflector.Component {
     public class NoOpDomainObjectInjector : IDomainObjectInjector {
-        public INakedObjectsFramework Framework { get; set; }
+        public INakedFramework Framework { get; set; }
         public void InjectInto(object obj) { }
         public void InjectIntoInline(object root, object inlineObject) { }
         public void InjectParentIntoChild(object parent, object child) { }

@@ -23,6 +23,6 @@ namespace NakedFramework.Architecture.Facet {
         /// <summary>
         ///     Sets the value of this property
         /// </summary>
-        void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedObjectsFramework framework);
+        void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework);
     }
 }

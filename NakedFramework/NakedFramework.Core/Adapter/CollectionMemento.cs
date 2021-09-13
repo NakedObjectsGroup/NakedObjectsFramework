@@ -20,7 +20,7 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Adapter {
     public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
 
         private readonly ILifecycleManager lifecycleManager;
         private readonly ILogger<CollectionMemento> logger;
@@ -28,7 +28,7 @@ namespace NakedFramework.Core.Adapter {
         private readonly INakedObjectManager nakedObjectManager;
         private readonly object[] selectedObjects;
 
-        private CollectionMemento(INakedObjectsFramework framework, ILogger<CollectionMemento> logger) {
+        private CollectionMemento(INakedFramework framework, ILogger<CollectionMemento> logger) {
             lifecycleManager = framework.LifecycleManager ?? throw new InitialisationException($"{nameof(framework.LifecycleManager)} is null");
             nakedObjectManager = framework.NakedObjectManager ?? throw new InitialisationException($"{nameof(framework.NakedObjectManager)} is null");
             metamodel = framework.MetamodelManager ?? throw new InitialisationException($"{nameof(framework.MetamodelManager)} is null");
@@ -36,7 +36,7 @@ namespace NakedFramework.Core.Adapter {
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
-        public CollectionMemento(INakedObjectsFramework framework, ILogger<CollectionMemento> logger, CollectionMemento otherMemento, object[] selectedObjects)
+        public CollectionMemento(INakedFramework framework, ILogger<CollectionMemento> logger, CollectionMemento otherMemento, object[] selectedObjects)
             : this(framework, logger) {
             IsPaged = otherMemento.IsPaged;
             IsNotQueryable = otherMemento.IsNotQueryable;
@@ -46,7 +46,7 @@ namespace NakedFramework.Core.Adapter {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(INakedObjectsFramework framework, ILogger<CollectionMemento> logger, INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters)
+        public CollectionMemento(INakedFramework framework, ILogger<CollectionMemento> logger, INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters)
             : this(framework, logger) {
             Target = target;
             Action = actionSpec;
@@ -57,7 +57,7 @@ namespace NakedFramework.Core.Adapter {
             }
         }
 
-        public CollectionMemento(INakedObjectsFramework framework, ILoggerFactory loggerFactory, ILogger<CollectionMemento> logger, string[] strings)
+        public CollectionMemento(INakedFramework framework, ILoggerFactory loggerFactory, ILogger<CollectionMemento> logger, string[] strings)
             : this(framework, logger) {
             var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings, true);
             // ReSharper disable once UnusedVariable

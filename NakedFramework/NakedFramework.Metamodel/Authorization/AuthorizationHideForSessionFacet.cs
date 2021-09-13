@@ -26,7 +26,7 @@ namespace NakedFramework.Metamodel.Authorization {
             this.authorizationManager = authorizationManager;
         }
 
-        public override string HiddenReason(INakedObjectAdapter target, INakedObjectsFramework framework) =>
+        public override string HiddenReason(INakedObjectAdapter target, INakedFramework framework) =>
             authorizationManager.IsVisible(framework, target, identifier)
                 ? null
                 : "Not authorized to view";

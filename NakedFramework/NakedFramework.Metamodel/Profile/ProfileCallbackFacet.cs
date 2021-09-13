@@ -36,7 +36,7 @@ namespace NakedFramework.Metamodel.Profile {
 
         #region ICreatedCallbackFacet Members
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             profileManager.Begin(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
             try {
                 underlyingFacet.Invoke(nakedObjectAdapter, framework);

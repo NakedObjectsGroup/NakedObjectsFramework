@@ -17,7 +17,7 @@ using NakedObjects.Core.Util;
 namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class InjectedIContextParameterFacetTest {
-        private readonly Mock<INakedObjectsFramework> mockFramework = new();
+        private readonly Mock<INakedFramework> mockFramework = new();
         private readonly Mock<IObjectPersistor> mockPersistor = new();
 
         private readonly IQueryable<object> testValue = new QueryableList<object>();

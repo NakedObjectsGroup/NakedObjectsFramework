@@ -18,6 +18,6 @@ namespace NakedFramework.Architecture.Facet {
     ///     invoking the <c>DefaultsXxx(...)</c> support method for an action
     /// </para>
     public interface IActionDefaultsFacet : IFacet {
-        (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
+        (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
     }
 }

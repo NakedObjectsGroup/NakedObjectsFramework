@@ -91,7 +91,7 @@ namespace NakedFramework.Core.Adapter {
             CacheState();
         }
 
-        public void UpdateKeysIfNecessary(INakedObjectAdapter adapter, INakedObjectsFramework framework) {
+        public void UpdateKeysIfNecessary(INakedObjectAdapter adapter, INakedFramework framework) {
             if (!IsFinal) {
                 UpdateKeys(adapter.Spec.GetFacet<IViewModelFacet>().Derive(adapter, framework), true);
             }

@@ -23,7 +23,7 @@ namespace NakedFramework.Core.Spec {
     public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
         private bool? isFindMenuEnabled;
 
-        public OneToOneAssociationSpec(IOneToOneAssociationSpecImmutable association, INakedObjectsFramework framework)
+        public OneToOneAssociationSpec(IOneToOneAssociationSpecImmutable association, INakedFramework framework)
             : base(association, framework) { }
 
         public override IObjectSpec ElementSpec => null;

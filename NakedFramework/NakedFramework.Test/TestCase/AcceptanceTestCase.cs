@@ -54,13 +54,13 @@ namespace NakedFramework.Test.TestCase {
 
         protected virtual IServiceScope ServiceScope { set; get; }
 
-        protected virtual ITestObjectFactory TestObjectFactoryClass => testObjectFactory ??= new TestObjectFactory(NakedObjectsFramework);
+        protected virtual ITestObjectFactory TestObjectFactoryClass => testObjectFactory ??= new TestObjectFactory(NakedFramework);
 
         protected virtual IPrincipal TestPrincipal {
             get { return testPrincipal ??= CreatePrincipal("Test", Array.Empty<string>()); }
         }
 
-        protected INakedObjectsFramework NakedObjectsFramework { get; private set; }
+        protected INakedFramework NakedFramework { get; private set; }
 
         protected ILoggerFactory LoggerFactory { get; private set; }
 
@@ -160,7 +160,7 @@ namespace NakedFramework.Test.TestCase {
         protected virtual void StartTest() {
             ServiceScope = RootServiceProvider.CreateScope();
             scopeServiceProvider = ServiceScope.ServiceProvider;
-            NakedObjectsFramework = scopeServiceProvider.GetService<INakedObjectsFramework>();
+            NakedFramework = scopeServiceProvider.GetService<INakedFramework>();
             LoggerFactory = scopeServiceProvider.GetService<ILoggerFactory>();
         }
 
@@ -240,15 +240,15 @@ namespace NakedFramework.Test.TestCase {
 
         protected virtual void RunFixtures() {
             using var fixtureServiceScope = RootServiceProvider.CreateScope();
-            NakedObjectsFramework = fixtureServiceScope.ServiceProvider.GetService<INakedObjectsFramework>();
-            InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.DomainObjectInjector, Fixtures);
-            NakedObjectsFramework = null;
+            NakedFramework = fixtureServiceScope.ServiceProvider.GetService<INakedFramework>();
+            InstallFixtures(NakedFramework.TransactionManager, NakedFramework.DomainObjectInjector, Fixtures);
+            NakedFramework = null;
         }
 
         protected ITestService GetTestService<T>() => GetTestService(typeof(T));
 
         protected virtual ITestService GetTestService(Type type) {
-            var testService = NakedObjectsFramework.ServicesManager.GetServices().Where(no => type.IsInstanceOfType(no.Object)).Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).FirstOrDefault();
+            var testService = NakedFramework.ServicesManager.GetServices().Where(no => type.IsInstanceOfType(no.Object)).Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).FirstOrDefault();
             if (testService == null) {
                 Assert.Fail("No service of type " + type);
             }
@@ -258,7 +258,7 @@ namespace NakedFramework.Test.TestCase {
 
         protected virtual ITestService GetTestService(string serviceName) {
             if (!servicesCache.ContainsKey(serviceName.ToLower())) {
-                foreach (var service in NakedObjectsFramework.ServicesManager.GetServices()) {
+                foreach (var service in NakedFramework.ServicesManager.GetServices()) {
                     if (service.TitleString().Equals(serviceName, StringComparison.CurrentCultureIgnoreCase)) {
                         var testService = TestObjectFactoryClass.CreateTestService(service.Object);
                         if (testService == null) {
@@ -278,7 +278,7 @@ namespace NakedFramework.Test.TestCase {
         }
 
         protected virtual ITestMenu GetMainMenu(string menuName) {
-            var mainMenus = NakedObjectsFramework.MetamodelManager.MainMenus();
+            var mainMenus = NakedFramework.MetamodelManager.MainMenus();
             if (mainMenus.Any()) {
                 var menu = mainMenus.FirstOrDefault(m => m.Name == menuName);
                 if (menu == null) {
@@ -298,11 +298,11 @@ namespace NakedFramework.Test.TestCase {
         }
 
         protected virtual ITestMenu[] AllMainMenus() {
-            return NakedObjectsFramework.MetamodelManager.MainMenus().Select(m => TestObjectFactoryClass.CreateTestMenuMain(m)).ToArray();
+            return NakedFramework.MetamodelManager.MainMenus().Select(m => TestObjectFactoryClass.CreateTestMenuMain(m)).ToArray();
         }
 
         protected virtual void AssertMainMenuCountIs(int expected) {
-            var actual = NakedObjectsFramework.MetamodelManager.MainMenus().Length;
+            var actual = NakedFramework.MetamodelManager.MainMenus().Length;
             Assert.AreEqual(expected, actual);
         }
 
@@ -312,7 +312,7 @@ namespace NakedFramework.Test.TestCase {
 
         protected virtual void SetUser(string username, params string[] roles) {
             testPrincipal = CreatePrincipal(username, roles);
-            var ts = NakedObjectsFramework?.Session as TestSession;
+            var ts = NakedFramework?.Session as TestSession;
             ts?.ReplacePrincipal(testPrincipal);
         }
 

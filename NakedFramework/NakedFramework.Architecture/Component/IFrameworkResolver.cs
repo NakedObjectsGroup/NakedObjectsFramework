@@ -10,6 +10,6 @@ using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Architecture.Component {
     public interface IFrameworkResolver : IDisposable {
-        INakedObjectsFramework GetFramework();
+        INakedFramework GetFramework();
     }
 }

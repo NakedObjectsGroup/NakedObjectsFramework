@@ -21,7 +21,7 @@ namespace NakedFramework.Core.Interactions {
     /// </para>
     internal sealed class InteractionContext : IInteractionContext {
         private InteractionContext(InteractionType interactionType,
-                                   INakedObjectsFramework framework,
+                                   INakedFramework framework,
                                    bool programmatic,
                                    INakedObjectAdapter target,
                                    IIdentifier id,
@@ -40,7 +40,7 @@ namespace NakedFramework.Core.Interactions {
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
         ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.MemberAccess" />  reading a property.
         /// </summary>
-        public static InteractionContext AccessMember(INakedObjectsFramework framework,
+        public static InteractionContext AccessMember(INakedFramework framework,
                                                       bool programmatic,
                                                       INakedObjectAdapter target,
                                                       IIdentifier memberIdentifier) =>
@@ -57,7 +57,7 @@ namespace NakedFramework.Core.Interactions {
         ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.PropertyParamModify" />  modifying a property
         ///     or parameter.
         /// </summary>
-        public static InteractionContext ModifyingPropParam(INakedObjectsFramework framework,
+        public static InteractionContext ModifyingPropParam(INakedFramework framework,
                                                             bool programmatic,
                                                             INakedObjectAdapter target,
                                                             IIdentifier propertyIdentifier,
@@ -74,7 +74,7 @@ namespace NakedFramework.Core.Interactions {
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
         ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ActionInvoke" />  invoking an action.
         /// </summary>
-        public static InteractionContext InvokingAction(INakedObjectsFramework framework,
+        public static InteractionContext InvokingAction(INakedFramework framework,
                                                         bool programmatic,
                                                         INakedObjectAdapter target,
                                                         IIdentifier actionIdentifier,
@@ -109,7 +109,7 @@ namespace NakedFramework.Core.Interactions {
         /// <para>
         ///     Will be set for all interactions.
         /// </para>
-        public INakedObjectsFramework Framework { get; }
+        public INakedFramework Framework { get; }
 
         /// <summary>
         ///     How the interaction was initiated

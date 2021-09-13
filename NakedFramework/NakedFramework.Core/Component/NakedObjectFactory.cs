@@ -13,12 +13,12 @@ using NakedFramework.Core.Error;
 
 namespace NakedFramework.Core.Component {
     public sealed class NakedObjectFactory {
-        private INakedObjectsFramework framework;
+        private INakedFramework framework;
         private bool isInitialized;
         private ILoggerFactory loggerFactory;
 
         // ReSharper disable ParameterHidesMember
-        public void Initialize(INakedObjectsFramework framework, ILoggerFactory loggerFactory) {
+        public void Initialize(INakedFramework framework, ILoggerFactory loggerFactory) {
             this.framework = framework;
             // ReSharper restore ParameterHidesMember
 

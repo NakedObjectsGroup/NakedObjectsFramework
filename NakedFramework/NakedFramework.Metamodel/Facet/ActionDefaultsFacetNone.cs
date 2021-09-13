@@ -18,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public override bool IsNoOp => true;
 
-        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => (null, TypeOfDefaultValue.Implicit);
+        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => (null, TypeOfDefaultValue.Implicit);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -19,7 +19,7 @@ namespace NakedFramework.Architecture.Facet {
     /// <seealso cref="IIconFacet" />
     /// <seealso cref="IPluralFacet" />
     public interface ITitleFacet : IFacet {
-        string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
-        string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
+        string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+        string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
     }
 }

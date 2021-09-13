@@ -24,7 +24,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public override bool IsMultiple => false;
 
-        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) => Array.Empty<object>();
+        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework) => Array.Empty<object>();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

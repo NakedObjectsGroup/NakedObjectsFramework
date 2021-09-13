@@ -26,8 +26,8 @@ namespace NakedFramework.Architecture.Facet {
         ITypeSpecImmutable OnType { get; }
         IObjectSpecImmutable ElementType { get; }
         bool IsQueryOnly { get; }
-        INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, INakedObjectsFramework framework);
-        INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, int resultPage, INakedObjectsFramework framework);
+        INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, INakedFramework framework);
+        INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

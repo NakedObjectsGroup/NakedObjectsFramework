@@ -15,7 +15,7 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Utility {
     public static class FacetUtils {
-        public static string GetMaskedValue(this ISpecification spec, IObjectFacade objectFacade, INakedObjectsFramework framework) {
+        public static string GetMaskedValue(this ISpecification spec, IObjectFacade objectFacade, INakedFramework framework) {
             if (objectFacade == null) {
                 return null;
             }

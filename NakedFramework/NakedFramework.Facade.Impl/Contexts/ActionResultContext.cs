@@ -35,7 +35,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
 
         private bool IsVoid() => hasResult && Specification.FullName == "System.Void";
 
-        public ActionResultContextFacade ToActionResultContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
+        public ActionResultContextFacade ToActionResultContextFacade(IFrameworkFacade facade, INakedFramework framework) {
             var ac = new ActionResultContextFacade {
                 Result = Result?.ToObjectContextFacade(facade, framework),
                 ActionContext = ActionContext.ToActionContextFacade(facade, framework),

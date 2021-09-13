@@ -19,13 +19,13 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Adapter {
     public sealed class NakedObjectAdapter : INakedObjectAdapter {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
         private readonly ILogger<NakedObjectAdapter> logger;
         private ITypeSpec spec;
 
         public NakedObjectAdapter(object domainObject,
                                   IOid oid,
-                                  INakedObjectsFramework framework,
+                                  INakedFramework framework,
                                   ILoggerFactory loggerFactory,
                                   ILogger<NakedObjectAdapter> logger) {
             this.framework = framework;

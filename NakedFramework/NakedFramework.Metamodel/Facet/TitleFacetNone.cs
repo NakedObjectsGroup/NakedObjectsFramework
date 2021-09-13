@@ -18,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public override bool IsNoOp => true;
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => null;
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => null;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

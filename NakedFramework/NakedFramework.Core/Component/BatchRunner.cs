@@ -11,9 +11,9 @@ using NakedFramework.Core.Error;
 
 namespace NakedFramework.Core.Component {
     public sealed class BatchRunner : IBatchRunner {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
 
-        public BatchRunner(INakedObjectsFramework framework) => this.framework = framework ?? throw new InitialisationException($"{nameof(framework)} is null");
+        public BatchRunner(INakedFramework framework) => this.framework = framework ?? throw new InitialisationException($"{nameof(framework)} is null");
 
         #region IBatchRunner Members
 

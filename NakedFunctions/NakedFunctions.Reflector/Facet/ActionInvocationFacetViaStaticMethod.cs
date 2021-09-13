@@ -64,7 +64,7 @@ namespace NakedFunctions.Reflector.Facet {
         private static INakedObjectAdapter AdaptResult(INakedObjectManager nakedObjectManager, object result) =>
             result is null ? null : nakedObjectManager.CreateAdapter(result, null, null);
 
-        private static Func<IDictionary<object, object>, bool> GetPostSaveFunction(FunctionalContext functionalContext, INakedObjectsFramework framework) {
+        private static Func<IDictionary<object, object>, bool> GetPostSaveFunction(FunctionalContext functionalContext, INakedFramework framework) {
             var postSaveFunction = functionalContext.PostSaveFunction;
 
             if (postSaveFunction is not null) {
@@ -84,10 +84,10 @@ namespace NakedFunctions.Reflector.Facet {
 
         private static (object, FunctionalContext) CastTuple(ITuple tuple) => (tuple[0], (FunctionalContext) tuple[1]);
 
-        private static (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedObjectsFramework framework) =>
+        private static (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedFramework framework) =>
             PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Deleted, functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
 
-        private static object HandleTupleResult((object, FunctionalContext) tuple, INakedObjectsFramework framework) {
+        private static object HandleTupleResult((object, FunctionalContext) tuple, INakedFramework framework) {
             var (toReturn, context) = tuple;
             var allPersisted = HandleContext(context, framework);
 
@@ -100,12 +100,12 @@ namespace NakedFunctions.Reflector.Facet {
             return toReturn;
         }
 
-        private static object HandleContextResult(FunctionalContext functionalContext, INakedObjectsFramework framework) {
+        private static object HandleContextResult(FunctionalContext functionalContext, INakedFramework framework) {
             HandleContext(functionalContext, framework);
             return null;
         }
 
-        private INakedObjectAdapter HandleInvokeResult(INakedObjectsFramework framework, object result) {
+        private INakedObjectAdapter HandleInvokeResult(INakedFramework framework, object result) {
             // if any changes made by invocation fail 
 
             if (framework.Persistor.HasChanges()) {
@@ -133,7 +133,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
                                                    INakedObjectAdapter[] parameters,
-                                                   INakedObjectsFramework framework) {
+                                                   INakedFramework framework) {
             if (parameters.Length != paramCount) {
                 logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
             }
@@ -146,7 +146,7 @@ namespace NakedFunctions.Reflector.Facet {
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
                                                    INakedObjectAdapter[] parameters,
                                                    int resultPage,
-                                                   INakedObjectsFramework framework) =>
+                                                   INakedFramework framework) =>
             Invoke(nakedObjectAdapter, parameters, framework);
 
         protected override string ToStringValues() => $"method={ActionMethod}";

@@ -18,7 +18,7 @@ namespace NakedObjects.Core.Async {
     ///     asynchronously -  each running within its own separate NakedObjects context.
     /// </summary>
     public class AsyncService : IAsyncService {
-        public INakedObjectsFramework Framework { set; protected get; }
+        public INakedFramework Framework { set; protected get; }
         public ILoggerFactory LoggerFactory { set; protected get; }
         public ILogger<AsyncService> Logger { set; protected get; }
 

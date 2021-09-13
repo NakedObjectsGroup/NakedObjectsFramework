@@ -17,7 +17,7 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Spec {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
-        protected AssociationSpecAbstract(IAssociationSpecImmutable association, INakedObjectsFramework framework)
+        protected AssociationSpecAbstract(IAssociationSpecImmutable association, INakedFramework framework)
             : base(association.Identifier.MemberName, association, framework) =>
             ReturnSpec = framework.MetamodelManager.GetSpecification(association.ReturnSpec);
 

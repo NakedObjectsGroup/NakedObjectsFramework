@@ -16,7 +16,7 @@ namespace NakedFramework.Core.Spec {
         private int? maximumLength;
         private int? noLines;
 
-        public ActionParseableParameterSpec(int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectsFramework framework)
+        public ActionParseableParameterSpec(int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedFramework framework)
             : base(index, actionSpec, actionParameterSpecImmutable, framework) { }
 
         #region IActionParseableParameterSpec Members

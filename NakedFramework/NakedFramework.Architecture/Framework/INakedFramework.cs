@@ -15,7 +15,7 @@ namespace NakedFramework.Architecture.Framework {
     ///     An implementation of this service interface will be injected into any domain
     ///     object that needs it.
     /// </summary>
-    public interface INakedObjectsFramework {
+    public interface INakedFramework {
         IMessageBroker MessageBroker { get; }
         ISession Session { get; }
         ILifecycleManager LifecycleManager { get; }

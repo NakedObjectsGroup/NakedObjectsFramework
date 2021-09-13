@@ -37,7 +37,7 @@ namespace NakedObjects.Reflector.Facet {
         [field: NonSerialized]
         internal Func<object, object[], object> MethodDelegate { get; private set; }
 
-        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
             var defaultValue = MethodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());

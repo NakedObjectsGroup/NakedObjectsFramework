@@ -33,12 +33,12 @@ namespace NakedFunctions.Reflector.Facet {
         private static Type Type => typeof(IViewModelFacet);
 
         public override string[] Derive(INakedObjectAdapter nakedObjectAdapter,
-                                        INakedObjectsFramework framework) =>
+                                        INakedFramework framework) =>
             deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, framework)) as string[];
 
         public override void Populate(string[] keys,
                                       INakedObjectAdapter nakedObjectAdapter,
-                                      INakedObjectsFramework framework) {
+                                      INakedFramework framework) {
             var newVm = populateFunction.Invoke(null, populateFunction.GetParameterValues(nakedObjectAdapter, keys, framework));
             nakedObjectAdapter.ReplacePoco(newVm);
         }

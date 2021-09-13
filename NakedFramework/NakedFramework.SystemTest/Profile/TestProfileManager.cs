@@ -259,20 +259,20 @@ namespace NakedObjects.SystemTest.Profile {
                 callbackData.Add(new CallbackData(p, e, t, s));
             };
 
-            NakedObjectsFramework.TransactionManager.StartTransaction();
+            NakedFramework.TransactionManager.StartTransaction();
 
             var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
             foo.Properties.First().SetValue("101");
             foo.Properties.Last().SetValue("avalue");
             foo.Save();
 
-            NakedObjectsFramework.TransactionManager.EndTransaction();
+            NakedFramework.TransactionManager.EndTransaction();
 
-            NakedObjectsFramework.TransactionManager.StartTransaction();
+            NakedFramework.TransactionManager.StartTransaction();
 
             foo.Properties.Last().SetValue("anothervalue");
 
-            NakedObjectsFramework.TransactionManager.EndTransaction();
+            NakedFramework.TransactionManager.EndTransaction();
 
             Assert.AreEqual(20, beginCalledCount);
             Assert.AreEqual(20, endCalledCount);

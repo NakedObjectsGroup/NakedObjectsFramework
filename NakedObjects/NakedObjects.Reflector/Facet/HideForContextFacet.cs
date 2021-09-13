@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.Facet {
 
         public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
-        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             if (nakedObjectAdapter == null) {
                 return null;
             }

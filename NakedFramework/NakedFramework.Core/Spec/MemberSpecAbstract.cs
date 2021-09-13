@@ -23,7 +23,7 @@ namespace NakedFramework.Core.Spec {
     public abstract class MemberSpecAbstract : IMemberSpec {
         private readonly IMemberSpecImmutable memberSpecImmutable;
 
-        protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, INakedObjectsFramework framework) {
+        protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, INakedFramework framework) {
             Id = id ?? throw new InitialisationException($"{nameof(id)} is null");
             Framework = framework;
             memberSpecImmutable = memberSpec ?? throw new InitialisationException($"{nameof(memberSpec)} is null");
@@ -38,7 +38,7 @@ namespace NakedFramework.Core.Spec {
         #region IMemberSpec Members
 
         public virtual string Id { get; }
-        protected INakedObjectsFramework Framework { get; }
+        protected INakedFramework Framework { get; }
 
         public virtual IIdentifier Identifier => memberSpecImmutable.Identifier;
 

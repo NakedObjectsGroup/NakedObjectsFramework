@@ -27,7 +27,7 @@ namespace NakedFunctions.Reflector.Utils {
 
         public static Type ContributedToType(this MethodInfo m) => m.GetParameters().SingleOrDefault(IsTargetParameter)?.ParameterType;
 
-        private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectsFramework framework) =>
+        private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedFramework framework) =>
             p switch {
                 _ when p.IsTargetParameter() => adapter?.Object,
                 _ when p.IsInjectedParameter() => new FunctionalContext {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
@@ -39,25 +39,25 @@ namespace NakedFunctions.Reflector.Utils {
             return parameterNameValues?.ContainsKey(key) == true ? parameterNameValues[key].GetDomainObject() : null;
         }
 
-        private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectAdapter[] parmValues, int i, INakedObjectsFramework framework) =>
+        private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectAdapter[] parmValues, int i, INakedFramework framework) =>
             p switch {
                 _ when p.IsTargetParameter() => adapter?.Object,
                 _ when p.IsInjectedParameter() => new FunctionalContext {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
                 _ => parmValues[i].GetDomainObject()
             };
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework)).ToArray();
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework)).ToArray();
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) =>
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework) =>
             method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? p.GetMatchingParameter(parameterNameValues)).ToArray();
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string autocomplete, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? autocomplete).ToArray();
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string autocomplete, INakedFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? autocomplete).ToArray();
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectAdapter parmValue, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? parmValue.GetDomainObject()).ToArray();
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectAdapter parmValue, INakedFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? parmValue.GetDomainObject()).ToArray();
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectAdapter[] parmValues, INakedObjectsFramework framework) => method.GetParameters().Select((p, i) => p.GetParameterValue(adapter, parmValues, i, framework)).ToArray();
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectAdapter[] parmValues, INakedFramework framework) => method.GetParameters().Select((p, i) => p.GetParameterValue(adapter, parmValues, i, framework)).ToArray();
 
-        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string[] keys, INakedObjectsFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? keys).ToArray();
+        public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string[] keys, INakedFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? keys).ToArray();
 
     }
 }

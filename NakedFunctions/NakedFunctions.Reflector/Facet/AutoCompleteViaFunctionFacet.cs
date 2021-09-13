@@ -55,7 +55,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         public int MinLength { get; }
 
-        public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedObjectsFramework framework) {
+        public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedFramework framework) {
             try {
                 var autoComplete = methodDelegate.Invoke<object>(method, method.GetParameterValues(inObjectAdapter, autoCompleteParm, framework));
 

@@ -21,7 +21,7 @@ namespace NakedFramework.Metamodel.Facet {
         /// <summary>
         ///     Always returns <c>null</c>
         /// </summary>
-        public override string HiddenReason(INakedObjectAdapter target, INakedObjectsFramework framework) => null;
+        public override string HiddenReason(INakedObjectAdapter target, INakedFramework framework) => null;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

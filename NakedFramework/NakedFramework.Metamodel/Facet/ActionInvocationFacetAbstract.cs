@@ -29,8 +29,8 @@ namespace NakedFramework.Metamodel.Facet {
         public abstract IObjectSpecImmutable ElementType { get; }
 
         //Note: Some passed-in components are not used within NOF code, but are provided for third-party customization. DO NOT REMOVE.
-        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedObjectsFramework framework);
-        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedObjectsFramework framework);
+        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework);
+        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework);
         public abstract bool IsQueryOnly { get; }
 
         #endregion

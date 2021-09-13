@@ -43,9 +43,9 @@ namespace NakedFramework.Architecture.Component {
         /// </para>
         void MakePersistent(INakedObjectAdapter nakedObjectAdapter);
 
-        void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
-        INakedObjectAdapter GetViewModel(IOid oid, INakedObjectsFramework framework);
-        IOid RestoreOid(string[] encodedData, INakedObjectsFramework framework);
+        void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+        INakedObjectAdapter GetViewModel(IOid oid, INakedFramework framework);
+        IOid RestoreOid(string[] encodedData, INakedFramework framework);
         INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec);
 
         IList<(object original, object updated)> Persist(IDetachedObjects objects);

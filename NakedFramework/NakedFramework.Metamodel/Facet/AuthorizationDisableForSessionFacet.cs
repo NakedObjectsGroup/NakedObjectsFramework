@@ -25,6 +25,6 @@ namespace NakedFramework.Metamodel.Facet {
             this.users = FacetUtils.SplitOnComma(users);
         }
 
-        public override string DisabledReason(INakedObjectAdapter target, INakedObjectsFramework framework) => FacetUtils.IsAllowed(framework.Session, roles, users) ? null : "Not authorized to edit";
+        public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) => FacetUtils.IsAllowed(framework.Session, roles, users) ? null : "Not authorized to edit";
     }
 }

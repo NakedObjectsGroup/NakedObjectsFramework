@@ -21,12 +21,12 @@ namespace NakedFramework.Test.TestObjects {
     public class TestProperty : ITestProperty {
         private readonly ITestObjectFactory factory;
         private readonly IAssociationSpec field;
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
         private readonly INakedObjectManager manager;
         private readonly ITestHasActions owningObject;
         private readonly IObjectPersistor persistor;
 
-        public TestProperty(IAssociationSpec field, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectsFramework framework) {
+        public TestProperty(IAssociationSpec field, ITestHasActions owningObject, ITestObjectFactory factory, INakedFramework framework) {
             persistor = framework.Persistor;
             this.field = field;
             this.owningObject = owningObject;

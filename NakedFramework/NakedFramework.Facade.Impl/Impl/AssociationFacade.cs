@@ -19,9 +19,9 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Impl {
     public class AssociationFacade : IAssociationFacade {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
 
-        public AssociationFacade(IAssociationSpec assoc, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
+        public AssociationFacade(IAssociationSpec assoc, IFrameworkFacade frameworkFacade, INakedFramework framework) {
             WrappedSpec = assoc ?? throw new NullReferenceException($"{nameof(assoc)} is null");
             this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
             FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");

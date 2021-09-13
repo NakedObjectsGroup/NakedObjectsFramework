@@ -72,7 +72,7 @@ namespace NakedFramework.Core.Component {
             return CreateNotPersistedObject(type, inject);
         }
 
-        private IOid RestoreGenericOid(string[] encodedData, INakedObjectsFramework framework) {
+        private IOid RestoreGenericOid(string[] encodedData, INakedFramework framework) {
             var typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
             var spec = metamodel.GetSpecification(typeName);
 
@@ -94,7 +94,7 @@ namespace NakedFramework.Core.Component {
 
         private void InitInlineObject(object root, object inlineObject) => injector.InjectIntoInline(root, inlineObject);
 
-        private INakedObjectAdapter RecreateViewModel(ViewModelOid oid, INakedObjectsFramework framework) {
+        private INakedObjectAdapter RecreateViewModel(ViewModelOid oid, INakedFramework framework) {
             var keys = oid.Keys;
             var spec = (IObjectSpec) oid.Spec;
             var vm = CreateViewModel(spec);
@@ -181,7 +181,7 @@ namespace NakedFramework.Core.Component {
 
         public object CreateNonAdaptedObject(Type type) => CreateNotPersistedObject(type, true);
 
-        public INakedObjectAdapter GetViewModel(IOid oid, INakedObjectsFramework framework) => nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid, framework);
+        public INakedObjectAdapter GetViewModel(IOid oid, INakedFramework framework) => nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid, framework);
 
         /// <summary>
         ///     Makes a naked object persistent. The specified object should be stored away via this object store's
@@ -213,7 +213,7 @@ namespace NakedFramework.Core.Component {
             persistAlgorithm.MakePersistent(nakedObjectAdapter);
         }
 
-        public void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+        public void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             if (nakedObjectAdapter.Oid is not ViewModelOid vmOid) {
                 throw new UnknownTypeException(logger.LogAndReturn($"Expect ViewModelOid got {nakedObjectAdapter.Oid?.GetType().ToString() ?? "null"}"));
             }
@@ -221,7 +221,7 @@ namespace NakedFramework.Core.Component {
             vmOid.UpdateKeysIfNecessary(nakedObjectAdapter, framework);
         }
 
-        public IOid RestoreOid(string[] encodedData, INakedObjectsFramework framework) => RestoreGenericOid(encodedData, framework) ?? oidGenerator.RestoreOid(encodedData);
+        public IOid RestoreOid(string[] encodedData, INakedFramework framework) => RestoreGenericOid(encodedData, framework) ?? oidGenerator.RestoreOid(encodedData);
 
         #endregion
     }

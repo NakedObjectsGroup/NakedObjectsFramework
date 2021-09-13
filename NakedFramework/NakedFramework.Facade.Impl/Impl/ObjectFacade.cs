@@ -22,9 +22,9 @@ using NakedFramework.Value;
 
 namespace NakedFramework.Facade.Impl.Impl {
     public class ObjectFacade : IObjectFacade {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
 
-        protected ObjectFacade(INakedObjectAdapter nakedObject, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
+        protected ObjectFacade(INakedObjectAdapter nakedObject, IFrameworkFacade frameworkFacade, INakedFramework framework) {
             WrappedNakedObject = nakedObject ?? throw new NullReferenceException($"{nameof(nakedObject)} is null");
             this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
             FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
@@ -32,7 +32,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public INakedObjectAdapter WrappedNakedObject { get; }
 
-        public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedObjectsFramework framework) => nakedObject == null ? null : new ObjectFacade(nakedObject, facade, framework);
+        public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedFramework framework) => nakedObject == null ? null : new ObjectFacade(nakedObject, facade, framework);
 
         private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) => objectRepresentingCollection.Oid is ICollectionMemento {IsNotQueryable: true};
 

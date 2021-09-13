@@ -9,6 +9,6 @@ using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Architecture.Facet {
     public interface ICreateNewFacet : IFacet {
-        public string[] OrderedProperties(INakedObjectsFramework framework);
+        public string[] OrderedProperties(INakedFramework framework);
     }
 }

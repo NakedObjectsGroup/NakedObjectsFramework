@@ -22,12 +22,12 @@ using NakedFramework.Facade.Translation;
 
 namespace NakedFramework.Facade.Impl.Utility {
     public class EntityOidStrategy : IOidStrategy {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
         private readonly IKeyCodeMapper keyCodeMapper;
         private readonly ILogger<EntityOidStrategy> logger;
         private readonly ITypeCodeMapper typeCodeMapper;
 
-        public EntityOidStrategy(INakedObjectsFramework framework, ITypeCodeMapper typeCodeMapper, IKeyCodeMapper keyCodeMapper, ILogger<EntityOidStrategy> logger) {
+        public EntityOidStrategy(INakedFramework framework, ITypeCodeMapper typeCodeMapper, IKeyCodeMapper keyCodeMapper, ILogger<EntityOidStrategy> logger) {
             this.framework = framework;
             this.typeCodeMapper = typeCodeMapper;
             this.keyCodeMapper = keyCodeMapper;
@@ -45,7 +45,7 @@ namespace NakedFramework.Facade.Impl.Utility {
 
         private static INakedObjectAdapter RestoreCollection(ICollectionMemento memento) => memento.RecoverCollection();
 
-        private static INakedObjectAdapter RestoreInline(INakedObjectsFramework framework, IAggregateOid aggregateOid) {
+        private static INakedObjectAdapter RestoreInline(INakedFramework framework, IAggregateOid aggregateOid) {
             var parentOid = aggregateOid.ParentOid;
             var parent = RestoreObject(framework, parentOid);
             var assoc = parent.GetObjectSpec().Properties.Single(p => p.Id == aggregateOid.FieldName);
@@ -53,9 +53,9 @@ namespace NakedFramework.Facade.Impl.Utility {
             return assoc.GetNakedObject(parent);
         }
 
-        private static INakedObjectAdapter RestoreViewModel(INakedObjectsFramework framework, IViewModelOid viewModelOid) => framework.NakedObjectManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid, framework);
+        private static INakedObjectAdapter RestoreViewModel(INakedFramework framework, IViewModelOid viewModelOid) => framework.NakedObjectManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid, framework);
 
-        public static INakedObjectAdapter RestoreObject(INakedObjectsFramework framework, IOid oid) => oid.IsTransient ? framework.LifecycleManager.RecreateInstance(oid, oid.Spec) : framework.LifecycleManager.LoadObject(oid, oid.Spec);
+        public static INakedObjectAdapter RestoreObject(INakedFramework framework, IOid oid) => oid.IsTransient ? framework.LifecycleManager.RecreateInstance(oid, oid.Spec) : framework.LifecycleManager.LoadObject(oid, oid.Spec);
 
         private INakedObjectAdapter GetAdapterByOid(IOid oid) =>
             oid switch {

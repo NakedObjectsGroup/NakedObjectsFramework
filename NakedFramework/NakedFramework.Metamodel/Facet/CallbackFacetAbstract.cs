@@ -22,7 +22,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         #region ICallbackFacet Members
 
-        public abstract void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
+        public abstract void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 
         #endregion
     }

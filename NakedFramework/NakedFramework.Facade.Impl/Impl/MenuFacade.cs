@@ -13,7 +13,7 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Impl {
     public class MenuFacade : IMenuFacade {
-        public MenuFacade(IMenuImmutable wrapped, IFrameworkFacade facade, INakedObjectsFramework framework) {
+        public MenuFacade(IMenuImmutable wrapped, IFrameworkFacade facade, INakedFramework framework) {
             Wrapped = wrapped;
             MenuItems = wrapped.MenuItems.Select(i => Wrap(i, facade, framework)).ToList();
             Name = wrapped.Name;
@@ -21,7 +21,7 @@ namespace NakedFramework.Facade.Impl.Impl {
             Grouping = wrapped.Grouping;
         }
 
-        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedObjectsFramework framework) =>
+        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedFramework framework) =>
             menu switch {
                 IMenuActionImmutable immutable => new MenuActionFacade(immutable, facade, framework),
                 IMenuImmutable menuImmutable => new MenuFacade(menuImmutable, facade, framework),

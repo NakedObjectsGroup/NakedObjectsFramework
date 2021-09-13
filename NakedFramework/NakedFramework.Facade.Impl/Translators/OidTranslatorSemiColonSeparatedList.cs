@@ -15,9 +15,9 @@ using NakedFramework.Facade.Translation;
 
 namespace NakedFramework.Facade.Impl.Translators {
     public class OidTranslatorSemiColonSeparatedList : IOidTranslator {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
 
-        public OidTranslatorSemiColonSeparatedList(INakedObjectsFramework framework) => this.framework = framework;
+        public OidTranslatorSemiColonSeparatedList(INakedFramework framework) => this.framework = framework;
 
         private static string Encode(IEncodedToStrings encoder) => encoder.ToShortEncodedStrings().Aggregate((a, b) => $"{a};{b}");
 

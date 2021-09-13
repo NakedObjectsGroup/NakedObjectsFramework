@@ -40,7 +40,7 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public FrameworkFacade(IOidStrategy oidStrategy,
                                IOidTranslator oidTranslator,
-                               INakedObjectsFramework framework,
+                               INakedFramework framework,
                                IStringHasher stringHasher,
                                IServiceProvider provider,
                                ILogger<FrameworkFacade> logger) {
@@ -57,7 +57,7 @@ namespace NakedFramework.Facade.Impl.Impl {
         /// <summary>
         ///     mainly for testing
         /// </summary>
-        public INakedObjectsFramework Framework { get; }
+        public INakedFramework Framework { get; }
 
         #region IFrameworkFacade Members
 
@@ -1152,12 +1152,12 @@ namespace NakedFramework.Facade.Impl.Impl {
         private ITypeFacade GetSpecificationWrapper(ITypeSpec spec) => new TypeFacade(spec, this, Framework);
 
         private class PropParmAdapter {
-            private readonly INakedObjectsFramework framework;
+            private readonly INakedFramework framework;
             private readonly IFrameworkFacade frameworkFacade;
             private readonly IActionParameterSpec parm;
             private readonly IOneToOneAssociationSpec prop;
 
-            private PropParmAdapter(object p, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
+            private PropParmAdapter(object p, IFrameworkFacade frameworkFacade, INakedFramework framework) {
                 this.frameworkFacade = frameworkFacade;
                 this.framework = framework;
                 if (p == null) {
@@ -1165,13 +1165,13 @@ namespace NakedFramework.Facade.Impl.Impl {
                 }
             }
 
-            public PropParmAdapter(IOneToOneAssociationSpec prop, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework)
+            public PropParmAdapter(IOneToOneAssociationSpec prop, IFrameworkFacade frameworkFacade, INakedFramework framework)
                 : this((object) prop, frameworkFacade, framework) {
                 this.prop = prop;
                 CheckAutocompleOrConditional();
             }
 
-            public PropParmAdapter(IActionParameterSpec parm, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework)
+            public PropParmAdapter(IActionParameterSpec parm, IFrameworkFacade frameworkFacade, INakedFramework framework)
                 : this((object) parm, frameworkFacade, framework) {
                 this.parm = parm;
                 CheckAutocompleOrConditional();

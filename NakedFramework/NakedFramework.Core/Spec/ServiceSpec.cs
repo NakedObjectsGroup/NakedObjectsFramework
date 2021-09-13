@@ -15,7 +15,7 @@ namespace NakedFramework.Core.Spec {
     public sealed class ServiceSpec : TypeSpec, IServiceSpec {
         private IActionSpec[] contributedActions;
 
-        public ServiceSpec(SpecFactory memberFactory, IServiceSpecImmutable innerSpec, INakedObjectsFramework framework) :
+        public ServiceSpec(SpecFactory memberFactory, IServiceSpecImmutable innerSpec, INakedFramework framework) :
             base(memberFactory, innerSpec, framework) { }
 
         private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions);

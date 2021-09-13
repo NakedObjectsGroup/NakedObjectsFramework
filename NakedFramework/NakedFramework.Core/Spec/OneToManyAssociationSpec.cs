@@ -17,7 +17,7 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Spec {
     public sealed class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
-        public OneToManyAssociationSpec(IOneToManyAssociationSpecImmutable association, INakedObjectsFramework framework)
+        public OneToManyAssociationSpec(IOneToManyAssociationSpecImmutable association, INakedFramework framework)
             : base(association, framework) {
             IsASet = association.ContainsFacet<IIsASetFacet>();
 

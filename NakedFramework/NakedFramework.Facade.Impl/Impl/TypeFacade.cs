@@ -17,9 +17,9 @@ using NakedFramework.Value;
 
 namespace NakedFramework.Facade.Impl.Impl {
     public class TypeFacade : ITypeFacade {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
 
-        public TypeFacade(ITypeSpec spec, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
+        public TypeFacade(ITypeSpec spec, IFrameworkFacade frameworkFacade, INakedFramework framework) {
             FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
             WrappedValue = spec ?? throw new NullReferenceException($"{nameof(spec)} is null");
             this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");

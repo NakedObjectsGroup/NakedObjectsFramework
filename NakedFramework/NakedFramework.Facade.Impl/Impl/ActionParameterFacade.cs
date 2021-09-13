@@ -20,9 +20,9 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Impl {
     public class ActionParameterFacade : IActionParameterFacade {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
 
-        public ActionParameterFacade(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
+        public ActionParameterFacade(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade frameworkFacade, INakedFramework framework) {
             WrappedSpec = nakedObjectActionParameter ?? throw new NullReferenceException($"{nameof(nakedObjectActionParameter)} is null");
             this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
             FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");

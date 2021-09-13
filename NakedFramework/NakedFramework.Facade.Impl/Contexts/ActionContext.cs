@@ -39,7 +39,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
 
         public string MenuId { get; init; }
 
-        public ActionContextFacade ToActionContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
+        public ActionContextFacade ToActionContextFacade(IFrameworkFacade facade, INakedFramework framework) {
             var ac = new ActionContextFacade {
                 MenuPath = MenuPath,
                 MenuId = MenuId,

@@ -18,7 +18,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
         public IMenuImmutable[] List { get; init; }
         public IObjectSpec ElementType { get; init; }
 
-        public MenuContextFacade ToMenuContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
+        public MenuContextFacade ToMenuContextFacade(IFrameworkFacade facade, INakedFramework framework) {
             return new() {
                 ElementType = new TypeFacade(ElementType, facade, framework),
                 List = List.Select(m => new MenuFacade(m, facade, framework)).Cast<IMenuFacade>().ToArray()

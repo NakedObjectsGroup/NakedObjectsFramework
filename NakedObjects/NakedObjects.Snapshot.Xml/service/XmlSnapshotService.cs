@@ -12,7 +12,7 @@ using NakedObjects.Snapshot.Xml.utility;
 namespace NakedObjects.Snapshot.Xml.service {
     [Named("XML Snapshot")]
     public class XmlSnapshotService : IXmlSnapshotService {
-        public INakedObjectsFramework Framework { set; protected get; }
+        public INakedFramework Framework { set; protected get; }
         public ILoggerFactory LoggerFactory { set; protected get; }
 
         #region IXmlSnapshotService Members

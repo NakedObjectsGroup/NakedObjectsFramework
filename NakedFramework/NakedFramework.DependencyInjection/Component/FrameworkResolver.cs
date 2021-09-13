@@ -20,7 +20,7 @@ namespace NakedFramework.DependencyInjection.Component {
 
         public void Dispose() => scopeServiceProvider.Dispose();
 
-        public INakedObjectsFramework GetFramework() => scopeServiceProvider.ServiceProvider.GetService<INakedObjectsFramework>();
+        public INakedFramework GetFramework() => scopeServiceProvider.ServiceProvider.GetService<INakedFramework>();
 
         #endregion
     }

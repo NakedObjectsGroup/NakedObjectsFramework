@@ -49,7 +49,7 @@ namespace NakedFramework.DependencyInjection.Configuration {
             services.AddDefaultScoped<ILifecycleManager, LifeCycleManager>();
 
             services.AddDefaultScoped<IMessageBroker, MessageBroker>();
-            services.AddDefaultScoped<INakedObjectsFramework, NakedObjectsFramework>();
+            services.AddDefaultScoped<INakedFramework, Core.Framework.NakedFramework>();
             services.AddDefaultScoped<ISession, WindowsSession>();
             services.AddScoped<IFrameworkResolver>(p => new FrameworkResolver(p));
 

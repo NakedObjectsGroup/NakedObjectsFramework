@@ -29,7 +29,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         protected IReflector Reflector = new Mock<IReflector>().Object;
         private IValueSemanticsProvider<T> value;
 
-        protected INakedObjectsFramework Framework = new Mock<INakedObjectsFramework>().Object;
+        protected INakedFramework Framework = new Mock<INakedFramework>().Object;
 
         protected void SetValue(IValueSemanticsProvider<T> newValue) {
             value = newValue;

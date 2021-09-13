@@ -44,7 +44,7 @@ namespace NakedFramework.Core.Spec {
         private ITypeSpec superclass;
         private string untitledName;
 
-        protected TypeSpec(SpecFactory memberFactory, ITypeSpecImmutable innerSpec, INakedObjectsFramework framework) {
+        protected TypeSpec(SpecFactory memberFactory, ITypeSpecImmutable innerSpec, INakedFramework framework) {
             MemberFactory = memberFactory ?? throw new InitialisationException($"{nameof(memberFactory)} is null");
             InnerSpec = innerSpec ?? throw new InitialisationException($"{nameof(innerSpec)} is null");
             Framework = framework;
@@ -94,7 +94,7 @@ namespace NakedFramework.Core.Spec {
         #region ITypeSpec Members
 
         public ITypeSpecImmutable InnerSpec { get; }
-        public INakedObjectsFramework Framework { get; }
+        public INakedFramework Framework { get; }
 
         public virtual string FullName => InnerSpec.FullName;
 

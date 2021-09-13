@@ -35,10 +35,10 @@ namespace NakedObjects.Reflector.Facet {
 
         #region IPropertyAccessorFacet Members
 
-        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework nakedObjectsFramework) {
+        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
             try {
-                var spec = nakedObjectsFramework.MetamodelManager.GetSpecification(propertyMethod.DeclaringType);
-                var service = nakedObjectsFramework.ServicesManager.GetService(spec as IServiceSpec);
+                var spec = nakedFramework.MetamodelManager.GetSpecification(propertyMethod.DeclaringType);
+                var service = nakedFramework.ServicesManager.GetService(spec as IServiceSpec);
                 return PropertyDelegate.Invoke<object>(propertyMethod, service.GetDomainObject(),  new[] { nakedObjectAdapter.GetDomainObject()});
             }
             catch (TargetInvocationException e) {

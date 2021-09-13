@@ -49,7 +49,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter,
                                             IDictionary<string, INakedObjectAdapter> parameterNameValues,
-                                            INakedObjectsFramework framework) {
+                                            INakedFramework framework) {
             try {
                 var parms = choicesMethod.GetParameterValues(nakedObjectAdapter, parameterNameValues, framework);
                 return choicesDelegate.Invoke<IEnumerable>(choicesMethod, parms).Cast<object>().ToArray();

@@ -1099,9 +1099,9 @@ namespace NakedObjects.SystemTest.Method {
             var dom1 = (Updated1) obj1.GetDomainObject();
             obj1.Save();
             try {
-                NakedObjectsFramework.TransactionManager.StartTransaction();
+                NakedFramework.TransactionManager.StartTransaction();
                 obj1.GetPropertyByName("Prop1").SetValue("Foo");
-                NakedObjectsFramework.TransactionManager.EndTransaction();
+                NakedFramework.TransactionManager.EndTransaction();
 
                 Assert.Fail("Shouldn't get to here");
             }
@@ -1126,10 +1126,10 @@ namespace NakedObjects.SystemTest.Method {
             var dom1 = (Updating1) obj1.GetDomainObject();
             obj1.Save();
             try {
-                NakedObjectsFramework.TransactionManager.StartTransaction();
+                NakedFramework.TransactionManager.StartTransaction();
 
                 obj1.GetPropertyByName("Prop1").SetValue("Foo");
-                NakedObjectsFramework.TransactionManager.EndTransaction();
+                NakedFramework.TransactionManager.EndTransaction();
 
                 Assert.Fail("Should not get to here");
             }

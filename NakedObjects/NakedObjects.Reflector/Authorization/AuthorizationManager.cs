@@ -69,7 +69,7 @@ namespace NakedObjects.Reflector.Authorization {
 
         protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
 
-        public override bool IsVisible(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
+        public override bool IsVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
             var authorizer = GetAuthorizer(target, framework.LifecycleManager);
 
             if (authorizer is INamespaceAuthorizer nameAuth) {
@@ -80,7 +80,7 @@ namespace NakedObjects.Reflector.Authorization {
             return isVisibleDelegates[authorizer.GetType()](authorizer, framework.Session.Principal, target.GetDomainObject(), identifier.MemberName);
         }
 
-        public override bool IsEditable(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
+        public override bool IsEditable(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
             var authorizer = GetAuthorizer(target, framework.LifecycleManager);
 
             if (authorizer is INamespaceAuthorizer nameAuth) {

@@ -28,7 +28,7 @@ namespace NakedFramework.Metamodel.Profile {
             protected set { }
         }
 
-        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedObjectsFramework framework) {
+        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework) {
             profileManager.Begin(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
             try {
                 underlyingFacet.SetProperty(nakedObjectAdapter, nakedValue, framework);

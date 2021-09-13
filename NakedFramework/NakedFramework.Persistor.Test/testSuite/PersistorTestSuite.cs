@@ -25,9 +25,9 @@ namespace NakedObjects.Persistor.TestSuite {
     ///     Prerequisite - TestData Fixture run and NakedObjects framework setup
     /// </summary>
     public class PersistorTestSuite {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
 
-        public PersistorTestSuite(INakedObjectsFramework framework) => this.framework = framework;
+        public PersistorTestSuite(INakedFramework framework) => this.framework = framework;
 
         #region helpers
 

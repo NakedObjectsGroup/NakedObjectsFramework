@@ -24,7 +24,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         #region IPropertyAccessorFacet Members
 
-        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework nakedObjectsFramework) {
+        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
             try {
                 return propertyMethod.GetValue(nakedObjectAdapter.GetDomainObject(), null);
             }

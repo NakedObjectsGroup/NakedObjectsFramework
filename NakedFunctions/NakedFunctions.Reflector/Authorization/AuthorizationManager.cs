@@ -58,9 +58,9 @@ namespace NakedFunctions.Reflector.Authorization {
         }
 
         protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedObject(type);
-        private static FunctionalContext FunctionalContext(INakedObjectsFramework framework) => new() { Persistor = framework.Persistor, Provider = framework.ServiceProvider };
+        private static FunctionalContext FunctionalContext(INakedFramework framework) => new() { Persistor = framework.Persistor, Provider = framework.ServiceProvider };
 
-        private bool IsMenuVisible(INakedObjectsFramework framework, IIdentifier identifier) {
+        private bool IsMenuVisible(INakedFramework framework, IIdentifier identifier) {
             var authorizerType = typeAuthorizers.Where(ta => ta.Key == typeof(string).FullName).Select(ta => ta.Value).FirstOrDefault();
             if (authorizerType is not null) {
                 if (CreateAuthorizer(authorizerType, framework.LifecycleManager) is IMainMenuAuthorizer menuAuth) {
@@ -71,7 +71,7 @@ namespace NakedFunctions.Reflector.Authorization {
             return true;
         }
 
-        private bool IsObjectVisible(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
+        private bool IsObjectVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
             var authorizer = GetAuthorizer(target, framework.LifecycleManager);
 
             if (authorizer is INamespaceAuthorizer nameAuth) {
@@ -82,12 +82,12 @@ namespace NakedFunctions.Reflector.Authorization {
             return isVisibleDelegates[authorizer.GetType()](authorizer, target.GetDomainObject(), identifier.MemberName, FunctionalContext(framework));
         }
 
-        public override bool IsVisible(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) =>
+        public override bool IsVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) =>
             target switch {
                 null => IsMenuVisible(framework, identifier),
                 _ => IsObjectVisible(framework, target, identifier)
             };
 
-        public override bool IsEditable(INakedObjectsFramework framework, INakedObjectAdapter target, IIdentifier identifier) => false;
+        public override bool IsEditable(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) => false;
     }
 }

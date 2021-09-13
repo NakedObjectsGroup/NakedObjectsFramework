@@ -32,7 +32,7 @@ namespace NakedFramework.Architecture.Interactions {
         /// <para>
         ///     Will be set for all interactions.
         /// </para>
-        INakedObjectsFramework Framework { get; }
+        INakedFramework Framework { get; }
 
         /// <summary>
         ///     How the interaction was initiated

@@ -20,7 +20,7 @@ namespace NakedFramework.Core.Test.Async {
         public void TestAction() => AsyncTest().Wait(1000);
 
         private static async Task AsyncTest() {
-            var mockFramework = new Mock<INakedObjectsFramework>();
+            var mockFramework = new Mock<INakedFramework>();
             var mockResolver = new Mock<IFrameworkResolver>();
             var mockTransactionManager = new Mock<ITransactionManager>();
             var mockLoggerFactory = new Mock<ILoggerFactory>();

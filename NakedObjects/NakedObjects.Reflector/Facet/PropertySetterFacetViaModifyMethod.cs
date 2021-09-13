@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.Facet {
 
         public override string PropertyName { get; protected set; }
 
-        public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, INakedObjectsFramework framework) => methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
+        public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, INakedFramework framework) => methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
 
         protected override string ToStringValues() => $"method={method}";
 

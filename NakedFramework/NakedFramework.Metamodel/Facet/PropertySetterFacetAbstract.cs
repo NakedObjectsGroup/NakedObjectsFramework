@@ -21,7 +21,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         #region IPropertySetterFacet Members
 
-        public abstract void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedObjectsFramework framework);
+        public abstract void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework);
         public abstract string PropertyName { get; protected set; }
 
         #endregion

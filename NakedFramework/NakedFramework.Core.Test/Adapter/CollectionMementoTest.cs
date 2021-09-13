@@ -136,11 +136,11 @@ namespace NakedFramework.Core.Test.Adapter {
         private void RoundTrip(CollectionMemento memento) {
             var strings1 = memento.ToEncodedStrings();
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
-            var newMemento = new CollectionMemento(NakedObjectsFramework, LoggerFactory, logger, strings1);
+            var newMemento = new CollectionMemento(NakedFramework, LoggerFactory, logger, strings1);
             var strings2 = newMemento.ToEncodedStrings();
             Assert.IsTrue(strings1.SequenceEqual(strings2), "memento failed roundtrip");
 
-            var copyMemento = new CollectionMemento(NakedObjectsFramework, logger, memento, new object[] { });
+            var copyMemento = new CollectionMemento(NakedFramework, logger, memento, new object[] { });
             var strings3 = copyMemento.ToEncodedStrings();
             Assert.IsTrue(strings1.SequenceEqual(strings3), "memento failed copy");
         }
@@ -155,42 +155,42 @@ namespace NakedFramework.Core.Test.Adapter {
 
         [Test]
         public void TestActionNoParms() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action1");
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { });
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { });
             RoundTrip(memento);
-            RecoverCollection(target.Action1(), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(target.Action1(), memento, NakedFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionNoParmsTransient() {
-            var targetNo = NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof(TestDomainObject)));
+            var targetNo = NakedFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedFramework.MetamodelManager.GetSpecification(typeof(TestDomainObject)));
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action1");
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { });
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { });
             RoundTrip(memento);
-            RecoverCollection(AdapterUtils.GetDomainObject<TestDomainObject>(targetNo).Action1(), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(AdapterUtils.GetDomainObject<TestDomainObject>(targetNo).Action1(), memento, NakedFramework.NakedObjectManager);
         }
 
         // ReSharper disable PossibleMultipleEnumeration
 
         [Test]
         public void TestActionNoParmsWithSelected() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action1");
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { });
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { });
 
-            var selectedMemento = new CollectionMemento(NakedObjectsFramework, logger, memento, new object[] {target});
+            var selectedMemento = new CollectionMemento(NakedFramework, logger, memento, new object[] {target});
 
             RoundTrip(selectedMemento);
-            var recoveredCollection = AdapterUtils.GetAsEnumerable(selectedMemento.RecoverCollection(), NakedObjectsFramework.NakedObjectManager).Select(AdapterUtils.GetDomainObject<TestDomainObject>);
+            var recoveredCollection = AdapterUtils.GetAsEnumerable(selectedMemento.RecoverCollection(), NakedFramework.NakedObjectManager).Select(AdapterUtils.GetDomainObject<TestDomainObject>);
             Assert.IsFalse(target.Action1().SequenceEqual(recoveredCollection), "recovered selected collection same as original");
 
             var selectedCollection = target.Action1().Where(tdo => tdo.Id == target.Id);
@@ -202,131 +202,131 @@ namespace NakedFramework.Core.Test.Adapter {
 
         [Test]
         public void TestActionObjectCollectionParm() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
 
-            var obj2 = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 2);
+            var obj2 = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 2);
 
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action5");
 
             var rawParm = new List<TestDomainObject> {target, obj2};
-            var parm = NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null);
+            var parm = NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null);
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new[] {parm});
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {parm});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action5(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(target.Action5(rawParm), memento, NakedFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionObjectCollectionParmEmpty() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
 
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action5");
 
             var rawParm = new List<TestDomainObject>();
-            var parm = NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null);
+            var parm = NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null);
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new[] {parm});
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {parm});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action5(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(target.Action5(rawParm), memento, NakedFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionObjectParm() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action3");
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new[] {targetNo});
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {targetNo});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action3(target), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(target.Action3(target), memento, NakedFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionObjectParmNull() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action3");
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] {null});
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] {null});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action3(null), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(target.Action3(null), memento, NakedFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionValueCollectionParm() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action4");
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
             var rawParm = new List<int> {1, 2};
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new[] {NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action4(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(target.Action4(rawParm), memento, NakedFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionValueCollectionParmEmpty() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action4");
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
             var rawParm = new List<int>();
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new[] {NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action4(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(target.Action4(rawParm), memento, NakedFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionValueCollectionParmString() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action7");
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
             var rawParm = new List<string> {"1", "2"};
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new[] {NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action7(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(target.Action7(rawParm), memento, NakedFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionValueParm() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action2");
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new[] {NakedObjectsFramework.NakedObjectManager.CreateAdapter(1, null, null)});
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {NakedFramework.NakedObjectManager.CreateAdapter(1, null, null)});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action2(1), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(target.Action2(1), memento, NakedFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionValueParmString() {
-            var target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            var targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
+            var target = NakedFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
             var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action6");
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-            var memento = new CollectionMemento(NakedObjectsFramework, logger, targetNo, actionSpec, new[] {NakedObjectsFramework.NakedObjectManager.CreateAdapter("1", null, null)});
+            var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {NakedFramework.NakedObjectManager.CreateAdapter("1", null, null)});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action6("1"), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(target.Action6("1"), memento, NakedFramework.NakedObjectManager);
         }
     }
 }

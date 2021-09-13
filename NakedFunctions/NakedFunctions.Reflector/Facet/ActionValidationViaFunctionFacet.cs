@@ -44,7 +44,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
-        public string InvalidReason(INakedObjectAdapter target, INakedObjectsFramework framework, INakedObjectAdapter[] proposedArguments) =>
+        public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArguments) =>
             methodDelegate.Invoke<string>(method, method.GetParameterValues(target, proposedArguments, framework));
 
         #endregion

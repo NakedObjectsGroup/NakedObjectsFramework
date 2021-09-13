@@ -45,7 +45,7 @@ namespace NakedObjects.Reflector.Audit {
 
         #region IAuditManager Members
 
-        public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedObjectsFramework framework) {
+        public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedFramework framework) {
             var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
 
             var byPrincipal = framework.Session.Principal;
@@ -59,12 +59,12 @@ namespace NakedObjects.Reflector.Audit {
             }
         }
 
-        public void Updated(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+        public void Updated(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
             auditor.ObjectUpdated(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
         }
 
-        public void Persisted(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+        public void Persisted(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
             auditor.ObjectPersisted(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
         }

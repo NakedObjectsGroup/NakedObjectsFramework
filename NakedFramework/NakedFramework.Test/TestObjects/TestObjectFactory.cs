@@ -16,9 +16,9 @@ using NakedFramework.Test.Interface;
 
 namespace NakedFramework.Test.TestObjects {
     public class TestObjectFactory : ITestObjectFactory {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
 
-        public TestObjectFactory(INakedObjectsFramework framework) => this.framework = framework;
+        public TestObjectFactory(INakedFramework framework) => this.framework = framework;
 
         private ITestService CreateTestService(INakedObjectAdapter service) => new TestService(service, this);
 

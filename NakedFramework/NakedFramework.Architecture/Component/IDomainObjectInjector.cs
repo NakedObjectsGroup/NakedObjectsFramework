@@ -9,11 +9,11 @@ using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Architecture.Component {
     /// <summary>
-    ///     Service that will inject an implementation of IDomainObjectContainer and/or INakedObjectsFramework into
+    ///     Service that will inject an implementation of IDomainObjectContainer and/or INakedFramework into
     ///     domain objects and services when they are instantiated.
     /// </summary>
     public interface IDomainObjectInjector {
-        INakedObjectsFramework Framework { set; }
+        INakedFramework Framework { set; }
 
         /// <summary>
         ///     Among other things, will inject all services into the object

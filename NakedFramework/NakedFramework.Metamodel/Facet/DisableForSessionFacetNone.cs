@@ -18,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public override bool IsNoOp => true;
 
-        public override string DisabledReason(INakedObjectAdapter target, INakedObjectsFramework framework) => null;
+        public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) => null;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

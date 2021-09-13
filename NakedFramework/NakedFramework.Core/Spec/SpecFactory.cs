@@ -16,12 +16,12 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Spec {
     public class SpecFactory {
-        private INakedObjectsFramework framework;
+        private INakedFramework framework;
         private bool isInitialised;
         private ILogger<SpecFactory> logger;
         private ILoggerFactory loggerFactory;
 
-        public void Initialize(INakedObjectsFramework newFramework, ILoggerFactory newLoggerFactory, ILogger<SpecFactory> newLogger) {
+        public void Initialize(INakedFramework newFramework, ILoggerFactory newLoggerFactory, ILogger<SpecFactory> newLogger) {
             framework = newFramework ?? throw new InitialisationException($"{nameof(newFramework)} is null");
             loggerFactory = newLoggerFactory ?? throw new InitialisationException($"{nameof(newLoggerFactory)} is null");
             logger = newLogger ?? throw new InitialisationException($"{nameof(newLogger)} is null");

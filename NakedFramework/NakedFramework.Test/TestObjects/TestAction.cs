@@ -20,13 +20,13 @@ namespace NakedFramework.Test.TestObjects {
     internal class TestAction : ITestAction {
         private readonly IActionSpec actionSpec;
         private readonly ITestObjectFactory factory;
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
         private readonly ITestHasActions owningObject;
 
-        public TestAction(INakedObjectsFramework framework, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory)
+        public TestAction(INakedFramework framework, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory)
             : this(framework, string.Empty, actionSpec, owningObject, factory) { }
 
-        private TestAction(INakedObjectsFramework framework, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory) {
+        private TestAction(INakedFramework framework, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory) {
             SubMenu = contributor;
             this.framework = framework;
             this.owningObject = owningObject;

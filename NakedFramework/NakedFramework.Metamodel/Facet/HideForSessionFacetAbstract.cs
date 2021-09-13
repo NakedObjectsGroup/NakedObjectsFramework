@@ -34,7 +34,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public virtual Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
-        public abstract string HiddenReason(INakedObjectAdapter target, INakedObjectsFramework framework);
+        public abstract string HiddenReason(INakedObjectAdapter target, INakedFramework framework);
 
         #endregion
     }

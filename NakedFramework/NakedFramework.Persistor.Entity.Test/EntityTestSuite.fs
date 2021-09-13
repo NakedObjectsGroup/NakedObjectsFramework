@@ -163,7 +163,7 @@ type EntityTestSuite() =
     
     override x.Fixtures = [| box (new TestDataFixture()) |]
      
-    member x.Tests = new PersistorTestSuite(x.NakedObjectsFramework)
+    member x.Tests = new PersistorTestSuite(x.NakedFramework)
     
     [<Test>]
     member x.CanAccessCollectionProperty() = x.Tests.CanAccessCollectionProperty()

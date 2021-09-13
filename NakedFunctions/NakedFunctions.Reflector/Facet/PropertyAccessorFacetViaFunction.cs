@@ -26,9 +26,9 @@ namespace NakedFunctions.Reflector.Facet {
 
         #region IPropertyAccessorFacet Members
 
-        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework nakedObjectsFramework) {
+        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
             try {
-                return method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, nakedObjectsFramework));
+                return method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, nakedFramework));
             }
             catch (TargetInvocationException e) {
                 InvokeUtils.InvocationException($"Exception executing {method}", e);

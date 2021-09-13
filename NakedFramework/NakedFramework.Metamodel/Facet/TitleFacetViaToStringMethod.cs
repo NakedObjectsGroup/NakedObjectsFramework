@@ -30,9 +30,9 @@ namespace NakedFramework.Metamodel.Facet {
             maskDelegate = maskMethod is null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
         }
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => nakedObjectAdapter.Object.ToString();
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.Object.ToString();
 
-        public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+        public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             if (maskDelegate is not null) {
                 return (string) maskDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {mask});
             }

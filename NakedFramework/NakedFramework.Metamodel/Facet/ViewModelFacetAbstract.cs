@@ -19,10 +19,10 @@ namespace NakedFramework.Metamodel.Facet {
 
         #region IViewModelFacet Members
 
-        public abstract string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
-        public abstract void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
+        public abstract string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+        public abstract void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 
-        public virtual bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => false;
+        public virtual bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => false;
 
         #endregion
     }

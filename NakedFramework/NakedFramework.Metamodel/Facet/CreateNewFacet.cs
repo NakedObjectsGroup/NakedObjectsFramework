@@ -20,7 +20,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         public static Type Type => typeof(ICreateNewFacet);
 
-        public string[] OrderedProperties(INakedObjectsFramework framework) {
+        public string[] OrderedProperties(INakedFramework framework) {
             if (framework.MetamodelManager.GetSpecification(toCreate) is IObjectSpec spec) {
                 return spec.Properties.Where(IsNotHidden).Select(f => f.Name).ToArray();
             }

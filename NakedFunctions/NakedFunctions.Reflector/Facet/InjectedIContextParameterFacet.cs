@@ -21,7 +21,7 @@ namespace NakedFunctions.Reflector.Facet {
 
         #region IInjectedParameterFacet Members
 
-        public object GetInjectedValue(INakedObjectsFramework framework, IServiceProvider provider) => new FunctionalContext {Persistor = framework.Persistor, Provider = provider};
+        public object GetInjectedValue(INakedFramework framework, IServiceProvider provider) => new FunctionalContext {Persistor = framework.Persistor, Provider = provider};
 
         #endregion
     }

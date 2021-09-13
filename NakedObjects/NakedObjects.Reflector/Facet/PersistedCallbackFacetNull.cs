@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.Facet {
         public PersistedCallbackFacetNull(ISpecification holder)
             : base(holder) { }
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) { }
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

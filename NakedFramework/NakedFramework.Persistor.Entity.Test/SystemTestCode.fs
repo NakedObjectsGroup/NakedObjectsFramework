@@ -13,7 +13,7 @@ open NakedFramework.Architecture.Framework
 open NakedFramework.Architecture.Spec
 open NakedFramework.Core.Persist
 
-let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
+let getNo (obj : obj) (ctx : INakedFramework) = 
     match obj with
     | :? INakedObjectAdapter as no -> no
     | _ -> ctx.NakedObjectManager.CreateAdapter(obj, null, null)
@@ -72,7 +72,7 @@ let IsNotNullAndTransientAggregate obj ctx =
     IsPersistentObject obj ctx
     IsTransientAggregateOid obj ctx
 
-let Create<'t when 't : not struct>(ctx : INakedObjectsFramework) = 
+let Create<'t when 't : not struct>(ctx : INakedFramework) = 
     let spec = ctx.MetamodelManager.GetSpecification(typeof<'t>) :?> IObjectSpec
     ctx.LifecycleManager.CreateInstance(spec)
 
@@ -82,11 +82,11 @@ let CreateAndSetup<'t when 't : not struct> setter ctx =
     setter inst
     no
 
-let makeAndSaveChanges change (ctx : INakedObjectsFramework) = 
+let makeAndSaveChanges change (ctx : INakedFramework) = 
     ctx.TransactionManager.StartTransaction()
     change()
     ctx.TransactionManager.EndTransaction()
 
-let save no (ctx : INakedObjectsFramework) = 
+let save no (ctx : INakedFramework) = 
     let saveNo() = no |> ctx.LifecycleManager.MakePersistent
     makeAndSaveChanges saveNo ctx

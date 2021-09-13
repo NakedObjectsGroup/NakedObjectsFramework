@@ -29,7 +29,7 @@ namespace NakedFramework.Core.Test.Adapter {
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly ILogger<NullVersion> vLogger = new Mock<ILogger<NullVersion>>().Object;
 
-        private readonly INakedObjectsFramework framework = new Mock<INakedObjectsFramework>().Object;
+        private readonly INakedFramework framework = new Mock<INakedFramework>().Object;
 
         [Test]
         public void TestCheckLockDefaultOk() {

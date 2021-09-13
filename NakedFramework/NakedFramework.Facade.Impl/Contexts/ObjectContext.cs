@@ -28,7 +28,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
         public PropertyContext[] VisibleProperties { get; set; }
         public ActionContext[] VisibleActions { get; init; }
 
-        public ObjectContextFacade ToObjectContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
+        public ObjectContextFacade ToObjectContextFacade(IFrameworkFacade facade, INakedFramework framework) {
             var oc = new ObjectContextFacade {
                 VisibleProperties = VisibleProperties?.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray(),
                 VisibleActions = VisibleActions?.Select(p => p.ToActionContextFacade(facade, framework)).ToArray(),

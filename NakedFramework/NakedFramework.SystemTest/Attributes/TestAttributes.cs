@@ -233,7 +233,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual void ActionsIncludedInFinderMenu() {
             var service = (TestServiceFinderAction) GetTestService(typeof(TestServiceFinderAction)).NakedObject.Object;
             var obj = service.NewObject1();
-            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
+            var adapter = NakedFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var finderActions = ((IObjectSpec) adapter.Spec).GetFinderActions();
 
             Assert.AreEqual(3, finderActions.Length);
@@ -266,7 +266,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual void CollectionContributed() {
             var testObj = NewTestObject<Contributee2>();
             var obj = testObj.GetDomainObject();
-            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
+            var adapter = NakedFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = (adapter.Spec as IObjectSpec)?.GetCollectionContributedActions();
             var testActions = testObj.Actions;
 
@@ -280,7 +280,7 @@ namespace NakedObjects.SystemTest.Attributes {
         [Test]
         public virtual void CollectionContributedNotToAnotherClass() {
             var obj = NewTestObject<Contributee>().GetDomainObject();
-            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
+            var adapter = NakedFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
 
             Assert.AreEqual(0, actions.Length);
@@ -289,7 +289,7 @@ namespace NakedObjects.SystemTest.Attributes {
         [Test]
         public virtual void CollectionContributedToSubClass() {
             var obj = NewTestObject<Contributee3>().GetDomainObject();
-            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
+            var adapter = NakedFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
 
             Assert.AreEqual(3, actions.Length);
@@ -321,7 +321,7 @@ namespace NakedObjects.SystemTest.Attributes {
         [Test]
         public virtual void Contributed() {
             var obj = NewTestObject<Contributee>().GetDomainObject();
-            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
+            var adapter = NakedFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = adapter.Spec.GetActions();
 
             Assert.AreEqual(1, actions.Length);

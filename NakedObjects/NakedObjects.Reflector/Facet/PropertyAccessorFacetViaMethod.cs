@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.Facet {
 
         #region IPropertyAccessorFacet Members
 
-        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework nakedObjectsFramework) {
+        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
             try {
                 return PropertyDelegate.Invoke<object>(propertyMethod, nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
             }

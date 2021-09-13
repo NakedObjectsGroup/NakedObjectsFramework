@@ -11,7 +11,7 @@ using NakedFramework.Facade.Interface;
 
 namespace NakedFramework.Facade.Impl.Impl {
     public class MenuActionFacade : IMenuActionFacade, IMenuItemFacade {
-        public MenuActionFacade(IMenuActionImmutable wrapped, IFrameworkFacade facade, INakedObjectsFramework framework) {
+        public MenuActionFacade(IMenuActionImmutable wrapped, IFrameworkFacade facade, INakedFramework framework) {
             Wrapped = wrapped;
             Name = wrapped.Name;
             Id = wrapped.Id;

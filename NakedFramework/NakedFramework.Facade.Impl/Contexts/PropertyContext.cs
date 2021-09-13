@@ -22,7 +22,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
 
         public override ITypeSpec Specification => Property.ReturnSpec;
 
-        public PropertyContextFacade ToPropertyContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
+        public PropertyContextFacade ToPropertyContextFacade(IFrameworkFacade facade, INakedFramework framework) {
             var pc = new PropertyContextFacade {
                 Property = new AssociationFacade(Property, facade, framework),
                 Completions = Completions?.ToListContextFacade(facade, framework),

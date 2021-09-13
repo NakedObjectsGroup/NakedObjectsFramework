@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.Facet {
             methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) => methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>()) as string;
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>()) as string;
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

@@ -23,7 +23,7 @@ namespace NakedFramework.Facade.Impl.Contexts {
 
         public string OverloadedUniqueId { get; init; }
 
-        public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework, string menuId) {
+        public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade, INakedFramework framework, string menuId) {
             var pc = new ParameterContextFacade {
                 Parameter = new ActionParameterFacade(Parameter, facade, framework),
                 Action = new ActionFacade(Action, facade, framework),

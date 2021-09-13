@@ -18,7 +18,7 @@ namespace NakedFramework.Architecture.Facet {
     ///     invoking the <c>HideXxx</c> support method for the member.
     /// </para>
     public interface IHideForContextFacet : IFacet, IHidingInteractionAdvisor {
-        string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
+        string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -20,7 +20,7 @@ namespace NakedFramework.Architecture.Facet {
         /// <summary>
         ///     The reason this is disabled, or <c>null</c> if not
         /// </summary>
-        string DisabledReason(INakedObjectAdapter target, INakedObjectsFramework framework);
+        string DisabledReason(INakedObjectAdapter target, INakedFramework framework);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

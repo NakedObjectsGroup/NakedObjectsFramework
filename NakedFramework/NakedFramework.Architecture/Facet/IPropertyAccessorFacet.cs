@@ -20,6 +20,6 @@ namespace NakedFramework.Architecture.Facet {
         /// <summary>
         ///     Gets the value of this property from this object
         /// </summary>
-        object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework nakedObjectsFramework);
+        object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework);
     }
 }

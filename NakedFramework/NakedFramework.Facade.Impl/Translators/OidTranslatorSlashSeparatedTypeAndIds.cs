@@ -16,11 +16,11 @@ using NakedFramework.Facade.Translation;
 
 namespace NakedFramework.Facade.Impl.Translators {
     public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
-        private readonly INakedObjectsFramework framework;
+        private readonly INakedFramework framework;
         private readonly IKeyCodeMapper keyCodeMapper;
         private readonly ITypeCodeMapper typeCodeMapper;
 
-        public OidTranslatorSlashSeparatedTypeAndIds(INakedObjectsFramework framework, ITypeCodeMapper typeCodeMapper, IKeyCodeMapper keyCodeMapper) {
+        public OidTranslatorSlashSeparatedTypeAndIds(INakedFramework framework, ITypeCodeMapper typeCodeMapper, IKeyCodeMapper keyCodeMapper) {
             this.framework = framework;
             this.typeCodeMapper = typeCodeMapper;
             this.keyCodeMapper = keyCodeMapper;

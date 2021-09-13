@@ -29,7 +29,7 @@ namespace NakedFramework.Core.Spec {
 
         public ObjectSpec(SpecFactory memberFactory,
                           IObjectSpecImmutable innerSpec,
-                          INakedObjectsFramework framework,
+                          INakedFramework framework,
                           ILogger<ObjectSpec> logger) :
             base(memberFactory, innerSpec, framework) => this.logger = logger;
 

@@ -60,16 +60,16 @@ type ModelSystemTests() =
             p.ComplexProperty.Surname <- uniqueName()
             p.ComplexProperty_1.s1 <- uniqueName()
             p.ComplexProperty_1.s2 <- uniqueName()
-        SystemTestCode.CreateAndSetup<Person> setter x.NakedObjectsFramework
+        SystemTestCode.CreateAndSetup<Person> setter x.NakedFramework
     
     member x.GetPersonDomainObject() = 
-        let pp : Person [] = box (x.NakedObjectsFramework.Persistor.Instances<Person>().ToArray()) :?> Person []
+        let pp : Person [] = box (x.NakedFramework.Persistor.Instances<Person>().ToArray()) :?> Person []
         pp
         |> Seq.filter (fun p -> p.Id = 1)
         |> Seq.head
     
     member x.GetNextPersonID() = 
-        let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
+        let pp = x.NakedFramework.Persistor.Instances<Person>()
         (pp
          |> Seq.map (fun i -> i.Id)
          |> Seq.max)
@@ -77,30 +77,30 @@ type ModelSystemTests() =
     
     [<Test>]
     member x.GetService() = 
-        let service = x.NakedObjectsFramework.ServicesManager.GetService("SimpleRepository-Person")
+        let service = x.NakedFramework.ServicesManager.GetService("SimpleRepository-Person")
         Assert.IsNotNull(service.Object)
     
     [<Test>]
     member x.GetCollectionDirectly() = 
-        let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
+        let pp = x.NakedFramework.Persistor.Instances<Person>()
         Assert.Greater(pp |> Seq.length, 0)
     
     [<Test>]
     member x.GetInstanceDirectly() = 
         let sr = x.GetPersonDomainObject()
-        IsNotNullAndPersistent sr x.NakedObjectsFramework
+        IsNotNullAndPersistent sr x.NakedFramework
     
     [<Test>]
     member x.GetAggregateInstance() = 
         let n = x.GetPersonDomainObject().ComplexProperty
-        IsNotNullAndPersistentAggregate n x.NakedObjectsFramework
+        IsNotNullAndPersistentAggregate n x.NakedFramework
     
     [<Test>]
     member x.GetTransientAggregateInstance() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
         let co = p.ComplexProperty
-        IsNotNullAndTransientAggregate co x.NakedObjectsFramework
+        IsNotNullAndTransientAggregate co x.NakedFramework
     
     [<Test>]
     member x.DirectlyLoadedObjectHasContainer() = 
@@ -125,17 +125,17 @@ type ModelSystemTests() =
     [<Test>]
     member x.CreateNewObjectWithComplexType() = 
         let pNo = x.CreatePerson()
-        save pNo x.NakedObjectsFramework
-        IsNotNullAndPersistent pNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
+        IsNotNullAndPersistent pNo x.NakedFramework
         let p = pNo.Object :?> Person
-        IsNotNullAndPersistentAggregate p.ComplexProperty x.NakedObjectsFramework
-        IsNotNullAndPersistentAggregate p.ComplexProperty_1 x.NakedObjectsFramework
+        IsNotNullAndPersistentAggregate p.ComplexProperty x.NakedFramework
+        IsNotNullAndPersistentAggregate p.ComplexProperty_1 x.NakedFramework
     
     [<Test>]
     member x.CreatedObjectCallsCreatedPersistingPersisted() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
-        save pNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
         let m1 = p.GetCallbackStatus()
         
         let fv (map : IDictionary<string, int>) key = 
@@ -154,7 +154,7 @@ type ModelSystemTests() =
     [<Test>]
     member x.ComplexTypeObjectCallsCreated() = 
         let pNo = x.CreatePerson()
-        save pNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
         let p = pNo.Object :?> Person
         let m = p.ComplexProperty.GetCallbackStatus()
         
@@ -169,7 +169,7 @@ type ModelSystemTests() =
         let p = pNo.Object :?> Person
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
-        save pNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
         let p = pNo.Object :?> Person
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
@@ -181,7 +181,7 @@ type ModelSystemTests() =
         let co = p.ComplexProperty
         Assert.IsNotNull(co.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, co.ExposeContainerForTest())
-        save pNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
         let co = p.ComplexProperty
         Assert.IsNotNull(co.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, co.ExposeContainerForTest())
@@ -193,7 +193,7 @@ type ModelSystemTests() =
         let co = p.ComplexProperty
         Assert.IsNotNull(co.Parent)
         Assert.IsInstanceOf(typeof<Person>, co.Parent)
-        save pNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
         let co = p.ComplexProperty
         Assert.IsNotNull(co.Parent)
         Assert.IsInstanceOf(typeof<Person>, co.Parent)
@@ -201,7 +201,7 @@ type ModelSystemTests() =
     [<Test>]
     member x.ComplexTypeObjectCallsPersistingPersisted() = 
         let pNo = x.CreatePerson()
-        save pNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
         let p = pNo.Object :?> Person
         let m = p.ComplexProperty.GetCallbackStatus()
         
@@ -214,10 +214,10 @@ type ModelSystemTests() =
    
     [<Test>]
     member x.ComplexTypeObjectCallsLoadingLoaded() = 
-        x.NakedObjectsFramework.TransactionManager.StartTransaction()
+        x.NakedFramework.TransactionManager.StartTransaction()
         let p = x.GetPersonDomainObject()
         let co = p.ComplexProperty
-        x.NakedObjectsFramework.TransactionManager.EndTransaction()
+        x.NakedFramework.TransactionManager.EndTransaction()
         let m = co.GetCallbackStatus()
         
         let findValue key = 
@@ -235,7 +235,7 @@ type ModelSystemTests() =
     
     [<Test>]
     member x.SavePersonWithInheritedTypeProperty() = 
-        let ctx = x.NakedObjectsFramework
+        let ctx = x.NakedFramework
         
         let GetNextFruitID() = 
             (ctx.Persistor.Instances<Fruit>()
@@ -261,7 +261,7 @@ type ModelSystemTests() =
     
     [<Test>]
     member x.AddToCollectionNotifiesUI() = 
-        let ctx = x.NakedObjectsFramework
+        let ctx = x.NakedFramework
         
         let GetNextFruitID() = 
             (ctx.Persistor.Instances<Fruit>()

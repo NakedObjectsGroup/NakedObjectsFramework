@@ -15,8 +15,8 @@ using NakedFramework.Core.Component;
 using NakedFramework.Core.Spec;
 
 namespace NakedFramework.Core.Framework {
-    public sealed class NakedObjectsFramework : INakedObjectsFramework {
-        public NakedObjectsFramework(IMessageBroker messageBroker,
+    public sealed class NakedFramework : INakedFramework {
+        public NakedFramework(IMessageBroker messageBroker,
                                      ISession session,
                                      ILifecycleManager lifecycleManager,
                                      IServicesManager servicesManager,
@@ -48,7 +48,7 @@ namespace NakedFramework.Core.Framework {
             nakedObjectFactory.Initialize(this, loggerFactory);
         }
 
-        #region INakedObjectsFramework Members
+        #region INakedFramework Members
 
         public IDomainObjectInjector DomainObjectInjector { get; }
 

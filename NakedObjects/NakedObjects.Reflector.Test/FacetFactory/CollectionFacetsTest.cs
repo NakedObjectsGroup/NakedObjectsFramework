@@ -24,7 +24,7 @@ using NakedFramework.Metamodel.Facet;
 namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
     public class CollectionFacetsTest {
-        private readonly INakedObjectsFramework framework = new Mock<INakedObjectsFramework>().Object;
+        private readonly INakedFramework framework = new Mock<INakedFramework>().Object;
         private readonly ILifecycleManager lifecycleManager;
         private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
         private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;

@@ -21,7 +21,7 @@ namespace NakedFramework.Metamodel.Facet {
 
         #region IActionDefaultsFacet Members
 
-        public abstract (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework);
+        public abstract (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 
         #endregion
     }

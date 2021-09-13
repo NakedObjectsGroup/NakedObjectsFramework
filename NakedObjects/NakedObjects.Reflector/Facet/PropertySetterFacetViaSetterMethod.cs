@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.Facet {
             protected set { }
         }
 
-        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, INakedObjectsFramework framework) {
+        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, INakedFramework framework) {
             try {
                 property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
             }

@@ -26,7 +26,7 @@ namespace NakedFramework.Metamodel.Audit {
             manager = auditManager;
         }
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             manager.Updated(nakedObjectAdapter, framework);
             underlyingFacet.Invoke(nakedObjectAdapter, framework);
         }

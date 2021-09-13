@@ -17,7 +17,7 @@ namespace NakedFunctions.Reflector.Test.Facet {
     [TestClass]
     public class ActionInvocationFacetViaStaticMethodTest {
         private static readonly object TestValue = new();
-        private readonly Mock<INakedObjectsFramework> mockFramework = new();
+        private readonly Mock<INakedFramework> mockFramework = new();
 
         private readonly Mock<INakedObjectManager> mockNakedObjectManager = new();
 

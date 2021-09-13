@@ -51,7 +51,7 @@ namespace NakedObjects.Core.Component {
 
         #region IDomainObjectInjector Members
 
-        public INakedObjectsFramework Framework { private get; set; }
+        public INakedFramework Framework { private get; set; }
 
         public void InjectInto(object obj) {
             Initialize();

@@ -56,29 +56,29 @@ type CodeSystemTests() =
     member x.TearDownFixture() = AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
     member x.GetPersonDomainObject() = 
-        let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
+        let pp = x.NakedFramework.Persistor.Instances<Person>()
         pp |> Seq.head
     
     member x.GetCategoryDomainObject() = 
-        let cc = x.NakedObjectsFramework.Persistor.Instances<Category>()
+        let cc = x.NakedFramework.Persistor.Instances<Category>()
         cc |> Seq.head
     
     member x.CreatePerson() = 
         let setter (p : Person) = p.Name <- uniqueName()
-        SystemTestCode.CreateAndSetup<Person> setter x.NakedObjectsFramework
+        SystemTestCode.CreateAndSetup<Person> setter x.NakedFramework
     
     member x.CreateProduct() = 
         let setter (pr : Product) = pr.Name <- uniqueName()
-        SystemTestCode.CreateAndSetup<Product> setter x.NakedObjectsFramework
+        SystemTestCode.CreateAndSetup<Product> setter x.NakedFramework
     
     [<Test>]
     member x.GetService() = 
-        let service = x.NakedObjectsFramework.ServicesManager.GetService("SimpleRepository-Person")
+        let service = x.NakedFramework.ServicesManager.GetService("SimpleRepository-Person")
         Assert.IsNotNull(service.Object)
     
     [<Test>]
     member x.GetCollectionDirectly() = 
-        let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
+        let pp = x.NakedFramework.Persistor.Instances<Person>()
         Assert.Greater(pp |> Seq.length, 0)
     
     [<Test>]
@@ -89,7 +89,7 @@ type CodeSystemTests() =
     
     [<Test>]
     member x.CheckIdentitiesAreConsistent() = 
-        let ctx = x.NakedObjectsFramework
+        let ctx = x.NakedFramework
         let getp sel = ctx.Persistor.Instances<Person>() |> sel
         let (p1, p2, p3, p4) = (getp Seq.head, getp (Seq.skip 1 >> Seq.head), getp Seq.head, getp (Seq.skip 1 >> Seq.head))
         Assert.AreSame(p1, p3)
@@ -100,18 +100,18 @@ type CodeSystemTests() =
     [<Test>]
     member x.CheckResolveStateOfPersistentObject() = 
         let p = x.GetPersonDomainObject()
-        IsNotNullAndPersistent p x.NakedObjectsFramework
+        IsNotNullAndPersistent p x.NakedFramework
     
     [<Test>]
     member x.CheckResolveStateOfTransientObject() = 
-        let p = Create<Person>(x.NakedObjectsFramework)
-        IsNotNullAndTransient p x.NakedObjectsFramework
+        let p = Create<Person>(x.NakedFramework)
+        IsNotNullAndTransient p x.NakedFramework
     
     [<Test>]
     member x.CheckResolveStateOfReference() = 
         let p = x.GetPersonDomainObject()
         let pr = p.Favourite
-        IsNotNullAndPersistent pr x.NakedObjectsFramework
+        IsNotNullAndPersistent pr x.NakedFramework
     
     [<Test>]
     member x.GetCollectionIndirectly() = 
@@ -121,10 +121,10 @@ type CodeSystemTests() =
     
     [<Test>]
     member x.GetInstanceIndirectly() = 
-        let pp = x.NakedObjectsFramework.Persistor.Instances<Person>() |> System.Linq.Enumerable.ToArray
+        let pp = x.NakedFramework.Persistor.Instances<Person>() |> System.Linq.Enumerable.ToArray
         let p = System.Linq.Enumerable.Where(pp, (fun (p : Person) -> p.Favourite <> null)) |> Seq.head
         Assert.IsNotNull(p)
-        IsNotNullAndPersistent p.Favourite x.NakedObjectsFramework
+        IsNotNullAndPersistent p.Favourite x.NakedFramework
     
     [<Test>]
     member x.CheckIdentitiesAreConsistentWhenNavigating() = 
@@ -132,7 +132,7 @@ type CodeSystemTests() =
         let pr = p.Favourite
         
         let pp = 
-            x.NakedObjectsFramework.Persistor.Instances<Person>()
+            x.NakedFramework.Persistor.Instances<Person>()
             |> Seq.filter (fun i -> i.Favourite = pr)
             |> Seq.head
         Assert.AreSame(p, pp)
@@ -153,17 +153,17 @@ type CodeSystemTests() =
     [<Test>]
     member x.CreateNewObjectWithScalars() = 
         let p = x.CreatePerson()
-        save p x.NakedObjectsFramework
-        IsNotNullAndPersistent p x.NakedObjectsFramework
+        save p x.NakedFramework
+        IsNotNullAndPersistent p x.NakedFramework
     
     [<Test>]
     member x.CreateNewObjectWithPersistentReference() = 
         let pNo = x.CreatePerson()
         let p = box pNo.Object :?> Person
-        let pr = x.NakedObjectsFramework.Persistor.Instances<Product>() |> Seq.head
+        let pr = x.NakedFramework.Persistor.Instances<Product>() |> Seq.head
         p.Favourite <- pr
-        save pNo x.NakedObjectsFramework
-        IsNotNullAndPersistent pNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
+        IsNotNullAndPersistent pNo x.NakedFramework
     
     [<Test>]
     member x.CreateNewObjectWithTransientReference() = 
@@ -172,9 +172,9 @@ type CodeSystemTests() =
         let prNo = x.CreateProduct()
         let pr = prNo.Object :?> Product
         p.Favourite <- pr
-        save pNo x.NakedObjectsFramework
-        IsNotNullAndPersistent pNo x.NakedObjectsFramework
-        IsNotNullAndPersistent prNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
+        IsNotNullAndPersistent pNo x.NakedFramework
+        IsNotNullAndPersistent prNo x.NakedFramework
     
     [<Test>]
     member x.CreatedObjectCallsCreated() = 
@@ -193,7 +193,7 @@ type CodeSystemTests() =
         let p = pNo.Object :?> Person
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
-        save pNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
         let p = pNo.Object :?> Person
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
@@ -205,7 +205,7 @@ type CodeSystemTests() =
         let changeName() = 
             let newName = uniqueName()
             p1.Name <- newName
-        makeAndSaveChanges changeName x.NakedObjectsFramework
+        makeAndSaveChanges changeName x.NakedFramework
         let p2 = x.GetPersonDomainObject()
         Assert.AreEqual(p1.Name, p2.Name)
     
@@ -213,7 +213,7 @@ type CodeSystemTests() =
     member x.UpdateScalarOnPersistentObjectCallsUpdatingUpdated() = 
         let p1 = x.GetPersonDomainObject()
         let changeName() = p1.Name <- uniqueName()
-        makeAndSaveChanges changeName x.NakedObjectsFramework
+        makeAndSaveChanges changeName x.NakedFramework
         let m = p1.GetCallbackStatus()
         
         let findValue key = 
@@ -225,7 +225,7 @@ type CodeSystemTests() =
     [<Test>]
     member x.UpdateReferenceOnPersistentObject() = 
         let p1 = x.GetPersonDomainObject()
-        let pp = x.NakedObjectsFramework.Persistor.Instances<Product>()
+        let pp = x.NakedFramework.Persistor.Instances<Product>()
         
         let pr = 
             pp
@@ -233,14 +233,14 @@ type CodeSystemTests() =
             |> Seq.head
         
         let changeFav() = p1.Favourite <- pr
-        makeAndSaveChanges changeFav x.NakedObjectsFramework
+        makeAndSaveChanges changeFav x.NakedFramework
         let p2 = x.GetPersonDomainObject()
         Assert.AreEqual(p1.Favourite, p2.Favourite)
   
     [<Test>]
     member x.UpdateReferenceOnPersistentObjectCallsUpdatingUpdated() = 
         let p1 = x.GetPersonDomainObject()
-        let pp = x.NakedObjectsFramework.Persistor.Instances<Product>() |> Seq.toList
+        let pp = x.NakedFramework.Persistor.Instances<Product>() |> Seq.toList
         
         let pr = 
             pp
@@ -248,7 +248,7 @@ type CodeSystemTests() =
             |> Seq.head
         
         let changeFav() = p1.Favourite <- pr
-        makeAndSaveChanges changeFav x.NakedObjectsFramework
+        makeAndSaveChanges changeFav x.NakedFramework
         let m = p1.GetCallbackStatus()
         
         let findValue key = 
@@ -261,7 +261,7 @@ type CodeSystemTests() =
     member x.SavingNewObjectCallsPersistingPersisted() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
-        save pNo x.NakedObjectsFramework
+        save pNo x.NakedFramework
         let m1 = p.GetCallbackStatus()
         
         let fv (map : IDictionary<string, int>) key = 
@@ -279,7 +279,7 @@ type CodeSystemTests() =
     
     [<Test>]
     member x.CreateAndRetrieveCountryCode() = 
-        let ctx = x.NakedObjectsFramework
+        let ctx = x.NakedFramework
         
         let createCC() = 
             let setter (cc : CountryCode) = 
@@ -289,15 +289,15 @@ type CodeSystemTests() =
         
         let nocc = createCC()
         let cc = nocc.GetDomainObject<CountryCode>()
-        save nocc x.NakedObjectsFramework
-        let cc1 = x.NakedObjectsFramework.Persistor.Instances<CountryCode>() |> Seq.head
+        save nocc x.NakedFramework
+        let cc1 = x.NakedFramework.Persistor.Instances<CountryCode>() |> Seq.head
         Assert.AreEqual(cc.Code, cc1.Code)
         Assert.AreEqual(cc.Name, cc1.Name)
         ()
     
     [<Test>]
     member x.CountryCodeNameIsRequired() = 
-        let ctx = x.NakedObjectsFramework
+        let ctx = x.NakedFramework
         
         let createCC() = 
             let setter (cc : CountryCode) = cc.Code <- uniqueName()
@@ -305,7 +305,7 @@ type CodeSystemTests() =
         
         let nocc = createCC()
         try 
-            save nocc x.NakedObjectsFramework
+            save nocc x.NakedFramework
             Assert.Fail()
         with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
         () 

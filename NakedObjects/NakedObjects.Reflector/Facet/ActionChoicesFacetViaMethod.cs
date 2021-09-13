@@ -47,7 +47,7 @@ namespace NakedObjects.Reflector.Facet {
 
         public override bool IsMultiple { get; }
 
-        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedObjectsFramework framework) {
+        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework) {
             var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
 
             try {
