@@ -24,21 +24,21 @@ using NakedFunctions.Services;
 namespace NakedFunctions.Reflector.Extensions {
     public static class NakedFunctionsExtensions {
         public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
-            new(options.FunctionalTypes, options.Functions, options.ConcurrencyCheck);
+            new(options.DomainTypes, options.DomainFunctions, options.ConcurrencyCheck);
 
         public static void AddNakedFunctions(this NakedFrameworkOptions frameworkOptions, Action<NakedFunctionsOptions> setupAction) {
             var options = new NakedFunctionsOptions();
             setupAction(options);
 
-            if (options.FunctionalTypes.Any()) {
+            if (options.DomainTypes.Any()) {
                 // filter enums and add to SystemTypes 
-                var enums = options.FunctionalTypes.Where(t => t.IsEnum).ToArray();
+                var enums = options.DomainTypes.Where(t => t.IsEnum).ToArray();
                 var coreFunctionalTypes = new[] {typeof(FunctionalContext), typeof(IContext)};
-                options.FunctionalTypes = options.FunctionalTypes.Except(enums).ToArray();
+                options.DomainTypes = options.DomainTypes.Except(enums).ToArray();
                 frameworkOptions.SupportedSystemTypes ??= t => t;
                 frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(enums).ToArray();
                 frameworkOptions.AdditionalUnpersistedTypes = coreFunctionalTypes;
-                options.FunctionalTypes = options.FunctionalTypes.Union(coreFunctionalTypes).Distinct().ToArray();
+                options.DomainTypes = options.DomainTypes.Union(coreFunctionalTypes).Distinct().ToArray();
             }
 
             RegisterWellKnownServices(frameworkOptions.Services);

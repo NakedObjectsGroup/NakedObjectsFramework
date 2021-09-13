@@ -110,8 +110,8 @@ namespace NakedFramework.Test.TestCase {
 
         protected virtual Action<NakedFunctionsOptions> NakedFunctionsOptions =>
             options => {
-                options.FunctionalTypes = Records;
-                options.Functions = Functions;
+                options.DomainTypes = Records;
+                options.DomainFunctions = Functions;
             };
 
         protected virtual Action<RestfulObjectsOptions> RestfulObjectsOptions => options => { options.CacheSettings = (0, 3600, 86400); };

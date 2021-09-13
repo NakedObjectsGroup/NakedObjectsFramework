@@ -62,8 +62,8 @@ namespace NakedFunctions.Reflector.Test.Component {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
 
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = Array.Empty<Type>();
-                        options.Functions = Array.Empty<Type>();
+                        options.DomainTypes = Array.Empty<Type>();
+                        options.DomainFunctions = Array.Empty<Type>();
                     }
                 );
             }
@@ -82,8 +82,8 @@ namespace NakedFunctions.Reflector.Test.Component {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 //
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = Array.Empty<Type>();
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = Array.Empty<Type>();
                     }
                 );
             }
@@ -107,8 +107,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectSimpleFunction() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(SimpleFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(SimpleFunctions)};
                     }
                 );
             }
@@ -129,8 +129,8 @@ namespace NakedFunctions.Reflector.Test.Component {
                 coreOptions.SupportedSystemTypes = t => new[] {typeof(IQueryable<>), typeof(IList<>)};
 
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(TupleFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(TupleFunctions)};
                     }
                 );
             }
@@ -151,8 +151,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectUnsupportedTuple() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(UnsupportedTupleFunctions)};
-                        options.Functions = Array.Empty<Type>();
+                        options.DomainTypes = new[] {typeof(UnsupportedTupleFunctions)};
+                        options.DomainFunctions = Array.Empty<Type>();
                     }
                 );
             }
@@ -178,8 +178,8 @@ namespace NakedFunctions.Reflector.Test.Component {
                 coreOptions.SupportedSystemTypes = t => new[] {typeof(IQueryable<>)};
 
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(SimpleInjectedFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(SimpleInjectedFunctions)};
                     }
                 );
             }
@@ -199,8 +199,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectNavigableType() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(NavigableClass), typeof(SimpleClass)};
-                        options.Functions = Array.Empty<Type>();
+                        options.DomainTypes = new[] {typeof(NavigableClass), typeof(SimpleClass)};
+                        options.DomainFunctions = Array.Empty<Type>();
                     }
                 );
             }
@@ -218,8 +218,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectBoundedType() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(BoundedClass)};
-                        options.Functions = Array.Empty<Type>();
+                        options.DomainTypes = new[] {typeof(BoundedClass)};
+                        options.DomainFunctions = Array.Empty<Type>();
                     }
                 );
             }
@@ -238,8 +238,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectCreateNewAction() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(CreateNewFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(CreateNewFunctions)};
                     }
                 );
             }
@@ -261,8 +261,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectDisplayAsPropertyAction() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(DisplayAsPropertyFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(DisplayAsPropertyFunctions)};
                     }
                 );
             }
@@ -292,8 +292,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectPluralClass() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(PluralClass)};
-                        options.Functions = Array.Empty<Type>();
+                        options.DomainTypes = new[] {typeof(PluralClass)};
+                        options.DomainFunctions = Array.Empty<Type>();
                     }
                 );
             }
@@ -315,8 +315,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectIgnoredProperty() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(IgnoredClass)};
-                        options.Functions = Array.Empty<Type>();
+                        options.DomainTypes = new[] {typeof(IgnoredClass)};
+                        options.DomainFunctions = Array.Empty<Type>();
                     }
                 );
             }
@@ -351,8 +351,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectDefaultValueParameter() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(ParameterDefaultClass)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(ParameterDefaultClass)};
                     }
                 );
             }
@@ -381,8 +381,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectRangeParameter() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(RangeClass)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(RangeClass)};
                     }
                 );
             }
@@ -407,8 +407,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectDescribedAs() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(DescribedAsClass)};
-                        options.Functions = new[] {typeof(DescribedAsFunctions)};
+                        options.DomainTypes = new[] {typeof(DescribedAsClass)};
+                        options.DomainFunctions = new[] {typeof(DescribedAsFunctions)};
                     }
                 );
             }
@@ -442,8 +442,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectRenderEagerly() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(RenderEagerlyClass)};
-                        options.Functions = new[] {typeof(RenderEagerlyFunctions)};
+                        options.DomainTypes = new[] {typeof(RenderEagerlyClass)};
+                        options.DomainFunctions = new[] {typeof(RenderEagerlyFunctions)};
                     }
                 );
             }
@@ -477,8 +477,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectTableView() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(TableViewClass)};
-                        options.Functions = new[] {typeof(TableViewFunctions)};
+                        options.DomainTypes = new[] {typeof(TableViewClass)};
+                        options.DomainFunctions = new[] {typeof(TableViewFunctions)};
                     }
                 );
             }
@@ -513,8 +513,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectMask() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(MaskClass)};
-                        options.Functions = new[] {typeof(MaskFunctions)};
+                        options.DomainTypes = new[] {typeof(MaskClass)};
+                        options.DomainFunctions = new[] {typeof(MaskFunctions)};
                     }
                 );
             }
@@ -537,8 +537,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectOptionally() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(OptionallyClass)};
-                        options.Functions = new[] {typeof(OptionallyFunctions)};
+                        options.DomainTypes = new[] {typeof(OptionallyClass)};
+                        options.DomainFunctions = new[] {typeof(OptionallyFunctions)};
                     }
                 );
             }
@@ -579,8 +579,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectNamed() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(NamedClass)};
-                        options.Functions = new[] {typeof(NamedFunctions)};
+                        options.DomainTypes = new[] {typeof(NamedClass)};
+                        options.DomainFunctions = new[] {typeof(NamedFunctions)};
                     }
                 );
             }
@@ -620,8 +620,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectRegex() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(RegexClass)};
-                        options.Functions = new[] {typeof(RegexFunctions)};
+                        options.DomainTypes = new[] {typeof(RegexClass)};
+                        options.DomainFunctions = new[] {typeof(RegexFunctions)};
                     }
                 );
             }
@@ -658,8 +658,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectPresentationHint() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(HintClass)};
-                        options.Functions = new[] {typeof(HintFunctions)};
+                        options.DomainTypes = new[] {typeof(HintClass)};
+                        options.DomainFunctions = new[] {typeof(HintFunctions)};
                     }
                 );
             }
@@ -699,8 +699,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectPageSize() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(PageSizeFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(PageSizeFunctions)};
                     }
                 );
             }
@@ -724,8 +724,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectPassword() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(PasswordFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(PasswordFunctions)};
                     }
                 );
             }
@@ -750,8 +750,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectMultiline() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(MultilineClass)};
-                        options.Functions = new[] {typeof(MultiLineFunctions)};
+                        options.DomainTypes = new[] {typeof(MultilineClass)};
+                        options.DomainFunctions = new[] {typeof(MultiLineFunctions)};
                     }
                 );
             }
@@ -790,8 +790,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectOrder() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(OrderClass)};
-                        options.Functions = new[] {typeof(OrderFunctions)};
+                        options.DomainTypes = new[] {typeof(OrderClass)};
+                        options.DomainFunctions = new[] {typeof(OrderFunctions)};
                     }
                 );
             }
@@ -832,8 +832,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectHidden() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(HiddenClass)};
-                        options.Functions = new Type[] { };
+                        options.DomainTypes = new[] {typeof(HiddenClass)};
+                        options.DomainFunctions = new Type[] { };
                     }
                 );
             }
@@ -855,8 +855,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectHiddenViaFunction() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(HiddenClass)};
-                        options.Functions = new[] {typeof(HideFunctions)};
+                        options.DomainTypes = new[] {typeof(HiddenClass)};
+                        options.DomainFunctions = new[] {typeof(HideFunctions)};
                     }
                 );
             }
@@ -876,8 +876,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectVersioned() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(VersionedClass)};
-                        options.Functions = new Type[] { };
+                        options.DomainTypes = new[] {typeof(VersionedClass)};
+                        options.DomainFunctions = new Type[] { };
                     }
                 );
             }
@@ -898,8 +898,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectViewModelFunctions() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass), typeof(ViewModel)};
-                        options.Functions = new[] {typeof(ViewModelFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass), typeof(ViewModel)};
+                        options.DomainFunctions = new[] {typeof(ViewModelFunctions)};
                     }
                 );
             }
@@ -920,8 +920,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectPotentFunctions() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(PotentFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(PotentFunctions)};
                     }
                 );
             }
@@ -948,8 +948,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectContributedCollections() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(ContributedCollectionFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(ContributedCollectionFunctions)};
                     }
                 );
             }
@@ -973,8 +973,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectEditAnnotation() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(EditClass), typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(EditClassFunctions)};
+                        options.DomainTypes = new[] {typeof(EditClass), typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(EditClassFunctions)};
                     }
                 );
             }
@@ -1023,8 +1023,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectDuplicateFunctionsSameType() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(DuplicateFunctions)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(DuplicateFunctions)};
                     }
                 );
             }
@@ -1047,8 +1047,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectDuplicateFunctionsDifferentType() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(DuplicateFunctions1), typeof(DuplicateFunctions2)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(DuplicateFunctions1), typeof(DuplicateFunctions2)};
                     }
                 );
             }
@@ -1070,8 +1070,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectParameterChoices() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(ChoicesClass)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(ChoicesClass)};
                     }
                 );
             }
@@ -1103,8 +1103,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectParameterMismatchedChoices() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(ChoicesClass)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(ChoicesClass)};
                     }
                 );
             }
@@ -1136,8 +1136,8 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectTargetMismatchedChoices() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedFunctions(options => {
-                        options.FunctionalTypes = new[] {typeof(SimpleClass)};
-                        options.Functions = new[] {typeof(MismatchedTargetClass)};
+                        options.DomainTypes = new[] {typeof(SimpleClass)};
+                        options.DomainFunctions = new[] {typeof(MismatchedTargetClass)};
                     }
                 );
             }

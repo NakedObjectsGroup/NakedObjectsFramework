@@ -10,8 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace NakedFunctions.Reflector.Extensions {
     public class NakedFunctionsOptions {
-        public Type[] FunctionalTypes { get; set; } = Array.Empty<Type>();
-        public Type[] Functions { get; set; } = Array.Empty<Type>();
+        public Type[] DomainTypes { get; set; } = Array.Empty<Type>();
+        public Type[] DomainFunctions { get; set; } = Array.Empty<Type>();
         public bool ConcurrencyCheck { get; set; } = true;
         public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
     }
