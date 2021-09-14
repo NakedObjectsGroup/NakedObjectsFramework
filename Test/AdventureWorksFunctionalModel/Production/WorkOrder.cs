@@ -29,9 +29,7 @@ namespace AW.Types {
         public virtual short? ScrapReasonID { get; init; }
 
         [MemberOrder(26)]
-#pragma warning disable 8618
-        public virtual ScrapReason ScrapReason { get; init; }
-#pragma warning restore 8618
+        public virtual ScrapReason? ScrapReason { get; init; }
 
         [MemberOrder(20)]
         public virtual int OrderQty { get; init; }
