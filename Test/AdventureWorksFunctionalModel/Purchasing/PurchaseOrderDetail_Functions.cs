@@ -5,28 +5,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFunctions;
 using AW.Types;
-
+using NakedFunctions;
 
 namespace AW.Functions {
-        
-    public static class PurchaseOrderDetail_Functions
-    {
+    public static class PurchaseOrderDetail_Functions {
         internal static IContext UpdatePOD(
             PurchaseOrderDetail original, PurchaseOrderDetail updated, IContext context) =>
-                context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
         [MemberOrder(1)]
-        public static  IContext ReceiveGoods(
+        public static IContext ReceiveGoods(
             this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock, IContext context) =>
-            UpdatePOD(pod, pod with {ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock}, context);
+            UpdatePOD(pod, pod with { ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock }, context);
 
-        public static int Default1ReceiveGoods(this PurchaseOrderDetail pod)=>  pod.OrderQty;
+        public static int Default1ReceiveGoods(this PurchaseOrderDetail pod) => pod.OrderQty;
 
         public static int Defaul32ReceiveGoods(this PurchaseOrderDetail pod) => pod.OrderQty;
 
         public static string ValidateReceiveGoods(this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock) =>
-        qtyRejected + qtyIntoStock != qtyReceived ? "Qty Into Stock + Qty Rejected must add up to Qty Received" : null;
+            qtyRejected + qtyIntoStock != qtyReceived ? "Qty Into Stock + Qty Rejected must add up to Qty Received" : null;
     }
 }

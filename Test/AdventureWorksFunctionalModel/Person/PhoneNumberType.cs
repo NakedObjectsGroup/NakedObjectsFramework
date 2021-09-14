@@ -1,6 +1,5 @@
-using NakedFunctions;
 using System;
-
+using NakedFunctions;
 
 namespace AW.Types {
     [Bounded]
@@ -11,14 +10,14 @@ namespace AW.Types {
         [Hidden]
         public virtual string Name { get; init; }
 
+        public virtual bool Equals(PhoneNumberType other) => ReferenceEquals(this, other);
+
         [Hidden]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(PhoneNumberType other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ProductCategoryMap : EntityTypeConfiguration<ProductCategory>
-    {
-        public ProductCategoryMap()
-        {
+namespace AW.Mapping {
+    public class ProductCategoryMap : EntityTypeConfiguration<ProductCategory> {
+        public ProductCategoryMap() {
             // Primary Key
             HasKey(t => t.ProductCategoryID);
 
@@ -22,14 +19,12 @@ namespace AW.Mapping
             Property(t => t.ProductCategoryID).HasColumnName("ProductCategoryID");
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<ProductCategory> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<ProductCategory> builder) {
             builder.HasKey(t => t.ProductCategoryID);
 
             // Properties
@@ -42,7 +37,7 @@ namespace AW.Mapping
             builder.Property(t => t.ProductCategoryID).HasColumnName("ProductCategoryID");
             builder.Property(t => t.Name).HasColumnName("Name");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 }

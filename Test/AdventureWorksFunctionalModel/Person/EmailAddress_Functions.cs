@@ -1,6 +1,3 @@
-namespace AW.Functions
-{
-    public static class EmailAddressFunctions
-    {
-    }
+namespace AW.Functions {
+    public static class EmailAddressFunctions { }
 }

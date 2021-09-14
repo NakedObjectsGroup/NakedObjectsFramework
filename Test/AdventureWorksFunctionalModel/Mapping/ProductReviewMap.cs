@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ProductReviewMap : EntityTypeConfiguration<ProductReview>
-    {
-        public ProductReviewMap()
-        {
+namespace AW.Mapping {
+    public class ProductReviewMap : EntityTypeConfiguration<ProductReview> {
+        public ProductReviewMap() {
             // Primary Key
             HasKey(t => t.ProductReviewID);
 
@@ -33,33 +30,30 @@ namespace AW.Mapping
             Property(t => t.EmailAddress).HasColumnName("EmailAddress");
             Property(t => t.Rating).HasColumnName("Rating");
             Property(t => t.Comments).HasColumnName("Comments");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product)
                 .WithMany(t => t.ProductReviews)
                 .HasForeignKey(d => d.ProductID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<ProductReview> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<ProductReview> builder) {
             builder.HasKey(t => t.ProductReviewID);
 
             // Properties
             builder.Property(t => t.ReviewerName)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             builder.Property(t => t.EmailAddress)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             builder.Property(t => t.Comments)
-                .HasMaxLength(3850);
+                   .HasMaxLength(3850);
 
             // Table & Column Mappings
             builder.ToTable("ProductReview", "Production");
@@ -70,7 +64,7 @@ namespace AW.Mapping
             builder.Property(t => t.EmailAddress).HasColumnName("EmailAddress");
             builder.Property(t => t.Rating).HasColumnName("Rating");
             builder.Property(t => t.Comments).HasColumnName("Comments");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.Product)

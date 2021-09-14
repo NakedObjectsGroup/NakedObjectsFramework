@@ -5,24 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using AW.Types;
+using System;
 using System.Linq;
+using AW.Types;
 using NakedFunctions;
 
-using System;
-
 namespace AW.Functions {
-
-
     [Named("Customers")]
     public static class CustomerQuery_Functions {
-
-        public static CustomerCollectionViewModel ShowCustomersWithAddressInRegion(this IQueryable<Customer> customers, CountryRegion region) {
-            throw new NotImplementedException();
-            //List<Customer> cc = customers.Where(c => c.Addresses.Any(a => a.Address.StateProvince.CountryRegion == region)).ToList();
-            //var ccvm = Container.NewViewModel<CustomerCollectionViewModel>();
-            //ccvm.Customers = cc.ToList();
-            //return ccvm;
-        }
+        public static CustomerCollectionViewModel ShowCustomersWithAddressInRegion(this IQueryable<Customer> customers, CountryRegion region) => throw new NotImplementedException();
     }
 }

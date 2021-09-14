@@ -1,6 +1,3 @@
-namespace AW.Functions
-{
-    public static class PhoneNumberTypeFunctions
-    {
-    }
+namespace AW.Functions {
+    public static class PhoneNumberTypeFunctions { }
 }

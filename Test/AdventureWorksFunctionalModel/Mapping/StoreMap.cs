@@ -29,8 +29,6 @@ namespace AW.Mapping {
 
     public static partial class Mapper {
         public static void Map(this EntityTypeBuilder<Store> builder) {
-            //builder.HasKey(t => t.BusinessEntityID);
-
             builder.Property(t => t.Name)
                    .IsRequired()
                    .HasMaxLength(50);

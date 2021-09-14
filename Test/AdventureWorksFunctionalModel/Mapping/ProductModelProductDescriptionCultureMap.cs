@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ProductModelProductDescriptionCultureMap : EntityTypeConfiguration<ProductModelProductDescriptionCulture>
-    {
-        public ProductModelProductDescriptionCultureMap()
-        {
+namespace AW.Mapping {
+    public class ProductModelProductDescriptionCultureMap : EntityTypeConfiguration<ProductModelProductDescriptionCulture> {
+        public ProductModelProductDescriptionCultureMap() {
             // Primary Key
             HasKey(t => new { t.ProductModelID, t.ProductDescriptionID, t.CultureID });
 
@@ -30,7 +27,7 @@ namespace AW.Mapping
             Property(t => t.ProductModelID).HasColumnName("ProductModelID");
             Property(t => t.ProductDescriptionID).HasColumnName("ProductDescriptionID");
             Property(t => t.CultureID).HasColumnName("CultureID");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Culture).WithMany().HasForeignKey(t => t.CultureID);
@@ -38,27 +35,24 @@ namespace AW.Mapping
             HasRequired(t => t.ProductModel)
                 .WithMany(t => t.ProductModelProductDescriptionCulture)
                 .HasForeignKey(d => d.ProductModelID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<ProductModelProductDescriptionCulture> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<ProductModelProductDescriptionCulture> builder) {
             builder.HasKey(t => new { t.ProductModelID, t.ProductDescriptionID, t.CultureID });
 
             // Properties
             builder.Property(t => t.ProductModelID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.ProductDescriptionID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.CultureID)
-                .IsRequired()
-                .IsFixedLength()
-                .HasMaxLength(6);
+                   .IsRequired()
+                   .IsFixedLength()
+                   .HasMaxLength(6);
 
             // Table & Column Mappings
             builder.ToTable("ProductModelProductDescriptionCulture", "Production");

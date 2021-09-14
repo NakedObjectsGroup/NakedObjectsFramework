@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class PurchaseOrderDetailMap : EntityTypeConfiguration<PurchaseOrderDetail>
-    {
-        public PurchaseOrderDetailMap()
-        {
+namespace AW.Mapping {
+    public class PurchaseOrderDetailMap : EntityTypeConfiguration<PurchaseOrderDetail> {
+        public PurchaseOrderDetailMap() {
             // Primary Key
             HasKey(t => new { t.PurchaseOrderID, t.PurchaseOrderDetailID });
 
@@ -32,29 +29,26 @@ namespace AW.Mapping
             Property(t => t.ReceivedQty).HasColumnName("ReceivedQty");
             Property(t => t.RejectedQty).HasColumnName("RejectedQty");
             Property(t => t.StockedQty).HasColumnName("StockedQty").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
             HasRequired(t => t.PurchaseOrderHeader)
                 .WithMany(t => t.Details)
                 .HasForeignKey(d => d.PurchaseOrderID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<PurchaseOrderDetail> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<PurchaseOrderDetail> builder) {
             builder.HasKey(t => new { t.PurchaseOrderID, t.PurchaseOrderDetailID });
 
             // Properties
             builder.Property(t => t.PurchaseOrderID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.PurchaseOrderDetailID)
-                .ValueGeneratedOnAdd();
+                   .ValueGeneratedOnAdd();
 
             // Table & Column Mappings
             builder.ToTable("PurchaseOrderDetail", "Purchasing");
@@ -68,7 +62,7 @@ namespace AW.Mapping
             builder.Property(t => t.ReceivedQty).HasColumnName("ReceivedQty");
             builder.Property(t => t.RejectedQty).HasColumnName("RejectedQty");
             builder.Property(t => t.StockedQty).HasColumnName("StockedQty").ValueGeneratedOnAddOrUpdate();
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);

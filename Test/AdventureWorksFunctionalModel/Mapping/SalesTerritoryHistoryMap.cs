@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class SalesTerritoryHistoryMap : EntityTypeConfiguration<SalesTerritoryHistory>
-    {
-        public SalesTerritoryHistoryMap()
-        {
+namespace AW.Mapping {
+    public class SalesTerritoryHistoryMap : EntityTypeConfiguration<SalesTerritoryHistory> {
+        public SalesTerritoryHistoryMap() {
             // Primary Key
             HasKey(t => new { t.BusinessEntityID, t.SalesTerritoryID, t.StartDate });
 
@@ -27,29 +24,26 @@ namespace AW.Mapping
             Property(t => t.StartDate).HasColumnName("StartDate");
             Property(t => t.EndDate).HasColumnName("EndDate");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.SalesPerson)
                 .WithMany(t => t.TerritoryHistory)
                 .HasForeignKey(d => d.BusinessEntityID);
             HasRequired(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<SalesTerritoryHistory> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<SalesTerritoryHistory> builder) {
             builder.HasKey(t => new { t.BusinessEntityID, t.SalesTerritoryID, t.StartDate });
 
             // Properties
             builder.Property(t => t.BusinessEntityID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.SalesTerritoryID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             // Table & Column Mappings
             builder.ToTable("SalesTerritoryHistory", "Sales");
@@ -58,7 +52,7 @@ namespace AW.Mapping
             builder.Property(t => t.StartDate).HasColumnName("StartDate");
             builder.Property(t => t.EndDate).HasColumnName("EndDate");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.SalesPerson)

@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class EmployeeMap : EntityTypeConfiguration<Employee>
-    {
-        public EmployeeMap()
-        {
+namespace AW.Mapping {
+    public class EmployeeMap : EntityTypeConfiguration<Employee> {
+        public EmployeeMap() {
             // Primary Key
             HasKey(t => t.BusinessEntityID);
 
@@ -50,21 +47,17 @@ namespace AW.Mapping
             Property(t => t.SickLeaveHours).HasColumnName("SickLeaveHours");
             Property(t => t.Current).HasColumnName("CurrentFlag");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             Ignore(t => t.Manager);
-                //.WithMany(t => t.DirectReports)
-                //.HasForeignKey(d => d.ManagerID);
             HasOptional(t => t.SalesPerson).WithRequired(t => t.EmployeeDetails);
             HasRequired(t => t.PersonDetails).WithOptional(t => t.Employee);
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<Employee> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<Employee> builder) {
             builder.HasKey(t => t.BusinessEntityID);
 
             // Properties
@@ -105,13 +98,10 @@ namespace AW.Mapping
             builder.Property(t => t.SickLeaveHours).HasColumnName("SickLeaveHours");
             builder.Property(t => t.Current).HasColumnName("CurrentFlag");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.Ignore(t => t.Manager);
-            //.WithMany(t => t.DirectReports)
-            //.HasForeignKey(d => d.ManagerID);
-            //builder.HasOne(t => t.SalesPerson).WithOne(t => t.EmployeeDetails);
             builder.HasOne(t => t.PersonDetails).WithOne(t => t.Employee);
         }
     }

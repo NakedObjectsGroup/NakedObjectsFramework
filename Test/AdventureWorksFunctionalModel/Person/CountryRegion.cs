@@ -6,19 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
-namespace AW.Types
-{
+namespace AW.Types {
     [Bounded]
-    public record CountryRegion : IHasModifiedDate
-    {
+    public record CountryRegion : IHasModifiedDate {
         [MemberOrder(1)]
         public virtual string Name { get; init; }
 
         [MemberOrder(2)]
         public virtual string CountryRegionCode { get; init; }
+
+        public virtual bool Equals(CountryRegion other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
@@ -26,8 +25,6 @@ namespace AW.Types
 
         public override string ToString() => Name;
 
-        public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(CountryRegion other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

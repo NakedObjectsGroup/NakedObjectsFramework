@@ -12,36 +12,21 @@ using NakedFunctions;
 
 namespace AW.Types {
     /// <summary>
-    /// 
     /// </summary>
     [ViewModel(typeof(CustomerDashboard_Functions))]
     public record CustomerDashboard {
-
         [Hidden]
         public virtual Customer Root { get; init; }
 
-        public string Name {
-            get { return Customer_Functions.IsIndividual(Root) ? Root.Person.ToString() : Root.Store.Name; }
-        }
-
-        [TableView(true, "OrderDate", "TotalDue", "Status")]
-        public IList<SalesOrderHeader> RecentOrders(IContext context) =>
-            Order_AdditionalFunctions.RecentOrders(Root, context).Take(5).ToList();
-
-
-        //TODO: Needs to be calculated on creation of VM, not once displayed
-        //public decimal TotalOrderValue(
-        //    IQueryable<SalesOrderHeader> headers)
-        //{
-        //    int id = Root.CustomerID;
-        //    return headers.Where(x => x.Customer.CustomerID == id).Sum(x => x.TotalDue);
-        //}
+        public string Name => Root.IsIndividual() ? Root.Person.ToString() : Root.Store.Name;
 
         //Empty field, not - to test that fields are not editable in a VM
         public virtual string Comments { get; init; }
 
-        public override string ToString() {
-            return $"{Name} - Dashboard";
-        }
+        [TableView(true, "OrderDate", "TotalDue", "Status")]
+        public IList<SalesOrderHeader> RecentOrders(IContext context) =>
+            Root.RecentOrders(context).Take(5).ToList();
+
+        public override string ToString() => $"{Name} - Dashboard";
     }
 }

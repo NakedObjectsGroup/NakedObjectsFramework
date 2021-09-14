@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ProductModelMap : EntityTypeConfiguration<ProductModel>
-    {
-        public ProductModelMap()
-        {
+namespace AW.Mapping {
+    public class ProductModelMap : EntityTypeConfiguration<ProductModel> {
+        public ProductModelMap() {
             // Primary Key
             HasKey(t => t.ProductModelID);
 
@@ -24,20 +21,18 @@ namespace AW.Mapping
             Property(t => t.CatalogDescription).HasColumnName("CatalogDescription");
             Property(t => t.Instructions).HasColumnName("Instructions");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<ProductModel> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<ProductModel> builder) {
             builder.HasKey(t => t.ProductModelID);
 
             // Properties
             builder.Property(t => t.Name)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             // Table & Column Mappings
             builder.ToTable("ProductModel", "Production");
@@ -46,7 +41,7 @@ namespace AW.Mapping
             builder.Property(t => t.CatalogDescription).HasColumnName("CatalogDescription");
             builder.Property(t => t.Instructions).HasColumnName("Instructions");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 }

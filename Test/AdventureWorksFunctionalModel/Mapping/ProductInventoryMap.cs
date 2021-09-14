@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ProductInventoryMap : EntityTypeConfiguration<ProductInventory>
-    {
-        public ProductInventoryMap()
-        {
+namespace AW.Mapping {
+    public class ProductInventoryMap : EntityTypeConfiguration<ProductInventory> {
+        public ProductInventoryMap() {
             // Primary Key
             HasKey(t => new { t.ProductID, t.LocationID });
 
@@ -32,21 +29,18 @@ namespace AW.Mapping
             Property(t => t.Bin).HasColumnName("Bin");
             Property(t => t.Quantity).HasColumnName("Quantity");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Location).WithMany().HasForeignKey(t => t.LocationID);
             HasRequired(t => t.Product)
                 .WithMany(t => t.ProductInventory)
                 .HasForeignKey(d => d.ProductID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<ProductInventory> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<ProductInventory> builder) {
             builder.HasKey(t => new { t.ProductID, t.LocationID });
 
             // Properties
@@ -68,7 +62,7 @@ namespace AW.Mapping
             builder.Property(t => t.Bin).HasColumnName("Bin");
             builder.Property(t => t.Quantity).HasColumnName("Quantity");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.Location).WithMany().HasForeignKey(t => t.LocationID);

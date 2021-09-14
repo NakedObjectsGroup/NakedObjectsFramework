@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ProductModelIllustrationMap : EntityTypeConfiguration<ProductModelIllustration>
-    {
-        public ProductModelIllustrationMap()
-        {
+namespace AW.Mapping {
+    public class ProductModelIllustrationMap : EntityTypeConfiguration<ProductModelIllustration> {
+        public ProductModelIllustrationMap() {
             // Primary Key
             HasKey(t => new { t.ProductModelID, t.IllustrationID });
 
@@ -24,7 +21,7 @@ namespace AW.Mapping
             ToTable("ProductModelIllustration", "Production");
             Property(t => t.ProductModelID).HasColumnName("ProductModelID");
             Property(t => t.IllustrationID).HasColumnName("IllustrationID");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Illustration)
@@ -33,28 +30,25 @@ namespace AW.Mapping
             HasRequired(t => t.ProductModel)
                 .WithMany(t => t.ProductModelIllustration)
                 .HasForeignKey(d => d.ProductModelID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<ProductModelIllustration> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<ProductModelIllustration> builder) {
             builder.HasKey(t => new { t.ProductModelID, t.IllustrationID });
 
             // Properties
             builder.Property(t => t.ProductModelID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.IllustrationID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             // Table & Column Mappings
             builder.ToTable("ProductModelIllustration", "Production");
             builder.Property(t => t.ProductModelID).HasColumnName("ProductModelID");
             builder.Property(t => t.IllustrationID).HasColumnName("IllustrationID");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.Illustration)

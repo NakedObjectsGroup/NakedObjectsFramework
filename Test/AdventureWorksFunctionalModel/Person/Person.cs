@@ -6,19 +6,55 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFunctions;
 using System.Collections.Generic;
+using NakedFunctions;
 
 namespace AW.Types {
-
-        public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
-
+    public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
         [Hidden]
         public virtual string PersonType { get; init; }
 
+        [MemberOrder(21)] [Hidden]
+        public virtual EmailPromotion EmailPromotion { get; init; }
+
+        //To test a null image
+        //[NotMapped]
+        //public virtual Image Photo { get { return null; } }
+
+        [RenderEagerly]
+        [TableView(false, nameof(EmailAddress.EmailAddress1))]
+        public virtual ICollection<EmailAddress> EmailAddresses { get; init; } = new List<EmailAddress>();
+
+        [AWNotCounted]
+        [TableView(false,
+                   nameof(PersonPhone.PhoneNumberType),
+                   nameof(PersonPhone.PhoneNumber))]
+        public virtual ICollection<PersonPhone> PhoneNumbers { get; init; } = new List<PersonPhone>();
+
+        public virtual Password Password { get; init; }
+
+        [MemberOrder(30)]
+        public virtual string AdditionalContactInfo { get; init; }
+
+        [Hidden]
+        public virtual Employee Employee { get; init; }
+
+        public virtual bool Equals(Person other) => ReferenceEquals(this, other);
+
+        [MemberOrder(99)]
+        [Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        [Hidden]
+        public virtual Guid rowguid { get; init; }
+
+        public override string ToString() => NameStyle ? $"{LastName} {FirstName}" : $"{FirstName} {LastName}";
+
+        public override int GetHashCode() => base.GetHashCode();
+
         #region Name fields
 
-        [MemberOrder(15),  Named("Reverse name order")] 
+        [MemberOrder(15)] [Named("Reverse name order")]
         public virtual bool NameStyle { get; init; }
 
         [MemberOrder(11)]
@@ -35,46 +71,7 @@ namespace AW.Types {
 
         [MemberOrder(15)]
         public virtual string Suffix { get; init; }
+
         #endregion
-
-        [MemberOrder(21), Hidden]
-        public virtual EmailPromotion EmailPromotion { get; init; }
-    
-        //To test a null image
-        //[NotMapped]
-        //public virtual Image Photo { get { return null; } }
-
-        [RenderEagerly]
-        [TableView(false, nameof(EmailAddress.EmailAddress1))]
-        public virtual ICollection<EmailAddress> EmailAddresses { get; init; } = new List<EmailAddress>();
-
-        [AWNotCounted]
-        [TableView(false,
-                   nameof(PersonPhone.PhoneNumberType),
-                   nameof(PersonPhone.PhoneNumber))]
-        public virtual ICollection<PersonPhone> PhoneNumbers { get; init; } = new List<PersonPhone>();
-
-        
-        public virtual Password Password { get; init; }
-
-        [MemberOrder(30)]
-        public virtual string AdditionalContactInfo { get; init; }
-
-
-        [Hidden]
-        public virtual Employee Employee { get; init; }
-
-        [Hidden]
-        public virtual Guid rowguid { get; init; }
-
-        [MemberOrder(99)]        
-        [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
-
-        public override string ToString() => NameStyle ? $"{LastName} {FirstName}" : $"{FirstName} {LastName}";
-
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(Person other) => ReferenceEquals(this, other);
     }
 }

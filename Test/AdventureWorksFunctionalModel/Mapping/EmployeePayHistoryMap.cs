@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class EmployeePayHistoryMap : EntityTypeConfiguration<EmployeePayHistory>
-    {
-        public EmployeePayHistoryMap()
-        {
+namespace AW.Mapping {
+    public class EmployeePayHistoryMap : EntityTypeConfiguration<EmployeePayHistory> {
+        public EmployeePayHistoryMap() {
             // Primary Key
             HasKey(t => new { t.EmployeeID, t.RateChangeDate });
 
@@ -23,20 +20,17 @@ namespace AW.Mapping
             Property(t => t.RateChangeDate).HasColumnName("RateChangeDate");
             Property(t => t.Rate).HasColumnName("Rate");
             Property(t => t.PayFrequency).HasColumnName("PayFrequency");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Employee)
                 .WithMany(t => t.PayHistory)
                 .HasForeignKey(d => d.EmployeeID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<EmployeePayHistory> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<EmployeePayHistory> builder) {
             builder.HasKey(t => new { t.EmployeeID, t.RateChangeDate });
 
             // Properties

@@ -58,10 +58,6 @@ namespace AW.Functions {
             return (so, context.WithNew(so));
         }
 
-        //public static string ValidateCreateNewSpecialOffer(
-        //    [DefaultValue(1)] int minQty, [Optionally] int? maxQty) =>
-        //        SpecialOffer_Functions.ValidateQuantities(minQty, maxQty);
-
         public static IList<string> Choices3CreateNewSpecialOffer() =>
             SpecialOffer_Functions.Categories;
 

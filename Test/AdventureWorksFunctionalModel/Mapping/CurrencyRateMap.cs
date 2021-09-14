@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class CurrencyRateMap : EntityTypeConfiguration<CurrencyRate>
-    {
-        public CurrencyRateMap()
-        {
+namespace AW.Mapping {
+    public class CurrencyRateMap : EntityTypeConfiguration<CurrencyRate> {
+        public CurrencyRateMap() {
             // Primary Key
             HasKey(t => t.CurrencyRateID);
 
@@ -31,19 +28,16 @@ namespace AW.Mapping
             Property(t => t.ToCurrencyCode).HasColumnName("ToCurrencyCode");
             Property(t => t.AverageRate).HasColumnName("AverageRate");
             Property(t => t.EndOfDayRate).HasColumnName("EndOfDayRate");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);
             HasRequired(t => t.Currency1).WithMany().HasForeignKey(t => t.ToCurrencyCode);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<CurrencyRate> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<CurrencyRate> builder) {
             builder.HasKey(t => t.CurrencyRateID);
 
             // Properties
@@ -65,7 +59,7 @@ namespace AW.Mapping
             builder.Property(t => t.ToCurrencyCode).HasColumnName("ToCurrencyCode");
             builder.Property(t => t.AverageRate).HasColumnName("AverageRate");
             builder.Property(t => t.EndOfDayRate).HasColumnName("EndOfDayRate");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);

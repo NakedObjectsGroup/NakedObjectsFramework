@@ -1,14 +1,12 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class PurchaseOrderHeaderMap : EntityTypeConfiguration<PurchaseOrderHeader>
-    {
-        public PurchaseOrderHeaderMap()
-        {
+namespace AW.Mapping {
+    public class PurchaseOrderHeaderMap : EntityTypeConfiguration<PurchaseOrderHeader> {
+        public PurchaseOrderHeaderMap() {
             // Primary Key
             HasKey(t => t.PurchaseOrderID);
 
@@ -26,21 +24,18 @@ namespace AW.Mapping
             Property(t => t.SubTotal).HasColumnName("SubTotal");
             Property(t => t.TaxAmt).HasColumnName("TaxAmt");
             Property(t => t.Freight).HasColumnName("Freight");
-            Property(t => t.TotalDue).HasColumnName("TotalDue").HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Computed);
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.TotalDue).HasColumnName("TotalDue").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.OrderPlacedBy).WithMany().HasForeignKey(t => t.OrderPlacedByID);
             HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
             HasRequired(t => t.Vendor).WithMany().HasForeignKey(t => t.VendorID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<PurchaseOrderHeader> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<PurchaseOrderHeader> builder) {
             builder.HasKey(t => t.PurchaseOrderID);
 
             // Properties
@@ -58,12 +53,12 @@ namespace AW.Mapping
             builder.Property(t => t.TaxAmt).HasColumnName("TaxAmt");
             builder.Property(t => t.Freight).HasColumnName("Freight");
             builder.Property(t => t.TotalDue).HasColumnName("TotalDue").ValueGeneratedOnAddOrUpdate();
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
-           builder.HasOne(t => t.OrderPlacedBy).WithMany().HasForeignKey(t => t.OrderPlacedByID);
-           builder.HasOne(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
-           builder.HasOne(t => t.Vendor).WithMany().HasForeignKey(t => t.VendorID);
+            builder.HasOne(t => t.OrderPlacedBy).WithMany().HasForeignKey(t => t.OrderPlacedByID);
+            builder.HasOne(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
+            builder.HasOne(t => t.Vendor).WithMany().HasForeignKey(t => t.VendorID);
         }
     }
 }

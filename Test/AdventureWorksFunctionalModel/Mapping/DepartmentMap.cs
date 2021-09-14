@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class DepartmentMap : EntityTypeConfiguration<Department>
-    {
-        public DepartmentMap()
-        {
+namespace AW.Mapping {
+    public class DepartmentMap : EntityTypeConfiguration<Department> {
+        public DepartmentMap() {
             // Primary Key
             HasKey(t => t.DepartmentID);
 
@@ -26,10 +23,8 @@ namespace AW.Mapping
             Property(t => t.DepartmentID).HasColumnName("DepartmentID");
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.GroupName).HasColumnName("GroupName");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
-
-        
     }
 
     public static partial class Mapper {
@@ -54,5 +49,4 @@ namespace AW.Mapping
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
-
 }

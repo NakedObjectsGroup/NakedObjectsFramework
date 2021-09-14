@@ -1,6 +1,3 @@
-﻿namespace AW.Functions
-{
-    public static class ProductProductPhotoFunctions
-    {
-    }
+﻿namespace AW.Functions {
+    public static class ProductProductPhotoFunctions { }
 }

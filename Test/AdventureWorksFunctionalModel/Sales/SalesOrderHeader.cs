@@ -32,54 +32,6 @@ namespace AW.Types {
         [MemberOrder(2)]
         public virtual Customer Customer { get; init; }
 
-        //[Hidden]
-        //public virtual int ContactID { get; init; }
-
-        //private Contact _contact;
-        //[Hidden]
-        //public virtual Contact Contact { get { return _contact; } set { _contact = value; } }
-
-        //internal void SetUpContact(Contact value) {
-        //    Contact = value;
-        //    storeContact = FindStoreContactForContact();
-        //}
-
-        //#region StoreContact Property
-
-        //private StoreContact storeContact;
-
-        //[MemberOrder(3)]
-        //public virtual StoreContact StoreContact {
-        //    get { return storeContact; }
-        //    set {
-        //        if (value != null) {
-        //            storeContact = value;
-        //            Contact = value.Contact;
-        //        }
-        //    }
-        //}
-
-        //private StoreContact FindStoreContactForContact() {
-        //    IQueryable<StoreContact> query = from obj in Container.Instances<StoreContact>()
-        //        where obj.Contact.BusinessEntityID == Contact.BusinessEntityID && obj.Store.BusinessEntityID == Customer.Store.BusinessEntityID
-        //        select obj;
-
-        //    return query.FirstOrDefault();
-        //}
-
-        //public virtual bool HideStoreContact() {
-        //    return Customer != null && Customer.IsIndividual();
-        //}
-
-        //public List<StoreContact> ChoicesStoreContact() {
-        //    throw new NotImplementedException();
-        //    //if (Customer != null && Customer.IsStore()) {
-        //    //    return new List<StoreContact>(((Store) Customer).Contacts);
-        //    //}
-        //    //return new List<StoreContact>();
-        //}
-        //#endregion
-
         [Hidden]
         public virtual int BillingAddressID { get; init; }
 

@@ -36,44 +36,14 @@ namespace AW.Functions {
         public static (SalesOrderHeader, IContext) CheckOut(IContext context) {
             var cust = GetCustomerForUser(context);
             throw new NotImplementedException();
-            //var (order, context2) = Order_AdditionalFunctions.CreateNewOrder(cust, true, context);
-            //TODO: Need to check idea of modifying an instance that is pending save from another method
-            //TODO: Need to convert the following to a function
-            //order.AddItemsFromCart = true;
         }
 
         public static string DisableCheckOut(IContext context) => DisableIfNoCustomerForUser(context);
 
         private static Customer GetCustomerForUser(IContext context) => throw new NotImplementedException();
 
-        //Person c = GetContactFromUserNameAsEmail(context);
-        //if (c == null) return null;
-        //var individuals = context.Instances<Customer>();
-        //var qi = from i in individuals
-        //         where i.Contact.BusinessEntityID == c.BusinessEntityID
-        //         select i;
-        //if (qi.Count() == 1)
-        //{
-        //    return qi.First();
-        //}
-        //var stores = context.Instances<Store>();
-        //var storeContacts = context.Instances<StoreContact>();
-        //var qs = from s in storeContacts
-        //         where s.Contact.BusinessEntityID == c.BusinessEntityID
-        //         select s;
-        //if (qs.Count() == 1)
-        //{
-        //    return qs.First().Store;
-        //}
-        //WarnUser("No Customer found with a Contact email address of: " + UserName());
-        //return null;
         private static Person GetContactFromUserNameAsEmail(IContext context) => throw new NotImplementedException();
 
-        //string username = UserName(context.CurrentUser()).Trim().ToUpper();
-        //var q = from e in  context.Instances<EmailAddress>()
-        //        where e.EmailAddress1.Trim().ToUpper() == username
-        //        select e.Person;
-        //return q.FirstOrDefault();
         private static string UserName(IPrincipal principal) => principal.Identity.Name;
 
         public static IContext AddAllItemsInCartToOrder(
@@ -89,7 +59,6 @@ namespace AW.Functions {
 
         public static IContext EmptyCart(IContext context) => throw new NotImplementedException();
 
-        //RemoveItems(Cart(context));
         public static string DisableEmptyCart(IContext context) => DisableIfNoCustomerForUser(context);
 
         public static string DisableIfNoCustomerForUser(IContext context) => GetCustomerForUser(context) == null ? "User is not a recognised Customer" : null;

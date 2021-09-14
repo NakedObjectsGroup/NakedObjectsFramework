@@ -4,19 +4,15 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class SalesOrderHeaderMap : EntityTypeConfiguration<SalesOrderHeader>
-    {
-        public SalesOrderHeaderMap()
-        {
+namespace AW.Mapping {
+    public class SalesOrderHeaderMap : EntityTypeConfiguration<SalesOrderHeader> {
+        public SalesOrderHeaderMap() {
             // Primary Key
             HasKey(t => t.SalesOrderID);
 
             //Ignores
             Ignore(t => t.AddItemsFromCart);
             //Ignore(t => t.Status); //TODO is it necessary to ignore this?
-            
 
             // Properties
             Property(t => t.SalesOrderNumber)
@@ -59,10 +55,11 @@ namespace AW.Mapping
             Property(t => t.SubTotal).HasColumnName("SubTotal");
             Property(t => t.TaxAmt).HasColumnName("TaxAmt");
             Property(t => t.Freight).HasColumnName("Freight");
-            Property(t => t.TotalDue).HasColumnName("TotalDue").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed); ;
+            Property(t => t.TotalDue).HasColumnName("TotalDue").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
+            ;
             Property(t => t.Comment).HasColumnName("Comment");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);
@@ -76,33 +73,30 @@ namespace AW.Mapping
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<SalesOrderHeader> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<SalesOrderHeader> builder) {
             builder.HasKey(t => t.SalesOrderID);
 
             //Ignores
             builder.Ignore(t => t.AddItemsFromCart);
             //Ignore(t => t.Status); //TODO is it necessary to ignore this?
 
-
             // Properties
             builder.Property(t => t.SalesOrderNumber)
-                .IsRequired()
-                .HasMaxLength(25).ValueGeneratedOnAddOrUpdate();
+                   .IsRequired()
+                   .HasMaxLength(25).ValueGeneratedOnAddOrUpdate();
 
             builder.Property(t => t.PurchaseOrderNumber)
-                .HasMaxLength(25);
+                   .HasMaxLength(25);
 
             builder.Property(t => t.AccountNumber)
-                .HasMaxLength(15);
+                   .HasMaxLength(15);
 
             builder.Property(t => t.CreditCardApprovalCode)
-                .HasMaxLength(15);
+                   .HasMaxLength(15);
 
             builder.Property(t => t.Comment)
-                .HasMaxLength(128);
+                   .HasMaxLength(128);
 
             // Table & Column Mappings
             builder.ToTable("SalesOrderHeader", "Sales");
@@ -128,10 +122,10 @@ namespace AW.Mapping
             builder.Property(t => t.SubTotal).HasColumnName("SubTotal");
             builder.Property(t => t.TaxAmt).HasColumnName("TaxAmt");
             builder.Property(t => t.Freight).HasColumnName("Freight");
-            builder.Property(t => t.TotalDue).HasColumnName("TotalDue").ValueGeneratedOnAddOrUpdate(); 
+            builder.Property(t => t.TotalDue).HasColumnName("TotalDue").ValueGeneratedOnAddOrUpdate();
             builder.Property(t => t.Comment).HasColumnName("Comment");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);

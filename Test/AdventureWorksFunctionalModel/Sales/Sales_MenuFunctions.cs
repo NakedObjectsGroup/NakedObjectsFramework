@@ -34,9 +34,6 @@ namespace AW.Functions {
         [DescribedAs("... from an existing Employee")]
         public static SalesPerson CreateNewSalesPerson(Employee employee) =>
             //TODO:
-            //var salesPerson = NewTransientInstance<SalesPerson>();
-            //salesPerson.EmployeeDetails = employee;
-            //return salesPerson;
             null;
 
         public static IQueryable<SalesTaxRate> ListSalesTaxRates(IContext context) => context.Instances<SalesTaxRate>();

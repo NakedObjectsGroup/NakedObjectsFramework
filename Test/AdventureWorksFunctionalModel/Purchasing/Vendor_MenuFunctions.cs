@@ -5,24 +5,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using System.Linq;
-using NakedFunctions;
 using AW.Types;
-
+using NakedFunctions;
 using static AW.Helpers;
 
 namespace AW.Functions {
     [Named("Vendors")]
-    public static class Vendor_MenuFunctions  {
-
+    public static class Vendor_MenuFunctions {
         [TableView(true, "AccountNumber", "ActiveFlag", "PreferredVendorStatus")]
         public static IQueryable<Vendor> FindVendorByName(string name, IContext context) =>
             context.Instances<Vendor>().Where(v => v.Name == name).OrderBy(v => v.Name);
 
-        public static Vendor FindVendorByAccountNumber(string accountNumber,IContext context) =>
+        public static Vendor FindVendorByAccountNumber(string accountNumber, IContext context) =>
             context.Instances<Vendor>().Where(x => x.AccountNumber == accountNumber).FirstOrDefault();
-
 
         public static Vendor RandomVendor(IContext context) => Random<Vendor>(context);
 

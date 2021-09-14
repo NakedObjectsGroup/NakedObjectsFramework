@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ShiftMap : EntityTypeConfiguration<Shift>
-    {
-        public ShiftMap()
-        {
+namespace AW.Mapping {
+    public class ShiftMap : EntityTypeConfiguration<Shift> {
+        public ShiftMap() {
             // Primary Key
             HasKey(t => t.ShiftID);
 
@@ -24,20 +21,18 @@ namespace AW.Mapping
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.StartTime).HasColumnName("StartTime");
             Property(t => t.EndTime).HasColumnName("EndTime");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<Shift> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<Shift> builder) {
             builder.HasKey(t => t.ShiftID);
 
             // Properties
             builder.Property(t => t.Name)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             // Table & Column Mappings
             builder.ToTable("Shift", "HumanResources");
@@ -45,7 +40,7 @@ namespace AW.Mapping
             builder.Property(t => t.Name).HasColumnName("Name");
             builder.Property(t => t.StartTime).HasColumnName("StartTime");
             builder.Property(t => t.EndTime).HasColumnName("EndTime");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 }

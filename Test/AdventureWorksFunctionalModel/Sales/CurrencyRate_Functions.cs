@@ -1,7 +1,3 @@
-﻿namespace AW.Functions
-{
-    public static class CurrencyRate_Functions
-    {
-
-    }
+﻿namespace AW.Functions {
+    public static class CurrencyRate_Functions { }
 }

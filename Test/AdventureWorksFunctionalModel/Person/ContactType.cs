@@ -6,27 +6,25 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
 namespace AW.Types {
     [Bounded]
     public record ContactType : IHasModifiedDate {
-
         [Hidden]
         public virtual int ContactTypeID { get; init; }
 
         [MemberOrder(1)]
         public virtual string Name { get; init; }
 
+        public virtual bool Equals(ContactType other) => ReferenceEquals(this, other);
+
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ContactType other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

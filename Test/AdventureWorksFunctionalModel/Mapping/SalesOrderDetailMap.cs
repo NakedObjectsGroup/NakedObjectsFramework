@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class SalesOrderDetailMap : EntityTypeConfiguration<SalesOrderDetail>
-    {
-        public SalesOrderDetailMap()
-        {
+namespace AW.Mapping {
+    public class SalesOrderDetailMap : EntityTypeConfiguration<SalesOrderDetail> {
+        public SalesOrderDetailMap() {
             // Primary Key
             HasKey(t => new { t.SalesOrderID, t.SalesOrderDetailID });
 
@@ -38,21 +35,18 @@ namespace AW.Mapping
             Property(t => t.UnitPriceDiscount).HasColumnName("UnitPriceDiscount");
             Property(t => t.LineTotal).HasColumnName("LineTotal").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.SalesOrderHeader)
                 .WithMany(t => t.Details)
                 .HasForeignKey(d => d.SalesOrderID);
             HasRequired(t => t.SpecialOfferProduct).WithMany().HasForeignKey(t => new { t.SpecialOfferID, t.ProductID });
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<SalesOrderDetail> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<SalesOrderDetail> builder) {
             builder.HasKey(t => new { t.SalesOrderID, t.SalesOrderDetailID });
 
             //Ignores
@@ -60,13 +54,13 @@ namespace AW.Mapping
 
             // Properties
             builder.Property(t => t.SalesOrderID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.SalesOrderDetailID)
-                .ValueGeneratedOnAdd();
+                   .ValueGeneratedOnAdd();
 
             builder.Property(t => t.CarrierTrackingNumber)
-                .HasMaxLength(25);
+                   .HasMaxLength(25);
 
             // Table & Column Mappings
             builder.ToTable("SalesOrderDetail", "Sales");
@@ -86,7 +80,7 @@ namespace AW.Mapping
             builder.HasOne(t => t.SalesOrderHeader)
                    .WithMany(t => t.Details)
                    .HasForeignKey(d => d.SalesOrderID);
-            builder.HasOne(t => t.SpecialOfferProduct).WithMany().HasForeignKey(t => new {t.SpecialOfferID, t.ProductID});
+            builder.HasOne(t => t.SpecialOfferProduct).WithMany().HasForeignKey(t => new { t.SpecialOfferID, t.ProductID });
         }
     }
 }

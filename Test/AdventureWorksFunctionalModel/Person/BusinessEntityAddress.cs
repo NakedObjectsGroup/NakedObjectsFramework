@@ -1,12 +1,9 @@
-using NakedFunctions;
 using System;
+using NakedFunctions;
 
-
-namespace AW.Types
-{
+namespace AW.Types {
     [Named("Address")]
-    public record BusinessEntityAddress : IHasRowGuid, IHasModifiedDate
-    {
+    public record BusinessEntityAddress : IHasRowGuid, IHasModifiedDate {
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
@@ -25,17 +22,17 @@ namespace AW.Types
         [MemberOrder(2)]
         public virtual Address Address { get; init; }
 
-        [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public virtual bool Equals(BusinessEntityAddress other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        [Hidden]
+        public virtual Guid rowguid { get; init; }
 
         public override string ToString() => $"{AddressType}: {Address}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(BusinessEntityAddress other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

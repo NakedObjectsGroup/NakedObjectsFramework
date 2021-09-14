@@ -12,9 +12,6 @@ using NakedFunctions;
 
 namespace AW.Types {
     public record Vendor : IBusinessEntity {
-        [Hidden]
-        public virtual int BusinessEntityID { get; init; }
-
         [MemberOrder(10)]
         public virtual string AccountNumber { get; init; }
 
@@ -31,46 +28,30 @@ namespace AW.Types {
         [MemberOrder(50)]
         public virtual bool ActiveFlag { get; init; }
 
-
         [MemberOrder(60)]
         public virtual string PurchasingWebServiceURL { get; init; }
+
+        [Named("Product - Order Info")]
+        [TableView(true)] //  Not obvious which of many possible fields should be shown here
+        [AWNotCounted] //To test this capability
+        public virtual ICollection<ProductVendor> Products { get; init; } = new List<ProductVendor>();
+
+        [MemberOrder(99)]
+        [Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        [Hidden]
+        public virtual int BusinessEntityID { get; init; }
+
+        public virtual bool Equals(Vendor other) => ReferenceEquals(this, other);
 
         public virtual IQueryable<string> AutoCompletePurchasingWebServiceURL([MinLength(2)] string value) {
             var matchingNames = new List<string> { "http://www.store1.com", "http://www.store2.com", "http://www.store3.com" };
             return from p in matchingNames.AsQueryable() select p.Trim();
         }
 
-        [Named("Product - Order Info")]
-        [TableView(true)] //  Not obvious which of many possible fields should be shown here
-        [AWNotCounted] //To test this capability
-        public virtual ICollection<ProductVendor> Products {get; init;} = new List<ProductVendor>();
-
-        //private ICollection<VendorAddress> _VendorAddress = new List<VendorAddress>();
-
-        //[RenderEagerly]
-        //[TableView(true)] // TableView == ListView
-        //public virtual ICollection<VendorAddress> Addresses {
-        //    get { return _VendorAddress; }
-        //    set { _VendorAddress = value; }
-        //}
-
-        //private ICollection<VendorContact> _VendorContact = new List<VendorContact>();
-
-        //[RenderEagerly]
-        //[TableView(true)] // TableView == ListView
-        //public virtual ICollection<VendorContact> Contacts {
-        //    get { return _VendorContact; }
-        //    set { _VendorContact = value; }
-        //}
-
-        [MemberOrder(99)]
-        [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
-
         public override string ToString() => $"{Name}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(Vendor other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class SalesPersonMap : EntityTypeConfiguration<SalesPerson>
-    {
-        public SalesPersonMap()
-        {
+namespace AW.Mapping {
+    public class SalesPersonMap : EntityTypeConfiguration<SalesPerson> {
+        public SalesPersonMap() {
             // Primary Key
             HasKey(t => t.BusinessEntityID);
 
@@ -27,26 +24,23 @@ namespace AW.Mapping
             Property(t => t.SalesYTD).HasColumnName("SalesYTD");
             Property(t => t.SalesLastYear).HasColumnName("SalesLastYear");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.EmployeeDetails).WithOptional(t => t.SalesPerson);
             HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
             Ignore(t => t.PersonDetails);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<SalesPerson> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<SalesPerson> builder) {
             builder.HasKey(t => t.BusinessEntityID);
 
             // Properties
             builder.Property(t => t.BusinessEntityID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             // Table & Column Mappings
             builder.ToTable("SalesPerson", "Sales");
@@ -58,7 +52,7 @@ namespace AW.Mapping
             builder.Property(t => t.SalesYTD).HasColumnName("SalesYTD");
             builder.Property(t => t.SalesLastYear).HasColumnName("SalesLastYear");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.EmployeeDetails).WithOne(t => t.SalesPerson).HasForeignKey<Employee>(t => t.BusinessEntityID);

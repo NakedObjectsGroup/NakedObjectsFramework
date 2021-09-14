@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class PersonMap : EntityTypeConfiguration<Person>
-    {
-        public PersonMap()
-        {
+namespace AW.Mapping {
+    public class PersonMap : EntityTypeConfiguration<Person> {
+        public PersonMap() {
             // Primary Key
             HasKey(t => t.BusinessEntityID);
 
@@ -49,28 +46,24 @@ namespace AW.Mapping
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<Person> builder)
-        {
-            //builder.HasKey(t => t.BusinessEntityID);
-
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<Person> builder) {
             builder.Property(t => t.Title)
-                .HasMaxLength(8);
+                   .HasMaxLength(8);
 
             builder.Property(t => t.FirstName)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             builder.Property(t => t.MiddleName)
-                .HasMaxLength(50);
+                   .HasMaxLength(50);
 
             builder.Property(t => t.LastName)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             builder.Property(t => t.Suffix)
-                .HasMaxLength(10);
+                   .HasMaxLength(10);
 
             // Table & Column Mappings
             builder.ToTable("Person", "Person");

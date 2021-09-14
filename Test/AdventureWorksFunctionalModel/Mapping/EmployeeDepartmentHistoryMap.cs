@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class EmployeeDepartmentHistoryMap : EntityTypeConfiguration<EmployeeDepartmentHistory>
-    {
-        public EmployeeDepartmentHistoryMap()
-        {
+namespace AW.Mapping {
+    public class EmployeeDepartmentHistoryMap : EntityTypeConfiguration<EmployeeDepartmentHistory> {
+        public EmployeeDepartmentHistoryMap() {
             // Primary Key
             HasKey(t => new { t.EmployeeID, t.DepartmentID, t.ShiftID, t.StartDate });
 
@@ -27,7 +24,7 @@ namespace AW.Mapping
             Property(t => t.ShiftID).HasColumnName("ShiftID");
             Property(t => t.StartDate).HasColumnName("StartDate");
             Property(t => t.EndDate).HasColumnName("EndDate");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Department).WithMany().HasForeignKey(t => t.DepartmentID);
@@ -35,14 +32,11 @@ namespace AW.Mapping
                 .WithMany(t => t.DepartmentHistory)
                 .HasForeignKey(d => d.EmployeeID);
             HasRequired(t => t.Shift).WithMany().HasForeignKey(t => t.ShiftID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<EmployeeDepartmentHistory> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<EmployeeDepartmentHistory> builder) {
             builder.HasKey(t => new { t.EmployeeID, t.DepartmentID, t.ShiftID, t.StartDate });
 
             // Properties
@@ -59,14 +53,14 @@ namespace AW.Mapping
             builder.Property(t => t.ShiftID).HasColumnName("ShiftID");
             builder.Property(t => t.StartDate).HasColumnName("StartDate");
             builder.Property(t => t.EndDate).HasColumnName("EndDate");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
-           builder.HasOne(t => t.Department).WithMany().HasForeignKey(t => t.DepartmentID);
-           builder.HasOne(t => t.Employee)
+            builder.HasOne(t => t.Department).WithMany().HasForeignKey(t => t.DepartmentID);
+            builder.HasOne(t => t.Employee)
                    .WithMany(t => t.DepartmentHistory)
                    .HasForeignKey(d => d.EmployeeID);
-           builder.HasOne(t => t.Shift).WithMany().HasForeignKey(t => t.ShiftID);
+            builder.HasOne(t => t.Shift).WithMany().HasForeignKey(t => t.ShiftID);
         }
     }
 }

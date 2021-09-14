@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class SalesOrderHeaderSalesReasonMap : EntityTypeConfiguration<SalesOrderHeaderSalesReason>
-    {
-        public SalesOrderHeaderSalesReasonMap()
-        {
+namespace AW.Mapping {
+    public class SalesOrderHeaderSalesReasonMap : EntityTypeConfiguration<SalesOrderHeaderSalesReason> {
+        public SalesOrderHeaderSalesReasonMap() {
             // Primary Key
             HasKey(t => new { t.SalesOrderID, t.SalesReasonID });
 
@@ -24,35 +21,32 @@ namespace AW.Mapping
             ToTable("SalesOrderHeaderSalesReason", "Sales");
             Property(t => t.SalesOrderID).HasColumnName("SalesOrderID");
             Property(t => t.SalesReasonID).HasColumnName("SalesReasonID");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.SalesOrderHeader)
                 .WithMany(t => t.SalesOrderHeaderSalesReason)
                 .HasForeignKey(d => d.SalesOrderID);
             HasRequired(t => t.SalesReason).WithMany().HasForeignKey(t => t.SalesReasonID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<SalesOrderHeaderSalesReason> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<SalesOrderHeaderSalesReason> builder) {
             builder.HasKey(t => new { t.SalesOrderID, t.SalesReasonID });
 
             // Properties
             builder.Property(t => t.SalesOrderID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.SalesReasonID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             // Table & Column Mappings
             builder.ToTable("SalesOrderHeaderSalesReason", "Sales");
             builder.Property(t => t.SalesOrderID).HasColumnName("SalesOrderID");
             builder.Property(t => t.SalesReasonID).HasColumnName("SalesReasonID");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.SalesOrderHeader)

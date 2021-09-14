@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ProductListPriceHistoryMap : EntityTypeConfiguration<ProductListPriceHistory>
-    {
-        public ProductListPriceHistoryMap()
-        {
+namespace AW.Mapping {
+    public class ProductListPriceHistoryMap : EntityTypeConfiguration<ProductListPriceHistory> {
+        public ProductListPriceHistoryMap() {
             // Primary Key
             HasKey(t => new { t.ProductID, t.StartDate });
 
@@ -23,18 +20,15 @@ namespace AW.Mapping
             Property(t => t.StartDate).HasColumnName("StartDate");
             Property(t => t.EndDate).HasColumnName("EndDate");
             Property(t => t.ListPrice).HasColumnName("ListPrice");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<ProductListPriceHistory> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<ProductListPriceHistory> builder) {
             builder.HasKey(t => new { t.ProductID, t.StartDate });
 
             // Properties
@@ -47,7 +41,7 @@ namespace AW.Mapping
             builder.Property(t => t.StartDate).HasColumnName("StartDate");
             builder.Property(t => t.EndDate).HasColumnName("EndDate");
             builder.Property(t => t.ListPrice).HasColumnName("ListPrice");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);

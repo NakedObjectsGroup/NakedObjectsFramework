@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class SalesTerritoryMap : EntityTypeConfiguration<SalesTerritory>
-    {
-        public SalesTerritoryMap()
-        {
+namespace AW.Mapping {
+    public class SalesTerritoryMap : EntityTypeConfiguration<SalesTerritory> {
+        public SalesTerritoryMap() {
             // Primary Key
             HasKey(t => t.TerritoryID);
 
@@ -36,28 +33,26 @@ namespace AW.Mapping
             Property(t => t.CostYTD).HasColumnName("CostYTD");
             Property(t => t.CostLastYear).HasColumnName("CostLastYear");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<SalesTerritory> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<SalesTerritory> builder) {
             builder.HasKey(t => t.TerritoryID);
 
             // Properties
             builder.Property(t => t.Name)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             builder.Property(t => t.CountryRegionCode)
-                .IsRequired()
-                .HasMaxLength(3);
+                   .IsRequired()
+                   .HasMaxLength(3);
 
             builder.Property(t => t.Group)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             // Table & Column Mappings
             builder.ToTable("SalesTerritory", "Sales");
@@ -70,7 +65,7 @@ namespace AW.Mapping
             builder.Property(t => t.CostYTD).HasColumnName("CostYTD");
             builder.Property(t => t.CostLastYear).HasColumnName("CostLastYear");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 }

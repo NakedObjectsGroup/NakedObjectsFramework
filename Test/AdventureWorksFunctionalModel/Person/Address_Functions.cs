@@ -12,9 +12,6 @@ using NakedFunctions;
 
 namespace AW.Functions {
     public static class Address_Functions {
-        //public static string Validate(this Address a, CountryRegion countryRegion, StateProvince stateProvince, IQueryable<StateProvince> allProvinces)
-        //=> StateProvincesForCountry(countryRegion, allProvinces).Contains(stateProvince) ? null : "Invalid region";
-
         internal static IContext UpdateAddress(
             Address original, Address updated, IContext context) =>
             context.WithUpdated(original, updated with { ModifiedDate = context.Now() });

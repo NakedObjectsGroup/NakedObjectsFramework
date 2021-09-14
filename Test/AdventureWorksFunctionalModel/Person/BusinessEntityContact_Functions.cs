@@ -1,5 +1,3 @@
 namespace AW.Functions {
-    public static class BusinessEntityContactFunctions
-    {
-    }
+    public static class BusinessEntityContactFunctions { }
 }

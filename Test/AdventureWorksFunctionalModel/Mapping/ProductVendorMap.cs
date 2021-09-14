@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ProductVendorMap : EntityTypeConfiguration<ProductVendor>
-    {
-        public ProductVendorMap()
-        {
+namespace AW.Mapping {
+    public class ProductVendorMap : EntityTypeConfiguration<ProductVendor> {
+        public ProductVendorMap() {
             // Primary Key
             HasKey(t => new { t.ProductID, t.VendorID });
 
@@ -37,7 +34,7 @@ namespace AW.Mapping
             Property(t => t.MaxOrderQty).HasColumnName("MaxOrderQty");
             Property(t => t.OnOrderQty).HasColumnName("OnOrderQty");
             Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
@@ -45,28 +42,25 @@ namespace AW.Mapping
             HasRequired(t => t.Vendor)
                 .WithMany(t => t.Products)
                 .HasForeignKey(d => d.VendorID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<ProductVendor> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<ProductVendor> builder) {
             // Primary Key
             builder.HasKey(t => new { t.ProductID, t.VendorID });
 
             // Properties
             builder.Property(t => t.ProductID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.VendorID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.UnitMeasureCode)
-                .IsRequired()
-                .IsFixedLength()
-                .HasMaxLength(3);
+                   .IsRequired()
+                   .IsFixedLength()
+                   .HasMaxLength(3);
 
             // Table & Column Mappings
             builder.ToTable("ProductVendor", "Purchasing");

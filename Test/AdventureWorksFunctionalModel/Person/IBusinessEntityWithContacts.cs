@@ -1,4 +1,3 @@
 ﻿namespace AW.Types {
-    public interface IBusinessEntityWithContacts : IBusinessEntity{
-    }
+    public interface IBusinessEntityWithContacts : IBusinessEntity { }
 }

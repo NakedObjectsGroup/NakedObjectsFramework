@@ -7,31 +7,12 @@ namespace AW {
         private readonly string _nameOrConnectionString;
 
         public AdventureWorksEFCoreContext(string nameOrConnectionString) => _nameOrConnectionString = nameOrConnectionString;
-
         public DbSet<Department> Departments { get; init; }
-
-        //public DbSet<Employee> Employees { get; init; }
-        //public DbSet<EmployeeAddress> EmployeeAddresses { get; init; }
-        //public DbSet<EmployeeDepartmentHistory> EmployeeDepartmentHistories { get; init; }
-        //public DbSet<EmployeePayHistory> EmployeePayHistories { get; init; }
-        //public DbSet<JobCandidate> JobCandidates { get; init; }
         public DbSet<Shift> Shifts { get; init; }
-
-        //public DbSet<Address> Addresses { get; init; }
         public DbSet<AddressType> AddressTypes { get; init; }
-
-        //public DbSet<BusinessEntity> BusinessEntities { get; init; }
-        //public DbSet<BusinessEntityAddress> BusinessEntityAddresses { get; init; }
-        //public DbSet<BusinessEntityContact> BusinessEntityContacts { get; init; }
-        //public DbSet<Person> Contacts { get; init; }
         public DbSet<ContactType> ContactTypes { get; init; }
-
         public DbSet<CountryRegion> CountryRegions { get; init; }
-
-        //public DbSet<PersonPhone> PersonPhones { get; init; }
         public DbSet<PhoneNumberType> PhoneNumberTypes { get; init; }
-
-        //public DbSet<EmailAddress> EmailAddresses { get; init; }
         public DbSet<Password> Passwords { get; init; }
         public DbSet<StateProvince> StateProvinces { get; init; }
         public DbSet<BillOfMaterial> BillOfMaterials { get; init; }
@@ -55,38 +36,13 @@ namespace AW {
         public DbSet<TransactionHistory> TransactionHistories { get; init; }
         public DbSet<UnitMeasure> UnitMeasures { get; init; }
         public DbSet<WorkOrder> WorkOrders { get; init; }
-
         public DbSet<WorkOrderRouting> WorkOrderRoutings { get; init; }
-
-        //public DbSet<ProductVendor> ProductVendors { get; init; }
-        //public DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; init; }
-        //public DbSet<PurchaseOrderHeader> PurchaseOrderHeaders { get; init; }
-        //public DbSet<ShipMethod> ShipMethods { get; init; }
-        //public DbSet<Vendor> Vendors { get; init; }
         public DbSet<PersonCreditCard> PersonCreditCards { get; init; }
-
-        //public DbSet<CountryRegionCurrency> CountryRegionCurrencies { get; init; }
         public DbSet<CreditCard> CreditCards { get; init; }
-
         public DbSet<Currency> Currencies { get; init; }
-
-        //public DbSet<CurrencyRate> CurrencyRates { get; init; }
-        //public DbSet<Customer> Customers { get; init; }
-        //public DbSet<SalesOrderDetail> SalesOrderDetails { get; init; }
-        //public DbSet<SalesOrderHeader> SalesOrderHeaders { get; init; }
-        //public DbSet<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReasons { get; init; }
-        //public DbSet<SalesPerson> SalesPersons { get; init; }
-        //public DbSet<SalesPersonQuotaHistory> SalesPersonQuotaHistories { get; init; }
-        //public DbSet<SalesReason> SalesReasons { get; init; }
-        //public DbSet<SalesTaxRate> SalesTaxRates { get; init; }
         public DbSet<SalesTerritory> SalesTerritories { get; init; }
-
-        //public DbSet<SalesTerritoryHistory> SalesTerritoryHistories { get; init; }
-        //public DbSet<ShoppingCartItem> ShoppingCartItems { get; init; }
         public DbSet<SpecialOffer> SpecialOffers { get; init; }
-
         public DbSet<SpecialOfferProduct> SpecialOfferProducts { get; init; }
-        //public DbSet<Store> Stores { get; init; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(_nameOrConnectionString);

@@ -41,9 +41,6 @@ namespace AW.Functions {
             return updates.Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
         }
 
-        //public static string ValidateAppendCommentToOrders(this IQueryable<SalesOrderHeader> toOrder, string commentToAppend) =>
-        //       toOrder.Count() > 5 ? "You may not apply the same comment to more than 5 orders at one time." : null;
-
         public static IContext AppendComment(
             this SalesOrderHeader order, string commentToAppend, IContext context) {
             var updated = WithAppendedComment(order, commentToAppend, context);

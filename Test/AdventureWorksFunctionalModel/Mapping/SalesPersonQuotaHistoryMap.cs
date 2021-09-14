@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class SalesPersonQuotaHistoryMap : EntityTypeConfiguration<SalesPersonQuotaHistory>
-    {
-        public SalesPersonQuotaHistoryMap()
-        {
+namespace AW.Mapping {
+    public class SalesPersonQuotaHistoryMap : EntityTypeConfiguration<SalesPersonQuotaHistory> {
+        public SalesPersonQuotaHistoryMap() {
             // Primary Key
             HasKey(t => new { t.BusinessEntityID, t.QuotaDate });
 
@@ -23,25 +20,22 @@ namespace AW.Mapping
             Property(t => t.QuotaDate).HasColumnName("QuotaDate");
             Property(t => t.SalesQuota).HasColumnName("SalesQuota");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.SalesPerson)
                 .WithMany(t => t.QuotaHistory)
                 .HasForeignKey(d => d.BusinessEntityID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<SalesPersonQuotaHistory> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<SalesPersonQuotaHistory> builder) {
             builder.HasKey(t => new { t.BusinessEntityID, t.QuotaDate });
 
             // Properties
             builder.Property(t => t.BusinessEntityID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             // Table & Column Mappings
             builder.ToTable("SalesPersonQuotaHistory", "Sales");

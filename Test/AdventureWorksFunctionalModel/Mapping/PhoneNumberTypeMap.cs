@@ -10,14 +10,12 @@ namespace AW.Mapping {
             HasKey(t => t.PhoneNumberTypeID);
 
             // Table & Column Mappings
-            this.ToTable("PhoneNumberType", "Person");
+            ToTable("PhoneNumberType", "Person");
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<PhoneNumberType> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<PhoneNumberType> builder) {
             builder.HasKey(t => t.PhoneNumberTypeID);
 
             // Table & Column Mappings

@@ -1,7 +1,3 @@
-namespace AW.Functions
-{
-    public static class BusinessEntityAddressFunctions
-    {
-
-    }
+namespace AW.Functions {
+    public static class BusinessEntityAddressFunctions { }
 }

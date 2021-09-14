@@ -108,7 +108,6 @@ namespace AdventureWorksModel
             modelBuilder.Configurations.Add(new PasswordMap());
             modelBuilder.Configurations.Add(new PersonPhoneMap());
             modelBuilder.Configurations.Add(new PhoneNumberTypeMap());
-
             modelBuilder.Configurations.Add(new StateProvinceMap());
             modelBuilder.Configurations.Add(new BillOfMaterialMap());
             modelBuilder.Configurations.Add(new CultureMap());

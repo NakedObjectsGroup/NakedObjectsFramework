@@ -8,10 +8,8 @@
 using System;
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record BillOfMaterial : IHasModifiedDate
-    {
+namespace AW.Types {
+    public record BillOfMaterial : IHasModifiedDate {
         [Hidden]
         public virtual int BillOfMaterialID { get; init; }
 
@@ -22,24 +20,27 @@ namespace AW.Types
 
         [Hidden]
         public virtual int? ProductAssemblyID { get; init; }
+
         public virtual Product Product { get; init; }
 
         [Hidden]
         public virtual int ComponentID { get; init; }
+
         public virtual Product Product1 { get; init; }
 
         [Hidden]
         public virtual string UnitMeasureCode { get; init; }
+
         public virtual UnitMeasure UnitMeasure { get; init; }
+
+        public virtual bool Equals(BillOfMaterial other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"BillOfMaterial: {BillOfMaterialID}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(BillOfMaterial other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

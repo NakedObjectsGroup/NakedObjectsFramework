@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class SalesTaxRateMap : EntityTypeConfiguration<SalesTaxRate>
-    {
-        public SalesTaxRateMap()
-        {
+namespace AW.Mapping {
+    public class SalesTaxRateMap : EntityTypeConfiguration<SalesTaxRate> {
+        public SalesTaxRateMap() {
             // Primary Key
             HasKey(t => t.SalesTaxRateID);
 
@@ -25,24 +22,21 @@ namespace AW.Mapping
             Property(t => t.TaxRate).HasColumnName("TaxRate");
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<SalesTaxRate> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<SalesTaxRate> builder) {
             builder.HasKey(t => t.SalesTaxRateID);
 
             // Properties
             builder.Property(t => t.Name)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             // Table & Column Mappings
             builder.ToTable("SalesTaxRate", "Sales");
@@ -52,10 +46,10 @@ namespace AW.Mapping
             builder.Property(t => t.TaxRate).HasColumnName("TaxRate");
             builder.Property(t => t.Name).HasColumnName("Name");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
-           builder.HasOne(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);
+            builder.HasOne(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);
         }
     }
 }

@@ -7,17 +7,15 @@ namespace AW.Mapping {
     public class PersonPhoneMap : EntityTypeConfiguration<PersonPhone> {
         public PersonPhoneMap() {
             // Primary Key
-            HasKey(t => new { t.BusinessEntityID, t.PhoneNumber, t.PhoneNumberTypeID});
+            HasKey(t => new { t.BusinessEntityID, t.PhoneNumber, t.PhoneNumberTypeID });
 
             // Table & Column Mappings
-            this.ToTable("PersonPhone", "Person");
+            ToTable("PersonPhone", "Person");
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<PersonPhone> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<PersonPhone> builder) {
             builder.HasKey(t => new { t.BusinessEntityID, t.PhoneNumber, t.PhoneNumberTypeID });
 
             // Table & Column Mappings

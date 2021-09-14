@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ProductMap : EntityTypeConfiguration<Product>
-    {
-        public ProductMap()
-        {
+namespace AW.Mapping {
+    public class ProductMap : EntityTypeConfiguration<Product> {
+        public ProductMap() {
             // Primary Key
             HasKey(t => t.ProductID);
 
@@ -73,22 +70,21 @@ namespace AW.Mapping
             Property(t => t.SellEndDate).HasColumnName("SellEndDate");
             Property(t => t.DiscontinuedDate).HasColumnName("DiscontinuedDate");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasOptional(t => t.ProductModel)
                 .WithMany(t => t.ProductVariants)
                 .HasForeignKey(d => d.ProductModelID);
-            HasOptional(t => t.ProductSubcategory).WithMany().HasForeignKey(t => t.ProductSubcategoryID); ;
+            HasOptional(t => t.ProductSubcategory).WithMany().HasForeignKey(t => t.ProductSubcategoryID);
+            ;
             HasOptional(t => t.SizeUnit).WithMany().HasForeignKey(t => t.SizeUnitMeasureCode);
             HasOptional(t => t.WeightUnit).WithMany().HasForeignKey(t => t.WeightUnitMeasureCode);
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<Product> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<Product> builder) {
             builder.HasKey(t => t.ProductID);
 
             // Properties
@@ -97,34 +93,34 @@ namespace AW.Mapping
                    .HasMaxLength(50);
 
             builder.Property(t => t.ProductNumber)
-                .IsRequired()
-                .HasMaxLength(25);
+                   .IsRequired()
+                   .HasMaxLength(25);
 
             builder.Property(t => t.Color)
-                .HasMaxLength(15);
+                   .HasMaxLength(15);
 
             builder.Property(t => t.Size)
-                .HasMaxLength(5);
+                   .HasMaxLength(5);
 
             builder.Property(t => t.SizeUnitMeasureCode)
-                .IsFixedLength()
-                .HasMaxLength(3);
+                   .IsFixedLength()
+                   .HasMaxLength(3);
 
             builder.Property(t => t.WeightUnitMeasureCode)
-                .IsFixedLength()
-                .HasMaxLength(3);
+                   .IsFixedLength()
+                   .HasMaxLength(3);
 
             builder.Property(t => t.ProductLine)
-                .IsFixedLength()
-                .HasMaxLength(2);
+                   .IsFixedLength()
+                   .HasMaxLength(2);
 
             builder.Property(t => t.Class)
-                .IsFixedLength()
-                .HasMaxLength(2);
+                   .IsFixedLength()
+                   .HasMaxLength(2);
 
             builder.Property(t => t.Style)
-                .IsFixedLength()
-                .HasMaxLength(2);
+                   .IsFixedLength()
+                   .HasMaxLength(2);
 
             // Table & Column Mappings
             builder.ToTable("Product", "Production");
@@ -152,13 +148,14 @@ namespace AW.Mapping
             builder.Property(t => t.SellEndDate).HasColumnName("SellEndDate");
             builder.Property(t => t.DiscontinuedDate).HasColumnName("DiscontinuedDate");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.ProductModel)
                    .WithMany(t => t.ProductVariants)
                    .HasForeignKey(d => d.ProductModelID);
-            builder.HasOne(t => t.ProductSubcategory).WithMany().HasForeignKey(t => t.ProductSubcategoryID); ;
+            builder.HasOne(t => t.ProductSubcategory).WithMany().HasForeignKey(t => t.ProductSubcategoryID);
+            ;
             builder.HasOne(t => t.SizeUnit).WithMany().HasForeignKey(t => t.SizeUnitMeasureCode);
             builder.HasOne(t => t.WeightUnit).WithMany().HasForeignKey(t => t.WeightUnitMeasureCode);
         }
