@@ -10,46 +10,39 @@ using System.Linq;
 using AW.Types;
 using NakedFunctions;
 
-
-namespace AW.Functions
-{
-    public static class SalesPerson_Functions
-    {
+namespace AW.Functions {
+    public static class SalesPerson_Functions {
         internal static IContext UpdateSalesPerson(
             SalesPerson original, SalesPerson updated, IContext context) =>
-                context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
         [MemberOrder(1)]
-        public static  IContext RecalulateSalesYTD(this SalesPerson sp, IContext context)
-        {
+        public static IContext RecalulateSalesYTD(this SalesPerson sp, IContext context) {
             var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
             decimal newYTD = 0;
-            IQueryable<SalesOrderHeader> query = from obj in context.Instances<SalesOrderHeader>()
-                                                 where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID &&
-                                                       obj.StatusByte == 5 &&
-                                                       obj.OrderDate >= startOfYear
-                                                 select obj;
-            if (query.Count() > 0)
-            {
+            var query = from obj in context.Instances<SalesOrderHeader>()
+                        where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID &&
+                              obj.StatusByte == 5 &&
+                              obj.OrderDate >= startOfYear
+                        select obj;
+            if (query.Count() > 0) {
                 newYTD = query.Sum(n => n.SubTotal);
             }
-            else
-            {
+            else {
                 newYTD = 0;
             }
+
             return UpdateSalesPerson(sp, sp with { SalesYTD = newYTD }, context);
         }
 
         [MemberOrder(2)]
         public static IContext ChangeSalesQuota(
             this SalesPerson sp, decimal newQuota, IContext context) =>
-             UpdateSalesPerson(sp, sp with { SalesQuota = newQuota }, context)
+            UpdateSalesPerson(sp, sp with { SalesQuota = newQuota }, context)
                 .WithNew(new SalesPersonQuotaHistory() with { SalesPerson = sp, SalesQuota = newQuota, QuotaDate = context.Now() });
 
-
         [MemberOrder(1)]
-        public static IContext ChangeSalesTerritory(this SalesPerson sp, SalesTerritory newTerritory, IContext context)
-        {
+        public static IContext ChangeSalesTerritory(this SalesPerson sp, SalesTerritory newTerritory, IContext context) {
             var newHist = new SalesTerritoryHistory() with { SalesPerson = sp, SalesTerritory = newTerritory, StartDate = context.Now() };
             var prev = sp.TerritoryHistory.Where(n => n.EndDate == null).FirstOrDefault();
             var uPrev = prev with { EndDate = context.Now() };

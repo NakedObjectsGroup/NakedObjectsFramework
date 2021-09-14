@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class JobCandidateMap : EntityTypeConfiguration<JobCandidate>
-    {
-        public JobCandidateMap()
-        {
+namespace AW.Mapping {
+    public class JobCandidateMap : EntityTypeConfiguration<JobCandidate> {
+        public JobCandidateMap() {
             // Primary Key
             HasKey(t => t.JobCandidateID);
 
@@ -18,17 +15,15 @@ namespace AW.Mapping
             Property(t => t.JobCandidateID).HasColumnName("JobCandidateID");
             Property(t => t.EmployeeID).HasColumnName("BusinessEntityID");
             Property(t => t.Resume).HasColumnName("Resume");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasOptional(t => t.Employee).WithMany().HasForeignKey(t => t.EmployeeID);
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<JobCandidate> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<JobCandidate> builder) {
             builder.HasKey(t => t.JobCandidateID);
 
             // Properties
@@ -37,7 +32,7 @@ namespace AW.Mapping
             builder.Property(t => t.JobCandidateID).HasColumnName("JobCandidateID");
             builder.Property(t => t.EmployeeID).HasColumnName("BusinessEntityID");
             builder.Property(t => t.Resume).HasColumnName("Resume");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.Employee).WithMany().HasForeignKey(t => t.EmployeeID);

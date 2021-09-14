@@ -8,11 +8,9 @@
 using System;
 using NakedFunctions;
 
-namespace AW.Types
-{
+namespace AW.Types {
     [Bounded]
-    public record Department : IHasModifiedDate
-    {
+    public record Department : IHasModifiedDate {
         [Hidden]
         public virtual short DepartmentID { get; init; }
 
@@ -22,14 +20,14 @@ namespace AW.Types
         [MemberOrder(2)]
         public virtual string GroupName { get; init; }
 
+        public virtual bool Equals(Department other) => ReferenceEquals(this, other);
+
         [MemberOrder(99)]
-		[Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(Department other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

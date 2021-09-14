@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class ContactTypeMap : EntityTypeConfiguration<ContactType>
-    {
-        public ContactTypeMap()
-        {
+namespace AW.Mapping {
+    public class ContactTypeMap : EntityTypeConfiguration<ContactType> {
+        public ContactTypeMap() {
             // Primary Key
             HasKey(t => t.ContactTypeID);
 
@@ -21,14 +18,12 @@ namespace AW.Mapping
             ToTable("ContactType", "Person");
             Property(t => t.ContactTypeID).HasColumnName("ContactTypeID");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<ContactType> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<ContactType> builder) {
             builder.HasKey(t => t.ContactTypeID);
 
             // Properties
@@ -40,7 +35,7 @@ namespace AW.Mapping
             builder.ToTable("ContactType", "Person");
             builder.Property(t => t.ContactTypeID).HasColumnName("ContactTypeID");
             builder.Property(t => t.Name).HasColumnName("Name");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 }

@@ -7,49 +7,44 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NakedFunctions;
 using AW.Types;
+using NakedFunctions;
 
 namespace AW.Functions {
-
-    public static class Address_Functions
-    {
-
+    public static class Address_Functions {
         //public static string Validate(this Address a, CountryRegion countryRegion, StateProvince stateProvince, IQueryable<StateProvince> allProvinces)
         //=> StateProvincesForCountry(countryRegion, allProvinces).Contains(stateProvince) ? null : "Invalid region";
 
         internal static IContext UpdateAddress(
             Address original, Address updated, IContext context) =>
-             context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
         public static IContext EditAddressLines(this Address a,
-            string line1,
-            [Optionally] string line2,
-            string city,
-            string postalCode,
-            IContext context) =>
-            UpdateAddress(a, a with
-            {
+                                                string line1,
+                                                [Optionally] string line2,
+                                                string city,
+                                                string postalCode,
+                                                IContext context) =>
+            UpdateAddress(a, a with {
                 AddressLine1 = line1,
                 AddressLine2 = line2,
                 City = city,
-                PostalCode = postalCode,
+                PostalCode = postalCode
             }, context);
 
         public static IContext EditStateProvince(this Address a,
-            CountryRegion countryRegion, StateProvince stateProvince, IContext context) =>
-                UpdateAddress(a, a with { StateProvince = stateProvince }, context);
+                                                 CountryRegion countryRegion, StateProvince stateProvince, IContext context) =>
+            UpdateAddress(a, a with { StateProvince = stateProvince }, context);
 
         public static IList<CountryRegion> Choices1EditStateProvince(this Address a, IContext context) =>
-                context.Instances<CountryRegion>().ToArray();
+            context.Instances<CountryRegion>().ToArray();
 
         public static IList<StateProvince> Choices2EditStateProvince(this Address a,
-            CountryRegion countryRegion, IContext context) =>
-                StateProvincesForCountry(countryRegion, context);
+                                                                     CountryRegion countryRegion, IContext context) =>
+            StateProvincesForCountry(countryRegion, context);
 
         internal static StateProvince[] StateProvincesForCountry(this CountryRegion country,
-            IContext context) =>
+                                                                 IContext context) =>
             context.Instances<StateProvince>().Where(p => p.CountryRegion.CountryRegionCode == country.CountryRegionCode).OrderBy(p => p.Name).ToArray();
-
     }
 }

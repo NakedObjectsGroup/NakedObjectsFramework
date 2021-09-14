@@ -6,20 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record EmployeePayHistory
-    {
+namespace AW.Types {
+    public record EmployeePayHistory {
         [Hidden]
         public virtual int EmployeeID { get; init; }
 
-        [MemberOrder(1), Mask("d")]
+        [MemberOrder(1)] [Mask("d")]
         public virtual DateTime RateChangeDate { get; init; }
 
-        [MemberOrder(2), Mask("C")]
+        [MemberOrder(2)] [Mask("C")]
         public virtual decimal Rate { get; init; }
 
         [MemberOrder(3)]
@@ -30,12 +27,12 @@ namespace AW.Types
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public virtual bool Equals(EmployeePayHistory other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(EmployeePayHistory other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

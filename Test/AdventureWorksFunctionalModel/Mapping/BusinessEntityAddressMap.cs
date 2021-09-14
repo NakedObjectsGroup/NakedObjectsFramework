@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping {
-    public class BusinessEntityAddressMap : EntityTypeConfiguration<BusinessEntityAddress>
-    {
-        public BusinessEntityAddressMap()
-        {
+    public class BusinessEntityAddressMap : EntityTypeConfiguration<BusinessEntityAddress> {
+        public BusinessEntityAddressMap() {
             // Primary Key
             HasKey(t => new { t.BusinessEntityID, t.AddressTypeID, t.AddressID });
 
@@ -17,7 +15,7 @@ namespace AW.Mapping {
             Property(t => t.AddressTypeID).HasColumnName("AddressTypeID");
             Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             //Relationships
             HasRequired(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);
@@ -26,10 +24,8 @@ namespace AW.Mapping {
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<BusinessEntityAddress> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<BusinessEntityAddress> builder) {
             builder.HasKey(t => new { t.BusinessEntityID, t.AddressTypeID, t.AddressID });
 
             // Table & Column Mappings
@@ -38,7 +34,7 @@ namespace AW.Mapping {
             builder.Property(t => t.AddressTypeID).HasColumnName("AddressTypeID");
             builder.Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             //Relationships
             builder.HasOne(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);

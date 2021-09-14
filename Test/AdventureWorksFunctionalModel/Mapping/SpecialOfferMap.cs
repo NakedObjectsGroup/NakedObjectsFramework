@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class SpecialOfferMap : EntityTypeConfiguration<SpecialOffer>
-    {
-        public SpecialOfferMap()
-        {
+namespace AW.Mapping {
+    public class SpecialOfferMap : EntityTypeConfiguration<SpecialOffer> {
+        public SpecialOfferMap() {
             // Primary Key
             HasKey(t => t.SpecialOfferID);
 
@@ -37,28 +34,26 @@ namespace AW.Mapping
             Property(t => t.MinQty).HasColumnName("MinQty");
             Property(t => t.MaxQty).HasColumnName("MaxQty");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<SpecialOffer> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<SpecialOffer> builder) {
             builder.HasKey(t => t.SpecialOfferID);
 
             // Properties
             builder.Property(t => t.Description)
-                .IsRequired()
-                .HasMaxLength(255);
+                   .IsRequired()
+                   .HasMaxLength(255);
 
             builder.Property(t => t.Type)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             builder.Property(t => t.Category)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             // Table & Column Mappings
             builder.ToTable("SpecialOffer", "Sales");
@@ -72,7 +67,7 @@ namespace AW.Mapping
             builder.Property(t => t.MinQty).HasColumnName("MinQty");
             builder.Property(t => t.MaxQty).HasColumnName("MaxQty");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 }

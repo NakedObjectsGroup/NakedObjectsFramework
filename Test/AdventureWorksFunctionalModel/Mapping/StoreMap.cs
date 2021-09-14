@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class StoreMap : EntityTypeConfiguration<Store>
-    {
-        public StoreMap()
-        {
+namespace AW.Mapping {
+    public class StoreMap : EntityTypeConfiguration<Store> {
+        public StoreMap() {
             // Primary Key
             HasKey(t => t.BusinessEntityID);
 
@@ -30,15 +27,13 @@ namespace AW.Mapping
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<Store> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<Store> builder) {
             //builder.HasKey(t => t.BusinessEntityID);
 
             builder.Property(t => t.Name)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             // Table & Column Mappings
             builder.ToTable("Store", "Sales");

@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class TransactionHistoryMap : EntityTypeConfiguration<TransactionHistory>
-    {
-        public TransactionHistoryMap()
-        {
+namespace AW.Mapping {
+    public class TransactionHistoryMap : EntityTypeConfiguration<TransactionHistory> {
+        public TransactionHistoryMap() {
             // Primary Key
             HasKey(t => t.TransactionID);
 
@@ -28,25 +25,22 @@ namespace AW.Mapping
             Property(t => t.TransactionType).HasColumnName("TransactionType");
             Property(t => t.Quantity).HasColumnName("Quantity");
             Property(t => t.ActualCost).HasColumnName("ActualCost");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<TransactionHistory> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<TransactionHistory> builder) {
             builder.HasKey(t => t.TransactionID);
 
             // Properties
             builder.Property(t => t.TransactionType)
-                .IsRequired()
-                .IsFixedLength()
-                .HasMaxLength(1);
+                   .IsRequired()
+                   .IsFixedLength()
+                   .HasMaxLength(1);
 
             // Table & Column Mappings
             builder.ToTable("TransactionHistory", "Production");
@@ -58,7 +52,7 @@ namespace AW.Mapping
             builder.Property(t => t.TransactionType).HasColumnName("TransactionType");
             builder.Property(t => t.Quantity).HasColumnName("Quantity");
             builder.Property(t => t.ActualCost).HasColumnName("ActualCost");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);

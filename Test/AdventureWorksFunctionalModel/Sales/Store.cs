@@ -10,14 +10,18 @@ using System.Linq;
 using AW.Functions;
 using NakedFunctions;
 
-namespace AW.Types
-{
+namespace AW.Types {
     //TODO: rename to StoreDetails
-    public record Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate
-    {
-         #region Properties
+    public record Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate {
+        public virtual bool Equals(Store other) => ReferenceEquals(this, other);
 
-        [Named("Store Name"), MemberOrder(20)]
+        public override string ToString() => Name;
+
+        public override int GetHashCode() => base.GetHashCode();
+
+        #region Properties
+
+        [Named("Store Name")] [MemberOrder(20)]
         public virtual string Name { get; init; }
 
         #region Demographics
@@ -25,19 +29,16 @@ namespace AW.Types
         [Hidden]
         public virtual string Demographics { get; init; }
 
-        [Named("Demographics"), MemberOrder(30), MultiLine(10)]
-        public virtual string FormattedDemographics
-        {
-            get { return Utilities.FormatXML(Demographics); }
-        }
+        [Named("Demographics")] [MemberOrder(30)] [MultiLine(10)]
+        public virtual string FormattedDemographics => Utilities.FormatXML(Demographics);
 
         #endregion
 
         #region SalesPerson
+
         [Hidden]
         public virtual int? SalesPersonID { get; init; }
 
-        
         [MemberOrder(40)]
         public virtual SalesPerson SalesPerson { get; init; }
 
@@ -46,7 +47,6 @@ namespace AW.Types
             [MinLength(2)] string name, IContext context) =>
             Sales_MenuFunctions.FindSalesPersonByName(null, name, context);
 
-
         #endregion
 
         #region ModifiedDate and rowguid
@@ -54,9 +54,8 @@ namespace AW.Types
         #region ModifiedDate
 
         [MemberOrder(99)]
-        
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
@@ -70,11 +69,5 @@ namespace AW.Types
         #endregion
 
         #endregion
-
-        public override string ToString() => Name;
-
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(Store other) => ReferenceEquals(this, other);
     }
 }

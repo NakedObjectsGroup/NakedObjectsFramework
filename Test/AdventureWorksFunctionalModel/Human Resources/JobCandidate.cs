@@ -6,13 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record JobCandidate
-    {
+namespace AW.Types {
+    public record JobCandidate {
         [Hidden]
         public virtual int JobCandidateID { get; init; }
 
@@ -25,12 +22,12 @@ namespace AW.Types
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
-
-        public override string ToString() => $"Job Candidate ";
-
-		public override int GetHashCode() =>base.GetHashCode();
+        public virtual DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(JobCandidate other) => ReferenceEquals(this, other);
+
+        public override string ToString() => "Job Candidate ";
+
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

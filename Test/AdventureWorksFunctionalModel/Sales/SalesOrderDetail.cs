@@ -9,11 +9,9 @@ using System;
 using NakedFunctions;
 
 namespace AW.Types {
-        public record SalesOrderDetail {
-
+    public record SalesOrderDetail {
         #region OrderQty
 
-        
         [MemberOrder(15)]
         public virtual short OrderQty { get; init; }
 
@@ -21,7 +19,6 @@ namespace AW.Types {
 
         #region UnitPrice
 
-        
         [MemberOrder(20)]
         [Mask("C")]
         public virtual decimal UnitPrice { get; init; }
@@ -30,7 +27,6 @@ namespace AW.Types {
 
         #region UnitPriceDiscount
 
-        
         [Named("Discount %")]
         [MemberOrder(30)]
         [Mask("P")]
@@ -39,8 +35,7 @@ namespace AW.Types {
         #endregion
 
         #region LineTotal
-        
-        
+
         [MemberOrder(40)]
         [Mask("C")]
         public virtual decimal LineTotal { get; init; }
@@ -49,9 +44,8 @@ namespace AW.Types {
 
         #region CarrierTrackingNumber
 
-        
         [MemberOrder(50)]
-        
+
         public virtual string CarrierTrackingNumber { get; init; }
 
         #endregion
@@ -62,6 +56,19 @@ namespace AW.Types {
         public virtual SalesOrderHeader SalesOrderHeader { get; init; }
 
         #endregion
+
+        [MemberOrder(99)]
+        [Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        [Hidden]
+        public virtual Guid rowguid { get; init; }
+
+        public virtual bool Equals(SalesOrderDetail other) => ReferenceEquals(this, other);
+
+        public override string ToString() => $"{OrderQty} x {Product}";
+
+        public override int GetHashCode() => base.GetHashCode();
 
         #region ID
 
@@ -87,26 +94,13 @@ namespace AW.Types {
         public virtual SpecialOfferProduct SpecialOfferProduct { get; init; }
 
         #endregion
-    
+
         [MemberOrder(11)]
-        public virtual Product Product =>  SpecialOfferProduct == null ? null : SpecialOfferProduct.Product; 
-        
+        public virtual Product Product => SpecialOfferProduct == null ? null : SpecialOfferProduct.Product;
+
         [MemberOrder(12)]
-        public virtual SpecialOffer SpecialOffer =>  SpecialOfferProduct == null ? null : SpecialOfferProduct.SpecialOffer;
+        public virtual SpecialOffer SpecialOffer => SpecialOfferProduct == null ? null : SpecialOfferProduct.SpecialOffer;
 
         #endregion
-
-       [MemberOrder(99)]
-        [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
-
-        [Hidden]
-        public virtual Guid rowguid { get; init; }
-
-        public override string ToString() => $"{OrderQty} x {Product}";
-
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(SalesOrderDetail other) => ReferenceEquals(this, other);
     }
 }

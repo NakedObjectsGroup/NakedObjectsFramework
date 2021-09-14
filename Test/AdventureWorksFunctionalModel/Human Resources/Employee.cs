@@ -9,12 +9,10 @@ using System;
 using System.Collections.Generic;
 using NakedFunctions;
 
-namespace AW.Types
-{
+namespace AW.Types {
     public interface IEmployee : IBusinessEntity { } //Interface is for testing purposes
 
-    public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate
-    {
+    public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate {
         [MemberOrder(1)]
         public virtual Person PersonDetails { get; init; }
 
@@ -24,7 +22,7 @@ namespace AW.Types
         [MemberOrder(12)]
         public virtual string JobTitle { get; init; }
 
-        [MemberOrder(13), Mask("d")]
+        [MemberOrder(13)] [Mask("d")]
         public virtual DateTime? DateOfBirth { get; init; }
 
         [MemberOrder(14)]
@@ -33,7 +31,7 @@ namespace AW.Types
         [MemberOrder(15)]
         public virtual string Gender { get; init; }
 
-        [MemberOrder(16), Mask("d")]
+        [MemberOrder(16)] [Mask("d")]
         public virtual DateTime? HireDate { get; init; }
 
         [MemberOrder(17)]
@@ -72,17 +70,17 @@ namespace AW.Types
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
+        public virtual bool Equals(Employee other) => ReferenceEquals(this, other);
+
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
         public override string ToString() => $"{PersonDetails}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(Employee other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

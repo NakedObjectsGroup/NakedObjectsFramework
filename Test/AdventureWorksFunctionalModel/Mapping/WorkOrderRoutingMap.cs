@@ -4,12 +4,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class WorkOrderRoutingMap : EntityTypeConfiguration<WorkOrderRouting>
-    {
-        public WorkOrderRoutingMap()
-        {
+namespace AW.Mapping {
+    public class WorkOrderRoutingMap : EntityTypeConfiguration<WorkOrderRouting> {
+        public WorkOrderRoutingMap() {
             // Primary Key
             HasKey(t => new { t.WorkOrderID, t.ProductID, t.OperationSequence });
 
@@ -36,32 +33,29 @@ namespace AW.Mapping
             Property(t => t.ActualResourceHrs).HasColumnName("ActualResourceHrs");
             Property(t => t.PlannedCost).HasColumnName("PlannedCost");
             Property(t => t.ActualCost).HasColumnName("ActualCost");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Location).WithMany().HasForeignKey(t => t.LocationID);
             HasRequired(t => t.WorkOrder)
                 .WithMany(t => t.WorkOrderRoutings)
                 .HasForeignKey(d => d.WorkOrderID);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<WorkOrderRouting> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<WorkOrderRouting> builder) {
             builder.HasKey(t => new { t.WorkOrderID, t.ProductID, t.OperationSequence });
 
             // Properties
             builder.Property(t => t.WorkOrderID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.ProductID)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.OperationSequence)
-                .ValueGeneratedNever();
+                   .ValueGeneratedNever();
 
             // Table & Column Mappings
             builder.ToTable("WorkOrderRouting", "Production");
@@ -76,7 +70,7 @@ namespace AW.Mapping
             builder.Property(t => t.ActualResourceHrs).HasColumnName("ActualResourceHrs");
             builder.Property(t => t.PlannedCost).HasColumnName("PlannedCost");
             builder.Property(t => t.ActualCost).HasColumnName("ActualCost");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.Location).WithMany().HasForeignKey(t => t.LocationID);

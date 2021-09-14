@@ -7,15 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-
 using NakedFunctions;
 
-namespace AW.Types
-{
+namespace AW.Types {
     [Bounded]
-    public record SalesTerritory
-    {
-
+    public record SalesTerritory {
         [Hidden]
         public virtual int TerritoryID { get; init; }
 
@@ -28,16 +24,16 @@ namespace AW.Types
         [MemberOrder(30)]
         public virtual string Group { get; init; }
 
-        [MemberOrder(40), Mask("C")]
+        [MemberOrder(40)] [Mask("C")]
         public virtual decimal SalesYTD { get; init; }
 
-        [MemberOrder(41), Mask("C")]
+        [MemberOrder(41)] [Mask("C")]
         public virtual decimal SalesLastYear { get; init; }
 
-        [MemberOrder(42), Mask("C")]
+        [MemberOrder(42)] [Mask("C")]
         public virtual decimal CostYTD { get; init; }
 
-        [MemberOrder(43), Mask("C")]
+        [MemberOrder(43)] [Mask("C")]
         public virtual decimal CostLastYear { get; init; }
 
         [Hidden]
@@ -45,15 +41,15 @@ namespace AW.Types
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [Named("States/Provinces covered"), TableView(true)] //Table View == List View
+        [Named("States/Provinces covered")] [TableView(true)] //Table View == List View
         public virtual ICollection<StateProvince> StateProvince { get; init; } = new List<StateProvince>();
+
+        public virtual bool Equals(SalesTerritory other) => ReferenceEquals(this, other);
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(SalesTerritory other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

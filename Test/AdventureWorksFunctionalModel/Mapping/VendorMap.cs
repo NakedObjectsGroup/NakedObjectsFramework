@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class VendorMap : EntityTypeConfiguration<Vendor>
-    {
-        public VendorMap()
-        {
+namespace AW.Mapping {
+    public class VendorMap : EntityTypeConfiguration<Vendor> {
+        public VendorMap() {
             // Primary Key
             HasKey(t => t.BusinessEntityID);
 
@@ -33,27 +30,25 @@ namespace AW.Mapping
             Property(t => t.PreferredVendorStatus).HasColumnName("PreferredVendorStatus");
             Property(t => t.ActiveFlag).HasColumnName("ActiveFlag");
             Property(t => t.PurchasingWebServiceURL).HasColumnName("PurchasingWebServiceURL");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<Vendor> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<Vendor> builder) {
             builder.HasKey(t => t.BusinessEntityID);
 
             // Properties
             builder.Property(t => t.AccountNumber)
-                .IsRequired()
-                .HasMaxLength(15);
+                   .IsRequired()
+                   .HasMaxLength(15);
 
             builder.Property(t => t.Name)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             builder.Property(t => t.PurchasingWebServiceURL)
-                .HasMaxLength(1024);
+                   .HasMaxLength(1024);
 
             // Table & Column Mappings
             builder.ToTable("Vendor", "Purchasing");
@@ -64,7 +59,7 @@ namespace AW.Mapping
             builder.Property(t => t.PreferredVendorStatus).HasColumnName("PreferredVendorStatus");
             builder.Property(t => t.ActiveFlag).HasColumnName("ActiveFlag");
             builder.Property(t => t.PurchasingWebServiceURL).HasColumnName("PurchasingWebServiceURL");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 }

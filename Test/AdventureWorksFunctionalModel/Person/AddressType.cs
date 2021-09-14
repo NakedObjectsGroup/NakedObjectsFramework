@@ -6,31 +6,28 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
-namespace AW.Types
-{
+namespace AW.Types {
     [Bounded]
-    public record AddressType : IHasModifiedDate, IHasRowGuid
-    {
+    public record AddressType : IHasModifiedDate, IHasRowGuid {
         [Hidden]
         public virtual int AddressTypeID { get; init; }
 
         [Hidden]
         public virtual string Name { get; init; }
 
-        [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public virtual bool Equals(AddressType other) => ReferenceEquals(this, other);
 
         [Hidden]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        [Hidden]
+        public virtual Guid rowguid { get; init; }
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(AddressType other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

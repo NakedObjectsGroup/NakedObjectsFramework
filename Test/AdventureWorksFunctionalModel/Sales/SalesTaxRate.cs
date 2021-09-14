@@ -6,21 +6,20 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record SalesTaxRate
-    {
+namespace AW.Types {
+    public record SalesTaxRate {
         [Hidden]
         public virtual int SalesTaxRateID { get; init; }
+
         public virtual byte TaxType { get; init; }
         public virtual decimal TaxRate { get; init; }
         public virtual string Name { get; init; }
 
         [Hidden]
         public virtual int StateProvinceID { get; init; }
+
         public virtual StateProvince StateProvince { get; init; }
 
         [MemberOrder(99)]
@@ -29,10 +28,10 @@ namespace AW.Types
 
         public virtual Guid rowguid { get; init; }
 
+        public virtual bool Equals(SalesTaxRate other) => ReferenceEquals(this, other);
+
         public override string ToString() => $"Sales Tax Rate for {StateProvince}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(SalesTaxRate other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

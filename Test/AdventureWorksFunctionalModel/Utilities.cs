@@ -18,19 +18,18 @@ namespace AW {
             if (!string.IsNullOrEmpty(inputXML)) {
                 XElement.Parse(inputXML).Elements().ToList().ForEach(n => output.Append(n.Name.ToString().Substring(n.Name.ToString().IndexOf("}") + 1) + ": " + n.Value + "\n"));
             }
+
             return output.ToString();
         }
 
-        internal static int HashCode(object obj, params int[] keys)
-        {
+        internal static int HashCode(object obj, params int[] keys) {
             //Uses Josh Bloch's algorithm
-            int hash = 17 * 23 + TypeUtils.GetProxiedType(obj.GetType()).GetHashCode();           
-            foreach (int key in keys)
-            {
+            var hash = 17 * 23 + obj.GetType().GetProxiedType().GetHashCode();
+            foreach (var key in keys) {
                 hash = hash * 23 + key.GetHashCode();
             }
+
             return hash;
         }
-
     }
 }

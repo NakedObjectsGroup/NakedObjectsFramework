@@ -6,52 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using AW.Types;
-using System.Linq;
-using NakedFunctions;
 using System.Collections.Generic;
+using System.Linq;
+using AW.Types;
+using NakedFunctions;
 
 namespace AW.Functions {
     [Named("Sales Order")]
-        public  static class SalesOrderHeader_Functions {
-
-        #region Add New Detail
-        [MemberOrder(2), DescribedAs("Add a new line item to the order")]
-        public static IContext AddNewDetail(
-                this SalesOrderHeader soh,
-                Product product,
-                [DefaultValue(1), ValueRange(1, 999)] short quantity,
-                IContext context
-            )
-        {            
-            SalesOrderDetail sod = CreateNewDetail(soh, product, quantity, context);
-            return context.WithNew(sod).WithDeferred(c => {
-                var soh2 = c.Reload(soh);
-                return c.WithUpdated(soh2, soh2.Recalculated(c));
-            });
-        }
-
-        public static string DisableAddNewDetail(this SalesOrderHeader soh)
-        {
-            if (!soh.IsInProcess())
-            {
-                return "Can only add to 'In Process' order";
-            }
-            return null;
-        }
-
-        [PageSize(20)]
-        public static IQueryable<Product> AutoComplete1AddNewDetail(this SalesOrderHeader soh,
-            [MinLength(2)] string name, IContext context) =>
-            Product_MenuFunctions.FindProductByName(name, context);
-
-        #endregion
-
-        internal static SalesOrderDetail CreateNewDetail(this SalesOrderHeader soh, Product product, short quantity, IContext context)
-        {
-            var specialOfferProduct = Product_Functions.BestSpecialOfferProduct(product, quantity, context);
-            return new SalesOrderDetail()
-            {
+    public static class SalesOrderHeader_Functions {
+        internal static SalesOrderDetail CreateNewDetail(this SalesOrderHeader soh, Product product, short quantity, IContext context) {
+            var specialOfferProduct = product.BestSpecialOfferProduct(quantity, context);
+            return new SalesOrderDetail {
                 SalesOrderHeader = soh,
                 OrderQty = quantity,
                 SpecialOfferProduct = specialOfferProduct,
@@ -62,13 +27,11 @@ namespace AW.Functions {
             };
         }
 
-        internal static SalesOrderHeader Recalculated(this SalesOrderHeader soh, IContext c)
-        {
+        internal static SalesOrderHeader Recalculated(this SalesOrderHeader soh, IContext c) {
             var subTotal = soh.Details.Any() ? soh.Details.Sum(d => d.LineTotal) : 0.0m;
             var tax = subTotal * soh.GetTaxRate(c) / 100;
             var total = subTotal + tax;
-            return soh with
-            {
+            return soh with {
                 SubTotal = subTotal,
                 TaxAmt = tax,
                 TotalDue = total,
@@ -76,92 +39,25 @@ namespace AW.Functions {
             };
         }
 
-        internal static decimal GetTaxRate(this SalesOrderHeader soh, IContext context)
-        {
+        internal static decimal GetTaxRate(this SalesOrderHeader soh, IContext context) {
             var stateId = soh.BillingAddress.StateProvince.StateProvinceID;
             var str = context.Instances<SalesTaxRate>().FirstOrDefault(str => str.StateProvinceID == stateId);
             return str is null ? 0 : str.TaxRate;
         }
 
-
-
-        //        #region Add New Details
-        //        [DescribedAs("Add multiple line items to the order")]
-        //        [MultiLine()]
-        //#pragma warning disable 612, 618
-        //        [MemberOrder(1, "Details")]
-        //#pragma warning restore 612,618
-        //        public void AddNewDetails(
-        //            Product product,
-        //           [DefaultValue((short)1)] short quantity,
-        //           IQueryable<SpecialOfferProduct> sops)
-        //        {
-        //            var detail = AddNewDetail(product, quantity, sops);
-        //            Container.Persist(ref detail);
-        // TODO: Call this at the end
-        //SalesOrderHeader.Recalculate()
-
-        //        }
-        //        public virtual string DisableAddNewDetails()
-        //        {
-        //            return DisableAddNewDetail();
-        //        }
-        //        [PageSize(20)]
-        //        public IQueryable<Product> AutoComplete0AddNewDetails([MinLength(2)] string name, IQueryable<Product> products)
-        //        {
-        //            return AutoComplete0AddNewDetail(name, products);
-        //        }
-
-        //        public string ValidateAddNewDetails(short quantity)
-        //        {
-        //            var rb = new ReasonBuilder();
-        //            rb.AppendOnCondition(quantity <= 0, "Must be > 0");
-        //            return rb.Reason;
-        //        }
-
-        //        #endregion
-
-        #region Remove Details
-
-        public static IContext RemoveDetail(this SalesOrderHeader soh,
-            SalesOrderDetail detailToRemove, IContext context) =>
-                     context.WithDeleted(detailToRemove)
-                     .WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
-
-
-        public static IEnumerable<SalesOrderDetail> Choices1RemoveDetail(this SalesOrderHeader soh) =>
-            soh.Details;
-
-        public static SalesOrderDetail Default1RemoveDetail(this SalesOrderHeader soh) =>
-            soh.Details.FirstOrDefault();
-
-        public static string DisableRemoveDetail(this SalesOrderHeader soh) =>
-            soh.Details.Any() ? null : "Order has no Details.";
-
-        [MemberOrder("Details", 1)]
-        public static  IContext RemoveDetails(this SalesOrderHeader soh,
-             IEnumerable<SalesOrderDetail> details, IContext context) =>
-                 details.Aggregate(context, (c, d) => c.WithDeleted(d))
-                    .WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
-
-        #endregion
-
         [MemberOrder("Details", 2)]
         public static IContext AddCarrierTrackingNumber(this SalesOrderHeader soh,
-           IEnumerable<SalesOrderDetail> details, string ctn, IContext context) =>
-             details.Select(d => new
-             {
-                 original = d,
-                 updated = d with
-                 { CarrierTrackingNumber = ctn, ModifiedDate = context.Now() }
-             })
-            .Aggregate(context, (c, u) => c.WithUpdated(u.original, u.updated));
+                                                        IEnumerable<SalesOrderDetail> details, string ctn, IContext context) =>
+            details.Select(d => new {
+                       original = d,
+                       updated = d with { CarrierTrackingNumber = ctn, ModifiedDate = context.Now() }
+                   })
+                   .Aggregate(context, (c, u) => c.WithUpdated(u.original, u.updated));
 
-
-        [MemberOrder("Details",3)] //Places action within the Details collection
-        public static IContext ChangeAQuantity(this SalesOrderHeader soh, 
-            SalesOrderDetail detail, short newQuantity, IContext context) =>
-                 detail.ChangeQuantity(newQuantity, context);
+        [MemberOrder("Details", 3)] //Places action within the Details collection
+        public static IContext ChangeAQuantity(this SalesOrderHeader soh,
+                                               SalesOrderDetail detail, short newQuantity, IContext context) =>
+            detail.ChangeQuantity(newQuantity, context);
 
         public static List<SalesOrderDetail> Choices1ChangeAQuantity(this SalesOrderHeader soh) =>
             soh.Details.ToList();
@@ -206,7 +102,6 @@ namespace AW.Functions {
         //            this.SalesOrderHeaderSalesReason.Remove(reason);
         //            Container.DisposeInstance(reason);
         //        }
-
 
         //        public IList<SalesOrderHeaderSalesReason> 
         //Choices0RemoveSalesReason()
@@ -265,17 +160,142 @@ namespace AW.Functions {
 
         internal static IContext UpdateOrder(
             SalesOrderHeader original, SalesOrderHeader updated, IContext context) =>
-                 context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+
+        //TODO: Move to Edit
+        public static ShipMethod DefaultShipMethod(this SalesOrderHeader soh, IContext context) => context.Instances<ShipMethod>().FirstOrDefault();
+
+        public static string DisableDueDate(this SalesOrderHeader soh) => soh.DisableIfShipped();
+
+        public static string ValidateDueDate(this SalesOrderHeader soh, DateTime dueDate) {
+            if (dueDate.Date < soh.OrderDate.Date) {
+                return "Due date cannot be before order date";
+            }
+
+            return null;
+        }
+
+        private static string DisableIfShipped(this SalesOrderHeader soh) {
+            if (soh.IsShipped()) {
+                return "Order has been shipped";
+            }
+
+            return null;
+        }
+
+        public static string DisableShipDate(this SalesOrderHeader soh) => soh.DisableIfShipped();
+
+        public static string DisableRecalculate(this SalesOrderHeader soh) =>
+            !soh.IsInProcess() ? "Can only recalculate an 'In Process' order" : null;
+
+        public static string ValidateShipDate(this SalesOrderHeader soh, DateTime? shipDate) {
+            if (shipDate.HasValue && shipDate.Value.Date < soh.OrderDate.Date) {
+                return "Ship date cannot be before order date";
+            }
+
+            return null;
+        }
+
+        #region Add New Detail
+
+        [MemberOrder(2)] [DescribedAs("Add a new line item to the order")]
+        public static IContext AddNewDetail(
+            this SalesOrderHeader soh,
+            Product product,
+            [DefaultValue(1)] [ValueRange(1, 999)] short quantity,
+            IContext context
+        ) {
+            var sod = CreateNewDetail(soh, product, quantity, context);
+            return context.WithNew(sod).WithDeferred(c => {
+                var soh2 = c.Reload(soh);
+                return c.WithUpdated(soh2, soh2.Recalculated(c));
+            });
+        }
+
+        public static string DisableAddNewDetail(this SalesOrderHeader soh) {
+            if (!soh.IsInProcess()) {
+                return "Can only add to 'In Process' order";
+            }
+
+            return null;
+        }
+
+        [PageSize(20)]
+        public static IQueryable<Product> AutoComplete1AddNewDetail(this SalesOrderHeader soh,
+                                                                    [MinLength(2)] string name, IContext context) =>
+            Product_MenuFunctions.FindProductByName(name, context);
+
+        #endregion
+
+        //        #region Add New Details
+        //        [DescribedAs("Add multiple line items to the order")]
+        //        [MultiLine()]
+        //#pragma warning disable 612, 618
+        //        [MemberOrder(1, "Details")]
+        //#pragma warning restore 612,618
+        //        public void AddNewDetails(
+        //            Product product,
+        //           [DefaultValue((short)1)] short quantity,
+        //           IQueryable<SpecialOfferProduct> sops)
+        //        {
+        //            var detail = AddNewDetail(product, quantity, sops);
+        //            Container.Persist(ref detail);
+        // TODO: Call this at the end
+        //SalesOrderHeader.Recalculate()
+
+        //        }
+        //        public virtual string DisableAddNewDetails()
+        //        {
+        //            return DisableAddNewDetail();
+        //        }
+        //        [PageSize(20)]
+        //        public IQueryable<Product> AutoComplete0AddNewDetails([MinLength(2)] string name, IQueryable<Product> products)
+        //        {
+        //            return AutoComplete0AddNewDetail(name, products);
+        //        }
+
+        //        public string ValidateAddNewDetails(short quantity)
+        //        {
+        //            var rb = new ReasonBuilder();
+        //            rb.AppendOnCondition(quantity <= 0, "Must be > 0");
+        //            return rb.Reason;
+        //        }
+
+        //        #endregion
+
+        #region Remove Details
+
+        public static IContext RemoveDetail(this SalesOrderHeader soh,
+                                            SalesOrderDetail detailToRemove, IContext context) =>
+            context.WithDeleted(detailToRemove)
+                   .WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
+
+        public static IEnumerable<SalesOrderDetail> Choices1RemoveDetail(this SalesOrderHeader soh) =>
+            soh.Details;
+
+        public static SalesOrderDetail Default1RemoveDetail(this SalesOrderHeader soh) =>
+            soh.Details.FirstOrDefault();
+
+        public static string DisableRemoveDetail(this SalesOrderHeader soh) =>
+            soh.Details.Any() ? null : "Order has no Details.";
+
+        [MemberOrder("Details", 1)]
+        public static IContext RemoveDetails(this SalesOrderHeader soh,
+                                             IEnumerable<SalesOrderDetail> details, IContext context) =>
+            details.Aggregate(context, (c, d) => c.WithDeleted(d))
+                   .WithDeferred(c => c.WithUpdated(soh, soh.Recalculated(c)));
+
+        #endregion
 
         #region ApproveOrder
 
         [MemberOrder(1)]
-        public static  IContext ApproveOrder(this SalesOrderHeader soh, IContext context) =>
+        public static IContext ApproveOrder(this SalesOrderHeader soh, IContext context) =>
             UpdateOrder(soh, soh with { StatusByte = (byte)OrderStatus.Approved }, context);
-       
+
         //TODO: Remove context param from next 2
-        public static bool HideApproveOrder( this SalesOrderHeader soh, IContext context) =>
-          !soh.IsInProcess();
+        public static bool HideApproveOrder(this SalesOrderHeader soh, IContext context) =>
+            !soh.IsInProcess();
 
         public static string DisableApproveOrder(this SalesOrderHeader soh, IContext context) =>
             soh.Details.Count == 0 ? "Cannot approve orders with no Details" : null;
@@ -326,83 +346,24 @@ namespace AW.Functions {
 
         //        #endregion
 
-
         #region Status helpers
-        internal static bool IsInProcess(this SalesOrderHeader soh)
-        {
-            return soh.StatusByte == 1; //OrderStatus.InProcess;
-        }
 
-        internal static bool IsApproved(this SalesOrderHeader soh)
-        {
-            return soh.StatusByte == 2;// OrderStatus.Approved;
-        }
+        internal static bool IsInProcess(this SalesOrderHeader soh) => soh.StatusByte == 1; //OrderStatus.InProcess;
 
-        internal static bool IsBackOrdered(this SalesOrderHeader soh)
-        {
-            return soh.StatusByte == 3; // OrderStatus.BackOrdered;
-        }
+        internal static bool IsApproved(this SalesOrderHeader soh) => soh.StatusByte == 2; // OrderStatus.Approved;
 
-        internal static bool IsRejected(this SalesOrderHeader soh)
-        {
-            return soh.StatusByte == 4; // OrderStatus.Rejected;
-        }
+        internal static bool IsBackOrdered(this SalesOrderHeader soh) => soh.StatusByte == 3; // OrderStatus.BackOrdered;
 
-        internal static bool IsShipped(this SalesOrderHeader soh)
-        {
-            return soh.StatusByte == 5; // OrderStatus.Shipped;
-        }
+        internal static bool IsRejected(this SalesOrderHeader soh) => soh.StatusByte == 4; // OrderStatus.Rejected;
 
-        internal static bool IsCancelled(this SalesOrderHeader soh)
-        {
-            return soh.StatusByte == 6; // OrderStatus.Cancelled;
-        }
+        internal static bool IsShipped(this SalesOrderHeader soh) => soh.StatusByte == 5; // OrderStatus.Shipped;
+
+        internal static bool IsCancelled(this SalesOrderHeader soh) => soh.StatusByte == 6; // OrderStatus.Cancelled;
+
         #endregion
 
-        //TODO: Move to Edit
-        public static ShipMethod DefaultShipMethod(this SalesOrderHeader soh, IContext context) => context.Instances<ShipMethod>().FirstOrDefault();
-
-
-        public static string DisableDueDate(this SalesOrderHeader soh)
-        {
-            return soh.DisableIfShipped();
-        }
-
-        public static string ValidateDueDate(this SalesOrderHeader soh, DateTime dueDate)
-        {
-            if (dueDate.Date < soh.OrderDate.Date)
-            {
-                return "Due date cannot be before order date";
-            }
-
-            return null;
-        }
-
-        private static string DisableIfShipped(this SalesOrderHeader soh)
-        {
-            if (soh.IsShipped())
-            {
-                return "Order has been shipped";
-            }
-            return null;
-        }
-
-        public static string DisableShipDate(this SalesOrderHeader soh) => soh.DisableIfShipped();
-
-        public static string DisableRecalculate(this SalesOrderHeader soh) =>
-            !soh.IsInProcess() ? "Can only recalculate an 'In Process' order" : null;
-
-        public static string ValidateShipDate(this SalesOrderHeader soh, DateTime? shipDate)
-        {
-            if (shipDate.HasValue && shipDate.Value.Date < soh.OrderDate.Date)
-            {
-                return "Ship date cannot be before order date";
-            }
-
-            return null;
-        }
-
         #region Comments - all TODO
+
         //public static bool HideComment(this SalesOrderHeader soh)
         //{
         //    throw new NotImplementedException();
@@ -471,21 +432,20 @@ namespace AW.Functions {
         //{
         //    Comment += comment + "\n";
         //}
+
         #endregion
 
         #region Edits - TODO
+
         //public static Address[] ChoicesBillingAddress(IContext context) => Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();
 
         //public static Address[] ChoicesShippingAddress(IContext context) => ChoicesBillingAddress(context);
 
-    //    [PageSize(20)]
-    //    public IQueryable<SalesPerson> AutoCompleteSalesPerson(
-    //[MinLength(2)] string name, IContext context) =>
-    //Sales_MenuFunctions.FindSalesPersonByName(null, name, context);
-
-
+        //    [PageSize(20)]
+        //    public IQueryable<SalesPerson> AutoCompleteSalesPerson(
+        //[MinLength(2)] string name, IContext context) =>
+        //Sales_MenuFunctions.FindSalesPersonByName(null, name, context);
 
         #endregion
     }
-
 }

@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class AddressTypeMap : EntityTypeConfiguration<AddressType>
-    {
-        public AddressTypeMap()
-        {
+namespace AW.Mapping {
+    public class AddressTypeMap : EntityTypeConfiguration<AddressType> {
+        public AddressTypeMap() {
             // Primary Key
             HasKey(t => t.AddressTypeID);
 
@@ -22,14 +19,12 @@ namespace AW.Mapping
             Property(t => t.AddressTypeID).HasColumnName("AddressTypeID");
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<AddressType> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<AddressType> builder) {
             builder.HasKey(t => t.AddressTypeID);
 
             // Properties
@@ -42,7 +37,7 @@ namespace AW.Mapping
             builder.Property(t => t.AddressTypeID).HasColumnName("AddressTypeID");
             builder.Property(t => t.Name).HasColumnName("Name");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 }

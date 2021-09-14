@@ -6,31 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using AW.Types;
 using NakedFunctions;
 
-using AW.Types;
-
 namespace AW.Functions {
-
     public static class ShiftFunctions {
-
         internal static IContext UpdateShift(Shift original, Shift updated, IContext context) =>
             context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
         [Edit]
-        public static IContext EditTimes(this Shift s, 
-            TimeSpan startTime, TimeSpan endTime, IContext context) =>
-             UpdateShift(s, s with { StartTime = startTime, EndTime = endTime }, context);
+        public static IContext EditTimes(this Shift s,
+                                         TimeSpan startTime, TimeSpan endTime, IContext context) =>
+            UpdateShift(s, s with { StartTime = startTime, EndTime = endTime }, context);
 
         public static string ValidateEditTimes(
             this Shift s, TimeSpan startTime, TimeSpan endTime) =>
-               endTime > startTime ? null : "End time must be after start time";
+            endTime > startTime ? null : "End time must be after start time";
 
         [Edit]
         public static IContext EditName(this Shift s,
-           string name, IContext context) =>
+                                        string name, IContext context) =>
             UpdateShift(s, s with { Name = name }, context);
-
-
     }
 }

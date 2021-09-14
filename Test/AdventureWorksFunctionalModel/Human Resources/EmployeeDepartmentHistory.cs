@@ -6,13 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record EmployeeDepartmentHistory
-    {
+namespace AW.Types {
+    public record EmployeeDepartmentHistory {
         [Hidden]
         public virtual int EmployeeID { get; init; }
 
@@ -22,10 +19,10 @@ namespace AW.Types
         [Hidden]
         public virtual byte ShiftID { get; init; }
 
-        [MemberOrder(4), Mask("d")]
+        [MemberOrder(4)] [Mask("d")]
         public virtual DateTime StartDate { get; init; }
 
-        [MemberOrder(5), Mask("d")]
+        [MemberOrder(5)] [Mask("d")]
         public virtual DateTime? EndDate { get; init; }
 
         [MemberOrder(2)]
@@ -39,12 +36,12 @@ namespace AW.Types
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public virtual bool Equals(EmployeeDepartmentHistory other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{Department} {StartDate.ToString("d")}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(EmployeeDepartmentHistory other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

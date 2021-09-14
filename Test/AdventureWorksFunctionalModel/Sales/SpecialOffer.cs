@@ -8,10 +8,8 @@
 using System;
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record SpecialOffer: IHasModifiedDate, IHasRowGuid     {
-
+namespace AW.Types {
+    public record SpecialOffer : IHasModifiedDate, IHasRowGuid {
         [Hidden]
         public virtual int SpecialOfferID { get; init; }
 
@@ -42,17 +40,17 @@ namespace AW.Types
         [MemberOrder(62)]
         public virtual int? MaxQty { get; init; }
 
-        [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public virtual bool Equals(SpecialOffer other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        [Hidden]
+        public virtual Guid rowguid { get; init; }
 
         public override string ToString() => Description;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(SpecialOffer other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

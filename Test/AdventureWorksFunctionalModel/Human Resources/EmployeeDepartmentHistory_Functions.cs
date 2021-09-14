@@ -6,9 +6,5 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace AW.Functions {
-
-    public static class EmployeeDepartmentHistoryFunctions
-    {
-
-    }
+    public static class EmployeeDepartmentHistoryFunctions { }
 }

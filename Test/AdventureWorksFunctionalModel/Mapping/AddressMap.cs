@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class AddressMap : EntityTypeConfiguration<Address>
-    {
-        public AddressMap()
-        {
+namespace AW.Mapping {
+    public class AddressMap : EntityTypeConfiguration<Address> {
+        public AddressMap() {
             // Primary Key
             HasKey(t => t.AddressID);
 
@@ -37,18 +34,15 @@ namespace AW.Mapping
             Property(t => t.StateProvinceID).HasColumnName("StateProvinceID");
             Property(t => t.PostalCode).HasColumnName("PostalCode");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
-            HasRequired(t => t.StateProvince).WithMany().HasForeignKey(t =>t.StateProvinceID);
-
+            HasRequired(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<Address> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<Address> builder) {
             builder.HasKey(t => t.AddressID);
 
             builder.Property(t => t.AddressLine1)
@@ -81,5 +75,4 @@ namespace AW.Mapping
             builder.HasOne(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);
         }
     }
-
 }

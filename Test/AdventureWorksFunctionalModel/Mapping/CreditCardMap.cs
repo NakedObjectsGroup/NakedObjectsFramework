@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class CreditCardMap : EntityTypeConfiguration<CreditCard>
-    {
-        public CreditCardMap()
-        {
+namespace AW.Mapping {
+    public class CreditCardMap : EntityTypeConfiguration<CreditCard> {
+        public CreditCardMap() {
             // Primary Key
             HasKey(t => t.CreditCardID);
 
@@ -30,28 +27,26 @@ namespace AW.Mapping
             Property(t => t.CardNumber).HasColumnName("CardNumber");
             Property(t => t.ExpMonth).HasColumnName("ExpMonth");
             Property(t => t.ExpYear).HasColumnName("ExpYear");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             HasMany(t => t.PersonLinks).WithRequired(t => t.CreditCard);
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<CreditCard> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<CreditCard> builder) {
             builder.HasKey(t => t.CreditCardID);
 
             //Ignores
 
             // Properties
             builder.Property(t => t.CardType)
-                .IsRequired()
-                .HasMaxLength(50);
+                   .IsRequired()
+                   .HasMaxLength(50);
 
             builder.Property(t => t.CardNumber)
-                .IsRequired()
-                .HasMaxLength(25);
+                   .IsRequired()
+                   .HasMaxLength(25);
 
             // Table & Column Mappings
             builder.ToTable("CreditCard", "Sales");
@@ -60,7 +55,7 @@ namespace AW.Mapping
             builder.Property(t => t.CardNumber).HasColumnName("CardNumber");
             builder.Property(t => t.ExpMonth).HasColumnName("ExpMonth");
             builder.Property(t => t.ExpYear).HasColumnName("ExpYear");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             builder.HasMany(t => t.PersonLinks).WithOne(t => t.CreditCard);
         }

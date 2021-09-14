@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class CountryRegionCurrencyMap : EntityTypeConfiguration<CountryRegionCurrency>
-    {
-        public CountryRegionCurrencyMap()
-        {
+namespace AW.Mapping {
+    public class CountryRegionCurrencyMap : EntityTypeConfiguration<CountryRegionCurrency> {
+        public CountryRegionCurrencyMap() {
             // Primary Key
             HasKey(t => new { t.CountryRegionCode, t.CurrencyCode });
 
@@ -26,19 +23,16 @@ namespace AW.Mapping
             ToTable("CountryRegionCurrency", "Sales");
             Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
             Property(t => t.CurrencyCode).HasColumnName("CurrencyCode");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);
-            HasRequired(t => t.Currency).WithMany().HasForeignKey(t => t.CurrencyCode); 
-
+            HasRequired(t => t.Currency).WithMany().HasForeignKey(t => t.CurrencyCode);
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<CountryRegionCurrency> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<CountryRegionCurrency> builder) {
             // Primary Key
             builder.HasKey(t => new { t.CountryRegionCode, t.CurrencyCode });
 
@@ -56,7 +50,7 @@ namespace AW.Mapping
             builder.ToTable("CountryRegionCurrency", "Sales");
             builder.Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
             builder.Property(t => t.CurrencyCode).HasColumnName("CurrencyCode");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);

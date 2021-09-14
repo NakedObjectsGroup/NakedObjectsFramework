@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class LocationMap : EntityTypeConfiguration<Location>
-    {
-        public LocationMap()
-        {
+namespace AW.Mapping {
+    public class LocationMap : EntityTypeConfiguration<Location> {
+        public LocationMap() {
             // Primary Key
             HasKey(t => t.LocationID);
 
@@ -23,14 +20,12 @@ namespace AW.Mapping
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.CostRate).HasColumnName("CostRate");
             Property(t => t.Availability).HasColumnName("Availability");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<Location> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<Location> builder) {
             builder.HasKey(t => t.LocationID);
 
             // Properties
@@ -44,7 +39,7 @@ namespace AW.Mapping
             builder.Property(t => t.Name).HasColumnName("Name");
             builder.Property(t => t.CostRate).HasColumnName("CostRate");
             builder.Property(t => t.Availability).HasColumnName("Availability");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 }

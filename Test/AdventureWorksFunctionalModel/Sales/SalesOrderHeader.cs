@@ -11,8 +11,7 @@ using NakedFunctions;
 
 namespace AW.Types {
     [Named("Sales Order")]
-    public record SalesOrderHeader : ICreditCardCreator
-    {
+    public record SalesOrderHeader : ICreditCardCreator {
         public virtual bool AddItemsFromCart { get; init; }
 
         [Hidden]
@@ -25,7 +24,7 @@ namespace AW.Types {
         public virtual byte StatusByte { get; init; }
 
         [MemberOrder(1)]
-        public virtual OrderStatus Status { get { return (OrderStatus)StatusByte; } }
+        public virtual OrderStatus Status => (OrderStatus)StatusByte;
 
         [Hidden]
         public virtual int CustomerID { get; init; }
@@ -72,7 +71,6 @@ namespace AW.Types {
         //    return Customer != null && Customer.IsIndividual();
         //}
 
-
         //public List<StoreContact> ChoicesStoreContact() {
         //    throw new NotImplementedException();
         //    //if (Customer != null && Customer.IsStore()) {
@@ -87,7 +85,6 @@ namespace AW.Types {
 
         [MemberOrder(4)]
         public virtual Address BillingAddress { get; init; }
-
 
         [MemberOrder(5)]
         public virtual string PurchaseOrderNumber { get; init; }
@@ -113,21 +110,21 @@ namespace AW.Types {
         [MemberOrder(21)]
         public virtual DateTime DueDate { get; init; }
 
-        [MemberOrder(22), Mask("d")]
-       // [NakedFunctions.Range(-30, 0)]
+        [MemberOrder(22)] [Mask("d")]
+        // [NakedFunctions.Range(-30, 0)]
         public virtual DateTime? ShipDate { get; init; }
-  
+
         [MemberOrder(31)]
         [Mask("C")]
         public virtual decimal SubTotal { get; init; }
 
-        [MemberOrder(32), Mask("C")]
+        [MemberOrder(32)] [Mask("C")]
         public virtual decimal TaxAmt { get; init; }
 
-        [MemberOrder(33), Mask("C")]
+        [MemberOrder(33)] [Mask("C")]
         public virtual decimal Freight { get; init; }
 
-        [MemberOrder(34), Mask("C")]
+        [MemberOrder(34)] [Mask("C")]
         public virtual decimal TotalDue { get; init; }
 
         [Hidden]
@@ -137,7 +134,7 @@ namespace AW.Types {
         public virtual CurrencyRate CurrencyRate { get; init; }
 
         [DescribedAs("Order has been placed via the web")]
-        [MemberOrder(41),Named("Online Order")]
+        [MemberOrder(41)] [Named("Online Order")]
         public virtual bool OnlineOrder { get; init; }
 
         [Hidden]
@@ -149,54 +146,45 @@ namespace AW.Types {
         [MemberOrder(43)]
         public virtual string CreditCardApprovalCode { get; init; }
 
-
         [MemberOrder(51)]
         public virtual byte RevisionNumber { get; init; }
-
 
         [MultiLine(NumberOfLines = 3, Width = 50)]
         [MemberOrder(52)]
         [DescribedAs("Free-form text")]
         public virtual string Comment { get; init; }
 
-
         [Hidden]
         public virtual int? SalesPersonID { get; init; }
-
 
         [MemberOrder(61)]
         public virtual SalesPerson SalesPerson { get; init; }
 
-
         [Hidden]
         public virtual int? SalesTerritoryID { get; init; }
-
 
         [MemberOrder(62)]
         public virtual SalesTerritory SalesTerritory { get; init; }
 
-
-        [MemberOrder(99)]     
+        [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-
-        public virtual ICollection<SalesOrderDetail> Details { get; init; } 
+        public virtual ICollection<SalesOrderDetail> Details { get; init; }
             = new List<SalesOrderDetail>();
 
         [Named("Reasons")]
-        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason { get; init; } 
+        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason { get; init; }
             = new List<SalesOrderHeaderSalesReason>();
 
+        public virtual bool Equals(SalesOrderHeader other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{SalesOrderNumber}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(SalesOrderHeader other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 
     public enum OrderStatus : byte {

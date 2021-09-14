@@ -8,58 +8,59 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedFunctions;
 using AW.Types;
+using NakedFunctions;
 
-
-namespace AW.Functions
-{
-    public static class SpecialOffer_Functions
-    {
-        internal static  IContext UpdateSpecialOffer(
+namespace AW.Functions {
+    public static class SpecialOffer_Functions {
+        internal static IContext UpdateSpecialOffer(
             SpecialOffer original, SpecialOffer updated, IContext context) =>
-                context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+
+        public static List<Product> ListAssociatedProducts(this SpecialOffer specialOffer, IContext context) {
+            var id = specialOffer.SpecialOfferID;
+            return context.Instances<SpecialOfferProduct>().Where(x => x.SpecialOfferID == id).Select(x => x.Product).ToList();
+        }
 
         #region Edit
-        public static  IContext EditDescription(
-            this SpecialOffer sp, string description, IContext context) => 
-                UpdateSpecialOffer(sp, sp with { Description = description}, context);
 
+        public static IContext EditDescription(
+            this SpecialOffer sp, string description, IContext context) =>
+            UpdateSpecialOffer(sp, sp with { Description = description }, context);
 
         public static IContext EditDiscount(
-            this SpecialOffer sp, decimal discountPct, IContext context) => 
+            this SpecialOffer sp, decimal discountPct, IContext context) =>
             UpdateSpecialOffer(sp, sp with { DiscountPct = discountPct }, context);
 
         public static string DisableEditDiscount(
             this SpecialOffer sp, IContext context) =>
-                DisableIfStarted(sp, context);
+            DisableIfStarted(sp, context);
 
         public static IContext EditType(
-            this SpecialOffer sp, string type, IContext context) => 
-                UpdateSpecialOffer(sp, sp with { Type = type }, context);
+            this SpecialOffer sp, string type, IContext context) =>
+            UpdateSpecialOffer(sp, sp with { Type = type }, context);
 
         public static bool HideEditType(
             this SpecialOffer sp, IContext context) =>
-                HideIfEnded(sp, context);
+            HideIfEnded(sp, context);
 
         public static IContext EditCategory(
-            this SpecialOffer sp, string category, IContext context) => 
-                UpdateSpecialOffer(sp, sp with { Category = category }, context);
+            this SpecialOffer sp, string category, IContext context) =>
+            UpdateSpecialOffer(sp, sp with { Category = category }, context);
 
         public static IList<string> Choices1Category(this SpecialOffer sp) => Categories;
 
         internal static IList<string> Categories = new[] { "Reseller", "Customer" };
 
-
         internal static string DisableIfStarted(this SpecialOffer so, IContext context) =>
-            context.Today() > so.StartDate? "Offer has started": null;
+            context.Today() > so.StartDate ? "Offer has started" : null;
 
         internal static bool HideIfEnded(this SpecialOffer so, IContext context) =>
             context.Today() > so.EndDate;
 
-        public static IContext EditDates( this SpecialOffer sp,
-            DateTime startDate, DateTime endDate, IContext context) => 
-                UpdateSpecialOffer(sp, sp with { StartDate = startDate, EndDate = endDate }, context);
+        public static IContext EditDates(this SpecialOffer sp,
+                                         DateTime startDate, DateTime endDate, IContext context) =>
+            UpdateSpecialOffer(sp, sp with { StartDate = startDate, EndDate = endDate }, context);
 
         public static DateTime Default1EditDates(this SpecialOffer sp, IContext context) =>
             sp.StartDate;
@@ -70,37 +71,33 @@ namespace AW.Functions
         internal static DateTime DefaultEndDate(IContext context) =>
             context.GetService<IClock>().Today().AddMonths(1);
 
-        public static  IContext EditQuantities(this SpecialOffer sp, 
-            [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
-                UpdateSpecialOffer(sp, sp with { MinQty = minQty, MaxQty = maxQty }, context);
+        public static IContext EditQuantities(this SpecialOffer sp,
+                                              [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
+            UpdateSpecialOffer(sp, sp with { MinQty = minQty, MaxQty = maxQty }, context);
 
         public static string Validate1EditQuantities(this SpecialOffer sp, int minQty) =>
             minQty < 1 ? "Must be > 0" : null;
 
         public static string ValidateEditQuantities(
             this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
-               ValidateQuantities(minQty, maxQty);
+            ValidateQuantities(minQty, maxQty);
 
         internal static string ValidateQuantities(int minQty, int? maxQty) =>
-             maxQty != null && maxQty.Value < minQty ? "Max Qty cannot be < Min Qty" : null;
-        #endregion
+            maxQty != null && maxQty.Value < minQty ? "Max Qty cannot be < Min Qty" : null;
 
+        #endregion
 
         #region AssociateWithProduct
 
         public static IContext AssociateWithProduct(
-            this SpecialOffer offer, Product product, IContext context)
-        {
+            this SpecialOffer offer, Product product, IContext context) {
             var prev = context.Instances<SpecialOfferProduct>().Where(x => x.SpecialOfferID == offer.SpecialOfferID && x.ProductID == product.ProductID).Count() == 0;
-            if (prev)
-            {
-                var newSO = new SpecialOfferProduct() { SpecialOffer = offer, Product = product, ModifiedDate = context.Now(), rowguid = context.NewGuid() };
+            if (prev) {
+                var newSO = new SpecialOfferProduct { SpecialOffer = offer, Product = product, ModifiedDate = context.Now(), rowguid = context.NewGuid() };
                 return context.WithNew(newSO);
             }
-            else
-            {
-                return context.WithInformUser($"{offer} is already associated with { product}");
-            }
+
+            return context.WithInformUser($"{offer} is already associated with {product}");
         }
 
         [PageSize(20)]
@@ -109,29 +106,23 @@ namespace AW.Functions
 
         #endregion
 
-        public static List<Product> ListAssociatedProducts(this SpecialOffer specialOffer, IContext context)
-        {
-            int id = specialOffer.SpecialOfferID;
-            return context.Instances<SpecialOfferProduct>().Where(x => x.SpecialOfferID == id).Select(x => x.Product).ToList();
-        }
-
         #region Queryable-contributed
+
         internal static IContext Change(this IQueryable<SpecialOffer> offers,
-            Func<SpecialOffer, SpecialOffer> change, IContext context) =>
-                offers.Select(x => new { original = x, updated = change(x) })
-                    .Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
+                                        Func<SpecialOffer, SpecialOffer> change, IContext context) =>
+            offers.Select(x => new { original = x, updated = change(x) })
+                  .Aggregate(context, (c, of) => c.WithUpdated(of.original, of.updated));
 
         //TODO: This example shows we must permit returning a List (not a queryable) for display.
         public static IContext ExtendOffers(this IQueryable<SpecialOffer> offers, DateTime toDate, IContext context) =>
             Change(offers, x => x with { EndDate = toDate, ModifiedDate = context.Now() }, context);
 
-
         public static IContext TerminateOffers(
-            this IQueryable<SpecialOffer> offers, IContext context)
-        {
-           var yesterday = context.Today().AddDays(-1);
-           return Change(offers, x => x with { EndDate = yesterday, ModifiedDate = context.Now() }, context);
+            this IQueryable<SpecialOffer> offers, IContext context) {
+            var yesterday = context.Today().AddDays(-1);
+            return Change(offers, x => x with { EndDate = yesterday, ModifiedDate = context.Now() }, context);
         }
+
         #endregion
     }
 }

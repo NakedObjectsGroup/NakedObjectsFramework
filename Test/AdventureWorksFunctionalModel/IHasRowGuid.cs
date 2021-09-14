@@ -1,9 +1,7 @@
 ﻿using System;
 
-namespace AW
-{
-    public interface IHasRowGuid
-    {
+namespace AW {
+    public interface IHasRowGuid {
         Guid rowguid { get; }
     }
 }

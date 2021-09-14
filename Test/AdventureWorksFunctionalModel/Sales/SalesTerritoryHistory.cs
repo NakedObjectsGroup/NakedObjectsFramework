@@ -6,12 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
 namespace AW.Types {
-        public record SalesTerritoryHistory {
-
+    public record SalesTerritoryHistory {
         [MemberOrder(1)]
         [Mask("d")]
         public virtual DateTime StartDate { get; init; }
@@ -20,19 +18,30 @@ namespace AW.Types {
         [Mask("d")]
         public virtual DateTime? EndDate { get; init; }
 
+        public virtual bool Equals(SalesTerritoryHistory other) => ReferenceEquals(this, other);
+
+        public override string ToString() => $"{SalesPerson} {SalesTerritory}";
+
+        public override int GetHashCode() => base.GetHashCode();
+
         #region SalesPerson
+
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
         [MemberOrder(3)]
         public virtual SalesPerson SalesPerson { get; init; }
+
         #endregion
 
         #region Sales Territory
+
         [Hidden]
         public virtual int SalesTerritoryID { get; init; }
+
         [MemberOrder(4)]
         public virtual SalesTerritory SalesTerritory { get; init; }
+
         #endregion
 
         #region ModifiedDate and rowguid
@@ -40,10 +49,8 @@ namespace AW.Types {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        
-        
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
@@ -55,11 +62,5 @@ namespace AW.Types {
         #endregion
 
         #endregion
-
-        public override string ToString()  => $"{SalesPerson} {SalesTerritory}";
-
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(SalesTerritoryHistory other) => ReferenceEquals(this, other);
     }
 }

@@ -8,39 +8,32 @@
 using System;
 using System.Linq;
 using System.Security.Principal;
-using NakedFunctions;
 using AW.Types;
+using NakedFunctions;
 
 namespace AW.Functions {
     /// <summary>
-    /// 
     /// </summary>
-    /// 
     [Named("Cart")]
     public static class ShoppingCart_MenuFunctions {
-
         //TODO: The Cart should probably be a view model
         [Named("Show Cart")]
         public static IQueryable<ShoppingCartItem> Cart(IContext context) {
-            string id = GetShoppingCartIDForUser(context);
+            var id = GetShoppingCartIDForUser(context);
             return context.Instances<ShoppingCartItem>().Where(x => x.ShoppingCartID == id);
         }
 
-        public static string DisableCart(IContext context) {
-            return DisableIfNoCustomerForUser(context);
-        }
+        public static string DisableCart(IContext context) => DisableIfNoCustomerForUser(context);
 
-        private static string GetShoppingCartIDForUser(IContext context) {
-            return GetCustomerForUser(context).CustomerID.ToString();
-        }
+        private static string GetShoppingCartIDForUser(IContext context) => GetCustomerForUser(context).CustomerID.ToString();
 
         public static IContext AddToShoppingCart(Product product, IContext context) {
-            string id = GetShoppingCartIDForUser(context);
-            var newItem = new ShoppingCartItem() with { ShoppingCartID = id, Product = product, Quantity = 1, DateCreated = context.Now()};
-            return  context.WithNew(newItem).WithInformUser($"1 x {product} added to Cart");
+            var id = GetShoppingCartIDForUser(context);
+            var newItem = new ShoppingCartItem() with { ShoppingCartID = id, Product = product, Quantity = 1, DateCreated = context.Now() };
+            return context.WithNew(newItem).WithInformUser($"1 x {product} added to Cart");
         }
 
-        public static  (SalesOrderHeader, IContext) CheckOut(IContext context) {
+        public static (SalesOrderHeader, IContext) CheckOut(IContext context) {
             var cust = GetCustomerForUser(context);
             throw new NotImplementedException();
             //var (order, context2) = Order_AdditionalFunctions.CreateNewOrder(cust, true, context);
@@ -49,72 +42,56 @@ namespace AW.Functions {
             //order.AddItemsFromCart = true;
         }
 
-        public static string DisableCheckOut(IContext context) {
-            return DisableIfNoCustomerForUser(context);
-        }
+        public static string DisableCheckOut(IContext context) => DisableIfNoCustomerForUser(context);
 
-        private static Customer GetCustomerForUser(IContext context) {
-            throw new NotImplementedException();
-            //Person c = GetContactFromUserNameAsEmail(context);
-            //if (c == null) return null;
+        private static Customer GetCustomerForUser(IContext context) => throw new NotImplementedException();
 
-            //var individuals = context.Instances<Customer>();
-            //var qi = from i in individuals
-            //         where i.Contact.BusinessEntityID == c.BusinessEntityID
-            //         select i;
-            //if (qi.Count() == 1)
-            //{
-            //    return qi.First();
-            //}
+        //Person c = GetContactFromUserNameAsEmail(context);
+        //if (c == null) return null;
+        //var individuals = context.Instances<Customer>();
+        //var qi = from i in individuals
+        //         where i.Contact.BusinessEntityID == c.BusinessEntityID
+        //         select i;
+        //if (qi.Count() == 1)
+        //{
+        //    return qi.First();
+        //}
+        //var stores = context.Instances<Store>();
+        //var storeContacts = context.Instances<StoreContact>();
+        //var qs = from s in storeContacts
+        //         where s.Contact.BusinessEntityID == c.BusinessEntityID
+        //         select s;
+        //if (qs.Count() == 1)
+        //{
+        //    return qs.First().Store;
+        //}
+        //WarnUser("No Customer found with a Contact email address of: " + UserName());
+        //return null;
+        private static Person GetContactFromUserNameAsEmail(IContext context) => throw new NotImplementedException();
 
-            //var stores = context.Instances<Store>();
-            //var storeContacts = context.Instances<StoreContact>();
+        //string username = UserName(context.CurrentUser()).Trim().ToUpper();
+        //var q = from e in  context.Instances<EmailAddress>()
+        //        where e.EmailAddress1.Trim().ToUpper() == username
+        //        select e.Person;
+        //return q.FirstOrDefault();
+        private static string UserName(IPrincipal principal) => principal.Identity.Name;
 
-            //var qs = from s in storeContacts
-            //         where s.Contact.BusinessEntityID == c.BusinessEntityID
-            //         select s;
-            //if (qs.Count() == 1)
-            //{
-            //    return qs.First().Store;
-            //}
-            //WarnUser("No Customer found with a Contact email address of: " + UserName());
-            //return null;
-        }
-
-        private static Person GetContactFromUserNameAsEmail(IContext context) {
-            throw new NotImplementedException();
-            //string username = UserName(context.CurrentUser()).Trim().ToUpper();
-            //var q = from e in  context.Instances<EmailAddress>()
-            //        where e.EmailAddress1.Trim().ToUpper() == username
-            //        select e.Person;
-            //return q.FirstOrDefault();
-        }
-
-        private static string UserName(IPrincipal principal) {
-            return principal.Identity.Name;
-        }
-        
-        public static  IContext AddAllItemsInCartToOrder(
+        public static IContext AddAllItemsInCartToOrder(
             SalesOrderHeader order, IContext context) {
-
             var items = Cart(context);
-            var details = items.Select(item => order.CreateNewDetail(item.Product, (short) item.Quantity, context));
+            var details = items.Select(item => order.CreateNewDetail(item.Product, (short)item.Quantity, context));
             var context2 = details.Aggregate(context, (c, d) => c.WithNew(d));
             var context3 = EmptyCart(context);
             return context3;
         }
 
-        public static IContext RemoveItems(IQueryable<ShoppingCartItem> items, IContext context) {
-           throw new NotImplementedException();
-        }
+        public static IContext RemoveItems(IQueryable<ShoppingCartItem> items, IContext context) => throw new NotImplementedException();
 
-        public static IContext EmptyCart(IContext context) {
-            throw new NotImplementedException();
-            //RemoveItems(Cart(context));
-        }
+        public static IContext EmptyCart(IContext context) => throw new NotImplementedException();
 
-        public static string DisableEmptyCart(IContext context) =>  DisableIfNoCustomerForUser(context);
+        //RemoveItems(Cart(context));
+        public static string DisableEmptyCart(IContext context) => DisableIfNoCustomerForUser(context);
 
-        public static string DisableIfNoCustomerForUser(IContext context) =>  GetCustomerForUser(context) == null? "User is not a recognised Customer": null;
+        public static string DisableIfNoCustomerForUser(IContext context) => GetCustomerForUser(context) == null ? "User is not a recognised Customer" : null;
     }
 }

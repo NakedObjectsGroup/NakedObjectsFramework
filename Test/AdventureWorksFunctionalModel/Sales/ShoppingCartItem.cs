@@ -8,10 +8,8 @@
 using System;
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record ShoppingCartItem
-    {
+namespace AW.Types {
+    public record ShoppingCartItem {
         [Hidden]
         public virtual int ShoppingCartItemID { get; init; }
 
@@ -24,14 +22,6 @@ namespace AW.Types
         [Hidden]
         public virtual DateTime DateCreated { get; init; }
 
-        #region Product
-        [Hidden]
-        public virtual int ProductID { get; init; }
-
-        [MemberOrder(10)]
-        public virtual Product Product { get; init; }
-        #endregion
-
         #region ModifiedDate
 
         [MemberOrder(99)]
@@ -40,10 +30,20 @@ namespace AW.Types
 
         #endregion
 
+        public virtual bool Equals(ShoppingCartItem other) => ReferenceEquals(this, other);
+
         public override string ToString() => $"{Quantity}  x {Product}";
 
-        public override int GetHashCode() =>base.GetHashCode();
+        public override int GetHashCode() => base.GetHashCode();
 
-        public virtual bool Equals(ShoppingCartItem other) => ReferenceEquals(this, other);
+        #region Product
+
+        [Hidden]
+        public virtual int ProductID { get; init; }
+
+        [MemberOrder(10)]
+        public virtual Product Product { get; init; }
+
+        #endregion
     }
 }

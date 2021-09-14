@@ -9,24 +9,13 @@ using System;
 using System.Collections.Generic;
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record SalesPerson : IBusinessEntity
-    {
-         [Hidden]
-        public virtual int BusinessEntityID { get; init; }
-
+namespace AW.Types {
+    public record SalesPerson : IBusinessEntity {
         [MemberOrder(10)]
         public virtual Employee EmployeeDetails { get; init; }
 
         [MemberOrder(11)]
-        public virtual Person PersonDetails
-        {
-            get
-            {
-                return EmployeeDetails.PersonDetails;
-            }
-        }
+        public virtual Person PersonDetails => EmployeeDetails.PersonDetails;
 
         [Hidden]
         public virtual int? SalesTerritoryID { get; init; }
@@ -56,7 +45,7 @@ namespace AW.Types
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
@@ -66,11 +55,14 @@ namespace AW.Types
 
         [TableView(false, "StartDate", "EndDate", "SalesTerritory")]
         public virtual ICollection<SalesTerritoryHistory> TerritoryHistory { get; init; } = new List<SalesTerritoryHistory>();
-  
-        public override string ToString() => $"{EmployeeDetails}";
 
-		public override int GetHashCode() =>base.GetHashCode();
+        [Hidden]
+        public virtual int BusinessEntityID { get; init; }
 
         public virtual bool Equals(SalesPerson other) => ReferenceEquals(this, other);
+
+        public override string ToString() => $"{EmployeeDetails}";
+
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

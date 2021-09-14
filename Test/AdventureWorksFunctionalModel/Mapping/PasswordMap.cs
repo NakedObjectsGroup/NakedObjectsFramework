@@ -15,15 +15,13 @@ namespace AW.Mapping {
             Property(t => t.PasswordHash).HasColumnName("PasswordHash");
             Property(t => t.PasswordSalt).HasColumnName("PasswordSalt");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
             HasRequired(pw => pw.Person);
-            }
+        }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<Password> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<Password> builder) {
             builder.HasKey(t => t.BusinessEntityID);
 
             // Table & Column Mappings
@@ -32,7 +30,7 @@ namespace AW.Mapping {
             builder.Property(t => t.PasswordHash).HasColumnName("PasswordHash");
             builder.Property(t => t.PasswordSalt).HasColumnName("PasswordSalt");
             builder.Property(t => t.rowguid).HasColumnName("rowguid");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
             builder.HasOne(pw => pw.Person).WithOne(p => p.Password);
         }
     }

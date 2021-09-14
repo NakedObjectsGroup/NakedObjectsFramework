@@ -9,25 +9,20 @@ using System;
 using System.Linq;
 using AW.Types;
 using NakedFunctions;
-
 using static AW.Helpers;
 
 namespace AW.Functions {
-
     [Named("Employees")]
     public static class Employee_MenuFunctions {
-
         [PageSize(15)]
         public static IQueryable<Employee> AllEmployees(IContext context) => context.Instances<Employee>();
 
         [TableView(true, nameof(Employee.Current), nameof(Employee.JobTitle), nameof(Employee.Manager))]
         public static IQueryable<Employee> FindEmployeeByName(
-            [Optionally] string firstName, string lastName, IContext context)
-        {
+            [Optionally] string firstName, string lastName, IContext context) {
             var employees = context.Instances<Employee>();
-            var persons = context.Instances<Person>().
-                    Where(p => (firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper())) &&
-                        p.LastName.ToUpper().StartsWith(lastName.ToUpper()));
+            var persons = context.Instances<Person>().Where(p => (firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper())) &&
+                                                                 p.LastName.ToUpper().StartsWith(lastName.ToUpper()));
 
             return from emp in employees
                    from p in persons
@@ -36,61 +31,54 @@ namespace AW.Functions {
                    select emp;
         }
 
-       public static Employee FindEmployeeByNationalIDNumber(string nationalIDNumber, IContext context) 
+        public static Employee FindEmployeeByNationalIDNumber(string nationalIDNumber, IContext context)
             => context.Instances<Employee>().Where(e => e.NationalIDNumber == nationalIDNumber).FirstOrDefault();
 
-        public static StaffSummary GenerateStaffSummary(IContext context)
-        {
+        public static StaffSummary GenerateStaffSummary(IContext context) {
             var staff = context.Instances<Employee>();
-            int female = staff.Where(x => x.Gender == "F").Count();
-            int male = staff.Where(x => x.Gender == "M").Count();
-            return new() { Female = female, Male = male };
+            var female = staff.Where(x => x.Gender == "F").Count();
+            var male = staff.Where(x => x.Gender == "M").Count();
+            return new StaffSummary { Female = female, Male = male };
         }
 
         [RenderEagerly]
         [TableView(true, "GroupName")]
         public static IQueryable<Department> ListAllDepartments(IContext context) => context.Instances<Department>();
 
-
-        internal static Employee CurrentUserAsEmployee(IContext context)
-        {
-            string login = context.CurrentUser().Identity.Name;
+        internal static Employee CurrentUserAsEmployee(IContext context) {
+            var login = context.CurrentUser().Identity.Name;
             return context.Instances<Employee>().Where(x => x.LoginID == login).FirstOrDefault();
         }
-        public static Employee Me(IContext context) =>CurrentUserAsEmployee(context);
 
+        public static Employee Me(IContext context) => CurrentUserAsEmployee(context);
 
         public static Employee RandomEmployee(IContext context) => Random<Employee>(context);
 
         ////This method is to test use of nullable booleans
         public static IQueryable<Employee> ListEmployees(
-
             bool? current, //mandatory
             [Optionally] bool? married,
             [DefaultValue(false)] bool? salaried,
-            [Optionally][DefaultValue(true)] bool? olderThan50,
+            [Optionally] [DefaultValue(true)] bool? olderThan50,
             IQueryable<Employee> employees
-            )
-        {
+        ) {
             var emps = employees.Where(e => e.Current == current.Value);
-            if (married != null)
-            {
-                string value = married.Value ? "M" : "S";
+            if (married != null) {
+                var value = married.Value ? "M" : "S";
                 emps = emps.Where(e => e.MaritalStatus == value);
             }
+
             emps = emps.Where(e => e.Salaried == salaried.Value);
-            if (olderThan50 != null)
-            {
+            if (olderThan50 != null) {
                 var date = DateTime.Today.AddYears(-50); //Not an exact calculation!
-                if (olderThan50.Value)
-                {
+                if (olderThan50.Value) {
                     emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth < date);
                 }
-                else
-                {
+                else {
                     emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth > date);
                 }
             }
+
             return emps;
         }
 

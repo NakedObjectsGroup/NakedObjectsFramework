@@ -5,18 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFunctions;
 using AW.Types;
+using NakedFunctions;
 
 namespace AW.Functions {
-
-    public static class SalesOrderDetail_Functions
-    {
-        public static IContext ChangeQuantity(this SalesOrderDetail detail, short newQuantity, IContext context)
-        {
-            var sop = Product_Functions.BestSpecialOfferProduct(detail.Product, newQuantity, context);
-            var detail2 = detail with
-            {
+    public static class SalesOrderDetail_Functions {
+        public static IContext ChangeQuantity(this SalesOrderDetail detail, short newQuantity, IContext context) {
+            var sop = detail.Product.BestSpecialOfferProduct(newQuantity, context);
+            var detail2 = detail with {
                 OrderQty = newQuantity,
                 SpecialOfferProduct = sop,
                 UnitPrice = detail.Product.ListPrice,
@@ -27,8 +23,8 @@ namespace AW.Functions {
                 c => {
                     var soh = c.Resolve(detail.SalesOrderHeader);
                     return c.WithUpdated(soh, soh.Recalculated(c));
-                    }
-                );
+                }
+            );
         }
 
         public static string DisableChangeQuantity(this SalesOrderDetail detail) =>

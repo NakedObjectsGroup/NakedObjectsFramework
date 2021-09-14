@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class CountryRegionMap : EntityTypeConfiguration<CountryRegion>
-    {
-        public CountryRegionMap()
-        {
+namespace AW.Mapping {
+    public class CountryRegionMap : EntityTypeConfiguration<CountryRegion> {
+        public CountryRegionMap() {
             // Primary Key
             HasKey(t => t.CountryRegionCode);
 
@@ -25,14 +22,12 @@ namespace AW.Mapping
             ToTable("CountryRegion", "Person");
             Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<CountryRegion> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<CountryRegion> builder) {
             builder.HasKey(t => t.CountryRegionCode);
 
             // Properties
@@ -48,7 +43,7 @@ namespace AW.Mapping
             builder.ToTable("CountryRegion", "Person");
             builder.Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
             builder.Property(t => t.Name).HasColumnName("Name");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
         }
     }
 }

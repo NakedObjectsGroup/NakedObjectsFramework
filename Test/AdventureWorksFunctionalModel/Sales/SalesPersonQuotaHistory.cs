@@ -9,8 +9,7 @@ using System;
 using NakedFunctions;
 
 namespace AW.Types {
-        public record SalesPersonQuotaHistory  {
-
+    public record SalesPersonQuotaHistory {
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
@@ -25,15 +24,19 @@ namespace AW.Types {
         [MemberOrder(3)]
         public virtual SalesPerson SalesPerson { get; init; }
 
+        public virtual bool Equals(SalesPersonQuotaHistory other) => ReferenceEquals(this, other);
+
+        public override string ToString() => $"{QuotaDate.ToString("d")} {SalesQuota.ToString("C")}";
+
+        public override int GetHashCode() => base.GetHashCode();
+
         #region ModifiedDate and rowguid
 
         #region ModifiedDate
 
         [MemberOrder(99)]
-        
-        
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
@@ -45,11 +48,5 @@ namespace AW.Types {
         #endregion
 
         #endregion
-
-        public override string ToString() => $"{QuotaDate.ToString("d")} {SalesQuota.ToString("C")}";
-
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(SalesPersonQuotaHistory other) => ReferenceEquals(this, other);
     }
 }

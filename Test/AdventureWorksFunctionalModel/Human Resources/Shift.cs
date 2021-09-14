@@ -6,34 +6,31 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
-namespace AW.Types
-{
+namespace AW.Types {
     [Bounded]
-    public record Shift : IHasModifiedDate
-    {
+    public record Shift : IHasModifiedDate {
         [Hidden]
         public virtual byte ShiftID { get; init; }
 
         [MemberOrder(1)]
         public virtual string Name { get; init; }
 
-        [MemberOrder(3), Mask("T")]
+        [MemberOrder(3)] [Mask("T")]
         public virtual TimeSpan StartTime { get; init; }
 
-        [MemberOrder(4), Mask("T")]
+        [MemberOrder(4)] [Mask("T")]
         public virtual TimeSpan EndTime { get; init; }
+
+        public virtual bool Equals(Shift other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(Shift other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

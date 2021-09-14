@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AW.Mapping {
-    public class BusinessEntityContactMap : EntityTypeConfiguration<BusinessEntityContact>
-    {
-        public BusinessEntityContactMap()
-        {
+    public class BusinessEntityContactMap : EntityTypeConfiguration<BusinessEntityContact> {
+        public BusinessEntityContactMap() {
             // Primary Key
             HasKey(t => new { t.BusinessEntityID, t.PersonID, t.ContactTypeID });
 
@@ -16,10 +14,8 @@ namespace AW.Mapping {
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<BusinessEntityContact> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<BusinessEntityContact> builder) {
             builder.HasKey(t => new { t.BusinessEntityID, t.PersonID, t.ContactTypeID });
 
             // Table & Column Mappings

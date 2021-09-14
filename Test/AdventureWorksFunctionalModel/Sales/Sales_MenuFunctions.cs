@@ -5,78 +5,70 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
-
 using System.Linq;
-using NakedFunctions;
 using AW.Types;
+using NakedFunctions;
 using static AW.Helpers;
 
 namespace AW.Functions {
     [Named("Sales")]
-    public static class Sales_MenuFunctions  {
-
+    public static class Sales_MenuFunctions {
         #region FindSalesPersonByName
+
         [TableView(true, "SalesTerritory")]
-        public static IQueryable<SalesPerson> FindSalesPersonByName(      
+        public static IQueryable<SalesPerson> FindSalesPersonByName(
             [Optionally] string firstName, string lastName, IContext context) {
-            IQueryable<Person> matchingPersons = Person_MenuFunctions.FindPersonsByName( firstName, lastName, context);
+            var matchingPersons = Person_MenuFunctions.FindPersonsByName(firstName, lastName, context);
             return from sp in context.Instances<SalesPerson>()
-                from person in matchingPersons
-                where sp.BusinessEntityID == person.BusinessEntityID
-                orderby sp.EmployeeDetails.PersonDetails.LastName, sp.EmployeeDetails.PersonDetails.FirstName
-                select sp;
+                   from person in matchingPersons
+                   where sp.BusinessEntityID == person.BusinessEntityID
+                   orderby sp.EmployeeDetails.PersonDetails.LastName, sp.EmployeeDetails.PersonDetails.FirstName
+                   select sp;
         }
 
         #endregion
-      
+
         public static SalesPerson RandomSalesPerson(IContext context) => Random<SalesPerson>(context);
 
-        [MemberOrder("Sales",1)]
+        [MemberOrder("Sales", 1)]
         [DescribedAs("... from an existing Employee")]
-        public static SalesPerson CreateNewSalesPerson( Employee employee) {
+        public static SalesPerson CreateNewSalesPerson(Employee employee) =>
             //TODO:
             //var salesPerson = NewTransientInstance<SalesPerson>();
             //salesPerson.EmployeeDetails = employee;
             //return salesPerson;
-            return null;
-        }
-
-        #region ListAccountsForSalesPerson
-
-        [TableView(true),MemberOrder("Sales",1)] //TableView == ListView
-        public static IQueryable<Store> ListAccountsForSalesPerson(
-            SalesPerson sp,
-            IContext context
-            ) {
-            return from obj in context.Instances<Store>()
-                where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID
-                select obj;
-        }
-
-        [PageSize(20)]
-        public static IQueryable<SalesPerson> AutoComplete0ListAccountsForSalesPerson(
-            [MinLength(2)] string name,
-            IContext context) 
-        {
-            return context.Instances<SalesPerson>().Where(sp => sp.EmployeeDetails.PersonDetails.LastName.ToUpper().StartsWith(name.ToUpper()));
-        }
-
-        #endregion
+            null;
 
         public static IQueryable<SalesTaxRate> ListSalesTaxRates(IContext context) => context.Instances<SalesTaxRate>();
 
-
         [TableView(true, "CurrencyRateDate", "AverageRate", "EndOfDayRate")]
-        public static CurrencyRate FindCurrencyRate(Currency currency1, Currency currency2, IContext context)
-        {
+        public static CurrencyRate FindCurrencyRate(Currency currency1, Currency currency2, IContext context) {
             var name1 = currency1.Name;
             var name2 = currency2.Name;
             return context.Instances<CurrencyRate>().FirstOrDefault(cr => cr.Currency.Name == name1 && cr.Currency1.Name == name2);
         }
 
         public static Currency Default0FindRate(IContext context) =>
-            context.Instances<Currency>().FirstOrDefault(c => c.Name == "US Dollar");    
+            context.Instances<Currency>().FirstOrDefault(c => c.Name == "US Dollar");
 
+        #region ListAccountsForSalesPerson
+
+        [TableView(true)] [MemberOrder("Sales", 1)] //TableView == ListView
+        public static IQueryable<Store> ListAccountsForSalesPerson(
+            SalesPerson sp,
+            IContext context
+        ) =>
+            from obj in context.Instances<Store>()
+            where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID
+            select obj;
+
+        [PageSize(20)]
+        public static IQueryable<SalesPerson> AutoComplete0ListAccountsForSalesPerson(
+            [MinLength(2)] string name,
+            IContext context) {
+            return context.Instances<SalesPerson>().Where(sp => sp.EmployeeDetails.PersonDetails.LastName.ToUpper().StartsWith(name.ToUpper()));
+        }
+
+        #endregion
     }
 }

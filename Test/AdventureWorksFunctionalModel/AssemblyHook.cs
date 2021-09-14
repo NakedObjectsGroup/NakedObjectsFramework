@@ -11,6 +11,6 @@ namespace AW {
     public class AssemblyHook {
         //This method contains no functionality.  It is just a convenient way
         //to ensure that the assembly containing this code is loaded into memory.
-        public static void EnsureAssemblyLoaded() {}
+        public static void EnsureAssemblyLoaded() { }
     }
 }

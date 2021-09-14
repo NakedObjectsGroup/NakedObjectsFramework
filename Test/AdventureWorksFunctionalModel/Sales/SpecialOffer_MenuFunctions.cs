@@ -6,31 +6,27 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
-using NakedFunctions;
-using AW.Types;
-
 using System.Collections.Generic;
+using System.Linq;
+using AW.Types;
+using NakedFunctions;
 
-namespace AW.Functions
-{
+namespace AW.Functions {
     [Named("Special Offers")]
-    public static class SpecialOffer_MenuFunctions
-    {
+    public static class SpecialOffer_MenuFunctions {
         [MemberOrder(1)]
         [TableView(false, "Description", "XNoMatchingColumn", "Category", "DiscountPct")]
-        public static IQueryable<SpecialOffer> CurrentSpecialOffers(IContext context)
-        {
+        public static IQueryable<SpecialOffer> CurrentSpecialOffers(IContext context) {
             var today = context.Today();
             var start = new DateTime(2004, 6, 1);
             return AllSpecialOffers(context).Where(x => x.StartDate <= today &&
-                          x.EndDate >= start);
+                                                        x.EndDate >= start);
         }
 
         //Returns most recently-modified first
         [MemberOrder(2)]
         public static IQueryable<SpecialOffer> AllSpecialOffers(IContext context) =>
-         context.Instances<SpecialOffer>().OrderByDescending(so => so.ModifiedDate);
+            context.Instances<SpecialOffer>().OrderByDescending(so => so.ModifiedDate);
 
         [MemberOrder(3)]
         public static IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty(IContext context) =>
@@ -46,11 +42,9 @@ namespace AW.Functions
             [DefaultValue("Customer")] string category,
             [DefaultValue(10)] int minQty,
             [DefaultValue(1)] DateTime startDate,
-             DateTime endDate,
-            IContext context)
-        {
-            var so = new SpecialOffer
-            {
+            DateTime endDate,
+            IContext context) {
+            var so = new SpecialOffer {
                 Description = description,
                 DiscountPct = discountPct,
                 Type = type,
@@ -74,8 +68,7 @@ namespace AW.Functions
         public static DateTime Default6CreateNewSpecialOffer(IContext context) =>
             SpecialOffer_Functions.DefaultEndDate(context);
 
-
-        [MemberOrder(5), MultiLine(2)]
+        [MemberOrder(5)] [MultiLine(2)]
         public static (SpecialOffer, IContext) CreateMultipleSpecialOffers(
             string description,
             decimal discountPct,
@@ -85,7 +78,7 @@ namespace AW.Functions
             [DefaultValue(1)] DateTime startDate,
             [DefaultValue(90)] DateTime endDate,
             IContext context) =>
-                CreateNewSpecialOffer(description, discountPct, type, category, minQty, startDate, endDate, context);
+            CreateNewSpecialOffer(description, discountPct, type, category, minQty, startDate, endDate, context);
 
         internal static SpecialOffer NoDiscount(IContext context) => context.Instances<SpecialOffer>().Where(x => x.SpecialOfferID == 1).First();
     }

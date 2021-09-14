@@ -1,20 +1,20 @@
-﻿using AW.Types;
+﻿using System.Linq;
+using AW.Types;
 using NakedFunctions;
-using System.Linq;
 
-namespace AW.Test
-{
-    public static class Test_MenuFunctions
-    {
-        internal static T FirstOf<T>(IContext context) where T: class => context.Instances<T>().FirstOrDefault();
-        
+namespace AW.Test {
+    public static class Test_MenuFunctions {
+        internal static T FirstOf<T>(IContext context) where T : class => context.Instances<T>().FirstOrDefault();
+
         //Human Resources
         [MemberOrder(1)] public static Department Department(IContext context) => FirstOf<Department>(context);
         [MemberOrder(2)] public static Employee Employee(IContext context) => FirstOf<Employee>(context);
         [MemberOrder(4)] public static EmployeeDepartmentHistory EmployeeDepartmentHistory(IContext context) => FirstOf<EmployeeDepartmentHistory>(context);
         [MemberOrder(5)] public static EmployeePayHistory EmployeePayHistory(IContext context) => FirstOf<EmployeePayHistory>(context);
         [MemberOrder(6)] public static JobCandidate JobCandidate(IContext context) => FirstOf<JobCandidate>(context);
+
         [MemberOrder(7)] public static Shift Shift(IContext context) => FirstOf<Shift>(context);
+
         //Person
         [MemberOrder(11)] public static Address Address(IContext context) => FirstOf<Address>(context);
         [MemberOrder(12)] public static AddressType AddressType(IContext context) => FirstOf<AddressType>(context);
@@ -28,7 +28,9 @@ namespace AW.Test
         [MemberOrder(20)] public static Person Person(IContext context) => FirstOf<Person>(context);
         [MemberOrder(21)] public static PersonPhone PersonPhone(IContext context) => FirstOf<PersonPhone>(context);
         [MemberOrder(22)] public static PhoneNumberType PhoneNumberType(IContext context) => FirstOf<PhoneNumberType>(context);
+
         [MemberOrder(23)] public static StateProvince StateProvince(IContext context) => FirstOf<StateProvince>(context);
+
         //Production
         [MemberOrder(31)] public static BillOfMaterial BillOfMaterial(IContext context) => FirstOf<BillOfMaterial>(context);
         [MemberOrder(32)] public static Culture Culture(IContext context) => FirstOf<Culture>(context);
@@ -51,13 +53,17 @@ namespace AW.Test
         [MemberOrder(51)] public static TransactionHistory TransactionHistory(IContext context) => FirstOf<TransactionHistory>(context);
         [MemberOrder(52)] public static UnitMeasure UnitMeasure(IContext context) => FirstOf<UnitMeasure>(context);
         [MemberOrder(53)] public static WorkOrder WorkOrder(IContext context) => FirstOf<WorkOrder>(context);
+
         [MemberOrder(54)] public static WorkOrderRouting WorkOrderRouting(IContext context) => FirstOf<WorkOrderRouting>(context);
+
         //Purchasing
         [MemberOrder(61)] public static ProductVendor ProductVendor(IContext context) => FirstOf<ProductVendor>(context);
         [MemberOrder(62)] public static PurchaseOrderDetail PurchaseOrderDetail(IContext context) => FirstOf<PurchaseOrderDetail>(context);
         [MemberOrder(63)] public static PurchaseOrderHeader PurchaseOrderHeader(IContext context) => FirstOf<PurchaseOrderHeader>(context);
         [MemberOrder(64)] public static ShipMethod ShipMethod(IContext context) => FirstOf<ShipMethod>(context);
+
         [MemberOrder(65)] public static Vendor Vendor(IContext context) => FirstOf<Vendor>(context);
+
         //Sales
         [MemberOrder(71)] public static CountryRegionCurrency CountryRegionCurrency(IContext context) => FirstOf<CountryRegionCurrency>(context);
         [MemberOrder(72)] public static CreditCard CreditCard(IContext context) => FirstOf<CreditCard>(context);

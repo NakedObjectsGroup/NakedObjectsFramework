@@ -5,19 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
-using NakedFunctions;
 using System.Linq;
 using AW.Types;
+using NakedFunctions;
 
 namespace AW.Functions {
     /// <summary>
-    /// 
     /// </summary>
-    /// 
     [Named("Cart")]
     public record ShoppingCart_Functions {
-
         public IQueryable<ShoppingCartItem> RemoveItems(
             IQueryable<ShoppingCartItem> items,
             IContext context) {
@@ -25,10 +21,8 @@ namespace AW.Functions {
             return ShoppingCart_MenuFunctions.Cart(context);
         }
 
-        public IContext AddToCart(Product product, IContext context) =>  ShoppingCart_MenuFunctions.AddToShoppingCart(product, context);
+        public IContext AddToCart(Product product, IContext context) => ShoppingCart_MenuFunctions.AddToShoppingCart(product, context);
 
-        public string DisableAddToCart(IContext context) {
-            return ShoppingCart_MenuFunctions.DisableIfNoCustomerForUser(context);
-        }
+        public string DisableAddToCart(IContext context) => ShoppingCart_MenuFunctions.DisableIfNoCustomerForUser(context);
     }
 }

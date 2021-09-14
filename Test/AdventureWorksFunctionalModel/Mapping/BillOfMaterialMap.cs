@@ -3,12 +3,9 @@ using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AW.Mapping
-{
-    public class BillOfMaterialMap : EntityTypeConfiguration<BillOfMaterial>
-    {
-        public BillOfMaterialMap()
-        {
+namespace AW.Mapping {
+    public class BillOfMaterialMap : EntityTypeConfiguration<BillOfMaterial> {
+        public BillOfMaterialMap() {
             // Primary Key
             HasKey(t => t.BillOfMaterialID);
 
@@ -28,20 +25,17 @@ namespace AW.Mapping
             Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
             Property(t => t.BOMLevel).HasColumnName("BOMLevel");
             Property(t => t.PerAssemblyQty).HasColumnName("PerAssemblyQty");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             HasOptional(t => t.Product).WithMany().HasForeignKey(t => t.ProductAssemblyID);
             HasRequired(t => t.Product1).WithMany().HasForeignKey(t => t.ComponentID);
             HasRequired(t => t.UnitMeasure).WithMany().HasForeignKey(t => t.UnitMeasureCode);
-
         }
     }
 
-    public static partial class Mapper
-    {
-        public static void Map(this EntityTypeBuilder<BillOfMaterial> builder)
-        {
+    public static partial class Mapper {
+        public static void Map(this EntityTypeBuilder<BillOfMaterial> builder) {
             builder.HasKey(t => t.BillOfMaterialID);
 
             // Properties
@@ -60,7 +54,7 @@ namespace AW.Mapping
             builder.Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
             builder.Property(t => t.BOMLevel).HasColumnName("BOMLevel");
             builder.Property(t => t.PerAssemblyQty).HasColumnName("PerAssemblyQty");
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
+            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate"); //.IsConcurrencyToken();
 
             // Relationships
             builder.HasOne(t => t.Product).WithMany().HasForeignKey(t => t.ProductAssemblyID);
