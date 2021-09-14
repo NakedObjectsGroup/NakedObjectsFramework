@@ -25,7 +25,7 @@ namespace AW.Types {
 
         public virtual FileAttachment LargePhotoAsAttachment =>
             // fake mimetype
-            new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
+            new(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
 
         [Hidden]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
