@@ -62,12 +62,12 @@ namespace AW.Types {
                    nameof(EmployeeDepartmentHistory.EndDate),
                    nameof(EmployeeDepartmentHistory.Department),
                    nameof(EmployeeDepartmentHistory.Shift))]
-        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory { get; init; } = Array.Empty<EmployeeDepartmentHistory>();
+        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory { get; init; } = new List<EmployeeDepartmentHistory>();
 
         [TableView(true,
                    nameof(EmployeePayHistory.RateChangeDate),
                    nameof(EmployeePayHistory.Rate))]
-        public virtual ICollection<EmployeePayHistory> PayHistory { get; init; } = Array.Empty<EmployeePayHistory>();
+        public virtual ICollection<EmployeePayHistory> PayHistory { get; init; } = new List<EmployeePayHistory>();
 
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
