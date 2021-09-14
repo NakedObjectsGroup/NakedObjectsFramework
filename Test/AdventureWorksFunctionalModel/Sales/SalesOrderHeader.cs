@@ -91,9 +91,7 @@ namespace AW.Types {
         public virtual int? CurrencyRateID { get; init; }
 
         [MemberOrder(35)]
-#pragma warning disable 8618
-        public virtual CurrencyRate CurrencyRate { get; init; }
-#pragma warning restore 8618
+        public virtual CurrencyRate? CurrencyRate { get; init; }
 
         [DescribedAs("Order has been placed via the web")]
         [MemberOrder(41)] [Named("Online Order")]
@@ -103,9 +101,7 @@ namespace AW.Types {
         public virtual int? CreditCardID { get; init; }
 
         [MemberOrder(42)]
-#pragma warning disable 8618
-        public virtual CreditCard CreditCard { get; init; }
-#pragma warning restore 8618
+        public virtual CreditCard? CreditCard { get; init; }
 
         [MemberOrder(43)]
         public virtual string? CreditCardApprovalCode { get; init; }
@@ -122,17 +118,13 @@ namespace AW.Types {
         public virtual int? SalesPersonID { get; init; }
 
         [MemberOrder(61)]
-#pragma warning disable 8618
-        public virtual SalesPerson SalesPerson { get; init; }
-#pragma warning restore 8618
+        public virtual SalesPerson? SalesPerson { get; init; }
 
         [Hidden]
         public virtual int? SalesTerritoryID { get; init; }
 
         [MemberOrder(62)]
-#pragma warning disable 8618
-        public virtual SalesTerritory SalesTerritory { get; init; }
-#pragma warning restore 8618
+        public virtual SalesTerritory? SalesTerritory { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
