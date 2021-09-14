@@ -9,9 +9,8 @@ using System;
 using NakedFunctions;
 
 namespace AW.Types {
-        [Bounded]
-        public record ShipMethod  {
-
+    [Bounded]
+    public record ShipMethod {
         [Hidden]
         public virtual int ShipMethodID { get; init; }
 
@@ -26,15 +25,15 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
+        public virtual bool Equals(ShipMethod other) => ReferenceEquals(this, other);
+
         public override string ToString() => Name;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ShipMethod other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

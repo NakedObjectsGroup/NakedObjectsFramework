@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using NakedFunctions;
 
 namespace AW.Types {
-        public record PurchaseOrderHeader: IHasModifiedDate  {
-
+    public record PurchaseOrderHeader : IHasModifiedDate {
         #region ID
 
         [Hidden]
@@ -21,7 +20,6 @@ namespace AW.Types {
 
         #region Revision Number
 
-        
         [MemberOrder(90)]
         public virtual byte RevisionNumber { get; init; }
 
@@ -33,7 +31,22 @@ namespace AW.Types {
         [MemberOrder(22)]
         public virtual ShipMethod ShipMethod { get; init; }
 
+        [RenderEagerly]
+        [TableView(true, "OrderQty", "Product", "UnitPrice", "LineTotal")]
+        public virtual ICollection<PurchaseOrderDetail> Details { get; init; }
+
+        public virtual bool Equals(PurchaseOrderHeader other) => ReferenceEquals(this, other);
+
+        [MemberOrder(99)]
+        [Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => $"PO from {Vendor}, {OrderDate}";
+
+        public override int GetHashCode() => base.GetHashCode();
+
         #region Vendor
+
         [Hidden]
         public virtual int VendorID { get; init; }
 
@@ -49,7 +62,7 @@ namespace AW.Types {
 
         [Named("Status")]
         [MemberOrder(1)]
-        public virtual POStatus StatusAsEnum => (POStatus) Status;
+        public virtual POStatus StatusAsEnum => (POStatus)Status;
 
         #endregion
 
@@ -69,21 +82,17 @@ namespace AW.Types {
         #region Amounts
 
         [MemberOrder(31)]
-        
         [Mask("C")]
         public virtual decimal SubTotal { get; init; }
 
-        
         [MemberOrder(32)]
         [Mask("C")]
         public virtual decimal TaxAmt { get; init; }
 
-        
         [MemberOrder(33)]
         [Mask("C")]
         public virtual decimal Freight { get; init; }
 
-        
         [MemberOrder(34)]
         [Mask("C")]
         public virtual decimal TotalDue { get; init; }
@@ -91,30 +100,20 @@ namespace AW.Types {
         #endregion
 
         #region Order Placed By (Employee)
+
         [Hidden]
         public virtual int OrderPlacedByID { get; init; }
 
         [MemberOrder(12)]
         public virtual Employee OrderPlacedBy { get; init; }
+
         #endregion
-
-        [MemberOrder(99)]
-        [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
-
-        [RenderEagerly]
-        [TableView(true, "OrderQty", "Product", "UnitPrice", "LineTotal")]
-        public virtual ICollection<PurchaseOrderDetail> Details { get; init; }
-
-        public override string ToString() => $"PO from {Vendor}, {OrderDate}";
-
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(PurchaseOrderHeader other) => ReferenceEquals(this, other);
     }
 
-    public enum POStatus
-    {
-        Pending = 1, Approved = 2, Rejected = 3, Complete = 4
+    public enum POStatus {
+        Pending = 1,
+        Approved = 2,
+        Rejected = 3,
+        Complete = 4
     }
 }

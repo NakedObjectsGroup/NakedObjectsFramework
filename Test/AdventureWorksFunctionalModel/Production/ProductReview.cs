@@ -36,12 +36,12 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
-
-        public override string ToString()  => "*****".Substring(0, Rating);
-
-		public override int GetHashCode() =>base.GetHashCode();
+        public virtual DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(ProductReview other) => ReferenceEquals(this, other);
+
+        public override string ToString() => "*****".Substring(0, Rating);
+
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

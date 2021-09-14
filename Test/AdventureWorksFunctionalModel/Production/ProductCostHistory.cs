@@ -6,27 +6,28 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
 namespace AW.Types {
-        public record ProductCostHistory : IHasModifiedDate {
+    public record ProductCostHistory : IHasModifiedDate {
         [Hidden]
         public virtual int ProductID { get; init; }
+
         public virtual DateTime StartDate { get; init; }
         public virtual DateTime? EndDate { get; init; }
         public virtual decimal StandardCost { get; init; }
+
         [Hidden]
         public virtual Product Product { get; init; }
 
+        public virtual bool Equals(ProductCostHistory other) => ReferenceEquals(this, other);
+
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{StandardCost} {StartDate}~";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ProductCostHistory other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

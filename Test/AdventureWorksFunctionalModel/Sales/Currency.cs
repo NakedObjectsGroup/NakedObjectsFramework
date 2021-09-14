@@ -8,24 +8,23 @@
 using System;
 using NakedFunctions;
 
-namespace AW.Types
-{
+namespace AW.Types {
     [Bounded]
-    public record Currency
-    {
+    public record Currency {
         [Hidden]
         public virtual string CurrencyCode { get; init; }
+
         [Hidden]
         public virtual string Name { get; init; }
 
-        public override string ToString() => $"{CurrencyCode} - {Name}";
-   
         [Hidden]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public override int GetHashCode() =>base.GetHashCode();
-
         public virtual bool Equals(Currency other) => ReferenceEquals(this, other);
+
+        public override string ToString() => $"{CurrencyCode} - {Name}";
+
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

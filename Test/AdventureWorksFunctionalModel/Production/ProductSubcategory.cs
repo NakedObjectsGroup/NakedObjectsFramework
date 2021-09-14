@@ -9,9 +9,8 @@ using System;
 using NakedFunctions;
 
 namespace AW.Types {
-        [Bounded]
-        public record ProductSubcategory: IHasRowGuid, IHasModifiedDate {
-
+    [Bounded]
+    public record ProductSubcategory : IHasRowGuid, IHasModifiedDate {
         [Hidden]
         public virtual int ProductSubcategoryID { get; init; }
 
@@ -22,17 +21,17 @@ namespace AW.Types {
 
         public virtual ProductCategory ProductCategory { get; init; }
 
-        [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public virtual bool Equals(ProductSubcategory other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        [Hidden]
+        public virtual Guid rowguid { get; init; }
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ProductSubcategory other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

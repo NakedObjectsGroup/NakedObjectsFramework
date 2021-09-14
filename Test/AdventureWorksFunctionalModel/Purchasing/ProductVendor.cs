@@ -10,7 +10,6 @@ using NakedFunctions;
 
 namespace AW.Types {
     public record ProductVendor {
-
         [Hidden]
         public virtual int ProductID { get; init; }
 
@@ -55,12 +54,12 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public virtual bool Equals(ProductVendor other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"ProductVendor: {ProductID}-{VendorID}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ProductVendor other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

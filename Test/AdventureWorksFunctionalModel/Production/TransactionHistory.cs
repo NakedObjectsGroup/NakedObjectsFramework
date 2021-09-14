@@ -9,8 +9,7 @@ using System;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record TransactionHistory  {
-
+    public record TransactionHistory {
         public virtual int TransactionID { get; init; }
         public virtual int ReferenceOrderID { get; init; }
         public virtual int ReferenceOrderLineID { get; init; }
@@ -21,16 +20,17 @@ namespace AW.Types {
 
         [Hidden]
         public virtual int ProductID { get; init; }
+
         public virtual Product Product { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public virtual bool Equals(TransactionHistory other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"TransactionHistory: {TransactionID}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(TransactionHistory other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

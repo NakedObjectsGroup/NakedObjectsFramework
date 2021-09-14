@@ -8,11 +8,9 @@
 using System;
 using NakedFunctions;
 
-namespace AW.Types
-{
+namespace AW.Types {
     [Bounded]
-    public record ScrapReason
-    {
+    public record ScrapReason {
         [Hidden]
         public virtual short ScrapReasonID { get; init; }
 
@@ -21,12 +19,12 @@ namespace AW.Types
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public virtual bool Equals(ScrapReason other) => ReferenceEquals(this, other);
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ScrapReason other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

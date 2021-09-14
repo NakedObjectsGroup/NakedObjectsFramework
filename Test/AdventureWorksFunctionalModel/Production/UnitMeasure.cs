@@ -9,23 +9,22 @@ using System;
 using NakedFunctions;
 
 namespace AW.Types {
-        [Bounded]
-        public record UnitMeasure: IHasModifiedDate {
-
+    [Bounded]
+    public record UnitMeasure : IHasModifiedDate {
         [MemberOrder(10)]
         public virtual string UnitMeasureCode { get; init; }
 
         [MemberOrder(20)]
         public virtual string Name { get; init; }
 
+        public virtual bool Equals(UnitMeasure other) => ReferenceEquals(this, other);
+
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(UnitMeasure other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

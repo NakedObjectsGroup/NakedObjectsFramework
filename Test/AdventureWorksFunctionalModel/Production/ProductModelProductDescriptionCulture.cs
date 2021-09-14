@@ -9,7 +9,7 @@ using System;
 using NakedFunctions;
 
 namespace AW.Types {
-            public record ProductModelProductDescriptionCulture : IHasModifiedDate {
+    public record ProductModelProductDescriptionCulture : IHasModifiedDate {
         [Hidden]
         public virtual int ProductModelID { get; init; }
 
@@ -25,14 +25,14 @@ namespace AW.Types {
         [Hidden]
         public virtual ProductModel ProductModel { get; init; }
 
+        public virtual bool Equals(ProductModelProductDescriptionCulture other) => ReferenceEquals(this, other);
+
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"ProductModelProductDescriptionCulture: {ProductModelID}-{ProductDescriptionID}-{CultureID}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ProductModelProductDescriptionCulture other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

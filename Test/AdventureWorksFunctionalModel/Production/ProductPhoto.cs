@@ -11,48 +11,33 @@ using NakedFramework.Value;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record ProductPhoto  {
-        private byte[] _LargePhoto = new byte[0];
-        private byte[] _ThumbNailPhoto = new byte[0];
-
+    public record ProductPhoto {
         [Hidden]
         public virtual int ProductPhotoID { get; init; }
 
-        public virtual byte[] ThumbNailPhoto {
-            get { return _ThumbNailPhoto; }
-            set { _ThumbNailPhoto = value; }
-        }
+        public virtual byte[] ThumbNailPhoto { get; set; } = new byte[0];
 
         public virtual string ThumbnailPhotoFileName { get; init; }
 
-        public virtual byte[] LargePhoto {
-            get { return _LargePhoto; }
-            set { _LargePhoto = value; }
-        }
+        public virtual byte[] LargePhoto { get; set; } = new byte[0];
 
-      
         public virtual string LargePhotoFileName { get; init; }
 
-        public virtual FileAttachment LargePhotoAsAttachment
-        {
-            get
-            {
-                // fake mimetype
-                return new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
-            }
-        }
+        public virtual FileAttachment LargePhotoAsAttachment =>
+            // fake mimetype
+            new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
 
         [Hidden]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public virtual bool Equals(ProductPhoto other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"Product Photo: {ProductPhotoID}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ProductPhoto other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

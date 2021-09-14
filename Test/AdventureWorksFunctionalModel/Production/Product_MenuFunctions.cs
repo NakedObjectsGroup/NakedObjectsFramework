@@ -11,13 +11,9 @@ using AW.Types;
 using NakedFunctions;
 using static AW.Helpers;
 
-namespace AW.Functions
-{
-
+namespace AW.Functions {
     [Named("Products")]
-    public static class Product_MenuFunctions
-    {
-
+    public static class Product_MenuFunctions {
         [MemberOrder(1)]
         [TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
         public static IQueryable<Product> FindProductByName(string searchString, IContext context) =>
@@ -35,26 +31,23 @@ namespace AW.Functions
 
         [MemberOrder(5)]
         public static IQueryable<Product> ListProductsByCategory(
-            ProductCategory category, [Optionally] ProductSubcategory subCategory, IContext context)
-        {
-            int catId = category.ProductCategoryID;
-            int subId = subCategory is null ? 0 : subCategory.ProductSubcategoryID;
-            return context.Instances<Product>().Where(p => p.ProductSubcategory.ProductCategoryID == catId 
-                && (subId == 0 || p.ProductSubcategoryID.Value == subId));
+            ProductCategory category, [Optionally] ProductSubcategory subCategory, IContext context) {
+            var catId = category.ProductCategoryID;
+            var subId = subCategory is null ? 0 : subCategory.ProductSubcategoryID;
+            return context.Instances<Product>().Where(p => p.ProductSubcategory.ProductCategoryID == catId
+                                                           && (subId == 0 || p.ProductSubcategoryID.Value == subId));
         }
 
         public static List<ProductSubcategory> Choices1ListProductsByCategory(ProductCategory category) =>
             category?.ProductSubcategory.ToList() ?? new List<ProductSubcategory>();
 
-
         [MemberOrder(5)]
         public static IQueryable<Product> ListBikes(
-          [Disabled] ProductCategory category, [Optionally] ProductSubcategory subCategory, IContext context)
-        {
-            int catId = category.ProductCategoryID;
-            int subId = subCategory is null ? 0 : subCategory.ProductSubcategoryID;
+            [Disabled] ProductCategory category, [Optionally] ProductSubcategory subCategory, IContext context) {
+            var catId = category.ProductCategoryID;
+            var subId = subCategory is null ? 0 : subCategory.ProductSubcategoryID;
             return context.Instances<Product>().Where(p => p.ProductSubcategory.ProductCategoryID == catId
-                && (subId == 0 || p.ProductSubcategoryID.Value == subId));
+                                                           && (subId == 0 || p.ProductSubcategoryID.Value == subId));
         }
 
         public static ProductCategory Default0ListBikes(IContext context) => context.Instances<ProductCategory>().First();

@@ -11,14 +11,19 @@ using AW.Functions;
 using NakedFramework.Value;
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record Product : IProduct, IHasModifiedDate, IHasRowGuid
-    {
+namespace AW.Types {
+    public record Product : IProduct, IHasModifiedDate, IHasRowGuid {
+        public virtual bool Equals(Product other) => ReferenceEquals(this, other);
+
+        public override string ToString() => Name;
+
+        public override int GetHashCode() => base.GetHashCode();
+
         #region Visible properties
+
         [MemberOrder(1)]
         public virtual string Name { get; init; }
-   
+
         [MemberOrder(2)]
         public virtual string ProductNumber { get; init; }
 
@@ -33,11 +38,11 @@ namespace AW.Types
 
         //MemberOrder 11 -  See Product_Functions.Description
 
-        [MemberOrder(12), Mask("C")]
+        [MemberOrder(12)] [Mask("C")]
         public virtual decimal ListPrice { get; init; }
 
         [MemberOrder(13)]
-        public virtual ProductCategory ProductCategory => Product_Functions.ProductCategory(this);
+        public virtual ProductCategory ProductCategory => this.ProductCategory();
 
         [MemberOrder(14)]
         public virtual ProductSubcategory ProductSubcategory { get; init; }
@@ -45,11 +50,11 @@ namespace AW.Types
         [MemberOrder(15)]
         public virtual string ProductLine { get; init; }
 
-        [Named("Size"), MemberOrder(16)]
-        public virtual string SizeWithUnit => Product_Functions.SizeWithUnit(this);
+        [Named("Size")] [MemberOrder(16)]
+        public virtual string SizeWithUnit => this.SizeWithUnit();
 
-        [Named("Weight"), MemberOrder(17)]
-        public virtual string WeightWithUnit => Product_Functions.WeightWithUnit(this);
+        [Named("Weight")] [MemberOrder(17)]
+        public virtual string WeightWithUnit => this.WeightWithUnit();
 
         [MemberOrder(18)]
         public virtual string Style { get; init; }
@@ -62,46 +67,50 @@ namespace AW.Types
 
         [MemberOrder(21)]
         public virtual bool FinishedGoods { get; init; }
-        
+
         [MemberOrder(22)]
         public virtual short SafetyStockLevel { get; init; }
-        
+
         [MemberOrder(23)]
         public virtual short ReorderPoint { get; init; }
 
         [MemberOrder(24)]
         public virtual int DaysToManufacture { get; init; }
 
-        [MemberOrder(81), Mask("d")]
+        [MemberOrder(81)] [Mask("d")]
         public virtual DateTime SellStartDate { get; init; }
 
-        [MemberOrder(82), Mask("d")]
+        [MemberOrder(82)] [Mask("d")]
         public virtual DateTime? SellEndDate { get; init; }
 
-        [MemberOrder(83), Mask("d")]
+        [MemberOrder(83)] [Mask("d")]
         public virtual DateTime? DiscontinuedDate { get; init; }
 
-        [MemberOrder(90), Mask("C")]
+        [MemberOrder(90)] [Mask("C")]
         public virtual decimal StandardCost { get; init; }
 
-        [MemberOrder(99), Versioned]
+        [MemberOrder(99)] [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
-#endregion
+
+        #endregion
 
         #region Visible Collections
+
         [MemberOrder(100)]
         [TableView(true, nameof(ProductReview.Rating), nameof(ProductReview.Comments))]
         public virtual ICollection<ProductReview> ProductReviews { get; init; } = new List<ProductReview>();
 
-        [MemberOrder(120), RenderEagerly, TableView(false,
-    nameof(Types.ProductInventory.Quantity),
-    nameof(Types.ProductInventory.Location),
-    nameof(Types.ProductInventory.Shelf),
-    nameof(Types.ProductInventory.Bin))]
+        [MemberOrder(120)] [RenderEagerly] [TableView(false,
+                                                      nameof(Types.ProductInventory.Quantity),
+                                                      nameof(Types.ProductInventory.Location),
+                                                      nameof(Types.ProductInventory.Shelf),
+                                                      nameof(Types.ProductInventory.Bin))]
         public virtual ICollection<ProductInventory> ProductInventory { get; init; } = new List<ProductInventory>();
+
         #endregion
 
         #region Hidden Properties & Collections
+
         [Hidden]
         public virtual int ProductID { get; init; }
 
@@ -122,10 +131,10 @@ namespace AW.Types
 
         [Hidden]
         public virtual UnitMeasure WeightUnit { get; init; }
-  
+
         [Hidden]
         public virtual int? ProductModelID { get; init; }
-     
+
         [Hidden]
         public virtual int? ProductSubcategoryID { get; init; }
 
@@ -133,15 +142,10 @@ namespace AW.Types
         public virtual Guid rowguid { get; init; }
 
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
-        
+
         [Hidden]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; } = new List<SpecialOfferProduct>();
+
         #endregion
-
-        public override string ToString()=> Name;
-
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(Product other) => ReferenceEquals(this, other);
     }
 }

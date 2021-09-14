@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record Illustration  {
- 
+    public record Illustration {
         public virtual int IllustrationID { get; init; }
         public virtual string Diagram { get; init; }
 
@@ -19,12 +18,12 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public virtual bool Equals(Illustration other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"Illustration: {IllustrationID}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(Illustration other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

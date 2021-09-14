@@ -19,14 +19,14 @@ namespace AW.Types {
         public virtual Illustration Illustration { get; init; }
         public virtual ProductModel ProductModel { get; init; }
 
+        public virtual bool Equals(ProductModelIllustration other) => ReferenceEquals(this, other);
+
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"ProductModelIllustration: {ProductModelID}-{IllustrationID}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ProductModelIllustration other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

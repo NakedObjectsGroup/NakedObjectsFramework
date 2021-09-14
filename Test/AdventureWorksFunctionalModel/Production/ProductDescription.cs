@@ -8,27 +8,25 @@
 using System;
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record ProductDescription : IHasRowGuid, IHasModifiedDate
-    {
+namespace AW.Types {
+    public record ProductDescription : IHasRowGuid, IHasModifiedDate {
         [Hidden]
         public virtual int ProductDescriptionID { get; init; }
 
-        [MultiLine(10), MemberOrder(2)]
+        [MultiLine(10)] [MemberOrder(2)]
         public virtual string Description { get; init; }
+
+        public virtual bool Equals(ProductDescription other) => ReferenceEquals(this, other);
+
+        [MemberOrder(99)]
+        [Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        [MemberOrder(99)]
-        [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
- 
         public override string ToString() => Description;
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ProductDescription other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

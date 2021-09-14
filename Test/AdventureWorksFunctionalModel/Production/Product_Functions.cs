@@ -59,7 +59,7 @@ namespace AW.Functions {
                                 context));
 
         private static ProductReview CreateReview(Product p, string reviewerName, DateTime date, string emailAddress, int rating, string comments, IContext context) =>
-            new ProductReview {
+            new() {
                 Product = p,
                 ReviewerName = reviewerName,
                 ReviewDate = date,

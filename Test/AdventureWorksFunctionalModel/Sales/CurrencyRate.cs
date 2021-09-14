@@ -9,8 +9,7 @@ using System;
 using NakedFunctions;
 
 namespace AW.Types {
-        public record CurrencyRate {
-
+    public record CurrencyRate {
         [Hidden]
         public virtual int CurrencyRateID { get; init; }
 
@@ -22,6 +21,7 @@ namespace AW.Types {
 
         [Hidden]
         public virtual string FromCurrencyCode { get; init; }
+
         public virtual Currency Currency { get; init; }
 
         [Hidden]
@@ -29,13 +29,13 @@ namespace AW.Types {
 
         public virtual Currency Currency1 { get; init; }
 
-        [MemberOrder(99)][Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        [MemberOrder(99)] [Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public virtual bool Equals(CurrencyRate other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{AverageRate}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(CurrencyRate other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

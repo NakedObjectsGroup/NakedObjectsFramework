@@ -9,47 +9,16 @@ using System;
 using AW.Functions;
 using NakedFunctions;
 
-
-namespace AW.Types
-{
-     public record Customer
-    {
+namespace AW.Types {
+    public record Customer {
         [Hidden]
         public virtual int CustomerID { get; init; }
 
         [MemberOrder(15)]
         public string CustomerType => this.IsIndividual() ? "Individual" : "Store";
 
-        [DescribedAs("xxx"), MemberOrder(10)]
+        [DescribedAs("xxx")] [MemberOrder(10)]
         public virtual string AccountNumber { get; init; }
-
-
-
-        #region Store & Personal customers
-
-
-        [Hidden]
-        public virtual int? StoreID { get; init; }
-
-        [MemberOrder(20)]
-        public virtual Store Store { get; init; }
-
-
-
-        [Hidden]
-        public virtual int? PersonID { get; init; }
-
-        [MemberOrder(20)]
-        public virtual Person Person { get; init; }
-        #endregion
-
-        #region Sales Territory
-        [Hidden]
-        public virtual int? SalesTerritoryID { get; init; }
-
-        [MemberOrder(30)]
-        public virtual SalesTerritory SalesTerritory { get; init; }
-        #endregion
 
         [Hidden]
         //
@@ -58,10 +27,36 @@ namespace AW.Types
         [Hidden]
         public virtual Guid CustomerRowguid { get; init; }
 
+        public virtual bool Equals(Customer other) => ReferenceEquals(this, other);
+
         public override string ToString() => $"{AccountNumber} {(Store is null ? Person : Store)}";
 
-		public override int GetHashCode() =>base.GetHashCode();
+        public override int GetHashCode() => base.GetHashCode();
 
-        public virtual bool Equals(Customer other) => ReferenceEquals(this, other);
+        #region Store & Personal customers
+
+        [Hidden]
+        public virtual int? StoreID { get; init; }
+
+        [MemberOrder(20)]
+        public virtual Store Store { get; init; }
+
+        [Hidden]
+        public virtual int? PersonID { get; init; }
+
+        [MemberOrder(20)]
+        public virtual Person Person { get; init; }
+
+        #endregion
+
+        #region Sales Territory
+
+        [Hidden]
+        public virtual int? SalesTerritoryID { get; init; }
+
+        [MemberOrder(30)]
+        public virtual SalesTerritory SalesTerritory { get; init; }
+
+        #endregion
     }
 }

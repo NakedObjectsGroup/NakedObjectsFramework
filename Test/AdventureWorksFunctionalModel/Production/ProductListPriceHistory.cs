@@ -9,21 +9,21 @@ using System;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record ProductListPriceHistory: IHasModifiedDate {
-
+    public record ProductListPriceHistory : IHasModifiedDate {
         public virtual int ProductID { get; init; }
         public virtual DateTime StartDate { get; init; }
         public virtual DateTime? EndDate { get; init; }
         public virtual decimal ListPrice { get; init; }
         public virtual Product Product { get; init; }
+
+        public virtual bool Equals(ProductListPriceHistory other) => ReferenceEquals(this, other);
+
         [MemberOrder(99)]
         [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"ProductListPriceHistory: {ProductID}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(ProductListPriceHistory other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

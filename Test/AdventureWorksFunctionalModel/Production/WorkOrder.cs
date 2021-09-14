@@ -9,10 +9,8 @@ using System;
 using System.Collections.Generic;
 using NakedFunctions;
 
-namespace AW.Types
-{
-    public record WorkOrder : IHasModifiedDate
-    {
+namespace AW.Types {
+    public record WorkOrder : IHasModifiedDate {
         [Hidden]
         public virtual int WorkOrderID { get; init; }
 
@@ -27,13 +25,8 @@ namespace AW.Types
         [Mask("d")]
         public virtual DateTime? EndDate { get; init; }
 
-        [MemberOrder(99)]
-        [Versioned]
-		public virtual DateTime ModifiedDate { get; init; }
-
         [Hidden]
         public virtual short? ScrapReasonID { get; init; }
-
 
         [MemberOrder(26)]
         public virtual ScrapReason ScrapReason { get; init; }
@@ -59,19 +52,19 @@ namespace AW.Types
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
         public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; init; } = new List<WorkOrderRouting>();
 
-
         // for testing 
 
         [Hidden]
-        public virtual string AnAlwaysHiddenReadOnlyProperty
-        {
-            get { return ""; }
-        } 
+        public virtual string AnAlwaysHiddenReadOnlyProperty => "";
+
+        public virtual bool Equals(WorkOrder other) => ReferenceEquals(this, other);
+
+        [MemberOrder(99)]
+        [Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Product}: {StartDate}";
 
-		public override int GetHashCode() =>base.GetHashCode();
-
-        public virtual bool Equals(WorkOrder other) => ReferenceEquals(this, other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }
