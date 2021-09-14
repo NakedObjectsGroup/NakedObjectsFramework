@@ -14,20 +14,22 @@ namespace AW.Types {
         public virtual int ReferenceOrderID { get; init; }
         public virtual int ReferenceOrderLineID { get; init; }
         public virtual DateTime TransactionDate { get; init; }
-        public virtual string TransactionType { get; init; }
+        public virtual string TransactionType { get; init; } = "";
         public virtual int Quantity { get; init; }
         public virtual decimal ActualCost { get; init; }
 
         [Hidden]
         public virtual int ProductID { get; init; }
 
+#pragma warning disable 8618
         public virtual Product Product { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(99)]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(TransactionHistory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(TransactionHistory? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"TransactionHistory: {TransactionID}";
 

@@ -23,13 +23,15 @@ namespace AW.Types {
         public virtual byte PayFrequency { get; init; }
 
         [MemberOrder(4)]
+#pragma warning disable 8618
         public virtual Employee Employee { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(99)]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(EmployeePayHistory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(EmployeePayHistory? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}";
 

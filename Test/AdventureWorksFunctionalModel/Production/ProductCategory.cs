@@ -15,12 +15,12 @@ namespace AW.Types {
         [Hidden]
         public virtual int ProductCategoryID { get; init; }
 
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [Named("Subcategories")] [TableView(true)] //TableView == ListView ?
         public virtual ICollection<ProductSubcategory> ProductSubcategory { get; init; } = new List<ProductSubcategory>();
 
-        public virtual bool Equals(ProductCategory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductCategory? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

@@ -6,14 +6,14 @@ namespace AW.Types {
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
-        public virtual string PhoneNumber { get; init; }
+        public virtual string? PhoneNumber { get; init; }
 
         [Hidden]
         public virtual int PhoneNumberTypeID { get; init; }
 
-        public virtual PhoneNumberType PhoneNumberType { get; init; }
+        public virtual PhoneNumberType? PhoneNumberType { get; init; }
 
-        public virtual bool Equals(PersonPhone other) => ReferenceEquals(this, other);
+        public virtual bool Equals(PersonPhone? other) => ReferenceEquals(this, other);
 
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }

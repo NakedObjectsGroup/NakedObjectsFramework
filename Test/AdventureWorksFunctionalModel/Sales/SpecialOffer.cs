@@ -14,17 +14,17 @@ namespace AW.Types {
         public virtual int SpecialOfferID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Description { get; init; }
+        public virtual string Description { get; init; } = "";
 
         [MemberOrder(20)]
         [Mask("P")]
         public virtual decimal DiscountPct { get; init; }
 
         [MemberOrder(30)]
-        public virtual string Type { get; init; }
+        public virtual string Type { get; init; } = "";
 
         [MemberOrder(40)]
-        public virtual string Category { get; init; }
+        public virtual string Category { get; init; } = "";
 
         [MemberOrder(51)]
         [Mask("d")]
@@ -40,7 +40,7 @@ namespace AW.Types {
         [MemberOrder(62)]
         public virtual int? MaxQty { get; init; }
 
-        public virtual bool Equals(SpecialOffer other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SpecialOffer? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

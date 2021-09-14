@@ -54,7 +54,7 @@ namespace AW.Functions {
             return (pod, context.WithNew(pod));
         }
 
-        public static string DisableAddNewDetail(this PurchaseOrderHeader header) =>
+        public static string? DisableAddNewDetail(this PurchaseOrderHeader header) =>
             header.IsPending() ? null : "Cannot add to Purchase Order unless status is Pending";
 
         public static IList<Product> Choices1AddNewDetail(this PurchaseOrderHeader header) =>
@@ -77,7 +77,7 @@ namespace AW.Functions {
 
         public static bool HideApprove(this PurchaseOrderHeader po) => !po.IsPending();
 
-        public static string DisableApprove(this PurchaseOrderHeader header) => header.Details.Count < 1 ? "Purchase Order must have at least one Detail to be approved" : null;
+        public static string? DisableApprove(this PurchaseOrderHeader header) => header.Details.Count < 1 ? "Purchase Order must have at least one Detail to be approved" : null;
 
         #endregion
     }

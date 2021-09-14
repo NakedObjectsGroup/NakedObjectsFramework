@@ -18,9 +18,11 @@ namespace AW.Types {
         public virtual decimal StandardCost { get; init; }
 
         [Hidden]
+#pragma warning disable 8618
         public virtual Product Product { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(ProductCostHistory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductCostHistory? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

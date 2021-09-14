@@ -11,11 +11,11 @@ using AW.Types;
 namespace AW.Functions {
     public static class Customer_Functions {
         internal static BusinessEntity BusinessEntity(this Customer c) {
-            if (c.IsStore()) {
+            if (c.Store is not null) {
                 return c.Store;
             }
 
-            if (c.IsIndividual()) {
+            if (c.Person is not null) {
                 return c.Person;
             }
 

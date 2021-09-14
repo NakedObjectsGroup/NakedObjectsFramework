@@ -14,23 +14,27 @@ namespace AW.Types {
         [Hidden]
         public virtual int StateProvinceID { get; init; }
 
-        public virtual string StateProvinceCode { get; init; }
+        public virtual string StateProvinceCode { get; init; } = "";
 
         public virtual bool IsOnlyStateProvinceFlag { get; init; }
 
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [Hidden]
-        public virtual string CountryRegionCode { get; init; }
+        public virtual string CountryRegionCode { get; init; } = "";
 
+#pragma warning disable 8618
         public virtual CountryRegion CountryRegion { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
         public virtual int TerritoryID { get; init; }
 
+#pragma warning disable 8618
         public virtual SalesTerritory SalesTerritory { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(StateProvince other) => ReferenceEquals(this, other);
+        public virtual bool Equals(StateProvince? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

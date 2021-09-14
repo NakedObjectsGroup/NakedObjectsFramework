@@ -17,7 +17,7 @@ namespace AW.Functions {
 
         [TableView(true, "SalesTerritory")]
         public static IQueryable<SalesPerson> FindSalesPersonByName(
-            [Optionally] string firstName, string lastName, IContext context) {
+            [Optionally] string? firstName, string lastName, IContext context) {
             var matchingPersons = Person_MenuFunctions.FindPersonsByName(firstName, lastName, context);
             return from sp in context.Instances<SalesPerson>()
                    from person in matchingPersons
@@ -32,21 +32,21 @@ namespace AW.Functions {
 
         [MemberOrder("Sales", 1)]
         [DescribedAs("... from an existing Employee")]
-        public static SalesPerson CreateNewSalesPerson(Employee employee) =>
+        public static SalesPerson? CreateNewSalesPerson(Employee employee) =>
             //TODO:
             null;
 
         public static IQueryable<SalesTaxRate> ListSalesTaxRates(IContext context) => context.Instances<SalesTaxRate>();
 
         [TableView(true, "CurrencyRateDate", "AverageRate", "EndOfDayRate")]
-        public static CurrencyRate FindCurrencyRate(Currency currency1, Currency currency2, IContext context) {
+        public static CurrencyRate? FindCurrencyRate(Currency currency1, Currency currency2, IContext context) {
             var name1 = currency1.Name;
             var name2 = currency2.Name;
             return context.Instances<CurrencyRate>().FirstOrDefault(cr => cr.Currency.Name == name1 && cr.Currency1.Name == name2);
         }
 
         public static Currency Default0FindRate(IContext context) =>
-            context.Instances<Currency>().FirstOrDefault(c => c.Name == "US Dollar");
+            context.Instances<Currency>().First(c => c.Name == "US Dollar");
 
         #region ListAccountsForSalesPerson
 
@@ -56,7 +56,7 @@ namespace AW.Functions {
             IContext context
         ) =>
             from obj in context.Instances<Store>()
-            where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID
+            where obj.SalesPerson != null && obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID
             select obj;
 
         [PageSize(20)]

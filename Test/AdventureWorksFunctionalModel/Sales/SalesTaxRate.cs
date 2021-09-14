@@ -15,12 +15,14 @@ namespace AW.Types {
 
         public virtual byte TaxType { get; init; }
         public virtual decimal TaxRate { get; init; }
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [Hidden]
         public virtual int StateProvinceID { get; init; }
 
+#pragma warning disable 8618
         public virtual StateProvince StateProvince { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(99)]
         [Versioned]
@@ -28,7 +30,7 @@ namespace AW.Types {
 
         public virtual Guid rowguid { get; init; }
 
-        public virtual bool Equals(SalesTaxRate other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SalesTaxRate? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"Sales Tax Rate for {StateProvince}";
 

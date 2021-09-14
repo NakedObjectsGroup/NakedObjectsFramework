@@ -13,7 +13,7 @@ using NakedFunctions;
 
 namespace AW.Types {
     public record Product : IProduct, IHasModifiedDate, IHasRowGuid {
-        public virtual bool Equals(Product other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Product? other) => ReferenceEquals(this, other);
 
         public override string ToString() => Name;
 
@@ -22,19 +22,19 @@ namespace AW.Types {
         #region Visible properties
 
         [MemberOrder(1)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [MemberOrder(2)]
-        public virtual string ProductNumber { get; init; }
+        public virtual string ProductNumber { get; init; } = "";
 
         [MemberOrder(3)]
-        public virtual string Color { get; init; }
+        public virtual string? Color { get; init; }
 
         [MemberOrder(4)]
-        public virtual Image Photo => Product_Functions.Photo(this);
+        public virtual Image? Photo => Product_Functions.Photo(this);
 
         [MemberOrder(10)]
-        public virtual ProductModel ProductModel { get; init; }
+        public virtual ProductModel? ProductModel { get; init; }
 
         //MemberOrder 11 -  See Product_Functions.Description
 
@@ -42,13 +42,13 @@ namespace AW.Types {
         public virtual decimal ListPrice { get; init; }
 
         [MemberOrder(13)]
-        public virtual ProductCategory ProductCategory => this.ProductCategory();
+        public virtual ProductCategory? ProductCategory => this.ProductCategory();
 
         [MemberOrder(14)]
-        public virtual ProductSubcategory ProductSubcategory { get; init; }
+        public virtual ProductSubcategory? ProductSubcategory { get; init; }
 
         [MemberOrder(15)]
-        public virtual string ProductLine { get; init; }
+        public virtual string? ProductLine { get; init; }
 
         [Named("Size")] [MemberOrder(16)]
         public virtual string SizeWithUnit => this.SizeWithUnit();
@@ -57,10 +57,10 @@ namespace AW.Types {
         public virtual string WeightWithUnit => this.WeightWithUnit();
 
         [MemberOrder(18)]
-        public virtual string Style { get; init; }
+        public virtual string? Style { get; init; }
 
         [MemberOrder(19)]
-        public virtual string Class { get; init; }
+        public virtual string? Class { get; init; }
 
         [MemberOrder(20)]
         public virtual bool Make { get; init; }
@@ -115,22 +115,22 @@ namespace AW.Types {
         public virtual int ProductID { get; init; }
 
         [Hidden]
-        public virtual string Size { get; init; }
+        public virtual string? Size { get; init; }
 
         [Hidden]
-        public virtual string SizeUnitMeasureCode { get; init; }
+        public virtual string? SizeUnitMeasureCode { get; init; }
 
         [Hidden]
-        public virtual UnitMeasure SizeUnit { get; init; }
+        public virtual UnitMeasure? SizeUnit { get; init; }
 
         [Hidden]
-        public virtual string WeightUnitMeasureCode { get; init; }
+        public virtual string? WeightUnitMeasureCode { get; init; }
 
         [Hidden]
         public virtual decimal? Weight { get; init; }
 
         [Hidden]
-        public virtual UnitMeasure WeightUnit { get; init; }
+        public virtual UnitMeasure? WeightUnit { get; init; }
 
         [Hidden]
         public virtual int? ProductModelID { get; init; }

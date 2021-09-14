@@ -16,15 +16,19 @@ namespace AW.Types {
         [Hidden]
         public virtual int CreditCardID { get; init; }
 
+#pragma warning disable 8618
         public virtual Person Person { get; init; }
+#pragma warning restore 8618
 
+#pragma warning disable 8618
         public virtual CreditCard CreditCard { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(99)]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(PersonCreditCard other) => ReferenceEquals(this, other);
+        public virtual bool Equals(PersonCreditCard? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"PersonCreditCard: {PersonID}-{CreditCardID}";
 

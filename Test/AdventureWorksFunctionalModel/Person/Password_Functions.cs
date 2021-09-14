@@ -10,7 +10,7 @@ namespace AW.Functions {
         [MemberOrder("Passwords", 1)]
         public static IContext CheckPassword(
             this Person p, [Password] string offered, IContext context) =>
-            context.WithInformUser(p.Password.OfferedPasswordIsCorrect(offered) ? "CORRECT" : "INCORRECT");
+            context.WithInformUser(p.Password?.OfferedPasswordIsCorrect(offered) == true ? "CORRECT" : "INCORRECT");
 
         public static bool HideCheckPassword(this Person p) => p.Password is null;
 
@@ -45,7 +45,7 @@ namespace AW.Functions {
                                               [Named("New Password (Confirm)")] [Password]
                                               string confirm,
                                               IContext context) {
-            var oldP = p.Password;
+            var oldP = p.Password!;
             var salt = CreateRandomSalt();
             var newP = oldP with {
                 PasswordSalt = salt,
@@ -58,7 +58,7 @@ namespace AW.Functions {
         public static string ValidateChangePassword(this Person p,
                                                     string oldPassword, string newPassword, string confirm, IContext context) {
             var reason = "";
-            if (p.Password.OfferedPasswordIsCorrect(oldPassword)) {
+            if (p.Password?.OfferedPasswordIsCorrect(oldPassword) == true) {
                 reason += "Old Password is incorrect";
             }
 

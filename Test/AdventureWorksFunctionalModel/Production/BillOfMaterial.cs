@@ -21,19 +21,23 @@ namespace AW.Types {
         [Hidden]
         public virtual int? ProductAssemblyID { get; init; }
 
-        public virtual Product Product { get; init; }
+        public virtual Product? Product { get; init; }
 
         [Hidden]
         public virtual int ComponentID { get; init; }
 
+#pragma warning disable 8618
         public virtual Product Product1 { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
-        public virtual string UnitMeasureCode { get; init; }
+        public virtual string UnitMeasureCode { get; init; } = "";
 
+#pragma warning disable 8618
         public virtual UnitMeasure UnitMeasure { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(BillOfMaterial other) => ReferenceEquals(this, other);
+        public virtual bool Equals(BillOfMaterial? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

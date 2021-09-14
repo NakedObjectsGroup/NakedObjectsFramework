@@ -12,7 +12,7 @@ using NakedFunctions;
 namespace AW.Types {
     public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
         [Hidden]
-        public virtual string PersonType { get; init; }
+        public virtual string? PersonType { get; init; }
 
         [MemberOrder(21)] [Hidden]
         public virtual EmailPromotion EmailPromotion { get; init; }
@@ -31,15 +31,15 @@ namespace AW.Types {
                    nameof(PersonPhone.PhoneNumber))]
         public virtual ICollection<PersonPhone> PhoneNumbers { get; init; } = new List<PersonPhone>();
 
-        public virtual Password Password { get; init; }
+        public virtual Password? Password { get; init; }
 
         [MemberOrder(30)]
-        public virtual string AdditionalContactInfo { get; init; }
+        public virtual string? AdditionalContactInfo { get; init; }
 
         [Hidden]
-        public virtual Employee Employee { get; init; }
+        public virtual Employee? Employee { get; init; }
 
-        public virtual bool Equals(Person other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Person? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
@@ -58,19 +58,19 @@ namespace AW.Types {
         public virtual bool NameStyle { get; init; }
 
         [MemberOrder(11)]
-        public virtual string Title { get; init; }
+        public virtual string? Title { get; init; }
 
         [MemberOrder(12)]
-        public virtual string FirstName { get; init; }
+        public virtual string FirstName { get; init; } = "";
 
         [MemberOrder(13)]
-        public virtual string MiddleName { get; init; }
+        public virtual string? MiddleName { get; init; }
 
         [MemberOrder(14)]
-        public virtual string LastName { get; init; }
+        public virtual string LastName { get; init; } = "";
 
         [MemberOrder(15)]
-        public virtual string Suffix { get; init; }
+        public virtual string? Suffix { get; init; }
 
         #endregion
     }

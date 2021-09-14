@@ -32,7 +32,7 @@ namespace AW.Functions {
             this SpecialOffer sp, decimal discountPct, IContext context) =>
             UpdateSpecialOffer(sp, sp with { DiscountPct = discountPct }, context);
 
-        public static string DisableEditDiscount(
+        public static string? DisableEditDiscount(
             this SpecialOffer sp, IContext context) =>
             DisableIfStarted(sp, context);
 
@@ -52,7 +52,7 @@ namespace AW.Functions {
 
         internal static IList<string> Categories = new[] { "Reseller", "Customer" };
 
-        internal static string DisableIfStarted(this SpecialOffer so, IContext context) =>
+        internal static string? DisableIfStarted(this SpecialOffer so, IContext context) =>
             context.Today() > so.StartDate ? "Offer has started" : null;
 
         internal static bool HideIfEnded(this SpecialOffer so, IContext context) =>
@@ -71,18 +71,16 @@ namespace AW.Functions {
         internal static DateTime DefaultEndDate(IContext context) =>
             context.GetService<IClock>().Today().AddMonths(1);
 
-        public static IContext EditQuantities(this SpecialOffer sp,
-                                              [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
+        public static IContext EditQuantities(this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
             UpdateSpecialOffer(sp, sp with { MinQty = minQty, MaxQty = maxQty }, context);
 
-        public static string Validate1EditQuantities(this SpecialOffer sp, int minQty) =>
+        public static string? Validate1EditQuantities(this SpecialOffer sp, int minQty) =>
             minQty < 1 ? "Must be > 0" : null;
 
-        public static string ValidateEditQuantities(
-            this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
+        public static string? ValidateEditQuantities(this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
             ValidateQuantities(minQty, maxQty);
 
-        internal static string ValidateQuantities(int minQty, int? maxQty) =>
+        internal static string? ValidateQuantities(int minQty, int? maxQty) =>
             maxQty != null && maxQty.Value < minQty ? "Max Qty cannot be < Min Qty" : null;
 
         #endregion

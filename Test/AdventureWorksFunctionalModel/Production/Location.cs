@@ -14,7 +14,7 @@ namespace AW.Types {
         [Hidden]
         public virtual short LocationID { get; init; }
 
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [Mask("C")]
         public virtual decimal CostRate { get; init; }
@@ -26,7 +26,7 @@ namespace AW.Types {
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(Location other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Location? other) => ReferenceEquals(this, other);
 
         public override string ToString() => Name;
 

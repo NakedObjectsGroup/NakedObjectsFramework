@@ -23,6 +23,6 @@ namespace AW.Functions {
 
         public IContext AddToCart(Product product, IContext context) => ShoppingCart_MenuFunctions.AddToShoppingCart(product, context);
 
-        public string DisableAddToCart(IContext context) => ShoppingCart_MenuFunctions.DisableIfNoCustomerForUser(context);
+        public string? DisableAddToCart(IContext context) => ShoppingCart_MenuFunctions.DisableIfNoCustomerForUser(context);
     }
 }

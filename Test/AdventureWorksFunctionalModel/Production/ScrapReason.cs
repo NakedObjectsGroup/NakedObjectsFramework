@@ -15,13 +15,13 @@ namespace AW.Types {
         public virtual short ScrapReasonID { get; init; }
 
         //Title
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [MemberOrder(99)]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(ScrapReason other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ScrapReason? other) => ReferenceEquals(this, other);
 
         public override string ToString() => Name;
 

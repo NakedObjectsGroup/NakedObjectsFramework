@@ -15,9 +15,9 @@ namespace AW.Types {
         public virtual int AddressTypeID { get; init; }
 
         [Hidden]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
-        public virtual bool Equals(AddressType other) => ReferenceEquals(this, other);
+        public virtual bool Equals(AddressType? other) => ReferenceEquals(this, other);
 
         [Hidden]
         [Versioned]

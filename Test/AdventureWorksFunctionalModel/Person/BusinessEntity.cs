@@ -21,7 +21,7 @@ namespace AW.Types {
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
-        public virtual bool Equals(BusinessEntity other) => ReferenceEquals(this, other);
+        public virtual bool Equals(BusinessEntity? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"BusinessEntity: {BusinessEntityID}";
 

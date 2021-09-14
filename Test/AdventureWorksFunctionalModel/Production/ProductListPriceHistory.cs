@@ -14,9 +14,11 @@ namespace AW.Types {
         public virtual DateTime StartDate { get; init; }
         public virtual DateTime? EndDate { get; init; }
         public virtual decimal ListPrice { get; init; }
+#pragma warning disable 8618
         public virtual Product Product { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(ProductListPriceHistory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductListPriceHistory? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

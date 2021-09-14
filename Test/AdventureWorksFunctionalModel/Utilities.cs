@@ -12,7 +12,7 @@ using NakedFramework;
 
 namespace AW {
     internal static class Utilities {
-        internal static string FormatXML(string inputXML) {
+        internal static string FormatXML(string? inputXML) {
             var output = new StringBuilder();
 
             if (!string.IsNullOrEmpty(inputXML)) {

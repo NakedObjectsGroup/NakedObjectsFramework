@@ -15,8 +15,12 @@ namespace AW.Types {
         public virtual int SalesOrderID { get; init; }
 
         public virtual int SalesReasonID { get; init; }
+#pragma warning disable 8618
         public virtual SalesOrderHeader SalesOrderHeader { get; init; }
+#pragma warning restore 8618
+#pragma warning disable 8618
         public virtual SalesReason SalesReason { get; init; }
+#pragma warning restore 8618
 
         #region ModifiedDate
 
@@ -26,7 +30,7 @@ namespace AW.Types {
 
         #endregion
 
-        public virtual bool Equals(SalesOrderHeaderSalesReason other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SalesOrderHeaderSalesReason? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"SalesOrderHeaderSalesReason: {SalesOrderID}-{SalesReasonID}";
 

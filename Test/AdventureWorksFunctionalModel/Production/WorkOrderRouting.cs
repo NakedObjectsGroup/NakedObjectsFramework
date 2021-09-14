@@ -46,13 +46,15 @@ namespace AW.Types {
         public virtual decimal? ActualCost { get; init; }
 
         [Hidden]
+#pragma warning disable 8618
         public virtual WorkOrder WorkOrder { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(99)]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(WorkOrderRouting other) => ReferenceEquals(this, other);
+        public virtual bool Equals(WorkOrderRouting? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{Location}";
 
@@ -64,7 +66,9 @@ namespace AW.Types {
         public virtual short LocationID { get; init; }
 
         [MemberOrder(10)]
+#pragma warning disable 8618
         public virtual Location Location { get; init; }
+#pragma warning restore 8618
 
         #endregion
     }

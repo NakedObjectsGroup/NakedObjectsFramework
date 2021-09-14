@@ -16,10 +16,14 @@ namespace AW.Types {
         [Hidden]
         public virtual int IllustrationID { get; init; }
 
+#pragma warning disable 8618
         public virtual Illustration Illustration { get; init; }
+#pragma warning restore 8618
+#pragma warning disable 8618
         public virtual ProductModel ProductModel { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(ProductModelIllustration other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductModelIllustration? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

@@ -14,14 +14,14 @@ namespace AW.Types {
         [Hidden]
         public virtual int SalesReasonID { get; init; }
 
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
-        public virtual string ReasonType { get; init; }
+        public virtual string ReasonType { get; init; } = "";
 
         [MemberOrder(99)] [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(SalesReason other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SalesReason? other) => ReferenceEquals(this, other);
 
         public override string ToString() => Name;
 

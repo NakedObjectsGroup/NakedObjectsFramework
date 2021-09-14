@@ -29,13 +29,17 @@ namespace AW.Types {
         public virtual int ShipMethodID { get; init; }
 
         [MemberOrder(22)]
+#pragma warning disable 8618
         public virtual ShipMethod ShipMethod { get; init; }
+#pragma warning restore 8618
 
         [RenderEagerly]
         [TableView(true, "OrderQty", "Product", "UnitPrice", "LineTotal")]
+#pragma warning disable 8618
         public virtual ICollection<PurchaseOrderDetail> Details { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(PurchaseOrderHeader other) => ReferenceEquals(this, other);
+        public virtual bool Equals(PurchaseOrderHeader? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
@@ -51,7 +55,9 @@ namespace AW.Types {
         public virtual int VendorID { get; init; }
 
         [MemberOrder(1)]
+#pragma warning disable 8618
         public virtual Vendor Vendor { get; init; }
+#pragma warning restore 8618
 
         #endregion
 
@@ -105,7 +111,9 @@ namespace AW.Types {
         public virtual int OrderPlacedByID { get; init; }
 
         [MemberOrder(12)]
+#pragma warning disable 8618
         public virtual Employee OrderPlacedBy { get; init; }
+#pragma warning restore 8618
 
         #endregion
     }

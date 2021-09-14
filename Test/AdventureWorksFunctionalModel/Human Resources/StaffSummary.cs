@@ -13,7 +13,7 @@ namespace AW.Types {
         [MemberOrder(3)]
         public virtual int TotalStaff => Female + Male;
 
-        public virtual bool Equals(StaffSummary other) => ReferenceEquals(this, other);
+        public virtual bool Equals(StaffSummary? other) => ReferenceEquals(this, other);
 
         public override string ToString() => "Staff Summary";
 

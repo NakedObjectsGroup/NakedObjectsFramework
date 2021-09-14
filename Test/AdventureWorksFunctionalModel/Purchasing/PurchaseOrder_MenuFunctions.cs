@@ -30,8 +30,8 @@ namespace AW.Functions {
         #region FindById
 
         [MemberOrder(7)]
-        public static PurchaseOrderHeader FindById(int id, IContext context) =>
-            context.Instances<PurchaseOrderHeader>().Where(x => x.PurchaseOrderID == id).FirstOrDefault();
+        public static PurchaseOrderHeader? FindById(int id, IContext context) =>
+            context.Instances<PurchaseOrderHeader>().FirstOrDefault(x => x.PurchaseOrderID == id);
 
         #endregion
 
@@ -66,7 +66,7 @@ namespace AW.Functions {
             [MinLength(2)] string name, IContext context) =>
             context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
 
-        public static string ValidateListPurchaseOrders(
+        public static string? ValidateListPurchaseOrders(
             Vendor vendor,
             DateTime? fromDate,
             DateTime? toDate) =>

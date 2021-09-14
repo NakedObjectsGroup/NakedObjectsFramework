@@ -27,7 +27,7 @@ namespace AW.Functions {
             );
         }
 
-        public static string DisableChangeQuantity(this SalesOrderDetail detail) =>
+        public static string? DisableChangeQuantity(this SalesOrderDetail detail) =>
             detail.SalesOrderHeader.DisableAddNewDetail();
     }
 }

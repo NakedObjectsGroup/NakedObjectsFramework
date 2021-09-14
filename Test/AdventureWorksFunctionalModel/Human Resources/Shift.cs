@@ -15,7 +15,7 @@ namespace AW.Types {
         public virtual byte ShiftID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [MemberOrder(3)] [Mask("T")]
         public virtual TimeSpan StartTime { get; init; }
@@ -23,7 +23,7 @@ namespace AW.Types {
         [MemberOrder(4)] [Mask("T")]
         public virtual TimeSpan EndTime { get; init; }
 
-        public virtual bool Equals(Shift other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Shift? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

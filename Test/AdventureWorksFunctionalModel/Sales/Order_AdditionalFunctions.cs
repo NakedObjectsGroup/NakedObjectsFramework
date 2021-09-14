@@ -52,7 +52,7 @@ namespace AW.Functions {
             return order with { Comment = newComments, ModifiedDate = context.Now() };
         }
 
-        public static string Validate1AppendComment(this SalesOrderHeader order, string commentToAppend) => string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
+        public static string? Validate1AppendComment(this SalesOrderHeader order, string commentToAppend) => string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
 
         public static IContext CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders, IContext context) =>
             AppendCommentToOrders(toOrders, "User unhappy", context);
@@ -60,7 +60,7 @@ namespace AW.Functions {
         public static IContext CommentAsUserUnhappy(this SalesOrderHeader order, IContext context) =>
             AppendComment(order, "User unhappy", context);
 
-        public static string DisableCommentAsUserUnhappy(this SalesOrderHeader order) => order.IsShipped() ? null : "Not shipped yet";
+        public static string? DisableCommentAsUserUnhappy(this SalesOrderHeader order) => order.IsShipped() ? null : "Not shipped yet";
 
         [Named("Clear Comments")]
         public static IContext ClearCommentsFromOrders(this IQueryable<SalesOrderHeader> toOrders, IContext context) {
@@ -114,7 +114,7 @@ namespace AW.Functions {
 
         public static (SalesOrderHeader, IContext) QuickOrder(this Customer customer,
                                                               Product product, short quantity, IContext context) {
-            var order = NewOrderFrom(context, GetLastOrder(customer, context));
+            var order = NewOrderFrom(context, GetLastOrder(customer, context)!);
             var detail = order.CreateNewDetail(product, quantity, context);
             return (order, context.WithNew(order).WithNew(detail).WithDeferred(
                         c => {
@@ -128,7 +128,7 @@ namespace AW.Functions {
                                                                   [MinLength(2)] string name, IContext context) =>
             Product_MenuFunctions.FindProductByName(name, context);
 
-        public static string DisableQuickOrder(this Customer customer, IContext context) =>
+        public static string? DisableQuickOrder(this Customer customer, IContext context) =>
             customer.DisableCreateAnotherOrder(context);
 
         #endregion
@@ -140,7 +140,7 @@ namespace AW.Functions {
         [MemberOrder(1)]
         public static (SalesOrderHeader, IContext) CreateAnotherOrder(
             this Customer customer, IContext context) {
-            var newOrder = NewOrderFrom(context, GetLastOrder(customer, context));
+            var newOrder = NewOrderFrom(context, GetLastOrder(customer, context)!);
             return (newOrder, context.WithNew(newOrder));
         }
 
@@ -161,10 +161,10 @@ namespace AW.Functions {
                 ModifiedDate = context.Now()
             };
 
-        public static string DisableCreateAnotherOrder(this Customer customer, IContext context) =>
+        public static string? DisableCreateAnotherOrder(this Customer customer, IContext context) =>
             GetLastOrder(customer, context) is null ? "Customer has no previous orders. Use Create First Order." : null;
 
-        public static SalesOrderHeader GetLastOrder(this Customer c, IContext context) {
+        public static SalesOrderHeader? GetLastOrder(this Customer c, IContext context) {
             var cid = c.CustomerID;
             return context.Instances<SalesOrderHeader>().Where(o => o.CustomerID == cid).OrderByDescending(o => o.OrderDate).FirstOrDefault();
         }
@@ -176,7 +176,7 @@ namespace AW.Functions {
         public static string CreateFirstOrder(this Customer customer) =>
             throw new NotImplementedException();
 
-        public static string DisableCreateFirstOrder(this Customer customer) =>
+        public static string? DisableCreateFirstOrder(this Customer customer) =>
             customer.SalesTerritoryID == 6 ? "Customers in Canada may not place orders directly." : null;
 
         #endregion

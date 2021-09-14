@@ -8,21 +8,21 @@ namespace AW.Types {
         public virtual int BusinessEntityID { get; init; }
 
         [Hidden]
-        public virtual BusinessEntity BusinessEntity { get; init; }
+        public virtual BusinessEntity? BusinessEntity { get; init; }
 
         [Hidden]
         public virtual int PersonID { get; init; }
 
         [MemberOrder(1)]
-        public virtual Person Person { get; init; }
+        public virtual Person? Person { get; init; }
 
         [Hidden]
         public virtual int ContactTypeID { get; init; }
 
         [MemberOrder(2)]
-        public virtual ContactType ContactType { get; init; }
+        public virtual ContactType? ContactType { get; init; }
 
-        public virtual bool Equals(BusinessEntityContact other) => ReferenceEquals(this, other);
+        public virtual bool Equals(BusinessEntityContact? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

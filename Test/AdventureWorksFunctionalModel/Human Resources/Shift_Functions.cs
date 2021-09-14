@@ -19,7 +19,7 @@ namespace AW.Functions {
                                          TimeSpan startTime, TimeSpan endTime, IContext context) =>
             UpdateShift(s, s with { StartTime = startTime, EndTime = endTime }, context);
 
-        public static string ValidateEditTimes(
+        public static string? ValidateEditTimes(
             this Shift s, TimeSpan startTime, TimeSpan endTime) =>
             endTime > startTime ? null : "End time must be after start time";
 

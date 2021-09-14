@@ -18,7 +18,7 @@ namespace AW.Types {
         public string CustomerType => this.IsIndividual() ? "Individual" : "Store";
 
         [DescribedAs("xxx")] [MemberOrder(10)]
-        public virtual string AccountNumber { get; init; }
+        public virtual string AccountNumber { get; init; } = "";
 
         [Hidden]
         //
@@ -27,7 +27,7 @@ namespace AW.Types {
         [Hidden]
         public virtual Guid CustomerRowguid { get; init; }
 
-        public virtual bool Equals(Customer other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Customer? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{AccountNumber} {(Store is null ? Person : Store)}";
 
@@ -39,13 +39,13 @@ namespace AW.Types {
         public virtual int? StoreID { get; init; }
 
         [MemberOrder(20)]
-        public virtual Store Store { get; init; }
+        public virtual Store? Store { get; init; }
 
         [Hidden]
         public virtual int? PersonID { get; init; }
 
         [MemberOrder(20)]
-        public virtual Person Person { get; init; }
+        public virtual Person? Person { get; init; }
 
         #endregion
 
@@ -55,7 +55,7 @@ namespace AW.Types {
         public virtual int? SalesTerritoryID { get; init; }
 
         [MemberOrder(30)]
-        public virtual SalesTerritory SalesTerritory { get; init; }
+        public virtual SalesTerritory? SalesTerritory { get; init; }
 
         #endregion
     }

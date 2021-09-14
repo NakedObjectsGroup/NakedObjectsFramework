@@ -18,7 +18,7 @@ namespace AW.Types {
         [Mask("d")]
         public virtual DateTime? EndDate { get; init; }
 
-        public virtual bool Equals(SalesTerritoryHistory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SalesTerritoryHistory? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{SalesPerson} {SalesTerritory}";
 
@@ -30,7 +30,9 @@ namespace AW.Types {
         public virtual int BusinessEntityID { get; init; }
 
         [MemberOrder(3)]
+#pragma warning disable 8618
         public virtual SalesPerson SalesPerson { get; init; }
+#pragma warning restore 8618
 
         #endregion
 
@@ -40,7 +42,9 @@ namespace AW.Types {
         public virtual int SalesTerritoryID { get; init; }
 
         [MemberOrder(4)]
+#pragma warning disable 8618
         public virtual SalesTerritory SalesTerritory { get; init; }
+#pragma warning restore 8618
 
         #endregion
 

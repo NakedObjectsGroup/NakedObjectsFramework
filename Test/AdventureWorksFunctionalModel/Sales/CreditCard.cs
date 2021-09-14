@@ -16,10 +16,10 @@ namespace AW.Types {
         public virtual int CreditCardID { get; init; }
 
         [Hidden]
-        public virtual string CardType { get; init; }
+        public virtual string CardType { get; init; } = "";
 
         [Hidden]
-        public virtual string CardNumber { get; init; }
+        public virtual string CardNumber { get; init; } = "";
 
         [Hidden]
         public virtual byte ExpMonth { get; init; }
@@ -34,9 +34,9 @@ namespace AW.Types {
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(CreditCard other) => ReferenceEquals(this, other);
+        public virtual bool Equals(CreditCard? other) => ReferenceEquals(this, other);
 
-        public override string ToString() => CreditCard_Functions.ObfuscatedNumber(this);
+        public override string? ToString() => CreditCard_Functions.ObfuscatedNumber(this);
 
         public override int GetHashCode() => base.GetHashCode();
     }

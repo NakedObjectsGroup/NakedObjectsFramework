@@ -14,22 +14,24 @@ namespace AW.Types {
 
     public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate {
         [MemberOrder(1)]
+#pragma warning disable 8618
         public virtual Person PersonDetails { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(10)]
-        public virtual string NationalIDNumber { get; init; }
+        public virtual string NationalIDNumber { get; init; } = "";
 
         [MemberOrder(12)]
-        public virtual string JobTitle { get; init; }
+        public virtual string JobTitle { get; init; } = "";
 
         [MemberOrder(13)] [Mask("d")]
         public virtual DateTime? DateOfBirth { get; init; }
 
         [MemberOrder(14)]
-        public virtual string MaritalStatus { get; init; }
+        public virtual string MaritalStatus { get; init; } = "";
 
         [MemberOrder(15)]
-        public virtual string Gender { get; init; }
+        public virtual string Gender { get; init; } = "";
 
         [MemberOrder(16)] [Mask("d")]
         public virtual DateTime? HireDate { get; init; }
@@ -47,30 +49,30 @@ namespace AW.Types {
         public virtual bool Current { get; init; }
 
         [MemberOrder(30)]
-        public virtual Employee Manager { get; init; }
+        public virtual Employee? Manager { get; init; }
 
         [MemberOrder(11)]
-        public virtual string LoginID { get; init; }
+        public virtual string LoginID { get; init; } = "";
 
         [Hidden]
-        public virtual SalesPerson SalesPerson { get; init; }
+        public virtual SalesPerson? SalesPerson { get; init; }
 
         [TableView(true,
                    nameof(EmployeeDepartmentHistory.StartDate),
                    nameof(EmployeeDepartmentHistory.EndDate),
                    nameof(EmployeeDepartmentHistory.Department),
                    nameof(EmployeeDepartmentHistory.Shift))]
-        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory { get; init; }
+        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory { get; init; } = Array.Empty<EmployeeDepartmentHistory>();
 
         [TableView(true,
                    nameof(EmployeePayHistory.RateChangeDate),
                    nameof(EmployeePayHistory.Rate))]
-        public virtual ICollection<EmployeePayHistory> PayHistory { get; init; }
+        public virtual ICollection<EmployeePayHistory> PayHistory { get; init; } = Array.Empty<EmployeePayHistory>();
 
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
-        public virtual bool Equals(Employee other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Employee? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

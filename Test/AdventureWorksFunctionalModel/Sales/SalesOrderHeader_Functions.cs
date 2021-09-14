@@ -62,7 +62,7 @@ namespace AW.Functions {
         public static List<SalesOrderDetail> Choices1ChangeAQuantity(this SalesOrderHeader soh) =>
             soh.Details.ToList();
 
-        public static string DisableChangeAQuantity(this SalesOrderHeader soh) =>
+        public static string? DisableChangeAQuantity(this SalesOrderHeader soh) =>
             soh.DisableAddNewDetail();
 
         internal static IContext UpdateOrder(
@@ -70,32 +70,21 @@ namespace AW.Functions {
             context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
 
         //TODO: Move to Edit
-        public static ShipMethod DefaultShipMethod(this SalesOrderHeader soh, IContext context) => context.Instances<ShipMethod>().FirstOrDefault();
+        public static ShipMethod DefaultShipMethod(this SalesOrderHeader soh, IContext context) => context.Instances<ShipMethod>().First();
 
-        public static string DisableDueDate(this SalesOrderHeader soh) => soh.DisableIfShipped();
+        public static string? DisableDueDate(this SalesOrderHeader soh) => soh.DisableIfShipped();
 
-        public static string ValidateDueDate(this SalesOrderHeader soh, DateTime dueDate) {
-            if (dueDate.Date < soh.OrderDate.Date) {
-                return "Due date cannot be before order date";
-            }
+        public static string? ValidateDueDate(this SalesOrderHeader soh, DateTime dueDate) =>
+            dueDate.Date < soh.OrderDate.Date ? "Due date cannot be before order date" : null;
 
-            return null;
-        }
+        private static string? DisableIfShipped(this SalesOrderHeader soh) => soh.IsShipped() ? "Order has been shipped" : null;
 
-        private static string DisableIfShipped(this SalesOrderHeader soh) {
-            if (soh.IsShipped()) {
-                return "Order has been shipped";
-            }
+        public static string? DisableShipDate(this SalesOrderHeader soh) => soh.DisableIfShipped();
 
-            return null;
-        }
-
-        public static string DisableShipDate(this SalesOrderHeader soh) => soh.DisableIfShipped();
-
-        public static string DisableRecalculate(this SalesOrderHeader soh) =>
+        public static string? DisableRecalculate(this SalesOrderHeader soh) =>
             !soh.IsInProcess() ? "Can only recalculate an 'In Process' order" : null;
 
-        public static string ValidateShipDate(this SalesOrderHeader soh, DateTime? shipDate) {
+        public static string? ValidateShipDate(this SalesOrderHeader soh, DateTime? shipDate) {
             if (shipDate.HasValue && shipDate.Value.Date < soh.OrderDate.Date) {
                 return "Ship date cannot be before order date";
             }
@@ -119,13 +108,8 @@ namespace AW.Functions {
             });
         }
 
-        public static string DisableAddNewDetail(this SalesOrderHeader soh) {
-            if (!soh.IsInProcess()) {
-                return "Can only add to 'In Process' order";
-            }
-
-            return null;
-        }
+        public static string? DisableAddNewDetail(this SalesOrderHeader soh) =>
+            !soh.IsInProcess() ? "Can only add to 'In Process' order" : null;
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete1AddNewDetail(this SalesOrderHeader soh,
@@ -144,10 +128,10 @@ namespace AW.Functions {
         public static IEnumerable<SalesOrderDetail> Choices1RemoveDetail(this SalesOrderHeader soh) =>
             soh.Details;
 
-        public static SalesOrderDetail Default1RemoveDetail(this SalesOrderHeader soh) =>
+        public static SalesOrderDetail? Default1RemoveDetail(this SalesOrderHeader soh) =>
             soh.Details.FirstOrDefault();
 
-        public static string DisableRemoveDetail(this SalesOrderHeader soh) =>
+        public static string? DisableRemoveDetail(this SalesOrderHeader soh) =>
             soh.Details.Any() ? null : "Order has no Details.";
 
         [MemberOrder("Details", 1)]
@@ -168,8 +152,8 @@ namespace AW.Functions {
         public static bool HideApproveOrder(this SalesOrderHeader soh, IContext context) =>
             !soh.IsInProcess();
 
-        public static string DisableApproveOrder(this SalesOrderHeader soh, IContext context) =>
-            soh.Details.Count == 0 ? "Cannot approve orders with no Details" : null;
+        public static string? DisableApproveOrder(this SalesOrderHeader soh, IContext context) =>
+            !soh.Details.Any() ? "Cannot approve orders with no Details" : null;
 
         #endregion
 

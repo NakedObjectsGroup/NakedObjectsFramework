@@ -12,12 +12,12 @@ namespace AW.Types {
     [Bounded]
     public record UnitMeasure : IHasModifiedDate {
         [MemberOrder(10)]
-        public virtual string UnitMeasureCode { get; init; }
+        public virtual string UnitMeasureCode { get; init; } = "";
 
         [MemberOrder(20)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
-        public virtual bool Equals(UnitMeasure other) => ReferenceEquals(this, other);
+        public virtual bool Equals(UnitMeasure? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

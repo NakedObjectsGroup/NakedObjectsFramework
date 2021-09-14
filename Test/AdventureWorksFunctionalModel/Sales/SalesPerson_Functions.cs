@@ -19,18 +19,12 @@ namespace AW.Functions {
         [MemberOrder(1)]
         public static IContext RecalulateSalesYTD(this SalesPerson sp, IContext context) {
             var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
-            decimal newYTD = 0;
             var query = from obj in context.Instances<SalesOrderHeader>()
                         where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID &&
                               obj.StatusByte == 5 &&
                               obj.OrderDate >= startOfYear
                         select obj;
-            if (query.Count() > 0) {
-                newYTD = query.Sum(n => n.SubTotal);
-            }
-            else {
-                newYTD = 0;
-            }
+            var newYTD = query.Any() ? query.Sum(n => n.SubTotal) : 0;
 
             return UpdateSalesPerson(sp, sp with { SalesYTD = newYTD }, context);
         }
@@ -44,7 +38,7 @@ namespace AW.Functions {
         [MemberOrder(1)]
         public static IContext ChangeSalesTerritory(this SalesPerson sp, SalesTerritory newTerritory, IContext context) {
             var newHist = new SalesTerritoryHistory() with { SalesPerson = sp, SalesTerritory = newTerritory, StartDate = context.Now() };
-            var prev = sp.TerritoryHistory.Where(n => n.EndDate == null).FirstOrDefault();
+            var prev = sp.TerritoryHistory.First(n => n.EndDate == null);
             var uPrev = prev with { EndDate = context.Now() };
             var uSp = sp with { SalesTerritory = newTerritory, ModifiedDate = context.Now() };
             return context.WithNew(newHist).WithUpdated(sp, uSp).WithUpdated(prev, uPrev);

@@ -18,7 +18,7 @@ namespace AW.Types {
         public virtual int SalesOrderID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string SalesOrderNumber { get; init; }
+        public virtual string SalesOrderNumber { get; init; } = "";
 
         [Hidden]
         public virtual byte StatusByte { get; init; }
@@ -30,31 +30,39 @@ namespace AW.Types {
         public virtual int CustomerID { get; init; }
 
         [MemberOrder(2)]
+#pragma warning disable 8618
         public virtual Customer Customer { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
         public virtual int BillingAddressID { get; init; }
 
         [MemberOrder(4)]
+#pragma warning disable 8618
         public virtual Address BillingAddress { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(5)]
-        public virtual string PurchaseOrderNumber { get; init; }
+        public virtual string? PurchaseOrderNumber { get; init; }
 
         [Hidden]
         public virtual int ShippingAddressID { get; init; }
 
         [MemberOrder(10)]
+#pragma warning disable 8618
         public virtual Address ShippingAddress { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
         public virtual int ShipMethodID { get; init; }
 
         [MemberOrder(11)]
+#pragma warning disable 8618
         public virtual ShipMethod ShipMethod { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(12)]
-        public virtual string AccountNumber { get; init; }
+        public virtual string? AccountNumber { get; init; }
 
         [MemberOrder(20)]
         public virtual DateTime OrderDate { get; init; }
@@ -83,7 +91,9 @@ namespace AW.Types {
         public virtual int? CurrencyRateID { get; init; }
 
         [MemberOrder(35)]
+#pragma warning disable 8618
         public virtual CurrencyRate CurrencyRate { get; init; }
+#pragma warning restore 8618
 
         [DescribedAs("Order has been placed via the web")]
         [MemberOrder(41)] [Named("Online Order")]
@@ -93,10 +103,12 @@ namespace AW.Types {
         public virtual int? CreditCardID { get; init; }
 
         [MemberOrder(42)]
+#pragma warning disable 8618
         public virtual CreditCard CreditCard { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(43)]
-        public virtual string CreditCardApprovalCode { get; init; }
+        public virtual string? CreditCardApprovalCode { get; init; }
 
         [MemberOrder(51)]
         public virtual byte RevisionNumber { get; init; }
@@ -104,19 +116,23 @@ namespace AW.Types {
         [MultiLine(NumberOfLines = 3, Width = 50)]
         [MemberOrder(52)]
         [DescribedAs("Free-form text")]
-        public virtual string Comment { get; init; }
+        public virtual string? Comment { get; init; }
 
         [Hidden]
         public virtual int? SalesPersonID { get; init; }
 
         [MemberOrder(61)]
+#pragma warning disable 8618
         public virtual SalesPerson SalesPerson { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
         public virtual int? SalesTerritoryID { get; init; }
 
         [MemberOrder(62)]
+#pragma warning disable 8618
         public virtual SalesTerritory SalesTerritory { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(99)]
         [Versioned]
@@ -132,7 +148,7 @@ namespace AW.Types {
         public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason { get; init; }
             = new List<SalesOrderHeaderSalesReason>();
 
-        public virtual bool Equals(SalesOrderHeader other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SalesOrderHeader? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{SalesOrderNumber}";
 

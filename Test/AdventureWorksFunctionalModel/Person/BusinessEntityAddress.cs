@@ -8,21 +8,27 @@ namespace AW.Types {
         public virtual int BusinessEntityID { get; init; }
 
         [MemberOrder(3)]
+#pragma warning disable 8618
         public virtual BusinessEntity BusinessEntity { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
         public virtual int AddressTypeID { get; init; }
 
         [MemberOrder(1)]
+#pragma warning disable 8618
         public virtual AddressType AddressType { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
         public virtual int AddressID { get; init; }
 
         [MemberOrder(2)]
+#pragma warning disable 8618
         public virtual Address Address { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(BusinessEntityAddress other) => ReferenceEquals(this, other);
+        public virtual bool Equals(BusinessEntityAddress? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

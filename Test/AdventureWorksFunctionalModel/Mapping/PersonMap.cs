@@ -2,6 +2,7 @@ using System.Data.Entity.ModelConfiguration;
 using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+#pragma warning disable 8602
 
 namespace AW.Mapping {
     public class PersonMap : EntityTypeConfiguration<Person> {

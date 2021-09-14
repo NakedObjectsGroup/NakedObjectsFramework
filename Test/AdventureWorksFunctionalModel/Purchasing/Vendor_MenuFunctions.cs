@@ -17,8 +17,8 @@ namespace AW.Functions {
         public static IQueryable<Vendor> FindVendorByName(string name, IContext context) =>
             context.Instances<Vendor>().Where(v => v.Name == name).OrderBy(v => v.Name);
 
-        public static Vendor FindVendorByAccountNumber(string accountNumber, IContext context) =>
-            context.Instances<Vendor>().Where(x => x.AccountNumber == accountNumber).FirstOrDefault();
+        public static Vendor? FindVendorByAccountNumber(string accountNumber, IContext context) =>
+            context.Instances<Vendor>().FirstOrDefault(x => x.AccountNumber == accountNumber);
 
         public static Vendor RandomVendor(IContext context) => Random<Vendor>(context);
 

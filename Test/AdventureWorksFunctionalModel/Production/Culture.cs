@@ -12,12 +12,12 @@ namespace AW.Types {
     [Bounded]
     public record Culture : IHasModifiedDate {
         [Hidden]
-        public virtual string CultureID { get; init; }
+        public virtual string CultureID { get; init; } = "";
 
         [MemberOrder(10)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
-        public virtual bool Equals(Culture other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Culture? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

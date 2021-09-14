@@ -16,12 +16,14 @@ namespace AW.Types {
     [ViewModel(typeof(CustomerDashboard_Functions))]
     public record CustomerDashboard {
         [Hidden]
+#pragma warning disable 8618
         public virtual Customer Root { get; init; }
+#pragma warning restore 8618
 
-        public string Name => Root.IsIndividual() ? Root.Person.ToString() : Root.Store.Name;
+        public string Name => $"{(Root.IsIndividual() ? Root.Person : Root.Store?.Name)}";
 
         //Empty field, not - to test that fields are not editable in a VM
-        public virtual string Comments { get; init; }
+        public virtual string Comments { get; init; } = "";
 
         [TableView(true, "OrderDate", "TotalDue", "Status")]
         public IList<SalesOrderHeader> RecentOrders(IContext context) =>

@@ -16,7 +16,7 @@ namespace AW.Functions {
     [Named("Persons")]
     public static class Person_MenuFunctions {
         public static IQueryable<Person> FindPersonsByName(
-            [Optionally] string firstName, string lastName, IContext context) =>
+            [Optionally] string? firstName, string lastName, IContext context) =>
             context.Instances<Person>().Where(p => (firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper())) &&
                                                    p.LastName.ToUpper().StartsWith(lastName.ToUpper())).OrderBy(p => p.LastName).ThenBy(p => p.FirstName);
 

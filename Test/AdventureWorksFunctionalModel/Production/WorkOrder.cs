@@ -29,7 +29,9 @@ namespace AW.Types {
         public virtual short? ScrapReasonID { get; init; }
 
         [MemberOrder(26)]
+#pragma warning disable 8618
         public virtual ScrapReason ScrapReason { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(20)]
         public virtual int OrderQty { get; init; }
@@ -46,7 +48,9 @@ namespace AW.Types {
         public virtual int ProductID { get; init; }
 
         [MemberOrder(10)]
+#pragma warning disable 8618
         public virtual Product Product { get; init; }
+#pragma warning restore 8618
 
         [RenderEagerly]
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
@@ -57,7 +61,7 @@ namespace AW.Types {
         [Hidden]
         public virtual string AnAlwaysHiddenReadOnlyProperty => "";
 
-        public virtual bool Equals(WorkOrder other) => ReferenceEquals(this, other);
+        public virtual bool Equals(WorkOrder? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

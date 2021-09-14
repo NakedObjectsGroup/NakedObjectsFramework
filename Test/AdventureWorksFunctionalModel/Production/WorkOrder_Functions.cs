@@ -25,7 +25,7 @@ namespace AW.Functions {
                                          [DefaultValue(0)] DateTime startDate, [DefaultValue(7)] DateTime dueDate, IContext context) =>
             UpdateWO(wo, wo with { StartDate = startDate, DueDate = dueDate }, context);
 
-        public static string ValidateEditDates(this WorkOrder wo, DateTime startDate, DateTime dueDate) =>
+        public static string? ValidateEditDates(this WorkOrder wo, DateTime startDate, DateTime dueDate) =>
             startDate > dueDate ? "StartDate must be before DueDate" : null;
 
         [Edit]
@@ -33,7 +33,7 @@ namespace AW.Functions {
             this WorkOrder wo, int orderQty, IContext context) =>
             UpdateWO(wo, wo with { OrderQty = orderQty }, context);
 
-        public static string Validate1EditOrderQty(this WorkOrder wo, int orderQty) =>
+        public static string? Validate1EditOrderQty(this WorkOrder wo, int orderQty) =>
             orderQty <= 0 ? "Order Quantity must be > 0" : null;
 
         [PageSize(20)]

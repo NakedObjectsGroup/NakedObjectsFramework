@@ -15,12 +15,12 @@ namespace AW.Types {
         public virtual short DepartmentID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [MemberOrder(2)]
-        public virtual string GroupName { get; init; }
+        public virtual string GroupName { get; init; } = "";
 
-        public virtual bool Equals(Department other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Department? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

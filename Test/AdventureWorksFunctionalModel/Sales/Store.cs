@@ -13,7 +13,7 @@ using NakedFunctions;
 namespace AW.Types {
     //TODO: rename to StoreDetails
     public record Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate {
-        public virtual bool Equals(Store other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Store? other) => ReferenceEquals(this, other);
 
         public override string ToString() => Name;
 
@@ -22,12 +22,12 @@ namespace AW.Types {
         #region Properties
 
         [Named("Store Name")] [MemberOrder(20)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         #region Demographics
 
         [Hidden]
-        public virtual string Demographics { get; init; }
+        public virtual string? Demographics { get; init; }
 
         [Named("Demographics")] [MemberOrder(30)] [MultiLine(10)]
         public virtual string FormattedDemographics => Utilities.FormatXML(Demographics);
@@ -40,7 +40,7 @@ namespace AW.Types {
         public virtual int? SalesPersonID { get; init; }
 
         [MemberOrder(40)]
-        public virtual SalesPerson SalesPerson { get; init; }
+        public virtual SalesPerson? SalesPerson { get; init; }
 
         [PageSize(20)]
         public IQueryable<SalesPerson> AutoCompleteSalesPerson(

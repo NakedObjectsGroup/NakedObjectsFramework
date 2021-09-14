@@ -17,11 +17,11 @@ namespace AW.Types {
 
         public virtual byte[] ThumbNailPhoto { get; set; } = new byte[0];
 
-        public virtual string ThumbnailPhotoFileName { get; init; }
+        public virtual string? ThumbnailPhotoFileName { get; init; }
 
         public virtual byte[] LargePhoto { get; set; } = new byte[0];
 
-        public virtual string LargePhotoFileName { get; init; }
+        public virtual string? LargePhotoFileName { get; init; }
 
         public virtual FileAttachment LargePhotoAsAttachment =>
             // fake mimetype
@@ -34,7 +34,7 @@ namespace AW.Types {
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(ProductPhoto other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductPhoto? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"Product Photo: {ProductPhotoID}";
 

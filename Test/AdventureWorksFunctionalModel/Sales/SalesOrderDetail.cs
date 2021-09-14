@@ -46,14 +46,16 @@ namespace AW.Types {
 
         [MemberOrder(50)]
 
-        public virtual string CarrierTrackingNumber { get; init; }
+        public virtual string? CarrierTrackingNumber { get; init; }
 
         #endregion
 
         #region SalesOrder
 
         // [Hidden]
+#pragma warning disable 8618
         public virtual SalesOrderHeader SalesOrderHeader { get; init; }
+#pragma warning restore 8618
 
         #endregion
 
@@ -64,7 +66,7 @@ namespace AW.Types {
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        public virtual bool Equals(SalesOrderDetail other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SalesOrderDetail? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{OrderQty} x {Product}";
 
@@ -91,15 +93,17 @@ namespace AW.Types {
         public virtual int ProductID { get; init; }
 
         [Hidden]
+#pragma warning disable 8618
         public virtual SpecialOfferProduct SpecialOfferProduct { get; init; }
+#pragma warning restore 8618
 
         #endregion
 
         [MemberOrder(11)]
-        public virtual Product Product => SpecialOfferProduct == null ? null : SpecialOfferProduct.Product;
+        public virtual Product Product => SpecialOfferProduct.Product;
 
         [MemberOrder(12)]
-        public virtual SpecialOffer SpecialOffer => SpecialOfferProduct == null ? null : SpecialOfferProduct.SpecialOffer;
+        public virtual SpecialOffer SpecialOffer => SpecialOfferProduct.SpecialOffer;
 
         #endregion
     }

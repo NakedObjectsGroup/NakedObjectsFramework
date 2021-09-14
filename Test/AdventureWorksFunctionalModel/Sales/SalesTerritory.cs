@@ -16,13 +16,13 @@ namespace AW.Types {
         public virtual int TerritoryID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [MemberOrder(20)]
-        public virtual string CountryRegionCode { get; init; }
+        public virtual string CountryRegionCode { get; init; } = "";
 
         [MemberOrder(30)]
-        public virtual string Group { get; init; }
+        public virtual string Group { get; init; } = "";
 
         [MemberOrder(40)] [Mask("C")]
         public virtual decimal SalesYTD { get; init; }
@@ -46,7 +46,7 @@ namespace AW.Types {
         [Named("States/Provinces covered")] [TableView(true)] //Table View == List View
         public virtual ICollection<StateProvince> StateProvince { get; init; } = new List<StateProvince>();
 
-        public virtual bool Equals(SalesTerritory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SalesTerritory? other) => ReferenceEquals(this, other);
 
         public override string ToString() => Name;
 

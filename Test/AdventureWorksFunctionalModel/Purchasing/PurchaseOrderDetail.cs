@@ -53,12 +53,16 @@ namespace AW.Types {
         public virtual int ProductID { get; init; }
 
         [MemberOrder(10)]
+#pragma warning disable 8618
         public virtual Product Product { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
+#pragma warning disable 8618
         public virtual PurchaseOrderHeader PurchaseOrderHeader { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(PurchaseOrderDetail other) => ReferenceEquals(this, other);
+        public virtual bool Equals(PurchaseOrderDetail? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{OrderQty} x {Product}";
 

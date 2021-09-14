@@ -14,14 +14,16 @@ namespace AW.Types {
         [Hidden]
         public virtual int ProductSubcategoryID { get; init; }
 
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [Hidden]
         public virtual int ProductCategoryID { get; init; }
 
+#pragma warning disable 8618
         public virtual ProductCategory ProductCategory { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(ProductSubcategory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductSubcategory? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

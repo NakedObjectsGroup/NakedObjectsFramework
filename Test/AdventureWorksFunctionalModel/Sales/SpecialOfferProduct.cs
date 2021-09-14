@@ -14,13 +14,17 @@ namespace AW.Types {
         public virtual int SpecialOfferID { get; init; }
 
         [MemberOrder(1)]
+#pragma warning disable 8618
         public virtual SpecialOffer SpecialOffer { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
         public virtual int ProductID { get; init; }
 
         [MemberOrder(2)]
+#pragma warning disable 8618
         public virtual Product Product { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
@@ -29,7 +33,7 @@ namespace AW.Types {
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(SpecialOfferProduct other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SpecialOfferProduct? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"SpecialOfferProduct: {SpecialOfferID}-{ProductID}";
 

@@ -9,13 +9,11 @@ namespace AW {
         private static IEnumerable<Type> DomainClasses =>
             typeof(AWModelConfig).Assembly.GetTypes().Where(t => t.IsPublic && (t.IsClass || t.IsInterface || t.IsEnum));
 
-        public static Func<IConfiguration, DbContext> DbContextCreator => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
+        public static Func<IConfiguration, DbContext> DbContextCreator => 
+            c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
-        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCDbContextCreator => c => {
-            var cc = new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
-
-            return cc;
-        };
+        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCDbContextCreator => 
+            c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
 
         //IsAbstract && IsSealed defines a static class. Not really necessary here, just extra safety check.
         public static Type[] FunctionalTypes() =>
@@ -25,6 +23,6 @@ namespace AW {
             DomainClasses.Where(t => t.Namespace == "AW.Functions" && t.IsAbstract && t.IsSealed).ToArray();
 
         public static Type[] MainMenuTypes() =>
-            Functions().Where(t => t.FullName.Contains("MenuFunctions")).ToArray();
+            Functions().Where(t => t.FullName?.Contains("MenuFunctions") == true).ToArray();
     }
 }

@@ -14,9 +14,9 @@ namespace AW.Types {
         public virtual int ProductDescriptionID { get; init; }
 
         [MultiLine(10)] [MemberOrder(2)]
-        public virtual string Description { get; init; }
+        public virtual string Description { get; init; } = "";
 
-        public virtual bool Equals(ProductDescription other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductDescription? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

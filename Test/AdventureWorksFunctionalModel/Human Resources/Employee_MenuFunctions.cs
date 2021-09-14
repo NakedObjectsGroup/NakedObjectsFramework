@@ -18,8 +18,7 @@ namespace AW.Functions {
         public static IQueryable<Employee> AllEmployees(IContext context) => context.Instances<Employee>();
 
         [TableView(true, nameof(Employee.Current), nameof(Employee.JobTitle), nameof(Employee.Manager))]
-        public static IQueryable<Employee> FindEmployeeByName(
-            [Optionally] string firstName, string lastName, IContext context) {
+        public static IQueryable<Employee> FindEmployeeByName([Optionally] string? firstName, string lastName, IContext context) {
             var employees = context.Instances<Employee>();
             var persons = context.Instances<Person>().Where(p => (firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper())) &&
                                                                  p.LastName.ToUpper().StartsWith(lastName.ToUpper()));
@@ -31,13 +30,13 @@ namespace AW.Functions {
                    select emp;
         }
 
-        public static Employee FindEmployeeByNationalIDNumber(string nationalIDNumber, IContext context)
-            => context.Instances<Employee>().Where(e => e.NationalIDNumber == nationalIDNumber).FirstOrDefault();
+        public static Employee? FindEmployeeByNationalIDNumber(string nationalIDNumber, IContext context)
+            => context.Instances<Employee>().FirstOrDefault(e => e.NationalIDNumber == nationalIDNumber);
 
         public static StaffSummary GenerateStaffSummary(IContext context) {
             var staff = context.Instances<Employee>();
-            var female = staff.Where(x => x.Gender == "F").Count();
-            var male = staff.Where(x => x.Gender == "M").Count();
+            var female = staff.Count(x => x.Gender == "F");
+            var male = staff.Count(x => x.Gender == "M");
             return new StaffSummary { Female = female, Male = male };
         }
 
@@ -45,12 +44,12 @@ namespace AW.Functions {
         [TableView(true, "GroupName")]
         public static IQueryable<Department> ListAllDepartments(IContext context) => context.Instances<Department>();
 
-        internal static Employee CurrentUserAsEmployee(IContext context) {
-            var login = context.CurrentUser().Identity.Name;
-            return context.Instances<Employee>().Where(x => x.LoginID == login).FirstOrDefault();
+        internal static Employee? CurrentUserAsEmployee(IContext context) {
+            var login = context.CurrentUser().Identity?.Name;
+            return context.Instances<Employee>().FirstOrDefault(x => x.LoginID == login);
         }
 
-        public static Employee Me(IContext context) => CurrentUserAsEmployee(context);
+        public static Employee? Me(IContext context) => CurrentUserAsEmployee(context);
 
         public static Employee RandomEmployee(IContext context) => Random<Employee>(context);
 
@@ -62,13 +61,15 @@ namespace AW.Functions {
             [Optionally] [DefaultValue(true)] bool? olderThan50,
             IQueryable<Employee> employees
         ) {
-            var emps = employees.Where(e => e.Current == current.Value);
+            var cv = current ?? false;
+            var emps = employees.Where(e => e.Current == cv);
             if (married != null) {
                 var value = married.Value ? "M" : "S";
                 emps = emps.Where(e => e.MaritalStatus == value);
             }
 
-            emps = emps.Where(e => e.Salaried == salaried.Value);
+            var sv = salaried ?? false;
+            emps = emps.Where(e => e.Salaried == sv);
             if (olderThan50 != null) {
                 var date = DateTime.Today.AddYears(-50); //Not an exact calculation!
                 if (olderThan50.Value) {

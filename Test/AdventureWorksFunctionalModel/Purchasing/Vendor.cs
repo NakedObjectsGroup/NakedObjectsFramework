@@ -13,11 +13,11 @@ using NakedFunctions;
 namespace AW.Types {
     public record Vendor : IBusinessEntity {
         [MemberOrder(10)]
-        public virtual string AccountNumber { get; init; }
+        public virtual string AccountNumber { get; init; } = "";
 
         //Title
         [MemberOrder(20)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [MemberOrder(30)]
         public virtual byte CreditRating { get; init; }
@@ -29,7 +29,7 @@ namespace AW.Types {
         public virtual bool ActiveFlag { get; init; }
 
         [MemberOrder(60)]
-        public virtual string PurchasingWebServiceURL { get; init; }
+        public virtual string? PurchasingWebServiceURL { get; init; }
 
         [Named("Product - Order Info")]
         [TableView(true)] //  Not obvious which of many possible fields should be shown here
@@ -43,7 +43,7 @@ namespace AW.Types {
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
-        public virtual bool Equals(Vendor other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Vendor? other) => ReferenceEquals(this, other);
 
         public virtual IQueryable<string> AutoCompletePurchasingWebServiceURL([MinLength(2)] string value) {
             var matchingNames = new List<string> { "http://www.store1.com", "http://www.store2.com", "http://www.store3.com" };

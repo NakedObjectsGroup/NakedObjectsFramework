@@ -17,15 +17,21 @@ namespace AW.Types {
         public virtual int ProductDescriptionID { get; init; }
 
         [Hidden]
-        public virtual string CultureID { get; init; }
+        public virtual string CultureID { get; init; } = "";
 
+#pragma warning disable 8618
         public virtual Culture Culture { get; init; }
+#pragma warning restore 8618
+#pragma warning disable 8618
         public virtual ProductDescription ProductDescription { get; init; }
+#pragma warning restore 8618
 
         [Hidden]
+#pragma warning disable 8618
         public virtual ProductModel ProductModel { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(ProductModelProductDescriptionCulture other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductModelProductDescriptionCulture? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

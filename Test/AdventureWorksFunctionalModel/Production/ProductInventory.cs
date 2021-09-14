@@ -17,7 +17,7 @@ namespace AW.Types {
         public virtual short LocationID { get; init; }
 
         [MemberOrder(40)]
-        public virtual string Shelf { get; init; }
+        public virtual string Shelf { get; init; } = "";
 
         [MemberOrder(50)]
         public virtual byte Bin { get; init; }
@@ -26,12 +26,16 @@ namespace AW.Types {
         public virtual short Quantity { get; init; }
 
         [MemberOrder(30)]
+#pragma warning disable 8618
         public virtual Location Location { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(20)]
+#pragma warning disable 8618
         public virtual Product Product { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(ProductInventory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductInventory? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

@@ -33,7 +33,7 @@ namespace AW.Functions {
             return (eph, context.WithNew(eph));
         }
 
-        public static EmployeePayHistory CurrentEmployeePayHistory(Employee e) => e.PayHistory.OrderByDescending(x => x.RateChangeDate).FirstOrDefault();
+        public static EmployeePayHistory CurrentEmployeePayHistory(Employee e) => e.PayHistory.OrderByDescending(x => x.RateChangeDate).First();
 
         #region ChangeDepartmentOrShift
 
@@ -55,12 +55,12 @@ namespace AW.Functions {
             return context.WithNew(newAssignment).WithUpdated(currentAssignment, updatedCA);
         }
 
-        public static Department Default1ChangeDepartmentOrShift(this Employee e) => CurrentAssignment(e)?.Department;
+        public static Department? Default1ChangeDepartmentOrShift(this Employee e) => CurrentAssignment(e)?.Department;
 
-        public static Shift Default2ChangeDepartmentOrShift(this Employee e) => CurrentAssignment(e)?.Shift;
+        public static Shift? Default2ChangeDepartmentOrShift(this Employee e) => CurrentAssignment(e)?.Shift;
 
         private static EmployeeDepartmentHistory CurrentAssignment(Employee e) =>
-            e.DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
+            e.DepartmentHistory.First(n => n.EndDate == null);
 
         #endregion
 
@@ -90,11 +90,11 @@ namespace AW.Functions {
                                                  DateTime? dateOfBirth, IContext context) =>
             UpdateEmployee(e, e with { DateOfBirth = dateOfBirth }, context);
 
-        public static string ValidateUpdateDateOfBirth(this Employee e,
-                                                       DateTime? dateOfBirth, IContext context) =>
+        public static string? ValidateUpdateDateOfBirth(this Employee e,
+                                                        DateTime? dateOfBirth, IContext context) =>
             ValidateDateOfBirth(dateOfBirth, context);
 
-        internal static string ValidateDateOfBirth(DateTime? dateOfBirth, IContext context) =>
+        internal static string? ValidateDateOfBirth(DateTime? dateOfBirth, IContext context) =>
             dateOfBirth > context.Today().AddYears(-16) || dateOfBirth < context.Today().AddYears(-100) ? "Invalid Date Of Birth" : null;
 
         public static IContext UpdateMaritalStatus(this Employee e,

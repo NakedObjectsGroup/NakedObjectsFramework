@@ -2,6 +2,7 @@ using System.Data.Entity.ModelConfiguration;
 using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+#pragma warning disable 8602
 
 namespace AW.Mapping {
     public class ProductMap : EntityTypeConfiguration<Product> {
@@ -77,7 +78,6 @@ namespace AW.Mapping {
                 .WithMany(t => t.ProductVariants)
                 .HasForeignKey(d => d.ProductModelID);
             HasOptional(t => t.ProductSubcategory).WithMany().HasForeignKey(t => t.ProductSubcategoryID);
-            ;
             HasOptional(t => t.SizeUnit).WithMany().HasForeignKey(t => t.SizeUnitMeasureCode);
             HasOptional(t => t.WeightUnit).WithMany().HasForeignKey(t => t.WeightUnitMeasureCode);
         }

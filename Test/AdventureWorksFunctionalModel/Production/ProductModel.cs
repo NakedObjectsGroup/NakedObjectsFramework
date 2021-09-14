@@ -16,10 +16,10 @@ namespace AW.Types {
         public virtual int ProductModelID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [Hidden]
-        public virtual string CatalogDescription { get; init; }
+        public virtual string? CatalogDescription { get; init; }
 
         [Named("CatalogDescription")] [MemberOrder(20)] [MultiLine(10)]
         public string FormattedCatalogDescription =>
@@ -30,7 +30,7 @@ namespace AW.Types {
             ProductModel_Functions.LocalCultureDescription(this);
 
         [MemberOrder(30)]
-        public virtual string Instructions { get; init; }
+        public virtual string? Instructions { get; init; }
 
         [TableView(true, "Name", "Number", "Color", "ProductInventory")]
         public virtual ICollection<Product> ProductVariants { get; init; } = new List<Product>();
@@ -41,7 +41,7 @@ namespace AW.Types {
         [Hidden]
         public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; } = new List<ProductModelProductDescriptionCulture>();
 
-        public virtual bool Equals(ProductModel other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductModel? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

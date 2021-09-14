@@ -15,7 +15,7 @@ namespace AW.Types {
         public virtual int ShipMethodID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [MemberOrder(2)]
         public virtual decimal ShipBase { get; init; }
@@ -30,7 +30,7 @@ namespace AW.Types {
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        public virtual bool Equals(ShipMethod other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ShipMethod? other) => ReferenceEquals(this, other);
 
         public override string ToString() => Name;
 

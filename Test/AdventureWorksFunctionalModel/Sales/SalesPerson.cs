@@ -12,7 +12,9 @@ using NakedFunctions;
 namespace AW.Types {
     public record SalesPerson : IBusinessEntity {
         [MemberOrder(10)]
+#pragma warning disable 8618
         public virtual Employee EmployeeDetails { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(11)]
         public virtual Person PersonDetails => EmployeeDetails.PersonDetails;
@@ -21,7 +23,7 @@ namespace AW.Types {
         public virtual int? SalesTerritoryID { get; init; }
 
         [MemberOrder(20)]
-        public virtual SalesTerritory SalesTerritory { get; init; }
+        public virtual SalesTerritory? SalesTerritory { get; init; }
 
         [MemberOrder(30)]
         [Mask("C")]
@@ -59,7 +61,7 @@ namespace AW.Types {
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
-        public virtual bool Equals(SalesPerson other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SalesPerson? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{EmployeeDetails}";
 

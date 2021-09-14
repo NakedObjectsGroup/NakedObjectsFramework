@@ -16,9 +16,9 @@ namespace AW.Functions {
         [MemberOrder(22)]
         public static ProductDescription LocalCultureDescription(ProductModel pm) =>
             pm.ProductModelProductDescriptionCulture
-              .Where(obj => obj.Culture != null && obj.Culture.CultureID.StartsWith(CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
+              .Where(obj => obj.Culture.CultureID.StartsWith(CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
               .Select(obj => obj.ProductDescription)
-              .FirstOrDefault();
+              .First();
 
         public static string CatalogDescription(ProductModel pm) =>
             string.IsNullOrEmpty(pm.CatalogDescription) ? "" : XElement.Parse(pm.CatalogDescription).Elements().Select(e => Formatted(e)).Aggregate((i, j) => i + j);

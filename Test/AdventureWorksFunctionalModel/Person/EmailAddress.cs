@@ -10,9 +10,9 @@ namespace AW.Types {
         public virtual int EmailAddressID { get; init; }
 
         [Named("Email Address")]
-        public virtual string EmailAddress1 { get; init; }
+        public virtual string? EmailAddress1 { get; init; }
 
-        public virtual bool Equals(EmailAddress other) => ReferenceEquals(this, other);
+        public virtual bool Equals(EmailAddress? other) => ReferenceEquals(this, other);
 
         [Hidden]
         [Versioned]
@@ -21,7 +21,7 @@ namespace AW.Types {
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        public override string ToString() => EmailAddress1;
+        public override string? ToString() => EmailAddress1;
 
         public override int GetHashCode() => base.GetHashCode();
     }

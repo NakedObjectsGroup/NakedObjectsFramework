@@ -12,7 +12,7 @@ using NakedFunctions;
 namespace AW.Types {
     public record Illustration {
         public virtual int IllustrationID { get; init; }
-        public virtual string Diagram { get; init; }
+        public virtual string? Diagram { get; init; }
 
         public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
@@ -20,7 +20,7 @@ namespace AW.Types {
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(Illustration other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Illustration? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"Illustration: {IllustrationID}";
 

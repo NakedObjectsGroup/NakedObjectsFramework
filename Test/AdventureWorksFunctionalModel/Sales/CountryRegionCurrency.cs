@@ -10,15 +10,19 @@ using NakedFunctions;
 
 namespace AW.Types {
     public record CountryRegionCurrency {
-        public virtual string CountryRegionCode { get; init; }
-        public virtual string CurrencyCode { get; init; }
+        public virtual string CountryRegionCode { get; init; } = "";
+        public virtual string CurrencyCode { get; init; } = "";
+#pragma warning disable 8618
         public virtual CountryRegion CountryRegion { get; init; }
+#pragma warning restore 8618
+#pragma warning disable 8618
         public virtual Currency Currency { get; init; }
+#pragma warning restore 8618
 
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(CountryRegionCurrency other) => ReferenceEquals(this, other);
+        public virtual bool Equals(CountryRegionCurrency? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"CountryRegionCurrency: {CountryRegion} {Currency}";
 

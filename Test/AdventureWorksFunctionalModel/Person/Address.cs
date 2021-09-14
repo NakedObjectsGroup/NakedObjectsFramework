@@ -14,24 +14,26 @@ namespace AW.Types {
         public virtual int AddressID { get; init; }
 
         [MemberOrder(11)]
-        public virtual string AddressLine1 { get; init; }
+        public virtual string AddressLine1 { get; init; } = "";
 
         [MemberOrder(12)]
-        public virtual string AddressLine2 { get; init; }
+        public virtual string? AddressLine2 { get; init; }
 
         [MemberOrder(13)]
-        public virtual string City { get; init; }
+        public virtual string City { get; init; } = "";
 
         [MemberOrder(14)]
-        public virtual string PostalCode { get; init; }
+        public virtual string PostalCode { get; init; } = "";
 
         [Hidden]
         public virtual int StateProvinceID { get; init; }
 
         [MemberOrder(15)]
+#pragma warning disable 8618
         public virtual StateProvince StateProvince { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(Address other) => ReferenceEquals(this, other);
+        public virtual bool Equals(Address? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

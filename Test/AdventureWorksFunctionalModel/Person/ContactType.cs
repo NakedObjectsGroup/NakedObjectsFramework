@@ -15,9 +15,9 @@ namespace AW.Types {
         public virtual int ContactTypeID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
-        public virtual bool Equals(ContactType other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ContactType? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

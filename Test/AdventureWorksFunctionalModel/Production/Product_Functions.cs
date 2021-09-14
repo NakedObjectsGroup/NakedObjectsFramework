@@ -27,7 +27,7 @@ namespace AW.Functions {
             p.ProductInventory.Sum(obj => obj.Quantity);
 
         public static IContext AddOrChangePhoto(this Product product, Image newImage, IContext context) {
-            var productProductPhoto = product.ProductProductPhoto.FirstOrDefault();
+            var productProductPhoto = product.ProductProductPhoto.First();
             var productPhoto = productProductPhoto.ProductPhoto;
             var newProductPhoto = productPhoto with { LargePhoto = newImage.GetResourceAsByteArray(), LargePhotoFileName = newImage.Name };
             var newProductProductPhoto = new ProductProductPhoto { ProductPhoto = newProductPhoto, Product = product, ModifiedDate = DateTime.Now };
@@ -51,7 +51,7 @@ namespace AW.Functions {
                                                 IContext context) =>
             context.WithNew(CreateReview(
                                 p,
-                                context.CurrentUser().Identity.Name,
+                                context.CurrentUser()?.Identity?.Name ?? "",
                                 dateOfReview,
                                 "[private]",
                                 rating,
@@ -73,11 +73,11 @@ namespace AW.Functions {
 
         private static List<int> Ratings() => new() { 1, 2, 3, 4, 5 };
 
-        public static string ValidateAddProductReview(this Product p,
-                                                      DateTime dateOfReview, int rating, string comments) =>
+        public static string? ValidateAddProductReview(this Product p,
+                                                       DateTime dateOfReview, int rating, string comments) =>
             LessThan5StarsRequiresComment(rating, comments);
 
-        private static string LessThan5StarsRequiresComment(int rating, string comments) =>
+        private static string? LessThan5StarsRequiresComment(int rating, string comments) =>
             rating < 5 && string.IsNullOrEmpty(comments) ? "Must provide comments for rating < 5" : null;
 
         public static IContext AddAnonReviews(this IQueryable<Product> products,
@@ -91,12 +91,12 @@ namespace AW.Functions {
         public static List<int> Choices1AddAnonReviews(this IQueryable<Product> products) =>
             Ratings();
 
-        public static string ValidateAddAnonReviews(this IQueryable<Product> products,
-                                                    int rating, string comments) =>
+        public static string? ValidateAddAnonReviews(this IQueryable<Product> products,
+                                                     int rating, string comments) =>
             LessThan5StarsRequiresComment(rating, comments);
 
         [DisplayAsProperty] [MemberOrder(11)]
-        public static ProductDescription Description(this Product product) =>
+        public static ProductDescription? Description(this Product product) =>
             product.ProductModel is null ? null : ProductModel_Functions.LocalCultureDescription(product.ProductModel);
 
         [DisplayAsProperty] [MemberOrder(110)]
@@ -108,7 +108,7 @@ namespace AW.Functions {
             // product.SpecialOfferProduct.Select(sop => sop.SpecialOffer).ToList()
         }
 
-        internal static Image Photo(Product product) {
+        internal static Image? Photo(Product product) {
             var p = product.ProductProductPhoto.Select(p => p.ProductPhoto).FirstOrDefault();
             return p is null ? null : new Image(p.LargePhoto, p.LargePhotoFileName);
         }
@@ -118,7 +118,7 @@ namespace AW.Functions {
         internal static string WeightWithUnit(this Product p) =>
             $"{p.Weight} {p.WeightUnit}";
 
-        internal static ProductCategory ProductCategory(this Product p) =>
+        internal static ProductCategory? ProductCategory(this Product p) =>
             p.ProductSubcategory is null ? null : p.ProductSubcategory.ProductCategory;
 
         internal static string SizeWithUnit(this Product p) =>
@@ -133,7 +133,7 @@ namespace AW.Functions {
             this Product p, [ValueRange(1, 999)] int quantity, IContext context) =>
             BestSpecialOfferProduct(p, (short)quantity, context).SpecialOffer;
 
-        public static string DisableBestSpecialOffer(this Product p, IContext context)
+        public static string? DisableBestSpecialOffer(this Product p, IContext context)
             => p.IsDiscontinued(context) ? "Product is discontinued" : null;
 
         internal static SpecialOfferProduct BestSpecialOfferProduct(

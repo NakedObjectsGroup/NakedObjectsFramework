@@ -34,7 +34,7 @@ namespace AW.Functions {
             this Vendor vendor, [MinLength(2)] string name, IContext context) =>
             PurchaseOrder_MenuFunctions.AutoComplete0ListPurchaseOrders(name, context);
 
-        public static string ValidateListPurchaseOrders(
+        public static string? ValidateListPurchaseOrders(
             this Vendor vendor, DateTime? fromDate, DateTime? toDate) =>
             PurchaseOrder_MenuFunctions.ValidateListPurchaseOrders(vendor, fromDate, toDate);
 

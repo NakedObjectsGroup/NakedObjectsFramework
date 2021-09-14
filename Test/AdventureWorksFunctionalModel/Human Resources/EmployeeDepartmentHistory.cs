@@ -26,19 +26,25 @@ namespace AW.Types {
         public virtual DateTime? EndDate { get; init; }
 
         [MemberOrder(2)]
+#pragma warning disable 8618
         public virtual Department Department { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(1)]
+#pragma warning disable 8618
         public virtual Employee Employee { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(3)]
+#pragma warning disable 8618
         public virtual Shift Shift { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(99)]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(EmployeeDepartmentHistory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(EmployeeDepartmentHistory? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{Department} {StartDate.ToString("d")}";
 

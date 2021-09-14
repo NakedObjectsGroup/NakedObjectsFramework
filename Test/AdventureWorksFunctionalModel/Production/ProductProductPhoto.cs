@@ -13,14 +13,18 @@ namespace AW.Types {
         public virtual int ProductID { get; init; }
         public virtual int ProductPhotoID { get; init; }
         public virtual bool Primary { get; init; }
+#pragma warning disable 8618
         public virtual Product Product { get; init; }
+#pragma warning restore 8618
+#pragma warning disable 8618
         public virtual ProductPhoto ProductPhoto { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(99)]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(ProductProductPhoto other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductProductPhoto? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"ProductProductPhoto: {ProductID}-{ProductPhotoID}";
 

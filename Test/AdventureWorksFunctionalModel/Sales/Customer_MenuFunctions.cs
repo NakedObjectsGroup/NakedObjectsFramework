@@ -13,14 +13,14 @@ namespace AW.Functions {
     [Named("Customers")]
     public static class Customer_MenuFunctions {
         [MemberOrder(10)]
-        public static Customer FindCustomerByAccountNumber(
+        public static Customer? FindCustomerByAccountNumber(
             [DefaultValue("AW")] [RegEx(@"^AW\d{8}$")]
             string accountNumber, IContext context) =>
-            context.Instances<Customer>().Where(x => x.AccountNumber == accountNumber).FirstOrDefault();
+            context.Instances<Customer>().FirstOrDefault(x => x.AccountNumber == accountNumber);
 
         public static IQueryable<Customer> ListCustomersForSalesTerritory(SalesTerritory territory, IContext context) {
             var id = territory.TerritoryID;
-            return context.Instances<Customer>().Where(c => c.SalesTerritory.TerritoryID == id);
+            return context.Instances<Customer>().Where(c => c.SalesTerritory != null && c.SalesTerritory.TerritoryID == id);
         }
 
         #region Stores Menu
@@ -50,7 +50,7 @@ namespace AW.Functions {
         public static Customer RandomStore(IContext context) {
             var stores = context.Instances<Customer>().Where(t => t.StoreID != null).OrderBy(t => "");
             var random = context.RandomSeed().ValueInRange(stores.Count());
-            return stores.Skip(random).FirstOrDefault();
+            return stores.Skip(random).First();
         }
 
         #endregion
@@ -96,7 +96,7 @@ namespace AW.Functions {
         public static Customer RandomIndividual(IContext context) {
             var indivs = context.Instances<Customer>().Where(t => t.PersonID != null).OrderBy(t => "");
             var random = context.RandomSeed().ValueInRange(indivs.Count());
-            return indivs.Skip(random).FirstOrDefault();
+            return indivs.Skip(random).First();
         }
 
         [MemberOrder("Individuals", 4)]

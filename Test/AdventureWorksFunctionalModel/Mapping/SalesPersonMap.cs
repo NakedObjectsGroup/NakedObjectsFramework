@@ -3,6 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 using AW.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+#pragma warning disable 8603
 
 namespace AW.Mapping {
     public class SalesPersonMap : EntityTypeConfiguration<SalesPerson> {

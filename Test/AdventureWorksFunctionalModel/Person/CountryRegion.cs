@@ -12,12 +12,12 @@ namespace AW.Types {
     [Bounded]
     public record CountryRegion : IHasModifiedDate {
         [MemberOrder(1)]
-        public virtual string Name { get; init; }
+        public virtual string Name { get; init; } = "";
 
         [MemberOrder(2)]
-        public virtual string CountryRegionCode { get; init; }
+        public virtual string CountryRegionCode { get; init; } = "";
 
-        public virtual bool Equals(CountryRegion other) => ReferenceEquals(this, other);
+        public virtual bool Equals(CountryRegion? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]

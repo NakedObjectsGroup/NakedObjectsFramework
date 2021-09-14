@@ -23,7 +23,7 @@ namespace AW.Functions {
             return context.Instances<ShoppingCartItem>().Where(x => x.ShoppingCartID == id);
         }
 
-        public static string DisableCart(IContext context) => DisableIfNoCustomerForUser(context);
+        public static string? DisableCart(IContext context) => DisableIfNoCustomerForUser(context);
 
         private static string GetShoppingCartIDForUser(IContext context) => GetCustomerForUser(context).CustomerID.ToString();
 
@@ -38,13 +38,13 @@ namespace AW.Functions {
             throw new NotImplementedException();
         }
 
-        public static string DisableCheckOut(IContext context) => DisableIfNoCustomerForUser(context);
+        public static string? DisableCheckOut(IContext context) => DisableIfNoCustomerForUser(context);
 
         private static Customer GetCustomerForUser(IContext context) => throw new NotImplementedException();
 
         private static Person GetContactFromUserNameAsEmail(IContext context) => throw new NotImplementedException();
 
-        private static string UserName(IPrincipal principal) => principal.Identity.Name;
+        private static string UserName(IPrincipal principal) => principal.Identity?.Name ?? "";
 
         public static IContext AddAllItemsInCartToOrder(
             SalesOrderHeader order, IContext context) {
@@ -59,8 +59,8 @@ namespace AW.Functions {
 
         public static IContext EmptyCart(IContext context) => throw new NotImplementedException();
 
-        public static string DisableEmptyCart(IContext context) => DisableIfNoCustomerForUser(context);
+        public static string? DisableEmptyCart(IContext context) => DisableIfNoCustomerForUser(context);
 
-        public static string DisableIfNoCustomerForUser(IContext context) => GetCustomerForUser(context) == null ? "User is not a recognised Customer" : null;
+        public static string? DisableIfNoCustomerForUser(IContext context) => GetCustomerForUser(context) == null ? "User is not a recognised Customer" : null;
     }
 }

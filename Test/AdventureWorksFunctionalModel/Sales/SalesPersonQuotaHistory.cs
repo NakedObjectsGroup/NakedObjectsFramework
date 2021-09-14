@@ -22,9 +22,11 @@ namespace AW.Types {
         public virtual decimal SalesQuota { get; init; }
 
         [MemberOrder(3)]
+#pragma warning disable 8618
         public virtual SalesPerson SalesPerson { get; init; }
+#pragma warning restore 8618
 
-        public virtual bool Equals(SalesPersonQuotaHistory other) => ReferenceEquals(this, other);
+        public virtual bool Equals(SalesPersonQuotaHistory? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{QuotaDate.ToString("d")} {SalesQuota.ToString("C")}";
 

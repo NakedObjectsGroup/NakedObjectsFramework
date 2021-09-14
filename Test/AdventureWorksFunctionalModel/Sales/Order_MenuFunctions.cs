@@ -30,8 +30,8 @@ namespace AW.Functions {
             context.Instances<SalesOrderHeader>().Where(x => x.StatusByte == 1);
 
         [MemberOrder(10)]
-        public static SalesOrderHeader FindOrder([DefaultValue("SO")] string orderNumber, IContext context) =>
-            context.Instances<SalesOrderHeader>().Where(x => x.SalesOrderNumber == orderNumber).FirstOrDefault();
+        public static SalesOrderHeader? FindOrder([DefaultValue("SO")] string orderNumber, IContext context) =>
+            context.Instances<SalesOrderHeader>().FirstOrDefault(x => x.SalesOrderNumber == orderNumber);
 
         [MemberOrder(90)]
         [TableView(true, "TotalDue", "Customer", "OrderDate", "SalesPerson", "Comment")]
@@ -50,8 +50,7 @@ namespace AW.Functions {
         }
 
         public static IQueryable<SalesOrderHeader> FindOrders(
-            [DescribedAs("Enter the Account Number (AW + 8 digits) & select the customer")] [Optionally]
-            Customer customer,
+            [DescribedAs("Enter the Account Number (AW + 8 digits) & select the customer"), Optionally] Customer? customer,
             [Optionally] DateTime? orderDate, IContext context) =>
             customer == null
                 ? ByDate(context.Instances<SalesOrderHeader>(), orderDate)
@@ -64,7 +63,7 @@ namespace AW.Functions {
                 : orders.Where(soh => soh.OrderDate == d);
 
         [PageSize(10)]
-        public static Customer AutoComplete0FindOrders(
+        public static Customer? AutoComplete0FindOrders(
             [MinLength(10)] string accountNumber,
             IContext context) =>
             Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, context);
@@ -79,7 +78,7 @@ namespace AW.Functions {
             customer.RecentOrders(context);
 
         [PageSize(10)]
-        public static Customer AutoComplete0OrdersForCustomer(
+        public static Customer? AutoComplete0OrdersForCustomer(
             [MinLength(10)] string accountNumber,
             IContext context) =>
             Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, context);

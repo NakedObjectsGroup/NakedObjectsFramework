@@ -14,7 +14,7 @@ namespace AW.Types {
         public virtual int ShoppingCartItemID { get; init; }
 
         [Hidden]
-        public virtual string ShoppingCartID { get; init; }
+        public virtual string ShoppingCartID { get; init; } = "";
 
         [MemberOrder(20)]
         public virtual int Quantity { get; init; }
@@ -30,7 +30,7 @@ namespace AW.Types {
 
         #endregion
 
-        public virtual bool Equals(ShoppingCartItem other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ShoppingCartItem? other) => ReferenceEquals(this, other);
 
         public override string ToString() => $"{Quantity}  x {Product}";
 
@@ -42,7 +42,9 @@ namespace AW.Types {
         public virtual int ProductID { get; init; }
 
         [MemberOrder(10)]
+#pragma warning disable 8618
         public virtual Product Product { get; init; }
+#pragma warning restore 8618
 
         #endregion
     }

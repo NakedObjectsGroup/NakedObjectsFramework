@@ -14,31 +14,33 @@ namespace AW.Types {
         public virtual int ProductReviewID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string ReviewerName { get; init; }
+        public virtual string ReviewerName { get; init; } = "";
 
         [MemberOrder(2)]
         public virtual DateTime ReviewDate { get; init; }
 
         [MemberOrder(3)]
-        public virtual string EmailAddress { get; init; }
+        public virtual string EmailAddress { get; init; } = "";
 
         [MemberOrder(4)]
         public virtual int Rating { get; init; }
 
         [MemberOrder(5)]
-        public virtual string Comments { get; init; }
+        public virtual string? Comments { get; init; }
 
         [Hidden]
         public virtual int ProductID { get; init; }
 
         [Hidden]
+#pragma warning disable 8618
         public virtual Product Product { get; init; }
+#pragma warning restore 8618
 
         [MemberOrder(99)]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(ProductReview other) => ReferenceEquals(this, other);
+        public virtual bool Equals(ProductReview? other) => ReferenceEquals(this, other);
 
         public override string ToString() => "*****".Substring(0, Rating);
 

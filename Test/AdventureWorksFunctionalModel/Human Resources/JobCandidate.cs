@@ -13,18 +13,18 @@ namespace AW.Types {
         [Hidden]
         public virtual int JobCandidateID { get; init; }
 
-        public virtual string Resume { get; init; }
+        public virtual string? Resume { get; init; }
 
         [Hidden]
         public virtual int? EmployeeID { get; init; }
 
-        public virtual Employee Employee { get; init; }
+        public virtual Employee? Employee { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual bool Equals(JobCandidate other) => ReferenceEquals(this, other);
+        public virtual bool Equals(JobCandidate? other) => ReferenceEquals(this, other);
 
         public override string ToString() => "Job Candidate ";
 
