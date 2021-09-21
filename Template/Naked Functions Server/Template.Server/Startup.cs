@@ -57,8 +57,8 @@ namespace NakedFunctions.Rest.App.Demo
                 frameworkOptions.AddEFCorePersistor(peristorOptions => { peristorOptions.ContextCreators = new[] { ModelConfig.EFCoreDbContextCreator }; });
                 frameworkOptions.AddNakedFunctions(appOptions =>
                 {
-                    appOptions.FunctionalTypes = ModelConfig.DomainTypes();
-                    appOptions.Functions = ModelConfig.TypesDefiningDomainFunctions();
+                    appOptions.DomainTypes = ModelConfig.DomainTypes();
+                    appOptions.DomainFunctions = ModelConfig.TypesDefiningDomainFunctions();
                 });
                 frameworkOptions.AddRestfulObjects(_ => { });
             });
