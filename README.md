@@ -28,7 +28,7 @@ Naked Objects
 =============
 Naked Objects is a mature framework, under continuous development for 20 years (last 7 on GitHub) and now at version 12.
 
-Full documentation of how use the framework (typically starting from the Template projects) is contained in the [Application Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx).
+Full documentation of how use the framework (typically starting from the Template projects) is contained in the [Application Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Objects%20-%20Developer%20Manual.docx).
 There is no need to download and build the source, as the recommended way to use the framework is via the published NuGet and NPM packages. (However there are details in the manual on how to build the source for those that really want to.)
 
 Differences between v12 and v11:
@@ -40,13 +40,9 @@ Differences between v12 and v11:
 Naked Functions
 ===============
 
-Naked Functions is a brand new framework, currently in Beta-release.
+Naked Functions is a brand new framework, currently a release-candidate stage.
 
-While the full Application Developer Manual is currently under construction, the following PowerPoint slides will help:
-
-* [Getting Started with Naked Functions](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Functions/Getting%20started%20with%20Naked%20Functions.pptx)
-
-* [The Naked Functions programming model](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Functions/The%20Naked%20Functions%20programming%20model.pptx)
+There is an (incomplete)  [Application Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Functions%20-%20Developer%20Manual.docx)
 
 
 
