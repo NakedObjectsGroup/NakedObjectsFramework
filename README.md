@@ -1,4 +1,4 @@
-This repository is now home to two C# application development frameworks: **Naked Objects**, and **Naked Functions** (Beta). With Naked Objects you write your application code in pure object-oriented style; with Naked Functions you write it in pure functional programming style.  But it is what they have in common that distinguishes them from other application development frameworks:
+This repository is now home to two C# application development frameworks: **Naked Objects**, and **Naked Functions** (pre-release). With Naked Objects you write your application code in pure object-oriented style; with Naked Functions you write it in pure functional programming style.  But it is what they have in common that distinguishes them from other application development frameworks:
 
 * You write only domain types and logic. For Naked Objects that means classes representing persistent domain entities and view models, with all your domain logic encapsulated as methods. For Naked Functions it means writing C# records (or immutable classes) and freestanding (static) functions that are 100% side-effect free. 
 
@@ -10,7 +10,7 @@ This repository is now home to two C# application development frameworks: **Nake
 
 * The generic client may be customised for look and feel using standard Angular patterns, and the beauty of the design is that this customisation may be undertaken completely independently of the domain application development. Many users have found that there is no need to customise it at all: the generic client is good enough for deployment. At the other extreme, since the Client adopts a well-structured layered architecture (each layer being a separate NPM package) you may choose to build your SPA from scratch, using only the lower layers of the generic Client architecture as helpers to interact with the RESTful API.
 
-* The frameworks may be used ready-packaged (as NuGet packages for the server side, and as NPM packages for the client) – there is no need to download the source code from this repository. (See instructions below).
+* The frameworks may be used ready-packaged (as NuGet packages for the server side, and as NPM packages for the client) – there is no need to download the source code from this repository.
 
 Both frameworks therefore offer the following advantages:
 
@@ -28,21 +28,20 @@ Naked Objects
 =============
 Naked Objects is a mature framework, under continuous development for 20 years (last 7 on GitHub) and now at version 12.
 
-Full documentation of how use the framework (typically starting from the Template projects) is contained in the [Application Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Objects%20-%20Developer%20Manual.docx).
+Full documentation of how use the framework (typically starting from the Template projects) is contained in the [Naked Objects - Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Objects%20-%20Developer%20Manual.docx).
 There is no need to download and build the source, as the recommended way to use the framework is via the published NuGet and NPM packages. (However there are details in the manual on how to build the source for those that really want to.)
 
 Differences between v12 and v11:
 
 * Now works with either Entity Framework Core or Entity Framework 6
 * Permits Properties (incl. Collection properties) to be 'contrributed' to an object (using the new **DisplayAsProperty** attribute) in a manner similar to the existing concept of 'contributed actions'.
-* Permits actions whose purpose is to edit one or more properties on a persisent objects to be annoted with the new **Edit** attribute, and hence allowe the action to be invoked using the new 'edit' icon next to any of those fields, and to edit the propert values _in situ_ rather than via a separate dialog.
+* Permits actions whose purpose is to edit one or more properties on a persisent objects to be annoted with the new **Edit** attribute, and hence allow the action to be invoked using the new 'edit' icon next to any of those fields, and to edit the propert values _in situ_ rather than via a separate dialog.
 
 Naked Functions
 ===============
 
-Naked Functions is a brand new framework, currently a release-candidate stage.
+Naked Functions is a brand new framework, currently at release-candidate stage.
 
-There is an (incomplete)  [Application Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Functions%20-%20Developer%20Manual.docx)
-
+Full documentation of how use the framework (typically starting from the Template projects) is contained in the  [Naked Functions - Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Functions%20-%20Developer%20Manual.docx). There is no need to download and build the source, as the recommended way to use the framework is via the published NuGet and NPM packages.
 
 
