@@ -93,6 +93,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Persistor.EF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Test", "NakedFramework\NakedFramework.Test\NakedFramework.Test.csproj", "{63E3FCCF-F5C0-47F8-A5C1-59708F8517C0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Rest.Test", "Legacy\Legacy.Rest.Test\Legacy.Rest.Test.csproj", "{735097D5-BAF3-4605-B02C-14B91B79EAD9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Rest.Test.Data", "Legacy\Legacy.Rest.Test.Data\Legacy.Rest.Test.Data.csproj", "{BCA69B6B-5691-4207-B8FC-5F087D8240F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -275,6 +279,14 @@ Global
 		{63E3FCCF-F5C0-47F8-A5C1-59708F8517C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63E3FCCF-F5C0-47F8-A5C1-59708F8517C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63E3FCCF-F5C0-47F8-A5C1-59708F8517C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{735097D5-BAF3-4605-B02C-14B91B79EAD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{735097D5-BAF3-4605-B02C-14B91B79EAD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{735097D5-BAF3-4605-B02C-14B91B79EAD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{735097D5-BAF3-4605-B02C-14B91B79EAD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA69B6B-5691-4207-B8FC-5F087D8240F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA69B6B-5691-4207-B8FC-5F087D8240F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA69B6B-5691-4207-B8FC-5F087D8240F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA69B6B-5691-4207-B8FC-5F087D8240F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
