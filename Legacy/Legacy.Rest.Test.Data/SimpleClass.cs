@@ -7,7 +7,6 @@
 
 using System.ComponentModel.DataAnnotations;
 using Legacy.NakedObjects;
-using NakedObjects;
 
 namespace Legacy.Rest.Test.Data {
     public class SimpleService {
@@ -15,14 +14,15 @@ namespace Legacy.Rest.Test.Data {
     }
 
     public class SimpleClass {
+        private TextString _name;
+
+#pragma warning disable 649
+        private string name;
+#pragma warning restore 649
+
         [Key]
         public int Id { get; init; }
 
-        private string name;
-
-        public TextString Name {
-            get => new(name);
-            set => name = value.stringValue();
-        }
+        public TextString Name => _name ??= new TextString(name);
     }
 }
