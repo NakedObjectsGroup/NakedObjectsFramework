@@ -6,30 +6,52 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Net;
+using Legacy.NakedObjects;
 using Legacy.Rest.Test.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
+using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test;
 using NakedObjects.Reflector.Configuration;
+using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace Legacy.Rest.Test {
     public class LegacyTest : AcceptanceTestCase {
-        protected override Type[] ObjectTypes { get; } = { typeof(SimpleClass) };
+        protected override Type[] ObjectTypes { get; } = {
+            typeof(SimpleClass),
+            typeof(TextString),
+            typeof(BusinessValueHolder),
+            typeof(TitledObject)
+        };
 
         protected override Type[] Services { get; } = { typeof(SimpleService)};
 
         protected override bool EnforceProxies => false;
 
         protected override Action<NakedFrameworkOptions> AddNakedFunctions => _ => { };
+
+        protected override Action<NakedObjectsOptions> NakedObjectsOptions =>
+            options => {
+                options.DomainModelTypes = ObjectTypes;
+                options.DomainModelServices = Services;
+                options.NoValidate = true;
+                options.RegisterCustomTypes = services => {
+                    services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(TextStringValueTypeFacetFactory));
+                };
+            };
+
 
         protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
             config => {
@@ -90,6 +112,19 @@ namespace Legacy.Rest.Test {
         private static string FullName<T>() => typeof(T).FullName;
 
         [Test]
+        public void TestGetObject() {
+            var api = Api();
+            var result = api.GetObject(FullName<SimpleClass>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNotNull(parsedResult["members"]["Id"]);
+            Assert.IsNotNull(parsedResult["members"]["Name"]);
+        }
+
+        [Test]
         public void TestGetObjectProperty() {
             var api = Api();
             var result = api.GetProperty(FullName<SimpleClass>(), "1", nameof(SimpleClass.Name));
@@ -98,6 +133,21 @@ namespace Legacy.Rest.Test {
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(SimpleClass.Name), parsedResult["id"].ToString());
+            Assert.AreEqual("Fred", parsedResult["value"].ToString());
         }
+
+        [Test]
+        public void TestPutProperty() {
+            var api = Api().AsPut();
+            var arg = new SingleValueArgument() {Value = new ScalarValue("Ted") } ;
+            var result = api.PutProperty(FullName<SimpleClass>(), "1", nameof(SimpleClass.Name), arg);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(SimpleClass.Name), parsedResult["id"].ToString());
+            Assert.AreEqual("Ted", parsedResult["value"].ToString());
+        }
+
     }
 }

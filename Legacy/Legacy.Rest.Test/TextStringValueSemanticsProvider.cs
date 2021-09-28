@@ -36,7 +36,7 @@ namespace Legacy.Rest.Test {
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) => type == typeof(string);
+        public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
         protected override TextString DoParse(string entry) => entry.Trim().Equals("") ? null : new TextString(entry);
 

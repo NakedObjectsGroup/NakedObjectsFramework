@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-   
+    <ProjectReference Include="..\Legacy.NakedObjects\Legacy.NakedObjects.csproj" />
   </ItemGroup>
 
 </Project>

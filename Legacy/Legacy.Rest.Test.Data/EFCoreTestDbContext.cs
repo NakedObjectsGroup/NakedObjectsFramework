@@ -34,10 +34,10 @@ namespace Legacy.Rest.Test.Data {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            var fred = new SimpleClass { Id = 1, Name = "Fred" };
+            var fred = new { Id = 1, name = "Fred" };
 
-            //modelBuilder.Entity<SimpleClass>().Property();
-
+            modelBuilder.Entity<SimpleClass>().Ignore(t => t.Name);
+            modelBuilder.Entity<SimpleClass>().Property("name").HasColumnName("Name");
 
             modelBuilder.Entity<SimpleClass>().HasData(fred);
         }

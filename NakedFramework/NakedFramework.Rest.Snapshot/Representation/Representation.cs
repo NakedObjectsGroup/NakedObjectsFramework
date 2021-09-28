@@ -175,7 +175,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             }
 
             if (property.Specification.IsParseable || property.Specification.IsCollection) {
-                return RestUtils.ObjectToPredefinedType(valueNakedObject.Object, useDateOverDateTime);
+                return RestUtils.ObjectToPredefinedType(valueNakedObject.Object, useDateOverDateTime, property.Specification.IsParseable);
             }
 
             if (valueOnly) {

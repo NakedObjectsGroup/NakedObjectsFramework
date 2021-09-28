@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.ComponentModel.DataAnnotations;
+using Legacy.NakedObjects;
+using NakedObjects;
 
 namespace Legacy.Rest.Test.Data {
     public class SimpleService {
@@ -16,6 +18,11 @@ namespace Legacy.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public string Name { get; init; }
+        private string name;
+
+        public TextString Name {
+            get => new(name);
+            set => name = value.stringValue();
+        }
     }
 }

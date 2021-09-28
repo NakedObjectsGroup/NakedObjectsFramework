@@ -263,12 +263,12 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         private static string ToTimeFormatString(TimeSpan time) => time.ToString(@"hh\:mm\:ss");
 
-        public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime) {
+        public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime, bool isParseable = false) {
             static object ToUniversalTime(DateTime dt) => dt.Kind == DateTimeKind.Unspecified
                 ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
                 : dt.ToUniversalTime();
 
-            var predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(), false, useDateOverDateTime);
+            var predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(), isParseable, useDateOverDateTime);
             return predefinedFormatType switch {
                 PredefinedFormatType.Date_time => ToUniversalTime((DateTime) toMap),
                 PredefinedFormatType.Date => ToDateFormatString((DateTime) toMap),
