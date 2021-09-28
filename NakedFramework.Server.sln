@@ -97,6 +97,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Rest.Test", "Legacy\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Rest.Test.Data", "Legacy\Legacy.Rest.Test.Data\Legacy.Rest.Test.Data.csproj", "{BCA69B6B-5691-4207-B8FC-5F087D8240F7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.NakedObjects", "Legacy\Legacy.NakedObjects\Legacy.NakedObjects.csproj", "{48CB3912-C495-47A5-9926-0C5807FC0E70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -287,6 +289,10 @@ Global
 		{BCA69B6B-5691-4207-B8FC-5F087D8240F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCA69B6B-5691-4207-B8FC-5F087D8240F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCA69B6B-5691-4207-B8FC-5F087D8240F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48CB3912-C495-47A5-9926-0C5807FC0E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48CB3912-C495-47A5-9926-0C5807FC0E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48CB3912-C495-47A5-9926-0C5807FC0E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48CB3912-C495-47A5-9926-0C5807FC0E70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

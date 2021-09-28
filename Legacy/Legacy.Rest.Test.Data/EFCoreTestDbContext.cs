@@ -36,6 +36,9 @@ namespace Legacy.Rest.Test.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             var fred = new SimpleClass { Id = 1, Name = "Fred" };
 
+            //modelBuilder.Entity<SimpleClass>().Property();
+
+
             modelBuilder.Entity<SimpleClass>().HasData(fred);
         }
     }
