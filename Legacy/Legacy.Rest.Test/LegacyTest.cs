@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using Legacy.NakedObjects.Application;
 using Legacy.NakedObjects.Application.ValueHolder;
@@ -118,9 +119,10 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNotNull(parsedResult["members"]["Id"]);
             Assert.IsNotNull(parsedResult["members"]["Name"]);
+            Assert.IsNotNull(parsedResult["members"]["ActionUpdateName"]);
         }
 
         [Test]
@@ -136,17 +138,18 @@ namespace Legacy.Rest.Test {
         }
 
         [Test]
-        [Ignore("property is now immutable need to work out how to fix")]
-        public void TestPutProperty() {
-            var api = Api().AsPut();
-            var arg = new SingleValueArgument() {Value = new ScalarValue("Ted") } ;
-            var result = api.PutProperty(FullName<SimpleClass>(), "1", nameof(SimpleClass.Name), arg);
+        public void TestInvokeUpdateAndPersist() {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Ted") } } };
+
+            var result = api.PostInvoke(FullName<SimpleClass>(), "1", nameof(SimpleClass.ActionUpdateName), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(nameof(SimpleClass.Name), parsedResult["id"].ToString());
-            Assert.AreEqual("Ted", parsedResult["value"].ToString());
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("Ted", resultObj["members"]["Name"]["value"].ToString());
         }
 
     }

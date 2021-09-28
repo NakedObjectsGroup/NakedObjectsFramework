@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.ComponentModel.DataAnnotations;
-using Legacy.NakedObjects;
 using Legacy.NakedObjects.Application.ValueHolder;
 
 namespace Legacy.Rest.Test.Data {
@@ -24,6 +23,11 @@ namespace Legacy.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public TextString Name => _name ??= new TextString(name);
+        public TextString Name => _name ??= new TextString(name) { BackingField = s => name = s };
+
+        public SimpleClass ActionUpdateName(TextString newName) {
+            Name.setValue(newName);
+            return this;
+        }
     }
 }

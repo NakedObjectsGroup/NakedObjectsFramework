@@ -29,6 +29,7 @@ namespace Legacy.NakedObjects.Application.ValueHolder {
             this.setValue(textString);
         }
 
+
         [NakedObjectsIgnore]
         public override string asEncodedString() => this.isEmpty() ? "NULL" : this.text;
 
@@ -42,7 +43,10 @@ namespace Legacy.NakedObjects.Application.ValueHolder {
         }
 
         [NakedObjectsIgnore]
-        public override void clear() => this.text = (string)null;
+        public override void clear() {
+            this.text = (string)null;
+            SaveChanges();
+        }
 
         [NakedObjectsIgnore]
         public virtual bool contains(string text) => this.contains(text, Case.SENSITIVE);
@@ -166,6 +170,7 @@ namespace Legacy.NakedObjects.Application.ValueHolder {
         public virtual void setValue(string text) {
             this.text = text != null ? text : (string)null;
             this.checkForInvalidCharacters();
+            SaveChanges();
         }
 
         [NakedObjectsIgnore]
@@ -207,5 +212,11 @@ namespace Legacy.NakedObjects.Application.ValueHolder {
         public override string ToString() {
             return stringValue();
         }
+
+        private void SaveChanges() {
+            BackingField(this.text);
+        }
+
+        public Action<string> BackingField { get; set; } = _ => { };
     }
 }
