@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NakedObjects;
+﻿using NakedObjects;
 
 // ReSharper disable InconsistentNaming
 
-namespace Legacy.NakedObjects {
+namespace Legacy.NakedObjects.Application.ValueHolder {
     public abstract class BusinessValueHolder : TitledObject {
         [NakedObjectsIgnore]
         public virtual bool userChangeable() => true;

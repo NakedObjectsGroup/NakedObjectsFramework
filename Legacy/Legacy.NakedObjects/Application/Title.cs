@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
 // ReSharper disable InconsistentNaming
 
-namespace Legacy.NakedObjects {
+namespace Legacy.NakedObjects.Application {
     public class Title {
         //private StringBuffer @string;
 

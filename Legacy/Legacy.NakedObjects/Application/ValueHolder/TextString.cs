@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NakedObjects;
 
 // ReSharper disable InconsistentNaming
 
-namespace Legacy.NakedObjects {
+namespace Legacy.NakedObjects.Application.ValueHolder {
     public class TextString : BusinessValueHolder {
         //private static readonly Logger logger;
         private const long serialVersionUID = 1;

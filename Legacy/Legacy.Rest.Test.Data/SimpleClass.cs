@@ -7,6 +7,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using Legacy.NakedObjects;
+using Legacy.NakedObjects.Application.ValueHolder;
 
 namespace Legacy.Rest.Test.Data {
     public class SimpleService {

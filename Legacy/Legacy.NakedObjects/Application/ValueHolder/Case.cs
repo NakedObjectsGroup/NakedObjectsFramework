@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
 // ReSharper disable InconsistentNaming
 
-namespace Legacy.NakedObjects {
+namespace Legacy.NakedObjects.Application.ValueHolder {
     public class Case {
         public static readonly Case INSENSITIVE;
         public static readonly Case SENSITIVE;

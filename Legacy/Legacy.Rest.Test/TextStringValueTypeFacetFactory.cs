@@ -12,7 +12,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
 namespace Legacy.Rest.Test {
