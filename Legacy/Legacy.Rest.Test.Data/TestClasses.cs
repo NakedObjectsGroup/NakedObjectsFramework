@@ -5,7 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.ValueHolder;
 
 namespace Legacy.Rest.Test.Data {
@@ -26,5 +29,17 @@ namespace Legacy.Rest.Test.Data {
             Name.setValue(newName);
             return this;
         }
+    }
+
+    public class ClassWithInternalCollection {
+
+        private ICollection<ClassWithTextString> testCollection = new List<ClassWithTextString>();
+
+        private InternalCollection _testCollection;
+
+        [Key]
+        public int Id { get; init; }
+
+        public InternalCollection TestCollection => _testCollection ??= new InternalCollection(typeof(ClassWithTextString).ToString());
     }
 }

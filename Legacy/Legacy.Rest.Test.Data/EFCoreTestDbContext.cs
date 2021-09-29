@@ -26,7 +26,8 @@ namespace Legacy.Rest.Test.Data {
 
         protected EFCoreTestDbContext(string cs) => this.cs = cs;
 
-        public DbSet<ClassWithTextString> SimpleClasses { get; set; }
+        public DbSet<ClassWithTextString> ClassesWithTextString { get; set; }
+        public DbSet<ClassWithInternalCollection> ClassesWithInternalCollection { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(cs);
@@ -40,6 +41,12 @@ namespace Legacy.Rest.Test.Data {
             modelBuilder.Entity<ClassWithTextString>().Property("name").HasColumnName("Name");
 
             modelBuilder.Entity<ClassWithTextString>().HasData(fred);
+
+
+            modelBuilder.Entity<ClassWithInternalCollection>().Ignore(t => t.TestCollection);
+
+            modelBuilder.Entity<ClassWithInternalCollection>()
+                        .HasMany("testCollection");
         }
     }
 
