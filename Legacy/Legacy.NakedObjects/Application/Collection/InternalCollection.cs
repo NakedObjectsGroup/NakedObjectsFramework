@@ -4,12 +4,17 @@
 // MVID: 1DE237A2-7EE8-405D-B628-89F8099DF058
 // Assembly location: C:\Users\scasc\Documents\sdm\SdmApp-Dlls\bin\nakedobjects.net.dll
 
+using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 // ReSharper disable InconsistentNaming
 
 namespace Legacy.NakedObjects.Application.Collection {
-    public class InternalCollection {
+    public class InternalCollection  : IList {
+
+        #region original code
+
         private readonly ArrayList arrayList;
         private readonly string type;
 
@@ -69,6 +74,7 @@ namespace Legacy.NakedObjects.Application.Collection {
             //return stringBuffer.ToString();
             $"InternalCollectionVector [,size={size()}] {GetHashCode():X}";
 
+        
         //[JavaThrownExceptions("1;java/lang/CloneNotSupportedException;")]
         //[JavaFlags(4227077)]
         public new virtual object MemberwiseClone() =>
@@ -76,5 +82,40 @@ namespace Legacy.NakedObjects.Application.Collection {
             //ObjectImpl.clone((object) internalCollection);
             //return ((object) internalCollection).MemberwiseClone();
             null; // to compile
+
+        #endregion
+
+        #region Ilist
+
+        public IEnumerator GetEnumerator() => arrayList.GetEnumerator();
+
+        public void CopyTo(Array array, int index) => arrayList.CopyTo(array, index);
+
+        public int Count => arrayList.Count;
+        public bool IsSynchronized => arrayList.IsSynchronized;
+        public object SyncRoot => arrayList.SyncRoot;
+        public int Add(object value) => arrayList.Add(value);
+
+        public void Clear() => arrayList.Clear();
+
+        public bool Contains(object value) => arrayList.Contains(value);
+
+        public int IndexOf(object value) => arrayList.IndexOf(value);
+
+        public void Insert(int index, object value) => arrayList.Insert(index, value);
+
+        public void Remove(object value) => arrayList.Remove(value);
+
+        public void RemoveAt(int index) => arrayList.RemoveAt(index);
+
+        public bool IsFixedSize => arrayList.IsFixedSize;
+        public bool IsReadOnly => arrayList.IsReadOnly;
+
+        public object this[int index] {
+            get => arrayList[index];
+            set => arrayList[index] = value;
+        }
+
+        #endregion
     }
 }

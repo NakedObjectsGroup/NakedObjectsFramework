@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
-namespace Legacy.Rest.Test {
+namespace Legacy.Metamodel {
     public sealed class TextStringValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public TextStringValueTypeFacetFactory(IFacetFactoryOrder<TextStringValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 

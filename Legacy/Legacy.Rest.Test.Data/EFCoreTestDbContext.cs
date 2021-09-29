@@ -46,7 +46,9 @@ namespace Legacy.Rest.Test.Data {
             modelBuilder.Entity<ClassWithInternalCollection>().Ignore(t => t.TestCollection);
 
             modelBuilder.Entity<ClassWithInternalCollection>()
-                        .HasMany("testCollection");
+                        .HasMany(c => c._TestCollection);
+
+            modelBuilder.Entity<ClassWithInternalCollection>().HasData(new ClassWithInternalCollection {Id = 1});
         }
     }
 

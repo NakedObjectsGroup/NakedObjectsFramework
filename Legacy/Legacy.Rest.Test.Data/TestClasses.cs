@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.ValueHolder;
+using NakedObjects;
 
 namespace Legacy.Rest.Test.Data {
     public class SimpleService {
@@ -32,8 +33,8 @@ namespace Legacy.Rest.Test.Data {
     }
 
     public class ClassWithInternalCollection {
-
-        private ICollection<ClassWithTextString> testCollection = new List<ClassWithTextString>();
+        [NakedObjectsIgnore]
+        public virtual ICollection<ClassWithTextString> _TestCollection { get; } = new List<ClassWithTextString>();
 
         private InternalCollection _testCollection;
 

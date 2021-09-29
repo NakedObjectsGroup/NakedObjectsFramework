@@ -14,7 +14,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace Legacy.Rest.Test {
+namespace Legacy.Metamodel {
     [Serializable]
     public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbstract<TextString>, IStringValueFacet {
         private const TextString DefaultValueConst = null;

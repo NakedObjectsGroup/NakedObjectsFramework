@@ -8,7 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using Legacy.Metamodel;
 using Legacy.NakedObjects.Application;
+using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.ValueHolder;
 using Legacy.Rest.Test.Data;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +33,9 @@ namespace Legacy.Rest.Test {
     public class LegacyTest : AcceptanceTestCase {
         protected override Type[] ObjectTypes { get; } = {
             typeof(ClassWithTextString),
+            typeof(ClassWithInternalCollection),
             typeof(TextString),
+            typeof(InternalCollection),
             typeof(BusinessValueHolder),
             typeof(TitledObject)
         };
@@ -49,6 +53,7 @@ namespace Legacy.Rest.Test {
                 options.NoValidate = true;
                 options.RegisterCustomTypes = services => {
                     services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(TextStringValueTypeFacetFactory));
+                    services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(InternalCollectionFacetFactory));
                 };
             };
 
@@ -112,7 +117,7 @@ namespace Legacy.Rest.Test {
         private static string FullName<T>() => typeof(T).FullName;
 
         [Test]
-        public void TestGetObject() {
+        public void TestGetObjectWithTextString() {
             var api = Api();
             var result = api.GetObject(FullName<ClassWithTextString>(), "1");
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -126,7 +131,7 @@ namespace Legacy.Rest.Test {
         }
 
         [Test]
-        public void TestGetObjectProperty() {
+        public void TestGetTextStringProperty() {
             var api = Api();
             var result = api.GetProperty(FullName<ClassWithTextString>(), "1", nameof(ClassWithTextString.Name));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -138,7 +143,7 @@ namespace Legacy.Rest.Test {
         }
 
         [Test]
-        public void TestInvokeUpdateAndPersist() {
+        public void TestInvokeUpdateAndPersistObjectWithTextString() {
             var api = Api().AsPost();
             var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Ted") } } };
 
@@ -150,6 +155,19 @@ namespace Legacy.Rest.Test {
             var resultObj = parsedResult["result"];
 
             Assert.AreEqual("Ted", resultObj["members"]["Name"]["value"].ToString());
+        }
+
+        [Test]
+        public void TestGetObjectWithInternalCollection() {
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithInternalCollection>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNotNull(parsedResult["members"]["Id"]);
+            Assert.IsNotNull(parsedResult["members"]["TestCollection"]);
         }
 
     }
