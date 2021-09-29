@@ -30,7 +30,7 @@ using NUnit.Framework;
 namespace Legacy.Rest.Test {
     public class LegacyTest : AcceptanceTestCase {
         protected override Type[] ObjectTypes { get; } = {
-            typeof(SimpleClass),
+            typeof(ClassWithTextString),
             typeof(TextString),
             typeof(BusinessValueHolder),
             typeof(TitledObject)
@@ -114,7 +114,7 @@ namespace Legacy.Rest.Test {
         [Test]
         public void TestGetObject() {
             var api = Api();
-            var result = api.GetObject(FullName<SimpleClass>(), "1");
+            var result = api.GetObject(FullName<ClassWithTextString>(), "1");
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -128,12 +128,12 @@ namespace Legacy.Rest.Test {
         [Test]
         public void TestGetObjectProperty() {
             var api = Api();
-            var result = api.GetProperty(FullName<SimpleClass>(), "1", nameof(SimpleClass.Name));
+            var result = api.GetProperty(FullName<ClassWithTextString>(), "1", nameof(ClassWithTextString.Name));
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(nameof(SimpleClass.Name), parsedResult["id"].ToString());
+            Assert.AreEqual(nameof(ClassWithTextString.Name), parsedResult["id"].ToString());
             Assert.AreEqual("Fred", parsedResult["value"].ToString());
         }
 
@@ -142,7 +142,7 @@ namespace Legacy.Rest.Test {
             var api = Api().AsPost();
             var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Ted") } } };
 
-            var result = api.PostInvoke(FullName<SimpleClass>(), "1", nameof(SimpleClass.ActionUpdateName), map);
+            var result = api.PostInvoke(FullName<ClassWithTextString>(), "1", nameof(ClassWithTextString.ActionUpdateName), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);

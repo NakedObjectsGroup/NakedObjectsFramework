@@ -10,22 +10,19 @@ using Legacy.NakedObjects.Application.ValueHolder;
 
 namespace Legacy.Rest.Test.Data {
     public class SimpleService {
-        public SimpleClass GetSimpleClass() => null;
+        public ClassWithTextString GetClassWithTextString() => null;
     }
 
-    public class SimpleClass {
+    public class ClassWithTextString {
         private TextString _name;
-
-#pragma warning disable 649
         private string name;
-#pragma warning restore 649
 
         [Key]
         public int Id { get; init; }
 
         public TextString Name => _name ??= new TextString(name) { BackingField = s => name = s };
 
-        public SimpleClass ActionUpdateName(TextString newName) {
+        public ClassWithTextString ActionUpdateName(TextString newName) {
             Name.setValue(newName);
             return this;
         }
