@@ -165,13 +165,31 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNotNull(parsedResult["members"]["Id"]);
             Assert.IsNotNull(parsedResult["members"]["TestCollection"]);
+            Assert.IsNotNull(parsedResult["members"]["ActionUpdateTestCollection"]);
 
             Assert.AreEqual("1", parsedResult["members"]["TestCollection"]["size"].ToString());
             Assert.AreEqual("collection", parsedResult["members"]["TestCollection"]["memberType"].ToString());
         }
+
+        [Test]
+        public void TestInvokeUpdateAndPersistObjectWithInternalCollection() {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Bill") } } };
+
+            var result = api.PostInvoke(FullName<ClassWithInternalCollection>(), "2", nameof(ClassWithInternalCollection.ActionUpdateTestCollection), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("1", resultObj["members"]["TestCollection"]["size"].ToString());
+            Assert.AreEqual("collection", resultObj["members"]["TestCollection"]["memberType"].ToString());
+        }
+
 
     }
 }

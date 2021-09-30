@@ -27,6 +27,7 @@ namespace Legacy.NakedObjects.Application.Collection {
             //if (@object == null)
             //  throw new NullPointerException("Cannot add null");
             arrayList.Add(@object);
+            SaveChanges(@object, true);
         }
 
         public virtual bool contains(object @object) {
@@ -57,9 +58,16 @@ namespace Legacy.NakedObjects.Application.Collection {
             //if (@object == null)
             //  throw new NullPointerException("Cannot remove null");
             arrayList.Remove(@object);
+            SaveChanges(@object, false);
         }
 
-        public virtual void removeAllElements() => arrayList.Clear();
+        public virtual void removeAllElements() {
+            var objs = arrayList.ToArray();
+            arrayList.Clear();
+            foreach (var o in objs) {
+                SaveChanges(o, false);
+            }
+        }
 
         public virtual int size() => arrayList.Count;
 
@@ -87,24 +95,27 @@ namespace Legacy.NakedObjects.Application.Collection {
 
         #region Ilist
 
-        public IEnumerator GetEnumerator() => arrayList.GetEnumerator();
+        public IEnumerator GetEnumerator() => elements();
 
         public void CopyTo(Array array, int index) => arrayList.CopyTo(array, index);
 
-        public int Count => arrayList.Count;
+        public int Count => size();
         public bool IsSynchronized => arrayList.IsSynchronized;
         public object SyncRoot => arrayList.SyncRoot;
-        public int Add(object value) => arrayList.Add(value);
+        public int Add(object value) {
+            add(value);
+            return arrayList.IndexOf(value);
+        }
 
-        public void Clear() => arrayList.Clear();
+        public void Clear() => removeAllElements();
 
-        public bool Contains(object value) => arrayList.Contains(value);
+        public bool Contains(object value) => contains(value);
 
         public int IndexOf(object value) => arrayList.IndexOf(value);
 
         public void Insert(int index, object value) => arrayList.Insert(index, value);
 
-        public void Remove(object value) => arrayList.Remove(value);
+        public void Remove(object value) => remove(value);
 
         public void RemoveAt(int index) => arrayList.RemoveAt(index);
 
@@ -112,10 +123,15 @@ namespace Legacy.NakedObjects.Application.Collection {
         public bool IsReadOnly => arrayList.IsReadOnly;
 
         public object this[int index] {
-            get => arrayList[index];
+            get => elementAt(index);
             set => arrayList[index] = value;
         }
 
         #endregion
+
+        private void SaveChanges(object obj, bool add) => BackingField(obj, add);
+
+        public Action<object, bool> BackingField { get; set; } = (_, _) => { };
+
     }
 }

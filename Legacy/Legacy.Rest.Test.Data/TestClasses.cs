@@ -7,6 +7,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Legacy.NakedObjects.Application.Collection;
@@ -20,7 +21,7 @@ namespace Legacy.Rest.Test.Data {
 
     public class ClassWithTextString {
         private TextString _name;
-        private string name;
+        public string name;
 
         [Key]
         public int Id { get; init; }
@@ -34,10 +35,15 @@ namespace Legacy.Rest.Test.Data {
     }
 
     public class ClassWithInternalCollection {
+        
+        public IDomainObjectContainer Container { private get; set; }
+        
         [NakedObjectsIgnore]
         public virtual ICollection<ClassWithTextString> _TestCollection { get; } = new List<ClassWithTextString>();
 
         private InternalCollection _testCollection;
+
+
 
         [Key]
         public int Id { get; init; }
@@ -47,10 +53,28 @@ namespace Legacy.Rest.Test.Data {
                 if (_testCollection is null) {
                     _testCollection = new InternalCollection(typeof(ClassWithTextString).ToString());
                     _testCollection.init(_TestCollection.ToArray() as object[]);
+
+                    _testCollection.BackingField = (obj, add) => {
+                        if (add) {
+                            _TestCollection.Add((ClassWithTextString)obj);
+                        }
+                        else {
+                            _TestCollection.Remove((ClassWithTextString)obj);
+                        }
+                    };
+
                 }
 
                 return _testCollection;
             }
+        }
+
+        public ClassWithInternalCollection ActionUpdateTestCollection(TextString newName) {
+            var name = newName.stringValue();
+            var bill = Container.Instances<ClassWithTextString>().Single(c => c.name == name);
+            TestCollection.add(bill);
+          
+            return this;
         }
     }
 }
