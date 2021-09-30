@@ -35,12 +35,10 @@ namespace Legacy.Rest.Test.Data {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            var fred = new { Id = 1, name = "Fred" };
+            var fred = new { Id = 1, name = "Fred", ClassWithInternalCollectionId = 1 };
 
             modelBuilder.Entity<ClassWithTextString>().Ignore(t => t.Name);
             modelBuilder.Entity<ClassWithTextString>().Property("name").HasColumnName("Name");
-
-            modelBuilder.Entity<ClassWithTextString>().HasData(fred);
 
 
             modelBuilder.Entity<ClassWithInternalCollection>().Ignore(t => t.TestCollection);
@@ -49,6 +47,8 @@ namespace Legacy.Rest.Test.Data {
                         .HasMany(c => c._TestCollection);
 
             modelBuilder.Entity<ClassWithInternalCollection>().HasData(new ClassWithInternalCollection {Id = 1});
+
+            modelBuilder.Entity<ClassWithTextString>().HasData(fred);
         }
     }
 

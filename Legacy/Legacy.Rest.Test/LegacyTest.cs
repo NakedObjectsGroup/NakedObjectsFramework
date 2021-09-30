@@ -168,6 +168,9 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNotNull(parsedResult["members"]["Id"]);
             Assert.IsNotNull(parsedResult["members"]["TestCollection"]);
+
+            Assert.AreEqual("1", parsedResult["members"]["TestCollection"]["size"].ToString());
+            Assert.AreEqual("collection", parsedResult["members"]["TestCollection"]["memberType"].ToString());
         }
 
     }

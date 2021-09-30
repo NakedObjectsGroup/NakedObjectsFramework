@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.ValueHolder;
 using NakedObjects;
@@ -41,6 +42,15 @@ namespace Legacy.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public InternalCollection TestCollection => _testCollection ??= new InternalCollection(typeof(ClassWithTextString).ToString());
+        public InternalCollection TestCollection {
+            get {
+                if (_testCollection is null) {
+                    _testCollection = new InternalCollection(typeof(ClassWithTextString).ToString());
+                    _testCollection.init(_TestCollection.ToArray() as object[]);
+                }
+
+                return _testCollection;
+            }
+        }
     }
 }
