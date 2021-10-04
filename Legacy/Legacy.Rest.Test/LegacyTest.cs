@@ -202,6 +202,8 @@ namespace Legacy.Rest.Test {
 
         [Test]
         public void TestGetObjectWithAction() {
+            ClassWithActionAbout.TestInvisibleFlag = false;
+
             var api = Api();
             var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -211,6 +213,20 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNotNull(parsedResult["members"]["Id"]);
             Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        }
+
+        [Test]
+        public void TestGetObjectWithInvisibleAction() {
+            ClassWithActionAbout.TestInvisibleFlag = true;
+
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNotNull(parsedResult["members"]["Id"]);
         }
     }
 }
