@@ -22,12 +22,20 @@ using NakedFramework.Metamodel.Facet;
 namespace Legacy.Metamodel {
     [Serializable]
     public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
+        public enum AboutType {
+            Action,
+            Fields
+        }
+
+
         private readonly ILogger<HideActionForContextViaAboutFacet> logger;
         private readonly MethodInfo method;
+        private readonly AboutType aboutType;
 
-        public HideActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, ILogger<HideActionForContextViaAboutFacet> logger)
+        public HideActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutType aboutType, ILogger<HideActionForContextViaAboutFacet> logger)
             : base(typeof(IHideForContextFacet), holder) {
             this.method = method;
+            this.aboutType = aboutType;
             this.logger = logger;
         }
 
@@ -45,10 +53,18 @@ namespace Legacy.Metamodel {
                 return null;
             }
 
-            var about = new SimpleActionAbout(framework.Session, nakedObjectAdapter.Object, Array.Empty<object>());
-            method.Invoke(nakedObjectAdapter.GetDomainObject(),  new object[] {about});
+            bool isHidden;
+            if (aboutType is AboutType.Action) {
+                var about = new SimpleActionAbout(framework.Session, nakedObjectAdapter.Object, Array.Empty<object>());
+                method.Invoke(nakedObjectAdapter.GetDomainObject(), new object[] { about });
+                isHidden = about.canAccess().IsVetoed;
+            }
+            else {
+                var about = new SimpleFieldAbout(framework.Session, nakedObjectAdapter.Object);
+                method.Invoke(nakedObjectAdapter.GetDomainObject(), new object[] { about });
+                isHidden = about.canAccess().IsVetoed;
+            }
 
-            var isHidden = about.canAccess().IsVetoed;
             return isHidden ? global::NakedObjects.Resources.NakedObjects.Hidden : null;
         }
 

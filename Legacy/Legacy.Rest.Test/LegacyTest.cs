@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
@@ -36,6 +37,7 @@ namespace Legacy.Rest.Test {
             typeof(ClassWithTextString),
             typeof(ClassWithInternalCollection),
             typeof(ClassWithActionAbout),
+            typeof(ClassWithFieldAbout),
             typeof(TextString),
             typeof(MultilineTextString),
             typeof(InternalCollection),
@@ -221,6 +223,35 @@ namespace Legacy.Rest.Test {
 
             var api = Api();
             var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNotNull(parsedResult["members"]["Id"]);
+        }
+
+        [Test]
+        public void TestGetObjectWithField() {
+            ClassWithFieldAbout.TestInvisibleFlag = false;
+
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNotNull(parsedResult["members"]["Id"]);
+            Assert.IsNotNull(parsedResult["members"]["Name"]);
+        }
+
+        [Test]
+        public void TestGetObjectWithInvisibleField() {
+            ClassWithFieldAbout.TestInvisibleFlag = true;
+
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);

@@ -97,5 +97,20 @@ namespace Legacy.Rest.Test.Data {
         }
     }
 
+    public class ClassWithFieldAbout {
+
+        public static bool TestInvisibleFlag = false;
+
+        [Key]
+        public int Id { get; init; }
+
+        public TextString Name => new TextString("");
+
+        public void aboutName(FieldAbout fieldAbout, TextString name) {
+            if (TestInvisibleFlag) {
+                fieldAbout.invisible();
+            }
+        }
+    }
 
 }

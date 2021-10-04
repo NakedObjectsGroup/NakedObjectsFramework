@@ -18,6 +18,7 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
@@ -29,7 +30,7 @@ namespace Legacy.Metamodel {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
-    public sealed class AboutMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory {
+    public sealed class AboutMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = {
             "about"
         };
@@ -72,17 +73,43 @@ namespace Legacy.Metamodel {
             methodRemover.SafeRemoveMethod(method);
 
             if (method is not null) {
-                facets.Add(new HideActionForContextViaAboutFacet(method, action, LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
+                facets.Add(new HideActionForContextViaAboutFacet(method, action, HideActionForContextViaAboutFacet.AboutType.Action, LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
             }
-            else {
-                MethodHelpers.AddHideForSessionFacetNone(facets, action);
-                MethodHelpers.AddDisableForSessionFacetNone(facets, action);
-            }
+
+            MethodHelpers.AddHideForSessionFacetNone(facets, action);
+            MethodHelpers.AddDisableForSessionFacetNone(facets, action);
 
             FacetUtils.AddFacets(facets);
 
             return metamodel;
         }
+
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var capitalizedName = property.Name;
+            var paramTypes = new[] { property.PropertyType };
+
+            var facets = new List<IFacet> { new PropertyAccessorFacet(property, specification) };
+
+            if (property.GetSetMethod() != null) {
+                facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
+                facets.Add(new PropertyInitializationFacet(property, specification));
+            }
+            else {
+                facets.Add(new NotPersistedFacet(specification));
+                facets.Add(new DisabledFacetAlways(specification));
+            }
+
+            var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{"about"}{capitalizedName}", null, null);
+            methodRemover.SafeRemoveMethod(method);
+
+            if (method is not null) {
+                facets.Add(new HideActionForContextViaAboutFacet(method, specification, HideActionForContextViaAboutFacet.AboutType.Fields,  LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
+            }
+
+            FacetUtils.AddFacets(facets);
+            return metamodel;
+        }
+
 
         #endregion
 
@@ -93,5 +120,15 @@ namespace Legacy.Metamodel {
                                                   !methodInfo.IsGenericMethod &&
                                                   !classStrategy.IsIgnored(methodInfo.ReturnType)).ToArray();
         }
+
+        public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
+            candidates = candidates.Where(property => !CollectionUtils.IsQueryable(property.PropertyType)).ToArray();
+            return PropertiesToBeIntrospected(candidates, classStrategy);
+        }
+
+        private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
+            candidates.Where(property => property.HasPublicGetter() &&
+                                         !classStrategy.IsIgnored(property.PropertyType) &&
+                                         !classStrategy.IsIgnored(property)).ToList();
     }
 }
