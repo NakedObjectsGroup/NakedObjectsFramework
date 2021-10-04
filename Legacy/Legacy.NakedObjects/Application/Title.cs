@@ -2,6 +2,8 @@
 
 // ReSharper disable InconsistentNaming
 
+using NakedObjects;
+
 namespace Legacy.NakedObjects.Application {
     public class Title {
         //private StringBuffer @string;
@@ -25,11 +27,13 @@ namespace Legacy.NakedObjects.Application {
             //this.concat(@object, defaultValue);
         }
 
+        [NakedObjectsIgnore]
         public virtual Title append(int number) {
             //this.append(StringImpl.valueOf(number));
             return this;
         }
 
+        [NakedObjectsIgnore]
         public virtual Title append(string text) {
             //if (!StringImpl.equals(text, (object)"")) {
             //    this.appendSpace();
@@ -38,6 +42,7 @@ namespace Legacy.NakedObjects.Application {
             return this;
         }
 
+        [NakedObjectsIgnore]
         public virtual Title append(string joiner, string text) {
             //if (!StringImpl.equals(text, (object)"")) {
             //    if (this.@string.length() > 0)
@@ -48,11 +53,13 @@ namespace Legacy.NakedObjects.Application {
             return this;
         }
 
+        [NakedObjectsIgnore]
         public virtual Title append(string joiner, TitledObject @object) {
             this.append(joiner, @object, "");
             return this;
         }
 
+        [NakedObjectsIgnore]
         public virtual Title append(string joiner, TitledObject @object, string defaultValue) {
             //if (this.@string.length() > 0 && @object != null && StringImpl.length(Title.titleString(@object)) > 0 || defaultValue != null && StringImpl.length(defaultValue) > 0) {
             //    this.concat(joiner);
@@ -64,6 +71,7 @@ namespace Legacy.NakedObjects.Application {
 
         private static string titleString(TitledObject @object) => @object == null || @object.title() == null ? "" : @object.title().ToString();
 
+        [NakedObjectsIgnore]
         public virtual Title append(TitledObject @object) {
             //if (@object != null && @object.title() != null && !StringImpl.equals(Title.titleString(@object), (object)"")) {
             //    this.appendSpace();
@@ -72,6 +80,7 @@ namespace Legacy.NakedObjects.Application {
             return this;
         }
 
+        [NakedObjectsIgnore]
         public virtual Title append(TitledObject @object, string defaultValue) {
             this.appendSpace();
             this.concat(@object, defaultValue);
@@ -85,12 +94,14 @@ namespace Legacy.NakedObjects.Application {
         }
 
         //[JavaFlags(17)]
+        [NakedObjectsIgnore]
         public Title concat(string text) {
             //this.@string.append(text);
             return this;
         }
 
         //[JavaFlags(17)]
+        [NakedObjectsIgnore]
         public Title concat(string joiner, TitledObject @object) {
             //if (this.@string.length() > 0 && @object != null && StringImpl.length(Title.titleString(@object)) > 0)
             //    this.concat(joiner);
@@ -99,12 +110,14 @@ namespace Legacy.NakedObjects.Application {
         }
 
         //[JavaFlags(17)]
+        [NakedObjectsIgnore]
         public Title concat(TitledObject @object) {
             this.concat(@object, "");
             return this;
         }
 
         //[JavaFlags(17)]
+        [NakedObjectsIgnore]
         public Title concat(string joiner, TitledObject @object, string defaultValue) {
             //if (this.@string.length() > 0 && @object != null && StringImpl.length(Title.titleString(@object)) > 0)
             //    this.concat(joiner);
@@ -113,6 +126,7 @@ namespace Legacy.NakedObjects.Application {
         }
 
         //[JavaFlags(17)]
+        [NakedObjectsIgnore]
         public Title concat(TitledObject @object, string defaultValue) {
             //if (@object == null || StringImpl.length(Title.titleString(@object)) == 0)
             //    this.@string.append(defaultValue);

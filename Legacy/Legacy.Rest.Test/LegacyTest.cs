@@ -11,6 +11,7 @@ using System.Net;
 using Legacy.Metamodel;
 using Legacy.NakedObjects.Application;
 using Legacy.NakedObjects.Application.Collection;
+using Legacy.NakedObjects.Application.Control;
 using Legacy.NakedObjects.Application.ValueHolder;
 using Legacy.Rest.Test.Data;
 using Microsoft.EntityFrameworkCore;
@@ -34,10 +35,18 @@ namespace Legacy.Rest.Test {
         protected override Type[] ObjectTypes { get; } = {
             typeof(ClassWithTextString),
             typeof(ClassWithInternalCollection),
+            typeof(ClassWithActionAbout),
             typeof(TextString),
+            typeof(MultilineTextString),
             typeof(InternalCollection),
             typeof(BusinessValueHolder),
-            typeof(TitledObject)
+            typeof(TitledObject),
+            typeof(ActionAbout),
+            typeof(FieldAbout),
+            typeof(User),
+            typeof(Role),
+            typeof(State),
+            typeof(Title)
         };
 
         protected override Type[] Services { get; } = { typeof(SimpleService)};
@@ -54,6 +63,7 @@ namespace Legacy.Rest.Test {
                 options.RegisterCustomTypes = services => {
                     services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(TextStringValueTypeFacetFactory));
                     services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(InternalCollectionFacetFactory));
+                    services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AboutMethodsFacetFactory));
                 };
             };
 
@@ -190,6 +200,17 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual("collection", resultObj["members"]["TestCollection"]["memberType"].ToString());
         }
 
+        [Test]
+        public void TestGetObjectWithAction() {
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
+            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNotNull(parsedResult["members"]["Id"]);
+            Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        }
     }
 }

@@ -5,65 +5,73 @@
 // Assembly location: C:\Users\scasc\Documents\sdm\SdmApp-Dlls\bin\nakedobjects.net.dll
 
 // ReSharper disable InconsistentNaming
-namespace Legacy.NakedObjects.Application.Control
-{
-  //[JavaInterface]
-  public interface ActionAbout
-  {
-    object[][] getOptions();
 
-    object[] getDefaultParameterValues();
+using NakedObjects;
 
-    string[] getParameterLabels();
+namespace Legacy.NakedObjects.Application.Control {
+    //[JavaInterface]
+    public interface ActionAbout {
+        [NakedObjectsIgnore]
+        object[][] getOptions();
 
-    bool[] getRequired();
+        [NakedObjectsIgnore]
+        object[] getDefaultParameterValues();
 
-    void invisible();
+        [NakedObjectsIgnore]
+        string[] getParameterLabels();
 
-    void invisibleToUser(User user);
+        [NakedObjectsIgnore]
+        bool[] getRequired();
 
-    void invisibleToUsers(User[] users);
+        [NakedObjectsIgnore]
+        void invisible();
 
-    void setDescription(string @string);
+        [NakedObjectsIgnore]
+        void invisibleToUser(User user);
 
-    void setName(string @string);
+        [NakedObjectsIgnore]
+        void invisibleToUsers(User[] users);
 
-    void setParameter(int index, object defaultValue);
+        [NakedObjectsIgnore] void setDescription(string @string);
 
-    void setParameter(int index, object[] options);
+        [NakedObjectsIgnore] void setName(string @string);
 
-    void setParameter(int index, string label);
+        [NakedObjectsIgnore] void setParameter(int index, object defaultValue);
 
-    void setParameter(int index, bool required);
+        [NakedObjectsIgnore] void setParameter(int index, object[] options);
 
-    void setParameter(int index, string label, object defaultValue, bool required);
+        [NakedObjectsIgnore] void setParameter(int index, string label);
 
-    void setParameters(object[] defaultValues);
+        [NakedObjectsIgnore] void setParameter(int index, bool required);
 
-    void setParameters(string[] labels);
+        [NakedObjectsIgnore] void setParameter(int index, string label, object defaultValue, bool required);
 
-    void setParameters(bool[] required);
+        [NakedObjectsIgnore] void setParameters(object[] defaultValues);
 
-    void unusable();
+        [NakedObjectsIgnore] void setParameters(string[] labels);
 
-    void unusable(string reason);
+        [NakedObjectsIgnore] void setParameters(bool[] required);
 
-    void unusableInState(State state);
+        [NakedObjectsIgnore] void unusable();
 
-    void unusableInStates(State[] states);
+        [NakedObjectsIgnore] void unusable(string reason);
 
-    void unusableOnCondition(bool conditionMet, string reasonNotMet);
+        [NakedObjectsIgnore] void unusableInState(State state);
 
-    void usableOnlyInState(State state);
+        [NakedObjectsIgnore] void unusableInStates(State[] states);
 
-    void usableOnlyInStates(State[] states);
+        [NakedObjectsIgnore] void unusableOnCondition(bool conditionMet, string reasonNotMet);
 
-    void visibleOnlyToRole(Role role);
+        [NakedObjectsIgnore] void usableOnlyInState(State state);
 
-    void visibleOnlyToRoles(Role[] roles);
+        [NakedObjectsIgnore] void usableOnlyInStates(State[] states);
 
-    void visibleOnlyToUser(User user);
+        [NakedObjectsIgnore] void visibleOnlyToRole(Role role);
 
-    void visibleOnlyToUsers(User[] users);
-  }
+        [NakedObjectsIgnore] void visibleOnlyToRoles(Role[] roles);
+
+        [NakedObjectsIgnore] void visibleOnlyToUser(User user);
+
+        [NakedObjectsIgnore] void visibleOnlyToUsers(User[] users);
+    }
 }

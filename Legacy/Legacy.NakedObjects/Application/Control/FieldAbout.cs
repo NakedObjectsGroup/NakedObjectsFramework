@@ -5,61 +5,64 @@
 // Assembly location: C:\Users\scasc\Documents\sdm\SdmApp-Dlls\bin\nakedobjects.net.dll
 
 // ReSharper disable InconsistentNaming
+
+using NakedObjects;
+
 namespace Legacy.NakedObjects.Application.Control
 {
   //[JavaInterface]
   public interface FieldAbout
   {
-    void invisible();
+      [NakedObjectsIgnore] void invisible();
 
-    void invisibleToUser(User user);
+      [NakedObjectsIgnore] void invisibleToUser(User user);
 
-    void invisibleToUsers(User[] users);
+      [NakedObjectsIgnore] void invisibleToUsers(User[] users);
 
-    bool isPersistent();
+      [NakedObjectsIgnore] bool isPersistent();
 
-    void modifiableOnlyByRole(Role role);
+      [NakedObjectsIgnore] void modifiableOnlyByRole(Role role);
 
-    void modifiableOnlyByRoles(Role[] roles);
+      [NakedObjectsIgnore] void modifiableOnlyByRoles(Role[] roles);
 
-    void modifiableOnlyByUser(User user);
+      [NakedObjectsIgnore] void modifiableOnlyByUser(User user);
 
-    void modifiableOnlyByUsers(User[] users);
+      [NakedObjectsIgnore] void modifiableOnlyByUsers(User[] users);
 
-    void modifiableOnlyInState(State state);
+      [NakedObjectsIgnore] void modifiableOnlyInState(State state);
 
-    void modifiableOnlyInStates(State[] states);
+      [NakedObjectsIgnore] void modifiableOnlyInStates(State[] states);
 
-    void nonPersistent();
+      [NakedObjectsIgnore] void nonPersistent();
 
-    void setDescription(string @string);
+      [NakedObjectsIgnore] void setDescription(string @string);
 
-    void unmodifiable();
+      [NakedObjectsIgnore] void unmodifiable();
 
-    void unmodifiable(string reason);
+      [NakedObjectsIgnore] void unmodifiable(string reason);
 
-    void unmodifiableByUser(User user);
+      [NakedObjectsIgnore] void unmodifiableByUser(User user);
 
-    void unmodifiableByUsers(User[] users);
+      [NakedObjectsIgnore] void unmodifiableByUsers(User[] users);
 
-    void unmodifiableInState(State state);
+      [NakedObjectsIgnore] void unmodifiableInState(State state);
 
-    void unmodifiableInStates(State[] states);
+      [NakedObjectsIgnore] void unmodifiableInStates(State[] states);
 
-    void unmodifiableOnCondition(bool conditionMet, string reasonNotMet);
+      [NakedObjectsIgnore] void unmodifiableOnCondition(bool conditionMet, string reasonNotMet);
 
-    void visibleOnlyToRole(Role role);
+      [NakedObjectsIgnore] void visibleOnlyToRole(Role role);
 
-    void visibleOnlyToRoles(Role[] roles);
+      [NakedObjectsIgnore] void visibleOnlyToRoles(Role[] roles);
 
-    void visibleOnlyToUser(User user);
+      [NakedObjectsIgnore] void visibleOnlyToUser(User user);
 
-    void visibleOnlyToUsers(User[] users);
+      [NakedObjectsIgnore] void visibleOnlyToUsers(User[] users);
 
-    void invalid();
+      [NakedObjectsIgnore] void invalid();
 
-    void invalid(string reason);
+      [NakedObjectsIgnore] void invalid(string reason);
 
-    void invalidOnCondition(bool condition, string reason);
+      [NakedObjectsIgnore] void invalidOnCondition(bool condition, string reason);
   }
 }

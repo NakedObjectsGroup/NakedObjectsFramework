@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Legacy.NakedObjects.Application.Collection;
+using Legacy.NakedObjects.Application.Control;
 using Legacy.NakedObjects.Application.ValueHolder;
 using NakedObjects;
 
@@ -77,4 +78,24 @@ namespace Legacy.Rest.Test.Data {
             return this;
         }
     }
+
+    public class ClassWithActionAbout {
+
+        public static bool  TestInvisibleFlag = false;
+        
+        [Key]
+        public int Id { get; init; }
+
+        public void actionTestAction() {
+            // do something
+        }
+
+        public void aboutActionTestAction(ActionAbout actionAbout) {
+            if (TestInvisibleFlag) {
+                actionAbout.invisible();
+            }
+        }
+    }
+
+
 }
