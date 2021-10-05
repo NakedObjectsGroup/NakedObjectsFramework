@@ -38,7 +38,7 @@ namespace Legacy.Metamodel {
         private readonly ILogger<AboutMethodsFacetFactory> logger;
 
         public AboutMethodsFacetFactory(IFacetFactoryOrder<ActionMethodsFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters) =>
+            : base(order.Order, loggerFactory, FeatureType.EverythingButActionParameters) =>
             logger = loggerFactory.CreateLogger<AboutMethodsFacetFactory>();
 
         public string[] Prefixes => FixedPrefixes;
@@ -85,6 +85,12 @@ namespace Legacy.Metamodel {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            //ignore non Legacy properties 
+            if (property.PropertyType.Namespace?.StartsWith("Legacy") is false or null) {
+                return metamodel;
+            }
+
+
             var capitalizedName = property.Name;
             var paramTypes = new[] { property.PropertyType };
 
@@ -128,6 +134,7 @@ namespace Legacy.Metamodel {
 
         private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
             candidates.Where(property => property.HasPublicGetter() &&
+                                         property.PropertyType.Namespace.StartsWith("Legacy") &&
                                          !classStrategy.IsIgnored(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
     }

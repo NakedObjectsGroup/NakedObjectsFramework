@@ -61,7 +61,7 @@ namespace Legacy.Metamodel {
             }
             else {
                 var about = new SimpleFieldAbout(framework.Session, nakedObjectAdapter.Object);
-                method.Invoke(nakedObjectAdapter.GetDomainObject(), new object[] { about });
+                method.Invoke(nakedObjectAdapter.GetDomainObject(), new object[] { about, null });
                 isHidden = about.canAccess().IsVetoed;
             }
 
