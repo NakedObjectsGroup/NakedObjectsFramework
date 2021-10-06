@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Server", "Template
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Model", "Template.Model\Template.Model.csproj", "{49E75CC4-C254-40CB-8FED-5F8AB9BB708D}"
 EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Template.Model.Fsharp", "Template.Model.Fsharp\Template.Model.Fsharp.fsproj", "{37A2A608-0674-430A-A5A9-DA3BC28F4413}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Server.Fsharp", "Template.Server.Fsharp\Template.Server.Fsharp.csproj", "{CB347AAE-9767-42BF-ACE6-C7729745A406}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{49E75CC4-C254-40CB-8FED-5F8AB9BB708D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49E75CC4-C254-40CB-8FED-5F8AB9BB708D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49E75CC4-C254-40CB-8FED-5F8AB9BB708D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37A2A608-0674-430A-A5A9-DA3BC28F4413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37A2A608-0674-430A-A5A9-DA3BC28F4413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37A2A608-0674-430A-A5A9-DA3BC28F4413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37A2A608-0674-430A-A5A9-DA3BC28F4413}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB347AAE-9767-42BF-ACE6-C7729745A406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB347AAE-9767-42BF-ACE6-C7729745A406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB347AAE-9767-42BF-ACE6-C7729745A406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB347AAE-9767-42BF-ACE6-C7729745A406}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
