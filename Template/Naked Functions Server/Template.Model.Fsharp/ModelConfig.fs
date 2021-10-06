@@ -4,6 +4,7 @@ open System.Linq
 open System
 open Template.Model.FSharp.Db
 open Microsoft.Extensions.Configuration
+open Microsoft.EntityFrameworkCore
 
 module ModelConfig = 
     type internal Marker = interface end
@@ -23,5 +24,5 @@ module ModelConfig =
         fun (c : IConfiguration) -> 
             let db = new ExampleDbContext(c.GetConnectionString("ExampleCS"))
             db.Create() |> ignore
-            db
+            db :> DbContext
 

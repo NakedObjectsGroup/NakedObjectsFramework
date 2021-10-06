@@ -2,11 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="ModelConfig_NakedObjectsPM.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="RestfulObjectsController.fs" />
+    <Compile Include="Startup.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
