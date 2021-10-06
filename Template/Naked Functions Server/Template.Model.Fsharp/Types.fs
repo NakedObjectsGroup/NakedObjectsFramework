@@ -12,7 +12,7 @@ open NakedFunctions
     type Student() = 
         [<Hidden>]
         abstract member Id: int with get, set
-        default val Id = 123 with get, set
+        default val Id = 0 with get, set
 
         abstract member FullName: string with get, set
         default val FullName = "" with get, set
