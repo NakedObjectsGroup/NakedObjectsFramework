@@ -28,9 +28,9 @@
    
     <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
    
-    <ProjectReference Include="..\Legacy.Metamodel\Legacy.Metamodel.csproj" />
-   
     <ProjectReference Include="..\Legacy.NakedObjects\Legacy.NakedObjects.csproj" />
+   
+    <ProjectReference Include="..\Legacy.Reflector\Legacy.Reflector.csproj" />
    
     <ProjectReference Include="..\Legacy.Rest.Test.Data\Legacy.Rest.Test.Data.csproj" />
    

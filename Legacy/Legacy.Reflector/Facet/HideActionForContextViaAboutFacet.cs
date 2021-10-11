@@ -18,7 +18,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace Legacy.Metamodel.Facet {
+namespace Legacy.Reflector.Facet {
     [Serializable]
     public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
         public enum AboutType {

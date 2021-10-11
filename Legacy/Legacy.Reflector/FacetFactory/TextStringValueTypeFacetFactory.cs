@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Immutable;
-using Legacy.Metamodel.SemanticsProvider;
+using Legacy.Reflector.SemanticsProvider;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
-namespace Legacy.Metamodel.FacetFactory {
+namespace Legacy.Reflector.FacetFactory {
     public sealed class TextStringValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public TextStringValueTypeFacetFactory(IFacetFactoryOrder<TextStringValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
