@@ -7,7 +7,7 @@
 
 namespace NakedFunctions.Rest.App.Demo
 
-open System;
+open System
 open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
@@ -25,66 +25,88 @@ open NakedFunctions.Reflector.Extensions
 open Newtonsoft.Json
 open Template.Model.Fsharp
 
-type Startup private () = 
-   
-        member this.MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+type Startup(configuration: IConfiguration) =
+    let Configuration = configuration
 
-        member this.Startup(configuration : IConfiguration ) = 
-            this.Configuration <- configuration;
-        
-        member val Configuration : IConfiguration = null with get, set
+    member this.MyAllowSpecificOrigins = "_myAllowSpecificOrigins"
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        member this.ConfigureServices (services : IServiceCollection) =
-        
-            services.AddAuthentication(fun options -> 
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme |> ignore
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme |> ignore
-            ).AddJwtBearer(fun options ->
+    // This method gets called by the runtime. Use this method to add services to the container.
+    member this.ConfigureServices(services: IServiceCollection) =
+
+        services
+            .AddAuthentication(fun options ->
+                options.DefaultAuthenticateScheme <- JwtBearerDefaults.AuthenticationScheme
+                options.DefaultChallengeScheme <- JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(fun options ->
                 let domain = "Auth0:Domain"
-                options.Authority = $"https://{this.Configuration.[domain]}/" |> ignore
-                options.Audience = this.Configuration.["Auth0:Audience"] |> ignore
-                options.TokenValidationParameters.NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress" |> ignore
-            ) |> ignore
+                options.Authority <- $"https://{Configuration.[domain]}/"
+                options.Audience <- Configuration.["Auth0:Audience"]
 
-            services.AddControllers()
-                .AddNewtonsoftJson(fun options -> options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc |> ignore) |> ignore
-            services.AddMvc(fun options -> options.EnableEndpointRouting = false |> ignore) |> ignore
-            services.AddHttpContextAccessor() |> ignore
-            services.AddNakedFramework(fun frameworkOptions -> 
-                frameworkOptions.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus()) |> ignore
-                frameworkOptions.AddEFCorePersistor(fun peristorOptions -> 
-                    peristorOptions.ContextCreators = [| Func<IConfiguration, DbContext> ModelConfig.EFCoreDbContextCreator |] |> ignore)
-                frameworkOptions.AddNakedFunctions(fun appOptions -> 
-                    appOptions.DomainTypes = ModelConfig.DomainTypes() |> ignore
-                    appOptions.DomainFunctions = ModelConfig.TypesDefiningDomainFunctions() |> ignore
-                );
-                frameworkOptions.AddRestfulObjects(fun _ -> ())
-            )
-            services.AddCors(fun corsOptions ->
-                corsOptions.AddPolicy(this.MyAllowSpecificOrigins, fun policyBuilder ->
-                    policyBuilder
-                        .WithOrigins("http://localhost:5001")
-                        .AllowAnyHeader()
-                        .WithExposedHeaders("Warning", "ETag", "Set-Cookie")
-                        .AllowAnyMethod()
-                        .AllowCredentials() |> ignore
-                )
-            )
-        
+                options.TokenValidationParameters.NameClaimType <-
+                    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
+        |> ignore
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        member this.Configure (app : IApplicationBuilder) (env : IWebHostEnvironment)  (builder: IModelBuilder)  (loggerFactory : ILoggerFactory) =
-            // for Demo use Log4Net. Configured in log4net.config  
-            loggerFactory.AddLog4Net() |> ignore
+        services
+            .AddControllers()
+            .AddNewtonsoftJson(fun options ->
+                options.SerializerSettings.DateTimeZoneHandling <- DateTimeZoneHandling.Utc)
+        |> ignore
 
-            builder.Build();
+        services.AddMvc(fun options -> options.EnableEndpointRouting <- false)
+        |> ignore
 
-            if (env.IsDevelopment()) then app.UseDeveloperExceptionPage() |> ignore
-            
-            app.UseAuthentication() |> ignore
+        services.AddHttpContextAccessor() |> ignore
 
-            app.UseCors(this.MyAllowSpecificOrigins)|> ignore
-            app.UseRouting() |> ignore
-            app.UseRestfulObjects() |> ignore
-        
+        services.AddNakedFramework
+            (fun frameworkOptions ->
+                frameworkOptions.MainMenus <- MenuHelper.GenerateMenus(ModelConfig.MainMenus())
+
+                frameworkOptions.AddEFCorePersistor
+                    (fun peristorOptions ->
+                        peristorOptions.ContextCreators <-
+                            [| Func<IConfiguration, DbContext> ModelConfig.EFCoreDbContextCreator |])
+
+                frameworkOptions.AddNakedFunctions
+                    (fun appOptions ->
+                        appOptions.DomainTypes <- ModelConfig.DomainTypes()
+                        appOptions.DomainFunctions <- ModelConfig.TypesDefiningDomainFunctions())
+
+                frameworkOptions.AddRestfulObjects(fun _ -> ()))
+
+        services.AddCors
+            (fun corsOptions ->
+                corsOptions.AddPolicy(
+                    this.MyAllowSpecificOrigins,
+                    fun policyBuilder ->
+                        policyBuilder
+                            .WithOrigins("http://localhost:5001")
+                            .AllowAnyHeader()
+                            .WithExposedHeaders("Warning", "ETag", "Set-Cookie")
+                            .AllowAnyMethod()
+                            .AllowCredentials()
+                        |> ignore
+                ))
+        |> ignore
+
+
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    member this.Configure
+        (app: IApplicationBuilder)
+        (env: IWebHostEnvironment)
+        (builder: IModelBuilder)
+        (loggerFactory: ILoggerFactory)
+        =
+        // for Demo use Log4Net. Configured in log4net.config
+        loggerFactory.AddLog4Net() |> ignore
+
+        builder.Build()
+
+        if (env.IsDevelopment()) then
+            app.UseDeveloperExceptionPage() |> ignore
+
+        app
+            .UseAuthentication()
+            .UseCors(this.MyAllowSpecificOrigins)
+            .UseRouting()
+            .UseRestfulObjects()

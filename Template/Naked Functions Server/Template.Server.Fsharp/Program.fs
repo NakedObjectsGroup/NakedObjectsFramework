@@ -7,21 +7,22 @@
 
 namespace NakedFunctions.Rest.App.Demo
 
-open System.Data.Common;
-open System.Data.SqlClient;
-open Microsoft.AspNetCore.Hosting;
-open Microsoft.Extensions.Hosting;
-open Microsoft.Extensions.Logging;
+open System.Data.Common
+open System.Data.SqlClient
+open Microsoft.AspNetCore.Hosting
+open Microsoft.Extensions.Hosting
+open Microsoft.Extensions.Logging
 
-module Program = 
-    let CreateHostBuilder(args : string[]) : IHostBuilder =
+module Program =
+    let CreateHostBuilder (args: string []) : IHostBuilder =
         // Clear default logging providers so we just log to log4net
-        Host.CreateDefaultBuilder(args)
+        Host
+            .CreateDefaultBuilder(args)
             .ConfigureLogging(fun logging -> logging.ClearProviders() |> ignore)
-            .ConfigureWebHostDefaults(fun webBuilder -> webBuilder.UseStartup<Startup>() |> ignore );
+            .ConfigureWebHostDefaults(fun webBuilder -> webBuilder.UseStartup<Startup>() |> ignore)
 
     [<EntryPoint>]
     let main args =
-        DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
-        CreateHostBuilder(args).Build().Run();
+        DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance)
+        CreateHostBuilder(args).Build().Run()
         0

@@ -2,17 +2,11 @@
 
 open NakedFunctions
 
-    //[<CLIMutable>]
-    //type Student = {
-    //    [<Hidden>]
-    //    Id : int
-    //    FullName : string
-    //}
+type Student() =
+    [<Hidden>]
+    abstract Id : int with get, set
 
-    type Student() = 
-        [<Hidden>]
-        abstract member Id: int with get, set
-        default val Id = 0 with get, set
+    override val Id = 0 with get, set
 
-        abstract member FullName: string with get, set
-        default val FullName = "" with get, set
+    abstract member FullName : string with get, set
+    override val FullName = "" with get, set

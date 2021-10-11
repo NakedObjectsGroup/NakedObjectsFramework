@@ -6,112 +6,134 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 
-namespace NakedObjects.Rest.App.Demo 
+namespace NakedObjects.Rest.App.Demo
 
 open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
-open NakedFramework.Rest.Configuration;
-open NakedFramework.Rest.Model;
-open NakedFramework.Facade;
-open NakedFramework.Rest.API;
-open NakedFramework.Facade.Interface;
+open NakedFramework.Rest.Configuration
+open NakedFramework.Rest.API
+open NakedFramework.Facade.Interface
 
-    //[Authorize]
-    type RestfulObjectsController (frameworkFacade : IFrameworkFacade,
-                                   logger : ILogger<RestfulObjectsController>,
-                                   loggerFactory : ILoggerFactory,
-                                   config : IRestfulObjectsConfiguration ) = 
-        inherit RestfulObjectsControllerBase(frameworkFacade, logger, loggerFactory, config)
-    
-        [<HttpGet>]
-        override this.GetHome() = base.GetHome();
+//[Authorize]
+type RestfulObjectsController
+    (
+        frameworkFacade: IFrameworkFacade,
+        logger: ILogger<RestfulObjectsController>,
+        loggerFactory: ILoggerFactory,
+        config: IRestfulObjectsConfiguration
+    ) =
+    inherit RestfulObjectsControllerBase(frameworkFacade, logger, loggerFactory, config)
 
-        [<HttpGet>]
-        override this.GetUser() = base.GetUser();
+    [<HttpGet>]
+    override this.GetHome() = base.GetHome()
 
-        [<HttpGet>]
-        override this.GetServices() = base.GetServices();
+    [<HttpGet>]
+    override this.GetUser() = base.GetUser()
 
-        [<HttpGet>]
-        override this.GetMenus() = base.GetMenus();
+    [<HttpGet>]
+    override this.GetServices() = base.GetServices()
 
-        [<HttpGet>]
-        override this.GetVersion() = base.GetVersion();
+    [<HttpGet>]
+    override this.GetMenus() = base.GetMenus()
 
-        [<HttpGet>]
-        override this.GetService(serviceName) = base.GetService(serviceName);
+    [<HttpGet>]
+    override this.GetVersion() = base.GetVersion()
 
-        [<HttpGet>]
-        override this.GetMenu(menuName) = base.GetMenu(menuName);
+    [<HttpGet>]
+    override this.GetService(serviceName) = base.GetService(serviceName)
 
-        [<HttpGet>]
-        override this.GetServiceAction( serviceName,  actionName) = base.GetServiceAction(serviceName, actionName);
+    [<HttpGet>]
+    override this.GetMenu(menuName) = base.GetMenu(menuName)
 
-        [<HttpGet>]
-        override this.GetImage( imageId) = base.GetImage(imageId);
+    [<HttpGet>]
+    override this.GetServiceAction(serviceName, actionName) =
+        base.GetServiceAction(serviceName, actionName)
 
-        [<HttpPost>]
-        override this.PostPersist( domainType,  arguments) = base.PostPersist(domainType, arguments);
+    [<HttpGet>]
+    override this.GetImage(imageId) = base.GetImage(imageId)
 
-        [<HttpGet>]
-        override this.GetObject( domainType,  instanceId) = base.GetObject(domainType, instanceId);
+    [<HttpPost>]
+    override this.PostPersist(domainType, arguments) = base.PostPersist(domainType, arguments)
 
-        [<HttpPut>]
-        override this.PutObject( domainType,  instanceId,  arguments) = base.PutObject(domainType, instanceId, arguments);
+    [<HttpGet>]
+    override this.GetObject(domainType, instanceId) = base.GetObject(domainType, instanceId)
 
-        [<HttpGet>]
-        override this.GetProperty( domainType,  instanceId,  propertyName) = base.GetProperty(domainType, instanceId, propertyName);
+    [<HttpPut>]
+    override this.PutObject(domainType, instanceId, arguments) =
+        base.PutObject(domainType, instanceId, arguments)
 
-        [<HttpGet>]
-        override this.GetCollection( domainType,  instanceId,  propertyName) = base.GetCollection(domainType, instanceId, propertyName);
+    [<HttpGet>]
+    override this.GetProperty(domainType, instanceId, propertyName) =
+        base.GetProperty(domainType, instanceId, propertyName)
 
-        [<HttpGet>]
-        override this.GetAction( domainType,  instanceId,  actionName) = base.GetAction(domainType, instanceId, actionName);
+    [<HttpGet>]
+    override this.GetCollection(domainType, instanceId, propertyName) =
+        base.GetCollection(domainType, instanceId, propertyName)
 
-        [<HttpPut>]
-        override this.PutProperty( domainType,  instanceId,  propertyName,  argument) = base.PutProperty(domainType, instanceId, propertyName, argument);
+    [<HttpGet>]
+    override this.GetAction(domainType, instanceId, actionName) =
+        base.GetAction(domainType, instanceId, actionName)
 
-        [<HttpDelete>]
-        override this.DeleteProperty( domainType,  instanceId,  propertyName) = base.DeleteProperty(domainType, instanceId, propertyName);
+    [<HttpPut>]
+    override this.PutProperty(domainType, instanceId, propertyName, argument) =
+        base.PutProperty(domainType, instanceId, propertyName, argument)
 
-        [<HttpPost>]
-        override this.PostCollection( domainType,  instanceId,  propertyName,  argument) = base.PostCollection(domainType, instanceId, propertyName, argument);
+    [<HttpDelete>]
+    override this.DeleteProperty(domainType, instanceId, propertyName) =
+        base.DeleteProperty(domainType, instanceId, propertyName)
 
-        [<HttpDelete>]
-        override this.DeleteCollection( domainType,  instanceId,  propertyName,  argument) = base.DeleteCollection(domainType, instanceId, propertyName, argument);
+    [<HttpPost>]
+    override this.PostCollection(domainType, instanceId, propertyName, argument) =
+        base.PostCollection(domainType, instanceId, propertyName, argument)
 
-        [<HttpGet>]
-        override this.GetInvoke( domainType,  instanceId,  actionName,  arguments) = base.GetInvoke(domainType, instanceId, actionName, arguments);
+    [<HttpDelete>]
+    override this.DeleteCollection(domainType, instanceId, propertyName, argument) =
+        base.DeleteCollection(domainType, instanceId, propertyName, argument)
 
-        [<HttpPost>]
-        override this.PostInvoke( domainType,  instanceId,  actionName,  arguments) = base.PostInvoke(domainType, instanceId, actionName, arguments);
+    [<HttpGet>]
+    override this.GetInvoke(domainType, instanceId, actionName, arguments) =
+        base.GetInvoke(domainType, instanceId, actionName, arguments)
 
-        [<HttpPut>]
-        override this.PutInvoke( domainType,  instanceId,  actionName,  arguments) = base.PutInvoke(domainType, instanceId, actionName, arguments);
+    [<HttpPost>]
+    override this.PostInvoke(domainType, instanceId, actionName, arguments) =
+        base.PostInvoke(domainType, instanceId, actionName, arguments)
 
-        [<HttpGet>]
-        override this.GetInvokeOnService( serviceName,  actionName,  arguments) = base.GetInvokeOnService(serviceName, actionName, arguments);
+    [<HttpPut>]
+    override this.PutInvoke(domainType, instanceId, actionName, arguments) =
+        base.PutInvoke(domainType, instanceId, actionName, arguments)
 
-        [<HttpPut>]
-        override this.PutInvokeOnService( serviceName,  actionName,  arguments) = base.PutInvokeOnService(serviceName, actionName, arguments);
+    [<HttpGet>]
+    override this.GetInvokeOnService(serviceName, actionName, arguments) =
+        base.GetInvokeOnService(serviceName, actionName, arguments)
 
-        [<HttpPost>]
-        override this.PostInvokeOnService( serviceName,  actionName,  arguments) = base.PostInvokeOnService(serviceName, actionName, arguments);
+    [<HttpPut>]
+    override this.PutInvokeOnService(serviceName, actionName, arguments) =
+        base.PutInvokeOnService(serviceName, actionName, arguments)
 
-        [<HttpGet>]
-        override this.GetInvokeTypeActions( typeName,  actionName,  arguments) = base.GetInvokeTypeActions(typeName, actionName, arguments);
+    [<HttpPost>]
+    override this.PostInvokeOnService(serviceName, actionName, arguments) =
+        base.PostInvokeOnService(serviceName, actionName, arguments)
 
-        [<HttpPut>]
-        override this.PutPersistPropertyPrompt( domainType,  propertyName,  promptArguments) = base.PutPersistPropertyPrompt(domainType, propertyName, promptArguments);
+    [<HttpGet>]
+    override this.GetInvokeTypeActions(typeName, actionName, arguments) =
+        base.GetInvokeTypeActions(typeName, actionName, arguments)
 
-        [<HttpGet>]
-        override this.GetPropertyPrompt( domainType,  instanceId,  propertyName,  arguments) = base.GetPropertyPrompt(domainType, instanceId, propertyName, arguments);
+    [<HttpPut>]
+    override this.PutPersistPropertyPrompt(domainType, propertyName, promptArguments) =
+        base.PutPersistPropertyPrompt(domainType, propertyName, promptArguments)
 
-        [<HttpGet>]
-        override this.GetParameterPrompt( domainType,  instanceId,  actionName,  parmName,  arguments) = base.GetParameterPrompt(domainType, instanceId, actionName, parmName, arguments);
+    [<HttpGet>]
+    override this.GetPropertyPrompt(domainType, instanceId, propertyName, arguments) =
+        base.GetPropertyPrompt(domainType, instanceId, propertyName, arguments)
 
-        [<HttpGet>]
-        override this.GetParameterPromptOnService( serviceName,  actionName,  parmName,  arguments) = base.GetParameterPromptOnService(serviceName, actionName, parmName, arguments);
+    [<HttpGet>]
+    override this.GetParameterPrompt(domainType, instanceId, actionName, parmName, arguments) =
+        base.GetParameterPrompt(domainType, instanceId, actionName, parmName, arguments)
 
-        [<HttpGet>]
-        override this.GetCollectionValue( domainType,  instanceId,  propertyName) = base.GetCollectionValue(domainType, instanceId, propertyName);
+    [<HttpGet>]
+    override this.GetParameterPromptOnService(serviceName, actionName, parmName, arguments) =
+        base.GetParameterPromptOnService(serviceName, actionName, parmName, arguments)
+
+    [<HttpGet>]
+    override this.GetCollectionValue(domainType, instanceId, propertyName) =
+        base.GetCollectionValue(domainType, instanceId, propertyName)
