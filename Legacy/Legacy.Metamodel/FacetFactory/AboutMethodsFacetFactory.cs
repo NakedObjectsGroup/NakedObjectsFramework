@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using Legacy.Metamodel.Facet;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
@@ -24,9 +25,8 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Facet;
 using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Utils;
 
-namespace Legacy.Metamodel {
+namespace Legacy.Metamodel.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>

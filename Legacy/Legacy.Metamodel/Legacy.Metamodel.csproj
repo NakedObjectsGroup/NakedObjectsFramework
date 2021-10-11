@@ -34,5 +34,9 @@
    
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Component\" />
+  </ItemGroup>
+
 
 </Project>

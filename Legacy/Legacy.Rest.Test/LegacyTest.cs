@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Legacy.Metamodel;
+using Legacy.Metamodel.FacetFactory;
 using Legacy.NakedObjects.Application;
 using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.Control;

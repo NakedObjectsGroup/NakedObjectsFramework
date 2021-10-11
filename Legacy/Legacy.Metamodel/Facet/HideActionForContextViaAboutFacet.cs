@@ -7,7 +7,6 @@
 
 using System;
 using System.Reflection;
-using Legacy.NakedObjects.Application.Control;
 using Legacy.NakedObjects.Reflector.Java.Control;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
@@ -19,7 +18,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace Legacy.Metamodel {
+namespace Legacy.Metamodel.Facet {
     [Serializable]
     public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
         public enum AboutType {
