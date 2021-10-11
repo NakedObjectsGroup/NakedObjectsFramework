@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Legacy.Reflector.Configuration;
+using Legacy.Reflector.Reflect;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
@@ -19,26 +21,26 @@ using NakedObjects.Reflector.Reflect;
 
 namespace Legacy.Reflector.Component {
     public sealed class LegacyObjectReflector : AbstractParallelReflector {
-        private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
+        private readonly ILegacyObjectReflectorConfiguration legacyObjectReflectorConfiguration;
 
-        public LegacyObjectReflector(ObjectFacetFactorySet objectFacetFactorySet,
+        public LegacyObjectReflector(LegacyObjectFacetFactorySet legacyObjectFacetFactorySet,
                                LegacyObjectClassStrategy legacyObjectClassStrategy,
-                               IObjectReflectorConfiguration objectReflectorConfiguration,
+                               ILegacyObjectReflectorConfiguration legacyObjectReflectorConfiguration,
                                IEnumerable<IFacetDecorator> facetDecorators,
                                IReflectorOrder<LegacyObjectReflector> reflectorOrder,
                                ILoggerFactory loggerFactory,
                                ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder,  loggerFactory, logger) {
-            this.objectReflectorConfiguration = objectReflectorConfiguration;
-            FacetFactorySet = objectFacetFactorySet;
+            this.legacyObjectReflectorConfiguration = legacyObjectReflectorConfiguration;
+            FacetFactorySet = legacyObjectFacetFactorySet;
             ClassStrategy = legacyObjectClassStrategy;
         }
 
-        public override bool ConcurrencyChecking => objectReflectorConfiguration.ConcurrencyChecking;
+        public override bool ConcurrencyChecking => legacyObjectReflectorConfiguration.ConcurrencyChecking;
         public override string Name => "Naked Objects";
         public override ReflectorType ReflectorType => ReflectorType.Object;
-        public override bool IgnoreCase => objectReflectorConfiguration.IgnoreCase;
+        public override bool IgnoreCase => legacyObjectReflectorConfiguration.IgnoreCase;
 
-        protected override IIntrospector GetNewIntrospector() => new ObjectIntrospector(this, LoggerFactory.CreateLogger<ObjectIntrospector>());
+        protected override IIntrospector GetNewIntrospector() => new LegacyObjectIntrospector(this, LoggerFactory.CreateLogger<LegacyObjectIntrospector>());
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var placeholders = GetPlaceholders(ooTypes);
@@ -50,7 +52,7 @@ namespace Legacy.Reflector.Component {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var ooTypes = objectReflectorConfiguration.ObjectTypes;
+            var ooTypes = legacyObjectReflectorConfiguration.ObjectTypes;
             specDictionary = IntrospectObjectTypes(ooTypes, specDictionary);
             return specDictionary;
         }

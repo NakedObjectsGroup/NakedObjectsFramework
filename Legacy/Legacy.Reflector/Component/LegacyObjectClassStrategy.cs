@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Legacy.Reflector.Configuration;
 using NakedFramework.ParallelReflector.Component;
 using NakedObjects;
 using NakedObjects.Reflector.Configuration;
@@ -18,9 +19,9 @@ namespace Legacy.Reflector.Component {
     /// </summary>
     [Serializable]
     public class LegacyObjectClassStrategy : AbstractClassStrategy {
-        private readonly IObjectReflectorConfiguration config;
+        private readonly ILegacyObjectReflectorConfiguration config;
 
-        public LegacyObjectClassStrategy(IObjectReflectorConfiguration config) => this.config = config;
+        public LegacyObjectClassStrategy(ILegacyObjectReflectorConfiguration config) => this.config = config;
 
         protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
 

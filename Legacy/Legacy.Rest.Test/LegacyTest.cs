@@ -12,6 +12,7 @@ using Legacy.NakedObjects.Application;
 using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.Control;
 using Legacy.NakedObjects.Application.ValueHolder;
+using Legacy.Reflector.Extensions;
 using Legacy.Reflector.FacetFactory;
 using Legacy.Rest.Test.Data;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +33,7 @@ using NUnit.Framework;
 
 namespace Legacy.Rest.Test {
     public class LegacyTest : AcceptanceTestCase {
-        protected override Type[] ObjectTypes { get; } = {
+        protected  Type[] LegacyTypes { get; } = {
             typeof(ClassWithTextString),
             typeof(ClassWithInternalCollection),
             typeof(ClassWithActionAbout),
@@ -50,24 +51,32 @@ namespace Legacy.Rest.Test {
             typeof(Title)
         };
 
-        protected override Type[] Services { get; } = { typeof(SimpleService)};
+        protected Type[] LegacyServices { get; } = { typeof(SimpleService)};
+
+        protected override Type[] ObjectTypes { get; } = {
+            typeof(ClassWithString)
+        };
+
+        protected override Type[] Services { get; } = { typeof(SimpleNOService) };
 
         protected override bool EnforceProxies => false;
 
         protected override Action<NakedFrameworkOptions> AddNakedFunctions => _ => { };
 
-        protected override Action<NakedObjectsOptions> NakedObjectsOptions =>
+        protected Action<LegacyOptions> LegacyOptions =>
             options => {
-                options.DomainModelTypes = ObjectTypes;
-                options.DomainModelServices = Services;
+                options.DomainModelTypes = LegacyTypes;
+                options.DomainModelServices = LegacyServices;
                 options.NoValidate = true;
-                options.RegisterCustomTypes = services => {
-                    services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(TextStringValueTypeFacetFactory));
-                    services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(InternalCollectionFacetFactory));
-                    services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AboutMethodsFacetFactory));
-                };
             };
 
+        protected virtual Action<NakedFrameworkOptions> AddLegacy => builder => builder.AddLegacy(LegacyOptions);
+
+        protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
+            builder => {
+                base.NakedFrameworkOptions(builder);
+                AddLegacy(builder);
+            };
 
         protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
             config => {
