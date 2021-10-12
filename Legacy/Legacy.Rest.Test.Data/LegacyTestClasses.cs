@@ -113,4 +113,17 @@ namespace Legacy.Rest.Test.Data {
         }
     }
 
+    public class ClassWithLinkToNOFClass {
+        private TextString _name;
+        public string name;
+
+        [Key]
+        public int Id { get; init; }
+
+        public TextString Name => _name ??= new TextString(name) { BackingField = s => name = s };
+
+        public virtual ClassWithString LinkToNOFClass { get; set; }
+      
+    }
+
 }
