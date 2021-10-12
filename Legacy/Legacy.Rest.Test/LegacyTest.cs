@@ -39,6 +39,7 @@ namespace Legacy.Rest.Test {
             typeof(ClassWithActionAbout),
             typeof(ClassWithFieldAbout),
             typeof(ClassWithLinkToNOFClass),
+            typeof(ClassWithNOFInternalCollection),
             typeof(TextString),
             typeof(MultilineTextString),
             typeof(InternalCollection),
@@ -317,6 +318,22 @@ namespace Legacy.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["LinkToNOFClass"]);
 
             Assert.AreEqual("Untitled Class With String", parsedResult["members"]["LinkToNOFClass"]["value"]["title"].ToString());
+        }
+
+        [Test]
+        public void TestLegacyToNOFCollection() {
+
+
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithNOFInternalCollection>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNotNull(parsedResult["members"]["CollectionOfNOFClass"]);
+
+            Assert.AreEqual("2", parsedResult["members"]["CollectionOfNOFClass"]["size"].ToString());
         }
     }
 }

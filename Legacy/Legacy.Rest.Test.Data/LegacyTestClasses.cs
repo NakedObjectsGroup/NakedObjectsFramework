@@ -79,6 +79,27 @@ namespace Legacy.Rest.Test.Data {
         }
     }
 
+    public class ClassWithNOFInternalCollection {
+        [NakedObjectsIgnore]
+        public virtual ICollection<ClassWithString> _TestCollection { get; } = new List<ClassWithString>();
+
+        private InternalCollection _testCollection;
+
+        [Key]
+        public int Id { get; init; }
+
+        public InternalCollection CollectionOfNOFClass {
+            get {
+                if (_testCollection is null) {
+                    _testCollection = new InternalCollection(typeof(ClassWithTextString).ToString());
+                    _testCollection.init(_TestCollection.ToArray() as object[]);
+                }
+
+                return _testCollection;
+            }
+        }
+    }
+
     public class ClassWithActionAbout {
 
         public static bool  TestInvisibleFlag = false;

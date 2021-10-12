@@ -32,6 +32,7 @@ namespace Legacy.Rest.Test.Data {
         public DbSet<ClassWithFieldAbout> ClassesWithFieldAbout { get; set; }
         public DbSet<ClassWithString> ClassesWithString { get; set; }
         public DbSet<ClassWithLinkToNOFClass> ClassesWithLinkToNOFClass { get; set; }
+        public DbSet<ClassWithNOFInternalCollection> ClassesWithNOFInternalCollection { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(cs);
@@ -54,7 +55,9 @@ namespace Legacy.Rest.Test.Data {
             modelBuilder.Entity<ClassWithInternalCollection>().HasData(new ClassWithInternalCollection { Id = 1 });
             modelBuilder.Entity<ClassWithInternalCollection>().HasData(new ClassWithInternalCollection { Id = 2 });
 
-            modelBuilder.Entity<ClassWithString>().HasData(new { Id = 2, Name = "Ted" });
+            modelBuilder.Entity<ClassWithNOFInternalCollection>().HasData(new { Id = 1 });
+
+            modelBuilder.Entity<ClassWithString>().HasData(new { Id = 2, Name = "Ted", ClassWithNOFInternalCollectionId = 1 });
 
             modelBuilder.Entity<ClassWithTextString>().HasData(fred);
             modelBuilder.Entity<ClassWithTextString>().HasData(bill);
@@ -62,9 +65,11 @@ namespace Legacy.Rest.Test.Data {
             modelBuilder.Entity<ClassWithActionAbout>().HasData(new ClassWithActionAbout { Id = 1 });
             modelBuilder.Entity<ClassWithFieldAbout>().HasData(new ClassWithActionAbout { Id = 1 });
 
-            modelBuilder.Entity<ClassWithString>().HasData(new { Id = 1, Name = "Jill", LinkToLegacyClassId = 1 });
+            modelBuilder.Entity<ClassWithString>().HasData(new { Id = 1, Name = "Jill", LinkToLegacyClassId = 1, ClassWithNOFInternalCollectionId = 1 });
 
             modelBuilder.Entity<ClassWithLinkToNOFClass>().HasData(new { Id = 1, Name = "Jack", LinkToNOFClassId = 1 });
+
+            
         }
     }
 
