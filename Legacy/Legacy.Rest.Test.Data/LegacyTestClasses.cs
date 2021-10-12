@@ -5,15 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Legacy.NakedObjects.Application;
 using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.Control;
 using Legacy.NakedObjects.Application.ValueHolder;
 using NakedObjects;
+
+// ReSharper disable InconsistentNaming
 
 namespace Legacy.Rest.Test.Data {
     public class SimpleService {
@@ -29,6 +30,8 @@ namespace Legacy.Rest.Test.Data {
 
         public TextString Name => _name ??= new TextString(name) { BackingField = s => name = s };
 
+        public Title title() => Name.title();
+
         public ClassWithTextString ActionUpdateName(TextString newName) {
             Name.setValue(newName);
             return this;
@@ -36,15 +39,12 @@ namespace Legacy.Rest.Test.Data {
     }
 
     public class ClassWithInternalCollection {
-        
-        public IDomainObjectContainer Container { private get; set; }
-        
-        [NakedObjectsIgnore]
-        public virtual ICollection<ClassWithTextString> _TestCollection { get; } = new List<ClassWithTextString>();
-
         private InternalCollection _testCollection;
 
+        public IDomainObjectContainer Container { private get; set; }
 
+        [NakedObjectsIgnore]
+        public virtual ICollection<ClassWithTextString> _TestCollection { get; } = new List<ClassWithTextString>();
 
         [Key]
         public int Id { get; init; }
@@ -53,7 +53,7 @@ namespace Legacy.Rest.Test.Data {
             get {
                 if (_testCollection is null) {
                     _testCollection = new InternalCollection(typeof(ClassWithTextString).ToString());
-                    _testCollection.init(_TestCollection.ToArray() as object[]);
+                    _testCollection.init(_TestCollection.ToArray());
 
                     _testCollection.BackingField = (obj, add) => {
                         if (add) {
@@ -63,7 +63,6 @@ namespace Legacy.Rest.Test.Data {
                             _TestCollection.Remove((ClassWithTextString)obj);
                         }
                     };
-
                 }
 
                 return _testCollection;
@@ -74,16 +73,16 @@ namespace Legacy.Rest.Test.Data {
             var name = newName.stringValue();
             var bill = Container.Instances<ClassWithTextString>().Single(c => c.name == name);
             TestCollection.add(bill);
-          
+
             return this;
         }
     }
 
     public class ClassWithNOFInternalCollection {
+        private InternalCollection _testCollection;
+
         [NakedObjectsIgnore]
         public virtual ICollection<ClassWithString> _TestCollection { get; } = new List<ClassWithString>();
-
-        private InternalCollection _testCollection;
 
         [Key]
         public int Id { get; init; }
@@ -92,7 +91,7 @@ namespace Legacy.Rest.Test.Data {
             get {
                 if (_testCollection is null) {
                     _testCollection = new InternalCollection(typeof(ClassWithTextString).ToString());
-                    _testCollection.init(_TestCollection.ToArray() as object[]);
+                    _testCollection.init(_TestCollection.ToArray());
                 }
 
                 return _testCollection;
@@ -101,9 +100,8 @@ namespace Legacy.Rest.Test.Data {
     }
 
     public class ClassWithActionAbout {
+        public static bool TestInvisibleFlag = false;
 
-        public static bool  TestInvisibleFlag = false;
-        
         [Key]
         public int Id { get; init; }
 
@@ -119,13 +117,14 @@ namespace Legacy.Rest.Test.Data {
     }
 
     public class ClassWithFieldAbout {
-
         public static bool TestInvisibleFlag = false;
 
         [Key]
         public int Id { get; init; }
 
-        public TextString Name => new TextString("");
+        public TextString Name => new("");
+
+        public Title title() => Name.title();
 
         public void aboutName(FieldAbout fieldAbout, TextString name) {
             if (TestInvisibleFlag) {
@@ -135,16 +134,9 @@ namespace Legacy.Rest.Test.Data {
     }
 
     public class ClassWithLinkToNOFClass {
-        private TextString _name;
-        public string name;
-
         [Key]
         public int Id { get; init; }
 
-        public TextString Name => _name ??= new TextString(name) { BackingField = s => name = s };
-
         public virtual ClassWithString LinkToNOFClass { get; set; }
-      
     }
-
 }

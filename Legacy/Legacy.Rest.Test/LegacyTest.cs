@@ -13,20 +13,17 @@ using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.Control;
 using Legacy.NakedObjects.Application.ValueHolder;
 using Legacy.Reflector.Extensions;
-using Legacy.Reflector.FacetFactory;
 using Legacy.Rest.Test.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test;
 using NakedObjects.Reflector.Configuration;
-using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -150,6 +147,8 @@ namespace Legacy.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["Id"]);
             Assert.IsNotNull(parsedResult["members"]["Name"]);
             Assert.IsNotNull(parsedResult["members"]["ActionUpdateName"]);
+
+            Assert.AreEqual("Fred", parsedResult["title"].ToString());
         }
 
         [Test]
@@ -284,7 +283,7 @@ namespace Legacy.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["LinkToLegacyClass"]);
             Assert.IsNotNull(parsedResult["members"]["CollectionOfLegacyClass"]);
 
-            Assert.AreEqual("Untitled Class With Text String", parsedResult["members"]["LinkToLegacyClass"]["value"]["title"].ToString());
+            Assert.AreEqual("Ted", parsedResult["members"]["LinkToLegacyClass"]["value"]["title"].ToString());
         }
 
         [Test]
@@ -314,7 +313,7 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNotNull(parsedResult["members"]["LinkToNOFClass"]);
 
             Assert.AreEqual("Untitled Class With String", parsedResult["members"]["LinkToNOFClass"]["value"]["title"].ToString());

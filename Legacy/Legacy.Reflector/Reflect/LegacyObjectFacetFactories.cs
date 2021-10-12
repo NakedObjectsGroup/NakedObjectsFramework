@@ -14,7 +14,8 @@ namespace Legacy.Reflector.Reflect {
             new[] {
                 typeof(TextStringValueTypeFacetFactory),
                 typeof(InternalCollectionFacetFactory),
-                typeof(AboutMethodsFacetFactory)
+                typeof(AboutMethodsFacetFactory),
+                typeof(TitleMethodFacetFactory)
             };
     }
 }

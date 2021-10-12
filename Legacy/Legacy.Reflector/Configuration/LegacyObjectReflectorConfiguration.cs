@@ -17,7 +17,7 @@ namespace Legacy.Reflector.Configuration {
                                             bool concurrencyChecking = true) {
             TypesToIntrospect = typesToIntrospect;
             Services = services;
-            IgnoreCase = false;
+            IgnoreCase = true;
             ConcurrencyChecking = concurrencyChecking;
 
             ValidateConfig();
