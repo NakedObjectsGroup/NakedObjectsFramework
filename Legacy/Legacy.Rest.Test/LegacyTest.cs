@@ -267,5 +267,21 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNotNull(parsedResult["members"]["Id"]);
         }
+
+        [Test]
+        public void TestNOFToLegacy() {
+            ClassWithFieldAbout.TestInvisibleFlag = true;
+
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithString>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNotNull(parsedResult["members"]["LinkToLegacyClass"]);
+
+            Assert.AreEqual("Untitled Class With Text String", parsedResult["members"]["LinkToLegacyClass"]["value"]["title"].ToString());
+        }
     }
 }

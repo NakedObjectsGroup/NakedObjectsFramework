@@ -17,5 +17,7 @@ namespace Legacy.Rest.Test.Data {
         public int Id { get; init; }
 
         public string Name { get; set; }
+
+        public virtual ClassWithTextString LinkToLegacyClass { get; set; }
     }
 }

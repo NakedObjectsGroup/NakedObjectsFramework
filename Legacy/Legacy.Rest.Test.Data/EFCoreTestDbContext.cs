@@ -30,6 +30,7 @@ namespace Legacy.Rest.Test.Data {
         public DbSet<ClassWithInternalCollection> ClassesWithInternalCollection { get; set; }
         public DbSet<ClassWithActionAbout> ClassesWithActionAbout { get; set; }
         public DbSet<ClassWithFieldAbout> ClassesWithFieldAbout { get; set; }
+        public DbSet<ClassWithString> ClassesWithString { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(cs);
@@ -57,6 +58,8 @@ namespace Legacy.Rest.Test.Data {
 
             modelBuilder.Entity<ClassWithActionAbout>().HasData(new ClassWithActionAbout { Id = 1 });
             modelBuilder.Entity<ClassWithFieldAbout>().HasData(new ClassWithActionAbout { Id = 1 });
+
+            modelBuilder.Entity<ClassWithString>().HasData(new { Id = 1, Name = "Jill", LinkToLegacyClassId = 1 });
         }
     }
 
