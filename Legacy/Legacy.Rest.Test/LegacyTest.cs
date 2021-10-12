@@ -279,10 +279,28 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+            Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNotNull(parsedResult["members"]["LinkToLegacyClass"]);
+            Assert.IsNotNull(parsedResult["members"]["CollectionOfLegacyClass"]);
 
             Assert.AreEqual("Untitled Class With Text String", parsedResult["members"]["LinkToLegacyClass"]["value"]["title"].ToString());
+        }
+
+        [Test]
+        public void TestNOFToLegacyCollection() {
+
+
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithString>(), "2");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNotNull(parsedResult["members"]["LinkToLegacyClass"]);
+            Assert.IsNotNull(parsedResult["members"]["CollectionOfLegacyClass"]);
+
+            Assert.AreEqual("2", parsedResult["members"]["CollectionOfLegacyClass"]["size"].ToString());
         }
 
         [Test]

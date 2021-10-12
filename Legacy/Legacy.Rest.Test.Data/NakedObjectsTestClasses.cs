@@ -5,6 +5,7 @@
 // // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Legacy.Rest.Test.Data {
@@ -19,5 +20,7 @@ namespace Legacy.Rest.Test.Data {
         public string Name { get; set; }
 
         public virtual ClassWithTextString LinkToLegacyClass { get; set; }
+
+        public virtual ICollection<ClassWithTextString> CollectionOfLegacyClass { get; set; } = new List<ClassWithTextString>();
     }
 }
