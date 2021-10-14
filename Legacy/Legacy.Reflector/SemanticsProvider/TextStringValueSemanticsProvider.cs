@@ -39,13 +39,11 @@ namespace Legacy.Reflector.SemanticsProvider {
 
         protected override TextString DoParse(string entry) => entry.Trim().Equals("") ? null : new TextString(entry);
 
-        protected override TextString DoParseInvariant(string entry) => new TextString(entry);
+        protected override TextString DoParseInvariant(string entry) => new(entry);
 
         protected override string GetInvariantString(TextString obj) => obj.stringValue();
 
-        protected override string DoEncode(TextString obj) {
-            return obj.asEncodedString();
-        }
+        protected override string DoEncode(TextString obj) => obj.asEncodedString();
 
         protected override TextString DoRestore(string data) {
             var text = IsEscaped(data) ? data[1..] : data;

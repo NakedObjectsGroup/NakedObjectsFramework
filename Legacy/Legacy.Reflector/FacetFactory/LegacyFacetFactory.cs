@@ -30,26 +30,41 @@ namespace Legacy.Reflector.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
-    public sealed class AboutMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
+    public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = {
             "about"
         };
 
-        private readonly ILogger<AboutMethodsFacetFactory> logger;
+        private readonly ILogger<LegacyFacetFactory> logger;
 
-        public AboutMethodsFacetFactory(IFacetFactoryOrder<ActionMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+        public LegacyFacetFactory(IFacetFactoryOrder<ActionMethodsFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.EverythingButActionParameters) =>
-            logger = loggerFactory.CreateLogger<AboutMethodsFacetFactory>();
+            logger = loggerFactory.CreateLogger<LegacyFacetFactory>();
+
+        public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
+            return candidates.Where(methodInfo => methodInfo.Name.StartsWith("action") &&
+                                                  !classStrategy.IsIgnored(methodInfo) &&
+                                                  !methodInfo.IsStatic &&
+                                                  !methodInfo.IsGenericMethod &&
+                                                  !classStrategy.IsIgnored(methodInfo.ReturnType)).ToArray();
+        }
 
         public string[] Prefixes => FixedPrefixes;
 
-       
+        public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
+            candidates = candidates.Where(property => !CollectionUtils.IsQueryable(property.PropertyType)).ToArray();
+            return PropertiesToBeIntrospected(candidates, classStrategy);
+        }
+
+        private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
+            candidates.Where(property => property.HasPublicGetter() &&
+                                         property.PropertyType.Namespace.StartsWith("Legacy") &&
+                                         !classStrategy.IsIgnored(property.PropertyType) &&
+                                         !classStrategy.IsIgnored(property)).ToList();
 
         #region IMethodIdentifyingFacetFactory Members
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
-
             var type = actionMethod.DeclaringType;
             var facets = new List<IFacet>();
 
@@ -60,16 +75,20 @@ namespace Legacy.Reflector.FacetFactory {
             (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType, metamodel);
 
             IObjectSpecBuilder elementSpec;
-            (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(typeof(object), metamodel); ;
-           
+            (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(typeof(object), metamodel);
+            ;
 
             methodRemover.SafeRemoveMethod(actionMethod);
             facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, false, Logger<ActionInvocationFacetViaMethod>()));
 
+            var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name[6..]); //remove 'action' from front 
+
+            facets.Add(new NamedFacetInferred(capitalizedName, action));
+
             var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
-            var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{"about"}{capitalizedName}", null, null);
+            var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{"about"}{actionMethod.Name}", null, null);
             methodRemover.SafeRemoveMethod(method);
 
             if (method is not null) {
@@ -90,7 +109,6 @@ namespace Legacy.Reflector.FacetFactory {
                 return metamodel;
             }
 
-
             var capitalizedName = property.Name;
             var paramTypes = new[] { property.PropertyType };
 
@@ -109,33 +127,13 @@ namespace Legacy.Reflector.FacetFactory {
             methodRemover.SafeRemoveMethod(method);
 
             if (method is not null) {
-                facets.Add(new HideActionForContextViaAboutFacet(method, specification, HideActionForContextViaAboutFacet.AboutType.Fields,  LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
+                facets.Add(new HideActionForContextViaAboutFacet(method, specification, HideActionForContextViaAboutFacet.AboutType.Fields, LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
             }
 
             FacetUtils.AddFacets(facets);
             return metamodel;
         }
 
-
         #endregion
-
-        public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
-            return candidates.Where(methodInfo => methodInfo.Name.StartsWith("action") &&
-                                                  !classStrategy.IsIgnored(methodInfo) &&
-                                                  !methodInfo.IsStatic &&
-                                                  !methodInfo.IsGenericMethod &&
-                                                  !classStrategy.IsIgnored(methodInfo.ReturnType)).ToArray();
-        }
-
-        public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            candidates = candidates.Where(property => !CollectionUtils.IsQueryable(property.PropertyType)).ToArray();
-            return PropertiesToBeIntrospected(candidates, classStrategy);
-        }
-
-        private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
-            candidates.Where(property => property.HasPublicGetter() &&
-                                         property.PropertyType.Namespace.StartsWith("Legacy") &&
-                                         !classStrategy.IsIgnored(property.PropertyType) &&
-                                         !classStrategy.IsIgnored(property)).ToList();
     }
 }

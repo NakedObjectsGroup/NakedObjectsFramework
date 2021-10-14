@@ -16,20 +16,18 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
-using NakedObjects.Reflector.Configuration;
-using NakedObjects.Reflector.Reflect;
 
 namespace Legacy.Reflector.Component {
     public sealed class LegacyObjectReflector : AbstractParallelReflector {
         private readonly ILegacyObjectReflectorConfiguration legacyObjectReflectorConfiguration;
 
         public LegacyObjectReflector(LegacyObjectFacetFactorySet legacyObjectFacetFactorySet,
-                               LegacyObjectClassStrategy legacyObjectClassStrategy,
-                               ILegacyObjectReflectorConfiguration legacyObjectReflectorConfiguration,
-                               IEnumerable<IFacetDecorator> facetDecorators,
-                               IReflectorOrder<LegacyObjectReflector> reflectorOrder,
-                               ILoggerFactory loggerFactory,
-                               ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder,  loggerFactory, logger) {
+                                     LegacyObjectClassStrategy legacyObjectClassStrategy,
+                                     ILegacyObjectReflectorConfiguration legacyObjectReflectorConfiguration,
+                                     IEnumerable<IFacetDecorator> facetDecorators,
+                                     IReflectorOrder<LegacyObjectReflector> reflectorOrder,
+                                     ILoggerFactory loggerFactory,
+                                     ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
             this.legacyObjectReflectorConfiguration = legacyObjectReflectorConfiguration;
             FacetFactorySet = legacyObjectFacetFactorySet;
             ClassStrategy = legacyObjectClassStrategy;

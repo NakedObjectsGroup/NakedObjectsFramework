@@ -11,7 +11,6 @@ using System.Reflection;
 using Legacy.Reflector.Configuration;
 using NakedFramework.ParallelReflector.Component;
 using NakedObjects;
-using NakedObjects.Reflector.Configuration;
 
 namespace Legacy.Reflector.Component {
     /// <summary>

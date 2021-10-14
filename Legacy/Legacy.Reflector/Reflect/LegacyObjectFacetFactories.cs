@@ -12,10 +12,17 @@ namespace Legacy.Reflector.Reflect {
     public static class LegacyObjectFacetFactories {
         public static Type[] StandardFacetFactories() =>
             new[] {
-                typeof(TextStringValueTypeFacetFactory),
+                typeof(FallbackFacetFactory),
+                typeof(TypeMarkerFacetFactory),
+                typeof(OptionalDefaultFacetFactory),
                 typeof(InternalCollectionFacetFactory),
-                typeof(AboutMethodsFacetFactory),
+                typeof(LegacyFacetFactory),
                 typeof(TitleMethodFacetFactory)
+            };
+
+        public static Type[] TypeFacetFactories() =>
+            new[] {
+                typeof(TextStringValueTypeFacetFactory)
             };
     }
 }

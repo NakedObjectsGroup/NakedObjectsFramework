@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using Legacy.Reflector.FacetFactory;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
@@ -20,7 +21,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 namespace Legacy.Reflector.Reflect {
     public sealed class LegacyObjectFacetFactorySet : IFacetFactorySet {
         private readonly IList<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
-        private readonly IDictionary<FeatureType, IList<IObjectFacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<IObjectFacetFactoryProcessor>>();
+        private readonly IDictionary<FeatureType, IList<ILegacyFacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<ILegacyFacetFactoryProcessor>>();
 
         /// <summary>
         ///     All registered <see cref="IFacetFactory" />s that implement
@@ -50,7 +51,7 @@ namespace Legacy.Reflector.Reflect {
         /// </para>
         private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
-        public LegacyObjectFacetFactorySet(IEnumerable<IObjectFacetFactoryProcessor> factories) {
+        public LegacyObjectFacetFactorySet(IEnumerable<ILegacyFacetFactoryProcessor> factories) {
             var allFactories = factories.ToList();
             allFactories.Sort();
 
@@ -68,7 +69,7 @@ namespace Legacy.Reflector.Reflect {
 
         private string[] Prefixes { get; }
 
-        private IList<IObjectFacetFactoryProcessor> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
+        private IList<ILegacyFacetFactoryProcessor> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
 
         #region IFacetFactorySet Members
 

@@ -7,7 +7,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Reflection.Emit;
 using Legacy.NakedObjects.Application;
 using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.Control;
@@ -74,6 +76,7 @@ namespace Legacy.Rest.Test {
         protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
             builder => {
                 base.NakedFrameworkOptions(builder);
+                builder.SupportedSystemTypes = t => t.Append(typeof(TextString)).ToArray();
                 AddLegacy(builder);
             };
 
@@ -223,7 +226,7 @@ namespace Legacy.Rest.Test {
 
             Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNotNull(parsedResult["members"]["Id"]);
-            Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+            Assert.IsNotNull(parsedResult["members"]["TestAction"]);
         }
 
         [Test]

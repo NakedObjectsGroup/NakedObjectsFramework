@@ -26,10 +26,10 @@ namespace Legacy.Reflector.Facet {
             Fields
         }
 
+        private readonly AboutType aboutType;
 
         private readonly ILogger<HideActionForContextViaAboutFacet> logger;
         private readonly MethodInfo method;
-        private readonly AboutType aboutType;
 
         public HideActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutType aboutType, ILogger<HideActionForContextViaAboutFacet> logger)
             : base(typeof(IHideForContextFacet), holder) {
@@ -39,7 +39,6 @@ namespace Legacy.Reflector.Facet {
         }
 
         protected override string ToStringValues() => $"method={method}";
-
 
         #region IHideForContextFacet Members
 

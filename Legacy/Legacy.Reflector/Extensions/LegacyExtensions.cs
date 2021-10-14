@@ -8,6 +8,7 @@
 using System;
 using Legacy.Reflector.Component;
 using Legacy.Reflector.Configuration;
+using Legacy.Reflector.FacetFactory;
 using Legacy.Reflector.Reflect;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
@@ -16,7 +17,6 @@ using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
-
 
 namespace Legacy.Reflector.Extensions {
     public static class LegacyExtensions {
@@ -29,7 +29,9 @@ namespace Legacy.Reflector.Extensions {
             var options = new LegacyOptions();
             setupAction(options);
 
-            frameworkOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(LegacyObjectFacetFactories.StandardFacetFactories());
+            frameworkOptions.Services.RegisterFacetFactories<ILegacyFacetFactoryProcessor>(LegacyObjectFacetFactories.StandardFacetFactories());
+            frameworkOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(LegacyObjectFacetFactories.TypeFacetFactories());
+
             frameworkOptions.Services.AddDefaultSingleton<LegacyObjectFacetFactorySet, LegacyObjectFacetFactorySet>();
             frameworkOptions.Services.AddDefaultSingleton<LegacyObjectClassStrategy, LegacyObjectClassStrategy>();
 

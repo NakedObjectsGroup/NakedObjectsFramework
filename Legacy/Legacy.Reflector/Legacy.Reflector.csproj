@@ -21,17 +21,18 @@
   </ItemGroup>
 
   <ItemGroup>
-   
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Persistor.EFCore\NakedFramework.Persistor.EFCore.csproj" />
-   
+
+    <ProjectReference
+      Include="..\..\NakedFramework\NakedFramework.Persistor.EFCore\NakedFramework.Persistor.EFCore.csproj" />
+
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Test\NakedFramework.Test.csproj" />
-   
+
     <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
-   
+
     <ProjectReference Include="..\Legacy.NakedObjects\Legacy.NakedObjects.csproj" />
-   
+
     <ProjectReference Include="..\Legacy.Rest.Test.Data\Legacy.Rest.Test.Data.csproj" />
-   
+
   </ItemGroup>
 
 

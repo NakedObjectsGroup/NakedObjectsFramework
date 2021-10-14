@@ -20,10 +20,9 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedFramework.ParallelReflector.Utils;
-using NakedObjects.Reflector.FacetFactory;
 
 namespace Legacy.Reflector.FacetFactory {
-    public sealed class TitleMethodFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
+    public sealed class TitleMethodFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.TitleMethod
         };

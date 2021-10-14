@@ -18,21 +18,20 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
-using NakedObjects.Reflector.FacetFactory;
 
 namespace Legacy.Reflector.FacetFactory {
-    public sealed class InternalCollectionFacetFactory : ObjectFacetFactoryProcessor {
+    public sealed class InternalCollectionFacetFactory : LegacyFacetFactoryProcessor {
         public InternalCollectionFacetFactory(IFacetFactoryOrder<InternalCollectionFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
         private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            
             if (type == typeof(InternalCollection)) {
                 var collectionElementType = typeof(object);
                 IObjectSpecBuilder oSpec;
                 (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, collectionElementType, oSpec));
             }
+
             return metamodel;
         }
 

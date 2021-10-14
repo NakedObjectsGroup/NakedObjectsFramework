@@ -13,8 +13,8 @@ namespace Legacy.Reflector.Configuration {
     [Serializable]
     public class LegacyObjectReflectorConfiguration : ILegacyObjectReflectorConfiguration {
         public LegacyObjectReflectorConfiguration(Type[] typesToIntrospect,
-                                            Type[] services,
-                                            bool concurrencyChecking = true) {
+                                                  Type[] services,
+                                                  bool concurrencyChecking = true) {
             TypesToIntrospect = typesToIntrospect;
             Services = services;
             IgnoreCase = true;
