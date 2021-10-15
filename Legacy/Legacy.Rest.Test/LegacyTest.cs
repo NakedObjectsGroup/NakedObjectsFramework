@@ -146,8 +146,8 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
-            Assert.IsNotNull(parsedResult["members"]["Id"]);
+            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNull(parsedResult["members"]["Id"]);
             Assert.IsNotNull(parsedResult["members"]["Name"]);
             Assert.IsNotNull(parsedResult["members"]["ActionUpdateName"]);
 
@@ -224,9 +224,9 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-            Assert.IsNotNull(parsedResult["members"]["Id"]);
-            Assert.IsNotNull(parsedResult["members"]["TestAction"]);
+            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNull(parsedResult["members"]["Id"]);
+            Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
         }
 
         [Test]
@@ -239,8 +239,8 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-            Assert.IsNotNull(parsedResult["members"]["Id"]);
+            Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
+            //Assert.IsNotNull(parsedResult["members"]["Id"]);
         }
 
         [Test]
@@ -253,8 +253,8 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-            Assert.IsNotNull(parsedResult["members"]["Id"]);
+            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNull(parsedResult["members"]["Id"]);
             Assert.IsNotNull(parsedResult["members"]["Name"]);
         }
 
@@ -268,8 +268,8 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-            Assert.IsNotNull(parsedResult["members"]["Id"]);
+            Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
+            //Assert.IsNotNull(parsedResult["members"]["Id"]);
         }
 
         [Test]
@@ -316,7 +316,7 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNotNull(parsedResult["members"]["LinkToNOFClass"]);
 
             Assert.AreEqual("Untitled Class With String", parsedResult["members"]["LinkToNOFClass"]["value"]["title"].ToString());

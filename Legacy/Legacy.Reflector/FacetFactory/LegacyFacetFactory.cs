@@ -42,7 +42,7 @@ namespace Legacy.Reflector.FacetFactory {
             logger = loggerFactory.CreateLogger<LegacyFacetFactory>();
 
         public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
-            return candidates.Where(methodInfo => methodInfo.Name.StartsWith("action") &&
+            return candidates.Where(methodInfo => methodInfo.Name.ToLower().StartsWith("action") &&
                                                   !classStrategy.IsIgnored(methodInfo) &&
                                                   !methodInfo.IsStatic &&
                                                   !methodInfo.IsGenericMethod &&
