@@ -15,6 +15,7 @@ namespace Legacy.Reflector.Reflect {
                 typeof(FallbackFacetFactory),
                 typeof(TypeMarkerFacetFactory),
                 typeof(OptionalDefaultFacetFactory),
+                typeof(LegacyCollectionFieldMethodsFacetFactory),
                 typeof(InternalCollectionFacetFactory),
                 typeof(LegacyFacetFactory),
                 typeof(TitleMethodFacetFactory),
@@ -23,7 +24,8 @@ namespace Legacy.Reflector.Reflect {
 
         public static Type[] TypeFacetFactories() =>
             new[] {
-                typeof(TextStringValueTypeFacetFactory)
+                typeof(TextStringValueTypeFacetFactory),
+               
             };
     }
 }

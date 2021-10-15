@@ -76,7 +76,7 @@ namespace Legacy.Rest.Test {
         protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
             builder => {
                 base.NakedFrameworkOptions(builder);
-                builder.SupportedSystemTypes = t => t.Append(typeof(TextString)).ToArray();
+                builder.SupportedSystemTypes = t => t.Append(typeof(TextString)).Append(typeof(InternalCollection)).ToArray();
                 AddLegacy(builder);
             };
 
@@ -189,8 +189,8 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
-            Assert.IsNotNull(parsedResult["members"]["Id"]);
+            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNull(parsedResult["members"]["Id"]);
             Assert.IsNotNull(parsedResult["members"]["TestCollection"]);
             Assert.IsNotNull(parsedResult["members"]["ActionUpdateTestCollection"]);
 
@@ -332,7 +332,7 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNotNull(parsedResult["members"]["CollectionOfNOFClass"]);
 
             Assert.AreEqual("2", parsedResult["members"]["CollectionOfNOFClass"]["size"].ToString());
