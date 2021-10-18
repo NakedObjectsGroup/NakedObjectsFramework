@@ -93,6 +93,7 @@ namespace Legacy.Reflector.FacetFactory {
 
             if (method is not null) {
                 facets.Add(new HideActionForContextViaAboutFacet(method, action, HideActionForContextViaAboutFacet.AboutType.Action, LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
+                facets.Add(new DisableActionForContextViaAboutFacet(method, action, DisableActionForContextViaAboutFacet.AboutType.Action, LoggerFactory.CreateLogger<DisableActionForContextViaAboutFacet>()));
             }
 
             MethodHelpers.AddHideForSessionFacetNone(facets, action);

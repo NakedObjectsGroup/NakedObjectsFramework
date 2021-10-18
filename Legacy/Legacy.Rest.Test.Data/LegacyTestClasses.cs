@@ -101,15 +101,19 @@ namespace Legacy.Rest.Test.Data {
 
     public class ClassWithActionAbout {
         public static bool TestInvisibleFlag = false;
+        public static int AboutCount = 0;
+
 
         [Key]
         public int Id { get; init; }
+
 
         public void actionTestAction() {
             // do something
         }
 
         public void aboutActionTestAction(ActionAbout actionAbout) {
+            AboutCount++;
             if (TestInvisibleFlag) {
                 actionAbout.invisible();
             }

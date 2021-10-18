@@ -244,6 +244,22 @@ namespace Legacy.Rest.Test {
         }
 
         [Test]
+        public void TestAboutCaching() {
+            ClassWithActionAbout.AboutCount = 0;
+
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+            Assert.AreEqual(1, ClassWithActionAbout.AboutCount);
+            //Assert.IsNotNull(parsedResult["members"]["Id"]);
+        }
+
+
+        [Test]
         public void TestGetObjectWithField() {
             ClassWithFieldAbout.TestInvisibleFlag = false;
 

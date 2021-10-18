@@ -22,7 +22,7 @@ using NakedFramework.Metamodel.Facet;
 
 namespace Legacy.Reflector.Facet {
     [Serializable]
-    public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
+    public sealed class DisableActionForContextViaAboutFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
         public enum AboutType {
             Action,
             Fields
@@ -30,11 +30,11 @@ namespace Legacy.Reflector.Facet {
 
         private readonly AboutType aboutType;
 
-        private readonly ILogger<HideActionForContextViaAboutFacet> logger;
+        private readonly ILogger<DisableActionForContextViaAboutFacet> logger;
         private readonly MethodInfo method;
 
-        public HideActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutType aboutType, ILogger<HideActionForContextViaAboutFacet> logger)
-            : base(typeof(IHideForContextFacet), holder) {
+        public DisableActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutType aboutType, ILogger<DisableActionForContextViaAboutFacet> logger)
+            : base(typeof(IDisableForContextFacet), holder) {
             this.method = method;
             this.aboutType = aboutType;
             this.logger = logger;
@@ -42,21 +42,19 @@ namespace Legacy.Reflector.Facet {
 
         protected override string ToStringValues() => $"method={method}";
 
-        #region IHideForContextFacet Members
+        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
 
-        public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
+        public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
-
-        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
             if (nakedObjectAdapter == null) {
                 return null;
             }
 
-            bool isHidden;
+            bool isDisabled;
             if (aboutType is AboutType.Action) {
                 var about =  (Hint)LegacyAboutCache.GetActionAbout(framework, method, nakedObjectAdapter.Object);
-                isHidden = about.canAccess().IsVetoed;
+                isDisabled = about.canUse().IsVetoed;
             }
             else {
                 var about = new SimpleFieldAbout(framework.Session, nakedObjectAdapter.Object);
@@ -64,13 +62,11 @@ namespace Legacy.Reflector.Facet {
                 var parms = method.GetParameters().Length == 1 ? new object[] { about } : new object[] { about, null };
 
                 method.Invoke(nakedObjectAdapter.GetDomainObject(), parms);
-                isHidden = about.canAccess().IsVetoed;
+                isDisabled = about.canUse().IsVetoed;
             }
 
-            return isHidden ? global::NakedObjects.Resources.NakedObjects.Hidden : null;
+            return isDisabled ? global::NakedObjects.Resources.NakedObjects.Disabled : null;
         }
-
-        #endregion
 
         #region IImperativeFacet Members
 

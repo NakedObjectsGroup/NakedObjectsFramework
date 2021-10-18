@@ -40,7 +40,7 @@ namespace Legacy.Reflector.Extensions {
             frameworkOptions.Services.AddSingleton<ILegacyObjectReflectorConfiguration>(p => LegacyObjectReflectorConfig(options));
             frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
 
-            //frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
+            frameworkOptions.Services.AddDefaultScoped<LegacyAboutCache, LegacyAboutCache>();
         }
     }
 }
