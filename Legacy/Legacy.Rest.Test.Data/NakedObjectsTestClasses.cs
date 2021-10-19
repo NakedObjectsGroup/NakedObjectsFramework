@@ -27,7 +27,7 @@ namespace Legacy.Rest.Test.Data {
     }
 
 
-    public class ClassWithLegacyInterface : ILegacyRoleInterface {
+    public class ClassWithLegacyInterface :  ILegacyRoleInterface {
         [Key]
         public int Id { get; init; }
     }

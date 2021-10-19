@@ -67,8 +67,8 @@ namespace Legacy.Rest.Test.Data {
             modelBuilder.Entity<ClassWithActionAbout>().HasData(new  { Id = 1 });
             modelBuilder.Entity<ClassWithFieldAbout>().HasData(new  { Id = 1 });
 
-            modelBuilder.Entity<LegacyClassWithInterface>().HasData(new  { Id = 1 });
-            modelBuilder.Entity<ClassWithLegacyInterface>().HasData(new  { Id = 1 });
+            modelBuilder.Entity<LegacyClassWithInterface>().HasData(new  { Id = 10 });
+            modelBuilder.Entity<ClassWithLegacyInterface>().HasData(new  { Id = 10 });
 
             modelBuilder.Entity<ClassWithString>().HasData(new { Id = 1, Name = "Jill", LinkToLegacyClassId = 1, ClassWithNOFInternalCollectionId = 1 });
 

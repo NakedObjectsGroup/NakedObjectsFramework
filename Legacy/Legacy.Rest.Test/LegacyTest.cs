@@ -363,7 +363,7 @@ namespace Legacy.Rest.Test {
             ClassWithFieldAbout.TestInvisibleFlag = false;
 
             var api = Api();
-            var result = api.GetObject(FullName<ClassWithLegacyInterface>(), "1");
+            var result = api.GetObject(FullName<ClassWithLegacyInterface>(), "10");
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -393,7 +393,7 @@ namespace Legacy.Rest.Test {
             ClassWithFieldAbout.TestInvisibleFlag = false;
 
             var api = Api();
-            var result = api.GetObject(FullName<LegacyClassWithInterface>(), "1");
+            var result = api.GetObject(FullName<LegacyClassWithInterface>(), "10");
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);

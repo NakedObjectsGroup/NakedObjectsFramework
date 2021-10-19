@@ -20,7 +20,7 @@ namespace Legacy.Rest.Test.Data {
 
     public interface ILegacyRoleInterface { }
 
-
+    
     public class SimpleService {
         public ClassWithTextString GetClassWithTextString() => null;
     }
@@ -148,8 +148,9 @@ namespace Legacy.Rest.Test.Data {
         public virtual ClassWithString LinkToNOFClass { get; set; }
     }
 
-    public class LegacyClassWithInterface : IRoleInterface {
+    public class LegacyClassWithInterface :  IRoleInterface {
         [Key]
         public int Id { get; init; }
     }
+
 }
