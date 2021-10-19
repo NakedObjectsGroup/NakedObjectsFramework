@@ -50,14 +50,16 @@ namespace Legacy.Rest.Test {
             typeof(User),
             typeof(Role),
             typeof(State),
-            typeof(Title)
+            typeof(Title),
+            typeof(ILegacyRoleInterface)
         };
 
         protected Type[] LegacyServices { get; } = { typeof(SimpleService)};
 
         protected override Type[] ObjectTypes { get; } = {
             typeof(ClassWithString),
-            typeof(ClassWithLegacyInterface)
+            typeof(ClassWithLegacyInterface),
+            typeof(IRoleInterface)
         };
 
         protected override Type[] Services { get; } = { typeof(SimpleNOService) };
