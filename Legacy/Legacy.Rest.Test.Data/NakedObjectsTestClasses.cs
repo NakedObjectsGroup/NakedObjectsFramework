@@ -7,12 +7,17 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using NakedObjects;
 
 namespace Legacy.Rest.Test.Data {
     public interface IRoleInterface { }
 
     public class SimpleNOService {
         public ClassWithString GetClassWithString() => null;
+
+        public void ContributedAction([ContributedAction] LegacyClassWithInterface contributee) {
+
+        }
     }
 
     public class ClassWithString {
