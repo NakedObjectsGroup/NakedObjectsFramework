@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Legacy.Rest.Test.Data {
+    public interface IRoleInterface { }
+
     public class SimpleNOService {
         public ClassWithString GetClassWithString() => null;
     }
@@ -22,5 +24,11 @@ namespace Legacy.Rest.Test.Data {
         public virtual ClassWithTextString LinkToLegacyClass { get; set; }
 
         public virtual ICollection<ClassWithTextString> CollectionOfLegacyClass { get; set; } = new List<ClassWithTextString>();
+    }
+
+
+    public class ClassWithLegacyInterface : ILegacyRoleInterface {
+        [Key]
+        public int Id { get; init; }
     }
 }

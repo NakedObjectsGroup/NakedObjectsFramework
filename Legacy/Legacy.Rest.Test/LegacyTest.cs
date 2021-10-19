@@ -39,6 +39,7 @@ namespace Legacy.Rest.Test {
             typeof(ClassWithFieldAbout),
             typeof(ClassWithLinkToNOFClass),
             typeof(ClassWithNOFInternalCollection),
+            typeof(LegacyClassWithInterface),
             typeof(TextString),
             typeof(MultilineTextString),
             typeof(InternalCollection),
@@ -55,7 +56,8 @@ namespace Legacy.Rest.Test {
         protected Type[] LegacyServices { get; } = { typeof(SimpleService)};
 
         protected override Type[] ObjectTypes { get; } = {
-            typeof(ClassWithString)
+            typeof(ClassWithString),
+            typeof(ClassWithLegacyInterface)
         };
 
         protected override Type[] Services { get; } = { typeof(SimpleNOService) };
@@ -352,6 +354,36 @@ namespace Legacy.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["CollectionOfNOFClass"]);
 
             Assert.AreEqual("2", parsedResult["members"]["CollectionOfNOFClass"]["size"].ToString());
+        }
+
+        [Test]
+        public void TestGetObjectWithLegacyInterface() {
+            ClassWithFieldAbout.TestInvisibleFlag = false;
+
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithLegacyInterface>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNotNull(parsedResult["members"]["Id"]);
+           
+        }
+
+        [Test]
+        public void TestGetLegacyObjectWithInterface() {
+            ClassWithFieldAbout.TestInvisibleFlag = false;
+
+            var api = Api();
+            var result = api.GetObject(FullName<LegacyClassWithInterface>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNull(parsedResult["members"]["Id"]);
+          
         }
     }
 }

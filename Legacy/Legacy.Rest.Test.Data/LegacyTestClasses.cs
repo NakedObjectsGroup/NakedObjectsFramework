@@ -17,6 +17,10 @@ using NakedObjects;
 // ReSharper disable InconsistentNaming
 
 namespace Legacy.Rest.Test.Data {
+
+    public interface ILegacyRoleInterface { }
+
+
     public class SimpleService {
         public ClassWithTextString GetClassWithTextString() => null;
     }
@@ -142,5 +146,10 @@ namespace Legacy.Rest.Test.Data {
         public int Id { get; init; }
 
         public virtual ClassWithString LinkToNOFClass { get; set; }
+    }
+
+    public class LegacyClassWithInterface : IRoleInterface {
+        [Key]
+        public int Id { get; init; }
     }
 }
