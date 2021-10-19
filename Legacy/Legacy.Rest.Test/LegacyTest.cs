@@ -374,6 +374,21 @@ namespace Legacy.Rest.Test {
         }
 
         [Test]
+        public void TestGetObjectWithLegacyInterfaceConfirmSubtype() {
+            ClassWithFieldAbout.TestInvisibleFlag = false;
+
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "supertype", new ScalarValue(FullName<ILegacyRoleInterface>()) } } };
+            var api = Api();
+            var result = api.GetInvokeTypeActions(FullName<ClassWithLegacyInterface>(), "isSubtypeOf", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("True", parsedResult["value"].ToString());
+        }
+
+
+        [Test]
         public void TestGetLegacyObjectWithInterface() {
             ClassWithFieldAbout.TestInvisibleFlag = false;
 
@@ -386,6 +401,20 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
             Assert.IsNull(parsedResult["members"]["Id"]);
           
+        }
+
+        [Test]
+        public void TestGetLegacyObjectWithInterfaceConfirmSubtype() {
+            ClassWithFieldAbout.TestInvisibleFlag = false;
+
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "supertype", new ScalarValue(FullName<IRoleInterface>()) } } };
+            var api = Api();
+            var result = api.GetInvokeTypeActions(FullName<LegacyClassWithInterface>(), "isSubtypeOf", map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("True", parsedResult["value"].ToString());
         }
     }
 }
