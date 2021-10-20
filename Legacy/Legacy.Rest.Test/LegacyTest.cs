@@ -444,7 +444,11 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+            Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+
+            Assert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
+            Assert.IsNotNull(parsedResult["members"]["actionMethod2"]);
+            Assert.AreEqual("Submenu1",   parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
         }
     }
 }

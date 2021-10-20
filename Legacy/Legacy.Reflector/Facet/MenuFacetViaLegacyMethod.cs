@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
 using Legacy.NakedObjects.Application.Action;
 using NakedFramework.Architecture.Component;
@@ -23,13 +24,36 @@ namespace Legacy.Reflector.Facet {
             : base(holder) =>
             this.method = method;
 
-        private MenuImpl ConvertLegacyToNOFMenu(Menu legacyMenu, IMetamodelBuilder metamodel) {
-            return new MenuImpl(metamodel, method.DeclaringType, false, GetMenuName(Spec));
+        private string MatchMethod(string legacyName, Type declaringType) {
+            var name = $"action{legacyName}";
+            var action = declaringType.GetMethod(name, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
+
+            return action?.Name ?? legacyName;
+        }
+
+
+
+        private MenuImpl ConvertLegacyToNOFMenu(MainMenu legacyMenu, IMetamodelBuilder metamodel) {
+            var mi = new MenuImpl(metamodel, method.DeclaringType, false, GetMenuName(Spec));
+            foreach (var menu in legacyMenu.Menus) {
+                switch (menu) {
+                    case SubMenu sm:
+                        var nsm = mi.CreateSubMenu(sm.Name);
+                        // temp hack
+                        nsm.AddAction(MatchMethod(sm.Menus.Cast<IMenu>().First().Name, method.DeclaringType));
+                        break;
+                    case Menu m:
+                        mi.AddAction(MatchMethod(m.Name, method.DeclaringType));
+                        break;
+                }
+            }
+
+            return mi;
         }
 
         //Creates a menu based on the definition in the object's Menu method
         public override void CreateMenu(IMetamodelBuilder metamodel) {
-            var legacyMenu = (Menu) InvokeUtils.InvokeStatic(method, new object[] {});
+            var legacyMenu = (MainMenu) InvokeUtils.InvokeStatic(method, new object[] {});
             Menu = ConvertLegacyToNOFMenu(legacyMenu, metamodel);
         }
     }

@@ -159,10 +159,12 @@ namespace Legacy.Rest.Test.Data {
         public Title title() => new(Name);
 
         public ClassWithMenu ActionMethod1() => this;
+        public ClassWithMenu actionMethod2() => this;
 
         public static MainMenu menuOrder() {
             var menu = new MainMenu();
             menu.addMenuItem("Method1");
+            menu.addSubMenu("Submenu1")?.addMenuItem("Method2");
             return menu;
         }
     }
