@@ -450,5 +450,14 @@ namespace Legacy.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["actionMethod2"]);
             Assert.AreEqual("Submenu1",   parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
         }
+
+        [Test]
+        public void TestGetLegacyMainMenu() {
+            var api = Api();
+            var result = api.GetMenus();
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+        }
     }
 }
