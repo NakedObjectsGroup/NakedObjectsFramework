@@ -167,6 +167,11 @@ namespace Legacy.Rest.Test.Data {
             menu.addSubMenu("Submenu1")?.addMenuItem("Method2");
             return menu;
         }
+
+        public static MainMenu sharedMenuOrder() {
+            var menu = new MainMenu();
+            return menu;
+        }
     }
 }
 

@@ -7,28 +7,31 @@
 
 using System;
 using System.Collections.Immutable;
+using Legacy.NakedObjects.Application.Action;
 using Legacy.Reflector.Facet;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
+using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Menu;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.FacetFactory;
-
 
 namespace Legacy.Reflector.FacetFactory {
     public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
         private static readonly string[] FixedPrefixes;
 
         static LegacyMenuFacetFactory() {
-            FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.MenuMethod};
+            FixedPrefixes = new[] { RecognisedMethodsAndPrefixes.MenuMethod };
         }
 
         public LegacyMenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
@@ -36,11 +39,32 @@ namespace Legacy.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
+        private static IMenuImmutable ConvertLegacyToNOFMenu(MainMenu legacyMenu, IMetamodelBuilder metamodel) {
+            return new MenuImpl(metamodel, "Test", "Test");
+        }
+
+
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            // instance
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "menuOrder", null, null);
             methodRemover.SafeRemoveMethod(method);
-            var facet = method is not null ? (IFacet) new MenuFacetViaLegacyMethod(method, specification) : new MenuFacetDefault(specification);
+            var facet = method is not null ? (IFacet)new MenuFacetViaLegacyMethod(method, specification) : new MenuFacetDefault(specification);
             FacetUtils.AddFacet(facet);
+
+            // mainMenu
+            var method1 = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "sharedMenuOrder", null, null);
+            methodRemover.SafeRemoveMethod(method1);
+
+            if (method1 is not null) {
+                void Action(IMetamodelBuilder builder) {
+                    var legacyMenu = (MainMenu)InvokeUtils.InvokeStatic(method1, new object[] { });
+                    var mainMenu = ConvertLegacyToNOFMenu(legacyMenu, builder);
+                    builder.AddMainMenu(mainMenu);
+                }
+
+                FacetUtils.AddFacet(new IntegrationFacet(specification, Action));
+            }
+
             return metamodel;
         }
     }

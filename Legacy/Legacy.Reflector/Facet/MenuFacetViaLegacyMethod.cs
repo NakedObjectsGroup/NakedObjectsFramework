@@ -31,8 +31,6 @@ namespace Legacy.Reflector.Facet {
             return action?.Name ?? legacyName;
         }
 
-
-
         private MenuImpl ConvertLegacyToNOFMenu(MainMenu legacyMenu, IMetamodelBuilder metamodel) {
             var mi = new MenuImpl(metamodel, method.DeclaringType, false, GetMenuName(Spec));
             foreach (var menu in legacyMenu.Menus) {
