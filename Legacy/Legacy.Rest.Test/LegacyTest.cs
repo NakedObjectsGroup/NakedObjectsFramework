@@ -51,7 +51,8 @@ namespace Legacy.Rest.Test {
             typeof(Role),
             typeof(State),
             typeof(Title),
-            typeof(ILegacyRoleInterface)
+            typeof(ILegacyRoleInterface),
+            typeof(ClassWithMenu)
         };
 
         protected Type[] LegacyServices { get; } = { typeof(SimpleService)};
@@ -431,6 +432,19 @@ namespace Legacy.Rest.Test {
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("True", parsedResult["value"].ToString());
+        }
+
+        [Test]
+        public void TestGetLegacyObjectWithMenu() {
+         
+
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithMenu>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         }
     }
 }

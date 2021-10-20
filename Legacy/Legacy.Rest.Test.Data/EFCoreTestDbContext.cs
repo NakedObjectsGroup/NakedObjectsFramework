@@ -35,6 +35,7 @@ namespace Legacy.Rest.Test.Data {
         public DbSet<ClassWithNOFInternalCollection> ClassesWithNOFInternalCollection { get; set; }
         public DbSet<LegacyClassWithInterface> LegacyClassWithInterfaces { get; set; }
         public DbSet<ClassWithLegacyInterface> ClassWithLegacyInterfaces { get; set; }
+        public DbSet<ClassWithMenu> ClassWithMenus { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(cs);
@@ -66,6 +67,7 @@ namespace Legacy.Rest.Test.Data {
 
             modelBuilder.Entity<ClassWithActionAbout>().HasData(new  { Id = 1 });
             modelBuilder.Entity<ClassWithFieldAbout>().HasData(new  { Id = 1 });
+            modelBuilder.Entity<ClassWithMenu>().HasData(new { Id = 1 });
 
             modelBuilder.Entity<LegacyClassWithInterface>().HasData(new  { Id = 10 });
             modelBuilder.Entity<ClassWithLegacyInterface>().HasData(new  { Id = 10 });

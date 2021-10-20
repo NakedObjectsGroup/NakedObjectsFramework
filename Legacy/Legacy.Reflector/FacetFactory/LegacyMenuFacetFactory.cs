@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Immutable;
+using Legacy.Reflector.Facet;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
@@ -20,6 +21,7 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.FacetFactory;
+
 
 namespace Legacy.Reflector.FacetFactory {
     public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
@@ -35,9 +37,9 @@ namespace Legacy.Reflector.FacetFactory {
         public string[] Prefixes => FixedPrefixes;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null);
+            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "menuOrder", null, null);
             methodRemover.SafeRemoveMethod(method);
-            var facet = method is not null ? (IFacet) new MenuFacetViaMethod(method, specification) : new MenuFacetDefault(specification);
+            var facet = method is not null ? (IFacet) new MenuFacetViaLegacyMethod(method, specification) : new MenuFacetDefault(specification);
             FacetUtils.AddFacet(facet);
             return metamodel;
         }

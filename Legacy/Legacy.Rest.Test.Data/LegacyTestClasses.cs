@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Legacy.NakedObjects.Application;
+using Legacy.NakedObjects.Application.Action;
 using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.Control;
 using Legacy.NakedObjects.Application.ValueHolder;
@@ -17,10 +18,8 @@ using NakedObjects;
 // ReSharper disable InconsistentNaming
 
 namespace Legacy.Rest.Test.Data {
-
     public interface ILegacyRoleInterface { }
 
-    
     public class SimpleService {
         public ClassWithTextString GetClassWithTextString() => null;
     }
@@ -105,12 +104,10 @@ namespace Legacy.Rest.Test.Data {
 
     public class ClassWithActionAbout {
         public static bool TestInvisibleFlag = false;
-        public static int AboutCount = 0;
-
+        public static int AboutCount;
 
         [Key]
         public int Id { get; init; }
-
 
         public void actionTestAction() {
             // do something
@@ -148,9 +145,59 @@ namespace Legacy.Rest.Test.Data {
         public virtual ClassWithString LinkToNOFClass { get; set; }
     }
 
-    public class LegacyClassWithInterface :  IRoleInterface {
+    public class LegacyClassWithInterface : IRoleInterface {
         [Key]
         public int Id { get; init; }
     }
 
+    public class ClassWithMenu {
+        [Key]
+        public int Id { get; init; }
+
+        public TextString Name => new($"{nameof(GetType)}/{Id}");
+
+        public Title title() => new(Name);
+
+        public ClassWithMenu ActionMethod1() => this;
+
+        public static MainMenu menuOrder() {
+            var menu = new MainMenu();
+            menu.addMenuItem("Method1");
+            return menu;
+        }
+    }
 }
+
+// class menu
+//public static MainMenu sharedMenuOrder() {
+//    MainMenu mainMenu = new MainMenu();
+//    mainMenu.addMenuItem("ExtendChildClaim");
+//    mainMenu.addMenuItem("FindSchool");
+//    mainMenu.addMenuItem("AddChildBenefitToNewCase");
+//    mainMenu.addMenuItem("AddAnotherChildBenefitToExistingCase");
+//    mainMenu.addMenuItem("FindForPPSN");
+//    mainMenu.addMenuItem("FindAllChildClaimsForPPSN");
+//    mainMenu.addMenuItem("AddChildBenefitToExistingCase");
+//    SubMenu subMenu = mainMenu.getSubMenu("Decisions");
+//    if (subMenu != null) {
+//        subMenu.addMenuItem("DisallowScheme");
+//        subMenu.addMenuItem("WithdrawScheme");
+//    }
+//    return mainMenu;
+//}
+
+// instance menu
+//public new static MainMenu menuOrder() {
+//    MainMenu mainMenu = Scheme.menuOrder();
+//    mainMenu.removeMenuItem("Individualised or Separate Payments");
+//    mainMenu.addMenuItem("AddChildClaim");
+//    mainMenu.addMenuItem("AddChildClaimForSelf");
+//    mainMenu.addSubMenu(ChildBenefit.communicationsSubMenu());
+//    SubMenu subMenu = mainMenu.getSubMenu("Update");
+//    subMenu.addMenuItem("UpdateResidencyStatus");
+//    subMenu.addSubMenu(ChildBenefit.NoEFTAllowedSubMenu());
+//    subMenu.addMenuItem("UpdateCountryOfResidence");
+//    mainMenu.getSubMenu("Decisions").addMenuItem("DisallowScheme");
+//    mainMenu.getSubMenu("Decisions").addMenuItem("WithdrawScheme");
+//    return mainMenu;
+//}
