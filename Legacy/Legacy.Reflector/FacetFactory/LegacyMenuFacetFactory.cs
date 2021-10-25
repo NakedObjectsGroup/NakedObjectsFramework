@@ -7,6 +7,8 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Reflection;
 using Legacy.NakedObjects.Application.Action;
 using Legacy.Reflector.Facet;
 using Microsoft.Extensions.Logging;
@@ -25,6 +27,7 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Resources;
 
 namespace Legacy.Reflector.FacetFactory {
     public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
@@ -39,8 +42,34 @@ namespace Legacy.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private static IMenuImmutable ConvertLegacyToNOFMenu(MainMenu legacyMenu, IMetamodelBuilder metamodel) {
-            return new MenuImpl(metamodel, "Test", "Test");
+        private static string GetMenuName(ITypeSpecImmutable spec) =>  spec.GetFacet<INamedFacet>().NaturalName;
+
+
+        private static string MatchMethod(string legacyName, Type declaringType) {
+            var name = $"action{legacyName}";
+            var action = declaringType.GetMethod(name, BindingFlags.IgnoreCase | BindingFlags.Static | BindingFlags.Public);
+
+            return action?.Name ?? legacyName;
+        }
+
+
+        private static IMenuImmutable ConvertLegacyToNOFMenu(MainMenu legacyMenu, Type type, IMetamodelBuilder metamodel) {
+            var spec = metamodel.GetSpecification(type);
+            var mi = new MenuImpl(metamodel, type, false, GetMenuName(spec));
+            foreach (var menu in legacyMenu.Menus) {
+                switch (menu) {
+                    case SubMenu sm:
+                        var nsm = mi.CreateSubMenu(sm.Name);
+                        // temp hack
+                        nsm.AddAction(MatchMethod(sm.Menus.Cast<IMenu>().First().Name, type));
+                        break;
+                    case Menu m:
+                        mi.AddAction(MatchMethod(m.Name, type));
+                        break;
+                }
+            }
+
+            return mi;
         }
 
 
@@ -58,7 +87,7 @@ namespace Legacy.Reflector.FacetFactory {
             if (method1 is not null) {
                 void Action(IMetamodelBuilder builder) {
                     var legacyMenu = (MainMenu)InvokeUtils.InvokeStatic(method1, new object[] { });
-                    var mainMenu = ConvertLegacyToNOFMenu(legacyMenu, builder);
+                    var mainMenu = ConvertLegacyToNOFMenu(legacyMenu, method1.DeclaringType, builder);
                     builder.AddMainMenu(mainMenu);
                 }
 

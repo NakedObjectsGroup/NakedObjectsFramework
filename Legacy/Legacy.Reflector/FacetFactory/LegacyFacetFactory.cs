@@ -44,7 +44,6 @@ namespace Legacy.Reflector.FacetFactory {
         public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
             return candidates.Where(methodInfo => methodInfo.Name.ToLower().StartsWith("action") &&
                                                   !classStrategy.IsIgnored(methodInfo) &&
-                                                  !methodInfo.IsStatic &&
                                                   !methodInfo.IsGenericMethod &&
                                                   !classStrategy.IsIgnored(methodInfo.ReturnType)).ToArray();
         }
@@ -76,10 +75,16 @@ namespace Legacy.Reflector.FacetFactory {
 
             IObjectSpecBuilder elementSpec;
             (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(typeof(object), metamodel);
-            ;
 
             methodRemover.SafeRemoveMethod(actionMethod);
-            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, false, Logger<ActionInvocationFacetViaMethod>()));
+
+            if (actionMethod.IsStatic) {
+                facets.Add(new StaticMethodFacet(action));
+                facets.Add(new ActionInvocationFacetViaStaticMethod(actionMethod, onType, returnSpec, elementSpec, action, false, Logger<ActionInvocationFacetViaStaticMethod>()));
+            }
+            else {
+                facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, false, Logger<ActionInvocationFacetViaMethod>()));
+            }
 
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name[6..]); //remove 'action' from front 
 

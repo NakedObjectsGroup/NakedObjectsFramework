@@ -454,10 +454,14 @@ namespace Legacy.Rest.Test {
         [Test]
         public void TestGetLegacyMainMenu() {
             var api = Api();
-            var result = api.GetMenus();
+            var result = api.GetMenu("ClassWithMenu");
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+
+            Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
         }
     }
 }

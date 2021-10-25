@@ -161,6 +161,9 @@ namespace Legacy.Rest.Test.Data {
         public ClassWithMenu ActionMethod1() => this;
         public ClassWithMenu actionMethod2() => this;
 
+        public static ClassWithMenu ActionMenuAction() => null;
+
+
         public static MainMenu menuOrder() {
             var menu = new MainMenu();
             menu.addMenuItem("Method1");
@@ -170,6 +173,7 @@ namespace Legacy.Rest.Test.Data {
 
         public static MainMenu sharedMenuOrder() {
             var menu = new MainMenu();
+            menu.addMenuItem("MenuAction");
             return menu;
         }
     }
