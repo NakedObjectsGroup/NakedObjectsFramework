@@ -10,7 +10,7 @@ namespace Legacy.Reflector.Component {
     public class LegacyAboutCache {
         private readonly IDictionary<object, IDictionary<MethodInfo, ActionAbout>> cacheDictionary = new Dictionary<object, IDictionary<MethodInfo, ActionAbout>>();
 
-        private ActionAbout InvokeOrReturnCachedAbout(INakedObjectsFramework framework, MethodInfo aboutMethod, object target) {
+        private ActionAbout InvokeOrReturnCachedAbout(INakedFramework framework, MethodInfo aboutMethod, object target) {
             ActionAbout InvokeAbout() {
                 var about = new SimpleActionAbout(framework.Session, target, Array.Empty<object>());
                 aboutMethod.Invoke(target, new object[] { about });
@@ -27,7 +27,7 @@ namespace Legacy.Reflector.Component {
             return cacheDictionary[target][aboutMethod];
         }
 
-        public static ActionAbout GetActionAbout(INakedObjectsFramework framework, MethodInfo aboutMethod, object target) =>
+        public static ActionAbout GetActionAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
             framework.ServiceProvider.GetService<LegacyAboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
     }
 }

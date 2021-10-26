@@ -84,7 +84,7 @@ namespace Legacy.Rest.Test {
                 AddLegacy(builder);
             };
 
-        protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
+        protected new Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
             config => {
                 var context = new EFCoreObjectDbContext();
                 context.Create();

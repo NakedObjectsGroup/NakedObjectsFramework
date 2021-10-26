@@ -20,11 +20,11 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NakedObjects.Server" Version="12.0.0" />
-  </ItemGroup>
+ 
 
   <ItemGroup>
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
+    <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
     <ProjectReference Include="..\Legacy.NakedObjects\Legacy.NakedObjects.csproj" />
   </ItemGroup>
 
