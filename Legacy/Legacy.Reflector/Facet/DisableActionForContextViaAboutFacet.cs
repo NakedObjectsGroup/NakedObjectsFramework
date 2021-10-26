@@ -46,7 +46,7 @@ namespace Legacy.Reflector.Facet {
 
         public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectsFramework framework) {
             if (nakedObjectAdapter == null) {
                 return null;
             }

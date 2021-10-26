@@ -55,7 +55,7 @@ namespace Legacy.Reflector.Facet {
 
         public override bool IsQueryOnly { get; }
 
-        private INakedObjectAdapter HandleInvokeResult(INakedFramework framework, object result) =>
+        private INakedObjectAdapter HandleInvokeResult(INakedObjectsFramework framework, object result) =>
             // if any changes made by invocation fail 
             framework.NakedObjectManager.CreateAdapter(result, null, null);
 
@@ -69,7 +69,7 @@ namespace Legacy.Reflector.Facet {
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
                                                    INakedObjectAdapter[] parameters,
-                                                   INakedFramework framework) {
+                                                   INakedObjectsFramework framework) {
             if (parameters.Length != paramCount) {
                 logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
             }
@@ -82,7 +82,7 @@ namespace Legacy.Reflector.Facet {
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
                                                    INakedObjectAdapter[] parameters,
                                                    int resultPage,
-                                                   INakedFramework framework) =>
+                                                   INakedObjectsFramework framework) =>
             Invoke(nakedObjectAdapter, parameters, framework);
 
         protected override string ToStringValues() => $"method={ActionMethod}";

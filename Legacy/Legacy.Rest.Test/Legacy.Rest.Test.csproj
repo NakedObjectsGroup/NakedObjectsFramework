@@ -21,12 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NakedObjects.Server" Version="12.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Test\NakedFramework.Test.csproj" />
-    <ProjectReference Include="..\Legacy.NakedObjects\Legacy.NakedObjects.csproj" />
     <ProjectReference Include="..\Legacy.Reflector\Legacy.Reflector.csproj" />
     <ProjectReference Include="..\Legacy.Rest.Test.Data\Legacy.Rest.Test.Data.csproj" />
   </ItemGroup>
