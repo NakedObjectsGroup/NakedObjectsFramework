@@ -15,9 +15,9 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFunctions.Reflector.Utils;
 
 namespace Legacy.Reflector.Facet {
     [Serializable]
@@ -59,6 +59,14 @@ namespace Legacy.Reflector.Facet {
             // if any changes made by invocation fail 
             framework.NakedObjectManager.CreateAdapter(result, null, null);
 
+        private static T Invoke<T>(Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) {
+            try {
+                return methodDelegate is not null ? (T)methodDelegate(null, parms) : (T)method.Invoke(null, parms);
+            } catch (InvalidCastException) {
+                throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.DeclaringType}.{method.Name}");
+            }
+        }
+
         public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
                                                    INakedObjectAdapter[] parameters,
                                                    INakedFramework framework) {
@@ -68,7 +76,7 @@ namespace Legacy.Reflector.Facet {
 
             var rawParms = parameters.Select(p => p?.Object).ToArray();
 
-            return HandleInvokeResult(framework, methodDelegate.Invoke<object>(ActionMethod, rawParms));
+            return HandleInvokeResult(framework, Invoke<object>(methodDelegate, ActionMethod, rawParms));
         }
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,

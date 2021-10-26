@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Legacy.Server</id>
+    <version>1.0.0-alpha01</version>
+    <authors>Naked Objects Group Ltd</authors>
+    <owners>Naked Objects Group Ltd</owners>
+    <license type="expression">Apache-2.0</license>
+    <projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
+    <icon>images\icon.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
+    <description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
+    <tags>naked objects nakedobjects ddd domain driven design</tags>
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="NakedObjects.Server" version="[12.0.0, 13)" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="icon.png" target="images\" />
+    <file src="..\..\Legacy\Legacy.NakedObjects\bin\Debug\**\Legacy.NakedObjects.dll" target="lib" />
+    <file src="..\..\Legacy\Legacy.Reflector\bin\Debug\**\Legacy.Reflector.dll" target="lib" />
+
+
+    <file src="..\..\Legacy\Legacy.NakedObjects\bin\Debug\**\Legacy.NakedObjects.pdb" target="lib" />
+    <file src="..\..\Legacy\Legacy.Reflector\bin\Debug\**\Legacy.Reflector.pdb" target="lib" />
+  </files>
+</package>

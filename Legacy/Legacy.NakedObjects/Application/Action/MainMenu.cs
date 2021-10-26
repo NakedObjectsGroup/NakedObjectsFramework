@@ -4,9 +4,7 @@
 // MVID: 99352736-2C6C-4D77-94E7-E744D03082F7
 // Assembly location: C:\Users\scasc\Documents\sdm\SdmApp-Dlls.part02\bin\sdm.systems.application.dll
 
-using System;
 using System.Collections;
-using System.Reflection;
 
 namespace Legacy.NakedObjects.Application.Action {
     public class MainMenu : Menu, IMainMenu {

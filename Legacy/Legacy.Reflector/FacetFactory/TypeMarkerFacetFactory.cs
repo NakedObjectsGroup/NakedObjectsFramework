@@ -17,7 +17,6 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.TypeFacetFactory;
 
 namespace Legacy.Reflector.FacetFactory {
     public sealed class TypeMarkerFacetFactory : LegacyFacetFactoryProcessor {
