@@ -7,7 +7,7 @@
 
 using System.Collections.Immutable;
 using System.Reflection;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using AdventureWorksLegacyModel.Production;
 using AdventureWorksLegacyModel.Sales;
 using Microsoft.Extensions.Logging;

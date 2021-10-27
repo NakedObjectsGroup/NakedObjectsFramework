@@ -7,16 +7,14 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using AdventureWorksLegacyModel.Sales;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Person {
+namespace AdventureWorksLegacyModel.Persons {
 
-    [Bounded,Immutable]
-    public class StateProvince {
+    [Bounded]
+    public class ContactType {
         #region Life Cycle Methods
         public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
             ModifiedDate = DateTime.Now;
         }
 
@@ -24,22 +22,10 @@ namespace AdventureWorksLegacyModel.Person {
             ModifiedDate = DateTime.Now;
         }
         #endregion
-        #region StateProvinceID
+        #region ID
 
         [NakedObjectsIgnore]
-        public virtual int StateProvinceID { get; set; }
-
-        #endregion
-
-        #region StateProvinceCode
-
-        public virtual string StateProvinceCode { get; set; }
-
-        #endregion
-
-        #region IsOnlyStateProvinceFlag
-
-        public virtual bool IsOnlyStateProvinceFlag { get; set; }
+        public virtual int ContactTypeID { get; set; }
 
         #endregion
 
@@ -50,41 +36,12 @@ namespace AdventureWorksLegacyModel.Person {
 
         #endregion
 
-        #region CountryRegion
-
-        [NakedObjectsIgnore]
-        public virtual string CountryRegionCode { get; set; }
-
-        public virtual CountryRegion CountryRegion { get; set; }
-
-        #endregion
-
-        #region SalesTerritory
-
-        [NakedObjectsIgnore]
-        public virtual int TerritoryID { get; set; }
-
-        public virtual SalesTerritory SalesTerritory { get; set; }
-
-        #endregion
-
-        #region Row Guid and Modified Date
-
-        #region rowguid
-
-        [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
-
-        #endregion
-
         #region ModifiedDate
 
         [MemberOrder(99)]
         [Disabled]
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
 
         #endregion
     }

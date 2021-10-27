@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Person {
+namespace AdventureWorksLegacyModel.Persons {
     [Bounded]
     public class PhoneNumberType {
         [NakedObjectsIgnore]

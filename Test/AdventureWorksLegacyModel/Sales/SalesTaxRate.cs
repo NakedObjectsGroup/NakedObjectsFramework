@@ -8,7 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 using NakedObjects.Redirect;
 

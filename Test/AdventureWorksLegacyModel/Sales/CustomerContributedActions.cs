@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using NakedFramework;
 using NakedObjects;
 using NakedObjects.Services;

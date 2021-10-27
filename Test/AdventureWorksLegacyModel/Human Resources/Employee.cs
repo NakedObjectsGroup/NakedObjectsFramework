@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using AdventureWorksLegacyModel.Sales;
 using NakedObjects;
 
@@ -50,7 +50,7 @@ namespace AdventureWorksLegacyModel.Human_Resources {
         public virtual int BusinessEntityID { get; set; }
 
          [MemberOrder(1), Disabled]
-        public virtual Person.Person PersonDetails { get; set; }
+        public virtual Person PersonDetails { get; set; }
 
         [MemberOrder(10)]
         public virtual string NationalIDNumber { get; set; }

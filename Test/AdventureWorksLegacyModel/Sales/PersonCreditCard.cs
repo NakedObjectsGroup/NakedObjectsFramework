@@ -7,6 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 
 namespace AdventureWorksLegacyModel.Sales {
@@ -28,7 +29,7 @@ namespace AdventureWorksLegacyModel.Sales {
         public virtual int CreditCardID { get; set; }
 
         [Title]
-        public virtual Person.Person Person { get; set; }
+        public virtual Person Person { get; set; }
 
         public virtual CreditCard CreditCard { get; set; }
 

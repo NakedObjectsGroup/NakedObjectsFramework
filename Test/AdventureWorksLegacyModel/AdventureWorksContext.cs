@@ -1,11 +1,10 @@
 using System.Data.Entity;
 using AdventureWorksLegacyModel.Human_Resources;
 using AdventureWorksLegacyModel.Mapping;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using AdventureWorksLegacyModel.Production;
 using AdventureWorksLegacyModel.Purchasing;
 using AdventureWorksLegacyModel.Sales;
-using AdventureWorksModel;
 
 namespace AdventureWorksLegacyModel
 {
@@ -37,7 +36,7 @@ namespace AdventureWorksLegacyModel
         public DbSet<BusinessEntity> BusinessEntities { get; set; }
         public DbSet<BusinessEntityAddress> BusinessEntityAddresses { get; set; }
         public DbSet<BusinessEntityContact> BusinessEntityContacts { get; set; }
-        public DbSet<Person.Person> Contacts { get; set; }
+        public DbSet<Person> Contacts { get; set; }
         public DbSet<ContactType> ContactTypes { get; set; }
         public DbSet<CountryRegion> CountryRegions { get; set; }
         public DbSet<PersonPhone> PersonPhones { get; set; }

@@ -8,7 +8,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 using NakedObjects.Services;
 

@@ -1,11 +1,12 @@
 using System.Data.Entity.ModelConfiguration;
 using AdventureWorksLegacyModel.Human_Resources;
+using AdventureWorksLegacyModel.Persons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AdventureWorksLegacyModel.Mapping
 {
-    public class PersonMap : EntityTypeConfiguration<Person.Person>
+    public class PersonMap : EntityTypeConfiguration<Person>
     {
         public PersonMap()
         {
@@ -57,7 +58,7 @@ namespace AdventureWorksLegacyModel.Mapping
 
     public static partial class Mapper
     {
-        public static void Map(this EntityTypeBuilder<Person.Person> builder)
+        public static void Map(this EntityTypeBuilder<Person> builder)
         {
             //builder.HasKey(t => t.BusinessEntityID);
 

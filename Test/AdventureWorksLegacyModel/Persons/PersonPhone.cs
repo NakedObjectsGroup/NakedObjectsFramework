@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Person {
+namespace AdventureWorksLegacyModel.Persons {
     public partial class PersonPhone {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

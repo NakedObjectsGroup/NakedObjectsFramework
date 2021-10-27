@@ -1,6 +1,6 @@
 ﻿using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Person {
+namespace AdventureWorksLegacyModel.Persons {
     /// <summary>
     /// Defines actions contributed to a business entity for managing associated addresses and contacts
     /// </summary>

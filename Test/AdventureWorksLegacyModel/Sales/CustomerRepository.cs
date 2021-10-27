@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using NakedFramework.Error;
 using NakedFramework.Menu;
 using NakedObjects;
@@ -137,7 +137,7 @@ namespace AdventureWorksLegacyModel.Sales {
         [MemberOrder(30)]
         [TableView(true)] //Table view == List View
         public IQueryable<Customer> FindIndividualCustomerByName([Optionally] string firstName, string lastName) {
-            IQueryable<Person.Person> matchingPersons = ContactRepository.FindContactByName(firstName, lastName);
+            IQueryable<Person> matchingPersons = ContactRepository.FindContactByName(firstName, lastName);
             return from c in Instances<Customer>()
                    from p in matchingPersons
                    where c.PersonID == p.BusinessEntityID
@@ -148,7 +148,7 @@ namespace AdventureWorksLegacyModel.Sales {
         [MemberOrder(50)]
         public Customer CreateNewIndividualCustomer(string firstName, string lastName, [DataType(DataType.Password)] string initialPassword) {
             var indv = NewTransientInstance<Customer>();
-            var person = NewTransientInstance<Person.Person>();
+            var person = NewTransientInstance<Person>();
             person.FirstName = firstName;
             person.LastName = lastName;
             person.EmailPromotion = 0;

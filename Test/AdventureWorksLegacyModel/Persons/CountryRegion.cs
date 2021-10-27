@@ -9,10 +9,10 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Person {
+namespace AdventureWorksLegacyModel.Persons {
 
-    [Bounded]
-    public class ContactType {
+    [Bounded, Immutable]
+    public class CountryRegion {
         #region Life Cycle Methods
         public virtual void Persisting() {
             ModifiedDate = DateTime.Now;
@@ -22,10 +22,9 @@ namespace AdventureWorksLegacyModel.Person {
             ModifiedDate = DateTime.Now;
         }
         #endregion
-        #region ID
+        #region CountryRegionCode
 
-        [NakedObjectsIgnore]
-        public virtual int ContactTypeID { get; set; }
+        public virtual string CountryRegionCode { get; set; }
 
         #endregion
 

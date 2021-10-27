@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksLegacyModel", "Test\AdventureWorksLegacyModel\AdventureWorksLegacyModel.csproj", "{93030F3E-CB48-4747-8C2E-B8CC2D8081BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Rest.App.Demo", "Test\Legacy.Rest.App.Demo\Legacy.Rest.App.Demo.csproj", "{148766BA-4612-4C2D-B4FF-37E830E1584F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93030F3E-CB48-4747-8C2E-B8CC2D8081BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93030F3E-CB48-4747-8C2E-B8CC2D8081BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93030F3E-CB48-4747-8C2E-B8CC2D8081BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93030F3E-CB48-4747-8C2E-B8CC2D8081BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{148766BA-4612-4C2D-B4FF-37E830E1584F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148766BA-4612-4C2D-B4FF-37E830E1584F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148766BA-4612-4C2D-B4FF-37E830E1584F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148766BA-4612-4C2D-B4FF-37E830E1584F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C36D66A9-187D-4006-9C9C-EDB600FB9E7A}
+	EndGlobalSection
+EndGlobal

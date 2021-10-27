@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 
 namespace AdventureWorksLegacyModel.Purchasing {
@@ -90,8 +90,8 @@ namespace AdventureWorksLegacyModel.Purchasing {
 
         #endregion
 
-        public Person.Person CreateNewContact() {
-            var _Contact = Container.NewTransientInstance<Person.Person>();
+        public Person CreateNewContact() {
+            var _Contact = Container.NewTransientInstance<Person>();
             _Contact.ForEntity = this;
             return _Contact;
         }

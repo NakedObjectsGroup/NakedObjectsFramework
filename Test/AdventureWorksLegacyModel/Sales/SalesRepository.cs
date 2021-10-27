@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using NakedFramework.Menu;
 using NakedObjects;
 using NakedObjects.Services;
@@ -26,7 +26,7 @@ namespace AdventureWorksLegacyModel.Sales {
         [FinderAction]
         [TableView(true, "SalesTerritory")]
         public IQueryable<SalesPerson> FindSalesPersonByName([Optionally] string firstName, string lastName) {
-            IQueryable<Person.Person> matchingPersons = ContactRepository.FindContactByName(firstName, lastName);
+            IQueryable<Person> matchingPersons = ContactRepository.FindContactByName(firstName, lastName);
 
             return from sp in Instances<SalesPerson>()
                 from person in matchingPersons

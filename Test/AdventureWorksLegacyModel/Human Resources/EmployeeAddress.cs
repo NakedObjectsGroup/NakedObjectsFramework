@@ -7,7 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 
 namespace AdventureWorksLegacyModel.Human_Resources {

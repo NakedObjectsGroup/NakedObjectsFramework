@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 
 namespace AdventureWorksLegacyModel.Sales {
@@ -73,7 +73,7 @@ namespace AdventureWorksLegacyModel.Sales {
         public virtual Employee EmployeeDetails { get; set; }
 
         [MemberOrder(11)]
-        public virtual Person.Person PersonDetails {
+        public virtual Person PersonDetails {
             get {
                 return EmployeeDetails.PersonDetails;
             }

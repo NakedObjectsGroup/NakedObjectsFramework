@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using Legacy.Reflector.Extensions;
 using Legacy.Rest.App.Demo.CustomReflectorExtensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,6 +56,10 @@ namespace Legacy.Rest.App.Demo {
                         services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AWNotCountedAnnotationFacetFactoryParallel));
                         services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AWNotNavigableFacetFactoryParallel));
                     };
+                });
+                builder.AddLegacy(options => {
+                    options.NoValidate = true;
+                    options.DomainModelTypes = new Type[] { };
                 });
             });
             services.AddCors(options => {

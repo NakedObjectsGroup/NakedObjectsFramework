@@ -11,7 +11,7 @@ using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace AdventureWorksLegacyModel.Person {
+namespace AdventureWorksLegacyModel.Persons {
     [DisplayName("Contacts")]
     public class PersonRepository : AbstractFactoryAndRepository {
 

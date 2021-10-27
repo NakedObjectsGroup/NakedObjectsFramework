@@ -7,7 +7,7 @@
 
 using System;
 using System.ComponentModel;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using NakedFramework;
 using NakedFramework.Error;
 using NakedObjects;
@@ -80,7 +80,7 @@ namespace AdventureWorksLegacyModel.Sales {
         public virtual int? PersonID { get; set; }
 
         [Disabled, MemberOrder(20)]
-        public virtual Person.Person Person { get; set; }
+        public virtual Person Person { get; set; }
 
         public bool HidePerson() {
             return !IsIndividual();

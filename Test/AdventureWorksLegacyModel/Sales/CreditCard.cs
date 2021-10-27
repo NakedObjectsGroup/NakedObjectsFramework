@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using AdventureWorksLegacyModel.Persons;
 using NakedFramework;
 using NakedObjects;
 
@@ -134,7 +135,7 @@ namespace AdventureWorksLegacyModel.Sales {
         public ICreditCardCreator Creator { get; set; }
 
         [NotPersisted]
-        public Person.Person ForContact { get; set; }
+        public Person ForContact { get; set; }
 
         #endregion
     }

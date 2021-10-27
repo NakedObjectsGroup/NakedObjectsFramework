@@ -15,12 +15,11 @@ using System.Security.Cryptography;
 using System.Text;
 using AdventureWorksLegacyModel.Human_Resources;
 using AdventureWorksLegacyModel.Sales;
-using AdventureWorksModel;
 using NakedFramework;
 using NakedFramework.Value;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Person {
+namespace AdventureWorksLegacyModel.Persons {
 
     public class Person : BusinessEntity {
 

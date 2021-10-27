@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Person;
+using AdventureWorksLegacyModel.Persons;
 using NakedFramework;
 using NakedObjects;
 using NakedObjects.Services;
@@ -44,7 +44,7 @@ namespace AdventureWorksLegacyModel.Human_Resources {
             nameof(Employee.Manager))]
         [MultiLine]
         public IQueryable<Employee> FindEmployeeByName([Optionally] string firstName, string lastName) {
-            IQueryable<Person.Person> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
+            IQueryable<Person> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
 
             IQueryable<Employee> query = from emp in Instances<Employee>()
                 from contact in matchingContacts
@@ -71,7 +71,7 @@ namespace AdventureWorksLegacyModel.Human_Resources {
 
         #endregion
 
-        public Employee CreateNewEmployeeFromContact([ContributedAction("Employees")] [FindMenu] Person.Person contactDetails) {
+        public Employee CreateNewEmployeeFromContact([ContributedAction("Employees")] [FindMenu] Person contactDetails) {
             var _Employee = Container.NewTransientInstance<Employee>();
             _Employee.BusinessEntityID = contactDetails.BusinessEntityID;
             _Employee.PersonDetails = contactDetails;
@@ -79,8 +79,8 @@ namespace AdventureWorksLegacyModel.Human_Resources {
         }
 
         [PageSize(20)]
-        public IQueryable<Person.Person> AutoComplete0CreateNewEmployeeFromContact([MinLength(2)] string name) {
-            return Container.Instances<Person.Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
+        public IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact([MinLength(2)] string name) {
+            return Container.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
         }
 
         [FinderAction]

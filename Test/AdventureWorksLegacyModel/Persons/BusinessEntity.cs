@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Person {
+namespace AdventureWorksLegacyModel.Persons {
     public class BusinessEntity : IBusinessEntity {
         #region Injected Services 
         public IDomainObjectContainer Container { set; protected get; }

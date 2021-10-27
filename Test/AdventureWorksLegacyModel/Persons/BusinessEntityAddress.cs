@@ -3,28 +3,35 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Person {
-    [DisplayName("Contact")]
-    public partial class BusinessEntityContact {
-
+namespace AdventureWorksLegacyModel.Persons
+{
+    [DisplayName("Address")]
+    public  class BusinessEntityAddress {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
 
-        #region Title
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(ContactType).Append(":", Person);
-            return t.ToString();
+        #region LifeCycle methods
+        public void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(AddressType).Append(":", Address);
+            return t.ToString();
+        }
+
+        [Disabled]
         public virtual int BusinessEntityID { get; set; }
-        [NakedObjectsIgnore]
-        public virtual int PersonID { get; set; }
-        [NakedObjectsIgnore]
-        public virtual int ContactTypeID { get; set; }
+
+        [Disabled]
+        public virtual int AddressID { get; set; }
+
+        [Disabled]
+        public virtual int AddressTypeID { get; set; }
         #region Row Guid and Modified Date
 
         #region rowguid
@@ -45,9 +52,15 @@ namespace AdventureWorksLegacyModel.Person {
 
         #endregion
 
-        [NakedObjectsIgnore]
+        [MemberOrder(1)]
+        [Optionally]
+        public virtual AddressType AddressType { get; set; }
+
+        [MemberOrder(2)]
+        [Optionally]
+        public virtual Address Address { get; set; }
+
+        [MemberOrder(3)]
         public virtual BusinessEntity BusinessEntity { get; set; }
-        public virtual ContactType ContactType { get; set; }
-        public virtual Person Person { get; set; }
     }
 }

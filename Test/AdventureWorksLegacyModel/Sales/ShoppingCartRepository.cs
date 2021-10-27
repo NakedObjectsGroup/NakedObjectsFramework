@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using AdventureWorksLegacyModel.Persons;
 using AdventureWorksLegacyModel.Production;
 using NakedObjects;
 using NakedObjects.Services;
@@ -91,7 +92,7 @@ namespace AdventureWorksLegacyModel.Sales {
             //return null;
         }
 
-        private Person.Person GetContactFromUserNameAsEmail() {
+        private Person GetContactFromUserNameAsEmail() {
             string username = UserName();
 
             //var q = from c in Container.Instances<Person>()
