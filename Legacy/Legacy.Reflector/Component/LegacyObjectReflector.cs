@@ -34,7 +34,7 @@ namespace Legacy.Reflector.Component {
         }
 
         public override bool ConcurrencyChecking => legacyObjectReflectorConfiguration.ConcurrencyChecking;
-        public override string Name => "Naked Objects";
+        public override string Name => "Legacy";
         public override ReflectorType ReflectorType => ReflectorType.Object;
         public override bool IgnoreCase => legacyObjectReflectorConfiguration.IgnoreCase;
 
