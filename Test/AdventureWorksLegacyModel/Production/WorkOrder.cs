@@ -13,7 +13,7 @@ using System.Linq;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Production {
+namespace AdventureWorksModel {
 
     public class WorkOrder  {
         #region Injected Servives

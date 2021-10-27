@@ -8,11 +8,10 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     [DisplayName("Orders")]
     public class OrderContributedActions : AbstractFactoryAndRepository {
         private const string subMenu = "Orders";

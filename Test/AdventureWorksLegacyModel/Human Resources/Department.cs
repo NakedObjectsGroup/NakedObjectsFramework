@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Human_Resources {
+namespace AdventureWorksModel {
 
     [Bounded]
     [Immutable]

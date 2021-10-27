@@ -1,11 +1,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Sales;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdventureWorksLegacyModel.Mapping
+namespace AdventureWorksModel
 {
     public class SalesPersonMap : EntityTypeConfiguration<SalesPerson>
     {

@@ -7,7 +7,7 @@
 
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     public interface ICreditCardCreator {
 
         [NakedObjectsIgnore]

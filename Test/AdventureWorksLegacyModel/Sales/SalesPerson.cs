@@ -9,11 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
 
     public class SalesPerson : IBusinessEntity {
 

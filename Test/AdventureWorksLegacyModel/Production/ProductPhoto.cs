@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework.Value;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Production {
+namespace AdventureWorksModel {
     public class ProductPhoto  {
 
         #region Life Cycle Methods

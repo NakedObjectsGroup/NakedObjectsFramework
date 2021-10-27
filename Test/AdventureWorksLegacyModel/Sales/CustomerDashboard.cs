@@ -10,7 +10,7 @@ using System.Linq;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     /// <summary>
     /// 
     /// </summary>

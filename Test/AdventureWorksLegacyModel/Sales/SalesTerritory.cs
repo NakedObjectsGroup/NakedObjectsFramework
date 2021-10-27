@@ -9,10 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
 
     [Bounded, Immutable]
     public class SalesTerritory {

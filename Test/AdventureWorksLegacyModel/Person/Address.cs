@@ -12,7 +12,7 @@ using System.Linq;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Persons {
+namespace AdventureWorksModel {
 
     [Immutable(WhenTo.OncePersisted)]
     public class Address  {

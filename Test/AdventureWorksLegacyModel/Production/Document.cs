@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Production {
+namespace AdventureWorksModel {
     public class Document  {
 
         #region Life Cycle Methods

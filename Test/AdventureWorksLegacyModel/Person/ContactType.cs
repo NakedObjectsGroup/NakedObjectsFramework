@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Persons {
+namespace AdventureWorksModel {
 
     [Bounded]
     public class ContactType {

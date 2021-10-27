@@ -7,10 +7,9 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     public class CountryRegionCurrency  {
 
         #region Life Cycle Methods

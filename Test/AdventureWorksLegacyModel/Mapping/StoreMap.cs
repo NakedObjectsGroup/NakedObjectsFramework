@@ -1,9 +1,8 @@
 using System.Data.Entity.ModelConfiguration;
-using AdventureWorksLegacyModel.Sales;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdventureWorksLegacyModel.Mapping
+namespace AdventureWorksModel
 {
     public class StoreMap : EntityTypeConfiguration<Store>
     {

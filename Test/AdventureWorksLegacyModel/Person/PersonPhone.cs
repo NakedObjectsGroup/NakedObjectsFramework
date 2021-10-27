@@ -1,8 +1,8 @@
+using NakedObjects;
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Persons {
+namespace AdventureWorksModel {
     public partial class PersonPhone {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

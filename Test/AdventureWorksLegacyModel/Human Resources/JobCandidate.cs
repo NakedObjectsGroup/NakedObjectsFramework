@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Human_Resources {
+namespace AdventureWorksModel {
     public class JobCandidate  {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

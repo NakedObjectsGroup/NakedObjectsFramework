@@ -13,7 +13,7 @@ using System.Text;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace AdventureWorksLegacyModel.Production {
+namespace AdventureWorksModel {
     public enum ProductLineEnum {
         R,
         M,

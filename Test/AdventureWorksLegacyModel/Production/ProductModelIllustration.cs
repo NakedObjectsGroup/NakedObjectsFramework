@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Production {
+namespace AdventureWorksModel {
     public class ProductModelIllustration  {
 
         #region Life Cycle Methods

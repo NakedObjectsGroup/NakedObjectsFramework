@@ -1,6 +1,6 @@
 ﻿using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales
+namespace AdventureWorksModel
 {
 
     public class StoreSalesInfo : IViewModelSwitchable

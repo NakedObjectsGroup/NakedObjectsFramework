@@ -1,9 +1,8 @@
 using System.Data.Entity.ModelConfiguration;
-using AdventureWorksLegacyModel.Persons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdventureWorksLegacyModel.Mapping
+namespace AdventureWorksModel
 {
     public class CountryRegionMap : EntityTypeConfiguration<CountryRegion>
     {

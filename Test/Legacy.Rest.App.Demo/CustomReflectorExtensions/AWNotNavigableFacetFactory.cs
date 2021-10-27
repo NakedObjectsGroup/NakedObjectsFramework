@@ -7,9 +7,7 @@
 
 using System.Collections.Immutable;
 using System.Reflection;
-using AdventureWorksLegacyModel.Persons;
-using AdventureWorksLegacyModel.Production;
-using AdventureWorksLegacyModel.Sales;
+using AdventureWorksModel;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;

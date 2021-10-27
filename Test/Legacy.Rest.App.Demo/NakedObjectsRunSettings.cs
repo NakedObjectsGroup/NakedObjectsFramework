@@ -9,12 +9,8 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
-using AdventureWorksLegacyModel;
-using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Persons;
-using AdventureWorksLegacyModel.Production;
-using AdventureWorksLegacyModel.Purchasing;
-using AdventureWorksLegacyModel.Sales;
+using AdventureWorksModel;
+using AdventureWorksModel.Sales;
 using Microsoft.Extensions.Configuration;
 using NakedFramework.Menu;
 
@@ -26,7 +22,7 @@ namespace Legacy.Rest.App.Demo {
         private static Type[] AllAdventureWorksTypes => 
             Assembly.GetAssembly(typeof(AssemblyHook)).GetTypes().
                      Where(t => t.IsPublic).
-                     Where(t => t.Namespace.StartsWith("AdventureWorksLegacyModel")).
+                     Where(t => t.Namespace == "AdventureWorksModel").
                      Append(typeof(SalesOrderHeader.SalesReasonCategories)).
                      ToArray();
 

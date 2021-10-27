@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using AdventureWorksLegacyModel.Human_Resources;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdventureWorksLegacyModel.Mapping
+namespace AdventureWorksModel
 {
     public class ShiftMap : EntityTypeConfiguration<Shift>
     {

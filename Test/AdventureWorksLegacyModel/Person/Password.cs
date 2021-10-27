@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AdventureWorksLegacyModel.Persons {
+namespace AdventureWorksModel {
     public partial class Password
     {
         public virtual int BusinessEntityID { get; set; }

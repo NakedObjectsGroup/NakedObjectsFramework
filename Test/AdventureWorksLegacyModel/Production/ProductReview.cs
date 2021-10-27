@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Production {
+namespace AdventureWorksModel {
     public class ProductReview {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     [DisplayName("Reason")]
     [Immutable(WhenTo.OncePersisted)]
     public class SalesOrderHeaderSalesReason {

@@ -9,11 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using AdventureWorksLegacyModel.Persons;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     [Immutable(WhenTo.OncePersisted)]
     public class CreditCard {
         #region Injected Services

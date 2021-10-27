@@ -1,14 +1,8 @@
 
 
-using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Mapping;
-using AdventureWorksLegacyModel.Persons;
-using AdventureWorksLegacyModel.Production;
-using AdventureWorksLegacyModel.Purchasing;
-using AdventureWorksLegacyModel.Sales;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdventureWorksLegacyModel
+namespace AdventureWorksModel
 {
     public class AdventureWorksEFCoreContext : DbContext
     {

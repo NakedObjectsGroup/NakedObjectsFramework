@@ -7,10 +7,9 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using AdventureWorksLegacyModel.Production;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Purchasing {
+namespace AdventureWorksModel {
 
     public class PurchaseOrderDetail {
         #region Injected Services

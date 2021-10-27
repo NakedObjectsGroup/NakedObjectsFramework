@@ -10,13 +10,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Persons;
-using AdventureWorksLegacyModel.Production;
-using AdventureWorksLegacyModel.Purchasing;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     [DisplayName("Sales Order")]
     public class SalesOrderHeader : ICreditCardCreator {
 

@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Purchasing {
+namespace AdventureWorksModel {
 
     [Bounded, Immutable]
     public class ShipMethod  {

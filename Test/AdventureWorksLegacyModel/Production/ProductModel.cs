@@ -15,7 +15,7 @@ using System.Text;
 using System.Xml.Linq;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Production {
+namespace AdventureWorksModel {
 
     public class ProductModel  {
 

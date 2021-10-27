@@ -10,12 +10,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Sales;
 using NakedFramework;
 using NakedFramework.Value;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Production {
+namespace AdventureWorksModel {
 
     public class Product { //: IRedirected {
         #region Injected Services
@@ -363,10 +362,10 @@ namespace AdventureWorksLegacyModel.Production {
         private ICollection<ProductInventory> _ProductInventory = new List<ProductInventory>();
 
         [Eagerly(Do.Rendering)]
-        [TableView(false, nameof(Production.ProductInventory.Quantity), 
-                nameof(Production.ProductInventory.Location),
-                    nameof(Production.ProductInventory.Shelf),
-                        nameof(Production.ProductInventory.Bin))]
+        [TableView(false, nameof(AdventureWorksModel.ProductInventory.Quantity), 
+                nameof(AdventureWorksModel.ProductInventory.Location),
+                    nameof(AdventureWorksModel.ProductInventory.Shelf),
+                        nameof(AdventureWorksModel.ProductInventory.Bin))]
         public virtual ICollection<ProductInventory> ProductInventory {
             get { return _ProductInventory; }
             set { _ProductInventory = value; }

@@ -1,7 +1,7 @@
 ﻿using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel {
+namespace AdventureWorksModel {
     public class ServiceWithNoVisibleActions
     {
 

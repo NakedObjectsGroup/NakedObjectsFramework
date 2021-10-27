@@ -7,13 +7,12 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using AdventureWorksLegacyModel.Sales;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Persons {
-
-    [Bounded,Immutable]
-    public class StateProvince {
+namespace AdventureWorksModel {
+    [Bounded]
+    [Immutable]
+    public class AddressType {
         #region Life Cycle Methods
         public virtual void Persisting() {
             rowguid = Guid.NewGuid();
@@ -24,47 +23,23 @@ namespace AdventureWorksLegacyModel.Persons {
             ModifiedDate = DateTime.Now;
         }
         #endregion
-        #region StateProvinceID
+
+        #region ID
 
         [NakedObjectsIgnore]
-        public virtual int StateProvinceID { get; set; }
-
-        #endregion
-
-        #region StateProvinceCode
-
-        public virtual string StateProvinceCode { get; set; }
-
-        #endregion
-
-        #region IsOnlyStateProvinceFlag
-
-        public virtual bool IsOnlyStateProvinceFlag { get; set; }
+        public virtual int AddressTypeID { get; set; }
 
         #endregion
 
         #region Name
 
         [Title]
+        [NakedObjectsIgnore]
         public virtual string Name { get; set; }
 
         #endregion
 
-        #region CountryRegion
-
-        [NakedObjectsIgnore]
-        public virtual string CountryRegionCode { get; set; }
-
-        public virtual CountryRegion CountryRegion { get; set; }
-
-        #endregion
-
-        #region SalesTerritory
-
-        [NakedObjectsIgnore]
-        public virtual int TerritoryID { get; set; }
-
-        public virtual SalesTerritory SalesTerritory { get; set; }
+        #region Title
 
         #endregion
 
@@ -80,7 +55,7 @@ namespace AdventureWorksLegacyModel.Persons {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        [NakedObjectsIgnore]
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

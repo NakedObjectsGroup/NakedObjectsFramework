@@ -10,12 +10,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Production;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Purchasing {
+namespace AdventureWorksModel {
 
     public class PurchaseOrderHeader  {
         #region Injected Services

@@ -11,7 +11,7 @@ using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace AdventureWorksLegacyModel.Production {
+namespace AdventureWorksModel {
     [DisplayName("Work Orders")]
     public class WorkOrderRepository : AbstractFactoryAndRepository {
         [FinderAction]

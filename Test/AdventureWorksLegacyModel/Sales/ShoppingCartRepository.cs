@@ -8,12 +8,10 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-using AdventureWorksLegacyModel.Persons;
-using AdventureWorksLegacyModel.Production;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     /// <summary>
     /// 
     /// </summary>

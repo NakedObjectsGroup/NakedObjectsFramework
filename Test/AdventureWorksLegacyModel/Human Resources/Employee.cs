@@ -9,11 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Persons;
-using AdventureWorksLegacyModel.Sales;
+using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Human_Resources {
+namespace AdventureWorksModel {
 
     public interface IEmployee : IBusinessEntity { } //Interface is for testing purposes
 

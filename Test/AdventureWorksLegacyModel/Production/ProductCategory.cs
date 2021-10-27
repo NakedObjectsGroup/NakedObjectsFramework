@@ -11,7 +11,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Production {
+namespace AdventureWorksModel {
     [Bounded]
     [Immutable]
     public class ProductCategory  {

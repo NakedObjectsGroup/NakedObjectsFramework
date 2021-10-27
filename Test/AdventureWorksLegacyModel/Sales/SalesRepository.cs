@@ -8,13 +8,12 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Persons;
+using NakedFramework;
 using NakedFramework.Menu;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     [DisplayName("Sales")]
     public class SalesRepository : AbstractFactoryAndRepository {
         #region Injected Services

@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Human_Resources {
+namespace AdventureWorksModel {
 
     [Immutable(WhenTo.OncePersisted)]
     public class EmployeePayHistory {

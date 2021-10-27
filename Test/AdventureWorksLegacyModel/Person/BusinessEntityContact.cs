@@ -1,37 +1,30 @@
+using NakedObjects;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Persons
-{
-    [DisplayName("Address")]
-    public  class BusinessEntityAddress {
+namespace AdventureWorksModel {
+    [DisplayName("Contact")]
+    public partial class BusinessEntityContact {
+
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
 
-        #region LifeCycle methods
-        public void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
+        #region Title
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(ContactType).Append(":", Person);
+            return t.ToString();
         }
         #endregion
 
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(AddressType).Append(":", Address);
-            return t.ToString();
-        }
-
-        [Disabled]
+        [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }
-
-        [Disabled]
-        public virtual int AddressID { get; set; }
-
-        [Disabled]
-        public virtual int AddressTypeID { get; set; }
+        [NakedObjectsIgnore]
+        public virtual int PersonID { get; set; }
+        [NakedObjectsIgnore]
+        public virtual int ContactTypeID { get; set; }
         #region Row Guid and Modified Date
 
         #region rowguid
@@ -52,15 +45,9 @@ namespace AdventureWorksLegacyModel.Persons
 
         #endregion
 
-        [MemberOrder(1)]
-        [Optionally]
-        public virtual AddressType AddressType { get; set; }
-
-        [MemberOrder(2)]
-        [Optionally]
-        public virtual Address Address { get; set; }
-
-        [MemberOrder(3)]
+        [NakedObjectsIgnore]
         public virtual BusinessEntity BusinessEntity { get; set; }
+        public virtual ContactType ContactType { get; set; }
+        public virtual Person Person { get; set; }
     }
 }

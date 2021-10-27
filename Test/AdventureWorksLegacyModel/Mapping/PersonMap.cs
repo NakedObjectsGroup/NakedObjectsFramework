@@ -1,10 +1,8 @@
 using System.Data.Entity.ModelConfiguration;
-using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Persons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdventureWorksLegacyModel.Mapping
+namespace AdventureWorksModel
 {
     public class PersonMap : EntityTypeConfiguration<Person>
     {

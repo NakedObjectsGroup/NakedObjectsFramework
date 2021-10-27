@@ -7,11 +7,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using AdventureWorksLegacyModel.Production;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     public class OrderLine : IViewModel {
         public IDomainObjectContainer Container { protected get; set; }
 

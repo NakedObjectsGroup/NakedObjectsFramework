@@ -9,11 +9,10 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Production;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace AdventureWorksLegacyModel.Purchasing
+namespace AdventureWorksModel
 {
     [DisplayName("Purchase Orders")]
     public class PurchaseOrderRepository : AbstractFactoryAndRepository

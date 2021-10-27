@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using NakedObjects;
+﻿using NakedObjects;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AdventureWorksLegacyModel.Human_Resources
+namespace AdventureWorksModel
 {
 
     //Used to test creation/rendering of NotPersisted object

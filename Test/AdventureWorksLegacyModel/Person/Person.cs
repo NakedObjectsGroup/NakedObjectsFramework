@@ -6,20 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Sales;
+using NakedObjects;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using NakedFramework;
 using NakedFramework.Value;
-using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Persons {
+namespace AdventureWorksModel {
 
     public class Person : BusinessEntity {
 

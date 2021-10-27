@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace AdventureWorksLegacyModel {
+namespace AdventureWorksModel {
     internal class Utilities {
         public static string FormatXML(string inputXML) {
             var output = new StringBuilder();

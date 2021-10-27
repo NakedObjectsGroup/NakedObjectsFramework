@@ -1,9 +1,9 @@
+using NakedObjects;
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFramework;
-using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Persons {
+namespace AdventureWorksModel {
     [Bounded]
     public class PhoneNumberType {
         [NakedObjectsIgnore]

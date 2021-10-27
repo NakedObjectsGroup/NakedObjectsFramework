@@ -8,13 +8,12 @@
 //------------------------------------------------------------------------------
 
 using System.ComponentModel.DataAnnotations;
-using AdventureWorksLegacyModel.Persons;
-using NakedObjects;
-using System.ComponentModel;
-using System;
 
-namespace AdventureWorksLegacyModel {
-   
+namespace AdventureWorksModel {
+    using NakedObjects;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
 
     public partial class EmailAddress {
         [NakedObjectsIgnore]

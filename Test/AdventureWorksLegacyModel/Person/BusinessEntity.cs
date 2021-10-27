@@ -1,10 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using NakedFramework;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Persons {
+namespace AdventureWorksModel {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class BusinessEntity : IBusinessEntity {
         #region Injected Services 
         public IDomainObjectContainer Container { set; protected get; }

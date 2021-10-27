@@ -9,12 +9,11 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Persons;
 using NakedFramework;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace AdventureWorksLegacyModel.Human_Resources {
+namespace AdventureWorksModel {
     [DisplayName("Employees")]
     public class EmployeeRepository : AbstractFactoryAndRepository {
         #region Injected Services

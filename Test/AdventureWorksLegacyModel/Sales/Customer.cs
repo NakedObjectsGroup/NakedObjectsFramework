@@ -7,12 +7,11 @@
 
 using System;
 using System.ComponentModel;
-using AdventureWorksLegacyModel.Persons;
 using NakedFramework;
 using NakedFramework.Error;
 using NakedObjects;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
 
     public class Customer  {
         #region Injected Services

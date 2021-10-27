@@ -5,18 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksLegacyModel.Persons;
-using NakedFramework.Error;
-using NakedFramework.Menu;
 using NakedObjects;
 using NakedObjects.Services;
+using System;
+using System.Collections.Generic;
+using NakedFramework;
+using NakedFramework.Error;
+using NakedFramework.Menu;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     [DisplayName("Customers")]
     public class CustomerRepository : AbstractFactoryAndRepository {
         #region Injected Services

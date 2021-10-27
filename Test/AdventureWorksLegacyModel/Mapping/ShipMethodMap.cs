@@ -1,9 +1,8 @@
 using System.Data.Entity.ModelConfiguration;
-using AdventureWorksLegacyModel.Purchasing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdventureWorksLegacyModel.Mapping
+namespace AdventureWorksModel
 {
     public class ShipMethodMap : EntityTypeConfiguration<ShipMethod>
     {

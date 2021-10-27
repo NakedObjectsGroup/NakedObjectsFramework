@@ -7,12 +7,11 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using AdventureWorksLegacyModel.Persons;
 using NakedObjects;
 using NakedObjects.Redirect;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
 
     //Redirects to the StateProvince object on the Azure server
     public class SalesTaxRate : IRedirectedObject {

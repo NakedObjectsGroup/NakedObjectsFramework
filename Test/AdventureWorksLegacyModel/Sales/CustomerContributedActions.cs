@@ -5,16 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using AdventureWorksLegacyModel.Persons;
-using NakedFramework;
 using NakedObjects;
 using NakedObjects.Services;
+using System;
+using NakedFramework;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     public class CustomerCollectionViewModel : IViewModel {
         public IDomainObjectContainer Container { protected get; set; }
         public IList<Customer> Customers { get; set; }

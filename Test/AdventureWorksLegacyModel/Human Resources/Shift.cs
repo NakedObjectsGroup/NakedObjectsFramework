@@ -7,10 +7,10 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AdventureWorksLegacyModel.Human_Resources {
+namespace AdventureWorksModel {
 
     [Bounded]
     public class Shift  {

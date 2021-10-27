@@ -7,10 +7,9 @@
 
 using System.ComponentModel;
 using System.Linq;
-using AdventureWorksLegacyModel.Production;
 using NakedObjects.Services;
 
-namespace AdventureWorksLegacyModel.Sales {
+namespace AdventureWorksModel {
     /// <summary>
     /// 
     /// </summary>

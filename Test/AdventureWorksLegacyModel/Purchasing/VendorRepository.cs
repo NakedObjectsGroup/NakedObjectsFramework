@@ -10,7 +10,7 @@ using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace AdventureWorksLegacyModel.Purchasing {
+namespace AdventureWorksModel {
     [DisplayName("Vendors")]
     public class VendorRepository : AbstractFactoryAndRepository {
         #region FindVendorByName

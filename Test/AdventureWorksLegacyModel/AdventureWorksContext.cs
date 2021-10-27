@@ -1,12 +1,6 @@
 using System.Data.Entity;
-using AdventureWorksLegacyModel.Human_Resources;
-using AdventureWorksLegacyModel.Mapping;
-using AdventureWorksLegacyModel.Persons;
-using AdventureWorksLegacyModel.Production;
-using AdventureWorksLegacyModel.Purchasing;
-using AdventureWorksLegacyModel.Sales;
 
-namespace AdventureWorksLegacyModel
+namespace AdventureWorksModel
 {
     public class AdventureWorksContext : DbContext
     {
