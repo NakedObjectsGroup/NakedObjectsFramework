@@ -14,7 +14,7 @@ using Microsoft.VisualBasic;
 
 namespace Legacy.NakedObjects.Application.ValueHolder
 {
-    public class Date : Magnitude
+    public class TimeStamp : Magnitude
     {
         //private static Clock clock;
         //private static readonly DateFormat ISO_LONG;
@@ -36,25 +36,18 @@ namespace Legacy.NakedObjects.Application.ValueHolder
             //Date.SHORT_FORMAT.setLenient(false);
         }
 
-        public Date()
+        public TimeStamp()
         {
             //this.isNull = true;
             //this.today();
         }
 
-        public Date(Date date)
-        {
-            //this.isNull = true;
-            //this.setValue(date);
-        }
+        public TimeStamp(TimeStamp ts) => this.date = ts.dateValue();
 
-        public Date(DateTime date)
-        {
-            //this.isNull = true;
-            this.date = date;
-        }
+        public TimeStamp(DateTime date) => this.date = date;
 
-        public Date(int year, int month, int day)
+
+        public TimeStamp(int year, int month, int day)
         {
             //this.isNull = true;
             //this.setValue(year, month, day);
@@ -113,11 +106,8 @@ namespace Legacy.NakedObjects.Application.ValueHolder
             //this.setValue((Date) @object);
         }
 
-        public virtual DateTime dateValue()
-        {
-            //return this.isNull ? (Date)null : this.date;
-            throw new NotImplementedException();
-        }
+        public virtual DateTime? dateValue() => date;
+
 
         //public override bool Equals(object obj) {
         //    //return obj is Date ? ((Date)obj).date.Equals((object)this.date) : base.Equals(obj);
@@ -320,13 +310,13 @@ namespace Legacy.NakedObjects.Application.ValueHolder
             //this.isNull = false;
         }
 
-        public virtual void setValue(Date date)
+        public virtual void setValue(TimeStamp ts)
         {
             //if (date == null || date.isEmpty())
             //  this.clear();
             //else
             //  this.setValue(new Date(date.longValue()));
-            this.date = date.date;
+            this.date = ts.dateValue();
         }
 
         public virtual void setValue(DateTime date)
@@ -335,7 +325,7 @@ namespace Legacy.NakedObjects.Application.ValueHolder
             //  this.clear();
             //else
             //  this.setValue(new Date(date.longValue()));
-            this.date = date.Date;
+            this.date = date;
         }
 
 
@@ -348,26 +338,9 @@ namespace Legacy.NakedObjects.Application.ValueHolder
             //this.set(instance);
         }
 
-        public virtual void setValue1(Date date)
-        {
-            //if (date == null)
-            //{
-            //  this.isNull = true;
-            //}
-            //else
-            //{
-            //  Calendar instance = Calendar.getInstance();
-            //  instance.setTime(date);
-            //  instance.set(10, 0);
-            //  instance.set(12, 0);
-            //  instance.set(13, 0);
-            //  instance.set(14, 0);
-            //  this.set(instance.
-            //}
-        }
 
         public override Title title() =>
-            new Title(date is null? "": date.Value.ToString("d"));
+            new Title(date is null? "": date.Value.ToString("dd/MM/yyyy hh:mm:ss"));
         
 
         public virtual void today()
