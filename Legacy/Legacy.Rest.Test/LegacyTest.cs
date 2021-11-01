@@ -52,7 +52,10 @@ namespace Legacy.Rest.Test {
             typeof(State),
             typeof(Title),
             typeof(ILegacyRoleInterface),
-            typeof(ClassWithMenu)
+            typeof(ClassWithMenu),
+            typeof(ClassWithDate),
+            typeof(Date),
+            typeof(Magnitude)
         };
 
         protected Type[] LegacyServices { get; } = { typeof(SimpleService)};
@@ -81,7 +84,10 @@ namespace Legacy.Rest.Test {
         protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
             builder => {
                 base.NakedFrameworkOptions(builder);
-                builder.SupportedSystemTypes = t => t.Append(typeof(TextString)).Append(typeof(InternalCollection)).ToArray();
+                builder.SupportedSystemTypes = t => t.Append(typeof(TextString))
+                                                     .Append(typeof(InternalCollection))
+                                                     .Append(typeof(Date))
+                                                     .ToArray();
                 AddLegacy(builder);
             };
 
@@ -462,6 +468,49 @@ namespace Legacy.Rest.Test {
             Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
 
             Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
+        }
+
+        [Test]
+        public void TestGetObjectWithDate() {
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithDate>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNull(parsedResult["members"]["Id"]);
+            Assert.IsNotNull(parsedResult["members"]["Date"]);
+            Assert.IsNotNull(parsedResult["members"]["ActionUpdateDate"]);
+
+            Assert.AreEqual("01 November 2021", parsedResult["title"].ToString());
+        }
+
+        [Test]
+        public void TestGetDateProperty() {
+            var api = Api();
+            var result = api.GetProperty(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.Date));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ClassWithDate.Date), parsedResult["id"].ToString());
+            Assert.AreEqual("01 November 2021", parsedResult["value"].ToString());
+        }
+
+        [Test]
+        public void TestInvokeUpdateAndPersistObjectWithDate() {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newDate", new ScalarValue(new DateTime(1998, 7, 6)) } } };
+
+            var result = api.PostInvoke(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.ActionUpdateDate), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("06 July 1998", resultObj["members"]["Date"]["value"].ToString());
         }
     }
 }

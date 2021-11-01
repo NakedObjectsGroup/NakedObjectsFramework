@@ -7,34 +7,31 @@
 using System;
 using Legacy.NakedObjects.Application.ValueHolder;
 
-namespace Legacy.NakedObjects.Application.System
-{
-  //[JavaInterfaces("1;org/nakedobjects/application/system/Clock;")]
-  public class SystemClock : Clock
-  {
-    public SystemClock()
-    {
-      Date.setClock((Clock) this);
-      //Time.setClock((Clock) this);
-      //DateTime.setClock((Clock) this);
-      //TimeStamp.setClock((Clock) this);
-    }
-
-    public virtual long getTime() {
-            //  return global::System.currentTimeMillis();
-            throw new NotImplementedException();
+namespace Legacy.NakedObjects.Application.System {
+    //[JavaInterfaces("1;org/nakedobjects/application/system/Clock;")]
+    public class SystemClock : Clock {
+        public SystemClock() {
+            Date.setClock(this);
+            //Time.setClock((Clock) this);
+            //DateTime.setClock((Clock) this);
+            //TimeStamp.setClock((Clock) this);
         }
 
-    //[JavaFlags(4227077)]
-    //[JavaThrownExceptions("1;java/lang/CloneNotSupportedException;")]
-    //public new virtual object MemberwiseClone()
-    //{
-    //  SystemClock systemClock = this;
-    //  ObjectImpl.clone((object) systemClock);
-    //  return ((object) systemClock).MemberwiseClone();
-    //}
+        public virtual long getTime() {
+            return DateTime.Now.Ticks;
+            //return global::System.currentTimeMillis();
+        }
 
-    ////[JavaFlags(4227073)]
-    //public override string ToString() => ObjectImpl.jloToString((object) this);
-  }
+        //[JavaFlags(4227077)]
+        //[JavaThrownExceptions("1;java/lang/CloneNotSupportedException;")]
+        //public new virtual object MemberwiseClone()
+        //{
+        //  SystemClock systemClock = this;
+        //  ObjectImpl.clone((object) systemClock);
+        //  return ((object) systemClock).MemberwiseClone();
+        //}
+
+        ////[JavaFlags(4227073)]
+        //public override string ToString() => ObjectImpl.jloToString((object) this);
+    }
 }

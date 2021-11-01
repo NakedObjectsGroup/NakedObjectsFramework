@@ -36,12 +36,7 @@ namespace Legacy.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public TextString Name {
-            get {
-                Action<string> callback = s => name = s;
-                return _name ??= new TextString(name, callback);
-            }
-        }
+        public TextString Name => _name ??= new TextString(name, s => name = s);
 
         public Title title() => Name.title();
 
@@ -157,6 +152,23 @@ namespace Legacy.Rest.Test.Data {
             var menu = new MainMenu();
             menu.addMenuItem("MenuAction");
             return menu;
+        }
+    }
+
+    public class ClassWithDate {
+        private Date _date;
+        public DateTime date;
+
+        [Key]
+        public int Id { get; init; }
+
+        public Date Date => _date ??= new Date(date, d => date = d);
+
+        public Title title() => Date.title();
+
+        public ClassWithDate ActionUpdateDate(Date newDate) {
+            Date.setValue(newDate);
+            return this;
         }
     }
 }

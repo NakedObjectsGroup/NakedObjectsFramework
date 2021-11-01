@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace Legacy.Rest.Test.Data {
@@ -36,6 +37,7 @@ namespace Legacy.Rest.Test.Data {
         public DbSet<LegacyClassWithInterface> LegacyClassWithInterfaces { get; set; }
         public DbSet<ClassWithLegacyInterface> ClassWithLegacyInterfaces { get; set; }
         public DbSet<ClassWithMenu> ClassWithMenus { get; set; }
+        public DbSet<ClassWithDate> ClassWithDates { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(cs);
@@ -45,9 +47,14 @@ namespace Legacy.Rest.Test.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             var fred = new { Id = 1, name = "Fred", ClassWithInternalCollectionId = 1, ClassWithStringId = 2 };
             var bill = new { Id = 2, name = "Bill", ClassWithStringId = 2 };
+            var jane = new { Id = 1, date = new DateTime(2021, 11, 1) };
 
             modelBuilder.Entity<ClassWithTextString>().Ignore(t => t.Name);
             modelBuilder.Entity<ClassWithTextString>().Property("name").HasColumnName("Name");
+
+            modelBuilder.Entity<ClassWithDate>().Ignore(t => t.Date);
+            modelBuilder.Entity<ClassWithDate>().Property("date").HasColumnName("Date");
+
 
 
             modelBuilder.Entity<ClassWithInternalCollection>().Ignore(t => t.TestCollection);
@@ -68,6 +75,7 @@ namespace Legacy.Rest.Test.Data {
             modelBuilder.Entity<ClassWithActionAbout>().HasData(new  { Id = 1 });
             modelBuilder.Entity<ClassWithFieldAbout>().HasData(new  { Id = 1 });
             modelBuilder.Entity<ClassWithMenu>().HasData(new { Id = 1 });
+            modelBuilder.Entity<ClassWithDate>().HasData(jane);
 
             modelBuilder.Entity<LegacyClassWithInterface>().HasData(new  { Id = 10 });
             modelBuilder.Entity<ClassWithLegacyInterface>().HasData(new  { Id = 10 });

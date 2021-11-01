@@ -25,7 +25,7 @@ namespace Legacy.Reflector.Reflect {
         public static Type[] TypeFacetFactories() =>
             new[] {
                 typeof(TextStringValueTypeFacetFactory),
-               
+                typeof(DateValueTypeFacetFactory)
             };
     }
 }
