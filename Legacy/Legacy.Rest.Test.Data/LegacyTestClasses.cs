@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,6 +15,7 @@ using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.Control;
 using Legacy.NakedObjects.Application.ValueHolder;
 using NakedObjects;
+using static Legacy.Rest.Test.Data.DomainHelpers;
 
 // ReSharper disable InconsistentNaming
 
@@ -31,7 +33,7 @@ namespace Legacy.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public TextString Name => _name ??= new TextString(name) { BackingField = s => name = s };
+        public TextString Name => _name ??= NewTextString(name, s => name = s);
 
         public Title title() => Name.title();
 
@@ -52,25 +54,7 @@ namespace Legacy.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public InternalCollection TestCollection {
-            get {
-                if (_testCollection is null) {
-                    _testCollection = new InternalCollection(typeof(ClassWithTextString).ToString());
-                    _testCollection.init(_TestCollection.ToArray());
-
-                    _testCollection.BackingField = (obj, add) => {
-                        if (add) {
-                            _TestCollection.Add((ClassWithTextString)obj);
-                        }
-                        else {
-                            _TestCollection.Remove((ClassWithTextString)obj);
-                        }
-                    };
-                }
-
-                return _testCollection;
-            }
-        }
+        public InternalCollection TestCollection => _testCollection ??= NewInternalCollection(_TestCollection);
 
         public ClassWithInternalCollection ActionUpdateTestCollection(TextString newName) {
             var name = newName.stringValue();
@@ -90,16 +74,7 @@ namespace Legacy.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public InternalCollection CollectionOfNOFClass {
-            get {
-                if (_testCollection is null) {
-                    _testCollection = new InternalCollection(typeof(ClassWithTextString).ToString());
-                    _testCollection.init(_TestCollection.ToArray());
-                }
-
-                return _testCollection;
-            }
-        }
+        public InternalCollection CollectionOfNOFClass => _testCollection ??= NewInternalCollection(_TestCollection);
     }
 
     public class ClassWithActionAbout {
@@ -163,7 +138,6 @@ namespace Legacy.Rest.Test.Data {
 
         public static ClassWithMenu ActionMenuAction() => null;
 
-
         public static MainMenu menuOrder() {
             var menu = new MainMenu();
             menu.addMenuItem("Method1");
@@ -178,37 +152,3 @@ namespace Legacy.Rest.Test.Data {
         }
     }
 }
-
-// class menu
-//public static MainMenu sharedMenuOrder() {
-//    MainMenu mainMenu = new MainMenu();
-//    mainMenu.addMenuItem("ExtendChildClaim");
-//    mainMenu.addMenuItem("FindSchool");
-//    mainMenu.addMenuItem("AddChildBenefitToNewCase");
-//    mainMenu.addMenuItem("AddAnotherChildBenefitToExistingCase");
-//    mainMenu.addMenuItem("FindForPPSN");
-//    mainMenu.addMenuItem("FindAllChildClaimsForPPSN");
-//    mainMenu.addMenuItem("AddChildBenefitToExistingCase");
-//    SubMenu subMenu = mainMenu.getSubMenu("Decisions");
-//    if (subMenu != null) {
-//        subMenu.addMenuItem("DisallowScheme");
-//        subMenu.addMenuItem("WithdrawScheme");
-//    }
-//    return mainMenu;
-//}
-
-// instance menu
-//public new static MainMenu menuOrder() {
-//    MainMenu mainMenu = Scheme.menuOrder();
-//    mainMenu.removeMenuItem("Individualised or Separate Payments");
-//    mainMenu.addMenuItem("AddChildClaim");
-//    mainMenu.addMenuItem("AddChildClaimForSelf");
-//    mainMenu.addSubMenu(ChildBenefit.communicationsSubMenu());
-//    SubMenu subMenu = mainMenu.getSubMenu("Update");
-//    subMenu.addMenuItem("UpdateResidencyStatus");
-//    subMenu.addSubMenu(ChildBenefit.NoEFTAllowedSubMenu());
-//    subMenu.addMenuItem("UpdateCountryOfResidence");
-//    mainMenu.getSubMenu("Decisions").addMenuItem("DisallowScheme");
-//    mainMenu.getSubMenu("Decisions").addMenuItem("WithdrawScheme");
-//    return mainMenu;
-//}
