@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AdventureWorksContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Legacy.Server" Version="1.0.0-alpha02" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />

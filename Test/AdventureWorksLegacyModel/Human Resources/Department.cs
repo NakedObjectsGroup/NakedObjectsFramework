@@ -7,12 +7,15 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Legacy.NakedObjects.Application.ValueHolder;
 using NakedObjects;
 
 namespace AdventureWorksModel {
 
     [Bounded]
     [Immutable]
+    [LegacyType]
     public class Department  {
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -29,12 +32,22 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual short DepartmentID { get; set; }
 
+        internal string name;
+        internal TextString _name;
+
         [Title]
         [MemberOrder(1)]
-        public virtual string Name { get; set; }
+        [NotMapped]
+        public virtual TextString Name => _name ??= new TextString(name) { BackingField = s => name = s };
+
+
+        internal string groupName;
+        private TextString _groupName;
+
 
         [MemberOrder(2)]
-        public virtual string GroupName { get; set; }
+        [NotMapped]
+        public virtual TextString GroupName => _groupName ??= new TextString(groupName) { BackingField = s => groupName = s };
 
         [MemberOrder(99)]
         [Disabled]
