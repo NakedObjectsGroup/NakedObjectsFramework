@@ -15,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 using NakedFramework.Menu;
 
 namespace Legacy.Rest.App.Demo {
-    public static class NakedObjectsRunSettings {
+    public static class ModelConfig {
 
        // Unintrospected specs: AdventureWorksModel.SalesOrderHeader+SalesReasonCategories,AdventureWorksModel.Sales.QuickOrderForm,
 
@@ -23,13 +23,14 @@ namespace Legacy.Rest.App.Demo {
             Assembly.GetAssembly(typeof(AssemblyHook)).GetTypes().
                      Where(t => t.IsPublic).
                      Where(t => t.Namespace == "AdventureWorksModel").
+                     Where(t => !t.Name.EndsWith("Map")).
                      Append(typeof(SalesOrderHeader.SalesReasonCategories)).
                      ToArray();
 
 
-        public static Type[] Types => AllAdventureWorksTypes;
+        public static Type[] NOTypes => AllAdventureWorksTypes.Where(t =>! t.IsDefined(typeof(LegacyType), false)).ToArray();
 
-        public static Type[] Services {
+        public static Type[] NOServices {
             get {
                 return new[] {
                     typeof(CustomerRepository),
@@ -51,9 +52,15 @@ namespace Legacy.Rest.App.Demo {
         }
 
 
-        public static Func<IConfiguration, DbContext> DbContextCreator => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
+        public static Type[] LegacyTypes => AllAdventureWorksTypes.Where(t => t.IsDefined(typeof(LegacyType), false)).ToArray();
+
+        public static Type[] LegacyServices => new Type[] { };
+
+
+    public static Func<IConfiguration, DbContext> DbContextCreator => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
         public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextCreator => c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
+
 
         /// <summary>
         ///     Return an array of IMenus (obtained via the factory, then configured) to
