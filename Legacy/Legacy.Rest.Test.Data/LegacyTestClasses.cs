@@ -15,7 +15,6 @@ using Legacy.NakedObjects.Application.Collection;
 using Legacy.NakedObjects.Application.Control;
 using Legacy.NakedObjects.Application.ValueHolder;
 using NakedObjects;
-using static Legacy.Rest.Test.Data.DomainHelpers;
 
 // ReSharper disable InconsistentNaming
 
@@ -26,14 +25,23 @@ namespace Legacy.Rest.Test.Data {
         public ClassWithTextString GetClassWithTextString() => null;
     }
 
+  
+
     public class ClassWithTextString {
+
+
         private TextString _name;
         public string name;
 
         [Key]
         public int Id { get; init; }
 
-        public TextString Name => _name ??= NewTextString(name, s => name = s);
+        public TextString Name {
+            get {
+                Action<string> callback = s => name = s;
+                return _name ??= new TextString(name, callback);
+            }
+        }
 
         public Title title() => Name.title();
 
@@ -54,7 +62,7 @@ namespace Legacy.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public InternalCollection TestCollection => _testCollection ??= NewInternalCollection(_TestCollection);
+        public InternalCollection TestCollection => _testCollection ??= new InternalCollection<ClassWithTextString>(_TestCollection);
 
         public ClassWithInternalCollection ActionUpdateTestCollection(TextString newName) {
             var name = newName.stringValue();
@@ -74,7 +82,7 @@ namespace Legacy.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
-        public InternalCollection CollectionOfNOFClass => _testCollection ??= NewInternalCollection(_TestCollection);
+        public InternalCollection CollectionOfNOFClass => _testCollection ??= new InternalCollection<ClassWithString>(_TestCollection);
     }
 
     public class ClassWithActionAbout {

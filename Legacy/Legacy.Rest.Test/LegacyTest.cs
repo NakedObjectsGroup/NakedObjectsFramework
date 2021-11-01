@@ -42,6 +42,7 @@ namespace Legacy.Rest.Test {
             typeof(TextString),
             typeof(MultilineTextString),
             typeof(InternalCollection),
+            typeof(InternalCollection<>),
             typeof(BusinessValueHolder),
             typeof(TitledObject),
             typeof(ActionAbout),

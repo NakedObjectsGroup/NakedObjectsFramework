@@ -6,11 +6,13 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 // ReSharper disable InconsistentNaming
 
 namespace Legacy.NakedObjects.Application.Collection {
-    public class InternalCollection  : IList {
+    public class InternalCollection : IList {
 
         #region original code
 
@@ -21,6 +23,8 @@ namespace Legacy.NakedObjects.Application.Collection {
             arrayList = new ArrayList();
             this.type = type;
         }
+
+        public InternalCollection(string type, Action<object, bool> callback) : this(type) => BackingField = callback;
 
         public virtual void add(object @object) {
             //if (@object == null)
@@ -81,7 +85,7 @@ namespace Legacy.NakedObjects.Application.Collection {
             //return stringBuffer.ToString();
             $"InternalCollectionVector [,size={size()}] {GetHashCode():X}";
 
-        
+
         //[JavaThrownExceptions("1;java/lang/CloneNotSupportedException;")]
         //[JavaFlags(4227077)]
         public new virtual object MemberwiseClone() =>
@@ -101,6 +105,7 @@ namespace Legacy.NakedObjects.Application.Collection {
         public int Count => size();
         public bool IsSynchronized => arrayList.IsSynchronized;
         public object SyncRoot => arrayList.SyncRoot;
+
         public int Add(object value) {
             add(value);
             return arrayList.IndexOf(value);
@@ -132,5 +137,27 @@ namespace Legacy.NakedObjects.Application.Collection {
 
         public Action<object, bool> BackingField { get; set; } = (_, _) => { };
 
+    }
+
+    public class InternalCollection<T> : InternalCollection, IEnumerable<T> {
+        private readonly ICollection<T> backingCollection;
+
+        public InternalCollection(ICollection<T> backingCollection) : base(typeof(T).ToString()) {
+            this.backingCollection = backingCollection;
+            init(backingCollection.Cast<object>().ToArray());
+
+            BackingField = (obj, add) => {
+                if (add) {
+                    backingCollection.Add((T)obj);
+                }
+                else {
+                    backingCollection.Remove((T)obj);
+                }
+            };
+        }
+
+        public new IEnumerator<T> GetEnumerator() {
+            return backingCollection.GetEnumerator();
+        }
     }
 }
