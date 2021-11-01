@@ -33,12 +33,11 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual short DepartmentID { get; set; }
 
-        internal string name;
-        internal TextString _name;
+        internal string mappedName;
+        internal TextString cachedName;
 
-        [Title]
         [MemberOrder(1)]
-        public virtual TextString Name => _name ??= new TextString(name) { BackingField = s => name = s };
+        public virtual TextString Name => cachedName ??= new TextString(mappedName, s => mappedName = s);
 
 
         internal string groupName;
@@ -47,7 +46,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(2)]
         [NotMapped]
-        public virtual TextString GroupName => _groupName ??= new TextString(groupName) { BackingField = s => groupName = s };
+        public virtual TextString GroupName => _groupName ??= new TextString(groupName, s => groupName = s );
 
         [MemberOrder(99)]
         [Disabled]

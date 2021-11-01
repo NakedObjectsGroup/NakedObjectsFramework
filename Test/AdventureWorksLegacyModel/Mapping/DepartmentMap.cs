@@ -43,7 +43,7 @@ namespace AdventureWorksModel
             // Table & Column Mappings
             builder.ToTable("Department", "HumanResources");
             builder.Property(t => t.DepartmentID).HasColumnName("DepartmentID");
-            builder.Property(t => t.name).HasColumnName("Name").IsRequired().HasMaxLength(50); 
+            builder.Property(t => t.mappedName).HasColumnName("Name").IsRequired().HasMaxLength(50); 
             builder.Property(t => t.groupName).HasColumnName("GroupName").IsRequired().HasMaxLength(50);
             builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false); 
         }

@@ -75,7 +75,7 @@ namespace AdventureWorksModel {
             int id = entity.BusinessEntityID;
             var baes = Container.Instances<BusinessEntityAddress>().Where(bae => bae.BusinessEntityID == id);
             if (ofType != null) {
-                baes = baes.Where(bae => bae.AddressType.Name == ofType);
+                baes = baes.Where(bae => bae.AddressType.mappedName == ofType);
             }
             return baes.Select(bae => bae.Address);
         }

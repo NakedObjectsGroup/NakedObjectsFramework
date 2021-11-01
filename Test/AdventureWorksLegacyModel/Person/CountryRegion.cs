@@ -7,11 +7,14 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Legacy.NakedObjects.Application;
+using Legacy.NakedObjects.Application.ValueHolder;
 using NakedObjects;
 
 namespace AdventureWorksModel {
 
     [Bounded, Immutable]
+    [LegacyType]
     public class CountryRegion {
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -22,17 +25,27 @@ namespace AdventureWorksModel {
             ModifiedDate = DateTime.Now;
         }
         #endregion
-        #region CountryRegionCode
 
-        public virtual string CountryRegionCode { get; set; }
+        #region Name
 
+        internal string mappedCountryRegionCode;
+        internal TextString cachedCountryRegionCode;
+
+        [MemberOrder(1)]
+        public virtual TextString CountryRegionCode => cachedCountryRegionCode ??= new TextString(mappedCountryRegionCode, s => mappedCountryRegionCode = s);
         #endregion
 
         #region Name
 
-        [Title]
-        public virtual string Name { get; set; }
+        internal string mappedName;
+        internal TextString cachedName;
 
+        [MemberOrder(1)]
+        public virtual TextString Name => cachedName ??= new TextString(mappedName, s => mappedName = s );
+        #endregion
+
+        #region Title
+        public Title title() => Name.title();
         #endregion
 
         #region ModifiedDate
