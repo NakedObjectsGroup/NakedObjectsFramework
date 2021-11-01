@@ -7,11 +7,14 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Legacy.NakedObjects.Application;
+using Legacy.NakedObjects.Application.ValueHolder;
 using NakedObjects;
 
 namespace AdventureWorksModel {
 
     [Bounded]
+    [LegacyType]
     public class ContactType {
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -31,9 +34,15 @@ namespace AdventureWorksModel {
 
         #region Name
 
-        [Title]
-        public virtual string Name { get; set; }
+        internal string mappedName;
+        internal TextString cachedName;
 
+        [MemberOrder(1)]
+        public virtual TextString Name => cachedName ??= new TextString(mappedName, s => mappedName = s);
+        #endregion
+
+        #region Title
+        public Title title() => Name.title();
         #endregion
 
         #region ModifiedDate

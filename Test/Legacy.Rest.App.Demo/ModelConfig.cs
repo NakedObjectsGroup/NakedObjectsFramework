@@ -57,8 +57,6 @@ namespace Legacy.Rest.App.Demo {
         public static Type[] LegacyServices => new Type[] { };
 
 
-    public static Func<IConfiguration, DbContext> DbContextCreator => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
-
         public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextCreator => c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
 
 
