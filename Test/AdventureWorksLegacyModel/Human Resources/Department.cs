@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Legacy.NakedObjects.Application;
 using Legacy.NakedObjects.Application.ValueHolder;
 using NakedObjects;
 
@@ -37,7 +38,6 @@ namespace AdventureWorksModel {
 
         [Title]
         [MemberOrder(1)]
-        [NotMapped]
         public virtual TextString Name => _name ??= new TextString(name) { BackingField = s => name = s };
 
 
@@ -55,5 +55,8 @@ namespace AdventureWorksModel {
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
+
+        public Title title() => Name.title();
+
     }
 }
