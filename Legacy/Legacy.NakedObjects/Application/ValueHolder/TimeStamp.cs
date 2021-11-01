@@ -375,12 +375,5 @@ namespace Legacy.NakedObjects.Application.ValueHolder
             //instance.set(6, instance.getMinimum(6));
             //this.date = instance.getTime();
         }
-
-        //[JavaFlags(32778)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        static Date()
-        {
-            // ISSUE: unable to decompile the method.
-        }
     }
 }
