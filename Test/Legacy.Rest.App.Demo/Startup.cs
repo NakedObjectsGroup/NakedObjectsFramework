@@ -37,9 +37,9 @@ namespace Legacy.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                builder.MainMenus = NakedObjectsRunSettings.MainMenus;
+                builder.MainMenus = ModelConfig.MainMenus;
                 //builder.AddEF6Persistor(options => { options.ContextCreators = new[] {NakedObjectsRunSettings.DbContextCreator}; });
-                builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { NakedObjectsRunSettings.EFDbContextCreator }; });
+                builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { ModelConfig.EFDbContextCreator }; });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;
@@ -49,8 +49,8 @@ namespace Legacy.Rest.App.Demo {
                     options.InlineDetailsInPropertyMemberRepresentations = false;
                 });
                 builder.AddNakedObjects(options => {
-                    options.DomainModelTypes = NakedObjectsRunSettings.Types;
-                    options.DomainModelServices = NakedObjectsRunSettings.Services;
+                    options.DomainModelTypes = ModelConfig.NOTypes;
+                    options.DomainModelServices = ModelConfig.NOServices;
                     options.RegisterCustomTypes = services => {
                         services.AddSingleton(typeof(AppendFacetFactoryOrder<>), typeof(AppendFacetFactoryOrder<>));
                         services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AWNotCountedAnnotationFacetFactoryParallel));
@@ -59,7 +59,8 @@ namespace Legacy.Rest.App.Demo {
                 });
                 builder.AddLegacy(options => {
                     options.NoValidate = true;
-                    options.DomainModelTypes = new Type[] { };
+                    options.DomainModelTypes = ModelConfig.LegacyTypes;
+                    options.DomainModelServices = ModelConfig.LegacyServices;
                 });
             });
             services.AddCors(options => {
