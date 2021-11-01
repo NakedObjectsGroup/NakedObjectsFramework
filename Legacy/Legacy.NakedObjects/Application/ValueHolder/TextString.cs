@@ -29,6 +29,7 @@ namespace Legacy.NakedObjects.Application.ValueHolder {
             this.setValue(textString);
         }
 
+        public TextString(string text, Action<string> callback) : this(text) => BackingField = callback;
 
         [NakedObjectsIgnore]
         public override string asEncodedString() => this.isEmpty() ? "NULL" : this.text;

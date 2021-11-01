@@ -22,6 +22,8 @@ namespace Legacy.NakedObjects.Application.Collection {
             this.type = type;
         }
 
+        public InternalCollection(string type, Action<object, bool> callback) : this(type) => BackingField = callback;
+
         public virtual void add(object @object) {
             //if (@object == null)
             //  throw new NullPointerException("Cannot add null");
