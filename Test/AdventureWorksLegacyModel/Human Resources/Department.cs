@@ -19,13 +19,10 @@ namespace AdventureWorksModel {
     [LegacyType]
     public class Department  {
         #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
+        public virtual void Persisting()  => ModifiedDate.setValue(DateTime.Now);
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        public virtual void Updating()  => Persisting();
+
         #endregion
 
         #region Properties
@@ -40,18 +37,21 @@ namespace AdventureWorksModel {
         public virtual TextString Name => cachedName ??= new TextString(mappedName, s => mappedName = s);
 
 
-        internal string groupName;
-        private TextString _groupName;
+        internal string mappedGroupName;
+        private TextString cachedGroupName;
 
 
         [MemberOrder(2)]
-        [NotMapped]
-        public virtual TextString GroupName => _groupName ??= new TextString(groupName, s => groupName = s );
+        public virtual TextString GroupName => cachedGroupName ??= new TextString(mappedGroupName, s => mappedGroupName = s );
+
+
+        internal string mappedModifiedDate;
+        private TextString cachedModifiedDate;
 
         [MemberOrder(99)]
         [Disabled]
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual TimeStamp ModifiedDate => cachedModifiedDate ??= new TimeStamp(mappedModifiedDate, s => mappedModifiedDate = s);
 
         #endregion
 
