@@ -159,7 +159,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                 var defaultNakedObject = parameter.GetDefault(objectFacade);
                 if (defaultNakedObject != null) {
                     var title = defaultNakedObject.TitleString;
-                    var value = RestUtils.ObjectToPredefinedType(defaultNakedObject.Object, true);
+                    var value = RestUtils.ObjectToPredefinedType(defaultNakedObject, true);
                     var isValue = defaultNakedObject.Specification.IsParseable || defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable;
                     var defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy, req, adapter, parameter.Action, defaultNakedObject, title, flags);
 
@@ -191,7 +191,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             var defaultNakedObject = assoc.GetValue(objectFacade);
             if (defaultNakedObject != null) {
                 var title = defaultNakedObject.TitleString;
-                var value = RestUtils.ObjectToPredefinedType(defaultNakedObject.Object, true);
+                var value = RestUtils.ObjectToPredefinedType(defaultNakedObject, true);
                 var isValue = defaultNakedObject.Specification.IsParseable || defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable;
                 var defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy, req, adapter, actionContext.Action, defaultNakedObject, title, flags);
 

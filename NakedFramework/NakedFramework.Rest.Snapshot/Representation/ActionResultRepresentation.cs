@@ -21,11 +21,11 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Representation {
     [DataContract]
     public class ActionResultRepresentation : Representation {
-        protected ActionResultRepresentation(IOidStrategy oidStrategy, HttpRequest req, ActionResultContextFacade actionResult, RestControlFlags flags)
-            : base(oidStrategy, flags) {
+        protected ActionResultRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, ActionResultContextFacade actionResult, RestControlFlags flags)
+            : base(frameworkFacade.OidStrategy, flags) {
             SelfRelType = new ActionResultRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, actionResult.ActionContext));
             SetResultType(actionResult);
-            SetLinks(req, actionResult);
+            SetLinks(frameworkFacade, req, actionResult);
             SetExtensions(actionResult);
             SetHeader(actionResult);
         }
@@ -67,8 +67,8 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             Extensions = exts.Count > 0 ? RestUtils.CreateMap(exts) : new MapRepresentation();
         }
 
-        private void SetLinks(HttpRequest req, ActionResultContextFacade actionResult) {
-            Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : Array.Empty<LinkRepresentation>();
+        private void SetLinks(IFrameworkFacade frameworkFacade, HttpRequest req, ActionResultContextFacade actionResult) {
+            Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(frameworkFacade, req, actionResult)))} : Array.Empty<LinkRepresentation>();
         }
 
         private void SetResultType(ActionResultContextFacade actionResult) {
@@ -83,14 +83,16 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             }
         }
 
-        private MapRepresentation CreateArguments(HttpRequest req, ActionResultContextFacade actionResult) {
+        private IObjectFacade GetFacade(IFrameworkFacade frameworkFacade, object obj) => frameworkFacade.GetObject(obj);
+
+        private MapRepresentation CreateArguments(IFrameworkFacade frameworkFacade, HttpRequest req, ActionResultContextFacade actionResult) {
             var optionalProperties = new List<OptionalProperty>();
 
             foreach (var visibleParamContext in actionResult.ActionContext.VisibleParameters) {
                 IRepresentation value;
 
                 if (visibleParamContext.Specification.IsParseable) {
-                    var proposedObj = visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade?.Object;
+                    var proposedObj = visibleParamContext.ProposedObjectFacade ?? GetFacade(frameworkFacade, visibleParamContext.ProposedValue);
                     var valueObj = proposedObj != null ? RestUtils.ObjectToPredefinedType(proposedObj, false) : null;
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObj));
                 }
@@ -102,7 +104,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
                         var proposedCollection = proposedEnumerable == null ? Array.Empty<object>() : proposedEnumerable.Cast<object>();
 
-                        var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(i, false)).ToArray();
+                        var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(GetFacade(frameworkFacade, i), false)).ToArray();
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));
                     }
                     else {
@@ -129,7 +131,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         public static ActionResultRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, ActionResultContextFacade actionResult, RestControlFlags flags) {
             if (!actionResult.HasResult) {
-                return new ActionResultRepresentation(frameworkFacade.OidStrategy, req, actionResult, flags);
+                return new ActionResultRepresentation(frameworkFacade,  req, actionResult, flags);
             }
 
             IRepresentation result = actionResult switch {
@@ -139,7 +141,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
                 _ => PagedListRepresentation.Create(frameworkFacade, actionResult, req, flags)
             };
 
-            return CreateWithOptionals<ActionResultRepresentation>(new object[] {frameworkFacade.OidStrategy, req, actionResult, flags}, new[] {new OptionalProperty(JsonPropertyNames.Result, result)});
+            return CreateWithOptionals<ActionResultRepresentation>(new object[] {frameworkFacade, req, actionResult, flags}, new[] {new OptionalProperty(JsonPropertyNames.Result, result)});
         }
     }
 }
