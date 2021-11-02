@@ -257,7 +257,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         public static object ObjectToPredefinedType(IObjectFacade toMap, bool useDateOverDateTime) =>
             TypeToPredefinedFormatType(toMap.Specification, useDateOverDateTime) switch {
-                PredefinedFormatType.Date_time => toMap.ToUniversalTime(),
+                PredefinedFormatType.Date_time => toMap.ToString("s"),
                 PredefinedFormatType.Date => toMap.ToString(DateFormat),
                 PredefinedFormatType.Time => toMap.ToString(@"hh\:mm\:ss"),
                 PredefinedFormatType.String => toMap.ToString(),

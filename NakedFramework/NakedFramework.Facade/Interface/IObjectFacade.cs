@@ -37,6 +37,5 @@ namespace NakedFramework.Facade.Interface {
         AttachmentContextFacade GetAttachment();
         void SetIsNotQueryableState(bool state);
         string ToString(string format = "");
-        DateTime? ToUniversalTime();
     }
 }
