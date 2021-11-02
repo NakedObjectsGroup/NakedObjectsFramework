@@ -495,7 +495,7 @@ namespace Legacy.Rest.Test {
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(ClassWithDate.Date), parsedResult["id"].ToString());
-            Assert.AreEqual("01/11/2021 00:00:00", parsedResult["value"].ToString());
+            Assert.AreEqual("2021-11-01", parsedResult["value"].ToString());
         }
 
         [Test]
@@ -510,7 +510,50 @@ namespace Legacy.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            Assert.AreEqual("06/07/1998 00:00:00", resultObj["members"]["Date"]["value"].ToString());
+            Assert.AreEqual("1998-07-06", resultObj["members"]["Date"]["value"].ToString());
         }
+
+        //[Test]
+        //public void TestGetObjectWithTimeStamp() {
+        //    var api = Api();
+        //    var result = api.GetObject(FullName<ClassWithDate>(), "1");
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
+
+        //    Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        //    Assert.IsNull(parsedResult["members"]["Id"]);
+        //    Assert.IsNotNull(parsedResult["members"]["Date"]);
+        //    Assert.IsNotNull(parsedResult["members"]["ActionUpdateDate"]);
+
+        //    Assert.AreEqual("01 November 2021", parsedResult["title"].ToString());
+        //}
+
+        //[Test]
+        //public void TestGetTimeStampProperty() {
+        //    var api = Api();
+        //    var result = api.GetProperty(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.Date));
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
+
+        //    Assert.AreEqual(nameof(ClassWithDate.Date), parsedResult["id"].ToString());
+        //    Assert.AreEqual("01/11/2021 00:00:00", parsedResult["value"].ToString());
+        //}
+
+        //[Test]
+        //public void TestInvokeUpdateAndPersistObjectWithTimestamp() {
+        //    var api = Api().AsPost();
+        //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newDate", new ScalarValue(new DateTime(1998, 7, 6)) } } };
+
+        //    var result = api.PostInvoke(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.ActionUpdateDate), map);
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
+
+        //    var resultObj = parsedResult["result"];
+
+        //    Assert.AreEqual("06/07/1998 00:00:00", resultObj["members"]["Date"]["value"].ToString());
+        //}
     }
 }

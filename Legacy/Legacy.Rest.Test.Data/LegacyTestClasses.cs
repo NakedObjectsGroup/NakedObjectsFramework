@@ -171,4 +171,22 @@ namespace Legacy.Rest.Test.Data {
             return this;
         }
     }
+
+
+    public class ClassWithTimeStamp {
+        private TimeStamp _timestamp;
+        public DateTime date;
+
+        [Key]
+        public int Id { get; init; }
+
+        public TimeStamp TimeStamp => _timestamp ??= new TimeStamp(date, d => date = d);
+
+        public Title title() => TimeStamp.title();
+
+        public ClassWithTimeStamp ActionUpdateDate(TimeStamp newTimestamp) {
+            //TimeStamp.setValue(newTimestamp);
+            return this;
+        }
+    }
 }

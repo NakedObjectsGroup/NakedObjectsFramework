@@ -13,7 +13,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.SemanticsProvider;
 using NakedObjects.Reflector.TypeFacetFactory;
 
 namespace Legacy.Reflector.FacetFactory {

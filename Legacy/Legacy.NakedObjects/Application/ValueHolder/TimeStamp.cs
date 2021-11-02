@@ -42,7 +42,6 @@ namespace Legacy.NakedObjects.Application.ValueHolder
         public TimeStamp(DateTime date, Action<DateTime> callback) : this(date) => BackingField = callback;
 
 
-
         public TimeStamp(int year, int month, int day)
         {
             //this.isNull = true;

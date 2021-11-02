@@ -17,6 +17,7 @@ namespace Legacy.Reflector.Reflect {
                 typeof(OptionalDefaultFacetFactory),
                 typeof(LegacyCollectionFieldMethodsFacetFactory),
                 typeof(InternalCollectionFacetFactory),
+                typeof(DateOnlyFacetFactory),
                 typeof(LegacyFacetFactory),
                 typeof(TitleMethodFacetFactory),
                 typeof(LegacyMenuFacetFactory)
