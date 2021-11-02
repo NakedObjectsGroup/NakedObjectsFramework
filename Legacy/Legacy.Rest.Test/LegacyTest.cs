@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using Legacy.NakedObjects.Application;
@@ -540,7 +541,7 @@ namespace Legacy.Rest.Test {
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(ClassWithTimeStamp.TimeStamp), parsedResult["id"].ToString());
-            Assert.AreEqual("01/11/2021 00:00:00", parsedResult["value"].ToString());
+            Assert.AreEqual(DateTime.Parse("01/11/2021 00:00:00"), parsedResult["value"].Value<DateTime>());
         }
 
         [Test]
@@ -555,7 +556,7 @@ namespace Legacy.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            Assert.AreEqual("01/11/2021 00:00:00", resultObj["members"]["TimeStamp"]["value"].ToString());
+            Assert.AreEqual(DateTime.Parse("01/11/2021 00:00:00"), resultObj["members"]["TimeStamp"]["value"].Value<DateTime>());
         }
     }
 }
