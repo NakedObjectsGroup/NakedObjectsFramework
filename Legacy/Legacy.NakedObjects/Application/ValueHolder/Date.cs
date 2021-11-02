@@ -273,7 +273,7 @@ namespace Legacy.NakedObjects.Application.ValueHolder {
             BackingField(this.date);
         }
 
-        public override Title title() => new(isNull ? "" : date.ToString("D"));
+        public override Title title() => new(isNull ? "" : date.ToString("D", CultureInfo.InvariantCulture));
 
         public virtual void today() {
             setValue(DateTime.Today);
