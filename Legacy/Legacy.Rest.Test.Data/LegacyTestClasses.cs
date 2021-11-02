@@ -180,11 +180,12 @@ namespace Legacy.Rest.Test.Data {
         [Key]
         public int Id { get; init; }
 
+        [ConcurrencyCheck]
         public TimeStamp TimeStamp => _timestamp ??= new TimeStamp(date, d => date = d);
 
         public Title title() => TimeStamp.title();
 
-        public ClassWithTimeStamp ActionUpdateDate(TimeStamp newTimestamp) {
+        public ClassWithTimeStamp ActionUpdateTimeStamp(TimeStamp newTimeStamp) {
             //TimeStamp.setValue(newTimestamp);
             return this;
         }

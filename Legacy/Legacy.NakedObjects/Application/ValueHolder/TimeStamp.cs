@@ -37,6 +37,11 @@ namespace Legacy.NakedObjects.Application.ValueHolder
             //Date.SHORT_FORMAT.setLenient(false);
         }
 
+        public TimeStamp() {
+            //isNull = true;
+            //today();
+        }
+
         public TimeStamp(DateTime date) => this.date = date;
 
         public TimeStamp(DateTime date, Action<DateTime> callback) : this(date) => BackingField = callback;
@@ -69,7 +74,8 @@ namespace Legacy.NakedObjects.Application.ValueHolder
 
         public override void parseUserEntry(string text)
         {
-            throw new NotImplementedException();
+            date = (DateTime.Parse(text));
+            BackingField(date.GetValueOrDefault());
         }
 
         public override void restoreFromEncodedString(string data)
@@ -91,5 +97,7 @@ namespace Legacy.NakedObjects.Application.ValueHolder
         {
             throw new NotImplementedException();
         }
+
+        public virtual DateTime? dateValue() =>  date;
     }
 }

@@ -38,6 +38,7 @@ namespace Legacy.Rest.Test.Data {
         public DbSet<ClassWithLegacyInterface> ClassWithLegacyInterfaces { get; set; }
         public DbSet<ClassWithMenu> ClassWithMenus { get; set; }
         public DbSet<ClassWithDate> ClassWithDates { get; set; }
+        public DbSet<ClassWithDate> ClassWithTimeStamps { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(cs);
@@ -55,7 +56,10 @@ namespace Legacy.Rest.Test.Data {
             modelBuilder.Entity<ClassWithDate>().Ignore(t => t.Date);
             modelBuilder.Entity<ClassWithDate>().Property("date").HasColumnName("Date");
 
+            modelBuilder.Entity<ClassWithTimeStamp>().Ignore(t => t.TimeStamp);
+            modelBuilder.Entity<ClassWithTimeStamp>().Property("date").HasColumnName("Date");
 
+            modelBuilder.Entity<ClassWithTimeStamp>().HasData(jane);
 
             modelBuilder.Entity<ClassWithInternalCollection>().Ignore(t => t.TestCollection);
 
