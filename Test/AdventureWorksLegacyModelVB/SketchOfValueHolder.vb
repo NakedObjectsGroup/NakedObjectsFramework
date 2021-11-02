@@ -1,4 +1,4 @@
-Public Class SketchOfValueHolder
+Public Class DomainTypeFoo
 
     Friend mappedName As String
 
@@ -9,6 +9,10 @@ Public Class SketchOfValueHolder
             Return If(myName, New TextString(mappedName, Sub(s) mappedName = s))
         End Get
     End Property
+
+    Public Function Title() As Title
+        Return New Title(Name)
+    End Function
 
 End Class
 
@@ -32,4 +36,15 @@ Public Class TextString
         Return value
     End Function
 
+End Class
+
+Public Class Title
+    Private value As String
+    Public Sub New(value As String)
+        Me.value = value
+    End Sub
+
+    Public Sub New(value As TextString)
+        Me.value = value.GetValue()
+    End Sub
 End Class
