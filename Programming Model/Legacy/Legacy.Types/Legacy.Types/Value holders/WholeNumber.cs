@@ -1,24 +1,24 @@
 ﻿using System;
 
 namespace Legacy.Types {
-    public class TextString {
-        private string text;
+    public class WholeNumber {
+        private int number;
 
         // necessary for when used as a parameter
-        public TextString(string text) => Text = text;
+        public WholeNumber(int number) => Number = number;
 
-        public TextString(string text, Action<string> callback) : this(text) => UpdateBackingField = callback;
+        public WholeNumber(int number, Action<int> callback) : this(number) => UpdateBackingField = callback;
 
-        public string Text {
-            get => text;
+        public int Number {
+            get => number;
             set {
-                text = value;
-                UpdateBackingField(text);
+                number = value;
+                UpdateBackingField(number);
             }
         }
 
-        private Action<string> UpdateBackingField { get; } = _ => { };
+        private Action<int> UpdateBackingField { get; } = _ => { };
 
-        public override string ToString() => Text;
+        public override string ToString() => number.ToString();
     }
 }
