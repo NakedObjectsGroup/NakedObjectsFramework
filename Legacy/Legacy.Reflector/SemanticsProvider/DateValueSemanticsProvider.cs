@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace Legacy.Reflector.SemanticsProvider {
@@ -35,7 +36,9 @@ namespace Legacy.Reflector.SemanticsProvider {
 
         #region IDateValueFacet Members
 
-        public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => (DateTime?) nakedObjectAdapter?.Object ?? Now();
+        public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<Date>().dateValue().GetValueOrDefault();
+        }
 
         #endregion
 

@@ -495,7 +495,7 @@ namespace Legacy.Rest.Test {
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual(nameof(ClassWithDate.Date), parsedResult["id"].ToString());
-            Assert.AreEqual("01 November 2021", parsedResult["value"].ToString());
+            Assert.AreEqual("01/11/2021 00:00:00", parsedResult["value"].ToString());
         }
 
         [Test]
@@ -510,7 +510,7 @@ namespace Legacy.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            Assert.AreEqual("06 July 1998", resultObj["members"]["Date"]["value"].ToString());
+            Assert.AreEqual("06/07/1998 00:00:00", resultObj["members"]["Date"]["value"].ToString());
         }
     }
 }
