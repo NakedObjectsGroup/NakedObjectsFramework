@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NakedFramework.Facade.Contexts;
@@ -35,5 +36,7 @@ namespace NakedFramework.Facade.Interface {
         int Count();
         AttachmentContextFacade GetAttachment();
         void SetIsNotQueryableState(bool state);
+        string ToString(string format = "");
+        DateTime? ToUniversalTime();
     }
 }

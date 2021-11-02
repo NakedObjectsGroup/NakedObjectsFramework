@@ -62,6 +62,8 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             {typeof(char[]), PredefinedFormatType.Clob}
         };
 
+        private const string DateFormat = "yyyy-MM-dd";
+
         public static MapRepresentation GetExtensions(string friendlyname,
                                                       string description,
                                                       string pluralName,
@@ -253,24 +255,14 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             return false;
         }
 
-        private static string ToDateFormatString(DateTime date) => date.Date.ToString("yyyy-MM-dd");
-
-        private static string ToTimeFormatString(TimeSpan time) => time.ToString(@"hh\:mm\:ss");
-
-        public static object ObjectToPredefinedType(IObjectFacade toMap, bool useDateOverDateTime) {
-            static object ToUniversalTime(DateTime dt) => dt.Kind == DateTimeKind.Unspecified
-                ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
-                : dt.ToUniversalTime();
-
-            var spec = toMap.Specification;
-            var predefinedFormatType = TypeToPredefinedFormatType(spec, useDateOverDateTime);
-            return predefinedFormatType switch {
-                PredefinedFormatType.Date_time => ToUniversalTime((DateTime)toMap.Object),
-                PredefinedFormatType.Date => ToDateFormatString((DateTime)toMap.Object),
-                PredefinedFormatType.Time => ToTimeFormatString((TimeSpan)toMap.Object),
-                _ => predefinedFormatType == PredefinedFormatType.String ? toMap.Object.ToString() : toMap.Object
+        public static object ObjectToPredefinedType(IObjectFacade toMap, bool useDateOverDateTime) =>
+            TypeToPredefinedFormatType(toMap.Specification, useDateOverDateTime) switch {
+                PredefinedFormatType.Date_time => toMap.ToUniversalTime(),
+                PredefinedFormatType.Date => toMap.ToString(DateFormat),
+                PredefinedFormatType.Time => toMap.ToString(@"hh\:mm\:ss"),
+                PredefinedFormatType.String => toMap.ToString(),
+                _ => toMap.Object
             };
-        }
 
         private static (PredefinedJsonType pdt, PredefinedFormatType? pft)? SpecToPredefinedTypes(ITypeFacade spec, bool useDateOverDateTime) {
             if (spec.IsFileAttachment || spec.IsImage) {
@@ -361,8 +353,8 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                     var earliest = DateTime.Today.AddDays(minDays);
                     var latest = DateTime.Today.AddDays(maxDays);
 
-                    min = ToDateFormatString(earliest);
-                    max = ToDateFormatString(latest);
+                    min = earliest.Date.ToString(DateFormat);
+                    max = latest.Date.ToString(DateFormat);
                 }
                 else {
                     min = minRange.ToType(propertyType, null);

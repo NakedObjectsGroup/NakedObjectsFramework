@@ -153,6 +153,36 @@ namespace NakedFramework.Facade.Impl.Impl {
             }
         }
 
+        public string ToString(string format = "") {
+
+            if (!string.IsNullOrWhiteSpace(format)) {
+                var spec = WrappedNakedObject.Spec;
+
+                if (spec.GetFacet<IDateValueFacet>() is { } df) {
+                    return df.DateValue(WrappedNakedObject).Date.ToString(format);
+                }
+
+                if (spec.GetFacet<ITimeValueFacet>() is { } tf) {
+                    return tf.TimeValue(WrappedNakedObject).ToString(format);
+                }
+            }
+
+            return WrappedNakedObject.Object.ToString();
+        }
+
+        public DateTime? ToUniversalTime() {
+            var spec = WrappedNakedObject.Spec;
+
+            if (spec.GetFacet<IDateValueFacet>() is { } df) {
+                var dt = df.DateValue(WrappedNakedObject);
+                return dt.Kind == DateTimeKind.Unspecified
+                    ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
+                    : dt.ToUniversalTime();
+            }
+
+            return null;
+        }
+
         #endregion
     }
 }
