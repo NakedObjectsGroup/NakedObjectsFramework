@@ -73,6 +73,10 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public bool IsDateTime => FullName == "System.DateTime";
 
+        public bool IsDate => WrappedValue.ContainsFacet<IDateValueFacet>();
+
+        public bool IsTime => WrappedValue.ContainsFacet<ITimeValueFacet>();
+
         public string FullName => WrappedValue.FullName;
 
         public string ShortName => WrappedValue.ShortName;

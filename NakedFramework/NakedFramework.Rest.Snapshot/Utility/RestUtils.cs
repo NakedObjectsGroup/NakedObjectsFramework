@@ -159,7 +159,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         private static object GetChoiceValue(IOidStrategy oidStrategy, IObjectFacade item, Func<ChoiceRelType> relType, RestControlFlags flags) {
             var title = SafeGetTitle(item);
-            var value = ObjectToPredefinedType(item.Object, false);
+            var value = ObjectToPredefinedType(item, false);
             return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType(), flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
@@ -175,76 +175,70 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         public static string SafeGetTitle(IAssociationFacade property, IObjectFacade valueNakedObject) => valueNakedObject == null ? "" : property.GetTitle(valueNakedObject);
 
-        private static PredefinedJsonType? TypeToPredefinedJsonType(Type toMapType, bool isParseable) {
+        private static PredefinedJsonType? TypeToPredefinedJsonType(ITypeFacade typeFacade) {
+            var toMapType = typeFacade.GetUnderlyingType();
+
             if (SimpleTypeMap.ContainsKey(toMapType)) {
                 return SimpleTypeMap[toMapType];
             }
 
-            if (toMapType.IsEnum) {
+            if (typeFacade.IsEnum) {
                 var underlyingType = Enum.GetUnderlyingType(toMapType);
                 return SimpleTypeMap[underlyingType];
             }
 
-            if (typeof(DateTime).IsAssignableFrom(toMapType) || typeof(TimeSpan).IsAssignableFrom(toMapType)) {
+            if (typeFacade.IsDate || typeFacade.IsTime) {
                 return PredefinedJsonType.String;
             }
 
-            if (IsGenericType(toMapType, typeof(ISet<>))) {
+            if (typeFacade.IsASet) {
                 return PredefinedJsonType.Set;
             }
 
-            if (IsGenericType(toMapType, typeof(ICollection<>)) || IsGenericType(toMapType, typeof(IQueryable<>))) {
-                return PredefinedJsonType.List;
-            }
-
-            if (typeof(ICollection).IsAssignableFrom(toMapType) || typeof(IQueryable).IsAssignableFrom(toMapType)) {
-                return PredefinedJsonType.List;
-            }
-
-            // to catch nof2 InternalCollections 
-
-            if (typeof(IEnumerable).IsAssignableFrom(toMapType) && !toMapType.IsArray) {
+            if (typeFacade.IsCollection || typeFacade.IsQueryable ) {
                 return PredefinedJsonType.List;
             }
 
             // if parseable default to string
-            if (isParseable) {
+            if (typeFacade.IsParseable) {
                 return PredefinedJsonType.String;
             }
 
             return null;
         }
 
-        private static PredefinedFormatType? TypeToPredefinedFormatType(Type toMapType, bool isParseable, bool useDateOverDateTime) {
-            if (SimpleFormatMap.ContainsKey(toMapType)) {
-                return SimpleFormatMap[toMapType];
-            }
-
-            if (toMapType.IsEnum) {
-                var underlyingType = Enum.GetUnderlyingType(toMapType);
+        private static PredefinedFormatType? TypeToPredefinedFormatType(ITypeFacade typeSpec, bool useDateOverDateTime) {
+            var underlyingType = typeSpec.GetUnderlyingType();
+            
+            if (SimpleFormatMap.ContainsKey(underlyingType)) {
                 return SimpleFormatMap[underlyingType];
             }
 
-            if (typeof(DateTime).IsAssignableFrom(toMapType)) {
+            if (typeSpec.IsEnum) {
+                var enumType = Enum.GetUnderlyingType(underlyingType);
+                return SimpleFormatMap[enumType];
+            }
+
+            if (typeSpec.IsDate) {
                 return useDateOverDateTime ? PredefinedFormatType.Date : PredefinedFormatType.Date_time;
             }
 
-            if (typeof(TimeSpan).IsAssignableFrom(toMapType)) {
+            if (typeSpec.IsTime) {
                 return PredefinedFormatType.Time;
             }
 
-            if (isParseable) {
+            if (typeSpec.IsParseable) {
                 return PredefinedFormatType.String;
             }
 
             return null;
         }
 
-        private static (PredefinedJsonType, PredefinedFormatType?)? TypeToPredefinedTypes(Type toMapType, bool isParseable, bool useDateOverDateTime) {
-            var pst = TypeToPredefinedJsonType(toMapType, isParseable);
+        private static (PredefinedJsonType, PredefinedFormatType?)? TypeToPredefinedTypes(ITypeFacade typeSpec, bool useDateOverDateTime) {
+            var pst = TypeToPredefinedJsonType(typeSpec);
 
             if (pst.HasValue) {
-                var pft = TypeToPredefinedFormatType(toMapType, isParseable, useDateOverDateTime);
+                var pft = TypeToPredefinedFormatType(typeSpec, useDateOverDateTime);
                 return (pst.Value, pft);
             }
 
@@ -263,17 +257,18 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         private static string ToTimeFormatString(TimeSpan time) => time.ToString(@"hh\:mm\:ss");
 
-        public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime, bool isParseable = false) {
+        public static object ObjectToPredefinedType(IObjectFacade toMap, bool useDateOverDateTime) {
             static object ToUniversalTime(DateTime dt) => dt.Kind == DateTimeKind.Unspecified
                 ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
                 : dt.ToUniversalTime();
 
-            var predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(), isParseable, useDateOverDateTime);
+            var spec = toMap.Specification;
+            var predefinedFormatType = TypeToPredefinedFormatType(spec, useDateOverDateTime);
             return predefinedFormatType switch {
-                PredefinedFormatType.Date_time => ToUniversalTime((DateTime) toMap),
-                PredefinedFormatType.Date => ToDateFormatString((DateTime) toMap),
-                PredefinedFormatType.Time => ToTimeFormatString((TimeSpan) toMap),
-                _ => predefinedFormatType == PredefinedFormatType.String ? toMap.ToString() : toMap
+                PredefinedFormatType.Date_time => ToUniversalTime((DateTime)toMap.Object),
+                PredefinedFormatType.Date => ToDateFormatString((DateTime)toMap.Object),
+                PredefinedFormatType.Time => ToTimeFormatString((TimeSpan)toMap.Object),
+                _ => predefinedFormatType == PredefinedFormatType.String ? toMap.Object.ToString() : toMap.Object
             };
         }
 
@@ -283,14 +278,13 @@ namespace NakedFramework.Rest.Snapshot.Utility {
             }
 
             if (spec.IsParseable || spec.IsCollection || spec.IsVoid) {
-                var underlyingType = spec.GetUnderlyingType();
-                return TypeToPredefinedTypes(underlyingType, spec.IsParseable, useDateOverDateTime);
+                return TypeToPredefinedTypes(spec, useDateOverDateTime);
             }
 
             return null;
         }
 
-        public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime) {
+        public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy) {
             if (!spec.IsVoid) {
                 var types = SpecToPredefinedTypes(spec, false);
                 return types != null ? types.Value.pdt.ToRoString() : spec.DomainTypeName(oidStrategy);
@@ -317,8 +311,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         public static bool IsBlobOrClob(ITypeFacade spec) {
             if (spec.IsParseable || spec.IsCollection) {
-                var underlyingType = spec.GetUnderlyingType();
-                var pdt = TypeToPredefinedFormatType(underlyingType, spec.IsParseable, false);
+                var pdt = TypeToPredefinedFormatType(spec, false);
                 return pdt == PredefinedFormatType.Blob || pdt == PredefinedFormatType.Clob;
             }
 

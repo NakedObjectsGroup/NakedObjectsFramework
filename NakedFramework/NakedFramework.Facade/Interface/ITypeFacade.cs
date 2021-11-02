@@ -22,6 +22,8 @@ namespace NakedFramework.Facade.Interface {
         bool IsVoid { get; }
         bool IsStatic { get; }
         bool IsDateTime { get; }
+        bool IsDate { get; }
+        bool IsTime { get; }
         bool IsCollection { get; }
         bool IsObject { get; }
         string FullName { get; }
