@@ -105,6 +105,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Rest.Test.Data", "Le
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Rest.Test", "Legacy\Legacy.Rest.Test\Legacy.Rest.Test.csproj", "{549638C5-A6F2-48BC-B65F-52D18EEEDF3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Legacy.Types", "Programming Model\Legacy\Legacy.Types\Legacy.Types\Legacy.Types.csproj", "{3202125C-E070-4432-93B2-EF944940AFC8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.ProgrammingModel.Package", "Programming Model\Legacy\Legacy.ProgrammingModel.package\Legacy.ProgrammingModel.Package.csproj", "{FA3A79E3-8600-4F5D-A38B-A383D9CE66B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -307,6 +311,12 @@ Global
 		{549638C5-A6F2-48BC-B65F-52D18EEEDF3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{549638C5-A6F2-48BC-B65F-52D18EEEDF3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{549638C5-A6F2-48BC-B65F-52D18EEEDF3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3202125C-E070-4432-93B2-EF944940AFC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3202125C-E070-4432-93B2-EF944940AFC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3202125C-E070-4432-93B2-EF944940AFC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3202125C-E070-4432-93B2-EF944940AFC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA3A79E3-8600-4F5D-A38B-A383D9CE66B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA3A79E3-8600-4F5D-A38B-A383D9CE66B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

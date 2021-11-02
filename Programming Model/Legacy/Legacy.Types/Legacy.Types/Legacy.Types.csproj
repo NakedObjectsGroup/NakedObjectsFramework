@@ -45,9 +45,8 @@
     <Compile Include="Control %28abouts%29\AboutTypeCodes.cs" />
     <Compile Include="Control %28abouts%29\ActionAbout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Value holders\TextString.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Value holders\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
