@@ -1,17 +1,24 @@
 ﻿using System;
 
-// ReSharper disable InconsistentNaming
-
 namespace Legacy.Types {
     public class TextString {
-        private readonly string text;
+        private string text;
 
-        public TextString(string text) => this.text = text;
+        // necessary for when used as a parameter
+        public TextString(string text) => Text = text;
 
-        public TextString(string text, Action<string> callback) : this(text) => BackingField = callback;
+        public TextString(string text, Action<string> callback) : this(text) => UpdateBackingField = callback;
 
-        private Action<string> BackingField { get; set; } = _ => { };
+        public string Text {
+            get => text;
+            set {
+                text = value;
+                UpdateBackingField(text);
+            }
+        }
 
-        public override string ToString() => text;
+        private Action<string> UpdateBackingField { get; } = _ => { };
+
+        public override string ToString() => Text;
     }
 }
