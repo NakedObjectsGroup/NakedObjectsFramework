@@ -2,11 +2,11 @@ Public Class SketchOfValueHolder
 
     Friend mappedName As String
 
-    Private myName As TextString = If(myName, New TextString(mappedName, Sub(s) mappedName = s))
+    Private myName As TextString
 
     Public ReadOnly Property Name As TextString
         Get
-            Return myName
+            Return If(myName, New TextString(mappedName, Sub(s) mappedName = s))
         End Get
     End Property
 
@@ -18,11 +18,10 @@ Public Class TextString
 
     Private updateMappedField As Action(Of String)
 
-    Public Sub New(value As String, updateBackingField As Action(Of String))
+    Public Sub New(value As String, updateMappedField As Action(Of String))
         Me.value = value
-        updateMappedField = updateBackingField
+        Me.updateMappedField = updateMappedField
     End Sub
-
 
     Public Sub SetValue(newValue As String)
         value = newValue
@@ -32,6 +31,5 @@ Public Class TextString
     Public Function GetValue() As String
         Return value
     End Function
-
 
 End Class
