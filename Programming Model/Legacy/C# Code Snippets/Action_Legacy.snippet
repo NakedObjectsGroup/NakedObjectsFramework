@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Action (legacy)</Title>
+      <Shortcut>actl</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Name</ID>
+          <Default>Name</Default>
+        </Literal>
+        <Literal>
+          <ID>ReturnType</ID>
+          <Default>ReturnType</Default>
+        </Literal>
+        <Literal>
+          <ID>ParamDef</ID>
+          <Default>ParamDef</Default>
+        </Literal>
+        <Literal>
+          <ID>ParamList</ID>
+          <Default>ParamList</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp">
+        <![CDATA[
+        #region Action $Name$
+        public $ReturnType$ Action$Name$($ParamDef$) => $Name$($ParamList$);
+
+        public void AboutAction$Name$(ActionAbout a, $ParamDef$)
+        {
+            switch (a.TypeCode)
+            {
+                case AboutTypeCodes.Name:
+                    //a.Name = "";
+                    break;
+                case AboutTypeCodes.Parameters:
+                    //a.ParamLabels[0] = "";
+                    //a.ParamDefaultValues[0] = Default0$Name$();
+                    //a.ParamOptions[0] = Choices0$Name$().ToArray();
+                    break;
+                case AboutTypeCodes.Usable:
+                    //a.UnusableReason = Disable$Name$();
+                    //a.Usable = string.IsNullOrEmpty(a.UnusableReason))                
+                    break;
+                case AboutTypeCodes.Valid:
+                    //var sb = new StringBuilder();
+                    //sb.append(a.Validate$Name$($ParamList$));
+                    //sb.append(a.Validate0$Name$());
+                    //a.UnusableReason = sb.ToString();
+                    //a.Usable = string.IsNullOrEmpty(a.UnusableReason))   
+                    break;
+                case AboutTypeCodes.Visible:
+                    //a.Visible = Hide$Name$();
+                    break;
+            }
+        }
+        #endregion
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

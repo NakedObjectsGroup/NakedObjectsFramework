@@ -8,6 +8,6 @@
         string[] ParamLabels { get; set; }
         object[] ParamDefaultValues { get; set; }
         object[][] ParamOptions { get; set; }
-        AboutTypeCodes TypeCode();
+        AboutTypeCodes TypeCode { get; }
     }
 }
