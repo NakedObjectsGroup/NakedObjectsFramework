@@ -7,36 +7,40 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Legacy.Types;
 using NakedObjects;
+
 
 namespace AdventureWorksModel {
 
     [Bounded, Immutable]
+    [LegacyType]
     public class ProductSubcategory {
 
         #region Life Cycle Methods
         public virtual void Persisting() {
             rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
+            ModifiedDate.DateTime = DateTime.Now;
         }
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        public virtual void Updating()  =>  ModifiedDate.DateTime = DateTime.Now;
         #endregion
 
         [NakedObjectsIgnore]
         public virtual int ProductSubcategoryID { get; set; }
 
-        [Title]
-        public virtual string Name { get; set; }
+        #region Name
+        internal string mappedName;
+        private TextString myName;
+
+        [MemberOrder(1)]
+        public virtual TextString Name => myName ??= new TextString(mappedName, v => mappedName = v);
+        #endregion
 
         [NakedObjectsIgnore]
         public virtual int ProductCategoryID { get; set; }
 
         public virtual ProductCategory ProductCategory { get; set; }
-
-        #region Row Guid and Modified Date
 
         #region rowguid
 
@@ -46,14 +50,15 @@ namespace AdventureWorksModel {
         #endregion
 
         #region ModifiedDate
+        internal DateTime mappedModifiedDate;
+        private TimeStamp myModifiedDate;
 
         [MemberOrder(99)]
         [Disabled]
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
+        public virtual TimeStamp ModifiedDate => myModifiedDate ??= new TimeStamp(mappedModifiedDate, s => mappedModifiedDate = s);
         #endregion
 
-        #endregion
+        public Title title() => Name.Title();
     }
 }

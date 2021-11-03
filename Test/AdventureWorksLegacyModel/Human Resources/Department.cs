@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using Legacy.Types;
 using NakedObjects;
 
+
 namespace AdventureWorksModel {
 
     [Bounded]
@@ -23,8 +24,6 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region Properties
-
         [NakedObjectsIgnore]
         public virtual short DepartmentID { get; set; }
 
@@ -36,15 +35,16 @@ namespace AdventureWorksModel {
         public virtual TextString Name => myName ??= new TextString(mappedName, s => mappedName = s);
         #endregion
 
-
+        #region GroupName
         internal string mappedGroupName;
         private TextString cachedGroupName;
 
 
         [MemberOrder(2)]
         public virtual TextString GroupName => cachedGroupName ??= new TextString(mappedGroupName, s => mappedGroupName = s );
+        #endregion
 
-
+        #region ModifiedDate
         internal DateTime mappedModifiedDate;
         private TimeStamp myModifiedDate;
 
@@ -52,11 +52,9 @@ namespace AdventureWorksModel {
         [Disabled]
         [ConcurrencyCheck]
         public virtual TimeStamp ModifiedDate => myModifiedDate ??= new TimeStamp(mappedModifiedDate, s => mappedModifiedDate = s);
-
         #endregion
 
         public Title title() => Name.Title();
-
 
     }
 }

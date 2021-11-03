@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 
 namespace Legacy.Types {
     public class TimeStamp : TitledObject {

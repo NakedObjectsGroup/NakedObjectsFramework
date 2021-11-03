@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using Legacy.Types;
 using NakedObjects;
 
+
 namespace AdventureWorksModel {
 
     [Bounded, Immutable]
@@ -25,7 +26,7 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        #region Name
+        #region CountryRegionCode
 
         internal string mappedCountryRegionCode;
         internal TextString cachedCountryRegionCode;

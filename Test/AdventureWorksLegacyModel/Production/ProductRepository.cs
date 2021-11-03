@@ -151,7 +151,7 @@ namespace AdventureWorksModel {
 
         public IList<ProductSubcategory> Choices1ListProducts(ProductCategory category) {
             if (category != null) {
-                return category.ProductSubcategory.ToList();
+                return category.MappedSubcategories.ToList();
             }
 
             return null;
@@ -168,8 +168,8 @@ namespace AdventureWorksModel {
 
         public virtual IList<ProductSubcategory> Default0ListProductsBySubCategories() {
             return new List<ProductSubcategory> {
-                Instances<ProductSubcategory>().Single(psc => psc.Name == "Mountain Bikes"),
-                Instances<ProductSubcategory>().Single(psc => psc.Name == "Touring Bikes")
+                Instances<ProductSubcategory>().Single(psc => psc.mappedName == "Mountain Bikes"),
+                Instances<ProductSubcategory>().Single(psc => psc.mappedName == "Touring Bikes")
             };
         }
 

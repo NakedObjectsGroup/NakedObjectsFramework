@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using Legacy.Types;
 using NakedObjects;
 
+
 namespace AdventureWorksModel {
     [Bounded]
     [Immutable]

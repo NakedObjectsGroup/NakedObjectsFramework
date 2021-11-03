@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Legacy.Types;
 using NakedObjects;
+
 
 namespace AdventureWorksModel {
     [Bounded]
@@ -18,32 +20,34 @@ namespace AdventureWorksModel {
     public class ProductCategory  {
 
         #region Life Cycle Methods
-        public virtual void Persisting() {
+        public virtual void Persisting()
+        {
             rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
+            ModifiedDate.DateTime = DateTime.Now;
         }
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        public virtual void Updating() => ModifiedDate.DateTime = DateTime.Now;
         #endregion
 
-        private ICollection<ProductSubcategory> _ProductSubcategory = new List<ProductSubcategory>();
+        #region Subcategories (collection)
+        [NakedObjectsIgnore]
+        public virtual ICollection<ProductSubcategory> MappedSubcategories { get; } = new List<ProductSubcategory>();
+        private InternalCollection mySubcategories;
 
-        [Hidden]
+        [MemberOrder(1)][TableView(true)]
+        public InternalCollection Subcategories => mySubcategories ??= new InternalCollection<ProductSubcategory>(MappedSubcategories);
+        #endregion
+
+        [NakedObjectsIgnore]
         public virtual int ProductCategoryID { get; set; }
 
-        [Title]
-        public virtual string Name { get; set; }
+        #region Name
+        internal string mappedName;
+        private TextString myName;
 
-        [DisplayName("Subcategories")]
-        [TableView(true)] //TableView == ListView
-        public virtual ICollection<ProductSubcategory> ProductSubcategory {
-            get { return _ProductSubcategory; }
-            set { _ProductSubcategory = value; }
-        }
-
-        #region Row Guid and Modified Date
+        [MemberOrder(1)]
+        public virtual TextString Name => myName ??= new TextString(mappedName, v => mappedName = v);
+        #endregion
 
         #region rowguid
 
@@ -53,14 +57,15 @@ namespace AdventureWorksModel {
         #endregion
 
         #region ModifiedDate
+        internal DateTime mappedModifiedDate;
+        private TimeStamp myModifiedDate;
 
         [MemberOrder(99)]
         [Disabled]
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
+        public virtual TimeStamp ModifiedDate => myModifiedDate ??= new TimeStamp(mappedModifiedDate, s => mappedModifiedDate = s);
         #endregion
 
-        #endregion
+        public Title title() => Name.Title();
     }
 }
