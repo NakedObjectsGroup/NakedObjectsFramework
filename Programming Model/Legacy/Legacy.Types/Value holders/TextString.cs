@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Legacy.Types {
-    public class TextString {
+    public class TextString : TitledObject {
         private string text;
 
         // necessary for when used as a parameter
@@ -20,5 +20,8 @@ namespace Legacy.Types {
         private Action<string> UpdateBackingField { get; } = _ => { };
 
         public override string ToString() => Text;
+
+        public Title Title() => new Title(this);
+
     }
 }

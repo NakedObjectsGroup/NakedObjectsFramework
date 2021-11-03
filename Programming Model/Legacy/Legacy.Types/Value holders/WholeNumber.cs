@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Legacy.Types {
-    public class WholeNumber {
+    public class WholeNumber : TitledObject {
         private int number;
 
         // necessary for when used as a parameter
@@ -20,5 +20,7 @@ namespace Legacy.Types {
         private Action<int> UpdateBackingField { get; } = _ => { };
 
         public override string ToString() => number.ToString();
+
+        public Title Title() => new Title(this);
     }
 }

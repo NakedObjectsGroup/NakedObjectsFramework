@@ -14,6 +14,7 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [Bounded]
     [Immutable]
+    [LegacyType]
     public class ProductCategory  {
 
         #region Life Cycle Methods
@@ -29,7 +30,7 @@ namespace AdventureWorksModel {
 
         private ICollection<ProductSubcategory> _ProductSubcategory = new List<ProductSubcategory>();
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductCategoryID { get; set; }
 
         [Title]

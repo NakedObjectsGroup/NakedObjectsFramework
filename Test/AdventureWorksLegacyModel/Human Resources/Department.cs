@@ -7,9 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Legacy.NakedObjects.Application;
-using Legacy.NakedObjects.Application.ValueHolder;
+using Legacy.Types;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -19,7 +17,7 @@ namespace AdventureWorksModel {
     [LegacyType]
     public class Department  {
         #region Life Cycle Methods
-        public virtual void Persisting()  => ModifiedDate.setValue(DateTime.Now);
+        public virtual void Persisting()  => ModifiedDate.DateTime = DateTime.Now;
 
         public virtual void Updating()  => Persisting();
 
@@ -30,11 +28,13 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual short DepartmentID { get; set; }
 
+        #region Name
         internal string mappedName;
-        internal TextString cachedName;
+        internal TextString myName;
 
         [MemberOrder(1)]
-        public virtual TextString Name => cachedName ??= new TextString(mappedName, s => mappedName = s);
+        public virtual TextString Name => myName ??= new TextString(mappedName, s => mappedName = s);
+        #endregion
 
 
         internal string mappedGroupName;
@@ -45,17 +45,18 @@ namespace AdventureWorksModel {
         public virtual TextString GroupName => cachedGroupName ??= new TextString(mappedGroupName, s => mappedGroupName = s );
 
 
-        internal string mappedModifiedDate;
-        private TextString cachedModifiedDate;
+        internal DateTime mappedModifiedDate;
+        private TimeStamp myModifiedDate;
 
         [MemberOrder(99)]
         [Disabled]
         [ConcurrencyCheck]
-        public virtual TimeStamp ModifiedDate => cachedModifiedDate ??= new TimeStamp(mappedModifiedDate, s => mappedModifiedDate = s);
+        public virtual TimeStamp ModifiedDate => myModifiedDate ??= new TimeStamp(mappedModifiedDate, s => mappedModifiedDate = s);
 
         #endregion
 
-        public Title title() => Name.title();
+        public Title title() => Name.Title();
+
 
     }
 }

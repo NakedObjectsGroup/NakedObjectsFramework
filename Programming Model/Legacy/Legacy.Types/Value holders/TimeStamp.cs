@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Legacy.Types {
-    public class TimeStamp {
+    public class TimeStamp : TitledObject {
         private DateTime dateTime;
 
         // necessary for when used as a parameter
@@ -19,6 +19,8 @@ namespace Legacy.Types {
 
         private Action<DateTime> UpdateBackingField { get; } = _ => { };
 
-        public override string ToString() => DateTime.ToString();
+        public override string ToString() => DateTime.ToString("dd/MM/yyyy hh:mm:ss"); //TODO: match original format.
+
+        public Title Title() => new Title(this);
     }
 }

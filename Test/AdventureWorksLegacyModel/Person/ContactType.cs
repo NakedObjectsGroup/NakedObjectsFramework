@@ -7,8 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using Legacy.NakedObjects.Application;
-using Legacy.NakedObjects.Application.ValueHolder;
+using Legacy.Types;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -42,7 +41,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Title
-        public Title title() => Name.title();
+        public Title title() => Name.Title();
         #endregion
 
         #region ModifiedDate
