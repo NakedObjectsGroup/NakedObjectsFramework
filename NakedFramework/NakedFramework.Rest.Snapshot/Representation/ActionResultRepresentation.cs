@@ -83,7 +83,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             }
         }
 
-        private IObjectFacade GetFacade(IFrameworkFacade frameworkFacade, object obj) => frameworkFacade.GetObject(obj);
+        private IObjectFacade GetFacade(IFrameworkFacade frameworkFacade, object obj) => obj is not null ? frameworkFacade.GetObject(obj): null;
 
         private MapRepresentation CreateArguments(IFrameworkFacade frameworkFacade, HttpRequest req, ActionResultContextFacade actionResult) {
             var optionalProperties = new List<OptionalProperty>();
@@ -93,7 +93,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
                 if (visibleParamContext.Specification.IsParseable) {
                     var proposedObj = visibleParamContext.ProposedObjectFacade ?? GetFacade(frameworkFacade, visibleParamContext.ProposedValue);
-                    var valueObj = proposedObj != null ? RestUtils.ObjectToPredefinedType(proposedObj, false) : null;
+                    var valueObj = proposedObj is not null ? RestUtils.ObjectToPredefinedType(proposedObj, false) : null;
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObj));
                 }
                 else if (visibleParamContext.Specification.IsCollection) {
