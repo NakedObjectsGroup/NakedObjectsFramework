@@ -4,17 +4,17 @@
 // MVID: 99352736-2C6C-4D77-94E7-E744D03082F7
 // Assembly location: C:\Users\scasc\Documents\sdm\SdmApp-Dlls.part02\bin\sdm.systems.application.dll
 
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Legacy.Types {
     public class SubMenu : MainMenu, ISubMenu {
-        private ArrayList myMenus;
+        private IList<IMenu> myMenus;
 
         public SubMenu(string menuName)
             : base(menuName) =>
-            myMenus = new ArrayList();
+            myMenus = new List<IMenu>();
 
-        public override ArrayList Menus {
+        public override IList<IMenu> Menus {
             get => myMenus;
             set => myMenus = value;
         }

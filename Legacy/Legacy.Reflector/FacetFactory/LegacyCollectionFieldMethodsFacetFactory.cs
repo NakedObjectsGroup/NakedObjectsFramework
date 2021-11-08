@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using Legacy.Types;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
@@ -71,10 +72,8 @@ namespace Legacy.Reflector.FacetFactory {
 
         public static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties, IClassStrategy classStrategy) {
             return properties.Where(property => property.HasPublicGetter() &&
-                                                CollectionUtils.IsCollection(property.PropertyType) &&
-                                                !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
-                                                !classStrategy.IsIgnored(property) &&
-                                                !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToArray();
+                                                property.PropertyType.IsAssignableTo(typeof(InternalCollection))
+                                                ).Select(p => p.PropertyType).ToArray();
         }
     }
 }
