@@ -7,7 +7,7 @@
 
 using System;
 using System.Globalization;
-using Legacy.NakedObjects.Application.ValueHolder;
+using Legacy.Types;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -22,7 +22,7 @@ namespace Legacy.Reflector.SemanticsProvider {
         private const bool EqualByContent = false;
         private const bool Immutable = false;
         private const int TypicalLengthConst = 18;
-        private static readonly Date DefaultValueConst = new();
+        private static readonly Date DefaultValueConst = new(new DateTime());
 
         public DateValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
@@ -37,24 +37,21 @@ namespace Legacy.Reflector.SemanticsProvider {
         #region IDateValueFacet Members
 
         public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<Date>().dateValue().GetValueOrDefault();
+            return nakedObjectAdapter.GetDomainObject<Date>().DateTime;
         }
 
         #endregion
 
         public static bool IsAdaptedType(Type type) => type == typeof(Date);
 
-        protected override string DoEncode(Date obj) {
-            var date = obj;
-            return date.asEncodedString();
+        protected override string DoEncode(Date date) {
+            return date.DateTime.ToString(CultureInfo.InvariantCulture);
         }
 
         protected override Date DoParse(string entry) {
             var dateString = entry.Trim();
             try {
-                var d = new Date();
-                d.parseUserEntry(entry);
-                return d;
+                return new Date(DateTime.Parse(entry));
             }
             catch (FormatException) {
                 throw new InvalidEntryException(FormatMessage(dateString));
@@ -63,15 +60,13 @@ namespace Legacy.Reflector.SemanticsProvider {
 
         protected override Date DoParseInvariant(string entry) => DoParse(entry);
 
-        protected override string GetInvariantString(Date obj) => obj.asEncodedString();
+        protected override string GetInvariantString(Date date) => date.DateTime.ToString(CultureInfo.InvariantCulture);
 
         protected override Date DoRestore(string data) {
-            var d = new Date();
-            d.restoreFromEncodedString(data);
-            return d;
+            return new Date(DateTime.Parse(data, CultureInfo.InvariantCulture));
         }
 
-        protected override string TitleStringWithMask(string mask, Date value) => value.titleString();
+        protected override string TitleStringWithMask(string mask, Date value) => value.DateTime.ToString(mask);
 
         private static DateTime Now() => TestDateTime ?? DateTime.Now;
     }

@@ -32,6 +32,6 @@ namespace Legacy.Types
 
         public override string ToString() => stringBuilder.ToString();
 
-        public static string TitleString(TitledObject obj) => obj?.Title()?.ToString() ?? "";
+        public static string TitleString(TitledObject obj) => obj?.ToString() ?? "";
     }
 }

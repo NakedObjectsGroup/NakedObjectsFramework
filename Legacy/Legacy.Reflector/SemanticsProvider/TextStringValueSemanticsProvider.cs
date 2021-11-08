@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Legacy.NakedObjects.Application.ValueHolder;
+using Legacy.Types;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -31,7 +31,7 @@ namespace Legacy.Reflector.SemanticsProvider {
 
         #region IStringValueFacet Members
 
-        public string StringValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TextString>().stringValue();
+        public string StringValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TextString>().Text;
 
         #endregion
 
@@ -41,15 +41,12 @@ namespace Legacy.Reflector.SemanticsProvider {
 
         protected override TextString DoParseInvariant(string entry) => new(entry);
 
-        protected override string GetInvariantString(TextString obj) => obj.stringValue();
+        protected override string GetInvariantString(TextString textString) => textString.Text;
 
-        protected override string DoEncode(TextString obj) => obj.asEncodedString();
+        protected override string DoEncode(TextString textString) => textString.Text;
 
         protected override TextString DoRestore(string data) {
-            var text = IsEscaped(data) ? data[1..] : data;
-            var textString = new TextString();
-            textString.restoreFromEncodedString(data);
-            return textString;
+            return new TextString(data);
         }
 
         private static bool IsEscaped(string text) => text.StartsWith("/");

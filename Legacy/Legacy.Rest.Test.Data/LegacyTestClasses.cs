@@ -9,11 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Legacy.NakedObjects.Application;
-using Legacy.NakedObjects.Application.Action;
-using Legacy.NakedObjects.Application.Collection;
-using Legacy.NakedObjects.Application.Control;
-using Legacy.NakedObjects.Application.ValueHolder;
+using Legacy.Types;
 using NakedObjects;
 
 // ReSharper disable InconsistentNaming
@@ -38,10 +34,10 @@ namespace Legacy.Rest.Test.Data {
 
         public TextString Name => _name ??= new TextString(name, s => name = s);
 
-        public Title title() => Name.title();
+        public Title title() => Name.Title();
 
         public ClassWithTextString ActionUpdateName(TextString newName) {
-            Name.setValue(newName);
+            Name.Text = newName.Text;
             return this;
         }
     }
@@ -60,9 +56,9 @@ namespace Legacy.Rest.Test.Data {
         public InternalCollection TestCollection => _testCollection ??= new InternalCollection<ClassWithTextString>(_TestCollection);
 
         public ClassWithInternalCollection ActionUpdateTestCollection(TextString newName) {
-            var name = newName.stringValue();
+            var name = newName.Text;
             var bill = Container.Instances<ClassWithTextString>().Single(c => c.name == name);
-            TestCollection.add(bill);
+            _TestCollection.Add(bill);
 
             return this;
         }
@@ -93,9 +89,7 @@ namespace Legacy.Rest.Test.Data {
 
         public void aboutActionTestAction(ActionAbout actionAbout) {
             AboutCount++;
-            if (TestInvisibleFlag) {
-                actionAbout.invisible();
-            }
+            actionAbout.Visible = !TestInvisibleFlag;
         }
     }
 
@@ -107,12 +101,10 @@ namespace Legacy.Rest.Test.Data {
 
         public TextString Name => new("");
 
-        public Title title() => Name.title();
+        public Title title() => Name.Title();
 
         public void aboutName(FieldAbout fieldAbout, TextString name) {
-            if (TestInvisibleFlag) {
-                fieldAbout.invisible();
-            }
+            fieldAbout.Visible = !TestInvisibleFlag;
         }
     }
 
@@ -164,10 +156,10 @@ namespace Legacy.Rest.Test.Data {
 
         public Date Date => _date ??= new Date(date, d => date = d);
 
-        public Title title() => Date.title();
+        public Title title() => Date.Title();
 
         public ClassWithDate ActionUpdateDate(Date newDate) {
-            Date.setValue(newDate);
+            Date.DateTime = newDate.DateTime;
             return this;
         }
     }
@@ -183,7 +175,7 @@ namespace Legacy.Rest.Test.Data {
         [ConcurrencyCheck]
         public TimeStamp TimeStamp => _timestamp ??= new TimeStamp(date, d => date = d);
 
-        public Title title() => TimeStamp.title();
+        public Title title() => TimeStamp.Title();
 
         public ClassWithTimeStamp ActionUpdateTimeStamp(TimeStamp newTimeStamp) {
             //TimeStamp.setValue(newTimestamp);

@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Immutable;
-using Legacy.NakedObjects.Application;
 using Legacy.Reflector.Facet;
+using Legacy.Types;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;

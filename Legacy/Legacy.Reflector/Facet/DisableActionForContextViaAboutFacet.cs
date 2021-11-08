@@ -7,9 +7,8 @@
 
 using System;
 using System.Reflection;
-using Legacy.NakedObjects.Object.Control;
-using Legacy.NakedObjects.Reflector.Java.Control;
 using Legacy.Reflector.Component;
+using Legacy.Types;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -53,16 +52,16 @@ namespace Legacy.Reflector.Facet {
 
             bool isDisabled;
             if (aboutType is AboutType.Action) {
-                var about =  (Hint)LegacyAboutCache.GetActionAbout(framework, method, nakedObjectAdapter.Object);
-                isDisabled = about.canUse().IsVetoed;
+                var about =  LegacyAboutCache.GetActionAbout(framework, method, nakedObjectAdapter.Object);
+                isDisabled = !about.Usable;
             }
             else {
-                var about = new SimpleFieldAbout(framework.Session, nakedObjectAdapter.Object);
+                var about = new FieldAboutImpl();
 
                 var parms = method.GetParameters().Length == 1 ? new object[] { about } : new object[] { about, null };
 
                 method.Invoke(nakedObjectAdapter.GetDomainObject(), parms);
-                isDisabled = about.canUse().IsVetoed;
+                isDisabled = about.Usable;
             }
 
             return isDisabled ? global::NakedObjects.Resources.NakedObjects.Disabled : null;

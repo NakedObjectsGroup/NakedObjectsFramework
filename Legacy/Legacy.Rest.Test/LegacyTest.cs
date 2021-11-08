@@ -10,12 +10,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using Legacy.NakedObjects.Application;
-using Legacy.NakedObjects.Application.Collection;
-using Legacy.NakedObjects.Application.Control;
-using Legacy.NakedObjects.Application.ValueHolder;
 using Legacy.Reflector.Extensions;
 using Legacy.Rest.Test.Data;
+using Legacy.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,23 +38,23 @@ namespace Legacy.Rest.Test {
             typeof(ClassWithNOFInternalCollection),
             typeof(LegacyClassWithInterface),
             typeof(TextString),
-            typeof(MultilineTextString),
+            //typeof(MultilineTextString),
             typeof(InternalCollection),
             typeof(InternalCollection<>),
-            typeof(BusinessValueHolder),
+            //typeof(BusinessValueHolder),
             typeof(TitledObject),
             typeof(ActionAbout),
             typeof(FieldAbout),
-            typeof(User),
-            typeof(Role),
-            typeof(State),
+            //typeof(User),
+            //typeof(Role),
+            //typeof(State),
             typeof(Title),
             typeof(ILegacyRoleInterface),
             typeof(ClassWithMenu),
             typeof(ClassWithDate),
             typeof(ClassWithTimeStamp),
             typeof(Date),
-            typeof(Magnitude)
+            //typeof(Magnitude)
         };
 
         protected Type[] LegacyServices { get; } = { typeof(SimpleService)};
@@ -445,7 +442,7 @@ namespace Legacy.Rest.Test {
 
         [Test]
         public void TestGetLegacyObjectWithMenu() {
-         
+
 
             var api = Api();
             var result = api.GetObject(FullName<ClassWithMenu>(), "1");
@@ -457,7 +454,7 @@ namespace Legacy.Rest.Test {
 
             Assert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
             Assert.IsNotNull(parsedResult["members"]["actionMethod2"]);
-            Assert.AreEqual("Submenu1",   parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
+            Assert.AreEqual("Submenu1", parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
         }
 
         [Test]
@@ -486,7 +483,7 @@ namespace Legacy.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["Date"]);
             Assert.IsNotNull(parsedResult["members"]["ActionUpdateDate"]);
 
-            Assert.AreEqual("Monday, 01 November 2021", parsedResult["title"].ToString());
+            Assert.AreEqual("01/11/2021", parsedResult["title"].ToString());
         }
 
         [Test]

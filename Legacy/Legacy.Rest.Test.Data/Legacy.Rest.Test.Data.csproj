@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Persistor.EFCore\NakedFramework.Persistor.EFCore.csproj" />
-    <ProjectReference Include="..\Legacy.NakedObjects\Legacy.NakedObjects.csproj" />
+    <ProjectReference Include="..\..\Programming Model\Legacy\Legacy.Types\Legacy.Types.csproj" />
   </ItemGroup>
 
 </Project>

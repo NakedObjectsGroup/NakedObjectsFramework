@@ -9,7 +9,7 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using Legacy.NakedObjects.Application.ValueHolder;
+using Legacy.Types;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
@@ -19,7 +19,6 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedObjects.Reflector.FacetFactory;
 
 namespace Legacy.Reflector.FacetFactory {
     public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {

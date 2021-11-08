@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Legacy.NakedObjects.Application.Control;
-using Legacy.NakedObjects.Reflector.Java.Control;
+using Legacy.Types;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
 
@@ -12,7 +11,7 @@ namespace Legacy.Reflector.Component {
 
         private ActionAbout InvokeOrReturnCachedAbout(INakedFramework framework, MethodInfo aboutMethod, object target) {
             ActionAbout InvokeAbout() {
-                var about = new SimpleActionAbout(framework.Session, target, Array.Empty<object>());
+                var about = new ActionAboutImpl();
                 aboutMethod.Invoke(target, new object[] { about });
                 return about;
             }

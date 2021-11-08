@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Legacy.NakedObjects.Application.Action;
+using Legacy.Types;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;

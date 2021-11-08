@@ -7,7 +7,7 @@
 
 using System;
 using System.Globalization;
-using Legacy.NakedObjects.Application.ValueHolder;
+using Legacy.Types;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -22,7 +22,7 @@ namespace Legacy.Reflector.SemanticsProvider {
         private const bool EqualByContent = false;
         private const bool Immutable = false;
         private const int TypicalLengthConst = 18;
-        private static readonly TimeStamp DefaultValueConst = new();
+        private static readonly TimeStamp DefaultValueConst = new(new DateTime());
 
         public TimeStampValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
@@ -37,41 +37,35 @@ namespace Legacy.Reflector.SemanticsProvider {
         #region IDateValueFacet Members
 
         public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<TimeStamp>().dateValue().GetValueOrDefault();
+            return nakedObjectAdapter.GetDomainObject<TimeStamp>().DateTime;
         }
 
         #endregion
 
         public static bool IsAdaptedType(Type type) => type == typeof(TimeStamp);
 
-        protected override string DoEncode(TimeStamp obj) {
-            var date = obj;
-            return date.asEncodedString();
+        protected override string DoEncode(TimeStamp timeStamp) {
+            return timeStamp.DateTime.ToString(CultureInfo.InvariantCulture);
         }
 
         protected override TimeStamp DoParse(string entry) {
             var dateString = entry.Trim();
             try {
-                var d = new TimeStamp();
-                d.parseUserEntry(entry);
-                return d;
-            }
-            catch (FormatException) {
+                return new TimeStamp(DateTime.Parse(entry));
+            } catch (FormatException) {
                 throw new InvalidEntryException(FormatMessage(dateString));
             }
         }
 
         protected override TimeStamp DoParseInvariant(string entry) => DoParse(entry);
 
-        protected override string GetInvariantString(TimeStamp obj) => obj.asEncodedString();
+        protected override string GetInvariantString(TimeStamp timeStamp) => timeStamp.DateTime.ToString(CultureInfo.InvariantCulture);
 
         protected override TimeStamp DoRestore(string data) {
-            var d = new TimeStamp();
-            d.restoreFromEncodedString(data);
-            return d;
+            return new TimeStamp(DateTime.Parse(data, CultureInfo.InvariantCulture));
         }
 
-        protected override string TitleStringWithMask(string mask, TimeStamp value) => value.titleString();
+        protected override string TitleStringWithMask(string mask, TimeStamp value) => value.DateTime.ToString(mask);
 
         private static DateTime Now() => TestDateTime ?? DateTime.Now;
     }
