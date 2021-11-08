@@ -6,8 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using Legacy.Reflector.Extensions;
 using Legacy.Rest.App.Demo.CustomReflectorExtensions;
+using Legacy.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +40,14 @@ namespace Legacy.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = ModelConfig.MainMenus;
+                builder.SupportedSystemTypes = t => t.Append(typeof(TextString))
+                                                     .Append(typeof(InternalCollection))
+                                                     .Append(typeof(InternalCollection<>))
+                                                     .Append(typeof(Title))
+                                                     .Append(typeof(TitledObject))
+                                                     .Append(typeof(Date))
+                                                     .Append(typeof(TimeStamp))
+                                                     .ToArray();
                 //builder.AddEF6Persistor(options => { options.ContextCreators = new[] {NakedObjectsRunSettings.DbContextCreator}; });
                 builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { ModelConfig.EFDbContextCreator }; });
                 builder.AddRestfulObjects(options => {

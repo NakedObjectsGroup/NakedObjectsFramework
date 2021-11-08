@@ -55,10 +55,6 @@ namespace Legacy.Rest.App.Demo {
         public static Type[] LegacyTypes()
         {
             var list = AllAdventureWorksTypes.Where(t => t.IsDefined(typeof(LegacyType), false)).ToList();
-            list.Add(typeof(Title));
-            list.Add(typeof(TitledObject));
-            list.Add(typeof(TimeStamp));
-            list.Add(typeof(InternalCollection));
             return list.ToArray();
         }
 
