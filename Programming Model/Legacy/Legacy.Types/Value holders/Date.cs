@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Globalization;
 
 namespace Legacy.Types {
     public class Date : TitledObject {
@@ -20,7 +21,7 @@ namespace Legacy.Types {
 
         private Action<DateTime> UpdateBackingField { get; } = _ => { };
 
-        public override string ToString() => DateTime.ToString("d"); //TODO: match original format.
+        public override string ToString() => DateTime.ToString("d", CultureInfo.InvariantCulture); //TODO: match original format.
 
         public Title Title() => new Title(this); 
     }

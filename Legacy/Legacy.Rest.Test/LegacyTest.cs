@@ -483,7 +483,7 @@ namespace Legacy.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["Date"]);
             Assert.IsNotNull(parsedResult["members"]["ActionUpdateDate"]);
 
-            //Assert.AreEqual("01/11/2021", parsedResult["title"].ToString());
+            Assert.AreEqual("11/01/2021", parsedResult["title"].ToString());
         }
 
         [Test]
