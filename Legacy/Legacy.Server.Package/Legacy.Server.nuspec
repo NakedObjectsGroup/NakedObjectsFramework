@@ -62,7 +62,7 @@
     <file src="..\..\NakedObjects\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.pdb" target="lib" />
     <file src="..\..\NakedObjects\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib" />
     <file src="..\..\NakedObjects\NakedObjects.Snapshot.Xml\bin\Debug\**\NakedObjects.Snapshot.Xml.pdb" target="lib" />
-    <file src="..\..\Programming Model\Legacy\Legacy.Types\bin\Debug\**\Legacy.Types.dll" target="lib" />
+    <file src="..\..\Programming Model\Legacy\Legacy.Types\bin\Debug\**\Legacy.Types.pdb" target="lib" />
     <file src="..\..\Legacy\Legacy.Reflector\bin\Debug\**\Legacy.Reflector.pdb" target="lib" />
   </files>
 </package>
