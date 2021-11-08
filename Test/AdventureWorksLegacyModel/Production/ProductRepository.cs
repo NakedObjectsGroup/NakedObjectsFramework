@@ -303,6 +303,6 @@ namespace AdventureWorksModel {
 
         public IQueryable<ProductCategory> AllCategories()=> Container.Instances<ProductCategory>();
 
-        public IQueryable<ProductSubcategory> AllSubcCategories() => Container.Instances<ProductSubcategory>();
+        public IQueryable<ProductSubcategory> AllSubcategories() => Container.Instances<ProductSubcategory>();
     }
 }
