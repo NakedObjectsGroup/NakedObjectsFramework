@@ -11,6 +11,7 @@ namespace Legacy.Types {
         public bool Visible { get; set; }
         public bool Usable { get; set; }
         public string UnusableReason { get; set; }
+        public bool[] ParamsRequired { get; set; }
         public string[] ParamLabels { get; set; }
         public object[] ParamDefaultValues { get; set; }
         public object[][] ParamOptions { get; set; }
