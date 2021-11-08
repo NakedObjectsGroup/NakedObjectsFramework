@@ -180,7 +180,7 @@ namespace AdventureWorksModel {
             var pod = Container.NewTransientInstance<PurchaseOrderDetail>();
             pod.PurchaseOrderHeader = this;
             pod.Product = prod;
-            pod.OrderQty = qty;
+            pod.OrderQty.Number = qty;
             return pod;
         }
 
@@ -203,7 +203,7 @@ namespace AdventureWorksModel {
         {
             var det = AddNewDetail(prod, qty);
             det.UnitPrice = unitPrice;
-            det.DueDate = DateTime.Today.AddDays(7);
+            det.DueDate.DateTime = DateTime.Today.AddDays(7);
             det.ReceivedQty = 0;
             det.RejectedQty = 0;
             Container.Persist(ref det);

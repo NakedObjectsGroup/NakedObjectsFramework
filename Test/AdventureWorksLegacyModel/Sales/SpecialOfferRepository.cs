@@ -22,8 +22,8 @@ namespace AdventureWorksModel {
         public IQueryable<SpecialOffer> CurrentSpecialOffers() {
             var endDate = new DateTime(2004, 6, 1);
             return from obj in Instances<SpecialOffer>()
-                   where obj.StartDate <= DateTime.Now &&
-                         obj.EndDate >= endDate
+                   where obj.mappedStartDate <= DateTime.Now &&
+                         obj.mappedEndDate >= endDate
                    select obj;
         }
 
@@ -42,7 +42,7 @@ namespace AdventureWorksModel {
         [MemberOrder(3)]
         public IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty()
         {
-            return CurrentSpecialOffers().Where(s => s.MinQty <= 1);
+            return CurrentSpecialOffers().Where(s => s.MinQty.Number <= 1);
         }
         #endregion
 
@@ -69,15 +69,15 @@ namespace AdventureWorksModel {
             )
         {
             var so = NewTransientInstance<SpecialOffer>();
-            so.Description = description;
+            so.Description.Text = description;
             so.DiscountPct = discountPct;
-            so.Type = type;
-            so.Category = category;
-            so.MinQty = minQty;
+            so.Type.Text = type;
+            so.Category.Text = category;
+            so.MinQty.Number = minQty;
             //Deliberately created non-current so they don't show up
             //in Current Special Offers (but can be viewed via All Special Offers)
-            so.StartDate = startDate;
-            so.EndDate = new DateTime(2003, 12, 31);
+            so.StartDate.DateTime = startDate;
+            so.EndDate.DateTime = new DateTime(2003, 12, 31);
             Container.Persist(ref so);
         }
         public virtual string[] Choices3CreateMultipleSpecialOffers()
@@ -120,7 +120,7 @@ namespace AdventureWorksModel {
 
         [PageSize(20)]
         public IQueryable<SpecialOffer> AutoComplete0AssociateSpecialOfferWithProduct([MinLength(2)] string name) {
-            return Container.Instances<SpecialOffer>().Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
+            return Container.Instances<SpecialOffer>().Where(specialOffer => specialOffer.Description.Text.ToUpper().StartsWith(name.ToUpper()));
         }
 
         [PageSize(20)]
@@ -150,5 +150,6 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        public SpecialOffer RandomSpecialOffer() => Random<SpecialOffer>();
     }
 }

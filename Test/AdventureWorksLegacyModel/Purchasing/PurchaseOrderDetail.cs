@@ -7,40 +7,50 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
+using Legacy.Types;
 using NakedObjects;
 
 namespace AdventureWorksModel {
 
-    public class PurchaseOrderDetail {
+    [LegacyType]
+    public class PurchaseOrderDetail : TitledObject     {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
 
         #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
+        public virtual void Persisting() => ModifiedDate.DateTime = DateTime.Now;
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        public virtual void Updating() => Persisting();
         #endregion
+
         [NakedObjectsIgnore]
         public virtual int PurchaseOrderID { get; set; }
 
         [NakedObjectsIgnore]
         public virtual int PurchaseOrderDetailID { get; set; }
 
+
+        #region DueDate
+        internal DateTime mappedDueDate;
+        private Date myDueDate;
+
         [MemberOrder(26)]
-        [Mask("d")]
-        public virtual DateTime DueDate { get; set; }
+        public virtual Date DueDate => myDueDate ??= new Date(mappedDueDate, v => mappedDueDate = v);
+        #endregion
+
+        #region OrderQty
+        internal short mappedOrderQty;
+        private WholeNumber myOrderQty;
 
         [MemberOrder(20)]
-        public virtual short OrderQty { get; set; }
+        public virtual WholeNumber OrderQty => myOrderQty ??= new WholeNumber(mappedOrderQty, v => mappedOrderQty = (short) v );
+        #endregion
 
         [MemberOrder(22)]
         [Mask("C")]
-        public virtual decimal UnitPrice { get; set; }
+        public virtual decimal UnitPrice { get; set; } //TODO - all decimal fields
 
         [MemberOrder(24)]
         [Mask("C")]
@@ -61,12 +71,13 @@ namespace AdventureWorksModel {
         public virtual decimal StockedQty { get; set; }
 
         #region ModifiedDate
+        internal DateTime mappedModifiedDate;
+        private TimeStamp myModifiedDate;
 
         [MemberOrder(99)]
         [Disabled]
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
+        public virtual TimeStamp ModifiedDate => myModifiedDate ??= new TimeStamp(mappedModifiedDate, s => mappedModifiedDate = s);
         #endregion
 
         #region Product
@@ -88,29 +99,58 @@ namespace AdventureWorksModel {
 
         #region Title
 
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(OrderQty.ToString()).Append(" x", Product);
+        public Title Title() => new Title(ToString());
+
+        public override string ToString()
+        {
+            var t = new StringBuilder();
+            t.Append(OrderQty.ToString()).Append(" x").Append(Product);
             return t.ToString();
         }
-
         #endregion
 
-        #region ReceiveGoods (Action)
+        #region Action ReceiveGoods
 
-        [MemberOrder(1)]
-        public void ReceiveGoods(int qtyReceived, int qtyRejected, int qtyIntoStock) {
+        private void ReceiveGoods(int qtyReceived, int qtyRejected, int qtyIntoStock)
+        {
             ReceivedQty = qtyReceived;
             RejectedQty = qtyRejected;
             StockedQty = qtyIntoStock;
         }
 
-        public virtual int Default0ReceiveGoods() {
-            return OrderQty;
-        }
+        [MemberOrder(1)]
+        public void ActionReceiveGoods(WholeNumber qtyReceived, WholeNumber qtyRejected, WholeNumber qtyIntoStock) => 
+            ReceiveGoods(qtyReceived.Number, qtyRejected.Number, qtyIntoStock.Number);
 
-        public virtual int Default2ReceiveGoods() {
-            return OrderQty;
+        public void AboutActionReceiveGoods(ActionAbout a, WholeNumber qtyReceived, WholeNumber qtyRejected, WholeNumber qtyIntoStock)
+        {
+            switch (a.TypeCode)
+            {
+                case AboutTypeCodes.Name:
+                    //a.Name = "";
+                    break;
+                case AboutTypeCodes.Parameters:
+                    //a.ParamLabels[0] = "";
+                    a.ParamDefaultValues[0] = OrderQty;
+                    a.ParamDefaultValues[1] = 0;
+                    a.ParamDefaultValues[2] = OrderQty;
+                    //a.ParamOptions[0] = Choices0ReceiveGoods().ToArray();
+                    break;
+                case AboutTypeCodes.Usable: //TODO this or .Valid
+                    //a.UnusableReason = DisableReceiveGoods();
+                    //a.Usable = string.IsNullOrEmpty(a.UnusableReason))                
+                    break;
+                case AboutTypeCodes.Valid:
+                    //var sb = new StringBuilder();
+                    //sb.append(a.ValidateReceiveGoods(ParamList));
+                    //sb.append(a.Validate0ReceiveGoods());
+                    //a.UnusableReason = sb.ToString();
+                    //a.Usable = string.IsNullOrEmpty(a.UnusableReason))   
+                    break;
+                case AboutTypeCodes.Visible:
+                    //a.Visible = HideReceiveGoods();
+                    break;
+            }
         }
 
         public virtual string ValidateReceiveGoods(int qtyReceived, int qtyRejected, int qtyIntoStock) {
@@ -120,7 +160,6 @@ namespace AdventureWorksModel {
             }
             return rb.Reason;
         }
-
         #endregion
     }
 }

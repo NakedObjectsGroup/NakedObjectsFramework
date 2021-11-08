@@ -14,7 +14,7 @@ namespace AdventureWorksModel.Sales {
         {
             foreach (SpecialOffer offer in offers)
             {
-                    offer.EndDate = toDate;
+                    offer.EndDate.DateTime = toDate;
             }
         }
 
@@ -23,9 +23,9 @@ namespace AdventureWorksModel.Sales {
             foreach (SpecialOffer offer in offers)
             {
                 var yesterday = DateTime.Today.AddDays(-1);
-                if (offer.EndDate > yesterday) //i.e. only terminate offers not already completed
+                if (offer.EndDate.DateTime > yesterday) //i.e. only terminate offers not already completed
                 {
-                    offer.EndDate = yesterday;
+                    offer.EndDate.DateTime = yesterday;
                 }
             }
         }
@@ -36,7 +36,7 @@ namespace AdventureWorksModel.Sales {
         {
             foreach (SpecialOffer offer in offers)
             {
-                offer.Type = newType;
+                offer.Type.Text = newType;
             }
         }
 
@@ -45,7 +45,7 @@ namespace AdventureWorksModel.Sales {
         {
             foreach (SpecialOffer offer in offers)
             {
-                offer.MaxQty = newMax;
+                offer.MaxQty.Number = newMax;
             }
         }
 
@@ -55,7 +55,7 @@ namespace AdventureWorksModel.Sales {
             {
                 offer.DiscountPct = newDiscount;
             }
-        }
+        }   
 
         //To test an empty param
         public void AppendToDescription([ContributedAction] IQueryable<SpecialOffer> offers, [Optionally] string text)
@@ -63,7 +63,7 @@ namespace AdventureWorksModel.Sales {
             if (string.IsNullOrEmpty(text)) return;
             foreach (SpecialOffer offer in offers)
             {
-                offer.Description += text;
+                offer.Description.Text += text;
             }
         }
 
