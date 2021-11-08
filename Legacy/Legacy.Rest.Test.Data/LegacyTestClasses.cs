@@ -21,10 +21,7 @@ namespace Legacy.Rest.Test.Data {
         public ClassWithTextString GetClassWithTextString() => null;
     }
 
-    
     public class ClassWithTextString {
-
-
         private TextString _name;
         public string name;
 
@@ -33,7 +30,7 @@ namespace Legacy.Rest.Test.Data {
 
         public TextString Name => _name ??= new TextString(name, s => name = s);
 
-        public Title title() => Name.Title();
+        public Title Title() => Name.Title();
 
         public ClassWithTextString ActionUpdateName(TextString newName) {
             Name.Text = newName.Text;
@@ -98,7 +95,7 @@ namespace Legacy.Rest.Test.Data {
 
         public TextString Name => new("");
 
-        public Title title() => Name.Title();
+        public Title Title() => Name.Title();
 
         public void aboutName(FieldAbout fieldAbout, TextString name) {
             fieldAbout.Visible = !TestInvisibleFlag;
@@ -123,7 +120,7 @@ namespace Legacy.Rest.Test.Data {
 
         public TextString Name => new($"{nameof(GetType)}/{Id}");
 
-        public Title title() => new(Name);
+        public Title Title() => new(Name);
 
         public ClassWithMenu ActionMethod1() => this;
         public ClassWithMenu actionMethod2() => this;
@@ -133,7 +130,7 @@ namespace Legacy.Rest.Test.Data {
         public static MainMenu menuOrder() {
             var menu = new MainMenu();
             menu.Menus.Add(new Menu("Method1"));
-           
+
             var newSubMenu = new SubMenu("Submenu1");
             menu.Menus.Add(newSubMenu);
             newSubMenu.Menus.Add(new Menu("Method2"));
@@ -156,14 +153,13 @@ namespace Legacy.Rest.Test.Data {
 
         public Date Date => _date ??= new Date(date, d => date = d);
 
-        public Title title() => Date.Title();
+        public Title Title() => Date.Title();
 
         public ClassWithDate ActionUpdateDate(Date newDate) {
             Date.DateTime = newDate.DateTime;
             return this;
         }
     }
-
 
     public class ClassWithTimeStamp {
         private TimeStamp _timestamp;
@@ -175,10 +171,27 @@ namespace Legacy.Rest.Test.Data {
         [ConcurrencyCheck]
         public TimeStamp TimeStamp => _timestamp ??= new TimeStamp(date, d => date = d);
 
-        public Title title() => TimeStamp.Title();
+        public Title Title() => TimeStamp.Title();
 
         public ClassWithTimeStamp ActionUpdateTimeStamp(TimeStamp newTimeStamp) {
-            //TimeStamp.setValue(newTimestamp);
+            TimeStamp.DateTime = newTimeStamp.DateTime;
+            return this;
+        }
+    }
+
+    public class ClassWithWholeNumber {
+        private WholeNumber _wholeNumber;
+        public int number;
+
+        [Key]
+        public int Id { get; init; }
+
+        public WholeNumber WholeNumber => _wholeNumber ??= new WholeNumber(number, i => number = i);
+
+        public Title Title() => WholeNumber.Title();
+
+        public ClassWithWholeNumber actionUpdateWholeNumber(WholeNumber newWholeNumber) {
+            WholeNumber.Number = newWholeNumber.Number;
             return this;
         }
     }

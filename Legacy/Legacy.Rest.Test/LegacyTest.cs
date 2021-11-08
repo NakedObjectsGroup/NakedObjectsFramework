@@ -41,6 +41,7 @@ namespace Legacy.Rest.Test {
             typeof(ClassWithMenu),
             typeof(ClassWithDate),
             typeof(ClassWithTimeStamp),
+            typeof(ClassWithWholeNumber)
         };
 
         protected Type[] LegacyServices { get; } = { typeof(SimpleService)};
@@ -534,7 +535,53 @@ namespace Legacy.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            Assert.AreEqual(DateTime.Parse("11/01/2021 00:00:00", CultureInfo.InvariantCulture), resultObj["members"]["TimeStamp"]["value"].Value<DateTime>());
+            Assert.AreEqual(DateTime.Parse("1998-07-06 00:00:00", CultureInfo.InvariantCulture), resultObj["members"]["TimeStamp"]["value"].Value<DateTime>());
+        }
+
+        [Test]
+        public void TestGetObjectWithWholeNumber()
+        {
+            var api = Api();
+            var result = api.GetObject(FullName<ClassWithWholeNumber>(), "1");
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+            Assert.IsNull(parsedResult["members"]["Id"]);
+            Assert.IsNotNull(parsedResult["members"]["WholeNumber"]);
+            Assert.IsNotNull(parsedResult["members"]["actionUpdateWholeNumber"]);
+
+            Assert.AreEqual("10", parsedResult["title"].ToString());
+        }
+
+        [Test]
+        public void TestGetWholeNumberProperty()
+        {
+            var api = Api();
+            var result = api.GetProperty(FullName<ClassWithWholeNumber>(), "1", nameof(ClassWithWholeNumber.WholeNumber));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(ClassWithWholeNumber.WholeNumber), parsedResult["id"].ToString());
+            Assert.AreEqual("10", parsedResult["value"].ToString());
+        }
+
+        [Test]
+        public void TestInvokeUpdateAndPersistObjectWithWholeNumber()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newWholeNumber", new ScalarValue(66) } } };
+
+            var result = api.PostInvoke(FullName<ClassWithWholeNumber>(), "1", nameof(ClassWithWholeNumber.actionUpdateWholeNumber), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("66", resultObj["members"]["WholeNumber"]["value"].ToString());
         }
     }
 }

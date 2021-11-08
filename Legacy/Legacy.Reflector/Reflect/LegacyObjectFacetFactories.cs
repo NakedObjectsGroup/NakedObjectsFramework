@@ -27,7 +27,8 @@ namespace Legacy.Reflector.Reflect {
             new[] {
                 typeof(TextStringValueTypeFacetFactory),
                 typeof(DateValueTypeFacetFactory),
-                typeof(TimeStampValueTypeFacetFactory)
+                typeof(TimeStampValueTypeFacetFactory),
+                typeof(WholeNumberValueTypeFacetFactory)
             };
     }
 }
