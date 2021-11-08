@@ -7,97 +7,141 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Legacy.Types;
 using NakedObjects;
 
-namespace AdventureWorksModel {
-    public class SpecialOffer {
-
+namespace AdventureWorksModel
+{
+    [LegacyType]
+    public class SpecialOffer : TitledObject
+    {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
 
         #region Life Cycle Methods
-        public virtual void Persisting() {
+        public virtual void Persisting()
+        {
             rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
+            ModifiedDate.DateTime = DateTime.Now;
         }
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        public virtual void Updating() => ModifiedDate.DateTime = DateTime.Now;
         #endregion
         [NakedObjectsIgnore]
         public virtual int SpecialOfferID { get; set; }
 
+        #region Description
+        internal string mappedDescription;
+        private TextString myDescription;
+
         [MemberOrder(10)]
-        public virtual string Description { get; set; }
+        public virtual TextString Description => myDescription ??= new TextString(mappedDescription, v => mappedDescription = v);
+        #endregion
 
         [MemberOrder(20)]
         [Mask("P")]
         public virtual decimal DiscountPct { get; set; }
 
+        #region Type
+        internal string mappedType;
+        private TextString myType;
+
         [MemberOrder(30)]
-        public virtual string Type { get; set; }
+        public virtual TextString Type => myType ??= new TextString(mappedType, v => mappedType = v);
+        #endregion
+
+        #region Category
+        internal string mappedCategory;
+        private TextString myCategory;
 
         [MemberOrder(40)]
-        public virtual string Category { get; set; }
+        public virtual TextString Category => myCategory ??= new TextString(mappedCategory, v => mappedCategory = v);
+        #endregion
+
+        #region StartDate
+        internal DateTime mappedStartDate;
+        private Date myStartDate;
 
         [MemberOrder(51)]
-        [Mask("d")]
-        public virtual DateTime StartDate { get; set; }
+        public virtual Date StartDate => myStartDate ??= new Date(mappedStartDate, v => mappedStartDate = v);
+        #endregion
+
+        #region EndDate (Legacy Property)
+        internal DateTime mappedEndDate;
+        private Date myEndDate;
 
         [MemberOrder(52)]
-        [Mask("d")]
-        public virtual DateTime EndDate { get; set; }
+        public virtual Date EndDate => myEndDate ??= new Date(mappedEndDate, v => mappedEndDate = v);
+        #endregion
 
         [DisplayAsProperty, Named("Duration (days)"), MemberOrder(53)]
-        public int Duration() => (EndDate - StartDate).Days;
+        public int Duration() => 0; //TODO
+
+        #region MinQty (Legacy Property)
+        internal int mappedMinQty;
+        private WholeNumber myMinQty;
 
         [MemberOrder(61)]
-        public virtual int MinQty { get; set; }
+        public virtual WholeNumber MinQty => myMinQty ??= new WholeNumber(mappedMinQty, v => mappedMinQty = v);
+        #endregion
 
-        [Edit]
-        public void EditMinQty(int minQty) => MinQty = minQty;
+     
+        #region EditMinQty (Legacy Action)
+        public void ActionEditMinQty(WholeNumber minQty) => MinQty.Number = minQty.Number;
 
-        [Edit]
-        public string ValidateEditMinQty(int minQty) => minQty > 0 ? null : "Min Qty must be > 0";
-
-        [Optionally]
-        [MemberOrder(62)]
-        public virtual int? MaxQty { get; set; }
-
-        public virtual string[] ChoicesCategory() {
-            return new[] {"Reseller", "Customer"};
+        public void AboutActionEditMinQty(ActionAbout a, WholeNumber minQty)
+        {
+            switch (a.TypeCode)
+            {
+                case AboutTypeCodes.Parameters:
+                    a.ParamDefaultValues[0] = MinQty;
+                    break;
+                case AboutTypeCodes.Usable:
+                    a.UnusableReason = ValidateEditMinQty(minQty.Number);
+                    a.Usable = string.IsNullOrEmpty(a.UnusableReason);              
+                    break;
+                default: 
+                    break;
+            }
         }
 
-        public virtual DateTime DefaultStartDate() {
+        private string ValidateEditMinQty(int minQty) => minQty > 0 ? null : "Min Qty must be > 0";
+        #endregion
+
+        #region MaxQty (Legacy Property)
+        internal int mappedMaxQty;
+        private WholeNumber myMaxQty;
+            
+        [MemberOrder(62)]
+        public virtual WholeNumber MaxQty => myMaxQty ??= new WholeNumber(mappedMaxQty, v => mappedMaxQty = v);
+        #endregion
+
+        //TODO
+        public virtual string[] ChoicesCategory()
+        {
+            return new[] { "Reseller", "Customer" };
+        }
+
+        public virtual DateTime DefaultStartDate()
+        {
             return DateTime.Now;
         }
 
-        public virtual DateTime DefaultEndDate() {
+        public virtual DateTime DefaultEndDate()
+        {
             return DateTime.Now.AddDays(90);
         }
 
         #region Title
 
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(Description);
-            return t.ToString();
-        }
+        public override string ToString() => Description.Text;
+
+        public Title Title() => new Title(Description);
 
         #endregion
 
         #region ModifiedDate and rowguid
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
 
         #region rowguid
 
@@ -106,8 +150,16 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        #region ModifiedDate
+        internal DateTime mappedModifiedDate;
+        private TimeStamp myModifiedDate;
+
+        [MemberOrder(99)]
+        [Disabled]
+        [ConcurrencyCheck]
+        public virtual TimeStamp ModifiedDate => myModifiedDate ??= new TimeStamp(mappedModifiedDate, s => mappedModifiedDate = s);
         #endregion
 
-
+        #endregion
     }
 }

@@ -52,11 +52,7 @@ namespace Legacy.Rest.App.Demo {
             }
         }
 
-        public static Type[] LegacyTypes()
-        {
-            var list = AllAdventureWorksTypes.Where(t => t.IsDefined(typeof(LegacyType), false)).ToList();
-            return list.ToArray();
-        }
+        public static Type[] LegacyTypes => AllAdventureWorksTypes.Where(t => t.IsDefined(typeof(LegacyType), false)).ToArray();
 
         public static Type[] LegacyServices => new Type[] { };
 

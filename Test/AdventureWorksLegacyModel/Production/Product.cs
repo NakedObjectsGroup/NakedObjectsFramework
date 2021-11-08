@@ -424,9 +424,9 @@ namespace AdventureWorksModel {
             var endDate = new DateTime(2004, 6, 1);
             var query = from obj in Container.Instances<SpecialOfferProduct>()
                 where obj.Product.ProductID == ProductID &&
-                      obj.SpecialOffer.StartDate <= DateTime.Now &&
-                      obj.SpecialOffer.EndDate >= endDate &&
-                      obj.SpecialOffer.MinQty < quantity
+                      obj.SpecialOffer.StartDate.DateTime <= DateTime.Now &&
+                      obj.SpecialOffer.EndDate.DateTime >= endDate &&
+                      obj.SpecialOffer.MinQty.Number < quantity
                 orderby obj.SpecialOffer.DiscountPct descending
                 select obj;
 
