@@ -151,7 +151,7 @@ namespace AdventureWorksModel {
 
         public IList<ProductSubcategory> Choices1ListProducts(ProductCategory category) {
             if (category != null) {
-                return category.MappedSubcategories.ToList();
+                return category.mappedSubcategories.ToList();
             }
 
             return null;
@@ -299,5 +299,10 @@ namespace AdventureWorksModel {
         public virtual ProductClassEnum Default1FindByProductLineAndClass() => ProductClassEnum.H;
 
         #endregion
+
+
+        public IQueryable<ProductCategory> AllCategories()=> Container.Instances<ProductCategory>();
+
+        public IQueryable<ProductSubcategory> AllSubcCategories() => Container.Instances<ProductSubcategory>();
     }
 }

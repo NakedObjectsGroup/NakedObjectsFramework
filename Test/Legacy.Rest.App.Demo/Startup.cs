@@ -59,7 +59,7 @@ namespace Legacy.Rest.App.Demo {
                 });
                 builder.AddLegacy(options => {
                     options.NoValidate = true;
-                    options.DomainModelTypes = ModelConfig.LegacyTypes;
+                    options.DomainModelTypes = ModelConfig.LegacyTypes();
                     options.DomainModelServices = ModelConfig.LegacyServices;
                 });
             });

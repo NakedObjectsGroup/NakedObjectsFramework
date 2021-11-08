@@ -31,11 +31,11 @@ namespace AdventureWorksModel {
 
         #region Subcategories (collection)
         [NakedObjectsIgnore]
-        public virtual ICollection<ProductSubcategory> MappedSubcategories { get; } = new List<ProductSubcategory>();
+        public virtual ICollection<ProductSubcategory> mappedSubcategories { get; } = new List<ProductSubcategory>();
         private InternalCollection mySubcategories;
 
         [MemberOrder(1)][TableView(true)]
-        public InternalCollection Subcategories => mySubcategories ??= new InternalCollection<ProductSubcategory>(MappedSubcategories);
+        public InternalCollection Subcategories => mySubcategories ??= new InternalCollection<ProductSubcategory>(mappedSubcategories);
         #endregion
 
         [NakedObjectsIgnore]

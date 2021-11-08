@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
+using Legacy.Types;
 using Microsoft.Extensions.Configuration;
 using NakedFramework.Menu;
 
@@ -51,11 +52,17 @@ namespace Legacy.Rest.App.Demo {
             }
         }
 
-
-        public static Type[] LegacyTypes => AllAdventureWorksTypes.Where(t => t.IsDefined(typeof(LegacyType), false)).ToArray();
+        public static Type[] LegacyTypes()
+        {
+            var list = AllAdventureWorksTypes.Where(t => t.IsDefined(typeof(LegacyType), false)).ToList();
+            list.Add(typeof(Title));
+            list.Add(typeof(TitledObject));
+            list.Add(typeof(TimeStamp));
+            list.Add(typeof(InternalCollection));
+            return list.ToArray();
+        }
 
         public static Type[] LegacyServices => new Type[] { };
-
 
         public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextCreator => c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
 
@@ -65,7 +72,7 @@ namespace Legacy.Rest.App.Demo {
         ///     specify the Main Menus for the application. If none are returned then
         ///     the Main Menus will be derived automatically from the Services.
         /// </summary>
-        public static IMenu[] MainMenus(IMenuFactory factory) {
+        public static NakedFramework.Menu.IMenu[] MainMenus(IMenuFactory factory) {
             var customerMenu = factory.NewMenu<CustomerRepository>();
             CustomerRepository.Menu(customerMenu);
             var salesMenu = factory.NewMenu<SalesRepository>();

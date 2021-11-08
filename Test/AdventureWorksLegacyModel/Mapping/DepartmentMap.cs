@@ -4,31 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AdventureWorksModel
 {
-    //public class DepartmentMap : EntityTypeConfiguration<Department>
-    //{
-    //    public DepartmentMap()
-    //    {
-    //        // Primary Key
-    //        HasKey(t => t.DepartmentID);
-
-    //        // Properties
-    //        Property(t => t.name)
-    //            .IsRequired()
-    //            .HasMaxLength(50);
-
-    //        Property(t => t.groupName)
-    //            .IsRequired()
-    //            .HasMaxLength(50);
-
-    //        // Table & Column Mappings
-    //        ToTable("Department", "HumanResources");
-    //        Property(t => t.DepartmentID).HasColumnName("DepartmentID");
-    //        Property(t => t.name).HasColumnName("Name");
-    //        Property(t => t.groupName).HasColumnName("GroupName");
-    //        Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
-    //    }
-    //}
-
     public static partial class Mapper
     {
         public static void Map(this EntityTypeBuilder<Department> builder)
@@ -44,8 +19,8 @@ namespace AdventureWorksModel
             builder.ToTable("Department", "HumanResources");
             builder.Property(t => t.DepartmentID).HasColumnName("DepartmentID");
             builder.Property(t => t.mappedName).HasColumnName("Name").IsRequired().HasMaxLength(50); 
-            builder.Property(t => t.mappedName).HasColumnName("GroupName").IsRequired().HasMaxLength(50);
-            builder.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false); 
+            builder.Property(t => t.mappedGroupName).HasColumnName("GroupName").IsRequired().HasMaxLength(50);
+            builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false); 
         }
     }
 

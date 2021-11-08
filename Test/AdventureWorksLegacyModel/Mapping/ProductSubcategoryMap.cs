@@ -22,7 +22,7 @@ namespace AdventureWorksModel
 
             // Relationships
             builder.HasOne(t => t.ProductCategory)
-                   .WithMany(t => t.MappedSubcategories)
+                   .WithMany(t => t.mappedSubcategories)
                    .HasForeignKey(d => d.ProductCategoryID);
         }
     }

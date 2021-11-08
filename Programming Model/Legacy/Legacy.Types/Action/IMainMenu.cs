@@ -1,5 +1,6 @@
 ﻿
 
+using NakedFramework.Menu;
 using System.Collections.Generic;
 
 namespace Legacy.Types {
