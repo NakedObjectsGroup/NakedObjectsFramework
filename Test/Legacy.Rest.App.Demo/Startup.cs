@@ -40,14 +40,6 @@ namespace Legacy.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = ModelConfig.MainMenus;
-                builder.SupportedSystemTypes = t => t.Append(typeof(TextString))
-                                                     .Append(typeof(InternalCollection))
-                                                     .Append(typeof(InternalCollection<>))
-                                                     .Append(typeof(Title))
-                                                     .Append(typeof(TitledObject))
-                                                     .Append(typeof(Date))
-                                                     .Append(typeof(TimeStamp))
-                                                     .ToArray();
                 //builder.AddEF6Persistor(options => { options.ContextCreators = new[] {NakedObjectsRunSettings.DbContextCreator}; });
                 builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { ModelConfig.EFDbContextCreator }; });
                 builder.AddRestfulObjects(options => {

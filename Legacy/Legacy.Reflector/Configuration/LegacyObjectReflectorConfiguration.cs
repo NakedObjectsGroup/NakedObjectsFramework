@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using NakedFramework.Core.Error;
+using NakedFramework.ParallelReflector.Utils;
 
 namespace Legacy.Reflector.Configuration {
     [Serializable]
@@ -44,19 +45,8 @@ namespace Legacy.Reflector.Configuration {
             }
         }
 
-        private static Type EnsureGenericTypeIsComplete(Type type) {
-            if (type.IsGenericType && !type.IsConstructedGenericType) {
-                var genericType = type.GetGenericTypeDefinition();
-                var genericParms = genericType.GetGenericArguments().Select(a => typeof(object)).ToArray();
-
-                return type.GetGenericTypeDefinition().MakeGenericType(genericParms);
-            }
-
-            return type;
-        }
-
         private Type[] GetObjectTypesToIntrospect() {
-            var types = TypesToIntrospect.Select(EnsureGenericTypeIsComplete);
+            var types = TypesToIntrospect.Select(ReflectorHelpers.EnsureGenericTypeIsComplete);
             return types.ToArray();
         }
 

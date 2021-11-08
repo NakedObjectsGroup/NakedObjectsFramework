@@ -37,24 +37,10 @@ namespace Legacy.Rest.Test {
             typeof(ClassWithLinkToNOFClass),
             typeof(ClassWithNOFInternalCollection),
             typeof(LegacyClassWithInterface),
-            typeof(TextString),
-            //typeof(MultilineTextString),
-            typeof(InternalCollection),
-            typeof(InternalCollection<>),
-            //typeof(BusinessValueHolder),
-            typeof(TitledObject),
-            typeof(ActionAbout),
-            typeof(FieldAbout),
-            //typeof(User),
-            //typeof(Role),
-            //typeof(State),
-            typeof(Title),
             typeof(ILegacyRoleInterface),
             typeof(ClassWithMenu),
             typeof(ClassWithDate),
             typeof(ClassWithTimeStamp),
-            typeof(Date),
-            //typeof(Magnitude)
         };
 
         protected Type[] LegacyServices { get; } = { typeof(SimpleService)};
@@ -83,11 +69,6 @@ namespace Legacy.Rest.Test {
         protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
             builder => {
                 base.NakedFrameworkOptions(builder);
-                builder.SupportedSystemTypes = t => t.Append(typeof(TextString))
-                                                     .Append(typeof(InternalCollection))
-                                                     .Append(typeof(Date))
-                                                     .Append(typeof(TimeStamp))
-                                                     .ToArray();
                 AddLegacy(builder);
             };
 

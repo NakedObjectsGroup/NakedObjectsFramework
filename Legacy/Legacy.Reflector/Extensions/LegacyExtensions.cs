@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using Legacy.Reflector.Component;
 using Legacy.Reflector.Configuration;
 using Legacy.Reflector.FacetFactory;
@@ -41,6 +42,9 @@ namespace Legacy.Reflector.Extensions {
             frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
 
             frameworkOptions.Services.AddDefaultScoped<LegacyAboutCache, LegacyAboutCache>();
+
+
+            frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(ReflectorDefaults.DefaultLegacyTypes).ToArray();
         }
     }
 }
