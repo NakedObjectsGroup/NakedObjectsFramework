@@ -176,6 +176,19 @@ namespace NakedFramework.Facade.Impl.Impl {
             return WrappedNakedObject.Object.ToString();
         }
 
+        public object ToUniversalTime() {
+            var spec = WrappedNakedObject.Spec;
+
+            if (spec.GetFacet<IDateValueFacet>() is { } df) {
+                var dt = df.DateValue(WrappedNakedObject);
+
+                return ToUniversalTime(dt);
+            }
+
+            return null;
+        }
+
+
         private static  DateTime ToUniversalTime(DateTime dt) =>
             dt.Kind == DateTimeKind.Unspecified
                 ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
