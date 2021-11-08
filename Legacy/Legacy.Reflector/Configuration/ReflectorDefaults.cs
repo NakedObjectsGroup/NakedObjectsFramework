@@ -20,6 +20,7 @@ namespace Legacy.Reflector.Configuration {
             typeof(ActionAbout),
             typeof(FieldAbout),
             typeof(Title),
+            typeof(WholeNumber)
         };
     }
 }
