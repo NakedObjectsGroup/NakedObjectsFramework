@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
@@ -202,11 +203,25 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         }
 
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-        private static void CheckArgumentNotNull(string argument, string name) {
+        private static void CheckArgumentNotNull(string argument, string name, string allArgs = "") {
             if (string.IsNullOrEmpty(argument)) {
-                throw new ArgumentException($"Cannot build URI : {name} is null or empty");
+                throw new ArgumentException($"Cannot build URI : {name} is null or empty - other arguments: {allArgs}");
             }
         }
+
+        private static void CheckArgumentNotNull(string argument, string name, params string[] allArguments)
+        {
+            CheckArgumentNotNull(argument, name, string.Join(", ", allArguments));
+        }
+
+        private static void CheckArgumentsNotNull(params (string argument, string name)[] arguments)
+        {
+            foreach (var (argument, name) in arguments)
+            {
+                CheckArgumentNotNull(argument, name, arguments.Select(t => t.argument).ToArray());
+            }
+        }
+
 
         private Uri BuildDomainTypeUri(string type) {
             CheckArgumentNotNull(type, "domain type");
@@ -216,23 +231,17 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         public Uri GetDomainTypeUri() => BuildDomainTypeUri(CachedType);
 
         private Uri GetObjectParamUri() {
-            CheckArgumentNotNull(CachedType, "object type");
-            CheckArgumentNotNull(action.Id, "action id");
-            CheckArgumentNotNull(param.Id, "param id");
+            CheckArgumentsNotNull((CachedType, "object type"), (action.Id, "action id"), (param.Id, "param id"));
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
         private Uri GetServiceParamUri() {
-            CheckArgumentNotNull(CachedType, "object type");
-            CheckArgumentNotNull(action.Id, "action id");
-            CheckArgumentNotNull(param.Id, "param id");
+            CheckArgumentsNotNull((CachedType, "object type"), (action.Id, "action id"), (param.Id, "param id"));
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
         private Uri GetMenuParamUri() {
-            CheckArgumentNotNull(CachedType, "object type");
-            CheckArgumentNotNull(action.Id, "action id");
-            CheckArgumentNotNull(param.Id, "param id");
+            CheckArgumentsNotNull((CachedType, "object type"), (action.Id, "action id"), (param.Id, "param id"));
             return new Uri($"{prefix}{SegmentValues.Menus}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
@@ -244,14 +253,12 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                     : GetObjectParamUri();
 
         public Uri GetTypeActionInvokeUri() {
-            CheckArgumentNotNull(CachedType, "domain type");
-            CheckArgumentNotNull(typeAction, "type action");
+            CheckArgumentsNotNull((CachedType, "domain type"), (typeAction, "type action"));
             return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.TypeActions}/{typeAction}/{SegmentValues.Invoke}");
         }
 
         public Uri GetObjectUri() {
-            CheckArgumentNotNull(CachedType, "object type");
-            CheckArgumentNotNull(cachedId, "object key");
+            CheckArgumentsNotNull((CachedType, "object type"), (cachedId, "object key"));
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}");
         }
 
@@ -268,21 +275,17 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                     : GetObjectInvokeUri();
 
         private Uri GetMenuInvokeUri() {
-            CheckArgumentNotNull(CachedType, "service type");
-            CheckArgumentNotNull(action.Id, "action id");
+            CheckArgumentsNotNull((CachedType, "service type"), (action.Id, "action id"));
             return new Uri($"{prefix}{SegmentValues.Menus}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}");
         }
 
         private Uri GetServiceInvokeUri() {
-            CheckArgumentNotNull(CachedType, "service type");
-            CheckArgumentNotNull(action.Id, "action id");
+            CheckArgumentsNotNull((CachedType, "service type"), (action.Id, "action id"));
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}");
         }
 
         private Uri GetObjectInvokeUri() {
-            CheckArgumentNotNull(CachedType, "object type");
-            CheckArgumentNotNull(cachedId, "object key");
-            CheckArgumentNotNull(action.Id, "action id");
+            CheckArgumentsNotNull((CachedType, "object type"), (cachedId, "object key"), (action.Id, "action id"));
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}");
         }
 
@@ -305,29 +308,22 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         }
 
         private Uri GetMenuMemberUri(IMemberFacade member, string memberType) {
-            CheckArgumentNotNull(CachedType, "menu type");
-            CheckArgumentNotNull(memberType, "member type");
-            CheckArgumentNotNull(member.Id, "member id");
+            CheckArgumentsNotNull((CachedType, "menu type"), (memberType, "member type"), (member.Id, "member id"));
             return new Uri($"{prefix}{SegmentValues.Menus}/{CachedType}/{memberType}/{member.Id}");
         }
 
         private Uri GetServiceMemberUri(IMemberFacade member, string memberType) {
-            CheckArgumentNotNull(CachedType, "service type");
-            CheckArgumentNotNull(memberType, "member type");
-            CheckArgumentNotNull(member.Id, "member id");
+            CheckArgumentsNotNull((CachedType, "service type"), (memberType, "member type"), (member.Id, "member id"));
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{memberType}/{member.Id}");
         }
 
         private Uri GetPersistentObjectMemberUri(IMemberFacade member, string memberType) {
-            CheckArgumentNotNull(CachedType, "object type");
-            CheckArgumentNotNull(memberType, "member type");
-            CheckArgumentNotNull(member.Id, "member id");
+            CheckArgumentsNotNull((CachedType, "object type"), (memberType, "member type"), (member.Id, "member id"));
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{memberType}/{member.Id}");
         }
 
         private Uri GetTransientObjectMemberUri(IMemberFacade member, string memberType) {
-            CheckArgumentNotNull(CachedType, "object type");
-            CheckArgumentNotNull(memberType, "member type");
+            CheckArgumentsNotNull((CachedType, "object type"), (memberType, "member type"));
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{memberType}/{member.Id}");
         }
 
@@ -406,9 +402,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         public static string GetTypeActionMediaType() => RepresentationTypes.TypeActionResult;
 
         public Uri GetTypeActionsUri(string actionName) {
-            CheckArgumentNotNull(CachedType, "object type");
-            CheckArgumentNotNull(actionName, "action name");
-
+            CheckArgumentsNotNull((CachedType, "object type"), (actionName, "action name"));
             return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.TypeActions}/{actionName}/{SegmentValues.Invoke}");
         }
 
