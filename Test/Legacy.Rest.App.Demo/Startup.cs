@@ -59,7 +59,7 @@ namespace Legacy.Rest.App.Demo {
                         services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AWNotNavigableFacetFactoryParallel));
                     };
                 });
-                builder.AddLegacy(options => {
+                builder.AddNakedLegacy(options => {
                     options.NoValidate = true;
                     options.DomainModelTypes = ModelConfig.LegacyTypes;
                     options.DomainModelServices = ModelConfig.LegacyServices;
