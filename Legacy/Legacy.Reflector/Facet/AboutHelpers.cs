@@ -15,9 +15,9 @@ namespace Legacy.Reflector.Facet {
             return aboutParam.Union(placeholders).ToArray();
         }
 
-        public static IAbout AboutFactory(this AboutType aboutType, AboutTypeCodes aboutTypeCodes) => 
+        public static IAbout AboutFactory(this AboutType aboutType, AboutTypeCodes aboutTypeCode) => 
             aboutType is AboutType.Action 
-                ? new ActionAboutImpl(AboutTypeCodes.Usable) 
-                : new FieldAboutImpl(AboutTypeCodes.Usable);
+                ? new ActionAboutImpl(aboutTypeCode) 
+                : new FieldAboutImpl(aboutTypeCode);
     }
 }
