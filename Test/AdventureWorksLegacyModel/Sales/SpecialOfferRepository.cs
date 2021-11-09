@@ -34,7 +34,7 @@ namespace AdventureWorksModel {
         [MemberOrder(2)]
         public IQueryable<SpecialOffer> AllSpecialOffers()
         {
-            return Container.Instances<SpecialOffer>().OrderByDescending(so => so.ModifiedDate);
+            return Container.Instances<SpecialOffer>().OrderByDescending(so => so.mappedModifiedDate);
         }
         #endregion
 
@@ -42,7 +42,7 @@ namespace AdventureWorksModel {
         [MemberOrder(3)]
         public IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty()
         {
-            return CurrentSpecialOffers().Where(s => s.MinQty.Number <= 1);
+            return CurrentSpecialOffers().Where(s => s.mappedMinQty <= 1);
         }
         #endregion
 
@@ -120,7 +120,7 @@ namespace AdventureWorksModel {
 
         [PageSize(20)]
         public IQueryable<SpecialOffer> AutoComplete0AssociateSpecialOfferWithProduct([MinLength(2)] string name) {
-            return Container.Instances<SpecialOffer>().Where(specialOffer => specialOffer.Description.Text.ToUpper().StartsWith(name.ToUpper()));
+            return Container.Instances<SpecialOffer>().Where(specialOffer => specialOffer.mappedDescription.ToUpper().StartsWith(name.ToUpper()));
         }
 
         [PageSize(20)]
