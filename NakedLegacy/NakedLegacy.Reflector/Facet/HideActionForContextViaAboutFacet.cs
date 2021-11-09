@@ -6,10 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using NakedLegacy.Reflector.Component;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;

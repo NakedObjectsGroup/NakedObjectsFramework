@@ -7,7 +7,6 @@
 
 using System;
 using System.Reflection;
-using NakedLegacy.Reflector.Component;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;

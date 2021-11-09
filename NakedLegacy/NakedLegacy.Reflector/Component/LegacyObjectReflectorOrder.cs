@@ -6,17 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Component;
-using NakedFramework.Core.Error;
 using NakedFramework.ParallelReflector.Component;
-using NakedObjects.Reflector.Component;
+
 
 namespace NakedLegacy.Reflector.Component {
     public class LegacyObjectReflectorOrder<T> : IReflectorOrder<T> {
         public int Order => typeof(T) switch {
             { } t when t.IsAssignableTo(typeof(SystemTypeReflector)) => 0,
             { } t when t.IsAssignableTo(typeof(LegacyObjectReflector)) => 1,
-            { } t when t.IsAssignableTo(typeof(ObjectReflector)) => 2,
-            _ => throw new InitialisationException($"Unexpected reflector type {typeof(T)}")
+            //{ } t when t.IsAssignableTo(typeof(ObjectReflector)) => 2,
+            _ => 2,
+            //_ => throw new InitialisationException($"Unexpected reflector type {typeof(T)}")
         };
     }
 }

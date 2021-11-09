@@ -26,7 +26,6 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.Facet;
 using NakedLegacy.Types;
-using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedLegacy.Reflector.FacetFactory {
     public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
@@ -36,7 +35,7 @@ namespace NakedLegacy.Reflector.FacetFactory {
             FixedPrefixes = new[] { RecognisedMethodsAndPrefixes.MenuMethod };
         }
 
-        public LegacyMenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
+        public LegacyMenuFacetFactory(IFacetFactoryOrder<LegacyMenuFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public string[] Prefixes => FixedPrefixes;

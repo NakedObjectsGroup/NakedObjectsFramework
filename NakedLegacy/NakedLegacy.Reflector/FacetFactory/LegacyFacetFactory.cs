@@ -25,8 +25,6 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.Facet;
 using NakedLegacy.Types;
-using NakedObjects.Reflector.Facet;
-using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedLegacy.Reflector.FacetFactory {
     /// <summary>
@@ -39,7 +37,7 @@ namespace NakedLegacy.Reflector.FacetFactory {
 
         private readonly ILogger<LegacyFacetFactory> logger;
 
-        public LegacyFacetFactory(IFacetFactoryOrder<ActionMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+        public LegacyFacetFactory(IFacetFactoryOrder<LegacyFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.EverythingButActionParameters) =>
             logger = loggerFactory.CreateLogger<LegacyFacetFactory>();
 
