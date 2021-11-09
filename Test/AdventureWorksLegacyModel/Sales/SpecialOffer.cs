@@ -85,26 +85,25 @@ namespace AdventureWorksModel
         [MemberOrder(61)]
         public virtual WholeNumber MinQty => myMinQty ??= new WholeNumber(mappedMinQty, v => mappedMinQty = v);
         #endregion
-
      
         #region EditMinQty (Legacy Action)
         public void ActionEditMinQty(WholeNumber minQty) => MinQty.Number = minQty.Number;
 
-        //public void AboutActionEditMinQty(ActionAbout a, WholeNumber minQty)
-        //{
-        //    switch (a.TypeCode)
-        //    {
-        //        case AboutTypeCodes.Parameters:
-        //            a.ParamDefaultValues[0] = MinQty;
-        //            break;
-        //        case AboutTypeCodes.Usable:
-        //            a.UnusableReason = ValidateEditMinQty(minQty.Number);
-        //            a.Usable = string.IsNullOrEmpty(a.UnusableReason);              
-        //            break;
-        //        default: 
-        //            break;
-        //    }
-        //}
+        public void AboutActionEditMinQty(ActionAbout a, WholeNumber minQty)
+        {
+            switch (a.TypeCode)
+            {
+                case AboutTypeCodes.Parameters:
+                    a.ParamDefaultValues[0] = MinQty;
+                    break;
+                case AboutTypeCodes.Usable:
+                    //a.UnusableReason = ValidateEditMinQty(minQty.Number);
+                    //a.Usable = string.IsNullOrEmpty(a.UnusableReason);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         private string ValidateEditMinQty(int minQty) => minQty > 0 ? null : "Min Qty must be > 0";
         #endregion
