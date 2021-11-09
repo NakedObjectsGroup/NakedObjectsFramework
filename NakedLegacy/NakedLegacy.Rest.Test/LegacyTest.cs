@@ -58,14 +58,14 @@ namespace NakedLegacy.Rest.Test {
 
         protected override Action<NakedFrameworkOptions> AddNakedFunctions => _ => { };
 
-        protected Action<LegacyOptions> LegacyOptions =>
+        protected Action<NakedLegacyOptions> LegacyOptions =>
             options => {
                 options.DomainModelTypes = LegacyTypes;
                 options.DomainModelServices = LegacyServices;
                 options.NoValidate = true;
             };
 
-        protected virtual Action<NakedFrameworkOptions> AddLegacy => builder => builder.AddLegacy(LegacyOptions);
+        protected virtual Action<NakedFrameworkOptions> AddLegacy => builder => builder.AddNakedLegacy(LegacyOptions);
 
         protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
             builder => {

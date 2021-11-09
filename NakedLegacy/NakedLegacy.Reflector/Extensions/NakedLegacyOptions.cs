@@ -9,7 +9,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace NakedLegacy.Reflector.Extensions {
-    public class LegacyOptions {
+    public class NakedLegacyOptions {
         public Type[] DomainModelTypes { get; set; } = Array.Empty<Type>();
         public Type[] DomainModelServices { get; set; } = Array.Empty<Type>();
         public bool ConcurrencyCheck { get; set; } = true;

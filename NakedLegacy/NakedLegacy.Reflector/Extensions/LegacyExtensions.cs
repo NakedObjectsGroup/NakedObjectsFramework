@@ -21,13 +21,13 @@ using NakedLegacy.Reflector.Reflect;
 
 namespace NakedLegacy.Reflector.Extensions {
     public static class LegacyExtensions {
-        private static LegacyObjectReflectorConfiguration LegacyObjectReflectorConfig(LegacyOptions options) {
+        private static LegacyObjectReflectorConfiguration LegacyObjectReflectorConfig(NakedLegacyOptions options) {
             LegacyObjectReflectorConfiguration.NoValidate = options.NoValidate;
             return new LegacyObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ConcurrencyCheck);
         }
 
-        public static void AddLegacy(this NakedFrameworkOptions frameworkOptions, Action<LegacyOptions> setupAction) {
-            var options = new LegacyOptions();
+        public static void AddNakedLegacy(this NakedFrameworkOptions frameworkOptions, Action<NakedLegacyOptions> setupAction) {
+            var options = new NakedLegacyOptions();
             setupAction(options);
 
             frameworkOptions.Services.RegisterFacetFactories<ILegacyFacetFactoryProcessor>(LegacyObjectFacetFactories.StandardFacetFactories());
