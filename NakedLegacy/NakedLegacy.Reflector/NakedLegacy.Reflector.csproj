@@ -25,7 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
     <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
-    <ProjectReference Include="..\..\Programming Model\Legacy\Legacy.Types\Legacy.Types.csproj" />
+    <ProjectReference Include="..\..\Programming Model\NakedLegacy\NakedLegacy.Types\NakedLegacy.Types.csproj" />
   </ItemGroup>
 
 

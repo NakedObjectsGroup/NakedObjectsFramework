@@ -24,7 +24,7 @@
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Persistor.EFCore\NakedFramework.Persistor.EFCore.csproj" />
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Rest\NakedFramework.Rest.csproj" />
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Test\NakedFramework.Test.csproj" />
-    <ProjectReference Include="..\Legacy.Reflector\Legacy.Reflector.csproj" />
-    <ProjectReference Include="..\Legacy.Rest.Test.Data\Legacy.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedLegacy.Reflector\NakedLegacy.Reflector.csproj" />
+    <ProjectReference Include="..\NakedLegacy.Rest.Test.Data\NakedLegacy.Rest.Test.Data.csproj" />
   </ItemGroup>
 </Project>

@@ -43,8 +43,8 @@
     <file src="..\..\NakedObjects\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.dll" target="lib" />
     <file src="..\..\NakedObjects\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.dll" target="lib" />
     <file src="..\..\NakedObjects\NakedObjects.Snapshot.Xml\bin\Debug\**\NakedObjects.Snapshot.Xml.dll" target="lib" />
-    <file src="..\..\Programming Model\Legacy\Legacy.Types\bin\Debug\**\Legacy.Types.dll" target="lib" />
-    <file src="..\..\Legacy\Legacy.Reflector\bin\Debug\**\Legacy.Reflector.dll" target="lib" />
+    <file src="..\..\Programming Model\NakedLegacy\NakedLegacy.Types\bin\Debug\**\NakedLegacy.Types.dll" target="lib" />
+    <file src="..\..\NakedLegacy\NakedLegacy.Reflector\bin\Debug\**\NakedLegacy.Reflector.dll" target="lib" />
 
     <file src="..\..\NakedFramework\NakedFramework.ModelBuilding\bin\Debug\**\NakedFramework.ModelBuilding.pdb" target="lib" />
     <file src="..\..\NakedFramework\NakedFramework.Architecture\bin\Debug\**\NakedFramework.Architecture.pdb" target="lib" />
@@ -62,7 +62,7 @@
     <file src="..\..\NakedObjects\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.pdb" target="lib" />
     <file src="..\..\NakedObjects\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib" />
     <file src="..\..\NakedObjects\NakedObjects.Snapshot.Xml\bin\Debug\**\NakedObjects.Snapshot.Xml.pdb" target="lib" />
-    <file src="..\..\Programming Model\Legacy\Legacy.Types\bin\Debug\**\Legacy.Types.pdb" target="lib" />
-    <file src="..\..\Legacy\Legacy.Reflector\bin\Debug\**\Legacy.Reflector.pdb" target="lib" />
+    <file src="..\..\Programming Model\NakedLegacy\NakedLegacy.Types\bin\Debug\**\NakedLegacy.Types.pdb" target="lib" />
+    <file src="..\..\NakedLegacy\NakedLegacy.Reflector\bin\Debug\**\NakedLegacy.Reflector.pdb" target="lib" />
   </files>
 </package>

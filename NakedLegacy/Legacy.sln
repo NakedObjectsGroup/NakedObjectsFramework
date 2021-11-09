@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Server.Package", "Legacy.Server.Package\Legacy.Server.Package.csproj", "{D195ABCA-2FEE-41FC-9E8E-AB21EAB336B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedNakedLegacy.Server.Package", "NakedLegacy.Server.Package\NakedLegacy.Server.Package.csproj", "{D195ABCA-2FEE-41FC-9E8E-AB21EAB336B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.NakedObjects", "Legacy.NakedObjects\Legacy.NakedObjects.csproj", "{816C5A42-6B3B-41CC-94CE-A2E0AEE36D6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.NakedObjects", "NakedLegacy.NakedObjects\NakedLegacy.NakedObjects.csproj", "{816C5A42-6B3B-41CC-94CE-A2E0AEE36D6E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Reflector", "Legacy.Reflector\Legacy.Reflector.csproj", "{345C5D2B-B032-47A9-A830-CD67F39A0D9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Reflector", "NakedLegacy.Reflector\NakedLegacy.Reflector.csproj", "{345C5D2B-B032-47A9-A830-CD67F39A0D9A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Rest.Test", "Legacy.Rest.Test\Legacy.Rest.Test.csproj", "{3926F308-8186-4653-BB09-7A3DABCCEE29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Rest.Test", "NakedLegacy.Rest.Test\NakedLegacy.Rest.Test.csproj", "{3926F308-8186-4653-BB09-7A3DABCCEE29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Rest.Test.Data", "Legacy.Rest.Test.Data\Legacy.Rest.Test.Data.csproj", "{A732052C-8A94-477F-833E-36C86E11DD15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Rest.Test.Data", "NakedLegacy.Rest.Test.Data\NakedLegacy.Rest.Test.Data.csproj", "{A732052C-8A94-477F-833E-36C86E11DD15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
