@@ -83,7 +83,7 @@ namespace NakedFramework.Rest.Snapshot.Representation {
             }
         }
 
-        private IObjectFacade GetFacade(IFrameworkFacade frameworkFacade, object obj) => obj is not null ? frameworkFacade.GetObject(obj): null;
+        private IObjectFacade GetFacade(IFrameworkFacade frameworkFacade, object obj) => obj is not null ? frameworkFacade.GetObject(obj) : null;
 
         private MapRepresentation CreateArguments(IFrameworkFacade frameworkFacade, HttpRequest req, ActionResultContextFacade actionResult) {
             var optionalProperties = new List<OptionalProperty>();

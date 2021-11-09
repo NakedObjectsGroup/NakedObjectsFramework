@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Legacy.ProgrammingModel</id>
+    <version>1.0.0-alpha01</version>
+    <authors>Naked Objects Group Ltd</authors>
+    <owners>Naked Objects Group Ltd</owners>
+    <license type="expression">Apache-2.0</license>
+    <projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
+    <icon>images\icon.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description></description>
+    <tags></tags>
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="NakedFramework.ProgrammingModel" version="[12.0.0, 13)" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="icon.png" target="images\" />
+    <file src="..\Legacy.Types\bin\Debug\**\Legacy.Types.dll" target="lib" />
+    <file src="..\Legacy.Types\bin\Debug\**\Legacy.Types.pdb" target="lib" />
+  </files>
+</package>

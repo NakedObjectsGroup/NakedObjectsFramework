@@ -159,7 +159,13 @@ namespace NakedFramework.Facade.Impl.Impl {
                 var spec = WrappedNakedObject.Spec;
 
                 if (spec.GetFacet<IDateValueFacet>() is { } df) {
-                    return df.DateValue(WrappedNakedObject).Date.ToString(format);
+                    var dt = df.DateValue(WrappedNakedObject);
+
+                    if (format == "s") {
+                        return ToUniversalTime(dt).ToString(format);
+                    }
+
+                    return dt.Date.ToString(format);
                 }
 
                 if (spec.GetFacet<ITimeValueFacet>() is { } tf) {
@@ -170,18 +176,23 @@ namespace NakedFramework.Facade.Impl.Impl {
             return WrappedNakedObject.Object.ToString();
         }
 
-        public DateTime? ToUniversalTime() {
+        public object ToUniversalTime() {
             var spec = WrappedNakedObject.Spec;
 
             if (spec.GetFacet<IDateValueFacet>() is { } df) {
                 var dt = df.DateValue(WrappedNakedObject);
-                return dt.Kind == DateTimeKind.Unspecified
-                    ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
-                    : dt.ToUniversalTime();
+
+                return ToUniversalTime(dt);
             }
 
             return null;
         }
+
+
+        private static  DateTime ToUniversalTime(DateTime dt) =>
+            dt.Kind == DateTimeKind.Unspecified
+                ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
+                : dt.ToUniversalTime();
 
         #endregion
     }
