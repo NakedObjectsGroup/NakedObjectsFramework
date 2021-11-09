@@ -31,6 +31,25 @@ private $HolderType$ my$PropName$;
 
 [MemberOrder($MemberOrder$)]
 public virtual $HolderType$ $PropName$ => my$PropName$ ??= new $HolderType$(mapped$PropName$, v => mapped$PropName$ = v);
+
+public void About$PropName$(FieldAbout a, $HolderType$ new$PropName$)
+{
+    switch (a.TypeCode)
+    {
+        case AboutTypeCodes.Name:
+            break;
+        case AboutTypeCodes.Parameters:
+            break;
+        case AboutTypeCodes.Usable:
+            break;
+        case AboutTypeCodes.Valid:
+            break;
+        case AboutTypeCodes.Visible:
+            break;
+        default:
+            break;
+    }
+}
 #endregion]]>
       </Code>
     </Snippet>
