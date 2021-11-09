@@ -8,7 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-using Legacy.Types;
+using NakedLegacy.Types;
 using NakedObjects;
 
 namespace AdventureWorksModel {

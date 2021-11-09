@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using Legacy.Reflector.Extensions;
 using Legacy.Rest.App.Demo.CustomReflectorExtensions;
-using Legacy.Types;
+using NakedLegacy.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

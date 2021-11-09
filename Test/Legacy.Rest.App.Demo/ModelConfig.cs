@@ -11,7 +11,7 @@ using System.Linq;
 using System.Reflection;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
-using Legacy.Types;
+using NakedLegacy.Types;
 using Microsoft.Extensions.Configuration;
 using NakedFramework.Menu;
 
