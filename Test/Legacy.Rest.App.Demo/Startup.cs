@@ -7,7 +7,7 @@
 
 using System;
 using System.Linq;
-using Legacy.Reflector.Extensions;
+using NakedLegacy.Reflector.Extensions;
 using Legacy.Rest.App.Demo.CustomReflectorExtensions;
 using NakedLegacy.Types;
 using Microsoft.AspNetCore.Builder;
