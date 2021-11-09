@@ -10,15 +10,15 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using Legacy.Reflector.FacetFactory;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
+using NakedLegacy.Reflector.FacetFactory;
 
-namespace Legacy.Reflector.Reflect {
+namespace NakedLegacy.Reflector.Reflect {
     public sealed class LegacyObjectFacetFactorySet : IFacetFactorySet {
         private readonly IList<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
         private readonly IDictionary<FeatureType, IList<ILegacyFacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<ILegacyFacetFactoryProcessor>>();

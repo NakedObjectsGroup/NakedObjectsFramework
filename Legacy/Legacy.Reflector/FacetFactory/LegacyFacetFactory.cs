@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using Legacy.Reflector.Facet;
-using Legacy.Types;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
@@ -25,10 +23,12 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
+using NakedLegacy.Reflector.Facet;
+using NakedLegacy.Types;
 using NakedObjects.Reflector.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace Legacy.Reflector.FacetFactory {
+namespace NakedLegacy.Reflector.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
@@ -59,7 +59,7 @@ namespace Legacy.Reflector.FacetFactory {
 
         private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
             candidates.Where(property => property.HasPublicGetter() &&
-                                         property.PropertyType.Namespace.StartsWith("Legacy") &&
+                                         property.PropertyType.Namespace.StartsWith("NakedLegacy") &&
                                          !classStrategy.IsIgnored(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
 
@@ -114,7 +114,7 @@ namespace Legacy.Reflector.FacetFactory {
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             //ignore non Legacy properties 
-            if (property.PropertyType.Namespace?.StartsWith("Legacy") is false or null) {
+            if (property.PropertyType.Namespace?.StartsWith("NakedLegacy") is false or null) {
                 return metamodel;
             }
 

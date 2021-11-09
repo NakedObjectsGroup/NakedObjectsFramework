@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace Legacy.Reflector.Facet {
+namespace NakedLegacy.Reflector.Facet {
     [Serializable]
     public sealed class TitleFacetViaTitleMethod : TitleFacetAbstract, IImperativeFacet {
         private readonly ILogger<TitleFacetViaTitleMethod> logger;

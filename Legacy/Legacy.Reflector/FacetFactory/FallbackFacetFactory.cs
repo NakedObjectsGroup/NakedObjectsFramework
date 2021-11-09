@@ -20,7 +20,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace Legacy.Reflector.FacetFactory {
+namespace NakedLegacy.Reflector.FacetFactory {
     /// <summary>
     ///     Central point for providing some kind of default for any  <see cref="IFacet" />s required by the Naked Objects
     ///     Framework itself.

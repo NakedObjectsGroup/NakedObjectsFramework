@@ -19,7 +19,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace Legacy.Reflector.Facet {
+namespace NakedLegacy.Reflector.Facet {
     [Serializable]
     public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
         private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;

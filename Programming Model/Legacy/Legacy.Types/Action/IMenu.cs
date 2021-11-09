@@ -1,6 +1,6 @@
 ﻿
 
-namespace Legacy.Types {
+namespace NakedLegacy.Types {
     public interface IMenu {
         string Name { get; set; }
     }

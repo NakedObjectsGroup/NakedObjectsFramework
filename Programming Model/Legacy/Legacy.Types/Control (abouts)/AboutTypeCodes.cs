@@ -1,4 +1,4 @@
-﻿namespace Legacy.Types {
+﻿namespace NakedLegacy.Types {
     public enum AboutTypeCodes {
         Name,
         Parameters,

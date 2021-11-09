@@ -7,10 +7,6 @@
 
 using System;
 using System.Linq;
-using Legacy.Reflector.Component;
-using Legacy.Reflector.Configuration;
-using Legacy.Reflector.FacetFactory;
-using Legacy.Reflector.Reflect;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Component;
@@ -18,8 +14,12 @@ using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
+using NakedLegacy.Reflector.Component;
+using NakedLegacy.Reflector.Configuration;
+using NakedLegacy.Reflector.FacetFactory;
+using NakedLegacy.Reflector.Reflect;
 
-namespace Legacy.Reflector.Extensions {
+namespace NakedLegacy.Reflector.Extensions {
     public static class LegacyExtensions {
         private static LegacyObjectReflectorConfiguration LegacyObjectReflectorConfig(LegacyOptions options) {
             LegacyObjectReflectorConfiguration.NoValidate = options.NoValidate;

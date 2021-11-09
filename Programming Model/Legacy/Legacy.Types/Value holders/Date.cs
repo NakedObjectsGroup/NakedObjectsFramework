@@ -2,7 +2,7 @@
 using System;
 using System.Globalization;
 
-namespace Legacy.Types {
+namespace NakedLegacy.Types {
     public class Date : TitledObject {
         private DateTime dateTime;
 

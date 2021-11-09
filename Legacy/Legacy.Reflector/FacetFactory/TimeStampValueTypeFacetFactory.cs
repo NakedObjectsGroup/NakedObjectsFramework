@@ -7,15 +7,15 @@
 
 using System;
 using System.Collections.Immutable;
-using Legacy.Reflector.SemanticsProvider;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedLegacy.Reflector.SemanticsProvider;
 using NakedObjects.Reflector.TypeFacetFactory;
 
-namespace Legacy.Reflector.FacetFactory {
+namespace NakedLegacy.Reflector.FacetFactory {
     public sealed class TimeStampValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public TimeStampValueTypeFacetFactory(IFacetFactoryOrder<TimeStampValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 

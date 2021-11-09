@@ -6,15 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Legacy.Types;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
+using NakedLegacy.Types;
 
-namespace Legacy.Reflector.SemanticsProvider {
+namespace NakedLegacy.Reflector.SemanticsProvider {
     [Serializable]
     public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbstract<TextString>, IStringValueFacet {
         private const TextString DefaultValueConst = null;

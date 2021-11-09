@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Legacy.Types;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
+using NakedLegacy.Types;
 
-namespace Legacy.Reflector.Component {
+namespace NakedLegacy.Reflector.Component {
     public class LegacyAboutCache {
         private readonly IDictionary<object, IDictionary<MethodInfo, ActionAbout>> cacheDictionary = new Dictionary<object, IDictionary<MethodInfo, ActionAbout>>();
 

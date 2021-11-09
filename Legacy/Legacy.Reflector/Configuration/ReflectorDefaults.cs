@@ -6,9 +6,9 @@
 // // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Legacy.Types;
+using NakedLegacy.Types;
 
-namespace Legacy.Reflector.Configuration {
+namespace NakedLegacy.Reflector.Configuration {
     public static class ReflectorDefaults {
         public static readonly Type[] DefaultLegacyTypes = {
             typeof(TextString),

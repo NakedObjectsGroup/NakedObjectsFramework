@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Reflection;
-using Legacy.Types;
+using NakedLegacy.Types;
 
-namespace Legacy.Reflector.Facet {
+namespace NakedLegacy.Reflector.Facet {
     public static class AboutHelpers {
         public enum AboutType {
             Action,

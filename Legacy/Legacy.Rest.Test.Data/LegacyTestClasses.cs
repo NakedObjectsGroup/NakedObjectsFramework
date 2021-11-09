@@ -9,12 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Legacy.Types;
+using NakedLegacy.Types;
 using NakedObjects;
 
 // ReSharper disable InconsistentNaming
 
-namespace Legacy.Rest.Test.Data {
+namespace NakedLegacy.Rest.Test.Data {
     public interface ILegacyRoleInterface { }
 
     public class SimpleService {

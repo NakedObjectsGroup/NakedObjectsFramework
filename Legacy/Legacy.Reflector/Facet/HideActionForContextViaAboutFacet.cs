@@ -9,8 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Legacy.Reflector.Component;
-using Legacy.Types;
+using NakedLegacy.Reflector.Component;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -20,8 +19,9 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedLegacy.Types;
 
-namespace Legacy.Reflector.Facet {
+namespace NakedLegacy.Reflector.Facet {
     [Serializable]
     public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
         

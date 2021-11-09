@@ -1,4 +1,4 @@
-﻿namespace Legacy.Types {
+﻿namespace NakedLegacy.Types {
     public class FieldAboutImpl : FieldAbout {
         public FieldAboutImpl(AboutTypeCodes typeCode) => TypeCode = typeCode;
 

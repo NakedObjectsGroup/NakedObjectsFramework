@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace Legacy.Rest.Test.Data {
+namespace NakedLegacy.Rest.Test.Data {
     public interface IRoleInterface { }
 
     public class SimpleNOService {

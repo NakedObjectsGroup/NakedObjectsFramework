@@ -9,8 +9,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using Legacy.Reflector.Facet;
-using Legacy.Types;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
@@ -26,9 +24,11 @@ using NakedFramework.Metamodel.Menu;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
+using NakedLegacy.Reflector.Facet;
+using NakedLegacy.Types;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace Legacy.Reflector.FacetFactory {
+namespace NakedLegacy.Reflector.FacetFactory {
     public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
         private static readonly string[] FixedPrefixes;
 

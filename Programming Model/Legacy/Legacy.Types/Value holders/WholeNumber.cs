@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace Legacy.Types {
+namespace NakedLegacy.Types {
     public class WholeNumber : TitledObject {
         private int number;
 

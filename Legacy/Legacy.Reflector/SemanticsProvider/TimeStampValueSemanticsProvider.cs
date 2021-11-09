@@ -7,7 +7,6 @@
 
 using System;
 using System.Globalization;
-using Legacy.Types;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -15,8 +14,9 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
+using NakedLegacy.Types;
 
-namespace Legacy.Reflector.SemanticsProvider {
+namespace NakedLegacy.Reflector.SemanticsProvider {
     [Serializable]
     public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeStamp>, IDateValueFacet {
         private const bool EqualByContent = false;

@@ -10,7 +10,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 
-namespace Legacy.Reflector.Component {
+namespace NakedLegacy.Reflector.Component {
     public class LegacyObjectReflectorOrder<T> : IReflectorOrder<T> {
         public int Order => typeof(T) switch {
             { } t when t.IsAssignableTo(typeof(SystemTypeReflector)) => 0,

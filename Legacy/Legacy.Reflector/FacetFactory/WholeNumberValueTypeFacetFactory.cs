@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Immutable;
-using Legacy.Reflector.SemanticsProvider;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
@@ -15,8 +14,9 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
+using NakedLegacy.Reflector.SemanticsProvider;
 
-namespace Legacy.Reflector.FacetFactory {
+namespace NakedLegacy.Reflector.FacetFactory {
     public sealed class WholeNumberValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public WholeNumberValueTypeFacetFactory(IFacetFactoryOrder<IntValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 

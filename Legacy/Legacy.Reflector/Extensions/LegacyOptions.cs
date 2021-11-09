@@ -8,7 +8,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Legacy.Reflector.Extensions {
+namespace NakedLegacy.Reflector.Extensions {
     public class LegacyOptions {
         public Type[] DomainModelTypes { get; set; } = Array.Empty<Type>();
         public Type[] DomainModelServices { get; set; } = Array.Empty<Type>();

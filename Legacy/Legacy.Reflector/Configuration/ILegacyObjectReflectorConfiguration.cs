@@ -7,7 +7,7 @@
 
 using System;
 
-namespace Legacy.Reflector.Configuration {
+namespace NakedLegacy.Reflector.Configuration {
     public interface ILegacyObjectReflectorConfiguration {
         /// <summary>
         ///     This is expected to contain any domain types that are not directly accessible by navigating the actions on the

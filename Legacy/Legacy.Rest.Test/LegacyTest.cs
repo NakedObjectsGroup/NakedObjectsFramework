@@ -10,9 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using Legacy.Reflector.Extensions;
-using Legacy.Rest.Test.Data;
-using Legacy.Types;
+using NakedLegacy.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,12 +20,14 @@ using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test;
+using NakedLegacy.Reflector.Extensions;
+using NakedLegacy.Rest.Test.Data;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace Legacy.Rest.Test {
+namespace NakedLegacy.Rest.Test {
     public class LegacyTest : AcceptanceTestCase {
         protected  Type[] LegacyTypes { get; } = {
             typeof(ClassWithTextString),

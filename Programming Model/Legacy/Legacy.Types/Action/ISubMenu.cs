@@ -1,5 +1,5 @@
 ﻿
 
-namespace Legacy.Types {
+namespace NakedLegacy.Types {
     public interface ISubMenu : IMainMenu { }
 }

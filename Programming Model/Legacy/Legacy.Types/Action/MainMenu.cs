@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Legacy.Types {
+namespace NakedLegacy.Types {
     public class MainMenu : Menu, IMainMenu {
         private IList<IMenu> myMenuItems;
 

@@ -9,15 +9,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Legacy.Reflector.Configuration;
-using Legacy.Reflector.Reflect;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
+using NakedLegacy.Reflector.Configuration;
+using NakedLegacy.Reflector.Reflect;
 
-namespace Legacy.Reflector.Component {
+namespace NakedLegacy.Reflector.Component {
     public sealed class LegacyObjectReflector : AbstractParallelReflector {
         private readonly ILegacyObjectReflectorConfiguration legacyObjectReflectorConfiguration;
 
@@ -34,7 +34,7 @@ namespace Legacy.Reflector.Component {
         }
 
         public override bool ConcurrencyChecking => legacyObjectReflectorConfiguration.ConcurrencyChecking;
-        public override string Name => "Legacy";
+        public override string Name => "NakedLegacy";
         public override ReflectorType ReflectorType => ReflectorType.Object;
         public override bool IgnoreCase => legacyObjectReflectorConfiguration.IgnoreCase;
 

@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-namespace Legacy.Types {
+namespace NakedLegacy.Types {
     public class SubMenu : MainMenu, ISubMenu {
         private IList<IMenu> myMenus;
 

@@ -8,11 +8,11 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Legacy.Reflector.Configuration;
 using NakedFramework.ParallelReflector.Component;
+using NakedLegacy.Reflector.Configuration;
 using NakedObjects;
 
-namespace Legacy.Reflector.Component {
+namespace NakedLegacy.Reflector.Component {
     /// <summary>
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>

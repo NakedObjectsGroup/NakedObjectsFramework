@@ -1,4 +1,4 @@
-﻿namespace Legacy.Types {
+﻿namespace NakedLegacy.Types {
     public interface ActionAbout : IAbout {
         string Name { get; set; }
         string Description { get; set; }

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Legacy.Types {
+namespace NakedLegacy.Types {
     public interface InternalCollection : IList { }
 
     public class InternalCollection<T> : InternalCollection, ICollection<T> {

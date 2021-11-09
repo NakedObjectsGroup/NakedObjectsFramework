@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Legacy.Types
+namespace NakedLegacy.Types
 {
     public interface TitledObject
     {

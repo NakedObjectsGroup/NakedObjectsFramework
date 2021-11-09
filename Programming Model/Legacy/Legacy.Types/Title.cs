@@ -1,4 +1,4 @@
-﻿using Legacy.Types;
+﻿using NakedLegacy.Types;
 using NakedObjects;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Legacy.Types
+namespace NakedLegacy.Types
 {
     public class Title
     {

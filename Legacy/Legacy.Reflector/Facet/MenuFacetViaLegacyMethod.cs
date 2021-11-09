@@ -8,14 +8,14 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Legacy.Types;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Menu;
+using NakedLegacy.Types;
 
-namespace Legacy.Reflector.Facet {
+namespace NakedLegacy.Reflector.Facet {
     [Serializable]
     public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract {
         private readonly MethodInfo method;

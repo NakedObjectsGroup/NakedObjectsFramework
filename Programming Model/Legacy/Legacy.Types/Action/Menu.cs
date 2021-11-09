@@ -1,6 +1,6 @@
 ﻿
 
-namespace Legacy.Types {
+namespace NakedLegacy.Types {
     public class Menu : IMenu {
         public Menu(string name) => Name = name;
 
