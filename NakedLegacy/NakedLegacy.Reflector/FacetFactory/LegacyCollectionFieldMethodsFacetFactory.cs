@@ -24,7 +24,6 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Types;
-using NakedObjects.Reflector.Utils;
 
 namespace NakedLegacy.Reflector.FacetFactory {
     public sealed class LegacyCollectionFieldMethodsFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
@@ -58,8 +57,8 @@ namespace NakedLegacy.Reflector.FacetFactory {
 
             MethodHelpers.AddHideForSessionFacetNone(facets, collection);
             MethodHelpers.AddDisableFacetAlways(facets, collection);
-            ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
-            ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, type, MethodType.Object, capitalizedName, collection, LoggerFactory, methodRemover);
+            //ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
+            //ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, type, MethodType.Object, capitalizedName, collection, LoggerFactory, methodRemover);
             FacetUtils.AddFacets(facets);
             return metamodel;
         }

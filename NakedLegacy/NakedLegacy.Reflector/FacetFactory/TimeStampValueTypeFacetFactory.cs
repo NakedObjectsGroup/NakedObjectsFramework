@@ -12,8 +12,8 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedLegacy.Reflector.SemanticsProvider;
-using NakedObjects.Reflector.TypeFacetFactory;
 
 namespace NakedLegacy.Reflector.FacetFactory {
     public sealed class TimeStampValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
