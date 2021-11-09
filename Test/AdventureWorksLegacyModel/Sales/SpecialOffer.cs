@@ -110,11 +110,11 @@ namespace AdventureWorksModel
         #endregion
 
         #region MaxQty (Legacy Property)
-        internal int mappedMaxQty;
+        internal int? mappedMaxQty;
         private WholeNumber myMaxQty;
             
         [MemberOrder(62)]
-        public virtual WholeNumber MaxQty => myMaxQty ??= new WholeNumber(mappedMaxQty, v => mappedMaxQty = v);
+        public virtual WholeNumber MaxQty => myMaxQty ??= new WholeNumber(mappedMaxQty.GetValueOrDefault(), v => mappedMaxQty = v);
         #endregion
 
         //TODO
