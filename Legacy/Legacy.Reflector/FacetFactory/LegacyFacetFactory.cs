@@ -5,11 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Legacy.Reflector.Facet;
+using Legacy.Types;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
@@ -91,14 +93,15 @@ namespace Legacy.Reflector.FacetFactory {
             facets.Add(new NamedFacetInferred(capitalizedName, action));
 
             var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
-            var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
+            var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType);
+            var aboutParamTypes = new List<Type> { typeof(ActionAbout) }.Union(paramTypes).ToArray();
 
-            var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{"about"}{actionMethod.Name}", null, null);
+            var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{"about"}{actionMethod.Name}", null, aboutParamTypes);
             methodRemover.SafeRemoveMethod(method);
 
             if (method is not null) {
-                facets.Add(new HideActionForContextViaAboutFacet(method, action, HideActionForContextViaAboutFacet.AboutType.Action, LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
-                facets.Add(new DisableActionForContextViaAboutFacet(method, action, DisableActionForContextViaAboutFacet.AboutType.Action, LoggerFactory.CreateLogger<DisableActionForContextViaAboutFacet>()));
+                facets.Add(new HideActionForContextViaAboutFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
+                facets.Add(new DisableActionForContextViaAboutFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<DisableActionForContextViaAboutFacet>()));
             }
 
             MethodHelpers.AddHideForSessionFacetNone(facets, action);
@@ -133,7 +136,7 @@ namespace Legacy.Reflector.FacetFactory {
             methodRemover.SafeRemoveMethod(method);
 
             if (method is not null) {
-                facets.Add(new HideActionForContextViaAboutFacet(method, specification, HideActionForContextViaAboutFacet.AboutType.Fields, LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
+                facets.Add(new HideActionForContextViaAboutFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
             }
 
             FacetUtils.AddFacets(facets);

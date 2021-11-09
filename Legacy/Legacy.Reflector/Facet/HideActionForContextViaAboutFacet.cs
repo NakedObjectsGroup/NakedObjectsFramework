@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Legacy.Reflector.Component;
 using Legacy.Types;
@@ -22,17 +24,13 @@ using NakedFramework.Metamodel.Facet;
 namespace Legacy.Reflector.Facet {
     [Serializable]
     public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
-        public enum AboutType {
-            Action,
-            Fields
-        }
-
-        private readonly AboutType aboutType;
+        
+        private readonly AboutHelpers.AboutType aboutType;
 
         private readonly ILogger<HideActionForContextViaAboutFacet> logger;
         private readonly MethodInfo method;
 
-        public HideActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutType aboutType, ILogger<HideActionForContextViaAboutFacet> logger)
+        public HideActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<HideActionForContextViaAboutFacet> logger)
             : base(typeof(IHideForContextFacet), holder) {
             this.method = method;
             this.aboutType = aboutType;
@@ -52,21 +50,11 @@ namespace Legacy.Reflector.Facet {
                 return null;
             }
 
-            bool isHidden;
-            if (aboutType is AboutType.Action) {
-                var about =  LegacyAboutCache.GetActionAbout(framework, method, nakedObjectAdapter.Object);
-                isHidden = !about.Visible;
-            }
-            else {
-                var about = new FieldAboutImpl();
+            var about = aboutType.AboutFactory(AboutTypeCodes.Visible);
 
-                var parms = method.GetParameters().Length == 1 ? new object[] { about } : new object[] { about, null };
+            method.Invoke(nakedObjectAdapter.GetDomainObject(), method.GetParameters(about));
 
-                method.Invoke(nakedObjectAdapter.GetDomainObject(), parms);
-                isHidden = !about.Visible;
-            }
-
-            return isHidden ? global::NakedObjects.Resources.NakedObjects.Hidden : null;
+            return about.Visible ? null : NakedObjects.Resources.NakedObjects.Hidden;
         }
 
         #endregion

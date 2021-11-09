@@ -194,5 +194,17 @@ namespace Legacy.Rest.Test.Data {
             WholeNumber.Number = newWholeNumber.Number;
             return this;
         }
+
+        public void AboutActionUpdateWholeNumber(ActionAbout actionAbout, WholeNumber newWholeNumber) {
+            if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
+                actionAbout.Visible = TestVisible;
+            }
+
+            if (actionAbout.TypeCode is AboutTypeCodes.Usable) {
+                actionAbout.Usable = true;
+            }
+        }
+
+        public static bool TestVisible { get; set; } = true;
     }
 }

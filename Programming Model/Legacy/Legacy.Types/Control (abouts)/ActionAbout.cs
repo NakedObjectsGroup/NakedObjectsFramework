@@ -1,14 +1,12 @@
 ﻿namespace Legacy.Types {
-    public interface ActionAbout {
+    public interface ActionAbout : IAbout {
         string Name { get; set; }
         string Description { get; set; }
-        bool Visible { get; set; }
-        bool Usable { get; set; }
         string UnusableReason { get; set; }
         bool[] ParamsRequired { get; set; }
         string[] ParamLabels { get; set; }
         object[] ParamDefaultValues { get; set; }
         object[][] ParamOptions { get; set; }
-        AboutTypeCodes TypeCode { get; }
+        
     }
 }

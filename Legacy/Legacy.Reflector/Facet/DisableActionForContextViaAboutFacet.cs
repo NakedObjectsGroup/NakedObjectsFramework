@@ -22,17 +22,14 @@ using NakedFramework.Metamodel.Facet;
 namespace Legacy.Reflector.Facet {
     [Serializable]
     public sealed class DisableActionForContextViaAboutFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
-        public enum AboutType {
-            Action,
-            Fields
-        }
+     
 
-        private readonly AboutType aboutType;
+        private readonly AboutHelpers.AboutType aboutType;
 
         private readonly ILogger<DisableActionForContextViaAboutFacet> logger;
         private readonly MethodInfo method;
 
-        public DisableActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutType aboutType, ILogger<DisableActionForContextViaAboutFacet> logger)
+        public DisableActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<DisableActionForContextViaAboutFacet> logger)
             : base(typeof(IDisableForContextFacet), holder) {
             this.method = method;
             this.aboutType = aboutType;
@@ -50,21 +47,11 @@ namespace Legacy.Reflector.Facet {
                 return null;
             }
 
-            bool isDisabled;
-            if (aboutType is AboutType.Action) {
-                var about =  LegacyAboutCache.GetActionAbout(framework, method, nakedObjectAdapter.Object);
-                isDisabled = !about.Usable;
-            }
-            else {
-                var about = new FieldAboutImpl();
+            var about = aboutType.AboutFactory(AboutTypeCodes.Usable);
 
-                var parms = method.GetParameters().Length == 1 ? new object[] { about } : new object[] { about, null };
+            method.Invoke(nakedObjectAdapter.GetDomainObject(), method.GetParameters(about));
 
-                method.Invoke(nakedObjectAdapter.GetDomainObject(), parms);
-                isDisabled = about.Usable;
-            }
-
-            return isDisabled ? global::NakedObjects.Resources.NakedObjects.Disabled : null;
+            return about.Usable ? null : global::NakedObjects.Resources.NakedObjects.Disabled;
         }
 
         #region IImperativeFacet Members
