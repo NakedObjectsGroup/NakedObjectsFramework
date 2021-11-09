@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Types", "Pro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.PMResources", "Programming Model\NakedFramework\NakedFramework.PMResources\NakedFramework.PMResources.csproj", "{C313300A-7145-436B-8860-EF2EE534C584}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Types", "Programming Model\NakedLegacy\NakedLegacy.Types\NakedLegacy.Types.csproj", "{47BC105E-0A17-4DF0-A069-182BABD5FFA1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.ProgrammingModel.Package", "Programming Model\NakedLegacy\NakedLegacy.ProgrammingModel.package\NakedLegacy.ProgrammingModel.Package.csproj", "{968CCC9F-19CB-4714-80E3-5669AC194562}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,12 @@ Global
 		{C313300A-7145-436B-8860-EF2EE534C584}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C313300A-7145-436B-8860-EF2EE534C584}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C313300A-7145-436B-8860-EF2EE534C584}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47BC105E-0A17-4DF0-A069-182BABD5FFA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47BC105E-0A17-4DF0-A069-182BABD5FFA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47BC105E-0A17-4DF0-A069-182BABD5FFA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47BC105E-0A17-4DF0-A069-182BABD5FFA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{968CCC9F-19CB-4714-80E3-5669AC194562}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{968CCC9F-19CB-4714-80E3-5669AC194562}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,6 +6,6 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <NuspecFile>Legacy.ProgrammingModel.nuspec</NuspecFile>
+    <NuspecFile>NakedLegacy.ProgrammingModel.nuspec</NuspecFile>
   </PropertyGroup>
 </Project>
