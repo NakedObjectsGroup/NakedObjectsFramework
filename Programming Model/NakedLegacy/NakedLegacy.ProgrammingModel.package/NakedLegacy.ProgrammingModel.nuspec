@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
     <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description></description>
+	  <description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
     <tags></tags>
     <dependencies>
       <group targetFramework="net5.0">
