@@ -157,6 +157,8 @@ namespace NakedLegacy.Rest.Test {
 
             Assert.AreEqual(nameof(ClassWithTextString.Name), parsedResult["id"].ToString());
             Assert.AreEqual("Fred", parsedResult["value"].ToString());
+            Assert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
+            Assert.AreEqual("string", parsedResult["extensions"]["format"].ToString());
         }
 
         [Test]
@@ -478,6 +480,8 @@ namespace NakedLegacy.Rest.Test {
 
             Assert.AreEqual(nameof(ClassWithDate.Date), parsedResult["id"].ToString());
             Assert.AreEqual("2021-11-01", parsedResult["value"].ToString());
+            Assert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
+            Assert.AreEqual("date", parsedResult["extensions"]["format"].ToString());
         }
 
         [Test]
@@ -493,6 +497,8 @@ namespace NakedLegacy.Rest.Test {
             var resultObj = parsedResult["result"];
 
             Assert.AreEqual("1998-07-06", resultObj["members"]["Date"]["value"].ToString());
+            Assert.AreEqual("string", resultObj["members"]["Date"]["extensions"]["returnType"].ToString());
+            Assert.AreEqual("date", resultObj["members"]["Date"]["extensions"]["format"].ToString());
         }
 
         [Test]
@@ -521,6 +527,8 @@ namespace NakedLegacy.Rest.Test {
 
             Assert.AreEqual(nameof(ClassWithTimeStamp.TimeStamp), parsedResult["id"].ToString());
             Assert.AreEqual(DateTime.Parse("11/01/2021 00:00:00", CultureInfo.InvariantCulture), parsedResult["value"].Value<DateTime>());
+            Assert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
+            Assert.AreEqual("date-time", parsedResult["extensions"]["format"].ToString());
         }
 
         [Test]
@@ -536,6 +544,9 @@ namespace NakedLegacy.Rest.Test {
             var resultObj = parsedResult["result"];
 
             Assert.AreEqual(DateTime.Parse("1998-07-06 00:00:00", CultureInfo.InvariantCulture), resultObj["members"]["TimeStamp"]["value"].Value<DateTime>());
+
+            Assert.AreEqual("string", resultObj["members"]["TimeStamp"]["extensions"]["returnType"].ToString());
+            Assert.AreEqual("date-time", resultObj["members"]["TimeStamp"]["extensions"]["format"].ToString());
         }
 
         [Test]
@@ -566,6 +577,8 @@ namespace NakedLegacy.Rest.Test {
 
             Assert.AreEqual(nameof(ClassWithWholeNumber.WholeNumber), parsedResult["id"].ToString());
             Assert.AreEqual("10", parsedResult["value"].ToString());
+            //Assert.AreEqual("number", parsedResult["extensions"]["returnType"].ToString());
+            //Assert.AreEqual("", parsedResult["extensions"]["format"].ToString());
         }
 
         [Test]
