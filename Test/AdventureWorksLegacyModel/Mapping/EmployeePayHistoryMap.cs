@@ -26,7 +26,7 @@ namespace AdventureWorksModel
 
             // Relationships
             HasRequired(t => t.Employee)
-                .WithMany(t => t.PayHistory)
+                .WithMany(t => t.mappedPayHistory)
                 .HasForeignKey(d => d.EmployeeID);
 
         }
@@ -52,7 +52,7 @@ namespace AdventureWorksModel
 
             // Relationships
             builder.HasOne(t => t.Employee)
-                   .WithMany(t => t.PayHistory)
+                   .WithMany(t => t.mappedPayHistory)
                    .HasForeignKey(d => d.EmployeeID);
         }
     }
