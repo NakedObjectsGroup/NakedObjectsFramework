@@ -38,7 +38,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [TableView(true,
-            nameof(Employee.Current),
+            /*nameof(Employee.Current), TODO*/
             nameof(Employee.JobTitle),
             nameof(Employee.Manager))]
         [MultiLine]
@@ -62,7 +62,7 @@ namespace AdventureWorksModel {
         [QueryOnly]
         public Employee FindEmployeeByNationalIDNumber(string nationalIDNumber) {
             IQueryable<Employee> query = from obj in Container.Instances<Employee>()
-                where obj.NationalIDNumber == nationalIDNumber
+                where obj.mappedNationalIDNumber == nationalIDNumber
                 select obj;
 
             return SingleObjectWarnIfNoMatch(query);
@@ -92,7 +92,7 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual Employee CurrentUserAsEmployee() {
             IQueryable<Employee> query = from obj in Container.Instances<Employee>()
-                where obj.LoginID == "adventure-works\\" + Principal.Identity.Name
+                where obj.mappedLoginID == "adventure-works\\" + Principal.Identity.Name
                 select obj;
 
             return query.FirstOrDefault();
@@ -111,7 +111,7 @@ namespace AdventureWorksModel {
                 return null;
             }
             else {
-                return me.ColleaguesInSameDept();
+                return me.ActionColleaguesInSameDept();
             }
         }
 
@@ -134,19 +134,19 @@ namespace AdventureWorksModel {
                                                   [Optionally] [DefaultValue(true)] bool? olderThan50
             ) {
             var emps = Container.Instances<Employee>();
-            emps = emps.Where(e => e.Current == current.Value);
+            emps = emps.Where(e => e.mappedCurrent == current.Value);
             if (married != null) {
                 string value = married.Value ? "M" : "S";
-                emps = emps.Where(e => e.MaritalStatus == value);
+                emps = emps.Where(e => e.mappedMaritalStatus == value);
             }
-            emps = emps.Where(e => e.Salaried == salaried.Value);
+            emps = emps.Where(e => e.mappedSalaried == salaried.Value);
             if (olderThan50 != null) {
                 var date = DateTime.Today.AddYears(-50); //Not an exact calculation!
                 if (olderThan50.Value) {
-                    emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth < date);
+                    emps = emps.Where(e => e.DateOfBirth != null && e.mappedDateOfBirth < date);
                 }
                 else {
-                    emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth > date);
+                    emps = emps.Where(e => e.DateOfBirth != null && e.mappedDateOfBirth > date);
                 }
             }
             return emps;
@@ -173,8 +173,8 @@ namespace AdventureWorksModel {
             var emps = Container.Instances<Employee>();
             var sum = Container.NewTransientInstance<StaffSummary>();
             sum.TotalStaff = emps.Count();
-            sum.Male = emps.Count(e => e.Gender == "M");
-            sum.Female = emps.Count(e => e.Gender == "F");
+            sum.Male = emps.Count(e => e.mappedGender == "M");
+            sum.Female = emps.Count(e => e.mappedGender == "F");
             return sum;
         }
     }

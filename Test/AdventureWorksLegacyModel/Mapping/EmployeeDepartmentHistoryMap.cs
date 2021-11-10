@@ -31,7 +31,7 @@ namespace AdventureWorksModel
             // Relationships
             HasRequired(t => t.Department).WithMany().HasForeignKey(t => t.DepartmentID);
             HasRequired(t => t.Employee)
-                .WithMany(t => t.DepartmentHistory)
+                .WithMany(t => t.mappedDepartmentHistory)
                 .HasForeignKey(d => d.EmployeeID);
             HasRequired(t => t.Shift).WithMany().HasForeignKey(t => t.ShiftID);
 
@@ -63,7 +63,7 @@ namespace AdventureWorksModel
             // Relationships
             builder.HasOne(t => t.Department).WithMany().HasForeignKey(t => t.DepartmentID);
             builder.HasOne(t => t.Employee)
-                   .WithMany(t => t.DepartmentHistory)
+                   .WithMany(t => t.mappedDepartmentHistory)
                    .HasForeignKey(d => d.EmployeeID);
             builder.HasOne(t => t.Shift).WithMany().HasForeignKey(t => t.ShiftID);
         }

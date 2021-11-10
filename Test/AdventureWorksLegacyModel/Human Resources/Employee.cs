@@ -10,36 +10,34 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFramework;
+using NakedLegacy.Types;
 using NakedObjects;
 
-namespace AdventureWorksModel {
-
+namespace AdventureWorksModel
+{
     public interface IEmployee : IBusinessEntity { } //Interface is for testing purposes
 
-    public class Employee : IEmployee {
+    [LegacyType]
+    public class Employee : IEmployee, TitledObject
+    {
         #region Injected Services
         public EmployeeRepository EmployeeRepository { set; protected get; }
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
 
         #region Life Cycle Methods
-        public virtual void Persisting() {
+        public virtual void Persisting()
+        {
             rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
+            ModifiedDate.DateTime = DateTime.Now;
         }
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        public virtual void Updating() => ModifiedDate.DateTime = DateTime.Now;
         #endregion
-        
-        #region Title & Icon
 
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(PersonDetails);
-            return t.ToString();
-        }
+        #region Title
+
+        public Title Title() => new Title(PersonDetails);
 
         #endregion
 
@@ -48,50 +46,142 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }
 
-         [MemberOrder(1), Disabled]
+        [MemberOrder(1), Disabled]
         public virtual Person PersonDetails { get; set; }
 
+        #region NationalIDNumber (Legacy Property)
+        internal string mappedNationalIDNumber;
+        private TextString myNationalIDNumber;
+
         [MemberOrder(10)]
-        public virtual string NationalIDNumber { get; set; }
+        public virtual TextString NationalIDNumber => myNationalIDNumber ??= new TextString(mappedNationalIDNumber, v => mappedNationalIDNumber = v);
+        #endregion
+
+        #region JobTitle (Legacy Property)
+        internal string mappedJobTitle;
+        private TextString myJobTitle;
 
         [MemberOrder(12)]
-        public virtual string JobTitle { get; set; }
+        public virtual TextString JobTitle => myJobTitle ??= new TextString(mappedJobTitle, v => mappedJobTitle = v);
+        #endregion
+
+        #region DateOfBirth (Legacy Property)
+        internal DateTime? mappedDateOfBirth;
+        private Date myDateOfBirth;
 
         [MemberOrder(13)]
-        [Mask("d")]
-        public virtual DateTime? DateOfBirth { get; set; }
+        public virtual Date DateOfBirth => myDateOfBirth ??= new Date(mappedDateOfBirth.GetValueOrDefault(), v => mappedDateOfBirth = v);
+        #endregion
+
+        #region MaritalStatus (Legacy Property)
+        internal string mappedMaritalStatus;
+        private TextString myMaritalStatus;
 
         [MemberOrder(14)]
         [StringLength(1)]
-        public virtual string MaritalStatus { get; set; }
+        public virtual TextString MaritalStatus => myMaritalStatus ??= new TextString(mappedMaritalStatus, v => mappedMaritalStatus = v);
 
-        public IList<string> ChoicesMaritalStatus() {
-            return new[] {"S", "M"};
+        public void AboutMaritalStatus(FieldAbout a, TextString newMaritalStatus)
+        {
+            switch (a.TypeCode)
+            {
+                case AboutTypeCodes.Name:
+                    break;
+                case AboutTypeCodes.Parameters:
+                    a.Options = (object[])ChoicesMaritalStatus();
+                    break;
+                case AboutTypeCodes.Usable:
+                    break;
+                case AboutTypeCodes.Valid:
+                    //var msg = newMaritalStatus is null || newMaritalStatus.Text.Length != 1 ? "Invalid" : "";
+                    //a.InvalidReason += msg;
+                    //a.inv = a.InvalidReason | (msg != "");
+                    break;
+                case AboutTypeCodes.Visible:
+                    break;
+                default:
+                    break;
+            }
         }
+
+        public IList<string> ChoicesMaritalStatus()
+        {
+            return new[] { "S", "M" };
+        }
+        #endregion
+
+        #region Gender (Legacy Property)
+        internal string mappedGender;
+        private TextString myGender;
 
         [MemberOrder(15)]
-        [StringLength(1)]
-        public virtual string Gender { get; set; }
+        public virtual TextString Gender => myGender ??= new TextString(mappedGender, v => mappedGender = v);
 
-        public IList<string> ChoicesGender() {
-            return new[] {"M", "F"};
+        public void AboutGender(FieldAbout a, TextString newGender)
+        {
+            switch (a.TypeCode)
+            {
+                case AboutTypeCodes.Name:
+                    break;
+                case AboutTypeCodes.Parameters:
+                    a.Options = (object[])ChoicesGender();
+                    break;
+                case AboutTypeCodes.Usable:
+                    break;
+                case AboutTypeCodes.Valid:
+                    break;
+                case AboutTypeCodes.Visible:
+                    break;
+                default:
+                    break;
+            }
         }
 
-        [MemberOrder(16)]
-        [Mask("d")]
-        public virtual DateTime? HireDate { get; set; }
+        public IList<string> ChoicesGender()
+        {
+            return new[] { "M", "F" };
+        }
+        #endregion
 
-        [MemberOrder(17)]
-        public virtual bool Salaried { get; set; }
+        #region HireDate (Legacy Property)
+        internal DateTime? mappedHireDate;
+        private Date myHireDate;
+
+        [MemberOrder(16)]
+        public virtual Date HireDate => myHireDate ??= new Date(mappedHireDate.GetValueOrDefault(), v => mappedHireDate = v);
+        #endregion
+
+        #region Salaried (Legacy Property)
+        internal bool mappedSalaried;
+        private Logical mySalaried;
+
+        //[MemberOrder(17)] //TODO uncomment when Logical supported
+        //public virtual Logical Salaried => mySalaried ??= new Logical(mappedSalaried, v => mappedSalaried = v);
+        #endregion
+
+        #region VacationHours (Legacy Property)
+        internal short mappedVacationHours;
+        private WholeNumber myVacationHours;
 
         [MemberOrder(18)]
-        public virtual short VacationHours { get; set; }
+        public virtual WholeNumber VacationHours => myVacationHours ??= new WholeNumber(mappedVacationHours, v => mappedVacationHours = (short)v);
+        #endregion
+
+        #region SickLeaveHours (Legacy Property)
+        internal short mappedSickLeaveHours;
+        private WholeNumber mySickLeaveHours;
 
         [MemberOrder(19)]
-        public virtual short SickLeaveHours { get; set; }
+        public virtual WholeNumber SickLeaveHours => mySickLeaveHours ??= new WholeNumber(mappedSickLeaveHours, v => mappedSickLeaveHours = (short) v);
+        #endregion
 
-        [MemberOrder(20)]
-        public virtual bool Current { get; set; }
+        #region Current (Legacy Property)
+        internal bool mappedCurrent;
+        private Logical myCurrent;
+
+        //[MemberOrder(20)] //TODO uncomment when Logical supported
+        //public virtual Logical Current => myCurrent ??= new Logical(mappedCurrent, v => mappedCurrent = v);
+        #endregion
 
         #region Manager
         [NakedObjectsIgnore]
@@ -102,62 +192,95 @@ namespace AdventureWorksModel {
         public virtual Employee Manager { get; set; }
 
         [PageSize(20)]
-        public IQueryable<Employee> AutoCompleteManager([MinLength(2)] string name) {
+        public IQueryable<Employee> AutoCompleteManager([MinLength(2)] string name)
+        {
             return EmployeeRepository.FindEmployeeByName(null, name);
         }
 
         #endregion
 
-        #region LoginID
+        #region LoginID (Legacy Property)
+        internal string mappedLoginID;
+        private TextString myLoginID;
 
         [MemberOrder(11)]
-        public virtual string LoginID { get; set; }
+        public virtual TextString LoginID => myLoginID ??= new TextString(mappedLoginID, v => mappedLoginID = v);
 
-        public virtual bool HideLoginID() {
-            if (Container.IsPersistent(this)) {
+        public void AboutLoginID(FieldAbout a, TextString newLoginID)
+        {
+            switch (a.TypeCode)
+            {
+                case AboutTypeCodes.Name:
+                    break;
+                case AboutTypeCodes.Parameters:
+                    break;
+                case AboutTypeCodes.Usable:
+                    break;
+                case AboutTypeCodes.Valid:
+                    break;
+                case AboutTypeCodes.Visible:
+                    //a.Visible = !HideLoginID(); But logic needs converting
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public virtual bool HideLoginID()
+        {
+            if (Container.IsPersistent(this))
+            {
                 Employee userAsEmployee = EmployeeRepository.CurrentUserAsEmployee();
                 return userAsEmployee != null ? userAsEmployee.LoginID != LoginID : true;
             }
             return false;
         }
-
         #endregion
 
         [NakedObjectsIgnore]
         public virtual SalesPerson SalesPerson { get; set; }
-      
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+
+        #region rowguid
 
         [NakedObjectsIgnore]
         public virtual Guid rowguid { get; set; }
 
         #endregion
 
-        #region collections
-        private ICollection<EmployeeDepartmentHistory> _departmentHistory = new List<EmployeeDepartmentHistory>();
+        #region ModifiedDate
+        internal DateTime mappedModifiedDate;
+        private TimeStamp myModifiedDate;
 
-        [TableView(true, 
-            nameof(EmployeeDepartmentHistory.StartDate),
-            nameof(EmployeeDepartmentHistory.EndDate),
-            nameof(EmployeeDepartmentHistory.Department),
-            nameof(EmployeeDepartmentHistory.Shift))]
-        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory {
-            get { return _departmentHistory; }
-            set { _departmentHistory = value; }
-        }
+        [MemberOrder(99)]
+        [Disabled]
+        [ConcurrencyCheck]
+        public virtual TimeStamp ModifiedDate => myModifiedDate ??= new TimeStamp(mappedModifiedDate, s => mappedModifiedDate = s);
+        #endregion
 
-        private ICollection<EmployeePayHistory> _payHistory = new List<EmployeePayHistory>();
+        #endregion
 
-        [TableView(true, 
-            nameof(EmployeePayHistory.RateChangeDate),
-            nameof(EmployeePayHistory.Rate))]
-        public virtual ICollection<EmployeePayHistory> PayHistory {
-            get { return _payHistory; }
-            set { _payHistory = value; }
-        }
+        #region DepartmentHistory (Legacy Collection)
+        public virtual ICollection<EmployeeDepartmentHistory> mappedDepartmentHistory { get; } = new List<EmployeeDepartmentHistory>();
+        private InternalCollection myDepartmentHistory;
+
+        [TableView(true,
+    nameof(EmployeeDepartmentHistory.StartDate),
+    nameof(EmployeeDepartmentHistory.EndDate),
+    nameof(EmployeeDepartmentHistory.Department),
+    nameof(EmployeeDepartmentHistory.Shift))]
+        [MemberOrder(1)]
+        public InternalCollection DepartmentHistory => myDepartmentHistory ??= new InternalCollection<EmployeeDepartmentHistory>(mappedDepartmentHistory);
+        #endregion
+
+        #region PayHistory (Legacy Collection)
+        public virtual ICollection<EmployeePayHistory> mappedPayHistory { get; } = new List<EmployeePayHistory>();
+        private InternalCollection myPayHistory;
+
+        [TableView(true,
+    nameof(EmployeePayHistory.RateChangeDate),
+    nameof(EmployeePayHistory.Rate))]
+        [MemberOrder(1)]
+        public InternalCollection PayHistory => myPayHistory ??= new InternalCollection<EmployeePayHistory>(mappedPayHistory);
         #endregion
 
         #region Actions
@@ -165,7 +288,8 @@ namespace AdventureWorksModel {
         #region ChangePayRate (Action)
 
         [MemberOrder(10)]
-        public EmployeePayHistory ChangePayRate() {
+        public EmployeePayHistory ActionChangePayRate()
+        {
             EmployeePayHistory current = CurrentEmployeePayHistory();
             var eph = Container.NewTransientInstance<EmployeePayHistory>();
             eph.Employee = this;
@@ -174,8 +298,9 @@ namespace AdventureWorksModel {
             return eph;
         }
 
-        private EmployeePayHistory CurrentEmployeePayHistory() {
-            var query = from obj in PayHistory
+        private EmployeePayHistory CurrentEmployeePayHistory()
+        {
+            var query = from obj in mappedPayHistory
                         orderby obj.RateChangeDate descending
                         select obj;
             return query.FirstOrDefault();
@@ -188,7 +313,8 @@ namespace AdventureWorksModel {
         #region ChangeDepartmentOrShift (Action)
 
         [MemberOrder(20)]
-        public void ChangeDepartmentOrShift(Department department, [Optionally] Shift shift) {
+        public void ActionChangeDepartmentOrShift(Department department, [Optionally] Shift shift)
+        {
             CurrentAssignment().EndDate = DateTime.Now;
             var newAssignment = Container.NewTransientInstance<EmployeeDepartmentHistory>();
             newAssignment.Department = department;
@@ -199,23 +325,21 @@ namespace AdventureWorksModel {
             DepartmentHistory.Add(newAssignment);
         }
 
-        public Department Default0ChangeDepartmentOrShift() {
+        public Department Default0ChangeDepartmentOrShift()
+        {
             EmployeeDepartmentHistory current = CurrentAssignment();
             return current != null ? current.Department : null;
         }
 
-        private EmployeeDepartmentHistory CurrentAssignment() {
-            return DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
-        }
+        private EmployeeDepartmentHistory CurrentAssignment() => mappedDepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
+         #endregion
 
-        #endregion
-
-        public void SpecifyManager(IEmployee manager)
+        public void SpecifyManagerAction(IEmployee manager)
         {
             this.ManagerID = manager.BusinessEntityID;
         }
 
-        public IQueryable<Employee> ColleaguesInSameDept()
+        public IQueryable<Employee> ActionColleaguesInSameDept()
         {
             var allCurrent = Container.Instances<EmployeeDepartmentHistory>().Where(edh => edh.EndDate == null);
             var thisId = this.BusinessEntityID;
