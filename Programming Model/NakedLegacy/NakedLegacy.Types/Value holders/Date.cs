@@ -21,8 +21,8 @@ namespace NakedLegacy.Types {
 
         private Action<DateTime> UpdateBackingField { get; } = _ => { };
 
-        public override string ToString() => DateTime.ToString("d", CultureInfo.InvariantCulture); //TODO: match original format.
+        public override string ToString() => DateTime.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture); //TODO: match original format.
 
-        public Title Title() => new Title(this); 
+        public Title Title() => new Title(ToString()); 
     }
 }
