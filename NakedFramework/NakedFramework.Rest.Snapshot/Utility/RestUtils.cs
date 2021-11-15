@@ -201,6 +201,10 @@ namespace NakedFramework.Rest.Snapshot.Utility {
                 return PredefinedJsonType.List;
             }
 
+            if (typeFacade.IsNumber) {
+                return PredefinedJsonType.Number;
+            }
+
             // if parseable default to string
             if (typeFacade.IsParseable) {
                 return PredefinedJsonType.String;
@@ -211,7 +215,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         private static PredefinedFormatType? TypeToPredefinedFormatType(ITypeFacade typeSpec, bool useDateOverDateTime) {
             var underlyingType = typeSpec.GetUnderlyingType();
-            
+
             if (SimpleFormatMap.ContainsKey(underlyingType)) {
                 return SimpleFormatMap[underlyingType];
             }
@@ -227,6 +231,10 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
             if (typeSpec.IsTime) {
                 return PredefinedFormatType.Time;
+            }
+
+            if (typeSpec.IsNumber) {
+                return PredefinedFormatType.Int;
             }
 
             if (typeSpec.IsParseable) {
@@ -257,9 +265,10 @@ namespace NakedFramework.Rest.Snapshot.Utility {
 
         public static object ObjectToPredefinedType(IObjectFacade toMap, bool useDateOverDateTime) =>
             TypeToPredefinedFormatType(toMap.Specification, useDateOverDateTime) switch {
-                PredefinedFormatType.Date_time => toMap.ToUniversalTime(),
+                PredefinedFormatType.Date_time => toMap.ToValue(),
                 PredefinedFormatType.Date => toMap.ToString(DateFormat),
                 PredefinedFormatType.Time => toMap.ToString(@"hh\:mm\:ss"),
+                PredefinedFormatType.Int => toMap.ToValue(),
                 PredefinedFormatType.String => toMap.ToString(),
                 _ => toMap.Object
             };

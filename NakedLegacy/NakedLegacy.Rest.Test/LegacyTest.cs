@@ -577,8 +577,8 @@ namespace NakedLegacy.Rest.Test {
 
             Assert.AreEqual(nameof(ClassWithWholeNumber.WholeNumber), parsedResult["id"].ToString());
             Assert.AreEqual("10", parsedResult["value"].ToString());
-            //Assert.AreEqual("number", parsedResult["extensions"]["returnType"].ToString());
-            //Assert.AreEqual("", parsedResult["extensions"]["format"].ToString());
+            Assert.AreEqual("number", parsedResult["extensions"]["returnType"].ToString());
+            Assert.AreEqual("int", parsedResult["extensions"]["format"].ToString());
         }
 
         [Test]

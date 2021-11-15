@@ -38,6 +38,7 @@ namespace NakedFramework.Facade.Interface {
         bool IsFile { get; }
         bool IsBoolean { get; }
         bool IsEnum { get; }
+        bool IsNumber { get; }
         ITypeFacade GetElementType(IObjectFacade objectFacade);
         bool IsImmutable(IObjectFacade objectFacade);
         IActionFacade[] GetActionLeafNodes();

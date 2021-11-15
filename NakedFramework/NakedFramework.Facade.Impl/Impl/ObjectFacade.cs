@@ -176,16 +176,19 @@ namespace NakedFramework.Facade.Impl.Impl {
             return WrappedNakedObject.Object.ToString();
         }
 
-        public object ToUniversalTime() {
+        public object ToValue() {
             var spec = WrappedNakedObject.Spec;
 
             if (spec.GetFacet<IDateValueFacet>() is { } df) {
                 var dt = df.DateValue(WrappedNakedObject);
-
                 return ToUniversalTime(dt);
             }
 
-            return null;
+            if (spec.GetFacet<IIntegerValueFacet>() is { } intf) {
+                return intf.IntegerValue(WrappedNakedObject);
+            }
+
+            return WrappedNakedObject.Object;
         }
 
 

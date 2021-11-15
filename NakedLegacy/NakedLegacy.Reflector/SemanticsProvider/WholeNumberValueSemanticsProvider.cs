@@ -33,7 +33,7 @@ namespace NakedLegacy.Reflector.SemanticsProvider {
 
         #region IIntegerValueFacet Members
 
-        public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<int>();
+        public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<WholeNumber>().Number;
 
         #endregion
 

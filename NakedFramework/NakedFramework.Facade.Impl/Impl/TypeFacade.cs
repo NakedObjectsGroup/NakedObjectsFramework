@@ -77,6 +77,8 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public bool IsTime => WrappedValue.ContainsFacet<ITimeValueFacet>();
 
+        public bool IsNumber => WrappedValue.ContainsFacet<IIntegerValueFacet>();
+
         public string FullName => WrappedValue.FullName;
 
         public string ShortName => WrappedValue.ShortName;
