@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Reflection;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Core.Util {
@@ -41,7 +42,11 @@ namespace NakedFramework.Core.Util {
         }
 
         public static IEnumerable Take(this IEnumerable e, int count) {
-            var takeMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "Take" && Enumerable.Count(m.GetParameters()) == 2);
+            static bool MatchParms(MethodInfo m) {
+                var parms = m.GetParameters();
+                return parms.Length == 2 && parms[1].ParameterType == typeof(int);
+            }
+            var takeMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "Take" && MatchParms(m));
             var gm = takeMethod.MakeGenericMethod(e.ElementType());
             return (IEnumerable) gm.Invoke(null, new object[] {e, count});
         }

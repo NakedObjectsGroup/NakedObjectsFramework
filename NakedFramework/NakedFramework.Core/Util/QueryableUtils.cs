@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace NakedFramework.Core.Util {
     public static class QueryableUtils {
@@ -24,7 +25,11 @@ namespace NakedFramework.Core.Util {
         }
 
         public static IQueryable Take(this IQueryable q, int count) {
-            var takeMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Take" && m.GetParameters().Length == 2);
+            static bool MatchParms(MethodInfo m) {
+                var parms = m.GetParameters();
+                return parms.Length == 2 && parms[1].ParameterType == typeof(int);
+            }
+            var takeMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Take" && MatchParms(m));
             var gm = takeMethod.MakeGenericMethod(q.ElementType);
             return (IQueryable) gm.Invoke(null, new object[] {q, count});
         }
