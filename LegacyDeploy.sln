@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29418.71
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksLegacyModel", "Test\AdventureWorksLegacyModel\AdventureWorksLegacyModel.csproj", "{93030F3E-CB48-4747-8C2E-B8CC2D8081BD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Legacy.Rest.App.Demo", "Test\Legacy.Rest.App.Demo\Legacy.Rest.App.Demo.csproj", "{148766BA-4612-4C2D-B4FF-37E830E1584F}"
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "AdventureWorksLegacyModelVB", "Test\AdventureWorksLegacyModelVB\AdventureWorksLegacyModelVB.vbproj", "{2C983F9C-B819-4D43-9103-9E74EA4555F7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Types", "Programming Model\NakedLegacy\NakedLegacy.Types\NakedLegacy.Types.csproj", "{40400CFA-EEB9-4BA3-B6B5-6000829882C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		{2C983F9C-B819-4D43-9103-9E74EA4555F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C983F9C-B819-4D43-9103-9E74EA4555F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C983F9C-B819-4D43-9103-9E74EA4555F7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40400CFA-EEB9-4BA3-B6B5-6000829882C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40400CFA-EEB9-4BA3-B6B5-6000829882C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40400CFA-EEB9-4BA3-B6B5-6000829882C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40400CFA-EEB9-4BA3-B6B5-6000829882C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
