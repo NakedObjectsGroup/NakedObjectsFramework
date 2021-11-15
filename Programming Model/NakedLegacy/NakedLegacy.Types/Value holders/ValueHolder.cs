@@ -21,7 +21,7 @@ namespace NakedLegacy.Types {
 
         public override string ToString() => value.ToString();
 
-        public Title Title() => new Title(this);
+        public Title Title() => new Title(Value);
 
     }
 }

@@ -18,11 +18,11 @@ namespace NakedLegacy.Types {
             }
         }
 
-        private Action<string> UpdateBackingField { get; } = _ => { };
+        protected Action<string> UpdateBackingField { get; } = _ => { };
 
         public override string ToString() => Text;
 
-        public Title Title() => new Title(this);
+        public Title Title() => new Title(ToString());
 
     }
 }
