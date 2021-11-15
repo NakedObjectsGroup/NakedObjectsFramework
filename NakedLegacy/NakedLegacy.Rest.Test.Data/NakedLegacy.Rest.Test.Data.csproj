@@ -15,7 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.8" />
     <PackageReference Include="NakedLegacy.ProgrammingModel" Version="1.0.0-alpha01" />
-    <PackageReference Include="NakedObjects.ProgrammingModel" Version="12.1.0" />
+    <PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0-beta01" />
   </ItemGroup>
 
   <ItemGroup>

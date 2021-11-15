@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29324.140
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Architecture", "NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj", "{8C2C6756-2E08-4A7F-9E4A-7ED33BF67826}"
 EndProject
@@ -100,6 +100,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Rest.Test.Data", "NakedLegacy\NakedLegacy.Rest.Test.Data\NakedLegacy.Rest.Test.Data.csproj", "{61E24965-8590-4BD1-8862-DCF1BE0462BB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Rest.Test", "NakedLegacy\NakedLegacy.Rest.Test\NakedLegacy.Rest.Test.csproj", "{549638C5-A6F2-48BC-B65F-52D18EEEDF3E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD278907-3EF9-49DE-A9E5-1EE39532A6C2}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

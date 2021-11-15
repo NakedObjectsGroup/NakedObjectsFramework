@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="NakedObjects.ProgrammingModel" Version="12.1.0" />
+    <PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0-beta01" />
   </ItemGroup>
 
 </Project>

@@ -1,1 +1,1 @@
-Naked Objects 12.1.0,Naked Functions 1.0.0
+Naked Objects 13.0.0-beta01,Naked Functions 1.0.0
