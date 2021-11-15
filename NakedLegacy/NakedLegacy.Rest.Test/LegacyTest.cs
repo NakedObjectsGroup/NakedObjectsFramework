@@ -454,6 +454,7 @@ namespace NakedLegacy.Rest.Test {
             Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
         }
 
+        [Ignore("fix locale")]
         [Test]
         public void TestGetObjectWithDate() {
             var api = Api();
