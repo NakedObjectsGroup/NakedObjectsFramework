@@ -101,7 +101,9 @@ namespace NakedFramework.Rest.Snapshot.Representation {
 
         private static byte[] ComputeMD5HashFromString(string s) {
             var idAsBytes = Encoding.UTF8.GetBytes(s);
+#pragma warning disable SYSLIB0021 // Type or member is obsolete
             return new MD5CryptoServiceProvider().ComputeHash(idAsBytes);
+#pragma warning restore SYSLIB0021 // Type or member is obsolete
         }
 
         protected static T CreateWithOptionals<T>(object[] ctorParms, IList<OptionalProperty> properties) {

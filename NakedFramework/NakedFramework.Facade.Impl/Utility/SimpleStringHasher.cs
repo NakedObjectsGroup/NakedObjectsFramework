@@ -23,7 +23,9 @@ namespace NakedFramework.Facade.Impl.Utility {
 
         private static byte[] ComputeSha256HashFromString(string s) {
             var idAsBytes = Encoding.UTF8.GetBytes(s);
+#pragma warning disable SYSLIB0021 // Type or member is obsolete
             return new SHA256Managed().ComputeHash(idAsBytes);
+#pragma warning restore SYSLIB0021 // Type or member is obsolete
         }
     }
 }

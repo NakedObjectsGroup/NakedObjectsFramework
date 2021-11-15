@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.Rest.Test.Functions
 
+#nowarn "44" // temp suppress crypto warning
+
 open System
 open System.Net
 open System.Net.Http
@@ -123,7 +125,7 @@ let internal wrap2 f (a, _, c, d, e) = f (a, c, d, e)
 
 let internal wrap3 f (a, _, c, d) = f (a, c, d) 
 
-let internal ComputeMD5HashFromString(s : string) = 
+let internal ComputeMD5HashFromString(s : string) =
     let crypto = new System.Security.Cryptography.MD5CryptoServiceProvider()
     crypto.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s))
 

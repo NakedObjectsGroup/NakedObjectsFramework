@@ -17,7 +17,9 @@ using NakedFramework.Architecture.Component;
 namespace RestfulObjects.Test.Data {
     public class TestKeyCodeMapper : IKeyCodeMapper {
         private const string KeySeparator = "--";
+#pragma warning disable SYSLIB0022 // Type or member is obsolete
         private static readonly RijndaelManaged Provider = new();
+#pragma warning restore SYSLIB0022 // Type or member is obsolete
 
         // these are constants so that tests are reproduceable
         private static readonly byte[] Iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
