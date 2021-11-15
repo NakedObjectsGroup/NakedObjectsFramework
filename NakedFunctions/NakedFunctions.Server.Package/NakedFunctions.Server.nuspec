@@ -14,7 +14,7 @@
     <description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
     <tags>naked functions functional progamming ddd domain driven design</tags>
     <dependencies>
-      <group targetFramework="net5.0">
+      <group targetFramework="net6.0">
         <dependency id="NakedFunctions.ProgrammingModel" version="[1.0.0, 2)" />
         <dependency id="EntityFramework" version="[6.4.4, 7)" />
         <dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[5.0.8, 6)" />

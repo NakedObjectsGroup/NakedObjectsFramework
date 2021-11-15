@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides a common core to the NakedObjects and NakedFunctions programming models</description>
     <dependencies>
-      <group targetFramework="net5.0" />
+      <group targetFramework="net6.0" />
     </dependencies>
   </metadata>
   <files>
