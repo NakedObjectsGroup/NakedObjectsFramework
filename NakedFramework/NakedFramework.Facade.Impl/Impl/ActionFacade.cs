@@ -45,6 +45,8 @@ namespace NakedFramework.Facade.Impl.Impl {
 
         public bool IsStatic => WrappedSpec.IsStaticFunction;
 
+        public bool IsStaticObjectMenu => WrappedSpec.IsStaticFunction && WrappedSpec.ContainsFacet<IStaticMenuFunctionFacet>();
+
         public bool IsIdempotent => WrappedSpec.ContainsFacet<IIdempotentFacet>();
 
         public string[] CreateNewProperties => WrappedSpec.GetFacet<ICreateNewFacet>()?.OrderedProperties(framework) ?? Array.Empty<string>();
