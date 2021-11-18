@@ -29,7 +29,7 @@ namespace AW.Functions {
 
         public static IContext AddToShoppingCart(Product product, IContext context) {
             var id = GetShoppingCartIDForUser(context);
-            var newItem = new ShoppingCartItem() with { ShoppingCartID = id, Product = product, Quantity = 1, DateCreated = context.Now() };
+            var newItem = new ShoppingCartItem { ShoppingCartID = id, Product = product, Quantity = 1, DateCreated = context.Now() };
             return context.WithNew(newItem).WithInformUser($"1 x {product} added to Cart");
         }
 

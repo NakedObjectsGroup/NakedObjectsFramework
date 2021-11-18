@@ -10,7 +10,51 @@ using System.Collections.Generic;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
+    public class Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
+        public Person() { }
+
+        public Person(Person cloneFrom) : base(cloneFrom)
+        {
+            NameStyle = cloneFrom.NameStyle;
+            Title = cloneFrom.Title;
+            FirstName = cloneFrom.FirstName;
+            MiddleName = cloneFrom.MiddleName;
+            LastName = cloneFrom.LastName;
+            Suffix = cloneFrom.Suffix;
+            PersonType = cloneFrom.PersonType;
+            EmailPromotion = cloneFrom.EmailPromotion;
+            EmailAddresses = cloneFrom.EmailAddresses;
+            PhoneNumbers = cloneFrom.PhoneNumbers;
+            Password = cloneFrom.Password;
+            AdditionalContactInfo = cloneFrom.AdditionalContactInfo;
+            Employee = cloneFrom.Employee;
+            ModifiedDate = cloneFrom.ModifiedDate;
+            rowguid = cloneFrom.rowguid;
+        }
+
+        #region Name fields
+
+        [MemberOrder(15)]
+        [Named("Reverse name order")]
+        public virtual bool NameStyle { get; init; }
+
+        [MemberOrder(11)]
+        public virtual string? Title { get; init; }
+
+        [MemberOrder(12)]
+        public virtual string FirstName { get; init; } = "";
+
+        [MemberOrder(13)]
+        public virtual string? MiddleName { get; init; }
+
+        [MemberOrder(14)]
+        public virtual string LastName { get; init; } = "";
+
+        [MemberOrder(15)]
+        public virtual string? Suffix { get; init; }
+
+        #endregion
+
         [Hidden]
         public virtual string? PersonType { get; init; }
 
@@ -39,7 +83,6 @@ namespace AW.Types {
         [Hidden]
         public virtual Employee? Employee { get; init; }
 
-        public virtual bool Equals(Person? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
@@ -49,29 +92,5 @@ namespace AW.Types {
         public virtual Guid rowguid { get; init; }
 
         public override string ToString() => NameStyle ? $"{LastName} {FirstName}" : $"{FirstName} {LastName}";
-
-        public override int GetHashCode() => base.GetHashCode();
-
-        #region Name fields
-
-        [MemberOrder(15)] [Named("Reverse name order")]
-        public virtual bool NameStyle { get; init; }
-
-        [MemberOrder(11)]
-        public virtual string? Title { get; init; }
-
-        [MemberOrder(12)]
-        public virtual string FirstName { get; init; } = "";
-
-        [MemberOrder(13)]
-        public virtual string? MiddleName { get; init; }
-
-        [MemberOrder(14)]
-        public virtual string LastName { get; init; } = "";
-
-        [MemberOrder(15)]
-        public virtual string? Suffix { get; init; }
-
-        #endregion
     }
 }
