@@ -80,6 +80,7 @@ namespace NakedLegacy.Reflector.FacetFactory {
 
             if (actionMethod.IsStatic) {
                 facets.Add(new StaticMethodFacet(action));
+                facets.Add(new StaticMenuMethodFacet(action));
                 facets.Add(new ActionInvocationFacetViaStaticMethod(actionMethod, onType, returnSpec, elementSpec, action, false, Logger<ActionInvocationFacetViaStaticMethod>()));
             }
             else {

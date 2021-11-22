@@ -270,7 +270,7 @@ namespace NakedFramework.Rest.Snapshot.Utility {
         public Uri GetInvokeUri() =>
             spec.IsService || action?.IsQueryContributedAction == true
                 ? GetServiceInvokeUri()
-                : spec.IsStatic || action?.IsStatic == true
+                : spec.IsStatic || action?.IsStaticObjectMenu == true
                     ? GetMenuInvokeUri()
                     : GetObjectInvokeUri();
 

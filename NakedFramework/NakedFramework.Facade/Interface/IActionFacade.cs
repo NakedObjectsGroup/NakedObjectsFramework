@@ -31,5 +31,7 @@ namespace NakedFramework.Facade.Interface {
         string FinderMethodPrefix { get; }
         bool IsVisible(IObjectFacade objectFacade);
         IConsentFacade IsUsable(IObjectFacade objectFacade);
+
+        bool IsStaticObjectMenu { get; }
     }
 }
