@@ -15,7 +15,7 @@ namespace AW.Functions {
     public static class Person_Functions {
         internal static IContext UpdatePerson(
             Person original, Person updated, IContext context) =>
-            context.WithUpdated(original, new Person(original) { ModifiedDate = context.Now() });
+            context.WithUpdated(original, new Person(updated) { ModifiedDate = context.Now() });
 
 
         [Edit]
@@ -26,15 +26,19 @@ namespace AW.Functions {
                                         string lastName,
                                         [Optionally] string suffix,
                                         [Named("Reverse name order")] bool nameStyle,
-                                        IContext context)  =>
-            UpdatePerson(p, new Person(p) {
-            Title = title,
+                                        IContext context)
+        {
+            var up = new Person(p)
+            {
+                Title = title,
                 FirstName = firstName,
                 MiddleName = middleName,
                 LastName = lastName,
                 Suffix = suffix,
                 NameStyle = nameStyle
-            }, context);
+            };
+            return context.WithUpdated(p, up);
+        }
 
 
         //Yes, this could be done with a Hidden attribute, but is done as a function here for testing.
