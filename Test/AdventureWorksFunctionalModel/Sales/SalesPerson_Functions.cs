@@ -20,7 +20,7 @@ namespace AW.Functions {
         public static IContext RecalulateSalesYTD(this SalesPerson sp, IContext context) {
             var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
             var query = from obj in context.Instances<SalesOrderHeader>()
-                        where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID &&
+                        where obj.SalesPerson != null && obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID &&
                               obj.StatusByte == 5 &&
                               obj.OrderDate >= startOfYear
                         select obj;
@@ -33,11 +33,11 @@ namespace AW.Functions {
         public static IContext ChangeSalesQuota(
             this SalesPerson sp, decimal newQuota, IContext context) =>
             UpdateSalesPerson(sp, sp with { SalesQuota = newQuota }, context)
-                .WithNew(new SalesPersonQuotaHistory() with { SalesPerson = sp, SalesQuota = newQuota, QuotaDate = context.Now() });
+                .WithNew(new SalesPersonQuotaHistory { SalesPerson = sp, SalesQuota = newQuota, QuotaDate = context.Now() });
 
         [MemberOrder(1)]
         public static IContext ChangeSalesTerritory(this SalesPerson sp, SalesTerritory newTerritory, IContext context) {
-            var newHist = new SalesTerritoryHistory() with { SalesPerson = sp, SalesTerritory = newTerritory, StartDate = context.Now() };
+            var newHist = new SalesTerritoryHistory { SalesPerson = sp, SalesTerritory = newTerritory, StartDate = context.Now() };
             var prev = sp.TerritoryHistory.First(n => n.EndDate == null);
             var uPrev = prev with { EndDate = context.Now() };
             var uSp = sp with { SalesTerritory = newTerritory, ModifiedDate = context.Now() };

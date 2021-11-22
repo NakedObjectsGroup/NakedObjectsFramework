@@ -15,7 +15,7 @@ namespace AW.Functions {
     public static class Person_Functions {
         internal static IContext UpdatePerson(
             Person original, Person updated, IContext context) =>
-            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, new Person(original) { ModifiedDate = context.Now() });
 
         [Edit]
         public static IContext EditName(this Person p,
@@ -26,7 +26,7 @@ namespace AW.Functions {
                                         [Optionally] string suffix,
                                         [Named("Reverse name order")] bool nameStyle,
                                         IContext context) =>
-            UpdatePerson(p, p with {
+            UpdatePerson(p, new Person(p) {
                 Title = title,
                 FirstName = firstName,
                 MiddleName = middleName,

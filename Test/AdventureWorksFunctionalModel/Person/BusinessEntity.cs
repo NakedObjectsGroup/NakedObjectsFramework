@@ -3,7 +3,21 @@ using System.Collections.Generic;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record BusinessEntity : IBusinessEntity {
+    public abstract class BusinessEntity : IBusinessEntity {
+
+        public BusinessEntity() { }
+
+        public BusinessEntity(BusinessEntity cloneFrom) {
+            BusinessEntityID = cloneFrom.BusinessEntityID;
+            BusinessEntityRowguid = cloneFrom.BusinessEntityRowguid;
+            BusinessEntityModifiedDate = cloneFrom.BusinessEntityModifiedDate;
+            Addresses = cloneFrom.Addresses;
+            Contacts = cloneFrom.Contacts;
+        }
+
+        [Hidden]
+        public virtual int BusinessEntityID { get; init; }
+
         [Hidden]
         public virtual Guid BusinessEntityRowguid { get; init; }
 
@@ -17,14 +31,5 @@ namespace AW.Types {
         [RenderEagerly]
         [TableView(false, nameof(BusinessEntityContact.ContactType), nameof(BusinessEntityContact.Person))]
         public virtual ICollection<BusinessEntityContact> Contacts { get; init; } = new List<BusinessEntityContact>();
-
-        [Hidden]
-        public virtual int BusinessEntityID { get; init; }
-
-        public virtual bool Equals(BusinessEntity? other) => ReferenceEquals(this, other);
-
-        public override string ToString() => $"BusinessEntity: {BusinessEntityID}";
-
-        public override int GetHashCode() => base.GetHashCode();
     }
 }

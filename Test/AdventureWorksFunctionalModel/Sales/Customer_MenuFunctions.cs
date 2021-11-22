@@ -41,8 +41,8 @@ namespace AW.Functions {
         [MemberOrder("Stores", 2)]
         public static (Customer, IContext) CreateNewStoreCustomer(
             string name, IContext context) {
-            var s = new Store() with { Name = name, rowguid = context.NewGuid(), BusinessEntityRowguid = context.NewGuid(), ModifiedDate = context.Now(), BusinessEntityModifiedDate = context.Now() };
-            var c = new Customer() with { Store = s, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
+            var s = new Store { Name = name, rowguid = context.NewGuid(), BusinessEntityRowguid = context.NewGuid(), ModifiedDate = context.Now(), BusinessEntityModifiedDate = context.Now() };
+            var c = new Customer { Store = s, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
             return (c, context.WithNew(c).WithNew(s));
         }
 
@@ -74,7 +74,7 @@ namespace AW.Functions {
             string lastName,
             [Optionally] [Password] string password,
             IContext context) {
-            var p = new Person() with {
+            var p = new Person {
                 PersonType = "SC",
                 FirstName = firstName,
                 LastName = lastName,
@@ -85,7 +85,7 @@ namespace AW.Functions {
                 ModifiedDate = context.Now(),
                 BusinessEntityModifiedDate = context.Now()
             };
-            var c = new Customer() with { Person = p, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
+            var c = new Customer { Person = p, CustomerRowguid = context.NewGuid(), CustomerModifiedDate = context.Now() };
             var context2 = context.WithNew(c).WithNew(p);
             return string.IsNullOrEmpty(password)
                 ? (c, context2)

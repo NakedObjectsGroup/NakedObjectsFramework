@@ -44,7 +44,7 @@ namespace AW.Functions {
         [MemberOrder(1)]
         public static (WorkOrderRouting, IContext) AddNewRouting(WorkOrder wo, Location loc, IContext context) {
             var highestSequence = wo.WorkOrderRoutings.Count > 0 ? wo.WorkOrderRoutings.Max(n => n.OperationSequence) + 1 : 1;
-            var wor = new WorkOrderRouting() with {
+            var wor = new WorkOrderRouting {
                 WorkOrder = wo,
                 Location = loc,
                 OperationSequence = (short)highestSequence

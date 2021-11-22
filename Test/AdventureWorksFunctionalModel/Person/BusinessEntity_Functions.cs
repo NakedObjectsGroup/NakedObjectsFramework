@@ -15,8 +15,8 @@ namespace AW.Functions {
             [Named("Country / Region")] CountryRegion countryRegion,
             [Named("State / Province")] StateProvince sp,
             IContext context) {
-            var a = new Address() with { AddressLine1 = line1, AddressLine2 = line2, City = city, PostalCode = postCode, StateProvince = sp, ModifiedDate = context.Now(), rowguid = context.NewGuid() };
-            var bea = new BusinessEntityAddress() with {
+            var a = new Address { AddressLine1 = line1, AddressLine2 = line2, City = city, PostalCode = postCode, StateProvince = sp, ModifiedDate = context.Now(), rowguid = context.NewGuid() };
+            var bea = new BusinessEntityAddress {
                 BusinessEntityID = be.BusinessEntityID,
                 Address = a,
                 AddressTypeID = type.AddressTypeID,

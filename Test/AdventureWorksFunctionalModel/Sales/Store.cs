@@ -11,13 +11,19 @@ using AW.Functions;
 using NakedFunctions;
 
 namespace AW.Types {
-    //TODO: rename to StoreDetails
-    public record Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate {
-        public virtual bool Equals(Store? other) => ReferenceEquals(this, other);
 
-        public override string ToString() => Name;
-
-        public override int GetHashCode() => base.GetHashCode();
+    public class Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate {
+        public Store() { }
+       
+        public Store(Store cloneFrom) : base(cloneFrom)
+        {
+            Name = cloneFrom.Name;
+            Demographics = cloneFrom.Demographics;
+            SalesPersonID = cloneFrom.SalesPersonID;
+            SalesPerson = cloneFrom.SalesPerson;
+            ModifiedDate = cloneFrom.ModifiedDate;
+            rowguid = cloneFrom.rowguid;
+        }
 
         #region Properties
 
@@ -69,5 +75,8 @@ namespace AW.Types {
         #endregion
 
         #endregion
+
+        public override string ToString() => Name;
+
     }
 }
