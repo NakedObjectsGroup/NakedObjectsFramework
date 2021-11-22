@@ -10,7 +10,18 @@ using NakedFunctions;
 
 namespace AW.Types {
     [Bounded]
-    public record Shift : IHasModifiedDate {
+    public class Shift : IHasModifiedDate {
+
+        public Shift() { }
+
+        public Shift(Shift cloneFrom) {
+          ShiftID = cloneFrom.ShiftID;
+            Name = cloneFrom.Name;
+            StartTime = cloneFrom.StartTime;
+            EndTime = cloneFrom.EndTime;
+            ModifiedDate = cloneFrom.ModifiedDate;
+        }
+
         [Hidden]
         public virtual byte ShiftID { get; init; }
 
