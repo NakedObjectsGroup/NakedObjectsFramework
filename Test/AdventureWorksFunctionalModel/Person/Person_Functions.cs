@@ -17,6 +17,24 @@ namespace AW.Functions {
             Person original, Person updated, IContext context) =>
             context.WithUpdated(original, new Person(original) { ModifiedDate = context.Now() });
 
+        public static IContext EditNameFields(this Person p,
+                                       [Optionally] string title,
+                                       string firstName,
+                                       [Optionally] string middleName,
+                                       string lastName,
+                                       [Optionally] string suffix,
+                                       [Named("Reverse name order")] bool nameStyle,
+                                       IContext context) =>
+           UpdatePerson(p, new Person(p)
+           {
+               Title = title,
+               FirstName = firstName,
+               MiddleName = middleName,
+               LastName = lastName,
+               Suffix = suffix,
+               NameStyle = nameStyle
+           }, context);
+
         [Edit]
         public static IContext EditName(this Person p,
                                         [Optionally] string title,
