@@ -13,7 +13,7 @@ namespace AW.Types {
         #region OrderQty
 
         [MemberOrder(15)]
-        public virtual short OrderQty { get; init; }
+        public short OrderQty { get; init; }
 
         #endregion
 
@@ -21,7 +21,7 @@ namespace AW.Types {
 
         [MemberOrder(20)]
         [Mask("C")]
-        public virtual decimal UnitPrice { get; init; }
+        public decimal UnitPrice { get; init; }
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace AW.Types {
         [Named("Discount %")]
         [MemberOrder(30)]
         [Mask("P")]
-        public virtual decimal UnitPriceDiscount { get; init; }
+        public decimal UnitPriceDiscount { get; init; }
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace AW.Types {
 
         [MemberOrder(40)]
         [Mask("C")]
-        public virtual decimal LineTotal { get; init; }
+        public decimal LineTotal { get; init; }
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace AW.Types {
 
         [MemberOrder(50)]
 
-        public virtual string? CarrierTrackingNumber { get; init; }
+        public string? CarrierTrackingNumber { get; init; }
 
         #endregion
 
@@ -61,10 +61,10 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public virtual bool Equals(SalesOrderDetail? other) => ReferenceEquals(this, other);
 
@@ -75,10 +75,10 @@ namespace AW.Types {
         #region ID
 
         [Hidden]
-        public virtual int SalesOrderID { get; init; }
+        public int SalesOrderID { get; init; }
 
         [Hidden]
-        public virtual int SalesOrderDetailID { get; init; }
+        public int SalesOrderDetailID { get; init; }
 
         #endregion
 
@@ -87,10 +87,10 @@ namespace AW.Types {
         #region SpecialOfferProduct
 
         [Hidden]
-        public virtual int SpecialOfferID { get; init; }
+        public int SpecialOfferID { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
         [Hidden]
 #pragma warning disable 8618

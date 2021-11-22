@@ -12,14 +12,14 @@ namespace AW.Types {
     [Bounded]
     public record Currency {
         [Hidden]
-        public virtual string CurrencyCode { get; init; } = "";
+        public string CurrencyCode { get; init; } = "";
 
         [Hidden]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [Hidden]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(Currency? other) => ReferenceEquals(this, other);
 

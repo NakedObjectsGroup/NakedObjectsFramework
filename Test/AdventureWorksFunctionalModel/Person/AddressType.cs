@@ -12,19 +12,19 @@ namespace AW.Types {
     [Bounded]
     public record AddressType : IHasModifiedDate, IHasRowGuid {
         [Hidden]
-        public virtual int AddressTypeID { get; init; }
+        public int AddressTypeID { get; init; }
 
         [Hidden]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         public virtual bool Equals(AddressType? other) => ReferenceEquals(this, other);
 
         [Hidden]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => Name;
 

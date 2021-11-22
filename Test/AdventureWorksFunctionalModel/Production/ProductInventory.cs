@@ -11,19 +11,19 @@ using NakedFunctions;
 namespace AW.Types {
     public record ProductInventory : IHasRowGuid, IHasModifiedDate {
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
         [Hidden]
-        public virtual short LocationID { get; init; }
+        public short LocationID { get; init; }
 
         [MemberOrder(40)]
-        public virtual string Shelf { get; init; } = "";
+        public string Shelf { get; init; } = "";
 
         [MemberOrder(50)]
-        public virtual byte Bin { get; init; }
+        public byte Bin { get; init; }
 
         [MemberOrder(10)]
-        public virtual short Quantity { get; init; }
+        public short Quantity { get; init; }
 
         [MemberOrder(30)]
 #pragma warning disable 8618
@@ -39,10 +39,10 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => $"{Quantity} in {Location} - {Shelf}";
 

@@ -12,14 +12,14 @@ namespace AW.Types {
     [Bounded]
     public record ScrapReason {
         [Hidden]
-        public virtual short ScrapReasonID { get; init; }
+        public short ScrapReasonID { get; init; }
 
         //Title
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(ScrapReason? other) => ReferenceEquals(this, other);
 

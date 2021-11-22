@@ -13,9 +13,9 @@ namespace AW.Types {
     [Bounded]
     public record ProductCategory : IHasRowGuid, IHasModifiedDate {
         [Hidden]
-        public virtual int ProductCategoryID { get; init; }
+        public int ProductCategoryID { get; init; }
 
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [Named("Subcategories")] [TableView(true)] //TableView == ListView ?
         public virtual ICollection<ProductSubcategory> ProductSubcategory { get; init; } = new List<ProductSubcategory>();
@@ -24,10 +24,10 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => Name;
 

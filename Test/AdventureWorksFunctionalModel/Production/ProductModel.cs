@@ -13,13 +13,13 @@ using NakedFunctions;
 namespace AW.Types {
     public record ProductModel : IHasRowGuid, IHasModifiedDate {
         [Hidden]
-        public virtual int ProductModelID { get; init; }
+        public int ProductModelID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [Hidden]
-        public virtual string? CatalogDescription { get; init; }
+        public string? CatalogDescription { get; init; }
 
         [Named("CatalogDescription")] [MemberOrder(20)] [MultiLine(10)]
         public string FormattedCatalogDescription =>
@@ -30,7 +30,7 @@ namespace AW.Types {
             ProductModel_Functions.LocalCultureDescription(this);
 
         [MemberOrder(30)]
-        public virtual string? Instructions { get; init; }
+        public string? Instructions { get; init; }
 
         [TableView(true, "Name", "Number", "Color", "ProductInventory")]
         public virtual ICollection<Product> ProductVariants { get; init; } = new List<Product>();
@@ -45,10 +45,10 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => Name;
 

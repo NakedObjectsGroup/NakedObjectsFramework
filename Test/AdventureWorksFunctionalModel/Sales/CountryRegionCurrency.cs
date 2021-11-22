@@ -10,8 +10,8 @@ using NakedFunctions;
 
 namespace AW.Types {
     public record CountryRegionCurrency {
-        public virtual string CountryRegionCode { get; init; } = "";
-        public virtual string CurrencyCode { get; init; } = "";
+        public string CountryRegionCode { get; init; } = "";
+        public string CurrencyCode { get; init; } = "";
 #pragma warning disable 8618
         public virtual CountryRegion CountryRegion { get; init; }
 #pragma warning restore 8618
@@ -20,7 +20,7 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(CountryRegionCurrency? other) => ReferenceEquals(this, other);
 

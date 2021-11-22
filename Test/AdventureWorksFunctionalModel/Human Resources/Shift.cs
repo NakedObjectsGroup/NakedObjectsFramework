@@ -23,22 +23,22 @@ namespace AW.Types {
         }
 
         [Hidden]
-        public virtual byte ShiftID { get; init; }
+        public byte ShiftID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [MemberOrder(3)] [Mask("T")]
-        public virtual TimeSpan StartTime { get; init; }
+        public TimeSpan StartTime { get; init; }
 
         [MemberOrder(4)] [Mask("T")]
-        public virtual TimeSpan EndTime { get; init; }
+        public TimeSpan EndTime { get; init; }
 
         public virtual bool Equals(Shift? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
 

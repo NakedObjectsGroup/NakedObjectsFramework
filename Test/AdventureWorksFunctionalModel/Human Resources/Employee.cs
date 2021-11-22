@@ -19,40 +19,40 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [MemberOrder(10)]
-        public virtual string NationalIDNumber { get; init; } = "";
+        public string NationalIDNumber { get; init; } = "";
 
         [MemberOrder(12)]
-        public virtual string JobTitle { get; init; } = "";
+        public string JobTitle { get; init; } = "";
 
         [MemberOrder(13)] [Mask("d")]
-        public virtual DateTime? DateOfBirth { get; init; }
+        public DateTime? DateOfBirth { get; init; }
 
         [MemberOrder(14)]
-        public virtual string MaritalStatus { get; init; } = "";
+        public string MaritalStatus { get; init; } = "";
 
         [MemberOrder(15)]
-        public virtual string Gender { get; init; } = "";
+        public string Gender { get; init; } = "";
 
         [MemberOrder(16)] [Mask("d")]
-        public virtual DateTime? HireDate { get; init; }
+        public DateTime? HireDate { get; init; }
 
         [MemberOrder(17)]
-        public virtual bool Salaried { get; init; }
+        public bool Salaried { get; init; }
 
         [MemberOrder(18)]
-        public virtual short VacationHours { get; init; }
+        public short VacationHours { get; init; }
 
         [MemberOrder(19)]
-        public virtual short SickLeaveHours { get; init; }
+        public short SickLeaveHours { get; init; }
 
         [MemberOrder(20)]
-        public virtual bool Current { get; init; }
+        public bool Current { get; init; }
 
         [MemberOrder(30)]
         public virtual Employee? Manager { get; init; }
 
         [MemberOrder(11)]
-        public virtual string LoginID { get; init; } = "";
+        public string LoginID { get; init; } = "";
 
         [Hidden]
         public virtual SalesPerson? SalesPerson { get; init; }
@@ -70,16 +70,16 @@ namespace AW.Types {
         public virtual ICollection<EmployeePayHistory> PayHistory { get; init; } = new List<EmployeePayHistory>();
 
         [Hidden]
-        public virtual int BusinessEntityID { get; init; }
+        public int BusinessEntityID { get; init; }
 
         public virtual bool Equals(Employee? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => $"{PersonDetails}";
 

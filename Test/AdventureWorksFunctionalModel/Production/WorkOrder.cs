@@ -12,38 +12,38 @@ using NakedFunctions;
 namespace AW.Types {
     public record WorkOrder : IHasModifiedDate {
         [Hidden]
-        public virtual int WorkOrderID { get; init; }
+        public int WorkOrderID { get; init; }
 
         [MemberOrder(22)]
 
-        public virtual int StockedQty { get; init; }
+        public int StockedQty { get; init; }
 
         [MemberOrder(24)]
-        public virtual short ScrappedQty { get; init; }
+        public short ScrappedQty { get; init; }
 
         [MemberOrder(32)]
         [Mask("d")]
-        public virtual DateTime? EndDate { get; init; }
+        public DateTime? EndDate { get; init; }
 
         [Hidden]
-        public virtual short? ScrapReasonID { get; init; }
+        public short? ScrapReasonID { get; init; }
 
         [MemberOrder(26)]
         public virtual ScrapReason? ScrapReason { get; init; }
 
         [MemberOrder(20)]
-        public virtual int OrderQty { get; init; }
+        public int OrderQty { get; init; }
 
         [MemberOrder(30)]
         [Mask("d")]
-        public virtual DateTime StartDate { get; init; }
+        public DateTime StartDate { get; init; }
 
         [MemberOrder(34)]
         [Mask("d")]
-        public virtual DateTime DueDate { get; init; }
+        public DateTime DueDate { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
         [MemberOrder(10)]
 #pragma warning disable 8618
@@ -57,13 +57,13 @@ namespace AW.Types {
         // for testing 
 
         [Hidden]
-        public virtual string AnAlwaysHiddenReadOnlyProperty => "";
+        public string AnAlwaysHiddenReadOnlyProperty => "";
 
         public virtual bool Equals(WorkOrder? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Product}: {StartDate}";
 

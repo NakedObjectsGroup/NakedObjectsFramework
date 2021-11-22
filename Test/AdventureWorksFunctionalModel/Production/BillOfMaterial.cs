@@ -11,27 +11,27 @@ using NakedFunctions;
 namespace AW.Types {
     public record BillOfMaterial : IHasModifiedDate {
         [Hidden]
-        public virtual int BillOfMaterialID { get; init; }
+        public int BillOfMaterialID { get; init; }
 
-        public virtual DateTime StartDate { get; init; }
-        public virtual DateTime? EndDate { get; init; }
-        public virtual short BOMLevel { get; init; }
-        public virtual decimal PerAssemblyQty { get; init; }
+        public DateTime StartDate { get; init; }
+        public DateTime? EndDate { get; init; }
+        public short BOMLevel { get; init; }
+        public decimal PerAssemblyQty { get; init; }
 
         [Hidden]
-        public virtual int? ProductAssemblyID { get; init; }
+        public int? ProductAssemblyID { get; init; }
 
         public virtual Product? Product { get; init; }
 
         [Hidden]
-        public virtual int ComponentID { get; init; }
+        public int ComponentID { get; init; }
 
 #pragma warning disable 8618
         public virtual Product Product1 { get; init; }
 #pragma warning restore 8618
 
         [Hidden]
-        public virtual string UnitMeasureCode { get; init; } = "";
+        public string UnitMeasureCode { get; init; } = "";
 
 #pragma warning disable 8618
         public virtual UnitMeasure UnitMeasure { get; init; }
@@ -41,7 +41,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"BillOfMaterial: {BillOfMaterialID}";
 

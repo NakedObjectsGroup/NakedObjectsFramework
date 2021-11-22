@@ -4,19 +4,19 @@ using NakedFunctions;
 namespace AW.Types {
     public record PersonPhone : IHasModifiedDate {
         [Hidden]
-        public virtual int BusinessEntityID { get; init; }
+        public int BusinessEntityID { get; init; }
 
-        public virtual string? PhoneNumber { get; init; }
+        public string? PhoneNumber { get; init; }
 
         [Hidden]
-        public virtual int PhoneNumberTypeID { get; init; }
+        public int PhoneNumberTypeID { get; init; }
 
         public virtual PhoneNumberType? PhoneNumberType { get; init; }
 
         public virtual bool Equals(PersonPhone? other) => ReferenceEquals(this, other);
 
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{PhoneNumberType}:{PhoneNumber}";
 

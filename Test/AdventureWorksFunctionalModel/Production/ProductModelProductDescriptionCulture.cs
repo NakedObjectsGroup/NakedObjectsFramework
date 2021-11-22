@@ -11,13 +11,13 @@ using NakedFunctions;
 namespace AW.Types {
     public record ProductModelProductDescriptionCulture : IHasModifiedDate {
         [Hidden]
-        public virtual int ProductModelID { get; init; }
+        public int ProductModelID { get; init; }
 
         [Hidden]
-        public virtual int ProductDescriptionID { get; init; }
+        public int ProductDescriptionID { get; init; }
 
         [Hidden]
-        public virtual string CultureID { get; init; } = "";
+        public string CultureID { get; init; } = "";
 
 #pragma warning disable 8618
         public virtual Culture Culture { get; init; }
@@ -35,7 +35,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"ProductModelProductDescriptionCulture: {ProductModelID}-{ProductDescriptionID}-{CultureID}";
 

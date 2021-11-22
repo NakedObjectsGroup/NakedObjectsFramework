@@ -13,35 +13,35 @@ namespace AW.Types {
     [Bounded]
     public record SalesTerritory {
         [Hidden]
-        public virtual int TerritoryID { get; init; }
+        public int TerritoryID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [MemberOrder(20)]
-        public virtual string CountryRegionCode { get; init; } = "";
+        public string CountryRegionCode { get; init; } = "";
 
         [MemberOrder(30)]
-        public virtual string Group { get; init; } = "";
+        public string Group { get; init; } = "";
 
         [MemberOrder(40)] [Mask("C")]
-        public virtual decimal SalesYTD { get; init; }
+        public decimal SalesYTD { get; init; }
 
         [MemberOrder(41)] [Mask("C")]
-        public virtual decimal SalesLastYear { get; init; }
+        public decimal SalesLastYear { get; init; }
 
         [MemberOrder(42)] [Mask("C")]
-        public virtual decimal CostYTD { get; init; }
+        public decimal CostYTD { get; init; }
 
         [MemberOrder(43)] [Mask("C")]
-        public virtual decimal CostLastYear { get; init; }
+        public decimal CostLastYear { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Named("States/Provinces covered")] [TableView(true)] //Table View == List View
         public virtual ICollection<StateProvince> StateProvince { get; init; } = new List<StateProvince>();

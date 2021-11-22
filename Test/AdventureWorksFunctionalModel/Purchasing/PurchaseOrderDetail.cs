@@ -11,46 +11,46 @@ using NakedFunctions;
 namespace AW.Types {
     public record PurchaseOrderDetail {
         [Hidden]
-        public virtual int PurchaseOrderID { get; init; }
+        public int PurchaseOrderID { get; init; }
 
         [Hidden]
-        public virtual int PurchaseOrderDetailID { get; init; }
+        public int PurchaseOrderDetailID { get; init; }
 
         [MemberOrder(26)]
         [Mask("d")]
-        public virtual DateTime DueDate { get; init; }
+        public DateTime DueDate { get; init; }
 
         [MemberOrder(20)]
-        public virtual short OrderQty { get; init; }
+        public short OrderQty { get; init; }
 
         [MemberOrder(22)]
         [Mask("C")]
-        public virtual decimal UnitPrice { get; init; }
+        public decimal UnitPrice { get; init; }
 
         [MemberOrder(24)]
         [Mask("C")]
 
-        public virtual decimal LineTotal { get; init; }
+        public decimal LineTotal { get; init; }
 
         [Mask("#")]
         [MemberOrder(30)]
-        public virtual decimal ReceivedQty { get; init; }
+        public decimal ReceivedQty { get; init; }
 
         [Mask("#")]
         [MemberOrder(32)]
-        public virtual decimal RejectedQty { get; init; }
+        public decimal RejectedQty { get; init; }
 
         [Mask("#")]
         [MemberOrder(34)]
 
-        public virtual decimal StockedQty { get; init; }
+        public decimal StockedQty { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
         [MemberOrder(10)]
 #pragma warning disable 8618

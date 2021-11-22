@@ -12,23 +12,23 @@ namespace AW.Types {
     [Bounded]
     public record StateProvince : IHasRowGuid, IHasModifiedDate {
         [Hidden]
-        public virtual int StateProvinceID { get; init; }
+        public int StateProvinceID { get; init; }
 
-        public virtual string StateProvinceCode { get; init; } = "";
+        public string StateProvinceCode { get; init; } = "";
 
-        public virtual bool IsOnlyStateProvinceFlag { get; init; }
+        public bool IsOnlyStateProvinceFlag { get; init; }
 
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [Hidden]
-        public virtual string CountryRegionCode { get; init; } = "";
+        public string CountryRegionCode { get; init; } = "";
 
 #pragma warning disable 8618
         public virtual CountryRegion CountryRegion { get; init; }
 #pragma warning restore 8618
 
         [Hidden]
-        public virtual int TerritoryID { get; init; }
+        public int TerritoryID { get; init; }
 
 #pragma warning disable 8618
         public virtual SalesTerritory SalesTerritory { get; init; }
@@ -38,10 +38,10 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => Name;
 

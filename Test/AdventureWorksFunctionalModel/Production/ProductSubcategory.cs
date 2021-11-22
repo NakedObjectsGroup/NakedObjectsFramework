@@ -12,12 +12,12 @@ namespace AW.Types {
     [Bounded]
     public record ProductSubcategory : IHasRowGuid, IHasModifiedDate {
         [Hidden]
-        public virtual int ProductSubcategoryID { get; init; }
+        public int ProductSubcategoryID { get; init; }
 
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [Hidden]
-        public virtual int ProductCategoryID { get; init; }
+        public int ProductCategoryID { get; init; }
 
 #pragma warning disable 8618
         public virtual ProductCategory ProductCategory { get; init; }
@@ -27,10 +27,10 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => Name;
 

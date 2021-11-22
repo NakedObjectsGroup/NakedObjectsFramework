@@ -11,14 +11,14 @@ using NakedFunctions;
 namespace AW.Types {
     public record SalesTaxRate {
         [Hidden]
-        public virtual int SalesTaxRateID { get; init; }
+        public int SalesTaxRateID { get; init; }
 
-        public virtual byte TaxType { get; init; }
-        public virtual decimal TaxRate { get; init; }
-        public virtual string Name { get; init; } = "";
+        public byte TaxType { get; init; }
+        public decimal TaxRate { get; init; }
+        public string Name { get; init; } = "";
 
         [Hidden]
-        public virtual int StateProvinceID { get; init; }
+        public int StateProvinceID { get; init; }
 
 #pragma warning disable 8618
         public virtual StateProvince StateProvince { get; init; }
@@ -26,9 +26,9 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public virtual bool Equals(SalesTaxRate? other) => ReferenceEquals(this, other);
 

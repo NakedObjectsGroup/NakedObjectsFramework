@@ -11,15 +11,15 @@ using NakedFunctions;
 namespace AW.Types {
     public record SalesPersonQuotaHistory {
         [Hidden]
-        public virtual int BusinessEntityID { get; init; }
+        public int BusinessEntityID { get; init; }
 
         [MemberOrder(1)]
         [Mask("d")]
-        public virtual DateTime QuotaDate { get; init; }
+        public DateTime QuotaDate { get; init; }
 
         [MemberOrder(2)]
         [Mask("C")]
-        public virtual decimal SalesQuota { get; init; }
+        public decimal SalesQuota { get; init; }
 
         [MemberOrder(3)]
 #pragma warning disable 8618
@@ -38,14 +38,14 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         #endregion
 

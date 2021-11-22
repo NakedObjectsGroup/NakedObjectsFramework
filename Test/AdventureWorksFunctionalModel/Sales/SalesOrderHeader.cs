@@ -12,22 +12,22 @@ using NakedFunctions;
 namespace AW.Types {
     [Named("Sales Order")]
     public record SalesOrderHeader : ICreditCardCreator {
-        public virtual bool AddItemsFromCart { get; init; }
+        public bool AddItemsFromCart { get; init; }
 
         [Hidden]
-        public virtual int SalesOrderID { get; init; }
+        public int SalesOrderID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string SalesOrderNumber { get; init; } = "";
+        public string SalesOrderNumber { get; init; } = "";
 
         [Hidden]
-        public virtual byte StatusByte { get; init; }
+        public byte StatusByte { get; init; }
 
         [MemberOrder(1)]
         public virtual OrderStatus Status => (OrderStatus)StatusByte;
 
         [Hidden]
-        public virtual int CustomerID { get; init; }
+        public int CustomerID { get; init; }
 
         [MemberOrder(2)]
 #pragma warning disable 8618
@@ -35,7 +35,7 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [Hidden]
-        public virtual int BillingAddressID { get; init; }
+        public int BillingAddressID { get; init; }
 
         [MemberOrder(4)]
 #pragma warning disable 8618
@@ -43,10 +43,10 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [MemberOrder(5)]
-        public virtual string? PurchaseOrderNumber { get; init; }
+        public string? PurchaseOrderNumber { get; init; }
 
         [Hidden]
-        public virtual int ShippingAddressID { get; init; }
+        public int ShippingAddressID { get; init; }
 
         [MemberOrder(10)]
 #pragma warning disable 8618
@@ -54,7 +54,7 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [Hidden]
-        public virtual int ShipMethodID { get; init; }
+        public int ShipMethodID { get; init; }
 
         [MemberOrder(11)]
 #pragma warning disable 8618
@@ -62,76 +62,76 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [MemberOrder(12)]
-        public virtual string? AccountNumber { get; init; }
+        public string? AccountNumber { get; init; }
 
         [MemberOrder(20)]
-        public virtual DateTime OrderDate { get; init; }
+        public DateTime OrderDate { get; init; }
 
         [MemberOrder(21)]
-        public virtual DateTime DueDate { get; init; }
+        public DateTime DueDate { get; init; }
 
         [MemberOrder(22)] [Mask("d")]
         // [NakedFunctions.Range(-30, 0)]
-        public virtual DateTime? ShipDate { get; init; }
+        public DateTime? ShipDate { get; init; }
 
         [MemberOrder(31)]
         [Mask("C")]
-        public virtual decimal SubTotal { get; init; }
+        public decimal SubTotal { get; init; }
 
         [MemberOrder(32)] [Mask("C")]
-        public virtual decimal TaxAmt { get; init; }
+        public decimal TaxAmt { get; init; }
 
         [MemberOrder(33)] [Mask("C")]
-        public virtual decimal Freight { get; init; }
+        public decimal Freight { get; init; }
 
         [MemberOrder(34)] [Mask("C")]
-        public virtual decimal TotalDue { get; init; }
+        public decimal TotalDue { get; init; }
 
         [Hidden]
-        public virtual int? CurrencyRateID { get; init; }
+        public int? CurrencyRateID { get; init; }
 
         [MemberOrder(35)]
         public virtual CurrencyRate? CurrencyRate { get; init; }
 
         [DescribedAs("Order has been placed via the web")]
         [MemberOrder(41)] [Named("Online Order")]
-        public virtual bool OnlineOrder { get; init; }
+        public bool OnlineOrder { get; init; }
 
         [Hidden]
-        public virtual int? CreditCardID { get; init; }
+        public int? CreditCardID { get; init; }
 
         [MemberOrder(42)]
         public virtual CreditCard? CreditCard { get; init; }
 
         [MemberOrder(43)]
-        public virtual string? CreditCardApprovalCode { get; init; }
+        public string? CreditCardApprovalCode { get; init; }
 
         [MemberOrder(51)]
-        public virtual byte RevisionNumber { get; init; }
+        public byte RevisionNumber { get; init; }
 
         [MultiLine(NumberOfLines = 3, Width = 50)]
         [MemberOrder(52)]
         [DescribedAs("Free-form text")]
-        public virtual string? Comment { get; init; }
+        public string? Comment { get; init; }
 
         [Hidden]
-        public virtual int? SalesPersonID { get; init; }
+        public int? SalesPersonID { get; init; }
 
         [MemberOrder(61)]
         public virtual SalesPerson? SalesPerson { get; init; }
 
         [Hidden]
-        public virtual int? SalesTerritoryID { get; init; }
+        public int? SalesTerritoryID { get; init; }
 
         [MemberOrder(62)]
         public virtual SalesTerritory? SalesTerritory { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public virtual ICollection<SalesOrderDetail> Details { get; init; }
             = new List<SalesOrderDetail>();

@@ -12,16 +12,16 @@ namespace AW.Types {
     [Bounded]
     public record ContactType : IHasModifiedDate {
         [Hidden]
-        public virtual int ContactTypeID { get; init; }
+        public int ContactTypeID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         public virtual bool Equals(ContactType? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
 

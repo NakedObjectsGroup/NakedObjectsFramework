@@ -23,7 +23,7 @@ namespace AW.Types {
         public string Name => $"{(Root.IsIndividual() ? Root.Person : Root.Store?.Name)}";
 
         //Empty field, not - to test that fields are not editable in a VM
-        public virtual string Comments { get; init; } = "";
+        public string Comments { get; init; } = "";
 
         [TableView(true, "OrderDate", "TotalDue", "Status")]
         public IList<SalesOrderHeader> RecentOrders(IContext context) =>

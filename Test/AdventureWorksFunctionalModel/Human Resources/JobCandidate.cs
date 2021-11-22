@@ -11,18 +11,18 @@ using NakedFunctions;
 namespace AW.Types {
     public record JobCandidate {
         [Hidden]
-        public virtual int JobCandidateID { get; init; }
+        public int JobCandidateID { get; init; }
 
-        public virtual string? Resume { get; init; }
+        public string? Resume { get; init; }
 
         [Hidden]
-        public virtual int? EmployeeID { get; init; }
+        public int? EmployeeID { get; init; }
 
         public virtual Employee? Employee { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(JobCandidate? other) => ReferenceEquals(this, other);
 

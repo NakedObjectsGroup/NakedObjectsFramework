@@ -11,7 +11,7 @@ using NakedFunctions;
 namespace AW.Types {
     public record SpecialOfferProduct {
         [Hidden]
-        public virtual int SpecialOfferID { get; init; }
+        public int SpecialOfferID { get; init; }
 
         [MemberOrder(1)]
 #pragma warning disable 8618
@@ -19,7 +19,7 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
         [MemberOrder(2)]
 #pragma warning disable 8618
@@ -27,11 +27,11 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(SpecialOfferProduct? other) => ReferenceEquals(this, other);
 

@@ -5,13 +5,13 @@ namespace AW.Types {
     [ViewModel(typeof(StaffSummary_Functions))]
     public record StaffSummary {
         [MemberOrder(1)]
-        public virtual int Female { get; init; }
+        public int Female { get; init; }
 
         [MemberOrder(2)]
-        public virtual int Male { get; init; }
+        public int Male { get; init; }
 
         [MemberOrder(3)]
-        public virtual int TotalStaff => Female + Male;
+        public int TotalStaff => Female + Male;
 
         public virtual bool Equals(StaffSummary? other) => ReferenceEquals(this, other);
 

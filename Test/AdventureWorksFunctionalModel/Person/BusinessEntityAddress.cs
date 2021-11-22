@@ -5,7 +5,7 @@ namespace AW.Types {
     [Named("Address")]
     public record BusinessEntityAddress : IHasRowGuid, IHasModifiedDate {
         [Hidden]
-        public virtual int BusinessEntityID { get; init; }
+        public int BusinessEntityID { get; init; }
 
         [MemberOrder(3)]
 #pragma warning disable 8618
@@ -13,7 +13,7 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [Hidden]
-        public virtual int AddressTypeID { get; init; }
+        public int AddressTypeID { get; init; }
 
         [MemberOrder(1)]
 #pragma warning disable 8618
@@ -21,7 +21,7 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [Hidden]
-        public virtual int AddressID { get; init; }
+        public int AddressID { get; init; }
 
         [MemberOrder(2)]
 #pragma warning disable 8618
@@ -32,10 +32,10 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => $"{AddressType}: {Address}";
 

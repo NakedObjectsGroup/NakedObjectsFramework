@@ -12,23 +12,23 @@ namespace AW.Types {
     [Bounded]
     public record ShipMethod {
         [Hidden]
-        public virtual int ShipMethodID { get; init; }
+        public int ShipMethodID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [MemberOrder(2)]
-        public virtual decimal ShipBase { get; init; }
+        public decimal ShipBase { get; init; }
 
         [MemberOrder(3)]
-        public virtual decimal ShipRate { get; init; }
+        public decimal ShipRate { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public virtual bool Equals(ShipMethod? other) => ReferenceEquals(this, other);
 

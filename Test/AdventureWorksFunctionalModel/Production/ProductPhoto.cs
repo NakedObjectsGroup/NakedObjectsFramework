@@ -13,15 +13,15 @@ using NakedFunctions;
 namespace AW.Types {
     public record ProductPhoto {
         [Hidden]
-        public virtual int ProductPhotoID { get; init; }
+        public int ProductPhotoID { get; init; }
 
-        public virtual byte[] ThumbNailPhoto { get; set; } = new byte[0];
+        public byte[] ThumbNailPhoto { get; set; } = new byte[0];
 
-        public virtual string? ThumbnailPhotoFileName { get; init; }
+        public string? ThumbnailPhotoFileName { get; init; }
 
-        public virtual byte[] LargePhoto { get; set; } = new byte[0];
+        public byte[] LargePhoto { get; set; } = new byte[0];
 
-        public virtual string? LargePhotoFileName { get; init; }
+        public string? LargePhotoFileName { get; init; }
 
         public virtual FileAttachment LargePhotoAsAttachment =>
             // fake mimetype
@@ -32,7 +32,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(ProductPhoto? other) => ReferenceEquals(this, other);
 

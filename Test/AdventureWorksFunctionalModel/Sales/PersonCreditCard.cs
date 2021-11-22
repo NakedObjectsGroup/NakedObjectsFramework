@@ -11,10 +11,10 @@ using NakedFunctions;
 namespace AW.Types {
     public record PersonCreditCard {
         [Hidden]
-        public virtual int PersonID { get; init; }
+        public int PersonID { get; init; }
 
         [Hidden]
-        public virtual int CreditCardID { get; init; }
+        public int CreditCardID { get; init; }
 
 #pragma warning disable 8618
         public virtual Person Person { get; init; }
@@ -26,7 +26,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(PersonCreditCard? other) => ReferenceEquals(this, other);
 

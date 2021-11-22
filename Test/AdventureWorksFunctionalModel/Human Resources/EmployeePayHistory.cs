@@ -11,16 +11,16 @@ using NakedFunctions;
 namespace AW.Types {
     public record EmployeePayHistory {
         [Hidden]
-        public virtual int EmployeeID { get; init; }
+        public int EmployeeID { get; init; }
 
         [MemberOrder(1)] [Mask("d")]
-        public virtual DateTime RateChangeDate { get; init; }
+        public DateTime RateChangeDate { get; init; }
 
         [MemberOrder(2)] [Mask("C")]
-        public virtual decimal Rate { get; init; }
+        public decimal Rate { get; init; }
 
         [MemberOrder(3)]
-        public virtual byte PayFrequency { get; init; }
+        public byte PayFrequency { get; init; }
 
         [MemberOrder(4)]
 #pragma warning disable 8618
@@ -29,7 +29,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(EmployeePayHistory? other) => ReferenceEquals(this, other);
 

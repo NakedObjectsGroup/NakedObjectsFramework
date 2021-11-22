@@ -20,37 +20,37 @@ namespace AW.Types {
         public virtual Person PersonDetails => EmployeeDetails.PersonDetails;
 
         [Hidden]
-        public virtual int? SalesTerritoryID { get; init; }
+        public int? SalesTerritoryID { get; init; }
 
         [MemberOrder(20)]
         public virtual SalesTerritory? SalesTerritory { get; init; }
 
         [MemberOrder(30)]
         [Mask("C")]
-        public virtual decimal? SalesQuota { get; init; }
+        public decimal? SalesQuota { get; init; }
 
         [MemberOrder(40)]
         [Mask("C")]
-        public virtual decimal Bonus { get; init; }
+        public decimal Bonus { get; init; }
 
         [MemberOrder(50)]
         [Mask("P")]
-        public virtual decimal CommissionPct { get; init; }
+        public decimal CommissionPct { get; init; }
 
         [MemberOrder(60)]
         [Mask("C")]
-        public virtual decimal SalesYTD { get; init; }
+        public decimal SalesYTD { get; init; }
 
         [MemberOrder(70)]
         [Mask("C")]
-        public virtual decimal SalesLastYear { get; init; }
+        public decimal SalesLastYear { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         [TableView(false, "QuotaDate", "SalesQuota")] //Column name deliberately duplicated to test that this is ignored
         public virtual ICollection<SalesPersonQuotaHistory> QuotaHistory { get; init; } = new List<SalesPersonQuotaHistory>();
@@ -59,7 +59,7 @@ namespace AW.Types {
         public virtual ICollection<SalesTerritoryHistory> TerritoryHistory { get; init; } = new List<SalesTerritoryHistory>();
 
         [Hidden]
-        public virtual int BusinessEntityID { get; init; }
+        public int BusinessEntityID { get; init; }
 
         public virtual bool Equals(SalesPerson? other) => ReferenceEquals(this, other);
 

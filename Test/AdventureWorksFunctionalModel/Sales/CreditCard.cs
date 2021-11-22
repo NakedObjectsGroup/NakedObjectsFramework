@@ -13,26 +13,26 @@ using NakedFunctions;
 namespace AW.Types {
     public record CreditCard {
         [Hidden]
-        public virtual int CreditCardID { get; init; }
+        public int CreditCardID { get; init; }
 
         [Hidden]
-        public virtual string CardType { get; init; } = "";
+        public string CardType { get; init; } = "";
 
         [Hidden]
-        public virtual string CardNumber { get; init; } = "";
+        public string CardNumber { get; init; } = "";
 
         [Hidden]
-        public virtual byte ExpMonth { get; init; }
+        public byte ExpMonth { get; init; }
 
         [Hidden]
-        public virtual short ExpYear { get; init; }
+        public short ExpYear { get; init; }
 
         [Named("Persons")] [MemberOrder(5)] [TableView(false, nameof(PersonCreditCard.Person))]
         public virtual ICollection<PersonCreditCard> PersonLinks { get; init; } = new List<PersonCreditCard>();
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(CreditCard? other) => ReferenceEquals(this, other);
 

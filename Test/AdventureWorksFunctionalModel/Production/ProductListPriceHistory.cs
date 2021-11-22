@@ -10,10 +10,10 @@ using NakedFunctions;
 
 namespace AW.Types {
     public record ProductListPriceHistory : IHasModifiedDate {
-        public virtual int ProductID { get; init; }
-        public virtual DateTime StartDate { get; init; }
-        public virtual DateTime? EndDate { get; init; }
-        public virtual decimal ListPrice { get; init; }
+        public int ProductID { get; init; }
+        public DateTime StartDate { get; init; }
+        public DateTime? EndDate { get; init; }
+        public decimal ListPrice { get; init; }
 #pragma warning disable 8618
         public virtual Product Product { get; init; }
 #pragma warning restore 8618
@@ -22,7 +22,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"ProductListPriceHistory: {ProductID}";
 

@@ -12,9 +12,9 @@ namespace AW.Types {
     [Named("Reason")]
     public record SalesOrderHeaderSalesReason {
         [Hidden]
-        public virtual int SalesOrderID { get; init; }
+        public int SalesOrderID { get; init; }
 
-        public virtual int SalesReasonID { get; init; }
+        public int SalesReasonID { get; init; }
 #pragma warning disable 8618
         public virtual SalesOrderHeader SalesOrderHeader { get; init; }
 #pragma warning restore 8618
@@ -26,7 +26,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         #endregion
 

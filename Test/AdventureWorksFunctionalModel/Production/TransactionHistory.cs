@@ -10,16 +10,16 @@ using NakedFunctions;
 
 namespace AW.Types {
     public record TransactionHistory {
-        public virtual int TransactionID { get; init; }
-        public virtual int ReferenceOrderID { get; init; }
-        public virtual int ReferenceOrderLineID { get; init; }
-        public virtual DateTime TransactionDate { get; init; }
-        public virtual string TransactionType { get; init; } = "";
-        public virtual int Quantity { get; init; }
-        public virtual decimal ActualCost { get; init; }
+        public int TransactionID { get; init; }
+        public int ReferenceOrderID { get; init; }
+        public int ReferenceOrderLineID { get; init; }
+        public DateTime TransactionDate { get; init; }
+        public string TransactionType { get; init; } = "";
+        public int Quantity { get; init; }
+        public decimal ActualCost { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
 #pragma warning disable 8618
         public virtual Product Product { get; init; }
@@ -27,7 +27,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(TransactionHistory? other) => ReferenceEquals(this, other);
 

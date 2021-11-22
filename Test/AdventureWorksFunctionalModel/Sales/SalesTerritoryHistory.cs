@@ -12,11 +12,11 @@ namespace AW.Types {
     public record SalesTerritoryHistory {
         [MemberOrder(1)]
         [Mask("d")]
-        public virtual DateTime StartDate { get; init; }
+        public DateTime StartDate { get; init; }
 
         [MemberOrder(2)]
         [Mask("d")]
-        public virtual DateTime? EndDate { get; init; }
+        public DateTime? EndDate { get; init; }
 
         public virtual bool Equals(SalesTerritoryHistory? other) => ReferenceEquals(this, other);
 
@@ -27,7 +27,7 @@ namespace AW.Types {
         #region SalesPerson
 
         [Hidden]
-        public virtual int BusinessEntityID { get; init; }
+        public int BusinessEntityID { get; init; }
 
         [MemberOrder(3)]
 #pragma warning disable 8618
@@ -39,7 +39,7 @@ namespace AW.Types {
         #region Sales Territory
 
         [Hidden]
-        public virtual int SalesTerritoryID { get; init; }
+        public int SalesTerritoryID { get; init; }
 
         [MemberOrder(4)]
 #pragma warning disable 8618
@@ -54,14 +54,14 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         #endregion
 

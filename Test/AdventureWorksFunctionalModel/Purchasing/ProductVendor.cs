@@ -11,34 +11,34 @@ using NakedFunctions;
 namespace AW.Types {
     public record ProductVendor {
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
         [Hidden]
-        public virtual int VendorID { get; init; }
+        public int VendorID { get; init; }
 
         [MemberOrder(30)]
-        public virtual int AverageLeadTime { get; init; }
+        public int AverageLeadTime { get; init; }
 
         [Mask("C")]
         [MemberOrder(40)]
-        public virtual decimal StandardPrice { get; init; }
+        public decimal StandardPrice { get; init; }
 
         [Mask("C")]
         [MemberOrder(41)]
-        public virtual decimal? LastReceiptCost { get; init; }
+        public decimal? LastReceiptCost { get; init; }
 
         [Mask("d")]
         [MemberOrder(50)]
-        public virtual DateTime? LastReceiptDate { get; init; }
+        public DateTime? LastReceiptDate { get; init; }
 
         [MemberOrder(60)]
-        public virtual int MinOrderQty { get; init; }
+        public int MinOrderQty { get; init; }
 
         [MemberOrder(61)]
-        public virtual int MaxOrderQty { get; init; }
+        public int MaxOrderQty { get; init; }
 
         [MemberOrder(62)]
-        public virtual int? OnOrderQty { get; init; }
+        public int? OnOrderQty { get; init; }
 
         [MemberOrder(10)]
 #pragma warning disable 8618
@@ -46,7 +46,7 @@ namespace AW.Types {
 #pragma warning restore 8618
 
         [Hidden]
-        public virtual string UnitMeasureCode { get; init; } = "";
+        public string UnitMeasureCode { get; init; } = "";
 
         [MemberOrder(20)]
 #pragma warning disable 8618
@@ -60,7 +60,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(ProductVendor? other) => ReferenceEquals(this, other);
 

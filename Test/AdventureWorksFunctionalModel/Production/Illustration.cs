@@ -11,14 +11,14 @@ using NakedFunctions;
 
 namespace AW.Types {
     public record Illustration {
-        public virtual int IllustrationID { get; init; }
-        public virtual string? Diagram { get; init; }
+        public int IllustrationID { get; init; }
+        public string? Diagram { get; init; }
 
         public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(Illustration? other) => ReferenceEquals(this, other);
 

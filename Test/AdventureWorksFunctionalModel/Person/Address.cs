@@ -11,22 +11,22 @@ using NakedFunctions;
 namespace AW.Types {
     public record Address : IHasRowGuid, IHasModifiedDate {
         [Hidden]
-        public virtual int AddressID { get; init; }
+        public int AddressID { get; init; }
 
         [MemberOrder(11)]
-        public virtual string AddressLine1 { get; init; } = "";
+        public string AddressLine1 { get; init; } = "";
 
         [MemberOrder(12)]
-        public virtual string? AddressLine2 { get; init; }
+        public string? AddressLine2 { get; init; }
 
         [MemberOrder(13)]
-        public virtual string City { get; init; } = "";
+        public string City { get; init; } = "";
 
         [MemberOrder(14)]
-        public virtual string PostalCode { get; init; } = "";
+        public string PostalCode { get; init; } = "";
 
         [Hidden]
-        public virtual int StateProvinceID { get; init; }
+        public int StateProvinceID { get; init; }
 
         [MemberOrder(15)]
 #pragma warning disable 8618
@@ -37,10 +37,10 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => $"{AddressLine1}...";
 

@@ -11,22 +11,22 @@ using NakedFunctions;
 namespace AW.Types {
     public record ShoppingCartItem {
         [Hidden]
-        public virtual int ShoppingCartItemID { get; init; }
+        public int ShoppingCartItemID { get; init; }
 
         [Hidden]
-        public virtual string ShoppingCartID { get; init; } = "";
+        public string ShoppingCartID { get; init; } = "";
 
         [MemberOrder(20)]
-        public virtual int Quantity { get; init; }
+        public int Quantity { get; init; }
 
         [Hidden]
-        public virtual DateTime DateCreated { get; init; }
+        public DateTime DateCreated { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace AW.Types {
         #region Product
 
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
         [MemberOrder(10)]
 #pragma warning disable 8618

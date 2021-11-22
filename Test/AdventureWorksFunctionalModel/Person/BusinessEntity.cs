@@ -16,13 +16,13 @@ namespace AW.Types {
         }
 
         [Hidden]
-        public virtual int BusinessEntityID { get; init; }
+        public int BusinessEntityID { get; init; }
 
         [Hidden]
-        public virtual Guid BusinessEntityRowguid { get; init; }
+        public Guid BusinessEntityRowguid { get; init; }
 
         [Hidden]
-        public virtual DateTime BusinessEntityModifiedDate { get; init; }
+        public DateTime BusinessEntityModifiedDate { get; init; }
 
         [RenderEagerly]
         [TableView(false, nameof(BusinessEntityAddress.AddressType), nameof(BusinessEntityAddress.Address))]

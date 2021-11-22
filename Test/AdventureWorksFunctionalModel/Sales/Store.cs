@@ -28,22 +28,22 @@ namespace AW.Types {
         #region Properties
 
         [Named("Store Name")] [MemberOrder(20)]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         #region Demographics
 
         [Hidden]
-        public virtual string? Demographics { get; init; }
+        public string? Demographics { get; init; }
 
         [Named("Demographics")] [MemberOrder(30)] [MultiLine(10)]
-        public virtual string FormattedDemographics => Utilities.FormatXML(Demographics);
+        public string FormattedDemographics => Utilities.FormatXML(Demographics);
 
         #endregion
 
         #region SalesPerson
 
         [Hidden]
-        public virtual int? SalesPersonID { get; init; }
+        public int? SalesPersonID { get; init; }
 
         [MemberOrder(40)]
         public virtual SalesPerson? SalesPerson { get; init; }
@@ -61,14 +61,14 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         #endregion
 

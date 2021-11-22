@@ -11,11 +11,11 @@ using NakedFunctions;
 namespace AW.Types {
     public record ProductCostHistory : IHasModifiedDate {
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
-        public virtual DateTime StartDate { get; init; }
-        public virtual DateTime? EndDate { get; init; }
-        public virtual decimal StandardCost { get; init; }
+        public DateTime StartDate { get; init; }
+        public DateTime? EndDate { get; init; }
+        public decimal StandardCost { get; init; }
 
         [Hidden]
 #pragma warning disable 8618
@@ -26,7 +26,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{StandardCost} {StartDate}~";
 

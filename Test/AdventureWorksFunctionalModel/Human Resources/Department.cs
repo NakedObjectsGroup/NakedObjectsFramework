@@ -12,19 +12,19 @@ namespace AW.Types {
     [Bounded]
     public record Department : IHasModifiedDate {
         [Hidden]
-        public virtual short DepartmentID { get; init; }
+        public short DepartmentID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [MemberOrder(2)]
-        public virtual string GroupName { get; init; } = "";
+        public string GroupName { get; init; } = "";
 
         public virtual bool Equals(Department? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
 

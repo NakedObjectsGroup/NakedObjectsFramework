@@ -11,25 +11,25 @@ using NakedFunctions;
 namespace AW.Types {
     public record ProductReview {
         [Hidden]
-        public virtual int ProductReviewID { get; init; }
+        public int ProductReviewID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string ReviewerName { get; init; } = "";
+        public string ReviewerName { get; init; } = "";
 
         [MemberOrder(2)]
-        public virtual DateTime ReviewDate { get; init; }
+        public DateTime ReviewDate { get; init; }
 
         [MemberOrder(3)]
-        public virtual string EmailAddress { get; init; } = "";
+        public string EmailAddress { get; init; } = "";
 
         [MemberOrder(4)]
-        public virtual int Rating { get; init; }
+        public int Rating { get; init; }
 
         [MemberOrder(5)]
-        public virtual string? Comments { get; init; }
+        public string? Comments { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
         [Hidden]
 #pragma warning disable 8618
@@ -38,7 +38,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(ProductReview? other) => ReferenceEquals(this, other);
 

@@ -10,9 +10,9 @@ using NakedFunctions;
 
 namespace AW.Types {
     public record ProductProductPhoto {
-        public virtual int ProductID { get; init; }
-        public virtual int ProductPhotoID { get; init; }
-        public virtual bool Primary { get; init; }
+        public int ProductID { get; init; }
+        public int ProductPhotoID { get; init; }
+        public  bool Primary { get; init; }
 #pragma warning disable 8618
         public virtual Product Product { get; init; }
 #pragma warning restore 8618
@@ -22,7 +22,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(ProductProductPhoto? other) => ReferenceEquals(this, other);
 

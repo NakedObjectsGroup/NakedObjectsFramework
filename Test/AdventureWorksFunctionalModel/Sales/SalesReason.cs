@@ -12,14 +12,14 @@ namespace AW.Types {
     [Bounded]
     public record SalesReason {
         [Hidden]
-        public virtual int SalesReasonID { get; init; }
+        public int SalesReasonID { get; init; }
 
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
-        public virtual string ReasonType { get; init; } = "";
+        public string ReasonType { get; init; } = "";
 
         [MemberOrder(99)] [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(SalesReason? other) => ReferenceEquals(this, other);
 

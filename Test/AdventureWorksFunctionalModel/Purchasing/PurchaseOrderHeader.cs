@@ -14,19 +14,19 @@ namespace AW.Types {
         #region ID
 
         [Hidden]
-        public virtual int PurchaseOrderID { get; init; }
+        public int PurchaseOrderID { get; init; }
 
         #endregion
 
         #region Revision Number
 
         [MemberOrder(90)]
-        public virtual byte RevisionNumber { get; init; }
+        public byte RevisionNumber { get; init; }
 
         #endregion
 
         [Hidden]
-        public virtual int ShipMethodID { get; init; }
+        public int ShipMethodID { get; init; }
 
         [MemberOrder(22)]
 #pragma warning disable 8618
@@ -43,7 +43,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"PO from {Vendor}, {OrderDate}";
 
@@ -52,7 +52,7 @@ namespace AW.Types {
         #region Vendor
 
         [Hidden]
-        public virtual int VendorID { get; init; }
+        public int VendorID { get; init; }
 
         [MemberOrder(1)]
 #pragma warning disable 8618
@@ -64,7 +64,7 @@ namespace AW.Types {
         #region Status
 
         [Hidden]
-        public virtual byte Status { get; init; }
+        public byte Status { get; init; }
 
         [Named("Status")]
         [MemberOrder(1)]
@@ -77,11 +77,11 @@ namespace AW.Types {
         //Title
         [Mask("d")]
         [MemberOrder(11)]
-        public virtual DateTime OrderDate { get; init; }
+        public DateTime OrderDate { get; init; }
 
         [Mask("d")]
         [MemberOrder(20)]
-        public virtual DateTime? ShipDate { get; init; }
+        public DateTime? ShipDate { get; init; }
 
         #endregion
 
@@ -89,26 +89,26 @@ namespace AW.Types {
 
         [MemberOrder(31)]
         [Mask("C")]
-        public virtual decimal SubTotal { get; init; }
+        public decimal SubTotal { get; init; }
 
         [MemberOrder(32)]
         [Mask("C")]
-        public virtual decimal TaxAmt { get; init; }
+        public decimal TaxAmt { get; init; }
 
         [MemberOrder(33)]
         [Mask("C")]
-        public virtual decimal Freight { get; init; }
+        public decimal Freight { get; init; }
 
         [MemberOrder(34)]
         [Mask("C")]
-        public virtual decimal TotalDue { get; init; }
+        public decimal TotalDue { get; init; }
 
         #endregion
 
         #region Order Placed By (Employee)
 
         [Hidden]
-        public virtual int OrderPlacedByID { get; init; }
+        public int OrderPlacedByID { get; init; }
 
         [MemberOrder(12)]
 #pragma warning disable 8618

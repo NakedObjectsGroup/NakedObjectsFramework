@@ -11,10 +11,10 @@ using NakedFunctions;
 namespace AW.Types {
     public record ProductModelIllustration : IHasModifiedDate {
         [Hidden]
-        public virtual int ProductModelID { get; init; }
+        public int ProductModelID { get; init; }
 
         [Hidden]
-        public virtual int IllustrationID { get; init; }
+        public int IllustrationID { get; init; }
 
 #pragma warning disable 8618
         public virtual Illustration Illustration { get; init; }
@@ -27,7 +27,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"ProductModelIllustration: {ProductModelID}-{IllustrationID}";
 

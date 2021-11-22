@@ -11,39 +11,39 @@ using NakedFunctions;
 namespace AW.Types {
     public record WorkOrderRouting {
         [Hidden]
-        public virtual int WorkOrderID { get; init; }
+        public int WorkOrderID { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
         [MemberOrder(1)]
-        public virtual short OperationSequence { get; init; }
+        public short OperationSequence { get; init; }
 
         [MemberOrder(20)]
 
-        public virtual DateTime? ScheduledStartDate { get; init; }
+        public DateTime? ScheduledStartDate { get; init; }
 
         [MemberOrder(22)]
-        public virtual DateTime? ScheduledEndDate { get; init; }
+        public DateTime? ScheduledEndDate { get; init; }
 
         [MemberOrder(21)]
         [Mask("d")]
-        public virtual DateTime? ActualStartDate { get; init; }
+        public DateTime? ActualStartDate { get; init; }
 
         [MemberOrder(23)]
         [Mask("d")]
-        public virtual DateTime? ActualEndDate { get; init; }
+        public DateTime? ActualEndDate { get; init; }
 
         [MemberOrder(31)]
-        public virtual decimal? ActualResourceHrs { get; init; }
+        public decimal? ActualResourceHrs { get; init; }
 
         [Mask("C")]
         [MemberOrder(40)]
-        public virtual decimal PlannedCost { get; init; }
+        public decimal PlannedCost { get; init; }
 
         [MemberOrder(41)]
         [Mask("C")]
-        public virtual decimal? ActualCost { get; init; }
+        public decimal? ActualCost { get; init; }
 
         [Hidden]
 #pragma warning disable 8618
@@ -52,7 +52,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(WorkOrderRouting? other) => ReferenceEquals(this, other);
 
@@ -63,7 +63,7 @@ namespace AW.Types {
         #region Location
 
         [Hidden]
-        public virtual short LocationID { get; init; }
+        public short LocationID { get; init; }
 
         [MemberOrder(10)]
 #pragma warning disable 8618

@@ -13,23 +13,23 @@ using NakedFunctions;
 namespace AW.Types {
     public record Vendor : IBusinessEntity {
         [MemberOrder(10)]
-        public virtual string AccountNumber { get; init; } = "";
+        public string AccountNumber { get; init; } = "";
 
         //Title
         [MemberOrder(20)]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [MemberOrder(30)]
-        public virtual byte CreditRating { get; init; }
+        public byte CreditRating { get; init; }
 
         [MemberOrder(40)]
         public virtual bool PreferredVendorStatus { get; init; }
 
         [MemberOrder(50)]
-        public virtual bool ActiveFlag { get; init; }
+        public bool ActiveFlag { get; init; }
 
         [MemberOrder(60)]
-        public virtual string? PurchasingWebServiceURL { get; init; }
+        public string? PurchasingWebServiceURL { get; init; }
 
         [Named("Product - Order Info")]
         [TableView(true)] //  Not obvious which of many possible fields should be shown here
@@ -38,10 +38,10 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual int BusinessEntityID { get; init; }
+        public int BusinessEntityID { get; init; }
 
         public virtual bool Equals(Vendor? other) => ReferenceEquals(this, other);
 

@@ -27,41 +27,41 @@ namespace AW.Types {
             rowguid = cloneFrom.rowguid;
         }
         [Hidden]
-        public virtual int SpecialOfferID { get; init; }
+        public int SpecialOfferID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Description { get; init; } = "";
+        public string Description { get; init; } = "";
 
         [MemberOrder(20)]
         [Mask("P")]
-        public virtual decimal DiscountPct { get; init; }
+        public decimal DiscountPct { get; init; }
 
         [MemberOrder(30)]
-        public virtual string Type { get; init; } = "";
+        public string Type { get; init; } = "";
 
         [MemberOrder(40)]
-        public virtual string Category { get; init; } = "";
+        public string Category { get; init; } = "";
 
         [MemberOrder(51)]
         [Mask("d")]
-        public virtual DateTime StartDate { get; init; }
+        public DateTime StartDate { get; init; }
 
         [MemberOrder(52)]
         [Mask("d")]
-        public virtual DateTime EndDate { get; init; }
+        public DateTime EndDate { get; init; }
 
         [MemberOrder(61)]
-        public virtual int MinQty { get; init; }
+        public int MinQty { get; init; }
 
         [MemberOrder(62)]
-        public virtual int? MaxQty { get; init; }
+        public int? MaxQty { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => Description;
     }

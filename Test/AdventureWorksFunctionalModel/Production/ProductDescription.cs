@@ -11,19 +11,19 @@ using NakedFunctions;
 namespace AW.Types {
     public record ProductDescription : IHasRowGuid, IHasModifiedDate {
         [Hidden]
-        public virtual int ProductDescriptionID { get; init; }
+        public int ProductDescriptionID { get; init; }
 
         [MultiLine(10)] [MemberOrder(2)]
-        public virtual string Description { get; init; } = "";
+        public string Description { get; init; } = "";
 
         public virtual bool Equals(ProductDescription? other) => ReferenceEquals(this, other);
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => Description;
 

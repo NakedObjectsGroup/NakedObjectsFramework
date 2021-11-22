@@ -12,19 +12,19 @@ namespace AW.Types {
     [Bounded] [PresentationHint("Topaz")]
     public record Location {
         [Hidden]
-        public virtual short LocationID { get; init; }
+        public short LocationID { get; init; }
 
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [Mask("C")]
-        public virtual decimal CostRate { get; init; }
+        public decimal CostRate { get; init; }
 
         [Mask("########.##")]
-        public virtual decimal Availability { get; init; }
+        public decimal Availability { get; init; }
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(Location? other) => ReferenceEquals(this, other);
 

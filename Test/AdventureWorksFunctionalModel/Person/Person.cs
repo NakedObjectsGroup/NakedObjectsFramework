@@ -36,27 +36,27 @@ namespace AW.Types {
 
         [MemberOrder(15)]
         [Named("Reverse name order")]
-        public virtual bool NameStyle { get; init; }
+        public bool NameStyle { get; init; }
 
         [MemberOrder(11)]
-        public virtual string? Title { get; init; }
+        public string? Title { get; init; }
 
         [MemberOrder(12)]
-        public virtual string FirstName { get; init; } = "";
+        public string FirstName { get; init; } = "";
 
         [MemberOrder(13)]
-        public virtual string? MiddleName { get; init; }
+        public string? MiddleName { get; init; }
 
         [MemberOrder(14)]
-        public virtual string LastName { get; init; } = "";
+        public string LastName { get; init; } = "";
 
         [MemberOrder(15)]
-        public virtual string? Suffix { get; init; }
+        public string? Suffix { get; init; }
 
         #endregion
 
         [Hidden]
-        public virtual string? PersonType { get; init; }
+        public string? PersonType { get; init; }
 
         [MemberOrder(21)] [Hidden]
         public virtual EmailPromotion EmailPromotion { get; init; }
@@ -78,7 +78,7 @@ namespace AW.Types {
         public virtual Password? Password { get; init; }
 
         [MemberOrder(30)]
-        public virtual string? AdditionalContactInfo { get; init; }
+        public string? AdditionalContactInfo { get; init; }
 
         [Hidden]
         public virtual Employee? Employee { get; init; }
@@ -86,10 +86,10 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public override string ToString() => NameStyle ? $"{LastName} {FirstName}" : $"{FirstName} {LastName}";
     }

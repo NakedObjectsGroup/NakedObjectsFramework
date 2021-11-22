@@ -11,30 +11,30 @@ using NakedFunctions;
 namespace AW.Types {
     public record CurrencyRate {
         [Hidden]
-        public virtual int CurrencyRateID { get; init; }
+        public int CurrencyRateID { get; init; }
 
-        public virtual DateTime CurrencyRateDate { get; init; }
+        public DateTime CurrencyRateDate { get; init; }
 
-        public virtual decimal AverageRate { get; init; }
+        public decimal AverageRate { get; init; }
 
-        public virtual decimal EndOfDayRate { get; init; }
+        public decimal EndOfDayRate { get; init; }
 
         [Hidden]
-        public virtual string FromCurrencyCode { get; init; } = "";
+        public string FromCurrencyCode { get; init; } = "";
 
 #pragma warning disable 8618
         public virtual Currency Currency { get; init; }
 #pragma warning restore 8618
 
         [Hidden]
-        public virtual string ToCurrencyCode { get; init; } = "";
+        public string ToCurrencyCode { get; init; } = "";
 
 #pragma warning disable 8618
         public virtual Currency Currency1 { get; init; }
 #pragma warning restore 8618
 
         [MemberOrder(99)] [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         public virtual bool Equals(CurrencyRate? other) => ReferenceEquals(this, other);
 

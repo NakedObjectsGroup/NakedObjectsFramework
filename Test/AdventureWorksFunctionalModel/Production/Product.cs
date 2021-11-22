@@ -22,13 +22,13 @@ namespace AW.Types {
         #region Visible properties
 
         [MemberOrder(1)]
-        public virtual string Name { get; init; } = "";
+        public string Name { get; init; } = "";
 
         [MemberOrder(2)]
-        public virtual string ProductNumber { get; init; } = "";
+        public string ProductNumber { get; init; } = "";
 
         [MemberOrder(3)]
-        public virtual string? Color { get; init; }
+        public string? Color { get; init; }
 
         [MemberOrder(4)]
         public virtual Image? Photo => Product_Functions.Photo(this);
@@ -39,7 +39,7 @@ namespace AW.Types {
         //MemberOrder 11 -  See Product_Functions.Description
 
         [MemberOrder(12)] [Mask("C")]
-        public virtual decimal ListPrice { get; init; }
+        public decimal ListPrice { get; init; }
 
         [MemberOrder(13)]
         public virtual ProductCategory? ProductCategory => this.ProductCategory();
@@ -48,49 +48,49 @@ namespace AW.Types {
         public virtual ProductSubcategory? ProductSubcategory { get; init; }
 
         [MemberOrder(15)]
-        public virtual string? ProductLine { get; init; }
+        public string? ProductLine { get; init; }
 
         [Named("Size")] [MemberOrder(16)]
-        public virtual string SizeWithUnit => this.SizeWithUnit();
+        public string SizeWithUnit => this.SizeWithUnit();
 
         [Named("Weight")] [MemberOrder(17)]
-        public virtual string WeightWithUnit => this.WeightWithUnit();
+        public string WeightWithUnit => this.WeightWithUnit();
 
         [MemberOrder(18)]
-        public virtual string? Style { get; init; }
+        public string? Style { get; init; }
 
         [MemberOrder(19)]
-        public virtual string? Class { get; init; }
+        public string? Class { get; init; }
 
         [MemberOrder(20)]
-        public virtual bool Make { get; init; }
+        public bool Make { get; init; }
 
         [MemberOrder(21)]
         public virtual bool FinishedGoods { get; init; }
 
         [MemberOrder(22)]
-        public virtual short SafetyStockLevel { get; init; }
+        public short SafetyStockLevel { get; init; }
 
         [MemberOrder(23)]
-        public virtual short ReorderPoint { get; init; }
+        public short ReorderPoint { get; init; }
 
         [MemberOrder(24)]
-        public virtual int DaysToManufacture { get; init; }
+        public int DaysToManufacture { get; init; }
 
         [MemberOrder(81)] [Mask("d")]
-        public virtual DateTime SellStartDate { get; init; }
+        public DateTime SellStartDate { get; init; }
 
         [MemberOrder(82)] [Mask("d")]
-        public virtual DateTime? SellEndDate { get; init; }
+        public DateTime? SellEndDate { get; init; }
 
         [MemberOrder(83)] [Mask("d")]
-        public virtual DateTime? DiscontinuedDate { get; init; }
+        public DateTime? DiscontinuedDate { get; init; }
 
         [MemberOrder(90)] [Mask("C")]
-        public virtual decimal StandardCost { get; init; }
+        public decimal StandardCost { get; init; }
 
         [MemberOrder(99)] [Versioned]
-        public virtual DateTime ModifiedDate { get; init; }
+        public DateTime ModifiedDate { get; init; }
 
         #endregion
 
@@ -112,34 +112,34 @@ namespace AW.Types {
         #region Hidden Properties & Collections
 
         [Hidden]
-        public virtual int ProductID { get; init; }
+        public int ProductID { get; init; }
 
         [Hidden]
-        public virtual string? Size { get; init; }
+        public string? Size { get; init; }
 
         [Hidden]
-        public virtual string? SizeUnitMeasureCode { get; init; }
+        public string? SizeUnitMeasureCode { get; init; }
 
         [Hidden]
         public virtual UnitMeasure? SizeUnit { get; init; }
 
         [Hidden]
-        public virtual string? WeightUnitMeasureCode { get; init; }
+        public string? WeightUnitMeasureCode { get; init; }
 
         [Hidden]
-        public virtual decimal? Weight { get; init; }
+        public decimal? Weight { get; init; }
 
         [Hidden]
         public virtual UnitMeasure? WeightUnit { get; init; }
 
         [Hidden]
-        public virtual int? ProductModelID { get; init; }
+        public int? ProductModelID { get; init; }
 
         [Hidden]
-        public virtual int? ProductSubcategoryID { get; init; }
+        public int? ProductSubcategoryID { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; init; }
+        public Guid rowguid { get; init; }
 
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
 
