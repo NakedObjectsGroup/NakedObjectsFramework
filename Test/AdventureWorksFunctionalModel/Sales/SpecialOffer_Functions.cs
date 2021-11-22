@@ -15,7 +15,7 @@ namespace AW.Functions {
     public static class SpecialOffer_Functions {
         internal static IContext UpdateSpecialOffer(
             SpecialOffer original, SpecialOffer updated, IContext context) =>
-            context.WithUpdated(original, new SpecialOffer(updated) { ModifiedDate = context.Now() });
+            context.WithUpdated(original, new(updated) { ModifiedDate = context.Now() });
 
         public static List<Product> ListAssociatedProducts(this SpecialOffer specialOffer, IContext context) {
             var id = specialOffer.SpecialOfferID;
@@ -26,11 +26,11 @@ namespace AW.Functions {
 
         public static IContext EditDescription(
             this SpecialOffer sp, string description, IContext context) =>
-            UpdateSpecialOffer(sp, new SpecialOffer(sp) { Description = description }, context);
+            UpdateSpecialOffer(sp, new(sp) { Description = description }, context);
 
         public static IContext EditDiscount(
             this SpecialOffer sp, decimal discountPct, IContext context) =>
-            UpdateSpecialOffer(sp, new SpecialOffer(sp) { DiscountPct = discountPct }, context);
+            UpdateSpecialOffer(sp, new(sp) { DiscountPct = discountPct }, context);
 
         public static string? DisableEditDiscount(
             this SpecialOffer sp, IContext context) =>
@@ -38,7 +38,7 @@ namespace AW.Functions {
 
         public static IContext EditType(
             this SpecialOffer sp, string type, IContext context) =>
-            UpdateSpecialOffer(sp, new SpecialOffer(sp) { Type = type }, context);
+            UpdateSpecialOffer(sp, new(sp) { Type = type }, context);
 
         public static bool HideEditType(
             this SpecialOffer sp, IContext context) =>
@@ -46,7 +46,7 @@ namespace AW.Functions {
 
         public static IContext EditCategory(
             this SpecialOffer sp, string category, IContext context) =>
-            UpdateSpecialOffer(sp, new SpecialOffer(sp) { Category = category }, context);
+            UpdateSpecialOffer(sp, new(sp) { Category = category }, context);
 
         public static IList<string> Choices1Category(this SpecialOffer sp) => Categories;
 
@@ -60,7 +60,7 @@ namespace AW.Functions {
 
         public static IContext EditDates(this SpecialOffer sp,
                                          DateTime startDate, DateTime endDate, IContext context) =>
-            UpdateSpecialOffer(sp, new SpecialOffer(sp) { StartDate = startDate, EndDate = endDate }, context);
+            UpdateSpecialOffer(sp, new(sp) { StartDate = startDate, EndDate = endDate }, context);
 
         public static DateTime Default1EditDates(this SpecialOffer sp, IContext context) =>
             sp.StartDate;
@@ -72,7 +72,7 @@ namespace AW.Functions {
             context.GetService<IClock>().Today().AddMonths(1);
 
         public static IContext EditQuantities(this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContext context) =>
-            UpdateSpecialOffer(sp, new SpecialOffer(sp) { MinQty = minQty, MaxQty = maxQty }, context);
+            UpdateSpecialOffer(sp, new(sp) { MinQty = minQty, MaxQty = maxQty }, context);
 
         public static string? Validate1EditQuantities(this SpecialOffer sp, int minQty) =>
             minQty < 1 ? "Must be > 0" : null;
@@ -113,12 +113,12 @@ namespace AW.Functions {
 
         //TODO: This example shows we must permit returning a List (not a queryable) for display.
         public static IContext ExtendOffers(this IQueryable<SpecialOffer> offers, DateTime toDate, IContext context) =>
-            Change(offers, sp => new SpecialOffer(sp) { EndDate = toDate, ModifiedDate = context.Now() }, context);
+            Change(offers, sp => new(sp) { EndDate = toDate, ModifiedDate = context.Now() }, context);
 
         public static IContext TerminateOffers(
             this IQueryable<SpecialOffer> offers, IContext context) {
             var yesterday = context.Today().AddDays(-1);
-            return Change(offers, sp => new SpecialOffer(sp) { EndDate = yesterday, ModifiedDate = context.Now() }, context);
+            return Change(offers, sp => new(sp) { EndDate = yesterday, ModifiedDate = context.Now() }, context);
         }
 
         #endregion

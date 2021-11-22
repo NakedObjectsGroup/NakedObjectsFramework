@@ -12,12 +12,12 @@ using NakedFunctions;
 namespace AW.Functions {
     public static class ShiftFunctions {
         internal static IContext UpdateShift(Shift original, Shift updated, IContext context) =>
-            context.WithUpdated(original, new Shift(updated) { ModifiedDate = context.Now() });
+            context.WithUpdated(original, new(updated) { ModifiedDate = context.Now() });
 
         [Edit]
         public static IContext EditTimes(this Shift s,
                                          TimeSpan startTime, TimeSpan endTime, IContext context) =>
-            UpdateShift(s, new Shift(s) { StartTime = startTime, EndTime = endTime }, context);
+            UpdateShift(s, new(s) { StartTime = startTime, EndTime = endTime }, context);
 
         public static string? ValidateEditTimes(
             this Shift s, TimeSpan startTime, TimeSpan endTime) =>
@@ -26,6 +26,6 @@ namespace AW.Functions {
         [Edit]
         public static IContext EditName(this Shift s,
                                         string name, IContext context) =>
-            UpdateShift(s, new Shift(s) { Name = name }, context);
+            UpdateShift(s, new(s) { Name = name }, context);
     }
 }
