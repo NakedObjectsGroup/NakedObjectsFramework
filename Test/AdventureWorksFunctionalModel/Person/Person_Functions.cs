@@ -15,7 +15,7 @@ namespace AW.Functions {
     public static class Person_Functions {
         internal static IContext UpdatePerson(
             Person original, Person updated, IContext context) =>
-            context.WithUpdated(original, new Person(updated) { ModifiedDate = context.Now() });
+            context.WithUpdated(original, new(updated) { ModifiedDate = context.Now() });
 
 
         [Edit]
