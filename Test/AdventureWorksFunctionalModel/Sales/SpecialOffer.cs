@@ -9,7 +9,23 @@ using System;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record SpecialOffer : IHasModifiedDate, IHasRowGuid {
+    public class SpecialOffer : IHasModifiedDate, IHasRowGuid {
+        public SpecialOffer() { }
+
+        public SpecialOffer(SpecialOffer cloneFrom)
+        {
+            SpecialOfferID = cloneFrom.SpecialOfferID;
+            Description = cloneFrom.Description;
+            DiscountPct = cloneFrom.DiscountPct;
+            Type = cloneFrom.Type;
+            Category = cloneFrom.Category;
+            StartDate = cloneFrom.StartDate;
+            EndDate = cloneFrom.EndDate;
+            MinQty = cloneFrom.MinQty;
+            MaxQty = cloneFrom.MaxQty;
+            ModifiedDate = cloneFrom.ModifiedDate;
+            rowguid = cloneFrom.rowguid;
+        }
         [Hidden]
         public virtual int SpecialOfferID { get; init; }
 
@@ -40,8 +56,6 @@ namespace AW.Types {
         [MemberOrder(62)]
         public virtual int? MaxQty { get; init; }
 
-        public virtual bool Equals(SpecialOffer? other) => ReferenceEquals(this, other);
-
         [MemberOrder(99)]
         [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
@@ -50,7 +64,5 @@ namespace AW.Types {
         public virtual Guid rowguid { get; init; }
 
         public override string ToString() => Description;
-
-        public override int GetHashCode() => base.GetHashCode();
     }
 }
