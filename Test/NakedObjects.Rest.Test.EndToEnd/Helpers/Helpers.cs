@@ -244,7 +244,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
 
             // Azure
-            return @"C:\projects\nakedobjectsframework-3kv00\" + suffix;
+            return @"C:\projects\nakedobjectsframework-4mlx1\" + suffix;
         }
     }
 }
