@@ -95,7 +95,7 @@ namespace AW.Functions {
                 return context.WithNew(newSO);
             }
 
-            return context.WithInformUser($"{offer} is already new(associated) {product}");
+            return context.WithInformUser($"{offer} is already associated with {product}");
         }
 
         [PageSize(20)]
