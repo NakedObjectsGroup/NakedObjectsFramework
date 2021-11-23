@@ -1,6 +1,6 @@
 using System.Data.Entity;
 using AW.Mapping;
-using AW.Types;
+
 
 namespace AW {
     public class AdventureWorksContext : DbContext {

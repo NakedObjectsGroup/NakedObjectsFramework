@@ -1,14 +1,5 @@
-
-
-
-
-
-
-
-using System;
-using NakedFunctions;
-
-namespace AW.Types {
+namespace AW.Types
+{
     public class Address : IHasRowGuid, IHasModifiedDate {
 
         public Address() { }

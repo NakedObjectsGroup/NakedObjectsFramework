@@ -1,14 +1,16 @@
-﻿namespace AW.Types {
-    public enum ProductLineEnum {
-        R,
-        M,
-        T,
-        S
-    }
+﻿namespace AW.Types;
 
-    public enum ProductClassEnum {
-        H,
-        M,
-        L
-    }
+public enum ProductLineEnum
+{
+    R,
+    M,
+    T,
+    S
+}
+
+public enum ProductClassEnum
+{
+    H,
+    M,
+    L
 }

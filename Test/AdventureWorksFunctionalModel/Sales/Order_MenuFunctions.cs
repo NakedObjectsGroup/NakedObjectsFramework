@@ -1,26 +1,20 @@
-
-
-
-
-
-
-
-using System;
-using System.Linq;
-using AW.Types;
-using NakedFunctions;
 using static AW.Helpers;
 
-namespace AW.Types {
-    public enum Ordering {
+namespace AW.Types
+{
+    public enum Ordering
+    {
         Ascending,
         Descending
     }
 }
 
-namespace AW.Functions {
+namespace AW.Functions
+{
+
     [Named("Orders")]
-    public static class Order_MenuFunctions {
+    public static class Order_MenuFunctions
+    {
         [MemberOrder(99)]
         public static SalesOrderHeader RandomOrder(IContext context) => Random<SalesOrderHeader>(context);
 
@@ -45,7 +39,8 @@ namespace AW.Functions {
 
         [TableView(true, "OrderDate", "Details")]
         public static IQueryable<SalesOrderHeader> OrdersWithMostLines(
-            IQueryable<SalesOrderHeader> headers) {
+            IQueryable<SalesOrderHeader> headers)
+        {
             return headers.OrderByDescending(obj => obj.Details.Count);
         }
 

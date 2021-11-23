@@ -1,29 +1,22 @@
+namespace AW.Functions;
+public static class PurchaseOrderDetail_Functions
+{
 
+    [MemberOrder(1)]
+    public static IContext ReceiveGoods(
+        this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock, IContext context) =>
+        context.WithUpdated(pod, new(pod)
+        {
+            ReceivedQty = qtyReceived,
+            RejectedQty = qtyRejected,
+            StockedQty = qtyIntoStock,
+            ModifiedDate = context.Now()
+        });
 
+    public static int Default1ReceiveGoods(this PurchaseOrderDetail pod) => pod.OrderQty;
 
+    public static int Default2ReceiveGoods(this PurchaseOrderDetail pod) => pod.OrderQty;
 
-
-
-
-using AW.Types;
-using NakedFunctions;
-
-namespace AW.Functions {
-    public static class PurchaseOrderDetail_Functions {
-        internal static IContext UpdatePOD(
-            PurchaseOrderDetail original, PurchaseOrderDetail updated, IContext context) =>
-            context.WithUpdated(original, new(updated) { ModifiedDate = context.Now() });
-
-        [MemberOrder(1)]
-        public static IContext ReceiveGoods(
-            this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock, IContext context) =>
-            UpdatePOD(pod, new(pod) { ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock }, context);
-
-        public static int Default1ReceiveGoods(this PurchaseOrderDetail pod) => pod.OrderQty;
-
-        public static int Default2ReceiveGoods(this PurchaseOrderDetail pod) => pod.OrderQty;
-
-        public static string? ValidateReceiveGoods(this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock) =>
-            qtyRejected + qtyIntoStock != qtyReceived ? "Qty Into Stock + Qty Rejected must add up to Qty Received" : null;
-    }
+    public static string? ValidateReceiveGoods(this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock) =>
+        qtyRejected + qtyIntoStock != qtyReceived ? "Qty Into Stock + Qty Rejected must add up to Qty Received" : null;
 }

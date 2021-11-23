@@ -1,5 +1,5 @@
 ﻿using System.Security.Principal;
-using NakedFunctions;
+
 
 namespace AW {
     public class MockPrincipalProvider : IPrincipalProvider {
