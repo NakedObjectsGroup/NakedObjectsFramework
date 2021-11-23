@@ -16,7 +16,7 @@ namespace AW.Functions {
             string postCode,
             [Named("State / Province")] StateProvince sp,
             IContext context) {
-            var a = new Address { AddressLine1 = line1, AddressLine2 = line2, City = city, PostalCode = postCode, StateProvince = sp, ModifiedDate = context.Now(), rowguid = context.NewGuid() };
+            Address a = new() { AddressLine1 = line1, AddressLine2 = line2, City = city, PostalCode = postCode, StateProvince = sp, ModifiedDate = context.Now(), rowguid = context.NewGuid() };
             return (a, context.WithNew(a));
         }
     }

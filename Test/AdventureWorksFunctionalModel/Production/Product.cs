@@ -1,9 +1,9 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and limitations under the License.
+
+
+
+
+
+
 
 using System;
 using System.Collections.Generic;
@@ -12,13 +12,46 @@ using NakedFramework.Value;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record Product : IProduct, IHasModifiedDate, IHasRowGuid {
-        public virtual bool Equals(Product? other) => ReferenceEquals(this, other);
+    public class Product : IProduct, IHasModifiedDate, IHasRowGuid {
+        public Product() { }
 
-        public override string ToString() => Name;
-
-        public override int GetHashCode() => base.GetHashCode();
-
+        public Product(Product cloneFrom)
+        {
+            ProductID = cloneFrom.ProductID;
+            Name = cloneFrom.Name;
+            ProductNumber = cloneFrom.ProductNumber;
+            Color = cloneFrom.Color;
+            ProductModel = cloneFrom.ProductModel;
+            ListPrice = cloneFrom.ListPrice;
+            ProductSubcategory = cloneFrom.ProductSubcategory;
+            ProductLine = cloneFrom.ProductLine;
+            Style = cloneFrom.Style;
+            Class = cloneFrom.Class;
+            Make = cloneFrom.Make;
+            FinishedGoods = cloneFrom.FinishedGoods;
+            SafetyStockLevel = cloneFrom.SafetyStockLevel;
+            ReorderPoint = cloneFrom.ReorderPoint;
+            DaysToManufacture = cloneFrom.DaysToManufacture;
+            SellStartDate = cloneFrom.SellStartDate;
+            SellEndDate = cloneFrom.SellEndDate;
+            DiscontinuedDate = cloneFrom.DiscontinuedDate;
+            StandardCost = cloneFrom.StandardCost;
+            Size = cloneFrom.Size;
+            SizeUnitMeasureCode = cloneFrom.SizeUnitMeasureCode;
+            SizeUnit = cloneFrom.SizeUnit;
+            Weight = cloneFrom.Weight;
+            WeightUnitMeasureCode = cloneFrom.WeightUnitMeasureCode;
+            WeightUnit = cloneFrom.WeightUnit;
+            ProductModelID = cloneFrom.ProductModelID;
+            ProductSubcategoryID = cloneFrom.ProductSubcategoryID;
+            rowguid = cloneFrom.rowguid;
+            ModifiedDate = cloneFrom.ModifiedDate;
+            ProductReviews = cloneFrom.ProductReviews;
+            ProductInventory = cloneFrom.ProductInventory;
+            ProductProductPhoto = cloneFrom.ProductProductPhoto;
+            SpecialOfferProduct = cloneFrom.SpecialOfferProduct;
+        }
+        
         #region Visible properties
 
         [MemberOrder(1)]
@@ -124,10 +157,10 @@ namespace AW.Types {
         public virtual UnitMeasure? SizeUnit { get; init; }
 
         [Hidden]
-        public string? WeightUnitMeasureCode { get; init; }
+        public decimal? Weight { get; init; }
 
         [Hidden]
-        public decimal? Weight { get; init; }
+        public string? WeightUnitMeasureCode { get; init; }
 
         [Hidden]
         public virtual UnitMeasure? WeightUnit { get; init; }
@@ -147,5 +180,7 @@ namespace AW.Types {
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; } = new List<SpecialOfferProduct>();
 
         #endregion
+
+        public override string ToString() => Name;
     }
 }

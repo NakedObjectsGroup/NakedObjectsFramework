@@ -4,7 +4,7 @@ using NakedFunctions;
 
 namespace AW.Types {
     [ViewModel(typeof(CustomerCollectionViewModel_Functions))]
-    public record CustomerCollectionViewModel {
+    public class CustomerCollectionViewModel {
         public CustomerCollectionViewModel(IList<Customer> customers) => Customers = customers;
 
         [Hidden]

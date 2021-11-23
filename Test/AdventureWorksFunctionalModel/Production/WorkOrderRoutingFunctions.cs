@@ -8,16 +8,16 @@ namespace AW.Functions {
 
         internal static IContext UpdateWOR(
             WorkOrderRouting original, WorkOrderRouting updated, IContext context) =>
-            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, new(updated) { ModifiedDate = context.Now() });
 
         [MemberOrder(1)]
         public static IContext SetScheduledStartDate(this WorkOrderRouting wor,
                                                      DateTime date, int hour, int minutes, IContext context) =>
-            UpdateWOR(wor, wor with { ScheduledStartDate = date.AddHours(hour).AddMinutes(minutes) }, context);
+            UpdateWOR(wor, new(wor) { ScheduledStartDate = date.AddHours(hour).AddMinutes(minutes) }, context);
 
         [MemberOrder(2)]
         public static IContext SetScheduledEndDate(this WorkOrderRouting wor,
                                                    DateTime date, [Optionally] int hour, [Optionally] int minutes, IContext context) =>
-            UpdateWOR(wor, wor with { ScheduledEndDate = date.AddHours(hour).AddMinutes(minutes) }, context);
+            UpdateWOR(wor, new(wor) { ScheduledEndDate = date.AddHours(hour).AddMinutes(minutes) }, context);
     }
 }

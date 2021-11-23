@@ -1,9 +1,9 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and limitations under the License.
+
+
+
+
+
+
 
 using System;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace AW.Functions {
         public static IContext ChangeDepartmentOrShift(
             this Employee e, Department department, Shift shift, IContext context) {
             var currentAssignment = CurrentAssignment(e);
-            var updatedCA = currentAssignment with {
+            EmployeeDepartmentHistory updatedCA = new(currentAssignment) {
                 EndDate = context.Now(),
                 ModifiedDate = context.Now()
             };
@@ -68,27 +68,27 @@ namespace AW.Functions {
 
         internal static IContext UpdateEmployee(
             Employee original, Employee updated, IContext context) =>
-            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, new(updated) { ModifiedDate = context.Now() });
 
         [Edit]
         public static IContext UpdateNationalIDNumber(this Employee e,
                                                       [MaxLength(15)] string nationalIdNumber, IContext context) =>
-            UpdateEmployee(e, e with { NationalIDNumber = nationalIdNumber }, context);
+            UpdateEmployee(e, new(e) { NationalIDNumber = nationalIdNumber }, context);
 
         [Edit]
         public static IContext UpdateLoginID(this Employee e,
                                              [MaxLength(256)] string loginID, IContext context) =>
-            UpdateEmployee(e, e with { LoginID = loginID }, context);
+            UpdateEmployee(e, new(e) { LoginID = loginID }, context);
 
         [Edit]
         public static IContext UpdateJobTitle(this Employee e,
                                               [MaxLength(50)] string jobTitle, IContext context) =>
-            UpdateEmployee(e, e with { JobTitle = jobTitle }, context);
+            UpdateEmployee(e, new(e) { JobTitle = jobTitle }, context);
 
         [Edit]
         public static IContext UpdateDateOfBirth(this Employee e,
                                                  DateTime? dateOfBirth, IContext context) =>
-            UpdateEmployee(e, e with { DateOfBirth = dateOfBirth }, context);
+            UpdateEmployee(e, new(e) { DateOfBirth = dateOfBirth }, context);
 
         public static string? ValidateUpdateDateOfBirth(this Employee e,
                                                         DateTime? dateOfBirth, IContext context) =>
@@ -99,7 +99,7 @@ namespace AW.Functions {
 
         public static IContext UpdateMaritalStatus(this Employee e,
                                                    string maritalStatus, IContext context) =>
-            UpdateEmployee(e, e with { MaritalStatus = maritalStatus }, context);
+            UpdateEmployee(e, new(e) { MaritalStatus = maritalStatus }, context);
 
         public static IList<string> Choices1UpdateMaritalStatus(this Employee e) => MaritalStatuses;
 
@@ -108,7 +108,7 @@ namespace AW.Functions {
         [Edit]
         public static IContext UpdateGender(
             this Employee e, string gender, IContext context) =>
-            UpdateEmployee(e, e with { Gender = gender }, context);
+            UpdateEmployee(e, new(e) { Gender = gender }, context);
 
         public static IList<string> Choices1UpdateGender(this Employee e) => Genders;
 
@@ -117,31 +117,31 @@ namespace AW.Functions {
         [Edit]
         public static IContext UpdateHireDate(this Employee e,
                                               DateTime? hireDate, IContext context) =>
-            UpdateEmployee(e, e with { HireDate = hireDate }, context);
+            UpdateEmployee(e, new(e) { HireDate = hireDate }, context);
 
         [Edit]
         public static IContext UpdateSalaried(this Employee e,
                                               bool salaried, IContext context) =>
-            UpdateEmployee(e, e with { Salaried = salaried }, context);
+            UpdateEmployee(e, new(e) { Salaried = salaried }, context);
 
         [Edit]
         public static IContext UpdateVacationHours(this Employee e,
                                                    short vacationHours, IContext context) =>
-            UpdateEmployee(e, e with { VacationHours = vacationHours }, context);
+            UpdateEmployee(e, new(e) { VacationHours = vacationHours }, context);
 
         [Edit]
         public static IContext UpdateSickLeaveHours(this Employee e,
                                                     short sickLeaveHours, IContext context) =>
-            UpdateEmployee(e, e with { SickLeaveHours = sickLeaveHours }, context);
+            UpdateEmployee(e, new(e) { SickLeaveHours = sickLeaveHours }, context);
 
         [Edit]
         public static IContext UpdateCurrent(this Employee e,
                                              bool current, IContext context) =>
-            UpdateEmployee(e, e with { Current = current }, context);
+            UpdateEmployee(e, new(e) { Current = current }, context);
 
         [Edit]
         public static IContext UpdateManager(this Employee e, Employee manager, IContext context) =>
-            UpdateEmployee(e, e with { Manager = manager }, context);
+            UpdateEmployee(e, new(e) { Manager = manager }, context);
 
         [PageSize(20)]
         public static IQueryable<Employee> AutoComplete1UpdateManager(

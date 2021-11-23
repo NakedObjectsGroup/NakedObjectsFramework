@@ -3,7 +3,7 @@ using NakedFunctions;
 
 namespace AW.Types {
     [ViewModel(typeof(StaffSummary_Functions))]
-    public record StaffSummary {
+    public class StaffSummary {
         [MemberOrder(1)]
         public int Female { get; init; }
 
@@ -13,10 +13,9 @@ namespace AW.Types {
         [MemberOrder(3)]
         public int TotalStaff => Female + Male;
 
-        public virtual bool Equals(StaffSummary? other) => ReferenceEquals(this, other);
-
+        
         public override string ToString() => "Staff Summary";
 
-        public override int GetHashCode() => base.GetHashCode();
+
     }
 }

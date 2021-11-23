@@ -1,9 +1,9 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and limitations under the License.
+
+
+
+
+
+
 
 using System;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ namespace AW.Functions {
             var subTotal = soh.Details.Any() ? soh.Details.Sum(d => d.LineTotal) : 0.0m;
             var tax = subTotal * soh.GetTaxRate(c) / 100;
             var total = subTotal + tax;
-            return soh with {
+            return new(soh) {
                 SubTotal = subTotal,
                 TaxAmt = tax,
                 TotalDue = total,
@@ -50,7 +50,7 @@ namespace AW.Functions {
                                                         IEnumerable<SalesOrderDetail> details, string ctn, IContext context) =>
             details.Select(d => new {
                        original = d,
-                       updated = d with { CarrierTrackingNumber = ctn, ModifiedDate = context.Now() }
+                       updated = new SalesOrderDetail(d) { CarrierTrackingNumber = ctn, ModifiedDate = context.Now() }
                    })
                    .Aggregate(context, (c, u) => c.WithUpdated(u.original, u.updated));
 
@@ -67,7 +67,7 @@ namespace AW.Functions {
 
         internal static IContext UpdateOrder(
             SalesOrderHeader original, SalesOrderHeader updated, IContext context) =>
-            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, new(updated) { ModifiedDate = context.Now() });
 
         //TODO: Move to Edit
         public static ShipMethod DefaultShipMethod(this SalesOrderHeader soh, IContext context) => context.Instances<ShipMethod>().First();
@@ -146,7 +146,7 @@ namespace AW.Functions {
 
         [MemberOrder(1)]
         public static IContext ApproveOrder(this SalesOrderHeader soh, IContext context) =>
-            UpdateOrder(soh, soh with { StatusByte = (byte)OrderStatus.Approved }, context);
+            UpdateOrder(soh, new(soh) { StatusByte = (byte)OrderStatus.Approved }, context);
 
         //TODO: Remove context param from next 2
         public static bool HideApproveOrder(this SalesOrderHeader soh, IContext context) =>

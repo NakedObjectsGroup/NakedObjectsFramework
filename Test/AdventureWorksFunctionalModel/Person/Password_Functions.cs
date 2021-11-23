@@ -47,7 +47,7 @@ namespace AW.Functions {
                                               IContext context) {
             var oldP = p.Password!;
             var salt = CreateRandomSalt();
-            var newP = oldP with {
+            Password newP = new(oldP) {
                 PasswordSalt = salt,
                 PasswordHash = Hashed(newPassword, salt),
                 ModifiedDate = context.Now()

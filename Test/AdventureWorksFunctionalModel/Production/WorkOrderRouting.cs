@@ -1,15 +1,35 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and limitations under the License.
+
+
+
+
+
+
 
 using System;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record WorkOrderRouting {
+    public class WorkOrderRouting {
+        public WorkOrderRouting() { }
+
+        public WorkOrderRouting(WorkOrderRouting cloneFrom)
+        {
+            WorkOrderID = cloneFrom.WorkOrderID;
+            ProductID = cloneFrom.ProductID;
+            OperationSequence = cloneFrom.OperationSequence;
+            ScheduledStartDate = cloneFrom.ScheduledStartDate;
+            ScheduledEndDate = cloneFrom.ScheduledEndDate;
+            ActualStartDate = cloneFrom.ActualStartDate;
+            ActualEndDate = cloneFrom.ActualEndDate;
+            ActualResourceHrs = cloneFrom.ActualResourceHrs;
+            PlannedCost = cloneFrom.PlannedCost;
+            ActualCost =  cloneFrom.ActualCost;
+            WorkOrder = cloneFrom.WorkOrder;
+            LocationID = cloneFrom.LocationID;
+            Location = cloneFrom.Location;
+            ModifiedDate = cloneFrom.ModifiedDate;
+        }
+
         [Hidden]
         public int WorkOrderID { get; init; }
 
@@ -20,7 +40,6 @@ namespace AW.Types {
         public short OperationSequence { get; init; }
 
         [MemberOrder(20)]
-
         public DateTime? ScheduledStartDate { get; init; }
 
         [MemberOrder(22)]
@@ -37,39 +56,24 @@ namespace AW.Types {
         [MemberOrder(31)]
         public decimal? ActualResourceHrs { get; init; }
 
-        [Mask("C")]
-        [MemberOrder(40)]
+        [MemberOrder(40), Mask("C")]
         public decimal PlannedCost { get; init; }
 
-        [MemberOrder(41)]
-        [Mask("C")]
+        [MemberOrder(41),Mask("C")]
         public decimal? ActualCost { get; init; }
 
         [Hidden]
-#pragma warning disable 8618
         public virtual WorkOrder WorkOrder { get; init; }
-#pragma warning restore 8618
-
-        [MemberOrder(99)]
-        [Versioned]
-        public DateTime ModifiedDate { get; init; }
-
-        public virtual bool Equals(WorkOrderRouting? other) => ReferenceEquals(this, other);
-
-        public override string ToString() => $"{Location}";
-
-        public override int GetHashCode() => base.GetHashCode();
-
-        #region Location
-
+      
         [Hidden]
         public short LocationID { get; init; }
 
         [MemberOrder(10)]
-#pragma warning disable 8618
         public virtual Location Location { get; init; }
-#pragma warning restore 8618
 
-        #endregion
+        [MemberOrder(99), Versioned]
+        public DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => $"{Location}";
     }
 }

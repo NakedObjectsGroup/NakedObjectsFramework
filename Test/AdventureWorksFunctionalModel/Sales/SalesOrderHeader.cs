@@ -1,24 +1,60 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and limitations under the License.
-
 using System;
 using System.Collections.Generic;
 using NakedFunctions;
 
 namespace AW.Types {
     [Named("Sales Order")]
-    public record SalesOrderHeader : ICreditCardCreator {
-        public bool AddItemsFromCart { get; init; }
+    public class SalesOrderHeader : ICreditCardCreator {
+        public SalesOrderHeader() { }
+
+        public SalesOrderHeader(SalesOrderHeader cloneFrom)
+        {
+           SalesOrderID = cloneFrom.SalesOrderID;
+            SalesOrderNumber = cloneFrom.SalesOrderNumber;
+            AddItemsFromCart = cloneFrom.AddItemsFromCart;
+            StatusByte = cloneFrom.StatusByte;
+            CustomerID = cloneFrom.CustomerID;
+            Customer = cloneFrom.Customer;
+            BillingAddressID = cloneFrom.BillingAddressID;
+            BillingAddress = cloneFrom.BillingAddress;  
+            PurchaseOrderNumber = cloneFrom.PurchaseOrderNumber;
+            ShippingAddressID = cloneFrom.ShippingAddressID;
+            ShippingAddress = cloneFrom.ShippingAddress;
+            ShipMethodID = cloneFrom.ShipMethodID;
+            ShipMethod = cloneFrom.ShipMethod;
+            AccountNumber = cloneFrom.AccountNumber;
+            OrderDate = cloneFrom.OrderDate;
+            ShipDate = cloneFrom.ShipDate;
+            DueDate = cloneFrom.DueDate;
+            SubTotal = cloneFrom.SubTotal;
+            TaxAmt = cloneFrom.TaxAmt;
+            Freight = cloneFrom.Freight;
+            TotalDue = cloneFrom.TotalDue;
+            CurrencyRateID = cloneFrom.CurrencyRateID;
+            CurrencyRate = cloneFrom.CurrencyRate;
+            OnlineOrder = cloneFrom.OnlineOrder;
+            CreditCardID = cloneFrom.CreditCardID;
+            CreditCard = cloneFrom.CreditCard;
+            CreditCardApprovalCode = cloneFrom.CreditCardApprovalCode;
+            RevisionNumber = cloneFrom.RevisionNumber;
+            Comment = cloneFrom.Comment;
+            SalesPersonID = cloneFrom.SalesPersonID;
+            SalesPerson = cloneFrom.SalesPerson;
+            SalesTerritoryID = cloneFrom.SalesTerritoryID;
+            SalesTerritory = cloneFrom.SalesTerritory;
+            Details = cloneFrom.Details;
+            SalesOrderHeaderSalesReason = cloneFrom.SalesOrderHeaderSalesReason;
+            ModifiedDate = cloneFrom.ModifiedDate;
+            rowguid = cloneFrom.rowguid;
+        }
 
         [Hidden]
         public int SalesOrderID { get; init; }
 
         [MemberOrder(1)]
         public string SalesOrderNumber { get; init; } = "";
+
+        public bool AddItemsFromCart { get; init; }
 
         [Hidden]
         public byte StatusByte { get; init; }
@@ -30,17 +66,13 @@ namespace AW.Types {
         public int CustomerID { get; init; }
 
         [MemberOrder(2)]
-#pragma warning disable 8618
         public virtual Customer Customer { get; init; }
-#pragma warning restore 8618
 
         [Hidden]
         public int BillingAddressID { get; init; }
 
         [MemberOrder(4)]
-#pragma warning disable 8618
         public virtual Address BillingAddress { get; init; }
-#pragma warning restore 8618
 
         [MemberOrder(5)]
         public string? PurchaseOrderNumber { get; init; }
@@ -49,17 +81,13 @@ namespace AW.Types {
         public int ShippingAddressID { get; init; }
 
         [MemberOrder(10)]
-#pragma warning disable 8618
         public virtual Address ShippingAddress { get; init; }
-#pragma warning restore 8618
 
         [Hidden]
         public int ShipMethodID { get; init; }
 
         [MemberOrder(11)]
-#pragma warning disable 8618
         public virtual ShipMethod ShipMethod { get; init; }
-#pragma warning restore 8618
 
         [MemberOrder(12)]
         public string? AccountNumber { get; init; }
@@ -70,18 +98,16 @@ namespace AW.Types {
         [MemberOrder(21)]
         public DateTime DueDate { get; init; }
 
-        [MemberOrder(22)] [Mask("d")]
-        // [NakedFunctions.Range(-30, 0)]
+        [MemberOrder(22), Mask("d")]
         public DateTime? ShipDate { get; init; }
 
-        [MemberOrder(31)]
-        [Mask("C")]
+        [MemberOrder(31), Mask("C")]
         public decimal SubTotal { get; init; }
 
-        [MemberOrder(32)] [Mask("C")]
+        [MemberOrder(32), Mask("C")]
         public decimal TaxAmt { get; init; }
 
-        [MemberOrder(33)] [Mask("C")]
+        [MemberOrder(33), Mask("C")]
         public decimal Freight { get; init; }
 
         [MemberOrder(34)] [Mask("C")]
@@ -94,7 +120,7 @@ namespace AW.Types {
         public virtual CurrencyRate? CurrencyRate { get; init; }
 
         [DescribedAs("Order has been placed via the web")]
-        [MemberOrder(41)] [Named("Online Order")]
+        [MemberOrder(41), Named("Online Order")]
         public bool OnlineOrder { get; init; }
 
         [Hidden]
@@ -109,9 +135,7 @@ namespace AW.Types {
         [MemberOrder(51)]
         public byte RevisionNumber { get; init; }
 
-        [MultiLine(NumberOfLines = 3, Width = 50)]
-        [MemberOrder(52)]
-        [DescribedAs("Free-form text")]
+        [MultiLine(NumberOfLines = 3, Width = 50), MemberOrder(52)]
         public string? Comment { get; init; }
 
         [Hidden]
@@ -126,25 +150,18 @@ namespace AW.Types {
         [MemberOrder(62)]
         public virtual SalesTerritory? SalesTerritory { get; init; }
 
-        [MemberOrder(99)]
-        [Versioned]
+        public virtual ICollection<SalesOrderDetail> Details { get; init; } = new List<SalesOrderDetail>();
+
+        [Named("Reasons")]
+        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason { get; init; } = new List<SalesOrderHeaderSalesReason>();
+
+        [MemberOrder(99), Versioned]
         public DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public Guid rowguid { get; init; }
-
-        public virtual ICollection<SalesOrderDetail> Details { get; init; }
-            = new List<SalesOrderDetail>();
-
-        [Named("Reasons")]
-        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason { get; init; }
-            = new List<SalesOrderHeaderSalesReason>();
-
-        public virtual bool Equals(SalesOrderHeader? other) => ReferenceEquals(this, other);
-
+        
         public override string ToString() => $"{SalesOrderNumber}";
-
-        public override int GetHashCode() => base.GetHashCode();
     }
 
     public enum OrderStatus : byte {

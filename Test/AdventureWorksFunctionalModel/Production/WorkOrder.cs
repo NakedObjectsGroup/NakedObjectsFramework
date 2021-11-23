@@ -1,28 +1,46 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and limitations under the License.
+
+
+
+
+
+
 
 using System;
 using System.Collections.Generic;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record WorkOrder : IHasModifiedDate {
+    public class WorkOrder : IHasModifiedDate {
+
+        public WorkOrder() { }
+
+        public WorkOrder(WorkOrder cloneFrom)
+        {
+            WorkOrderID = cloneFrom.WorkOrderID;
+            StockedQty = cloneFrom.StockedQty;
+            ScrappedQty = cloneFrom.ScrappedQty;
+            EndDate = cloneFrom.EndDate;
+            ScrapReasonID = cloneFrom.ScrapReasonID;
+            ScrapReason = cloneFrom.ScrapReason;
+            OrderQty = cloneFrom.OrderQty;
+            StartDate = cloneFrom.StartDate;
+            DueDate = cloneFrom.DueDate;
+            ProductID  = cloneFrom.ProductID;
+            Product = cloneFrom.Product;
+            WorkOrderRoutings = cloneFrom.WorkOrderRoutings;
+            ModifiedDate = cloneFrom.ModifiedDate;
+        }
+
         [Hidden]
         public int WorkOrderID { get; init; }
 
         [MemberOrder(22)]
-
         public int StockedQty { get; init; }
 
         [MemberOrder(24)]
         public short ScrappedQty { get; init; }
 
-        [MemberOrder(32)]
-        [Mask("d")]
+        [MemberOrder(32), Mask("d")]
         public DateTime? EndDate { get; init; }
 
         [Hidden]
@@ -34,39 +52,27 @@ namespace AW.Types {
         [MemberOrder(20)]
         public int OrderQty { get; init; }
 
-        [MemberOrder(30)]
-        [Mask("d")]
+        [MemberOrder(30),Mask("d")]
         public DateTime StartDate { get; init; }
 
-        [MemberOrder(34)]
-        [Mask("d")]
+        [MemberOrder(34),Mask("d")]
         public DateTime DueDate { get; init; }
 
         [Hidden]
         public int ProductID { get; init; }
 
         [MemberOrder(10)]
-#pragma warning disable 8618
         public virtual Product Product { get; init; }
-#pragma warning restore 8618
 
-        [RenderEagerly]
-        [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
+        [RenderEagerly,TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
         public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; init; } = new List<WorkOrderRouting>();
-
-        // for testing 
 
         [Hidden]
         public string AnAlwaysHiddenReadOnlyProperty => "";
-
-        public virtual bool Equals(WorkOrder? other) => ReferenceEquals(this, other);
-
-        [MemberOrder(99)]
-        [Versioned]
+       
+        [MemberOrder(99), Versioned]
         public DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Product}: {StartDate}";
-
-        public override int GetHashCode() => base.GetHashCode();
     }
 }

@@ -1,9 +1,9 @@
-﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+﻿
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and limitations under the License.
+
+
+
+
 
 using System;
 using System.Collections.Generic;
@@ -27,11 +27,12 @@ namespace AW.Functions {
             p.ProductInventory.Sum(obj => obj.Quantity);
 
         public static IContext AddOrChangePhoto(this Product product, Image newImage, IContext context) {
+            //TODO: code looks wrong. Would be clearer to separate add and change photo? Also, Product should not need updating?
             var productProductPhoto = product.ProductProductPhoto.First();
             var productPhoto = productProductPhoto.ProductPhoto;
-            var newProductPhoto = productPhoto with { LargePhoto = newImage.GetResourceAsByteArray(), LargePhotoFileName = newImage.Name };
+            ProductPhoto newProductPhoto = new(productPhoto) { LargePhoto = newImage.GetResourceAsByteArray(), LargePhotoFileName = newImage.Name };
             var newProductProductPhoto = new ProductProductPhoto { ProductPhoto = newProductPhoto, Product = product, ModifiedDate = DateTime.Now };
-            var newProduct = product with { ProductProductPhoto = new List<ProductProductPhoto> { newProductProductPhoto } };
+            Product newProduct = new(product) { ProductProductPhoto = new List<ProductProductPhoto> { newProductProductPhoto } };
             return context.WithUpdated(product, newProduct).WithUpdated(productProductPhoto, newProductProductPhoto).WithUpdated(productPhoto, newProductPhoto);
         }
 
@@ -146,7 +147,7 @@ namespace AW.Functions {
                                                                              obj.SpecialOffer.StartDate <= today &&
                                                                              obj.SpecialOffer.MinQty < quantity).OrderByDescending(obj => obj.SpecialOffer.DiscountPct).FirstOrDefault();
             if (best is null) {
-                throw new Exception($"No Special Offers associated with {p}");
+                throw new Exception($"No Special Offers new(associated) {p}");
             }
 
             return best;
@@ -175,12 +176,12 @@ namespace AW.Functions {
 
         internal static IContext UpdateProduct(
             Product original, Product updated, IContext context) =>
-            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, new(updated) { ModifiedDate = context.Now() });
 
         [Edit]
         public static IContext EditProductLine(this Product p,
                                                string productLine, IContext context) =>
-            UpdateProduct(p, p with { ProductLine = productLine }, context);
+            UpdateProduct(p, new(p) { ProductLine = productLine }, context);
 
         public static IList<string> Choices1EditProductLine(this Product p)
             => new List<string> { "R ", "M ", "T ", "S " }; // nchar(2) in database so pad right with space
@@ -188,7 +189,7 @@ namespace AW.Functions {
         [Edit]
         public static IContext EditClass(this Product p,
                                          string @class, IContext context) =>
-            UpdateProduct(p, p with { Class = @class }, context);
+            UpdateProduct(p, new(p) { Class = @class }, context);
 
         public static IList<string> Choices1EditClass(this Product p) =>
             new[] { "H ", "M ", "L " }; // nchar(2) in database so pad right with space
@@ -196,7 +197,7 @@ namespace AW.Functions {
         [Edit]
         public static IContext EditStyle(this Product p,
                                          string style, IContext context) =>
-            UpdateProduct(p, p with { Style = style }, context);
+            UpdateProduct(p, new(p) { Style = style }, context);
 
         public static IList<string> Choices1EditStyle(this Product p) =>
             new[] { "U ", "M ", "W " }; // nchar(2) in database so pad right with space
@@ -204,7 +205,7 @@ namespace AW.Functions {
         [Edit]
         public static IContext EditProductModel(this Product p,
                                                 ProductModel productModel, IContext context) =>
-            UpdateProduct(p, p with { ProductModel = productModel }, context);
+            UpdateProduct(p, new(p) { ProductModel = productModel }, context);
 
         public static IQueryable<ProductModel> AutoComplete1EditProductModel(this Product p,
                                                                              [MinLength(3)] string match, IContext context) {
@@ -213,7 +214,7 @@ namespace AW.Functions {
 
         [Edit]
         public static IContext EditCategories(this Product p, ProductCategory productCategory, ProductSubcategory productSubcategory, IContext context) =>
-            UpdateProduct(p, p with { ProductSubcategory = productSubcategory }, context);
+            UpdateProduct(p, new(p) { ProductSubcategory = productSubcategory }, context);
 
         public static IList<ProductSubcategory> Choices2EditCategories(this Product p,
                                                                        ProductCategory productCategory, IContext context) =>

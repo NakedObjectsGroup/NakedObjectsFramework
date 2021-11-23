@@ -1,20 +1,33 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and limitations under the License.
-
 using System;
 using System.Collections.Generic;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record SalesPerson : IBusinessEntity {
+    public class SalesPerson : IBusinessEntity {
+        public SalesPerson() { }
+
+        public SalesPerson(SalesPerson cloneFrom)
+        {
+            BusinessEntityID = cloneFrom.BusinessEntityID;
+            EmployeeDetails = cloneFrom.EmployeeDetails;
+            SalesTerritoryID = cloneFrom.SalesTerritoryID;
+            SalesTerritory  = cloneFrom.SalesTerritory;
+            SalesQuota = cloneFrom.SalesQuota;
+            Bonus = cloneFrom.Bonus;
+            CommissionPct = cloneFrom.CommissionPct;
+            SalesYTD = cloneFrom.SalesYTD;
+            SalesLastYear = cloneFrom.SalesLastYear;
+            QuotaHistory = cloneFrom.QuotaHistory;
+            TerritoryHistory = cloneFrom.TerritoryHistory;
+            ModifiedDate = cloneFrom.ModifiedDate;
+            rowguid = cloneFrom.rowguid;
+        }
+
+        [Hidden]
+        public int BusinessEntityID { get; init; }
+
         [MemberOrder(10)]
-#pragma warning disable 8618
         public virtual Employee EmployeeDetails { get; init; }
-#pragma warning restore 8618
 
         [MemberOrder(11)]
         public virtual Person PersonDetails => EmployeeDetails.PersonDetails;
@@ -25,32 +38,21 @@ namespace AW.Types {
         [MemberOrder(20)]
         public virtual SalesTerritory? SalesTerritory { get; init; }
 
-        [MemberOrder(30)]
-        [Mask("C")]
+        [MemberOrder(30),Mask("C")]
         public decimal? SalesQuota { get; init; }
 
-        [MemberOrder(40)]
-        [Mask("C")]
+        [MemberOrder(40),Mask("C")]
         public decimal Bonus { get; init; }
 
         [MemberOrder(50)]
         [Mask("P")]
         public decimal CommissionPct { get; init; }
 
-        [MemberOrder(60)]
-        [Mask("C")]
+        [MemberOrder(60),Mask("C")]
         public decimal SalesYTD { get; init; }
 
-        [MemberOrder(70)]
-        [Mask("C")]
+        [MemberOrder(70),Mask("C")]
         public decimal SalesLastYear { get; init; }
-
-        [MemberOrder(99)]
-        [Versioned]
-        public DateTime ModifiedDate { get; init; }
-
-        [Hidden]
-        public Guid rowguid { get; init; }
 
         [TableView(false, "QuotaDate", "SalesQuota")] //Column name deliberately duplicated to test that this is ignored
         public virtual ICollection<SalesPersonQuotaHistory> QuotaHistory { get; init; } = new List<SalesPersonQuotaHistory>();
@@ -58,13 +60,12 @@ namespace AW.Types {
         [TableView(false, "StartDate", "EndDate", "SalesTerritory")]
         public virtual ICollection<SalesTerritoryHistory> TerritoryHistory { get; init; } = new List<SalesTerritoryHistory>();
 
+        [MemberOrder(99), Versioned]
+        public DateTime ModifiedDate { get; init; }
+
         [Hidden]
-        public int BusinessEntityID { get; init; }
-
-        public virtual bool Equals(SalesPerson? other) => ReferenceEquals(this, other);
-
+        public Guid rowguid { get; init; }
+        
         public override string ToString() => $"{EmployeeDetails}";
-
-        public override int GetHashCode() => base.GetHashCode();
     }
 }

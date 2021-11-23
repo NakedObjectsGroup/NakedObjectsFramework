@@ -3,7 +3,7 @@ using NakedFunctions;
 
 namespace AW.Types {
     [Named("Contact")]
-    public record BusinessEntityContact : IHasRowGuid, IHasModifiedDate {
+    public class BusinessEntityContact : IHasRowGuid, IHasModifiedDate {
         [Hidden]
         public int BusinessEntityID { get; init; }
 
@@ -22,8 +22,7 @@ namespace AW.Types {
         [MemberOrder(2)]
         public virtual ContactType? ContactType { get; init; }
 
-        public virtual bool Equals(BusinessEntityContact? other) => ReferenceEquals(this, other);
-
+        
         [MemberOrder(99)]
         [Versioned]
         public DateTime ModifiedDate { get; init; }
@@ -33,6 +32,6 @@ namespace AW.Types {
 
         public override string ToString() => $"{Person}";
 
-        public override int GetHashCode() => base.GetHashCode();
+
     }
 }

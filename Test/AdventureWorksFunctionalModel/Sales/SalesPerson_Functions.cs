@@ -1,9 +1,9 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and limitations under the License.
+
+
+
+
+
+
 
 using System;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace AW.Functions {
     public static class SalesPerson_Functions {
         internal static IContext UpdateSalesPerson(
             SalesPerson original, SalesPerson updated, IContext context) =>
-            context.WithUpdated(original, updated with { ModifiedDate = context.Now() });
+            context.WithUpdated(original, new(updated) { ModifiedDate = context.Now() });
 
         [MemberOrder(1)]
         public static IContext RecalulateSalesYTD(this SalesPerson sp, IContext context) {
@@ -26,21 +26,21 @@ namespace AW.Functions {
                         select obj;
             var newYTD = query.Any() ? query.Sum(n => n.SubTotal) : 0;
 
-            return UpdateSalesPerson(sp, sp with { SalesYTD = newYTD }, context);
+            return UpdateSalesPerson(sp, new(sp) { SalesYTD = newYTD }, context);
         }
 
         [MemberOrder(2)]
         public static IContext ChangeSalesQuota(
             this SalesPerson sp, decimal newQuota, IContext context) =>
-            UpdateSalesPerson(sp, sp with { SalesQuota = newQuota }, context)
+            UpdateSalesPerson(sp, new(sp) { SalesQuota = newQuota }, context)
                 .WithNew(new SalesPersonQuotaHistory { SalesPerson = sp, SalesQuota = newQuota, QuotaDate = context.Now() });
 
         [MemberOrder(1)]
         public static IContext ChangeSalesTerritory(this SalesPerson sp, SalesTerritory newTerritory, IContext context) {
             var newHist = new SalesTerritoryHistory { SalesPerson = sp, SalesTerritory = newTerritory, StartDate = context.Now() };
             var prev = sp.TerritoryHistory.First(n => n.EndDate == null);
-            var uPrev = prev with { EndDate = context.Now() };
-            var uSp = sp with { SalesTerritory = newTerritory, ModifiedDate = context.Now() };
+            SalesTerritoryHistory uPrev = new(prev) { EndDate = context.Now() };
+            SalesPerson uSp = new(sp) { SalesTerritory = newTerritory, ModifiedDate = context.Now() };
             return context.WithNew(newHist).WithUpdated(sp, uSp).WithUpdated(prev, uPrev);
         }
     }

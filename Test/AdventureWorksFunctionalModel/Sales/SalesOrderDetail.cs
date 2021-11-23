@@ -1,78 +1,26 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and limitations under the License.
-
 using System;
 using NakedFunctions;
 
 namespace AW.Types {
-    public record SalesOrderDetail {
-        #region OrderQty
+    public class SalesOrderDetail {
+        public SalesOrderDetail() { }
 
-        [MemberOrder(15)]
-        public short OrderQty { get; init; }
-
-        #endregion
-
-        #region UnitPrice
-
-        [MemberOrder(20)]
-        [Mask("C")]
-        public decimal UnitPrice { get; init; }
-
-        #endregion
-
-        #region UnitPriceDiscount
-
-        [Named("Discount %")]
-        [MemberOrder(30)]
-        [Mask("P")]
-        public decimal UnitPriceDiscount { get; init; }
-
-        #endregion
-
-        #region LineTotal
-
-        [MemberOrder(40)]
-        [Mask("C")]
-        public decimal LineTotal { get; init; }
-
-        #endregion
-
-        #region CarrierTrackingNumber
-
-        [MemberOrder(50)]
-
-        public string? CarrierTrackingNumber { get; init; }
-
-        #endregion
-
-        #region SalesOrder
-
-        // [Hidden]
-#pragma warning disable 8618
-        public virtual SalesOrderHeader SalesOrderHeader { get; init; }
-#pragma warning restore 8618
-
-        #endregion
-
-        [MemberOrder(99)]
-        [Versioned]
-        public DateTime ModifiedDate { get; init; }
-
-        [Hidden]
-        public Guid rowguid { get; init; }
-
-        public virtual bool Equals(SalesOrderDetail? other) => ReferenceEquals(this, other);
-
-        public override string ToString() => $"{OrderQty} x {Product}";
-
-        public override int GetHashCode() => base.GetHashCode();
-
-        #region ID
+        public SalesOrderDetail(SalesOrderDetail cloneFrom)
+        {
+            SalesOrderID = cloneFrom.SalesOrderID;
+            SalesOrderDetailID = cloneFrom.SalesOrderDetailID;
+            OrderQty = cloneFrom.OrderQty;
+            UnitPrice = cloneFrom.UnitPrice;
+            UnitPriceDiscount = cloneFrom.UnitPriceDiscount;
+            LineTotal = cloneFrom.LineTotal;
+            CarrierTrackingNumber = cloneFrom.CarrierTrackingNumber;
+            SalesOrderHeader = cloneFrom.SalesOrderHeader;
+            SpecialOfferID = cloneFrom.SpecialOfferID;
+            ProductID = cloneFrom.ProductID;
+            SpecialOfferProduct = cloneFrom.SpecialOfferProduct;
+            ModifiedDate = cloneFrom.ModifiedDate;
+            rowguid = cloneFrom.rowguid;
+        }
 
         [Hidden]
         public int SalesOrderID { get; init; }
@@ -80,12 +28,24 @@ namespace AW.Types {
         [Hidden]
         public int SalesOrderDetailID { get; init; }
 
-        #endregion
+        [MemberOrder(15)]
+        public short OrderQty { get; init; }
+        
+        [MemberOrder(20),Mask("C")]
+        public decimal UnitPrice { get; init; }
+   
+        [Named("Discount %"),MemberOrder(30),Mask("P")]
+        public decimal UnitPriceDiscount { get; init; }
+            
+        [MemberOrder(40),Mask("C")]
+        public decimal LineTotal { get; init; }
+        
+        [MemberOrder(50)]
+        public string? CarrierTrackingNumber { get; init; }
 
-        #region Product & Special Offer
-
-        #region SpecialOfferProduct
-
+        [Hidden]
+        public virtual SalesOrderHeader SalesOrderHeader { get; init; }
+        
         [Hidden]
         public int SpecialOfferID { get; init; }
 
@@ -93,11 +53,7 @@ namespace AW.Types {
         public int ProductID { get; init; }
 
         [Hidden]
-#pragma warning disable 8618
         public virtual SpecialOfferProduct SpecialOfferProduct { get; init; }
-#pragma warning restore 8618
-
-        #endregion
 
         [MemberOrder(11)]
         public virtual Product Product => SpecialOfferProduct.Product;
@@ -105,6 +61,12 @@ namespace AW.Types {
         [MemberOrder(12)]
         public virtual SpecialOffer SpecialOffer => SpecialOfferProduct.SpecialOffer;
 
-        #endregion
+        [MemberOrder(99), Versioned]
+        public DateTime ModifiedDate { get; init; }
+
+        [Hidden]
+        public Guid rowguid { get; init; }
+
+        public override string ToString() => $"{OrderQty} x {Product}";
     }
 }
