@@ -1,7 +1,4 @@
-using System;
-using NakedFunctions;
-
-namespace AW.Types {
+namespace AW.Types;
     [Named("Contact")]
     public class BusinessEntityContact : IHasRowGuid, IHasModifiedDate {
         [Hidden]
@@ -31,7 +28,4 @@ namespace AW.Types {
         public Guid rowguid { get; init; }
 
         public override string ToString() => $"{Person}";
-
-
     }
-}

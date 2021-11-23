@@ -1,14 +1,11 @@
-using System;
-using NakedFunctions;
+namespace AW.Types;
 
-namespace AW.Types {
     [Named("Address")]
     public class BusinessEntityAddress : IHasRowGuid, IHasModifiedDate {
         [Hidden]
         public int BusinessEntityID { get; init; }
 
         [MemberOrder(3)]
-
         public virtual BusinessEntity BusinessEntity { get; init; }
 
 
@@ -16,9 +13,7 @@ namespace AW.Types {
         public int AddressTypeID { get; init; }
 
         [MemberOrder(1)]
-
         public virtual AddressType AddressType { get; init; }
-
 
         [Hidden]
         public int AddressID { get; init; }
@@ -27,17 +22,12 @@ namespace AW.Types {
 
         public virtual Address Address { get; init; }
 
-
         
-        [MemberOrder(99)]
-        [Versioned]
+        [MemberOrder(99),Versioned]
         public DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public Guid rowguid { get; init; }
 
         public override string ToString() => $"{AddressType}: {Address}";
-
-
     }
-}

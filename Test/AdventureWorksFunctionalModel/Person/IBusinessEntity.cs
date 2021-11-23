@@ -1,5 +1,6 @@
-﻿namespace AW.Types {
-    public interface IBusinessEntity {
-        int BusinessEntityID { get; }
-    }
+﻿namespace AW.Types;
+
+public interface IBusinessEntity
+{
+    int BusinessEntityID { get; }
 }

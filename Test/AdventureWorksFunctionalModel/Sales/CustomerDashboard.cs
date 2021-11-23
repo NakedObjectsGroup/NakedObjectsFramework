@@ -1,24 +1,11 @@
-﻿
+﻿using AW.Functions;
 
+namespace AW.Types;
 
-
-
-
-
-using System.Collections.Generic;
-using System.Linq;
-using AW.Functions;
-using NakedFunctions;
-
-namespace AW.Types {
-    /// <summary>
-    /// </summary>
     [ViewModel(typeof(CustomerDashboard_Functions))]
     public class CustomerDashboard {
         [Hidden]
-
         public virtual Customer Root { get; init; }
-
 
         public string Name => $"{(Root.IsIndividual() ? Root.Person : Root.Store?.Name)}";
 
@@ -31,4 +18,3 @@ namespace AW.Types {
 
         public override string ToString() => $"{Name} - Dashboard";
     }
-}

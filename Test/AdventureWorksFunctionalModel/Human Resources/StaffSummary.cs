@@ -1,21 +1,18 @@
 ﻿using AW.Functions;
-using NakedFunctions;
 
-namespace AW.Types {
-    [ViewModel(typeof(StaffSummary_Functions))]
-    public class StaffSummary {
-        [MemberOrder(1)]
-        public int Female { get; init; }
+namespace AW.Types;
 
-        [MemberOrder(2)]
-        public int Male { get; init; }
+[ViewModel(typeof(StaffSummary_Functions))]
+public class StaffSummary
+{
+    [MemberOrder(1)]
+    public int Female { get; init; }
 
-        [MemberOrder(3)]
-        public int TotalStaff => Female + Male;
+    [MemberOrder(2)]
+    public int Male { get; init; }
 
-        
-        public override string ToString() => "Staff Summary";
+    [MemberOrder(3)]
+    public int TotalStaff => Female + Male;
 
-
-    }
+    public override string ToString() => "Staff Summary";
 }

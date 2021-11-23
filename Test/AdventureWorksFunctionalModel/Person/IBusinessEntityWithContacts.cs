@@ -1,3 +1,3 @@
-﻿namespace AW.Types {
-    public interface IBusinessEntityWithContacts : IBusinessEntity { }
-}
+﻿namespace AW.Types;
+
+public interface IBusinessEntityWithContacts : IBusinessEntity { }

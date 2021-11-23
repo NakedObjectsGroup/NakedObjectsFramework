@@ -1,10 +1,3 @@
-﻿
+﻿namespace AW.Types;
 
-
-
-
-
-
-namespace AW.Types {
-    public interface IAddressRole { }
-}
+public interface IAddressRole { }

@@ -1,56 +1,43 @@
-
-
-
-
-
-
-
-using System;
-using System.Collections.Generic;
 using AW.Functions;
-using NakedFunctions;
 
-namespace AW.Types {
-    public class ProductModel : IHasRowGuid, IHasModifiedDate {
-        [Hidden]
-        public int ProductModelID { get; init; }
+namespace AW.Types;
 
-        [MemberOrder(10)]
-        public string Name { get; init; } = "";
+public class ProductModel : IHasRowGuid, IHasModifiedDate
+{
+    [Hidden]
+    public int ProductModelID { get; init; }
 
-        [Hidden]
-        public string? CatalogDescription { get; init; }
+    [MemberOrder(10)]
+    public string Name { get; init; } = "";
 
-        [Named("CatalogDescription")] [MemberOrder(20)] [MultiLine(10)]
-        public string FormattedCatalogDescription =>
-            ProductModel_Functions.CatalogDescription(this);
+    [Hidden]
+    public string? CatalogDescription { get; init; }
 
-        [MemberOrder(22)]
-        public ProductDescription LocalCultureDescription =>
-            ProductModel_Functions.LocalCultureDescription(this);
+    [Named("CatalogDescription"), MemberOrder(20), MultiLine(10)]
+    public string FormattedCatalogDescription =>
+        ProductModel_Functions.CatalogDescription(this);
 
-        [MemberOrder(30)]
-        public string? Instructions { get; init; }
+    [MemberOrder(22)]
+    public ProductDescription LocalCultureDescription =>
+        ProductModel_Functions.LocalCultureDescription(this);
 
-        [TableView(true, "Name", "Number", "Color", "ProductInventory")]
-        public virtual ICollection<Product> ProductVariants { get; init; } = new List<Product>();
+    [MemberOrder(30)]
+    public string? Instructions { get; init; }
 
-        [Hidden]
-        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
+    [TableView(true, "Name", "Number", "Color", "ProductInventory")]
+    public virtual ICollection<Product> ProductVariants { get; init; } = new List<Product>();
 
-        [Hidden]
-        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; } = new List<ProductModelProductDescriptionCulture>();
+    [Hidden]
+    public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
-        
-        [MemberOrder(99)]
-        [Versioned]
-        public DateTime ModifiedDate { get; init; }
+    [Hidden]
+    public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; } = new List<ProductModelProductDescriptionCulture>();
 
-        [Hidden]
-        public Guid rowguid { get; init; }
+    [MemberOrder(99), Versioned]
+    public DateTime ModifiedDate { get; init; }
 
-        public override string ToString() => Name;
+    [Hidden]
+    public Guid rowguid { get; init; }
 
-
-    }
+    public override string ToString() => Name;
 }
