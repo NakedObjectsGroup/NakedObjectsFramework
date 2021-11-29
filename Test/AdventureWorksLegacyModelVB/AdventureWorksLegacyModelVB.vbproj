@@ -1,8 +1,37 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>AdventureWorksLegacyModelVB</RootNamespace>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mapping\**" />
+    <EmbeddedResource Remove="Mapping\**" />
+    <None Remove="Mapping\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="AdventureWorksContext.vb" />
+    <Compile Remove="AdventureWorksEFCoreContext.vb" />
+    <Compile Remove="AssemblyHook.vb" />
+    <Compile Remove="AWModelConfig.vb" />
+    <Compile Remove="Helpers.vb" />
+    <Compile Remove="MockPrincipalProvider.vb" />
+    <Compile Remove="Sales\SalesPerson_Functions.vb" />
+    <Compile Remove="Sales\ShoppingCart_Functions.vb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="NakedLegacy.ProgrammingModel" Version="1.0.0-alpha01" />
+    <PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0-beta01" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Import Include="AdventureWorksLegacyModelVB.AW.Types" />
+    <Import Include="NakedObjects" />
+    <Import Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
 
 </Project>
