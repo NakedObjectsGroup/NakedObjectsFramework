@@ -72,24 +72,10 @@ namespace NakedFramework.Core.Spec {
             return Parameters[position];
         }
 
-        public override string ToString() {
-            var sb = new StringBuilder();
-            sb.Append("Action [");
-            sb.Append(base.ToString());
-            sb.Append(",returns=");
-            sb.Append(ReturnSpec);
-            sb.Append(",parameters={");
-            for (var i = 0; i < ParameterCount; i++) {
-                if (i > 0) {
-                    sb.Append(",");
-                }
+        private string asString;
 
-                sb.Append(Parameters[i].Spec.ShortName);
-            }
+        public override string ToString() => asString ??= $"Action[{base.ToString()},returns={ReturnSpec},parameters={{{string.Join(",", Parameters.Select(p => p.Spec.ShortName))}}}]";
 
-            sb.Append("}]");
-            return sb.ToString();
-        }
 
         #region IActionSpec Members
 

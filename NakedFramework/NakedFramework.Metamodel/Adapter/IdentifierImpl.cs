@@ -83,15 +83,10 @@ namespace NakedFramework.Metamodel.Adapter {
 
         private string ToParmsIdentityString() => !IsField ? $"({string.Join(",", parameterTypes)})" : "";
 
-        private string ToFullIdentityString() {
-            if (identityString is null) {
-                identityString = name.Length == 0 
-                    ? ToClassIdentityString() 
+        private string ToFullIdentityString() => 
+            identityString ??= name.Length == 0
+                    ? ToClassIdentityString()
                     : $"{ToClassAndNameIdentityString()}{ToParmsIdentityString()}";
-            }
-
-            return identityString;
-        }
 
         public static IdentifierImpl FromIdentityString(IMetamodel metamodel, string asString) {
             if (asString == null) {
@@ -159,13 +154,7 @@ namespace NakedFramework.Metamodel.Adapter {
                    Equals(other.parameterTypes, parameterTypes);
         }
 
-        public override string ToString() {
-            if (asString is null) {
-                asString = $"{className}#{name}({string.Join(", ", parameterTypes)})";
-            }
-
-            return asString;
-        }
+        public override string ToString() => asString ??= $"{className}#{name}({string.Join(", ", parameterTypes)})";
 
         public override int GetHashCode() => (className + name + parameterTypes.Aggregate("", (s, t) => $"{s}{t}")).GetHashCode();
 
