@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
+using static NakedFramework.Core.Util.ToStringHelpers;
 
 namespace NakedFramework.Core.Spec {
     public sealed class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
@@ -49,14 +50,8 @@ namespace NakedFramework.Core.Spec {
             }
         }
 
-        public override string ToString() {
-            var str = new AsString(this);
-            str.Append(base.ToString());
-            str.Append(",");
-            str.Append("persisted", IsPersisted);
-            str.Append("type", ReturnSpec == null ? "unknown" : ReturnSpec.ShortName);
-            return str.ToString();
-        }
+        public override string ToString() => 
+            $"{NameAndHashCode(this)} [{base.ToString()},persisted={IsPersisted},type={(ReturnSpec is null ? "unknown" : ReturnSpec.ShortName)}]";
 
         #region IOneToManyAssociationSpec Members
 

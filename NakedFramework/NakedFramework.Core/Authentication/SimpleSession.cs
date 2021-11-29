@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Security.Principal;
-using NakedFramework.Core.Util;
+using static NakedFramework.Core.Util.ToStringHelpers;
 
 namespace NakedFramework.Core.Authentication {
     public sealed class SimpleSession : WindowsSession {
@@ -17,12 +17,7 @@ namespace NakedFramework.Core.Authentication {
 
         private string ValidationCode { get; }
 
-        public override string ToString() {
-            var str = new AsString(this);
-            str.Append("name", UserName);
-            str.Append("code", ValidationCode);
-            return str.ToString();
-        }
+        public override string ToString() => $"{NameAndHashCode(this)} [name={UserName},code={ValidationCode}]";
     }
 
     // Copyright (c) Naked Objects Group Ltd.

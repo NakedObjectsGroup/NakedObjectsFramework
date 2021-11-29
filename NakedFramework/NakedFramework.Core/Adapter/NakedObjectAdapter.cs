@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
+using static NakedFramework.Core.Util.ToStringHelpers;
 
 namespace NakedFramework.Core.Adapter {
     public sealed class NakedObjectAdapter : INakedObjectAdapter {
@@ -70,19 +71,20 @@ namespace NakedFramework.Core.Adapter {
         }
 
         public override string ToString() =>
-            $"{AsStringHelpers.AsString(this)}{AddProperties()}{GetTitle()}domainObject-hash=#{Convert.ToString(Object.GetHashCode(), 16)}]";
+            $"{NameAndHashCode(this)} [{AddProperties()}{GetTitle()}domainObject-hash=#{HashCode(Object)}]";
 
         private bool ShouldSetVersion(IVersion newVersion) => newVersion.IsDifferent(Version);
 
         private string AddProperties()
         {
+            var objectType = Object.GetType();
             string GetOid() => Oid is not null ? $":{Oid}," : ":-,";
 
             string GetSpec() => 
-                spec is null ? $"class={ Object.GetType().FullName}," : $"specification={spec.ShortName},Type={spec.FullName},";
+                spec is null ? $"class={objectType.FullName}," : $"specification={spec.ShortName},Type={spec.FullName},";
 
             string GetProxy() => 
-                Object is not null && FasterTypeUtils.IsAnyProxy(Object.GetType()) ? $"{Object.GetType().FullName}," : "None,";
+                Object is not null && FasterTypeUtils.IsAnyProxy(objectType) ? $"{objectType.FullName}," : "None,";
 
             string GetVersion() =>
                 $"{Version?.AsSequence()},";

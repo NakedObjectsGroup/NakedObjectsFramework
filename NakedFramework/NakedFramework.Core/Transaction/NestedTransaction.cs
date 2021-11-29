@@ -10,8 +10,10 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Transaction;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
+using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Transaction {
+namespace NakedFramework.Core.Transaction
+{
     public sealed class NestedTransaction : ITransaction {
         private readonly ILogger<NestedTransaction> logger;
         private readonly IObjectStore objectStore;
@@ -22,11 +24,7 @@ namespace NakedFramework.Core.Transaction {
             this.logger = logger;
         }
 
-        public override string ToString() {
-            var str = new AsString(this);
-            str.Append("complete", complete);
-            return str.ToString();
-        }
+        public override string ToString() => $"{NameAndHashCode(this)} [complete={complete}]";
 
         #region ITransaction Members
 

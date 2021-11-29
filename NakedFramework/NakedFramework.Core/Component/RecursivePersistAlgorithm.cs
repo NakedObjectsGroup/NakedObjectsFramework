@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
+using static NakedFramework.Core.Util.ToStringHelpers;
 
 namespace NakedFramework.Core.Component {
     /// <summary>
@@ -68,7 +69,7 @@ namespace NakedFramework.Core.Component {
             }
         }
 
-        public override string ToString() => new AsString(this).ToString();
+        public override string ToString() => $"{NameAndHashCode(this)} []";
 
         #region IPersistAlgorithm Members
 

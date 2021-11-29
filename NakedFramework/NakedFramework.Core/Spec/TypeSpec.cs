@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
+using static NakedFramework.Core.Util.ToStringHelpers;
 
 namespace NakedFramework.Core.Spec {
     public abstract class TypeSpec : ITypeSpec {
@@ -60,21 +61,15 @@ namespace NakedFramework.Core.Spec {
 
         protected abstract PersistableType GetPersistable();
 
-        private string TypeNameFor() => IsCollection ? "Collection" : "Object";
+        private string TypeNameFor => IsCollection ? "Collection" : "Object";
 
-        public override string ToString() {
-            var str = new AsString(this);
-            str.Append("class", FullName);
-            str.Append("type", TypeNameFor());
-            str.Append("persistable", Persistable);
-            str.Append("superclass", InnerSpec.Superclass == null ? "object" : InnerSpec.Superclass.FullName);
-            return str.ToString();
-        }
+        public override string ToString() => 
+            $"{NameAndHashCode(this)} [class={FullName},type={TypeNameFor},persistable={Persistable},superclass={SuperClass(InnerSpec)}]";
 
         protected bool Equals(TypeSpec other) => Equals(InnerSpec, other.InnerSpec);
 
         public override bool Equals(object obj) {
-            if (ReferenceEquals(null, obj)) {
+            if (obj is null) {
                 return false;
             }
 

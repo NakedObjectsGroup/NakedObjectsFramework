@@ -18,6 +18,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Interactions;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
+using static NakedFramework.Core.Util.ToStringHelpers;
 
 namespace NakedFramework.Core.Spec {
     public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
@@ -54,14 +55,9 @@ namespace NakedFramework.Core.Spec {
             return (Framework.NakedObjectManager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
         }
 
-        public override string ToString() {
-            var str = new AsString(this);
-            str.Append(base.ToString());
-            str.AddComma();
-            str.Append("persisted", IsPersisted);
-            str.Append("type", ReturnSpec.ShortName);
-            return str.ToString();
-        }
+        public override string ToString() => 
+            $"{NameAndHashCode(this)} [{base.ToString()},persisted={IsPersisted},type={ReturnSpec.ShortName}]";
+
 
         #region IOneToOneAssociationSpec Members
 
