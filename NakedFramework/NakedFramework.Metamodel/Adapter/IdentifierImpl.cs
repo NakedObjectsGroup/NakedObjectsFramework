@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Error;
@@ -82,35 +81,13 @@ namespace NakedFramework.Metamodel.Adapter {
 
         private string ToClassAndNameIdentityString() => $"{ToClassIdentityString()}#{name}";
 
-        private string ToParmsIdentityString() {
-            var str = new StringBuilder();
-            if (!IsField) {
-                str.Append('(');
-                for (var i = 0; i < parameterTypes.Length; i++) {
-                    if (i > 0) {
-                        str.Append(",");
-                    }
-
-                    str.Append(parameterTypes[i]);
-                }
-
-                str.Append(')');
-            }
-
-            return str.ToString();
-        }
+        private string ToParmsIdentityString() => !IsField ? $"({string.Join(",", parameterTypes)})" : "";
 
         private string ToFullIdentityString() {
-            if (identityString == null) {
-                if (name.Length == 0) {
-                    identityString = ToClassIdentityString();
-                }
-                else {
-                    var str = new StringBuilder();
-                    str.Append(ToClassAndNameIdentityString());
-                    str.Append(ToParmsIdentityString());
-                    identityString = str.ToString();
-                }
+            if (identityString is null) {
+                identityString = name.Length == 0 
+                    ? ToClassIdentityString() 
+                    : $"{ToClassAndNameIdentityString()}{ToParmsIdentityString()}";
             }
 
             return identityString;
@@ -183,19 +160,8 @@ namespace NakedFramework.Metamodel.Adapter {
         }
 
         public override string ToString() {
-            if (asString == null) {
-                var str = new StringBuilder();
-                str.Append(className).Append('#').Append(name).Append('(');
-                for (var i = 0; i < parameterTypes.Length; i++) {
-                    if (i > 0) {
-                        str.Append(", ");
-                    }
-
-                    str.Append(parameterTypes[i]);
-                }
-
-                str.Append(')');
-                asString = str.ToString();
+            if (asString is null) {
+                asString = $"{className}#{name}({string.Join(", ", parameterTypes)})";
             }
 
             return asString;
