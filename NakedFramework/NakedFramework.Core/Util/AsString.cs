@@ -9,6 +9,28 @@ using System;
 using System.Text;
 
 namespace NakedFramework.Core.Util {
+
+    public static class AsStringHelpers {
+        public static string AsString(object forObject) {
+            return $"{CreateName(forObject)} [";
+        }
+
+        private static string CreateName(object forObject)
+        {
+            return $"{Name(forObject)}@{Convert.ToString(forObject.GetHashCode(), 16)}";
+        }
+
+        public static string Name(object forObject)
+        {
+            var name = forObject.GetType().FullName;
+            return name[(name.LastIndexOf('.') + 1)..];
+        }
+    }
+
+
+
+
+
     public sealed class AsString {
         private readonly StringBuilder buffer;
         private bool addComma;

@@ -59,49 +59,35 @@ namespace NakedFramework.Core.Adapter {
 
         private bool CanCount() => !Spec.ContainsFacet<INotCountedFacet>();
 
-        public override string ToString() {
-            var str = new AsString(this);
-            ToString(str);
 
+        private string GetTitle() {
             // don't do title of unresolved objects as this may force the resolving of the object.
-            if (ResolveState.IsTransient() || ResolveState.IsResolved() || ResolveState.IsAggregated()) {
-                str.Append("title", TitleString());
+            if (ResolveState.IsTransient() || ResolveState.IsResolved() || ResolveState.IsAggregated())
+            {
+                return $"title={TitleString()},";
             }
-
-            str.AppendAsHex("domainObject-hash", Object.GetHashCode());
-            return str.ToString();
+            return "";
         }
+
+        public override string ToString() =>
+            $"{AsStringHelpers.AsString(this)}{AddProperties()}{GetTitle()}domainObject-hash=#{Convert.ToString(Object.GetHashCode(), 16)}]";
 
         private bool ShouldSetVersion(IVersion newVersion) => newVersion.IsDifferent(Version);
 
-        private void ToString(AsString str) {
-            str.Append(ResolveState.CurrentState.Code);
+        private string AddProperties()
+        {
+            string GetOid() => Oid is not null ? $":{Oid}," : ":-,";
 
-            if (Oid is not null) {
-                str.Append(":");
-                str.Append(Oid.ToString());
-            }
-            else {
-                str.Append(":-");
-            }
+            string GetSpec() => 
+                spec is null ? $"class={ Object.GetType().FullName}," : $"specification={spec.ShortName},Type={spec.FullName},";
 
-            str.AddComma();
-            if (spec is null) {
-                str.Append("class", Object.GetType().FullName);
-            }
-            else {
-                str.Append("specification", spec.ShortName);
-                str.Append("Type", spec.FullName);
-            }
+            string GetProxy() => 
+                Object is not null && FasterTypeUtils.IsAnyProxy(Object.GetType()) ? $"{Object.GetType().FullName}," : "None,";
 
-            if (Object is not null && FasterTypeUtils.IsAnyProxy(Object.GetType())) {
-                str.Append("proxy", Object.GetType().FullName);
-            }
-            else {
-                str.Append("proxy", "None");
-            }
+            string GetVersion() =>
+                $"{Version?.AsSequence()},";
 
-            str.Append("version", Version?.AsSequence());
+            return $"{ResolveState.CurrentState.Code}{GetOid()}{GetSpec()}proxy={GetProxy()}version={GetVersion()}";
         }
 
         private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>()?.Invoke(this, framework);
