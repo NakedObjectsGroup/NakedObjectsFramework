@@ -7,7 +7,6 @@
 
 using System;
 using System.Text;
-using System.Threading;
 
 namespace NakedFramework.Core.Util {
     public sealed class AsString {
@@ -18,26 +17,6 @@ namespace NakedFramework.Core.Util {
             buffer = new StringBuilder();
             CreateName(forObject, buffer);
             buffer.Append(" [");
-        }
-
-        public AsString(object forObject, int id) {
-            buffer = new StringBuilder();
-            buffer.Append(Name(forObject));
-            buffer.Append("#");
-            buffer.Append(id);
-            buffer.Append(" [");
-        }
-
-        public AsString(object forObject, string text)
-            : this(forObject) {
-            buffer.Append(text);
-            addComma = text.Length > 0;
-        }
-
-        public static string CreateName(object forObject) {
-            var buffer = new StringBuilder();
-            CreateName(forObject, buffer);
-            return buffer.ToString();
         }
 
         private static void CreateName(object forObject, StringBuilder buffer) {
@@ -61,38 +40,8 @@ namespace NakedFramework.Core.Util {
             return this;
         }
 
-        public AsString Append(string name, sbyte number) {
-            Append(name, number.ToString(Thread.CurrentThread.CurrentCulture));
-            return this;
-        }
-
-        public AsString Append(string name, double number) {
-            Append(name, number.ToString(Thread.CurrentThread.CurrentCulture));
-            return this;
-        }
-
-        public AsString Append(string name, float number) {
-            Append(name, number.ToString(Thread.CurrentThread.CurrentCulture));
-            return this;
-        }
-
-        public AsString Append(string name, int number) {
-            Append(name, Convert.ToString(number));
-            return this;
-        }
-
-        public AsString Append(string name, long number) {
-            Append(name, Convert.ToString(number));
-            return this;
-        }
-
         public AsString Append(string name, object obj) {
             Append(name, obj == null ? "null" : obj.ToString());
-            return this;
-        }
-
-        public AsString Append(string name, short number) {
-            Append(name, number.ToString(Thread.CurrentThread.CurrentCulture));
             return this;
         }
 
