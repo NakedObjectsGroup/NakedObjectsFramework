@@ -17,10 +17,26 @@
 'ORIGINAL LINE: public virtual PhoneNumberType? PhoneNumberType {get;set;}
 		Public Overridable Property PhoneNumberType() As PhoneNumberType
 
-		
-		Public Property ModifiedDate() As DateTime Implements IHasModifiedDate.ModifiedDate
+#Region "ModifiedDate"
+        Friend mappedModifiedDate As Date
+        Friend myModifiedDate As TimeStamp
 
-		Public Overrides Function ToString() As String
+        <MemberOrder(1)>
+        Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+            Get
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+            End Get
+        End Property
+
+        Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
+
+        Public Overrides Function ToString() As String
 			Return $"{PhoneNumberType}:{PhoneNumber}"
 		End Function
 	End Class

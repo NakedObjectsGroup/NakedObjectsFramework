@@ -120,8 +120,24 @@ Namespace AW.Types
         <Mask("C")>
         Public Property StandardCost() As Decimal
 
-        <MemberOrder(99)>
-        Public Property ModifiedDate() As DateTime Implements IHasModifiedDate.ModifiedDate
+#Region "ModifiedDate"
+        Friend mappedModifiedDate As Date
+        Friend myModifiedDate As TimeStamp
+
+        <MemberOrder(1)>
+        Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+            Get
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+            End Get
+        End Property
+
+        Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
 
 #End Region
 
@@ -142,15 +158,42 @@ Namespace AW.Types
         <Hidden>
         Public Property ProductID() As Integer Implements IProduct.ProductID
 
-        'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-        'ORIGINAL LINE: public string? Size {get;set;}
-        <Hidden>
-        Public Property Size() As String
+#Region "Size"
+        Friend mappedSize As String
+        Friend mySize As TextString
 
-        'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-        'ORIGINAL LINE: public string? SizeUnitMeasureCode {get;set;}
-        <Hidden>
-        Public Property SizeUnitMeasureCode() As String
+        Public ReadOnly Property Size As TextString
+            Get
+                Return If(mySize, New TextString(mappedSize, Function(v) mappedSize = v))
+            End Get
+        End Property
+
+        Public Sub AboutSize(a As FieldAbout, Size As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Visible
+                    a.Visible = False
+            End Select
+        End Sub
+#End Region
+
+#Region "SizeUnitMeasureCode"
+        Friend mappedSizeUnitMeasureCode As String
+        Friend mySizeUnitMeasureCode As TextString
+
+        <MemberOrder(1)>
+        Public ReadOnly Property SizeUnitMeasureCode As TextString
+            Get
+                Return If(mySizeUnitMeasureCode, New TextString(mappedSizeUnitMeasureCode, Function(v) mappedSizeUnitMeasureCode = v))
+            End Get
+        End Property
+
+        Public Sub AboutSizeUnitMeasureCode(a As FieldAbout, SizeUnitMeasureCode As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Visible
+                    a.Visible = False
+            End Select
+        End Sub
+#End Region
 
         <Hidden>
         Public Overridable Property SizeUnit() As UnitMeasure

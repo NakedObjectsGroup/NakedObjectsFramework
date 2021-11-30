@@ -4,17 +4,6 @@
 	Partial Public Class Shift
 		Implements IHasModifiedDate
 
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As Shift)
-			ShiftID = cloneFrom.ShiftID
-			Name = cloneFrom.Name
-			StartTime = cloneFrom.StartTime
-			EndTime = cloneFrom.EndTime
-			ModifiedDate = cloneFrom.ModifiedDate
-		End Sub
-
 		<Hidden>
 		Public Property ShiftID() As Byte
 
@@ -27,10 +16,24 @@
 		<MemberOrder(4), Mask("T")>
 		Public Property EndTime() As TimeSpan
 
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime Implements IHasModifiedDate.ModifiedDate
+		<MemberOrder(1)>
+		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
 
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
 		Public Overrides Function ToString() As String
 			Return Name
 		End Function

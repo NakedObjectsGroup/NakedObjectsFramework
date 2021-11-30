@@ -4,28 +4,6 @@
 		Inherits BusinessEntity
 		Implements IHasRowGuid, IHasModifiedDate
 
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As Person)
-			MyBase.New(cloneFrom)
-			NameStyle = cloneFrom.NameStyle
-			Title = cloneFrom.Title
-			FirstName = cloneFrom.FirstName
-			MiddleName = cloneFrom.MiddleName
-			LastName = cloneFrom.LastName
-			Suffix = cloneFrom.Suffix
-			PersonType = cloneFrom.PersonType
-			EmailPromotion = cloneFrom.EmailPromotion
-			EmailAddresses = cloneFrom.EmailAddresses
-			PhoneNumbers = cloneFrom.PhoneNumbers
-			Password = cloneFrom.Password
-			AdditionalContactInfo = cloneFrom.AdditionalContactInfo
-			Employee = cloneFrom.Employee
-			ModifiedDate = cloneFrom.ModifiedDate
-			rowguid = cloneFrom.rowguid
-		End Sub
-
 #Region "Name fields"
 
 		<MemberOrder(15)>
@@ -89,8 +67,24 @@
 		<Hidden>
 		Public Overridable Property Employee() As Employee
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime Implements IHasModifiedDate.ModifiedDate
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
+
+		<MemberOrder(1)>
+		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
+
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
 
 		<Hidden>
 		Public Property rowguid() As Guid Implements IHasRowGuid.rowguid

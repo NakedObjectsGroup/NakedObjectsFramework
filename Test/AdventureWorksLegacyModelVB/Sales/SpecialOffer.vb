@@ -3,22 +3,6 @@
 	Partial Public Class SpecialOffer
 		Implements IHasModifiedDate, IHasRowGuid
 
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As SpecialOffer)
-			SpecialOfferID = cloneFrom.SpecialOfferID
-			Description = cloneFrom.Description
-			DiscountPct = cloneFrom.DiscountPct
-			Type = cloneFrom.Type
-			Category = cloneFrom.Category
-			StartDate = cloneFrom.StartDate
-			EndDate = cloneFrom.EndDate
-			MinQty = cloneFrom.MinQty
-			MaxQty = cloneFrom.MaxQty
-			ModifiedDate = cloneFrom.ModifiedDate
-			rowguid = cloneFrom.rowguid
-		End Sub
 		<Hidden>
 		Public Property SpecialOfferID() As Integer
 
@@ -49,8 +33,24 @@
 		<MemberOrder(62)>
 		Public Property MaxQty() As Integer?
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime Implements IHasModifiedDate.ModifiedDate
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
+
+		<MemberOrder(1)>
+		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
+
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
 
 		<Hidden>
 		Public Property rowguid() As Guid Implements IHasRowGuid.rowguid

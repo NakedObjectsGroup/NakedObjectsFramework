@@ -1,5 +1,5 @@
 ﻿Namespace AW
 	Public Interface IHasModifiedDate
-		Property ModifiedDate() As DateTime
+		ReadOnly Property ModifiedDate() As TimeStamp
 	End Interface
 End Namespace

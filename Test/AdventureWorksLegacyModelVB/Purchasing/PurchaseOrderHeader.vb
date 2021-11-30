@@ -3,29 +3,6 @@
 	Partial Public Class PurchaseOrderHeader
 		Implements IHasModifiedDate
 
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As PurchaseOrderHeader)
-			PurchaseOrderID = cloneFrom.PurchaseOrderID
-			RevisionNumber = cloneFrom.RevisionNumber
-			ShipMethodID = cloneFrom.ShipMethodID
-			ShipMethod = cloneFrom.ShipMethod
-			Details = cloneFrom.Details
-			VendorID = cloneFrom.VendorID
-			Vendor = cloneFrom.Vendor
-			Status = cloneFrom.Status
-			OrderDate = cloneFrom.OrderDate
-			ShipDate = cloneFrom.ShipDate
-			SubTotal = cloneFrom.SubTotal
-			TaxAmt = cloneFrom.TaxAmt
-			Freight = cloneFrom.Freight
-			TotalDue = cloneFrom.TotalDue
-			OrderPlacedByID = cloneFrom.OrderPlacedByID
-			OrderPlacedBy = cloneFrom.OrderPlacedBy
-			ModifiedDate = cloneFrom.ModifiedDate
-		End Sub
-
 		<Hidden>
 		Public Property PurchaseOrderID() As Integer
 
@@ -81,8 +58,24 @@
 		<MemberOrder(12)>
 		Public Overridable Property OrderPlacedBy() As Employee
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime Implements IHasModifiedDate.ModifiedDate
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
+
+		<MemberOrder(1)>
+		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
+
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
 
 		Public Overrides Function ToString() As String
 			Return $"PO from {Vendor}, {OrderDate}"

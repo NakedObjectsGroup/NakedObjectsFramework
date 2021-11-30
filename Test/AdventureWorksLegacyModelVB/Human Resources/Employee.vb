@@ -8,33 +8,10 @@
 	Partial Public Class Employee
 		Implements IEmployee, IHasRowGuid, IHasModifiedDate
 
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As Employee)
-			BusinessEntityID = cloneFrom.BusinessEntityID
-			PersonDetails = cloneFrom.PersonDetails
-			NationalIDNumber = cloneFrom.NationalIDNumber
-			JobTitle = cloneFrom.JobTitle
-			DateOfBirth = cloneFrom.DateOfBirth
-			MaritalStatus = cloneFrom.MaritalStatus
-			Gender = cloneFrom.Gender
-			HireDate = cloneFrom.HireDate
-			Salaried = cloneFrom.Salaried
-			VacationHours = cloneFrom.VacationHours
-			SickLeaveHours = cloneFrom.SickLeaveHours
-			Current = cloneFrom.Current
-			Manager = cloneFrom.Manager
-			LoginID = cloneFrom.LoginID
-			SalesPerson = cloneFrom.SalesPerson
-			ModifiedDate = cloneFrom.ModifiedDate
-			rowguid = cloneFrom.rowguid
-			DepartmentHistory = cloneFrom.DepartmentHistory
-			PayHistory = cloneFrom.PayHistory
-		End Sub
-
 		<Hidden>
 		Public Property BusinessEntityID() As Integer Implements AW.Types.IBusinessEntity.BusinessEntityID
+
+
 
 		<MemberOrder(1)>
 		Public Overridable Property PersonDetails() As Person
@@ -89,9 +66,24 @@
 		<TableView(True, NameOf(EmployeePayHistory.RateChangeDate), NameOf(EmployeePayHistory.Rate))>
 		Public Overridable Property PayHistory() As ICollection(Of EmployeePayHistory) = New List(Of EmployeePayHistory)()
 
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime Implements IHasModifiedDate.ModifiedDate
+		<MemberOrder(1)>
+		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
+
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
 
 		<Hidden>
 		Public Property rowguid() As Guid Implements IHasRowGuid.rowguid

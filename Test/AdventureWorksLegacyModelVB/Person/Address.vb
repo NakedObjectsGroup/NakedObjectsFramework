@@ -2,21 +2,6 @@
 	Partial Public Class Address
 		Implements IHasRowGuid, IHasModifiedDate
 
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As Address)
-			AddressID = cloneFrom.AddressID
-			AddressLine1 = cloneFrom.AddressLine1
-			AddressLine2 = cloneFrom.AddressLine2
-			City = cloneFrom.City
-			PostalCode = cloneFrom.PostalCode
-			StateProvinceID = cloneFrom.StateProvinceID
-			StateProvince = cloneFrom.StateProvince
-			ModifiedDate = cloneFrom.ModifiedDate
-			rowguid = cloneFrom.rowguid
-		End Sub
-
 		<Hidden>
 		Public Property AddressID() As Integer
 
@@ -39,10 +24,24 @@
 
 		<MemberOrder(15)>
 		Public Overridable Property StateProvince() As StateProvince
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime Implements IHasModifiedDate.ModifiedDate
+		<MemberOrder(1)>
+		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
 
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
 		<Hidden>
 		Public Property rowguid() As Guid Implements IHasRowGuid.rowguid
 

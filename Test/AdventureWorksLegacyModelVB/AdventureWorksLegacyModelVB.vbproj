@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>AdventureWorksLegacyModelVB</RootNamespace>
@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Import Include="AdventureWorksLegacyModelVB.AW.Types" />
+    <Import Include="NakedLegacy.Types" />
     <Import Include="NakedObjects" />
     <Import Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>

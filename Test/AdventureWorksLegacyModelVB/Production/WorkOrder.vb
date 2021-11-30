@@ -3,25 +3,6 @@
 	Partial Public Class WorkOrder
 		Implements IHasModifiedDate
 
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As WorkOrder)
-			WorkOrderID = cloneFrom.WorkOrderID
-			StockedQty = cloneFrom.StockedQty
-			ScrappedQty = cloneFrom.ScrappedQty
-			EndDate = cloneFrom.EndDate
-			ScrapReasonID = cloneFrom.ScrapReasonID
-			ScrapReason = cloneFrom.ScrapReason
-			OrderQty = cloneFrom.OrderQty
-			StartDate = cloneFrom.StartDate
-			DueDate = cloneFrom.DueDate
-			ProductID = cloneFrom.ProductID
-			Product = cloneFrom.Product
-			WorkOrderRoutings = cloneFrom.WorkOrderRoutings
-			ModifiedDate = cloneFrom.ModifiedDate
-		End Sub
-
 		<Hidden>
 		Public Property WorkOrderID() As Integer
 
@@ -67,8 +48,24 @@
 			End Get
 		End Property
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime Implements IHasModifiedDate.ModifiedDate
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
+
+		<MemberOrder(1)>
+		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
+
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
 
 		Public Overrides Function ToString() As String
 			Return $"{Product}: {StartDate}"
