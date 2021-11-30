@@ -351,7 +351,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
         public void CCATests() {
             ListViewWithParmDialogAlreadyOpen();
             ListViewWithParmDialogNotOpen();
-            DateParam();      
+            DateParam();
             TestSelectAll();
             SelectAllTableView();
             SelectionRetainedWhenNavigatingAwayAndBack();

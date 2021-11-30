@@ -75,7 +75,7 @@ namespace NakedFramework.ModelBuilding.Component {
             }
 
             foreach (var spec in metamodelBuilder.AllSpecifications.AsParallel()) {
-                spec.ObjectActions.Union(spec.ContributedActions).Select(ToActionHolder).ErrorOnDuplicates();
+                spec.OrderedObjectActions.Union(spec.ContributedActions).Select(ToActionHolder).ErrorOnDuplicates();
             }
         }
 
@@ -127,8 +127,8 @@ namespace NakedFramework.ModelBuilding.Component {
 
         private static void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services, IMetamodel metamodel) {
             var (contribActions, collContribActions, finderActions) = services.AsParallel().Select(serviceType => {
-                var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
-                var serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
+                var serviceSpecification = (ITypeSpecBuilder) metamodel.GetSpecification(serviceType);
+                var serviceActions = serviceSpecification.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
 
                 var matchingActionsForObject = new List<IActionSpecImmutable>();
                 var matchingActionsForCollection = new List<IActionSpecImmutable>();
@@ -161,9 +161,9 @@ namespace NakedFramework.ModelBuilding.Component {
                              return a;
                          });
 
-            var groupedContribActions = contribActions.GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new {service, actions}).OrderBy(a => Array.IndexOf(services, a.service)).SelectMany(a => a.actions).ToList();
+            //var groupedContribActions = contribActions.GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new {service, actions}).OrderBy(a => Array.IndexOf(services, a.service)).SelectMany(a => a.actions).ToList();
 
-            spec.AddContributedActions(groupedContribActions);
+            spec.AddContributedActions(contribActions, services);
             spec.AddCollectionContributedActions(collContribActions);
             spec.AddFinderActions(finderActions);
         }

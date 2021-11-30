@@ -56,7 +56,7 @@ namespace NakedFramework.Core.Spec {
             };
         }
 
-        public IActionSpec[] CreateActionSpecs(IList<IActionSpecImmutable> specImmutables) => specImmutables.Select(CreateActionSpec).ToArray();
+        public IActionSpec[] CreateActionSpecs(IReadOnlyList<IActionSpecImmutable> specImmutables) => specImmutables.Select(CreateActionSpec).ToArray();
 
         public IAssociationSpec[] CreateAssociationSpecs(IList<IAssociationSpecImmutable> specImmutables) => specImmutables.Select(CreateAssociationSpec).ToArray();
 

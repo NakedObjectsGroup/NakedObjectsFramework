@@ -45,9 +45,9 @@ namespace NakedFramework.Metamodel.Menu {
 
         private ITypeSpecImmutable ObjectSpec => Metamodel.GetSpecification(Type);
 
-        private IList<IActionSpecImmutable> ActionsForObject => ObjectSpec.ObjectActions.ToList();
+        private IList<IActionSpecImmutable> ActionsForObject => ObjectSpec.OrderedObjectActions.ToList();
 
-        private IList<IActionSpecImmutable> ActionsForType(Type type) => Metamodel.GetSpecification(type).ObjectActions.ToList();
+        private IList<IActionSpecImmutable> ActionsForType(Type type) => Metamodel.GetSpecification(type).OrderedObjectActions.ToList();
 
         private MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName, string id = null) {
             var subMenu = new MenuImpl(Metamodel, Type, false, subMenuName);

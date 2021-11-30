@@ -23,13 +23,13 @@ namespace NakedFramework.Architecture.SpecImmutable {
         string FullName { get; }
         string ShortName { get; }
         IMenuImmutable ObjectMenu { get; }
-        IList<IActionSpecImmutable> ObjectActions { get; }
-        IList<IActionSpecImmutable> ContributedActions { get; }
-        IList<IActionSpecImmutable> CollectionContributedActions { get; }
-        IList<IActionSpecImmutable> FinderActions { get; }
+        IReadOnlyList<IActionSpecImmutable> OrderedObjectActions { get; }
+        IReadOnlyList<IActionSpecImmutable> ContributedActions { get; }
+        IReadOnlyList<IActionSpecImmutable> CollectionContributedActions { get; }
+        IReadOnlyList<IActionSpecImmutable> FinderActions { get; }
         IReadOnlyList<IAssociationSpecImmutable> OrderedFields { get; }
-        IList<ITypeSpecImmutable> Interfaces { get; }
-        IList<ITypeSpecImmutable> Subclasses { get; }
+        IReadOnlyList<ITypeSpecImmutable> Interfaces { get; }
+        IReadOnlyList<ITypeSpecImmutable> Subclasses { get; }
         ITypeSpecImmutable Superclass { get; }
         bool IsObject { get; }
         bool IsCollection { get; }

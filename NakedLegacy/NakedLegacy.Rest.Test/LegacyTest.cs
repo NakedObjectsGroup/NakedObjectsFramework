@@ -28,6 +28,7 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace NakedLegacy.Rest.Test {
+    [Ignore("until project restarted")]
     public class LegacyTest : AcceptanceTestCase {
         protected  Type[] LegacyTypes { get; } = {
             typeof(ClassWithTextString),

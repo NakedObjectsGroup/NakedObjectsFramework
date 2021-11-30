@@ -26,13 +26,15 @@ namespace NakedFramework.Metamodel.SpecImmutable {
         private IIdentifier identifier;
         private ImmutableList<ITypeSpecImmutable> subclasses;
         private List<IAssociationSpecImmutable> unorderedFields;
+        private List<IActionSpecImmutable> unorderedObjectActions;
+        private List<IActionSpecImmutable> unorderedContributedActions = new();
+        private Type[] services;
 
         protected TypeSpecImmutable(Type type, bool isRecognized)
         {
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
             Interfaces = ImmutableList<ITypeSpecImmutable>.Empty;
             subclasses = ImmutableList<ITypeSpecImmutable>.Empty;
-            ContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
             CollectionContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
             FinderActions = ImmutableList<IActionSpecImmutable>.Empty;
             ReflectionStatus = isRecognized ? ReflectionStatus.PlaceHolder : ReflectionStatus.PendingIntrospection;
@@ -40,7 +42,7 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         private ReflectionStatus ReflectionStatus { get; set; }
 
-        public void AddContributedFunctions(IList<IActionSpecImmutable> contributedFunctions) => ContributedActions = ContributedActions.Union(contributedFunctions).ToImmutableList();
+        public void AddContributedFunctions(IList<IActionSpecImmutable> contributedFunctions) => unorderedContributedActions.AddRange(contributedFunctions);
 
         public void AddContributedFields(IList<IAssociationSpecImmutable> addedFields) => unorderedFields.AddRange(addedFields);
 
@@ -66,7 +68,11 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             return baseType != null && IsAssignableToGenericType(baseType, genericType);
         }
 
-        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) => ContributedActions = ContributedActions.Union(contributedActions).ToImmutableList();
+        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions, Type[] services)
+        {
+            unorderedContributedActions = contributedActions.ToList();
+            this.services = services;
+        }
 
         public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) => CollectionContributedActions = CollectionContributedActions.Union(collectionContributedActions).ToImmutableList();
 
@@ -74,9 +80,9 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public void RemoveAction(IActionSpecImmutable action)
         {
-            if (ObjectActions.Contains(action))
+            if (UnorderedObjectActions.Contains(action))
             {
-                ObjectActions = ObjectActions.Except(new[] { action }).ToImmutableList();
+                UnorderedObjectActions.Remove(action);
             }
         }
 
@@ -85,7 +91,7 @@ namespace NakedFramework.Metamodel.SpecImmutable {
         {
             decorator.DecorateAllHoldersFacets(this);
             UnorderedFields.ForEach(decorator.DecorateAllHoldersFacets);
-            ObjectActions.Where(s => s != null).ForEach(action => DecorateAction(decorator, action));
+            UnorderedObjectActions.Where(s => s != null).ForEach(action => DecorateAction(decorator, action));
         }
 
         private static void DecorateAction(IFacetDecoratorSet decorator, IActionSpecImmutable action)
@@ -107,7 +113,7 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             Superclass = introspector.Superclass;
             Interfaces = introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList();
             unorderedFields = introspector.UnorderedFields.ToList();
-            ObjectActions = introspector.ObjectActions;
+            unorderedObjectActions = introspector.UnorderedObjectActions.ToList();
             DecorateAllFacets(decorator);
             Type = introspector.SpecificationType;
             ReflectionStatus = ReflectionStatus.Introspected;
@@ -132,15 +138,15 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public IMenuImmutable ObjectMenu => GetFacet<IMenuFacet>()?.GetMenu();
 
-        public IList<IActionSpecImmutable> ObjectActions { get; private set; }
-        public IList<IActionSpecImmutable> ContributedActions { get; private set; }
-        public IList<IActionSpecImmutable> CollectionContributedActions { get; private set; }
-        public IList<IActionSpecImmutable> FinderActions { get; private set; }
+        public IReadOnlyList<IActionSpecImmutable> OrderedObjectActions { get; private set; }
+        public IReadOnlyList<IActionSpecImmutable> ContributedActions { get; private set; }
+        public IReadOnlyList<IActionSpecImmutable> CollectionContributedActions { get; private set; }
+        public IReadOnlyList<IActionSpecImmutable> FinderActions { get; private set; }
         public IReadOnlyList<IAssociationSpecImmutable> OrderedFields { get; private set; }
 
-        public IList<ITypeSpecImmutable> Interfaces { get; private set; }
+        public IReadOnlyList<ITypeSpecImmutable> Interfaces { get; private set; }
 
-        public IList<ITypeSpecImmutable> Subclasses => subclasses;
+        public IReadOnlyList<ITypeSpecImmutable> Subclasses => subclasses;
 
         public override IFacet GetFacet(Type facetType)
         {
@@ -187,6 +193,11 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public IList<IAssociationSpecImmutable> UnorderedFields { 
             get => unorderedFields; 
+        }
+
+        public IList<IActionSpecImmutable> UnorderedObjectActions
+        {
+            get => unorderedObjectActions;
         }
 
         public bool IsOfType(ITypeSpecImmutable otherSpecification)
@@ -253,7 +264,7 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             info.AddValue<IList<ITypeSpecImmutable>>("Interfaces", Interfaces.ToList());
             info.AddValue<ITypeSpecImmutable>("Superclass", Superclass);
             info.AddValue<IList<ITypeSpecImmutable>>("subclasses", subclasses.ToList());
-            info.AddValue<IList<IActionSpecImmutable>>("ObjectActions", ObjectActions.ToList());
+            info.AddValue<IList<IActionSpecImmutable>>("ObjectActions", OrderedObjectActions.ToList());
             info.AddValue<IList<IActionSpecImmutable>>("ContributedActions", ContributedActions.ToList());
             info.AddValue<IList<IActionSpecImmutable>>("CollectionContributedActions", CollectionContributedActions.ToList());
             info.AddValue<IList<IActionSpecImmutable>>("FinderActions", FinderActions.ToList());
@@ -265,17 +276,24 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             OrderedFields = tempFields.ToImmutableList();
             Interfaces = tempInterfaces.ToImmutableList();
             subclasses = tempSubclasses.ToImmutableList();
-            ObjectActions = tempObjectActions.ToImmutableList();
+            OrderedObjectActions = tempObjectActions.ToImmutableList();
             ContributedActions = tempContributedActions.ToImmutableList();
             CollectionContributedActions = tempCollectionContributedActions.ToImmutableList();
             FinderActions = tempFinderActions.ToImmutableList();
             base.OnDeserialization(sender);
         }
 
+        private static IReadOnlyList<T> CreateOrderedListOfMembers<T>(IEnumerable<T> members) where T : IMemberSpecImmutable => CreateOrderedMembers(members).ToImmutableList();
+
+        private static IEnumerable<T> CreateOrderedMembers<T>(IEnumerable<T> members) where T : IMemberSpecImmutable => members.OrderBy(m => m, new MemberOrderComparator<T>());
+
         public void CompleteIntegration()
         {
-            OrderedFields = UnorderedFields.OrderBy(m => m, new MemberOrderComparator<IAssociationSpecImmutable>()).ToImmutableList();
+            OrderedFields = CreateOrderedListOfMembers(UnorderedFields);
             FacetUtils.ErrorOnDuplicates(OrderedFields.Select(a => new FacetUtils.ActionHolder(a)).ToList());
+            OrderedObjectActions = CreateOrderedListOfMembers(UnorderedObjectActions);
+
+            ContributedActions = CreateOrderedMembers(unorderedContributedActions).GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new { service, actions }).OrderBy(a => Array.IndexOf(services, a.service)).SelectMany(a => a.actions).ToImmutableList();
         }
 
         #endregion

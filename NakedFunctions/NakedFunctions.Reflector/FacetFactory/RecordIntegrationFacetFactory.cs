@@ -29,9 +29,9 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;
 
-        private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecImmutable[] functions) {
+        private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecBuilder[] functions) {
             var objectContribActions = functions.AsParallel().SelectMany(functionsSpec => {
-                var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
+                var serviceActions = functionsSpec.UnorderedObjectActions.Where(sa => sa != null).ToArray();
 
                 var matchingActionsForObject = new List<IActionSpecImmutable>();
 
@@ -50,7 +50,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
 
             var collectionContribActions = functions.AsParallel().SelectMany(functionsSpec => {
-                var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
+                var serviceActions = functionsSpec.UnorderedObjectActions.Where(sa => sa != null).ToArray();
 
                 var matchingActionsForCollection = new List<IActionSpecImmutable>();
 
@@ -72,7 +72,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private static Action<IMetamodelBuilder> GetAddAction(Type type) {
             void Action(IMetamodelBuilder m) {
                 if (m.GetSpecification(type) is IObjectSpecBuilder spec) {
-                    var functions = m.AllSpecifications.Where(IsStatic).ToArray();
+                    var functions = m.AllSpecifications.Where(IsStatic).OfType<ITypeSpecBuilder>().ToArray();
                     PopulateContributedFunctions(spec, functions);
                 }
             }

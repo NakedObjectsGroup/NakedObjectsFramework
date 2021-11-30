@@ -53,7 +53,7 @@ namespace NakedFramework.Core.Spec {
 
         private Type Type => InnerSpec.Type;
 
-        protected IActionSpec[] ObjectActions => objectActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ObjectActions);
+        protected IActionSpec[] ObjectActions => objectActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedObjectActions);
 
         protected SpecFactory MemberFactory { get; }
 

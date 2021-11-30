@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace NakedFramework.Architecture.SpecImmutable {
     public interface IObjectSpecBuilder : IObjectSpecImmutable, ITypeSpecBuilder {
-        void AddContributedActions(IList<IActionSpecImmutable> contributedActions);
+        void AddContributedActions(IList<IActionSpecImmutable> contributedActions, System.Type[] services);
         void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionCntributedActions);
         void AddFinderActions(IList<IActionSpecImmutable> finderActions);
     }

@@ -37,5 +37,6 @@ namespace NakedFramework.Architecture.SpecImmutable {
         void CompleteIntegration();
 
         IList<IAssociationSpecImmutable> UnorderedFields { get; }
+        IList<IActionSpecImmutable> UnorderedObjectActions { get; }
     }
 }

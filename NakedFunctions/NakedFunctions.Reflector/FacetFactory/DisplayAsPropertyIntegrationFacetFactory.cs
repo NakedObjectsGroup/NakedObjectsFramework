@@ -29,9 +29,9 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
 
-        private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
+        private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecBuilder[] functions, IMetamodel metamodel) {
             var result = functions.AsParallel().SelectMany(functionsSpec => {
-                var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
+                var serviceActions =  functionsSpec.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
 
                 var matchingActionsForObject = new List<IActionSpecImmutable>();
 
@@ -53,7 +53,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private static Action<IMetamodelBuilder> GetAddAction(Type type) {
             void Action(IMetamodelBuilder m) {
                 if (m.GetSpecification(type) is ITypeSpecBuilder spec) {
-                    var functions = m.AllSpecifications.Where(IsStatic).ToArray();
+                    var functions = m.AllSpecifications.Where(IsStatic).OfType<ITypeSpecBuilder>().ToArray();
                     PopulateDisplayAsPropertyFunctions(spec, functions, m);
                 }
             }

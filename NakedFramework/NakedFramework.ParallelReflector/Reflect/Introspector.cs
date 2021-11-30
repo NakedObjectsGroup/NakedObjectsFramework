@@ -62,7 +62,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
         public IList<IAssociationSpecImmutable> UnorderedFields { get; set; }
 
-        public IList<IActionSpecImmutable> ObjectActions => OrderedObjectActions.ToArray();
+        public IList<IActionSpecImmutable> UnorderedObjectActions { get; set; }
 
         public ITypeSpecBuilder[] Interfaces { get; set; }
         public ITypeSpecBuilder Superclass { get; set; }
@@ -122,8 +122,6 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
         private void AddAsSubclass(ITypeSpecImmutable spec) => Superclass?.AddSubclass(spec);
 
-        private static IList<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable => members.OrderBy(m => m, new MemberOrderComparator<T>()).ToArray();
-
         protected bool IsUnsupportedSystemType(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => FasterTypeUtils.IsSystem(type) && !Reflector.FindSpecification(type, metamodel);
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -139,9 +137,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectActions(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // find the actions ...
-            IActionSpecImmutable[] findObjectActionMethods;
-            (findObjectActionMethods, metamodel) = FindActionMethods(spec, metamodel);
-            OrderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
+            (UnorderedObjectActions, metamodel) = FindActionMethods(spec, metamodel);
             return metamodel;
         }
 
