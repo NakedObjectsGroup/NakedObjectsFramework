@@ -26,7 +26,7 @@ namespace NakedFramework.Architecture.Reflect {
         IIdentifier Identifier { get; }
         string FullName { get; }
         string ShortName { get; }
-        IList<IAssociationSpecImmutable> Fields { get; }
+        IList<IAssociationSpecImmutable> UnorderedFields { get; }
         IList<IActionSpecImmutable> ObjectActions { get; }
         ITypeSpecBuilder[] Interfaces { get; set; }
         ITypeSpecBuilder Superclass { get; set; }

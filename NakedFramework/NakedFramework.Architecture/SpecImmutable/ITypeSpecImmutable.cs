@@ -27,7 +27,7 @@ namespace NakedFramework.Architecture.SpecImmutable {
         IList<IActionSpecImmutable> ContributedActions { get; }
         IList<IActionSpecImmutable> CollectionContributedActions { get; }
         IList<IActionSpecImmutable> FinderActions { get; }
-        IList<IAssociationSpecImmutable> Fields { get; }
+        IReadOnlyList<IAssociationSpecImmutable> OrderedFields { get; }
         IList<ITypeSpecImmutable> Interfaces { get; }
         IList<ITypeSpecImmutable> Subclasses { get; }
         ITypeSpecImmutable Superclass { get; }

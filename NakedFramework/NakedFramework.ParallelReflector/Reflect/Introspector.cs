@@ -32,7 +32,6 @@ namespace NakedFramework.ParallelReflector.Reflect {
             FacetFactorySet = reflector.FacetFactorySet;
         }
 
-        private IList<IAssociationSpecImmutable> OrderedFields { get; set; }
         private IList<IActionSpecImmutable> OrderedObjectActions { get; set; }
         private PropertyInfo[] Properties { get; set; }
         protected IReflector Reflector { get; }
@@ -61,7 +60,7 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
         public IIdentifier Identifier { get; private set; }
 
-        public IList<IAssociationSpecImmutable> Fields => OrderedFields.ToArray();
+        public IList<IAssociationSpecImmutable> UnorderedFields { get; set; }
 
         public IList<IActionSpecImmutable> ObjectActions => OrderedObjectActions.ToArray();
 
@@ -129,12 +128,10 @@ namespace NakedFramework.ParallelReflector.Reflect {
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (spec is IObjectSpecImmutable objectSpec) {
-                IAssociationSpecImmutable[] fields;
-                (fields, metamodel) = FindAndCreateFieldSpecs(objectSpec, metamodel);
-                OrderedFields = CreateSortedListOfMembers(fields);
+                (UnorderedFields, metamodel) = FindAndCreateFieldSpecs(objectSpec, metamodel);
             }
             else {
-                OrderedFields = new List<IAssociationSpecImmutable>();
+                UnorderedFields = new List<IAssociationSpecImmutable>();
             }
 
             return metamodel;

@@ -21,11 +21,14 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.SpecImmutable {
     [Serializable]
-    public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
+    public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder
+    {
         private IIdentifier identifier;
         private ImmutableList<ITypeSpecImmutable> subclasses;
+        private List<IAssociationSpecImmutable> unorderedFields;
 
-        protected TypeSpecImmutable(Type type, bool isRecognized) {
+        protected TypeSpecImmutable(Type type, bool isRecognized)
+        {
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
             Interfaces = ImmutableList<ITypeSpecImmutable>.Empty;
             subclasses = ImmutableList<ITypeSpecImmutable>.Empty;
@@ -39,20 +42,23 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public void AddContributedFunctions(IList<IActionSpecImmutable> contributedFunctions) => ContributedActions = ContributedActions.Union(contributedFunctions).ToImmutableList();
 
-        public void AddContributedFields(IList<IAssociationSpecImmutable> addedToFields) => Fields = addedToFields.ToImmutableList();
+        public void AddContributedFields(IList<IAssociationSpecImmutable> addedFields) => unorderedFields.AddRange(addedFields);
 
         public bool IsPlaceHolder => ReflectionStatus == ReflectionStatus.PlaceHolder;
 
         public bool IsPendingIntrospection => ReflectionStatus == ReflectionStatus.PendingIntrospection;
 
-        private static bool IsAssignableToGenericType(Type givenType, Type genericType) {
+        private static bool IsAssignableToGenericType(Type givenType, Type genericType)
+        {
             var interfaceTypes = givenType.GetInterfaces();
 
-            if (interfaceTypes.Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType)) {
+            if (interfaceTypes.Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType))
+            {
                 return true;
             }
 
-            if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType) {
+            if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
+            {
                 return true;
             }
 
@@ -66,20 +72,24 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public void AddFinderActions(IList<IActionSpecImmutable> finderActions) => FinderActions = finderActions.ToImmutableList();
 
-        public void RemoveAction(IActionSpecImmutable action) {
-            if (ObjectActions.Contains(action)) {
-                ObjectActions = ObjectActions.Except(new[] {action}).ToImmutableList();
+        public void RemoveAction(IActionSpecImmutable action)
+        {
+            if (ObjectActions.Contains(action))
+            {
+                ObjectActions = ObjectActions.Except(new[] { action }).ToImmutableList();
             }
         }
 
 
-        private void DecorateAllFacets(IFacetDecoratorSet decorator) {
+        private void DecorateAllFacets(IFacetDecoratorSet decorator)
+        {
             decorator.DecorateAllHoldersFacets(this);
-            Fields.ForEach(decorator.DecorateAllHoldersFacets);
+            UnorderedFields.ForEach(decorator.DecorateAllHoldersFacets);
             ObjectActions.Where(s => s != null).ForEach(action => DecorateAction(decorator, action));
         }
 
-        private static void DecorateAction(IFacetDecoratorSet decorator, IActionSpecImmutable action) {
+        private static void DecorateAction(IFacetDecoratorSet decorator, IActionSpecImmutable action)
+        {
             decorator.DecorateAllHoldersFacets(action);
             action.Parameters.ForEach(decorator.DecorateAllHoldersFacets);
         }
@@ -88,14 +98,15 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         #region ITypeSpecBuilder Members
 
-        public IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
+        {
             metamodel = introspector.IntrospectType(Type, this, metamodel);
             identifier = introspector.Identifier;
             FullName = introspector.FullName;
             ShortName = introspector.ShortName;
             Superclass = introspector.Superclass;
             Interfaces = introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList();
-            Fields = introspector.Fields;
+            unorderedFields = introspector.UnorderedFields.ToList();
             ObjectActions = introspector.ObjectActions;
             DecorateAllFacets(decorator);
             Type = introspector.SpecificationType;
@@ -103,8 +114,10 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             return metamodel;
         }
 
-        public void AddSubclass(ITypeSpecImmutable subclass) {
-            lock (subclasses) {
+        public void AddSubclass(ITypeSpecImmutable subclass)
+        {
+            lock (subclasses)
+            {
                 subclasses = subclasses.Add(subclass);
             }
         }
@@ -123,32 +136,38 @@ namespace NakedFramework.Metamodel.SpecImmutable {
         public IList<IActionSpecImmutable> ContributedActions { get; private set; }
         public IList<IActionSpecImmutable> CollectionContributedActions { get; private set; }
         public IList<IActionSpecImmutable> FinderActions { get; private set; }
-        public IList<IAssociationSpecImmutable> Fields { get; private set; }
+        public IReadOnlyList<IAssociationSpecImmutable> OrderedFields { get; private set; }
 
         public IList<ITypeSpecImmutable> Interfaces { get; private set; }
 
         public IList<ITypeSpecImmutable> Subclasses => subclasses;
 
-        public override IFacet GetFacet(Type facetType) {
+        public override IFacet GetFacet(Type facetType)
+        {
             var facet = base.GetFacet(facetType);
-            if (FacetUtils.IsNotANoopFacet(facet)) {
+            if (FacetUtils.IsNotANoopFacet(facet))
+            {
                 return facet;
             }
 
             var noopFacet = facet;
 
-            if (Superclass != null) {
+            if (Superclass != null)
+            {
                 var superClassFacet = Superclass.GetFacet(facetType);
-                if (FacetUtils.IsNotANoopFacet(superClassFacet)) {
+                if (FacetUtils.IsNotANoopFacet(superClassFacet))
+                {
                     return superClassFacet;
                 }
 
                 noopFacet ??= superClassFacet;
             }
 
-            foreach (var interfaceSpec in Interfaces) {
+            foreach (var interfaceSpec in Interfaces)
+            {
                 var interfaceFacet = interfaceSpec.GetFacet(facetType);
-                if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
+                if (FacetUtils.IsNotANoopFacet(interfaceFacet))
+                {
                     return interfaceFacet;
                 }
 
@@ -166,19 +185,27 @@ namespace NakedFramework.Metamodel.SpecImmutable {
 
         public virtual bool IsObject => !IsCollection;
 
-        public bool IsOfType(ITypeSpecImmutable otherSpecification) {
-            if (otherSpecification == this) {
+        public IList<IAssociationSpecImmutable> UnorderedFields { 
+            get => unorderedFields; 
+        }
+
+        public bool IsOfType(ITypeSpecImmutable otherSpecification)
+        {
+            if (otherSpecification == this)
+            {
                 return true;
             }
 
             var otherType = otherSpecification.Type;
 
-            if (otherType.IsAssignableFrom(Type)) {
+            if (otherType.IsAssignableFrom(Type))
+            {
                 return true;
             }
 
             // match  generic types 
-            if (Type.IsGenericType && IsCollection && otherType.IsGenericType && otherSpecification.IsCollection) {
+            if (Type.IsGenericType && IsCollection && otherType.IsGenericType && otherSpecification.IsCollection)
+            {
                 var thisGenericType = Type.GetGenericTypeDefinition();
                 var otherGenericType = Type.GetGenericTypeDefinition();
                 return thisGenericType == otherGenericType || IsAssignableToGenericType(otherType, thisGenericType);
@@ -200,7 +227,8 @@ namespace NakedFramework.Metamodel.SpecImmutable {
         private readonly IList<ITypeSpecImmutable> tempSubclasses;
 
         // The special constructor is used to deserialize values. 
-        protected TypeSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
+        protected TypeSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
             Type = info.GetValue<Type>("Type");
             FullName = info.GetValue<string>("FullName");
             ShortName = info.GetValue<string>("ShortName");
@@ -215,12 +243,13 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             tempFinderActions = info.GetValue<IList<IActionSpecImmutable>>("FinderActions");
         }
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
             info.AddValue<Type>("Type", Type);
             info.AddValue<string>("FullName", FullName);
             info.AddValue<string>("ShortName", ShortName);
             info.AddValue<IIdentifier>("identifier", identifier);
-            info.AddValue<IList<IAssociationSpecImmutable>>("Fields", Fields.ToList());
+            info.AddValue<IList<IAssociationSpecImmutable>>("Fields", OrderedFields.ToList());
             info.AddValue<IList<ITypeSpecImmutable>>("Interfaces", Interfaces.ToList());
             info.AddValue<ITypeSpecImmutable>("Superclass", Superclass);
             info.AddValue<IList<ITypeSpecImmutable>>("subclasses", subclasses.ToList());
@@ -231,8 +260,9 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             base.GetObjectData(info, context);
         }
 
-        public override void OnDeserialization(object sender) {
-            Fields = tempFields.ToImmutableList();
+        public override void OnDeserialization(object sender)
+        {
+            OrderedFields = tempFields.ToImmutableList();
             Interfaces = tempInterfaces.ToImmutableList();
             subclasses = tempSubclasses.ToImmutableList();
             ObjectActions = tempObjectActions.ToImmutableList();
@@ -240,6 +270,12 @@ namespace NakedFramework.Metamodel.SpecImmutable {
             CollectionContributedActions = tempCollectionContributedActions.ToImmutableList();
             FinderActions = tempFinderActions.ToImmutableList();
             base.OnDeserialization(sender);
+        }
+
+        public void CompleteIntegration()
+        {
+            OrderedFields = UnorderedFields.OrderBy(m => m, new MemberOrderComparator<IAssociationSpecImmutable>()).ToImmutableList();
+            FacetUtils.ErrorOnDuplicates(OrderedFields.Select(a => new FacetUtils.ActionHolder(a)).ToList());
         }
 
         #endregion

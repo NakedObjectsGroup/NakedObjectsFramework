@@ -72,13 +72,20 @@ namespace NakedFunctions.Reflector.FacetFactory {
             var onType = recognizedMethod.ContributedToType();
             if (onType is not null) {
                 action = m => {
-                    var spec = m.GetSpecification(onType);
-                    var propertyName = recognizedMethod.Name.Remove(0, 4);
-                    var property = spec.Fields.SingleOrDefault(f => f.Name == NameUtils.NaturalName(propertyName));
+                    if (m.GetSpecification(onType) is ITypeSpecBuilder spec)
+                    {
+                        var propertyName = recognizedMethod.Name.Remove(0, 4);
+                        var property = spec.UnorderedFields.SingleOrDefault(f => f.Name == NameUtils.NaturalName(propertyName));
 
-                    if (property is not null) {
-                        var facet = new HideForContextViaFunctionFacet(recognizedMethod, property, LoggerFactory.CreateLogger<HideForContextViaFunctionFacet>());
-                        FacetUtils.AddFacet(facet);
+                        if (property is not null)
+                        {
+                            var facet = new HideForContextViaFunctionFacet(recognizedMethod, property, LoggerFactory.CreateLogger<HideForContextViaFunctionFacet>());
+                            FacetUtils.AddFacet(facet);
+                        }
+                        else
+                        {
+                            logger.LogWarning($"No matching property found for {recognizedMethod.Name} on {spec.FullName}");
+                        }
                     }
                 };
             }

@@ -96,7 +96,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
 
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
-                var propertySpec = spec.Fields.First();
+                var propertySpec = spec.OrderedFields.First();
                 var facet = propertySpec.GetFacet<IDisabledFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(WhenTo.Always, facet.Value);
@@ -274,13 +274,13 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var propertySpec = spec.Fields[0];
+                var propertySpec = spec.OrderedFields[0];
                 var facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(false, propertySpec.ReturnSpec.IsCollection);
                 Assert.AreEqual("Always disabled", propertySpec.GetFacet<IDisabledFacet>().DisabledReason(null));
 
-                propertySpec = spec.Fields[1];
+                propertySpec = spec.OrderedFields[1];
                 facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(true, propertySpec.ReturnSpec.IsCollection);
@@ -327,7 +327,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<IgnoredClass>());
-                Assert.AreEqual(0, spec.Fields.Count);
+                Assert.AreEqual(0, spec.OrderedFields.Count);
             }
         }
 
@@ -424,7 +424,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual("Class Description", facet.Value);
 
-                var propertySpec = spec.Fields.First();
+                var propertySpec = spec.OrderedFields.First();
 
                 facet = propertySpec.GetFacet<IDescribedAsFacet>();
                 Assert.IsNotNull(facet);
@@ -459,7 +459,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(Do.Rendering, facet.What);
 
-                var propertySpec = spec.Fields.First();
+                var propertySpec = spec.OrderedFields.First();
 
                 facet = propertySpec.GetFacet<IEagerlyFacet>();
                 Assert.IsNotNull(facet);
@@ -490,7 +490,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<TableViewClass>());
 
-                var propertySpec = spec.Fields.First();
+                var propertySpec = spec.OrderedFields.First();
 
                 var facet = propertySpec.GetFacet<ITableViewFacet>();
                 Assert.IsNotNull(facet);
@@ -526,7 +526,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<MaskClass>());
 
-                var propertySpec = spec.Fields.First();
+                var propertySpec = spec.OrderedFields.First();
                 var facet = propertySpec.GetFacet<IMaskFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual("Property Mask", facet.Value);
@@ -550,8 +550,8 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<OptionallyClass>());
 
-                var propertySpec1 = spec.Fields.First();
-                var propertySpec2 = spec.Fields[1];
+                var propertySpec1 = spec.OrderedFields.First();
+                var propertySpec2 = spec.OrderedFields[1];
 
                 var facet = propertySpec1.GetFacet<IMandatoryFacet>();
                 Assert.IsNotNull(facet);
@@ -596,7 +596,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual("Class Name", facet.Value);
 
-                var propertySpec = spec.Fields.First();
+                var propertySpec = spec.OrderedFields.First();
 
                 facet = propertySpec.GetFacet<INamedFacet>();
                 Assert.IsNotNull(facet);
@@ -636,7 +636,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var facet = spec.GetFacet<IRegExFacet>();
                 Assert.IsNull(facet);
 
-                var propertySpec = spec.Fields.First();
+                var propertySpec = spec.OrderedFields.First();
 
                 facet = propertySpec.GetFacet<IRegExFacet>();
                 Assert.IsNull(facet);
@@ -675,7 +675,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual("Class Hint", facet.Value);
 
-                var propertySpec = spec.Fields.First();
+                var propertySpec = spec.OrderedFields.First();
 
                 facet = propertySpec.GetFacet<IPresentationHintFacet>();
                 Assert.IsNotNull(facet);
@@ -763,7 +763,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<MultilineClass>());
 
-                var propertySpec = spec.Fields.First();
+                var propertySpec = spec.OrderedFields.First();
 
                 var facet = propertySpec.GetFacet<IMultiLineFacet>();
                 Assert.IsNotNull(facet);
@@ -803,8 +803,8 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<OrderClass>());
 
-                var propertySpec = spec.Fields.First();
-                var collectionSpec = spec.Fields[1];
+                var propertySpec = spec.OrderedFields.First();
+                var collectionSpec = spec.OrderedFields[1];
 
                 var facet = propertySpec.GetFacet<IMemberOrderFacet>();
                 Assert.IsNotNull(facet);
@@ -845,7 +845,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
 
-                var facet = spec.Fields.Single(f => f.Name == "Hidden Property").GetFacet<IHiddenFacet>();
+                var facet = spec.OrderedFields.Single(f => f.Name == "Hidden Property").GetFacet<IHiddenFacet>();
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(WhenTo.Always, facet.Value);
             }
@@ -867,7 +867,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
-                var facet = spec.Fields.Single(f => f.Name == "Hidden Property Via Function").GetFacet<IHideForContextFacet>();
+                var facet = spec.OrderedFields.Single(f => f.Name == "Hidden Property Via Function").GetFacet<IHideForContextFacet>();
                 Assert.IsNotNull(facet);
             }
         }
@@ -889,7 +889,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<VersionedClass>());
 
-                var facet = spec.Fields.First().GetFacet<IConcurrencyCheckFacet>();
+                var facet = spec.OrderedFields.First().GetFacet<IConcurrencyCheckFacet>();
                 Assert.IsNotNull(facet);
             }
         }

@@ -22,6 +22,9 @@ namespace NakedFunctions.Reflector.Reflect {
                 typeof(DisableFunctionFacetFactory),
                 typeof(DisabledAnnotationFacetFactory),
                 typeof(ActionValidateViaFunctionFacetFactory),
+                // must come before any facets that identify properties
+                typeof(DisplayAsPropertyAnnotationFacetFactory),
+                typeof(DisplayAsPropertyIntegrationFacetFactory),
                 typeof(HideFunctionIntegrationFacetFactory),
                 typeof(ActionDefaultViaFunctionFacetFactory),
                 typeof(ActionChoicesViaFunctionFacetFactory),
@@ -54,8 +57,6 @@ namespace NakedFunctions.Reflector.Reflect {
                 typeof(OptionalAnnotationFacetFactory),
                 typeof(RegExAnnotationFacetFactory),
                 typeof(CreateNewAnnotationFacetFactory),
-                typeof(DisplayAsPropertyAnnotationFacetFactory),
-                typeof(DisplayAsPropertyIntegrationFacetFactory),
                 typeof(SystemClassMethodFilteringFactory),
                 typeof(SystemClassPropertyFilteringFactory),
                 typeof(DefaultNamingFacetFactory), // must come after Named and Plural factories

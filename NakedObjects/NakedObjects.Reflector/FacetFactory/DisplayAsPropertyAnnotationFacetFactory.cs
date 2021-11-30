@@ -42,9 +42,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             if (specification is IActionSpecImmutable actionSpec) {
                 void Action(IMetamodelBuilder b) {
                     var adaptedMember = ImmutableSpecFactory.CreateSpecAdapter(actionSpec);
-                    var orderedFields = displayOnTypeSpec.Fields.Append(adaptedMember).OrderBy(f => f, new MemberOrderComparator<IAssociationSpecImmutable>()).ToList();
-                    FacetUtils.ErrorOnDuplicates(orderedFields.Select(a => new FacetUtils.ActionHolder(a)).ToList());
-                    displayOnTypeSpec.AddContributedFields(orderedFields);
+                    displayOnTypeSpec.AddContributedFields(new[] { adaptedMember });
                     RemoveAction(actionSpec);
                 }
 

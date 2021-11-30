@@ -46,9 +46,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             if (result.Any()) {
                 var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
-                var orderedFields = spec.Fields.Union(adaptedMembers).OrderBy(f => f, new MemberOrderComparator<IAssociationSpecImmutable>()).ToList();
-                FacetUtils.ErrorOnDuplicates(orderedFields.Select(a => new FacetUtils.ActionHolder(a)).ToList());
-                spec.AddContributedFields(orderedFields);
+                spec.AddContributedFields(adaptedMembers);
             }
         }
 

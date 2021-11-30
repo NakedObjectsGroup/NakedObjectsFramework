@@ -42,7 +42,7 @@ namespace NakedFramework.Core.Spec {
 
         #region IObjectSpec Members
 
-        private IAssociationSpec[] ObjectFields => objectFields ??= InnerSpec.Fields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray();
+        private IAssociationSpec[] ObjectFields => objectFields ??= InnerSpec.OrderedFields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray();
 
         public IAssociationSpec[] Properties => ObjectFields;
 
