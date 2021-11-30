@@ -19,9 +19,8 @@ namespace NakedLegacy.Types {
 
         private Action<T> UpdateBackingField { get; } = _ => { };
 
-        public override string ToString() => value.ToString();
+        public override string ToString() => Value.ToString();
 
-        public Title Title() => new Title(Value);
-
+        public Title Title() => new Title(ToString());
     }
 }
