@@ -50,7 +50,7 @@ namespace NakedFramework.ModelBuilding.Component {
             integrationFacets.ForEach(f => f.Execute(metamodelBuilder));
             integrationFacets.ForEach(f => f.Remove());
 
-            metamodelBuilder.AllSpecifications.OfType<ITypeSpecBuilder>().ForEach(spec => spec.CompleteIntegration());
+            metamodelBuilder.AllSpecifications.OfType<ITypeSpecBuilder>().AsParallel().ForEach(spec => spec.CompleteIntegration());
 
             //Menus installed once rest of metamodel has been built:
             InstallMainMenus(metamodelBuilder);
