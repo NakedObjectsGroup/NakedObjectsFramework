@@ -168,7 +168,7 @@ namespace NakedFramework.Metamodel.Menu {
                 throw new Exception("No default type has been specified (as the source for the contributed actions)");
             }
 
-            ObjectSpec?.ContributedActions.ForEach(AddContributed);
+            ObjectSpec?.OrderedContributedActions.ForEach(AddContributed);
             return this;
         }
 

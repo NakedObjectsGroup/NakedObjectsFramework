@@ -75,7 +75,7 @@ namespace NakedFramework.ModelBuilding.Component {
             }
 
             foreach (var spec in metamodelBuilder.AllSpecifications.AsParallel()) {
-                spec.OrderedObjectActions.Union(spec.ContributedActions).Select(ToActionHolder).ErrorOnDuplicates();
+                spec.OrderedObjectActions.Union(spec.OrderedContributedActions).Select(ToActionHolder).ErrorOnDuplicates();
             }
         }
 
@@ -150,7 +150,7 @@ namespace NakedFramework.ModelBuilding.Component {
                     }
                 }
 
-                return (matchingActionsForObject, matchingActionsForCollection, matchingFinderActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).ToList());
+                return (matchingActionsForObject, matchingActionsForCollection, matchingFinderActions);
             }).Aggregate((new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>()),
                          (a, t) => {
                              var (contrib, collContrib, finder) = a;
@@ -160,8 +160,6 @@ namespace NakedFramework.ModelBuilding.Component {
                              finder.AddRange(fa);
                              return a;
                          });
-
-            //var groupedContribActions = contribActions.GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new {service, actions}).OrderBy(a => Array.IndexOf(services, a.service)).SelectMany(a => a.actions).ToList();
 
             spec.AddContributedActions(contribActions, services);
             spec.AddCollectionContributedActions(collContribActions);

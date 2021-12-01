@@ -251,7 +251,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
                 var facet = actionSpec.GetFacet<ICreateNewFacet>();
                 Assert.IsNotNull(facet);
             }
@@ -364,16 +364,16 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                AssertParm(spec.ContributedActions[0], true);
-                AssertParm(spec.ContributedActions[1], (byte) 66);
-                AssertParm(spec.ContributedActions[2], 'g');
-                AssertParm(spec.ContributedActions[3], DateTime.UtcNow.AddDays(35));
-                AssertParm(spec.ContributedActions[4], 56.23);
-                AssertParm(spec.ContributedActions[5], (float) 22.82);
-                AssertParm(spec.ContributedActions[6], 72);
-                AssertParm(spec.ContributedActions[7], (long) 91);
-                AssertParm(spec.ContributedActions[8], (short) 30);
-                AssertParm(spec.ContributedActions[9], "a default");
+                AssertParm(spec.OrderedContributedActions[0], true);
+                AssertParm(spec.OrderedContributedActions[1], (byte) 66);
+                AssertParm(spec.OrderedContributedActions[2], 'g');
+                AssertParm(spec.OrderedContributedActions[3], DateTime.UtcNow.AddDays(35));
+                AssertParm(spec.OrderedContributedActions[4], 56.23);
+                AssertParm(spec.OrderedContributedActions[5], (float) 22.82);
+                AssertParm(spec.OrderedContributedActions[6], 72);
+                AssertParm(spec.OrderedContributedActions[7], (long) 91);
+                AssertParm(spec.OrderedContributedActions[8], (short) 30);
+                AssertParm(spec.OrderedContributedActions[9], "a default");
             }
         }
 
@@ -394,7 +394,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var parmSpec = spec.ContributedActions.First().Parameters[1];
+                var parmSpec = spec.OrderedContributedActions.First().Parameters[1];
                 var facet = parmSpec.GetFacet<IRangeFacet>();
                 Assert.IsNotNull(facet);
 
@@ -430,7 +430,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual("Property Description", facet.Value);
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
 
                 facet = actionSpec.GetFacet<IDescribedAsFacet>();
                 Assert.IsNotNull(facet);
@@ -465,7 +465,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(Do.Rendering, facet.What);
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
 
                 facet = actionSpec.GetFacet<IEagerlyFacet>();
                 Assert.IsNotNull(facet);
@@ -496,8 +496,8 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual(true, facet.Title);
 
-                var actionSpec1 = spec.ContributedActions.First();
-                var actionSpec2 = spec.ContributedActions[1];
+                var actionSpec1 = spec.OrderedContributedActions.First();
+                var actionSpec2 = spec.OrderedContributedActions[1];
 
                 facet = actionSpec1.GetFacet<ITableViewFacet>();
                 Assert.IsNotNull(facet);
@@ -558,7 +558,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual(true, facet.IsMandatory);
                 Assert.AreEqual(false, facet.IsOptional);
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
 
                 var parmSpec1 = actionSpec.Parameters[1];
                 var parmSpec2 = actionSpec.Parameters[2];
@@ -602,7 +602,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual("Property Name", facet.Value);
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
 
                 facet = actionSpec.GetFacet<INamedFacet>();
                 Assert.IsNotNull(facet);
@@ -641,7 +641,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 facet = propertySpec.GetFacet<IRegExFacet>();
                 Assert.IsNull(facet);
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
 
                 facet = actionSpec.GetFacet<IRegExFacet>();
                 Assert.IsNull(facet);
@@ -681,7 +681,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
                 Assert.AreEqual("Property Hint", facet.Value);
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
 
                 facet = actionSpec.GetFacet<IPresentationHintFacet>();
                 Assert.IsNotNull(facet);
@@ -712,7 +712,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
 
                 var facet = actionSpec.GetFacet<IPageSizeFacet>();
                 Assert.IsNotNull(facet);
@@ -737,7 +737,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
 
                 var parmSpec = actionSpec.Parameters[1];
 
@@ -770,7 +770,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual(1, facet.NumberOfLines);
                 Assert.AreEqual(2, facet.Width);
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
 
                 facet = actionSpec.GetFacet<IMultiLineFacet>();
                 Assert.IsNotNull(facet);
@@ -818,7 +818,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.AreEqual("Collection Order", facet.Grouping);
                 Assert.AreEqual("1", facet.Sequence);
 
-                var actionSpec = spec.ContributedActions.First();
+                var actionSpec = spec.OrderedContributedActions.First();
 
                 facet = actionSpec.GetFacet<IMemberOrderFacet>();
                 Assert.IsNotNull(facet);
@@ -933,7 +933,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var actionSpecs = spec.ContributedActions;
+                var actionSpecs = spec.OrderedContributedActions;
 
                 Assert.IsNull(actionSpecs[0].GetFacet<IQueryOnlyFacet>());
                 Assert.IsNull(actionSpecs[1].GetFacet<IQueryOnlyFacet>());
@@ -961,7 +961,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var actionSpecs = spec.CollectionContributedActions;
+                var actionSpecs = spec.OrderedCollectionContributedActions;
                 var facet = actionSpecs[0].GetFacet<IContributedFunctionFacet>();
 
                 Assert.IsNotNull(facet);
@@ -986,7 +986,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<EditClass>());
 
-                var actionSpecs = spec.ContributedActions;
+                var actionSpecs = spec.OrderedContributedActions;
                 var actionSpec = actionSpecs[0];
                 var facet = actionSpec.GetFacet<IEditPropertiesFacet>();
 
@@ -1083,7 +1083,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var actionSpecs = spec.ContributedActions;
+                var actionSpecs = spec.OrderedContributedActions;
                 var actionSpec = actionSpecs.SingleOrDefault(s => s.Identifier.MemberName == nameof(ChoicesClass.ActionWithChoices));
 
                 var parameterSpecs = actionSpec.Parameters;
@@ -1116,7 +1116,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var actionSpecs = spec.ContributedActions;
+                var actionSpecs = spec.OrderedContributedActions;
                 var actionSpec = actionSpecs.SingleOrDefault(s => s.Identifier.MemberName == nameof(ChoicesClass.ActionWithMismatchedChoices));
 
                 var parameterSpecs = actionSpec.Parameters;
@@ -1149,7 +1149,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 var specs = AllObjectSpecImmutables(container);
                 var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
-                var actionSpecs = spec.ContributedActions;
+                var actionSpecs = spec.OrderedContributedActions;
                 var actionSpec = actionSpecs.SingleOrDefault(s => s.Identifier.MemberName == nameof(MismatchedTargetClass.ActionWithChoices));
 
                 var parameterSpecs = actionSpec.Parameters;

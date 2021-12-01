@@ -24,9 +24,9 @@ namespace NakedFramework.Architecture.SpecImmutable {
         string ShortName { get; }
         IMenuImmutable ObjectMenu { get; }
         IReadOnlyList<IActionSpecImmutable> OrderedObjectActions { get; }
-        IReadOnlyList<IActionSpecImmutable> ContributedActions { get; }
-        IReadOnlyList<IActionSpecImmutable> CollectionContributedActions { get; }
-        IReadOnlyList<IActionSpecImmutable> FinderActions { get; }
+        IReadOnlyList<IActionSpecImmutable> OrderedContributedActions { get; }
+        IReadOnlyList<IActionSpecImmutable> OrderedCollectionContributedActions { get; }
+        IReadOnlyList<IActionSpecImmutable> OrderedFinderActions { get; }
         IReadOnlyList<IAssociationSpecImmutable> OrderedFields { get; }
         IReadOnlyList<ITypeSpecImmutable> Interfaces { get; }
         IReadOnlyList<ITypeSpecImmutable> Subclasses { get; }

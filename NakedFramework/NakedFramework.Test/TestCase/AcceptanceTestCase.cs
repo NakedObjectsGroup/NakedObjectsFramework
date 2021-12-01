@@ -67,7 +67,7 @@ namespace NakedFramework.Test.TestCase {
         protected virtual object[] Fixtures => Array.Empty<object>();
 
         /// <summary>
-        ///     By default this returns the union of the types specified in MenuServices, ContributedActions
+        ///     By default this returns the union of the types specified in MenuServices, OrderedContributedActions
         ///     & SystemServices. This is for backwards compatibility only.
         ///     The property may be overridden to return a fresh list of types, in which case Menu Services etc
         ///     will be ignored.

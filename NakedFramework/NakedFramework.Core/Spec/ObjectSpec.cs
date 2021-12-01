@@ -33,7 +33,7 @@ namespace NakedFramework.Core.Spec {
                           ILogger<ObjectSpec> logger) :
             base(memberFactory, innerSpec, framework) => this.logger = logger;
 
-        private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions);
+        private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedContributedActions);
 
         protected override PersistableType GetPersistable() =>
             InnerSpec.ContainsFacet<INotPersistedFacet>()
@@ -66,9 +66,9 @@ namespace NakedFramework.Core.Spec {
             return combinedActions;
         }
 
-        public IActionSpec[] GetCollectionContributedActions() => collectionContributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.CollectionContributedActions);
+        public IActionSpec[] GetCollectionContributedActions() => collectionContributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedCollectionContributedActions);
 
-        public IActionSpec[] GetFinderActions() => finderActions ??= MemberFactory.CreateActionSpecs(InnerSpec.FinderActions);
+        public IActionSpec[] GetFinderActions() => finderActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedFinderActions);
 
         public IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec, string id) {
             if (!locallyContributedActions.ContainsKey(id)) {
